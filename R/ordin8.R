@@ -2,7 +2,7 @@
 #'
 #' Extends functionality of phyloseq::ordinate()
 #'
-#' @param data list object output from calc_dist or agg_tax (if no distance calculation required e.g. for RDA)
+#' @param data list object output from calc_dist or tax_agg (if no distance calculation required e.g. for RDA)
 #' @param method which ordination method to use? currently one of 'PCoA', 'PCA' or 'NMDS'
 #' @param constraints (a vector of) valid variable name(s) to constrain PCoA or RDA analyses, or leave as 1 for unconstrained ordination
 #' @param conditions (a vector of) valid variable name(s) to partial these out of PCoA or RDA analyses with Condition(), or leave as NULL
@@ -29,18 +29,19 @@
 #'
 #' # compute ordination
 #' test <- dietswap %>%
-#'   agg_tax("Genus") %>%
+#'   tax_agg("Genus") %>%
 #'   calc_dist("bray") %>%
 #'   ordin8(constraints = c("weight", "female"))
-#' class(test$ordination)
+#' # familiarise yourself with the structure of the returned list object
+#' str(test, max.level = 1)
 #'
-#' # compute RDA ("aitchison distance") directly from phyloseq (demo return argument)
+#' # compute RDA ("aitchison distance") directly from phyloseq (and demo return argument)
 #' test2 <- dietswap %>%
-#'   agg_tax("Genus", return = "ps") %>%
-#'   microbiome::transform("clr") %>%
+#'   tax_agg("Genus") %>%
+#'   tax_transform("clr") %>%
 #'   ordin8(method = "RDA", constraints = c("weight", "female"), return = "ordination")
+#' # plot with oldschool vegan graphics to show it returns a standard interoperable ordination object
 #' ordiplot(test2)
-#'
 ordin8 <- function(data,
                    method = c("PCoA", "PCA", "NMDS")[1],
                    constraints = 1,
@@ -50,19 +51,23 @@ ordin8 <- function(data,
   # check input data object class
   if (inherits(data, "list")) {
     ps <- data[["ps"]]
-    distMat <- data[['distMat']]
-    distName <- data[['distName']]
-    tax_level <- data[['tax_level']]
+    distMat <- data[["distMat"]]
+    info <- data[["info"]]
   } else if (inherits(data, "phyloseq")) {
     ps <- data
-    tax_level <- distName <- distMat <- NULL
+    distMat <- NULL
+    info <- list(tax_level = "not specified", distName = "not specified")
+  } else {
+    stop("data is wrong class, should be list output of calc_dist or tax_agg, or a phyloseq")
   }
 
   # constraint and condition handling in phyloseq object and distance matrix
   # drop missings and scale explanatory variables (constraints) if given (for RDA or dbRDA/constrained PCoA)
-  if (constraints[[1]] != 1) {
+  if (constraints[[1]] != 1 || !rlang::is_null(conditions)) {
     message("\nCentering (mean) and scaling (sd) the constraint and conditioning vars: ")
-    for (v in c(constraints, conditions)) {
+    # remove '1' in case conditions is set but constraints is still 1 (default)
+    VARS <- setdiff(c(constraints, conditions), 1)
+    for (v in VARS) {
       message("\t", v)
       vec <- phyloseq::sample_data(ps)[[v]]
       if (!class(vec) %in% c("logical", "numeric", "integer")) {
@@ -92,6 +97,9 @@ ordin8 <- function(data,
 
   # PCoA/capscale or RDA
   if (method %in% c("RDA", "CAP")) {
+    if (method != "RDA" & rlang::is_null(distMat)) {
+      stop("CAP (PCoA) requires a distance matrix but you did not provide one.")
+    }
 
     # set formula to include any given constraints on RHS (by default the RHS = 1)
     f <- paste0("distMat ~ ", paste(constraints, collapse = " + "))
@@ -103,10 +111,9 @@ ordin8 <- function(data,
     }
 
     Formula <- stats::as.formula(f)
-    message(f)
 
     # note RDA does not use distance arg (and distMat is not computed)
-    ORD <- phyloseq::ordinate(ps, method = method, distance = distMat, formula = Formula)
+    ORD <- phyloseq::ordinate(physeq = ps, method = method, distance = distMat, formula = Formula)
   }
 
 
@@ -116,13 +123,17 @@ ordin8 <- function(data,
     "DCA", "CCA", "DPCoA", "NMDS", "MDS"
   ) && constraints[[1]] == 1 # unconstrained only
   ) {
-    ORD <- phyloseq::ordinate(ps, method = method, distance = distMat)
+    ORD <- phyloseq::ordinate(physeq = ps, method = method, distance = distMat)
   }
 
   # return list output
+  info[["method"]] <- method
+  info[["constraints"]] <- constraints
+  info[["conditions"]] <- conditions
+
   out <- list(
-    ordination = ORD, constraints = constraints, conditions = conditions,
-    distMat = distMat, distName = distName, tax_level = tax_level, ps = ps
+    info = info, ordination = ORD,
+    distMat = distMat, ps = ps
   )
 
   if (return == "all") {

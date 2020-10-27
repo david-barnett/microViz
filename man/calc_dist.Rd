@@ -13,7 +13,7 @@ calc_dist(
 )
 }
 \arguments{
-\item{data}{phyloseq object or list object output from agg_tax}
+\item{data}{phyloseq object or list object output from tax_agg}
 
 \item{dist}{name of distance to calculate between pairs of samples}
 
@@ -25,27 +25,31 @@ calc_dist(
 list with distance matrix, phyloseq object, and name of distance used
 }
 \description{
-For use directly with phyloseq object or with list output of agg_tax.
+For use directly with phyloseq object or with list output of tax_agg.
 Computes various unifrac distances, aitchison distance or any distance from vegdist.
 Returns phyloseq and name of distance in addition to the distance matrix itself!
 Result intended to be piped into ordin8 or permanova functions.
 }
 \details{
-Note: Instead of calculating aitchison distance with this function, users should prefer directly applying microbiome::transform(ps, 'clr') and using pca/rda method of ordin8 to allow plotting loading vectors in plot_ordin8
+Aitchison distance note: You should EITHER
+\enumerate{
+\item skip the calc_dist function and call ordin8(method = "RDA") directly on an object with taxa transformed with tax_transform(transformation = "clr")
+\item pass an object with untransformed (or 'identity' transformed) taxa to the data argument of calc_dist and specify dist = "aitchison".
+If ordination plots with taxon loading distances are desired, users should prefer option 1.
+If the distance matrix is required for permanova, users should prefer option 2.
+}
 }
 \examples{
 # bray curtis distance on genera-level features
 data("dietswap", package = "microbiome")
 bc <- dietswap \%>\%
-  agg_tax("Genus") \%>\%
-  calc_dist("aitchison")
+  tax_agg("Genus") \%>\%
+  calc_dist("bray")
 class(bc)
 
 # gunifrac distance using phyloseq input
 data("esophagus", package = "phyloseq")
 gunifrac <- esophagus \%>\%
   calc_dist("gunifrac", return = "distMat")
-
 class(gunifrac)
-
 }

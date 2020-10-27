@@ -13,7 +13,7 @@ ordin8(
 )
 }
 \arguments{
-\item{data}{list object output from calc_dist or agg_tax (if no distance calculation required e.g. for RDA)}
+\item{data}{list object output from calc_dist or tax_agg (if no distance calculation required e.g. for RDA)}
 
 \item{method}{which ordination method to use? currently one of 'PCoA', 'PCA' or 'NMDS'}
 
@@ -47,16 +47,17 @@ sample_data(dietswap)$weight <-
 
 # compute ordination
 test <- dietswap \%>\%
-  agg_tax("Genus") \%>\%
+  tax_agg("Genus") \%>\%
   calc_dist("bray") \%>\%
   ordin8(constraints = c("weight", "female"))
-class(test$ordination)
+# familiarise yourself with the structure of the returned list object
+str(test, max.level = 1)
 
-# compute RDA ("aitchison distance") directly from phyloseq (demo return argument)
+# compute RDA ("aitchison distance") directly from phyloseq (and demo return argument)
 test2 <- dietswap \%>\%
-  agg_tax("Genus", return = "ps") \%>\%
-  microbiome::transform("clr") \%>\%
+  tax_agg("Genus") \%>\%
+  tax_transform("clr") \%>\%
   ordin8(method = "RDA", constraints = c("weight", "female"), return = "ordination")
+# plot with oldschool vegan graphics to show it returns a standard interoperable ordination object
 ordiplot(test2)
-
 }
