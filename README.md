@@ -19,7 +19,7 @@ You can install the development version from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("david-barnett/microViz")
+devtools::install_github("MUMC-MEDMIC/microViz@bbecb5d33dc0b6f987d31a788105a3dbc61cfab5")
 ```
 
 ## Setup
