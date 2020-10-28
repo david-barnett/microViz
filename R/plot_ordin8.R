@@ -241,7 +241,7 @@ plot_ordin8 <-
             # TODO could colour taxa by phylum?
             colour = taxon_label_style$colour,
             lineend = "round", linejoin = "mitre", size = 1,
-            arrow = arrow(length = unit(0.0025, "npc"), type = "closed"),
+            arrow = grid::arrow(length = grid::unit(0.0025, "npc"), type = "closed"),
             data = speciesScoresDf
           )
         }
@@ -272,7 +272,7 @@ plot_ordin8 <-
         p <- p + geom_segment(aes_string(xend = axesNames[1], yend = axesNames[2], x = 0, y = 0),
           size = 1.5, colour = constraint_label_style$colour,
           lineend = "round", linejoin = "mitre",
-          arrow = arrow(length = unit(0.005, "npc"), type = "closed"),
+          arrow = grid::arrow(length = grid::unit(0.005, "npc"), type = "closed"),
           data = constraintDf
         )
       }
