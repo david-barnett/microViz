@@ -22,7 +22,7 @@
 #' @return ggplot
 #' @export
 #' @import ggplot2
-#' @importMethodsFrom vegan summary
+#' @import vegan
 #'
 #' @examples
 #' library(phyloseq)
