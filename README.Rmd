@@ -53,24 +53,34 @@ sample_data(dietswap)$female[c(3, 4)] <- NA
 ```
 
 
-## Example ordination plot workflow
+## Example: ordination plot workflow
 
-PCA with clr-transformed features (equivalent to aitchison distance).
+You want to visually see if overall microbial ecosystem composition differs markedly between groups, e.g. BMI.
 
-```{r ordination-plot}
-# compute and plot ordinations for demonstration of conditioning
-unconstrained_aitchison_pca <- dietswap %>%
+Here is one option to try first:
+
+1. Aggregate the taxa into bacterial families (for example) - use `tax_agg()`
+2. Transform the microbial data with the centre-log-ratio transformation - use `tax_transform()`
+3. Perform PCA with the clr-transformed features (equivalent to aitchison distance PCoA) - use `ordin8()`
+4. Plot the first 2 axes of this PCA ordination, colouring samples by group and adding taxon loading arrows to visualise which taxa generally differ across your samples - use `plot_ordin8()`
+5. Customise the theme of the ggplot as you like and/or add features like ellipses or annotations
+
+```{r ordination-plot, dpi=300}
+unconstrained_aitchison_pca <- 
+  dietswap %>%
   tax_agg("Family") %>%
   tax_transform('clr') %>%
   ordin8(method = 'RDA')
 
 unconstrained_aitchison_pca %>%
-plot_ordin8(plot_taxa = 1:5, colour = 'bmi_group', auto_title = TRUE) +
-stat_ellipse(aes(linetype = bmi_group, colour = bmi_group))
+  plot_ordin8(plot_taxa = 1:5, colour = 'bmi_group', auto_title = TRUE) +
+  stat_ellipse(aes(linetype = bmi_group, colour = bmi_group)) + 
+  scale_colour_brewer(palette = 'Set1')
 ```
 
 # Session info
 ```{r}
+options(width = 100)
 devtools::session_info()
 ```
 
