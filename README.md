@@ -14,8 +14,7 @@ like phyloseq, vegan, and microbiome.
 
 ## Installation
 
-You can install the development version from
-[GitHub](https://github.com/) with:
+You can install the latest available version from here.
 
 ``` r
 # install.packages("devtools")
