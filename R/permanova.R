@@ -91,14 +91,14 @@ permanova <- function(data,
     if (s > 0) {
       if (complete_cases) {
         if (verbose) {
-          message('WARNING: Dropping samples with NAs for "', v, '". N = ', s)
+          message('WARNING: Dropping samples with NAs for "', v, '". At least ', s)
         }
         ps <- phyloseq::prune_samples(samples = !NAs, x = ps)
         if (exists("distMat") && !rlang::is_null(distMat)) {
           distMat <- stats::as.dist(as.matrix(distMat)[!NAs, !NAs])
         }
       } else {
-        stop(v, " contains missings: ", s, "\n\tTry `drop_incomplete()`")
+        stop(v, " contains missings, at least: ", s, "\n\tTry `drop_incomplete()`")
       }
     }
   }
