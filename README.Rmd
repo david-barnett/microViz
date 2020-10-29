@@ -26,11 +26,17 @@ microViz wraps and extends core microbial ecology packages like phyloseq, vegan,
 You can install the latest available package version using the following code.
 
 ``` r
+# # How to authenticate your R to install from this private github repo # #
+# install.packages("usethis")
+# usethis::browse_github_pat() 
+# click "generate token" on the webpage and then follow instructions in the R console.
+
+# # Installing the latest version of this package # #
 # install.packages("devtools")
-devtools::install_github("MUMC-MEDMIC/microViz@bbecb5d33dc0b6f987d31a788105a3dbc61cfab5")
-# ensure you have the commit you want (e.g. check the hash after the @ is the latest)
-# eventually I will set up a proper version system once I've added more of the in-development functions
+devtools::install_github("MUMC-MEDMIC/microViz")
+# # advanced tip: add @<commit-hash> after microViz to install a particular version
 ```
+
 ## Setup
 
 ```{r load, message=FALSE, warning=FALSE}
