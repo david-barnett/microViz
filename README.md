@@ -21,7 +21,8 @@ code.
 # # How to authenticate your R to install from this private github repo # #
 # install.packages("usethis")
 # usethis::browse_github_pat() 
-# click "generate token" on the webpage and then follow instructions in the R console.
+# # click "generate token" on the webpage and then follow instructions in the R console.
+# # For more help see: https://happygitwithr.com/github-pat.html#step-by-step
 
 # # Installing the latest version of this package # #
 # install.packages("devtools")
@@ -60,31 +61,44 @@ differs markedly between groups, e.g. BMI.
 
 Here is one option to try first:
 
-1.  Aggregate the taxa into bacterial families (for example) - use
+1.  Filter out rare taxa (e.g. remove Genera not present in at least 10%
+    of samples) - use `tax_filter()`
+2.  Aggregate the taxa into bacterial families (for example) - use
     `tax_agg()`
-2.  Transform the microbial data with the centre-log-ratio
+3.  Transform the microbial data with the centre-log-ratio
     transformation - use `tax_transform()`
-3.  Perform PCA with the clr-transformed features (equivalent to
+4.  Perform PCA with the clr-transformed features (equivalent to
     aitchison distance PCoA) - use `ordin8()`
-4.  Plot the first 2 axes of this PCA ordination, colouring samples by
+5.  Plot the first 2 axes of this PCA ordination, colouring samples by
     group and adding taxon loading arrows to visualise which taxa
     generally differ across your samples - use `plot_ordin8()`
-5.  Customise the theme of the ggplot as you like and/or add features
+6.  Customise the theme of the ggplot as you like and/or add features
     like ellipses or annotations
 
 <!-- end list -->
 
 ``` r
+# perform ordination
 unconstrained_aitchison_pca <- 
   dietswap %>%
+  tax_filter(min_prevalence = 0.1, tax_level = 'Genus') %>% 
   tax_agg("Family") %>%
   tax_transform('clr') %>%
   ordin8(method = 'RDA')
+#> Proportional min_prevalence given: 0.1 --> min 23/222 samples.
 
-unconstrained_aitchison_pca %>%
-  plot_ordin8(plot_taxa = 1:5, colour = 'bmi_group', auto_title = TRUE) +
+# create plot
+pca_plot <- unconstrained_aitchison_pca %>%
+  plot_ordin8(plot_taxa = 1:5, colour = 'bmi_group', auto_title = TRUE)
+
+# customise plot
+customised_plot <- pca_plot + 
   stat_ellipse(aes(linetype = bmi_group, colour = bmi_group)) + 
-  scale_colour_brewer(palette = 'Set1')
+  scale_colour_brewer(palette = 'Set1') + 
+  xlim(c(-1.5,2.75)) + theme(legend.position = 'bottom')
+
+# show plot
+customised_plot
 ```
 
 <img src="man/figures/README-ordination-plot-1.png" width="100%" />
