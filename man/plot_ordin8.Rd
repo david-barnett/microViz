@@ -88,19 +88,20 @@ constrained_aitchison_rda <- dietswap \%>\%
   ordin8(method = "RDA", constraints = c("weight", "female"))
 
 constrained_aitchison_rda \%>\%
-  plot_ordin8(colour = "bmi_group") +
+  plot_ordin8(colour = "bmi_group", constraint_label_length = 2) +
   stat_ellipse(aes(linetype = bmi_group, colour = bmi_group))
 
 # ggplot allows additional customisation of the resulting plot
 p <- constrained_aitchison_rda \%>\%
-  plot_ordin8(colour = "bmi_group", plot_taxa = 1:3, taxon_label_length = 5) +
-  lims(x = c(-5, 6), y = c(-5, 5))
+  plot_ordin8(colour = "bmi_group", constraint_label_length = 2,
+  plot_taxa = 1:3, taxon_label_length = 5) +
+  lims(x = c(-5, 6), y = c(-5, 5)) +
+  scale_colour_brewer(palette = "Set1")
 
 p + stat_ellipse(aes(linetype = bmi_group, colour = bmi_group))
 p + stat_density2d(aes(colour = bmi_group))
 
 # it is possible to facet only unconstrained ordination plots (with plot_taxa = FALSE)
-
 unconstrained_aitchison_pca \%>\%
   plot_ordin8(color = "sex") +
   facet_wrap("sex") +

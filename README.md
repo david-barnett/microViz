@@ -15,9 +15,12 @@ like phyloseq, vegan, and microbiome.
 ## Installation
 
 You can install the latest available package version using the following
-code.
+instructions.
 
 ``` r
+# # If you are on windows you will need to install RTools so that your computer can build this package
+# # Follow instructions here: http://jtleek.com/modules/01_DataScientistToolbox/02_10_rtools/
+
 # # How to authenticate your R to install from this private github repo # #
 # install.packages("usethis")
 # usethis::browse_github_pat() 
@@ -54,7 +57,7 @@ sample_data(dietswap)$female <-
 sample_data(dietswap)$female[c(3, 4)] <- NA
 ```
 
-## Example: ordination plot workflow
+## Example ordination plot workflow
 
 You want to visually see if overall microbial ecosystem composition
 differs markedly between groups, e.g. BMI.
@@ -103,6 +106,124 @@ customised_plot
 
 <img src="man/figures/README-ordination-plot-1.png" width="100%" />
 
+## PERMANOVA
+
+You visualised your ordinated data in the plot above. Below you can see
+how to perform a PERMANOVA to test the significance of BMI. This example
+uses the Family-level aitchison distance to correspond with the plot
+above.
+
+``` r
+# calculate distances
+aitchison_dists <- 
+  dietswap %>%
+  tax_filter(min_prevalence = 0.1, tax_level = 'Genus') %>% 
+  tax_agg("Family") %>%
+  calc_dist('aitchison')
+#> Proportional min_prevalence given: 0.1 --> min 23/222 samples.
+
+# the more permutations you request, the longer it takes, 
+# but also the more stable and precise your p-values become
+aitchison_perm <- permanova(aitchison_dists, n_perms = 99, n_processes = 1,
+                            variables = c('bmi_group'))
+#> 2020-10-30 10:19:23 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2020-10-30 10:19:24 - Finished PERMANOVA
+# view the permanova results
+aitchison_perm$permanova
+#> 
+#> Call:
+#> vegan::adonis(formula = FORMULA, data = metadata, permutations = n_perms,      parallel = cl) 
+#> 
+#> Permutation: free
+#> Number of permutations: 99
+#> 
+#> Terms added sequentially (first to last)
+#> 
+#>            Df SumsOfSqs MeanSqs F.Model      R2 Pr(>F)   
+#> bmi_group   2    104.07  52.034  4.7734 0.04177   0.01 **
+#> Residuals 219   2387.29  10.901         0.95823          
+#> Total     221   2491.35                 1.00000          
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+# view the info stored about the distance calculation
+aitchison_perm$info
+#> $tax_level
+#> [1] "Family"
+#> 
+#> $tax_transformation
+#> [1] "none specified"
+#> 
+#> $distName
+#> [1] "aitchison"
+```
+
+## Constrained ordination
+
+You could visualise the effect of the (numeric/logical) variables in
+your permanova directly using the plot\_ordin8 function with
+constraints.
+
+``` r
+perm2 <- permanova(aitchison_dists, variables = c('weight', 'female'))
+#> WARNING: Dropping samples with NAs for "female". At least 2
+#> 2020-10-30 10:19:24 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2020-10-30 10:19:26 - Finished PERMANOVA
+perm2$permanova
+#> 
+#> Call:
+#> vegan::adonis(formula = FORMULA, data = metadata, permutations = n_perms,      parallel = cl) 
+#> 
+#> Permutation: free
+#> Number of permutations: 999
+#> 
+#> Terms added sequentially (first to last)
+#> 
+#>            Df SumsOfSqs MeanSqs F.Model      R2 Pr(>F)    
+#> weight      1     55.43  55.427  5.1340 0.02259  0.001 ***
+#> female      1     55.83  55.831  5.1714 0.02275  0.001 ***
+#> Residuals 217   2342.73  10.796         0.95466           
+#> Total     219   2453.98                 1.00000           
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+ordin8(perm2, constraints = c('weight', 'female')) %>% 
+  plot_ordin8(colour = 'sex', constraint_label_length = 2) +
+  stat_ellipse(aes(colour = sex)) + scale_color_brewer(palette = "Set2")
+#> 
+#> Centering (mean) and scaling (sd) the constraint and conditioning vars:
+#>  weight
+#>  female
+```
+
+<img src="man/figures/README-constrained-ord-1.png" width="100%" />
+
+You can make your model more complicated, including the addition of
+interactions. Currently I don’t provide options for random effects. Ask
+me if you want this.
+
+``` r
+# example with interactions
+permanova(aitchison_dists, variables = c('bmi_group', 'sex'),
+          interactions = "bmi_group * sex", 
+          adonis2 = TRUE, # important when testing interactions
+          return = "permanova" # return only the permanova output
+)
+#> 2020-10-30 10:19:26 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2020-10-30 10:19:28 - Finished PERMANOVA
+#> Permutation test for adonis under reduced model
+#> Marginal effects of terms
+#> Permutation: free
+#> Number of permutations: 999
+#> 
+#> vegan::adonis2(formula = FORMULA, data = metadata, permutations = n_perms, by = "margin", parallel = cl)
+#>                Df SumOfSqs      R2      F Pr(>F)    
+#> bmi_group:sex   1    55.43 0.02225 5.2811  0.001 ***
+#> Residual      217  2277.56 0.91419                  
+#> Total         221  2491.35 1.00000                  
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
 # Session info
 
 ``` r
@@ -118,7 +239,7 @@ devtools::session_info()
 #>  collate  English_United Kingdom.1252 
 #>  ctype    English_United Kingdom.1252 
 #>  tz       Europe/Berlin               
-#>  date     2020-10-29                  
+#>  date     2020-10-30                  
 #> 
 #> - Packages ---------------------------------------------------------------------------------------
 #>  package      * version    date       lib source                               
@@ -166,7 +287,7 @@ devtools::session_info()
 #>  memoise        1.1.0      2017-04-21 [1] CRAN (R 4.0.0)                       
 #>  mgcv           1.8-33     2020-08-27 [1] CRAN (R 4.0.3)                       
 #>  microbiome   * 1.10.0     2020-04-27 [1] Bioconductor                         
-#>  microViz     * 0.0.0.9000 2020-10-29 [1] Github (MUMC-MEDMIC/microViz@81d03d5)
+#>  microViz     * 0.0.0.9000 2020-10-30 [1] Github (MUMC-MEDMIC/microViz@988fdbc)
 #>  multtest       2.44.0     2020-04-27 [1] Bioconductor                         
 #>  munsell        0.5.0      2018-06-12 [1] CRAN (R 4.0.0)                       
 #>  nlme           3.1-150    2020-10-24 [1] CRAN (R 4.0.3)                       
