@@ -16,7 +16,8 @@ plot_comp_bar(
   horizontal = TRUE,
   bar_width = 1,
   bar_outline_colour = "black",
-  drop_unused_vars = TRUE
+  drop_unused_vars = TRUE,
+  seriate_method = "OLO_ward"
 )
 }
 \arguments{
@@ -43,9 +44,11 @@ plot_comp_bar(
 \item{bar_outline_colour}{line colour separating taxa and samples}
 
 \item{drop_unused_vars}{speeds up ps_melt but might limit future plot customisation options}
+
+\item{seriate_method}{name of any ordering method suitable for distance matrices (see ?seriation::seriate)}
 }
 \value{
-ggplot
+ggplot or list of harmonised ggplots
 }
 \description{
 No gaps, unless you want them. Grouped bars and bar outlines if you want them.
@@ -55,7 +58,25 @@ Consistent, distinct, fairly pleasant colouring.
 library(microbiome)
 data(dietswap)
 
+# make a list of 2 harmonised composition plots (grouped by sex)
+p <- plot_comp_bar(dietswap, n_taxa = 15, bar_outline_colour = "black",
+                   sample_order = 'aitchison', groups = 'sex')
 
+# plot them side by side with patchwork package
+patch <- patchwork::wrap_plots(p, ncol = 2, guides = 'collect')
+patch
+
+# beautifying tweak #
+# modify one plot in place (flip the order of the samples in the 2nd plot)
+# notice that the scaling is for the x-axis
+# (that's because coord_flip is used inside plot_comp_bar)
+patch[[2]] <- patch[[2]] + scale_x_discrete(limits = rev)
+# Explainer: rev() function takes current limits and reverses them.
+# You could also pass a completely arbitrary order, naming all samples
+
+# you can theme all plots with the & operator
+patch & theme(axis.text.y = element_text(size = 5), legend.text = element_text(size = 6))
+# See https://patchwork.data-imaginist.com/index.html
 
 
 }

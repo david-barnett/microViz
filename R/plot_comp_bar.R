@@ -15,15 +15,34 @@
 #' @param bar_width  default 1 avoids random gapping otherwise seen with many samples (set to something less than 1 to introduce gaps between fewer samples)
 #' @param bar_outline_colour line colour separating taxa and samples
 #' @param drop_unused_vars speeds up ps_melt but might limit future plot customisation options
+#' @param seriate_method name of any ordering method suitable for distance matrices (see ?seriation::seriate)
 #'
-#' @return ggplot
+#' @return ggplot or list of harmonised ggplots
 #' @export
 #'
 #' @examples
 #' library(microbiome)
 #' data(dietswap)
 #'
+#' # make a list of 2 harmonised composition plots (grouped by sex)
+#' p <- plot_comp_bar(dietswap, n_taxa = 15, bar_outline_colour = "black",
+#'                    sample_order = 'aitchison', groups = 'sex')
 #'
+#' # plot them side by side with patchwork package
+#' patch <- patchwork::wrap_plots(p, ncol = 2, guides = 'collect')
+#' patch
+#'
+#' # beautifying tweak #
+#' # modify one plot in place (flip the order of the samples in the 2nd plot)
+#' # notice that the scaling is for the x-axis
+#' # (that's because coord_flip is used inside plot_comp_bar)
+#' patch[[2]] <- patch[[2]] + scale_x_discrete(limits = rev)
+#' # Explainer: rev() function takes current limits and reverses them.
+#' # You could also pass a completely arbitrary order, naming all samples
+#'
+#' # you can theme all plots with the & operator
+#' patch & theme(axis.text.y = element_text(size = 5), legend.text = element_text(size = 6))
+#' # See https://patchwork.data-imaginist.com/index.html
 #'
 #'
 plot_comp_bar <- function(
@@ -38,11 +57,16 @@ plot_comp_bar <- function(
   horizontal = TRUE,
   bar_width = 1,
   bar_outline_colour = 'black',
-  drop_unused_vars = TRUE
+  drop_unused_vars = TRUE,
+  seriate_method = "OLO_ward"
 ){
 
   # how many taxa to plot (otherwise group into other)
-  ps <- microbiome::aggregate_top_taxa(ps, top = n_taxa, tax_level)
+  ps <- microbiome::aggregate_top_taxa(ps, top = n_taxa, level = tax_level)
+
+  # set colour scheme
+  ordered_taxa <- rev(c(setdiff(microbiome::top_taxa(ps), "Other"), "Other"))
+  names(palette) <- ordered_taxa
 
   # determine sample ordering option
   if(length(sample_order) == 1 && !sample_order %in% phyloseq::sample_variables(ps)){
@@ -75,45 +99,70 @@ plot_comp_bar <- function(
   }
 
 
-  # grouping
-  # splitting entire phyloseq (multiple susbset_sample calls)
+  # define function to actually create the plot/plots
+  plot_function <- function(ps){
+
+    # sample ordering
+    if (samples_ordered_by_similarity) {
+      # calculate distance between samples for pretty ordering
+      distMat <- ps %>%
+        # microbiome::transform(transform = "compositional") %>%
+        calc_dist(dist = sample_order) %>% .[["distMat"]]
+      ser <- seriation::seriate(x = distMat, method = seriate_method)
+      s_order <- seriation::get_order(ser)
+      ordered_samples <- attr(distMat, which = "Labels")[s_order]
+    }
+
+    # create long dataframe from compositional phyloseq
+    df <- ps %>%
+      microbiome::transform(transform = "compositional") %>%
+      phyloseq::psmelt()
+
+    # set abundance order of taxa at chosen rank level
+    df[[tax_level]] <- factor(df[[tax_level]], levels = ordered_taxa, ordered = TRUE)
+
+    # set sample order
+    df[["SAMPLE"]] <- factor(df[["SAMPLE"]], levels = ordered_samples, ordered = TRUE)
 
 
-  # sample ordering
-  if (samples_ordered_by_similarity) {
-    # calculate distance between samples for pretty ordering
-    distMat <- ps %>%
-      # microbiome::transform(transform = "compositional") %>%
-      calc_dist(dist = sample_order) %>% .[["distMat"]]
-    ser <- seriation::seriate(x = distMat, method = "OLO_ward")[[1]]
-    ordered_samples <- ser$labels[ser$order]
+    p <- ggplot(df, aes_string(x = "SAMPLE", y = "Abundance", fill = tax_level))
+
+    if (is.na(bar_outline_colour)) {
+      p <- p + geom_bar(position = "stack", stat = "identity", width = bar_width)
+    } else {
+      p <- p + geom_bar(position = "stack", stat = "identity", width = bar_width, colour = bar_outline_colour)
+    }
+
+    p <- p +
+      theme(panel.background = element_blank(), panel.grid = element_blank()) +
+      scale_x_discrete(
+        # limits = ordered_samples,
+        breaks = ordered_samples,
+        labels = LABELLER) +
+      scale_fill_manual(values = palette, guide = guide_legend(reverse = TRUE))
+
+    if (horizontal) {
+      p <- p + coord_flip()
+    }
+
+    if(label == "SAMPLE"){
+      p <- p + xlab(NULL)
+    }
+
+    p
   }
+  # grouping / splitting entire phyloseq (multiple susbset_sample calls)
+  LEVELS <- unique(phyloseq::sample_data(ps)[[groups]])
 
-  # create long dataframe from compositional phyloseq
-  df <- ps %>%
-    microbiome::transform(transform = "compositional") %>%
-    phyloseq::psmelt()
-
-  # set abundance order of taxa at chosen rank level
-  ordered_taxa <- rev(c(setdiff(microbiome::top_taxa(ps), "Other"), "Other"))
-  df[[tax_level]] <- factor(df[[tax_level]], levels = ordered_taxa)
-
-  p <- ggplot(df, aes_string(x = "Sample", y = "Abundance", fill = tax_level))
-
-  if (is.na(bar_outline_colour)) {
-    p <- p + geom_bar(position = "stack", stat = "identity", width = bar_width)
+  if(isTRUE(is.null(LEVELS))){
+    plot_function(ps)
   } else {
-    p <- p + geom_bar(position = "stack", stat = "identity", width = bar_width, colour = bar_outline_colour)
+    plots_list <- lapply(LEVELS, function(level){
+      keepers <- phyloseq::sample_data(ps)[[groups]] == level
+      ps <- phyloseq::prune_samples(samples = keepers, x = ps)
+      plot_function(ps)
+    })
+    names(plots_list) <- LEVELS
+    return(plots_list)
   }
-
-  p <- p +
-    theme(panel.background = element_blank(), panel.grid = element_blank()) +
-    scale_x_discrete(limits = ordered_samples, breaks = ordered_samples, labels = LABELLER) +
-    scale_fill_manual(values = palette, guide = guide_legend(reverse = TRUE))
-
-  if (horizontal) {
-    p <- p + coord_flip()
-  }
-
-  p
 }
