@@ -6,8 +6,8 @@
 \usage{
 plot_comp_bar(
   ps,
-  n_taxa = 10,
-  tax_level = "Genus",
+  tax_level,
+  n_taxa = 8,
   tax_order = "abundance",
   palette = c("lightgrey", rev(distinct_palette(n_taxa))),
   sample_order = "aitchison",
@@ -23,9 +23,9 @@ plot_comp_bar(
 \arguments{
 \item{ps}{phyloseq object}
 
-\item{n_taxa}{how many distinct taxa to colour in the plot (otherwise "other")}
-
 \item{tax_level}{taxonomic aggregation level (from rank_names(ps))}
+
+\item{n_taxa}{how many distinct taxa to colour in the plot (otherwise "other")}
 
 \item{tax_order}{or what? taxonomy grouping?}
 
@@ -41,7 +41,7 @@ plot_comp_bar(
 
 \item{bar_width}{default 1 avoids random gapping otherwise seen with many samples (set to something less than 1 to introduce gaps between fewer samples)}
 
-\item{bar_outline_colour}{line colour separating taxa and samples}
+\item{bar_outline_colour}{line colour separating taxa and samples (use NA for none)}
 
 \item{drop_unused_vars}{speeds up ps_melt but might limit future plot customisation options}
 
@@ -51,19 +51,37 @@ plot_comp_bar(
 ggplot or list of harmonised ggplots
 }
 \description{
-No gaps, unless you want them. Grouped bars and bar outlines if you want them.
-Consistent, distinct, fairly pleasant colouring.
+Stacked barplots showing composition of phyloseq samples for a specified number of coloured taxa.
+\itemize{
+\item sample_order: The bars are sorted by similarity, according to a specified distance measure (default aitchison), and seriation/ordering algorithm (default Ward hierarchical clustering with optimal leaf ordering.)
+\item groups: You can group the samples on distinct plots by levels of a variable in the phyloseq object. The list of ggplots produced can be arranged flexibly with the patchwork package functions.
+\item bar_width: No gaps between bars, unless you want them (decrease width argument).
+\item bar_outline_colour: Bar outlines default to "black". Set to NA if you don't want outlines.
+\item palette: Default colouring is consistent across any groups, distinct, and fairly pleasant.
+}
 }
 \examples{
 library(microbiome)
 data(dietswap)
 
+# illustrative simple customised example
+dietswap \%>\%
+  subset_samples(timepoint == 1) \%>\%
+  plot_comp_bar(
+    tax_level = "Family", n_taxa = 8,
+    bar_outline_colour = NA,
+    sample_order = "bray", bar_width = 0.7
+  )
+
 # make a list of 2 harmonised composition plots (grouped by sex)
-p <- plot_comp_bar(dietswap, n_taxa = 15, bar_outline_colour = "black",
-                   sample_order = 'aitchison', groups = 'sex')
+p <- plot_comp_bar(dietswap,
+  n_taxa = 15, tax_level = "Genus",
+  bar_outline_colour = "black",
+  sample_order = "aitchison", groups = "sex"
+)
 
 # plot them side by side with patchwork package
-patch <- patchwork::wrap_plots(p, ncol = 2, guides = 'collect')
+patch <- patchwork::wrap_plots(p, ncol = 2, guides = "collect")
 patch
 
 # beautifying tweak #
@@ -77,6 +95,4 @@ patch[[2]] <- patch[[2]] + scale_x_discrete(limits = rev)
 # you can theme all plots with the & operator
 patch & theme(axis.text.y = element_text(size = 5), legend.text = element_text(size = 6))
 # See https://patchwork.data-imaginist.com/index.html
-
-
 }
