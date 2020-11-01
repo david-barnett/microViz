@@ -1,0 +1,116 @@
+---
+title: "Visualising-compositions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Visualising-compositions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, message=FALSE}
+library(microViz)
+library(microbiome)
+library(patchwork) # for arranging groups of plots
+data(dietswap)
+knitr::opts_chunk$set(fig.width = 9, fig.height = 6)
+```
+
+The `plot_comp_bar` function allows you to visualise the taxonomic compositions of your microbiome samples in a flexible, scalable, group-able, and visually appealing way.
+
+## Illustrative simple customised example
+```{r}
+dietswap %>%
+   phyloseq::subset_samples(timepoint == 1) %>%
+   plot_comp_bar(
+     tax_level = "Family", n_taxa = 8,
+     bar_outline_colour = NA,
+     sample_order = "bray", bar_width = 0.7
+   ) + coord_flip()
+```
+
+## Averages or everything?
+
+Often to compare groups, average compositions are presented.
+```{r}
+p1 <- dietswap %>% 
+  phyloseq::merge_samples(group = "group") %>%
+  plot_comp_bar(
+    tax_level = "Genus", n_taxa = 12,
+    sample_order = c("ED", "HE", "DI"),
+    bar_width = 0.8
+  ) +
+  coord_flip() + labs(x = NULL, y = NULL)
+p1
+```
+
+However that "group-averaging" approach hides a lot of within-group variation.
+```{r}
+p2 <- dietswap %>% 
+  plot_comp_bar(
+    tax_level = "Genus", n_taxa = 12, groups = "group",
+    sample_order = "euclidean", bar_outline_colour = NA
+  ) %>%
+  patchwork::wrap_plots(nrow = 3, guides = "collect") &
+  coord_flip() & 
+  labs(x = NULL, y = NULL) &
+  theme(axis.text.y = element_blank(), 
+        axis.ticks.y = element_blank())
+p2
+```
+
+
+Only from p2 you can see that the apparently higher average relative abundance of Oscillospira in group DI is probably driven largely by a subgroup of DI samples with relatively high Oscillospira.
+
+## Customising grouped plots
+
+Make a list of 2 harmonised composition plots grouped by sex.
+```{r}
+plot_list <- plot_comp_bar(
+  dietswap,
+  n_taxa = 15, tax_level = "Genus",
+  bar_outline_colour = "black",
+  sample_order = "aitchison", groups = "sex"
+)
+```
+
+Plot them side by side with the patchwork package.
+```{r}
+patch <- patchwork::wrap_plots(plot_list, ncol = 2, guides = "collect")
+patch & coord_flip() # make bars in all plots horizontal (note: use & instead of +)
+```
+
+Modify one plot in place (flip the order of the samples in the 2nd plot).
+*Notice that the scaling is for the x-axis. That's because* `coord_flip` *is used afterwards when displaying the plots*
+
+```{r}
+patch[[2]] <- patch[[2]] + scale_x_discrete(limits = rev)
+# Explainer: rev() function takes current axis limits and reverses them.
+# You could also pass a completely arbitrary order to limits, naming all samples.
+```
+
+Notice how you can theme all plots with the `&` operator. 
+
+See https://patchwork.data-imaginist.com/index.html for more examples of arranging multiple plots.
+
+```{r}
+patch & 
+  coord_flip() & labs(x = NULL, y = NULL) &
+  theme(axis.text.y = element_text(size = 5), 
+        legend.text = element_text(size = 8)) &
+  plot_annotation(
+    title = "Comparing microbial composition across sexes",
+    caption = "Caption: patchwork is a great package!",
+    theme = theme(plot.title = element_text(size = 16, face = 'bold'))
+  )
+```
+
+
+ 
+ 
