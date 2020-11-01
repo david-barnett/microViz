@@ -15,7 +15,6 @@
 #' @param sample_order any distance measure in calc_dist that does not require a phylogenetic tree (or a variable?)
 #' @param label could also consider arbitrary annotation with extra info, like in complex heatmap
 #' @param groups splits dataset by this variable (must be categorical) and uses patchwork to assemble multiple plots?
-#' @param horizontal typically you have more samples than taxa and more vertical space than horizontal, so TRUE makes sense as default
 #' @param bar_width  default 1 avoids random gapping otherwise seen with many samples (set to something less than 1 to introduce gaps between fewer samples)
 #' @param bar_outline_colour line colour separating taxa and samples (use NA for none)
 #' @param drop_unused_vars speeds up ps_melt but might limit future plot customisation options
@@ -28,6 +27,7 @@
 #' library(microbiome)
 #' data(dietswap)
 #'
+#'
 #' # illustrative simple customised example
 #' dietswap %>%
 #'   subset_samples(timepoint == 1) %>%
@@ -35,7 +35,31 @@
 #'     tax_level = "Family", n_taxa = 8,
 #'     bar_outline_colour = NA,
 #'     sample_order = "bray", bar_width = 0.7
-#'   )
+#'   ) + coord_flip()
+#'
+#' # Often to compare groups, average compositions are presented
+#' p1 <- phyloseq::merge_samples(dietswap, group = "group") %>%
+#'   plot_comp_bar(
+#'     tax_level = "Genus", n_taxa = 12,
+#'     sample_order = c("ED", "HE", "DI"),
+#'     bar_width = 0.8
+#'   ) +
+#'   coord_flip() + labs(x = NULL, y = NULL)
+#' p1
+#'
+#' # However that "group-averaging" approach hides a lot of within-group variation
+#' p2 <- plot_comp_bar(dietswap,
+#'   tax_level = "Genus", n_taxa = 12, groups = "group",
+#'   sample_order = "euclidean", bar_outline_colour = NA
+#' ) %>%
+#'   patchwork::wrap_plots(nrow = 3, guides = "collect") &
+#'   coord_flip() & labs(x = NULL, y = NULL) &
+#'   theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
+#' p2
+#'
+#' # Only from p2 you can see that the apparently higher average relative abundance
+#' # of Oscillospira in group DI is probably driven largely by a subgroup
+#' # of DI samples with relatively high Oscillospira.
 #'
 #' # make a list of 2 harmonised composition plots (grouped by sex)
 #' p <- plot_comp_bar(dietswap,
@@ -46,18 +70,18 @@
 #'
 #' # plot them side by side with patchwork package
 #' patch <- patchwork::wrap_plots(p, ncol = 2, guides = "collect")
-#' patch
+#' patch & coord_flip() # make bars in all plots horizontal (note: use & instead of +)
 #'
 #' # beautifying tweak #
 #' # modify one plot in place (flip the order of the samples in the 2nd plot)
 #' # notice that the scaling is for the x-axis
-#' # (that's because coord_flip is used inside plot_comp_bar)
+#' # (that's because coord_flip is used afterwards when displaying the plots
 #' patch[[2]] <- patch[[2]] + scale_x_discrete(limits = rev)
 #' # Explainer: rev() function takes current limits and reverses them.
 #' # You could also pass a completely arbitrary order, naming all samples
 #'
 #' # you can theme all plots with the & operator
-#' patch & theme(axis.text.y = element_text(size = 5), legend.text = element_text(size = 6))
+#' patch & coord_flip() & theme(axis.text.y = element_text(size = 5), legend.text = element_text(size = 6))
 #' # See https://patchwork.data-imaginist.com/index.html
 plot_comp_bar <- function(
                           ps,
@@ -68,7 +92,6 @@ plot_comp_bar <- function(
                           sample_order = "aitchison",
                           label = "SAMPLE",
                           groups = NA,
-                          horizontal = TRUE,
                           bar_width = 1,
                           bar_outline_colour = "black",
                           drop_unused_vars = TRUE,
@@ -90,16 +113,18 @@ plot_comp_bar <- function(
   }
   # determine sample ordering option
   samples_ordered_by_similarity <- FALSE # default (overwritten if true)
-    if (identical(sample_order, "none")){
+  if (identical(sample_order, "none")) {
     ordered_samples <- phyloseq::sample_names(ps)
   } else if (length(sample_order) == 1 && !sample_order %in% phyloseq::sample_variables(ps)) {
     samples_ordered_by_similarity <- TRUE
   } else if (length(sample_order) > 1) {
     ordered_samples <- sample_order
   } else {
-    stop(sample_order,
-         " <- ordering by metadata variable levels is not yet implemented,",
-         "\n\tbut you can pass a pre-arranged list of sample names to sample_order")
+    stop(
+      sample_order,
+      " <- ordering by metadata variable levels is not yet implemented,",
+      "\n\tbut you can pass a pre-arranged list of sample names to sample_order"
+    )
   }
 
   # create a sample names variable if this will be used for labelling
@@ -121,7 +146,7 @@ plot_comp_bar <- function(
     if (isFALSE(is.na(groups))) {
       kept_vars <- c(union(kept_vars, groups))
     }
-    if (!samples_ordered_by_similarity && sample_order != "none") {
+    if (!samples_ordered_by_similarity && length(sample_order) == 1 && sample_order != "none") {
       kept_vars <- c(union(kept_vars, sample_order))
     }
     phyloseq::sample_data(ps) <- microbiome::meta(ps)[, kept_vars, drop = FALSE]
@@ -133,7 +158,7 @@ plot_comp_bar <- function(
 
     # sample ordering
     if (samples_ordered_by_similarity) {
-      if(phyloseq::nsamples(ps) > 2){
+      if (phyloseq::nsamples(ps) > 2) {
         # calculate distance between samples for pretty ordering
         distMat <- ps %>%
           # microbiome::transform(transform = "compositional") %>%
@@ -168,15 +193,10 @@ plot_comp_bar <- function(
     p <- p +
       theme(panel.background = element_blank(), panel.grid = element_blank()) +
       scale_x_discrete(
-        # limits = ordered_samples,
         breaks = ordered_samples,
         labels = LABELLER
       ) +
       scale_fill_manual(values = palette, guide = guide_legend(reverse = TRUE))
-
-    if (horizontal) {
-      p <- p + xlab(NULL) + coord_flip()
-    }
 
     p
   }
@@ -187,9 +207,13 @@ plot_comp_bar <- function(
     plot_function(ps)
   } else {
     plots_list <- lapply(LEVELS, function(level) {
-      keepers <- phyloseq::sample_data(ps)[[groups]] == level
-      ps <- phyloseq::prune_samples(samples = keepers, x = ps)
+      this_group <- phyloseq::sample_data(ps)[[groups]] == level
+      ps <- phyloseq::prune_samples(samples = this_group, x = ps)
       plot_function(ps)
+    })
+    # set y axis title to group level
+    plots_list <- lapply(1:length(LEVELS), function(level) {
+      plots_list[[level]] + labs(title = LEVELS[[level]])
     })
     names(plots_list) <- LEVELS
     return(plots_list)

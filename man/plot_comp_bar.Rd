@@ -13,7 +13,6 @@ plot_comp_bar(
   sample_order = "aitchison",
   label = "SAMPLE",
   groups = NA,
-  horizontal = TRUE,
   bar_width = 1,
   bar_outline_colour = "black",
   drop_unused_vars = TRUE,
@@ -36,8 +35,6 @@ plot_comp_bar(
 \item{label}{could also consider arbitrary annotation with extra info, like in complex heatmap}
 
 \item{groups}{splits dataset by this variable (must be categorical) and uses patchwork to assemble multiple plots?}
-
-\item{horizontal}{typically you have more samples than taxa and more vertical space than horizontal, so TRUE makes sense as default}
 
 \item{bar_width}{default 1 avoids random gapping otherwise seen with many samples (set to something less than 1 to introduce gaps between fewer samples)}
 
@@ -64,6 +61,7 @@ Stacked barplots showing composition of phyloseq samples for a specified number 
 library(microbiome)
 data(dietswap)
 
+
 # illustrative simple customised example
 dietswap \%>\%
   subset_samples(timepoint == 1) \%>\%
@@ -71,7 +69,31 @@ dietswap \%>\%
     tax_level = "Family", n_taxa = 8,
     bar_outline_colour = NA,
     sample_order = "bray", bar_width = 0.7
-  )
+  ) + coord_flip()
+
+# Often to compare groups, average compositions are presented
+p1 <- phyloseq::merge_samples(dietswap, group = "group") \%>\%
+  plot_comp_bar(
+    tax_level = "Genus", n_taxa = 12,
+    sample_order = c("ED", "HE", "DI"),
+    bar_width = 0.8
+  ) +
+  coord_flip() + labs(x = NULL, y = NULL)
+p1
+
+# However that "group-averaging" approach hides a lot of within-group variation
+p2 <- plot_comp_bar(dietswap,
+  tax_level = "Genus", n_taxa = 12, groups = "group",
+  sample_order = "euclidean", bar_outline_colour = NA
+) \%>\%
+  patchwork::wrap_plots(nrow = 3, guides = "collect") &
+  coord_flip() & labs(x = NULL, y = NULL) &
+  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
+p2
+
+# Only from p2 you can see that the apparently higher average relative abundance
+# of Oscillospira in group DI is probably driven largely by a subgroup
+# of DI samples with relatively high Oscillospira.
 
 # make a list of 2 harmonised composition plots (grouped by sex)
 p <- plot_comp_bar(dietswap,
@@ -82,17 +104,17 @@ p <- plot_comp_bar(dietswap,
 
 # plot them side by side with patchwork package
 patch <- patchwork::wrap_plots(p, ncol = 2, guides = "collect")
-patch
+patch & coord_flip() # make bars in all plots horizontal (note: use & instead of +)
 
 # beautifying tweak #
 # modify one plot in place (flip the order of the samples in the 2nd plot)
 # notice that the scaling is for the x-axis
-# (that's because coord_flip is used inside plot_comp_bar)
+# (that's because coord_flip is used afterwards when displaying the plots
 patch[[2]] <- patch[[2]] + scale_x_discrete(limits = rev)
 # Explainer: rev() function takes current limits and reverses them.
 # You could also pass a completely arbitrary order, naming all samples
 
 # you can theme all plots with the & operator
-patch & theme(axis.text.y = element_text(size = 5), legend.text = element_text(size = 6))
+patch & coord_flip() & theme(axis.text.y = element_text(size = 5), legend.text = element_text(size = 6))
 # See https://patchwork.data-imaginist.com/index.html
 }
