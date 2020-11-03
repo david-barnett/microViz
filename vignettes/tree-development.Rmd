@@ -1,0 +1,234 @@
+---
+title: "tree-development"
+author: "David Barnett"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(microViz)
+```
+
+```{r}
+library(microbiome)
+library(igraph)
+library(tidygraph)
+library(ggraph)
+library(patchwork)
+library(dplyr)
+```
+
+# Intro
+
+This is a work in progress script about visualising taxon-specific statistics on a taxonomic tree (kinda like a phylogenetic tree with arbitrary branch lengths and with connections not directly defined by phylogenetic similarity).
+
+In the future I will turn this process into a (couple of) function(s) with documentation for visualising any statistic/numbers as the colour and size of the nodes and edges of this tree.
+
+The layout should be somewhat like a circular tree, rooted at e.g. kingdom, but not uniformly arranged. 
+The characteristic/quasi-stochastic visual arrangement of the tree actually will be a feature that allows easy visual orientation across multiple copies of the same tree.
+
+Much of this can be done with `metacoder::heat_tree()` but this package has several limitations in my opinion:
+
+- it generates a kind of ugly "legend" for which the breaks and sig.figs etc cannot be customised
+- it draws the nodes with `geom_polygon`
+    - preventing addition of customised legends 
+    - preventing flexible (re)styling of the ggplot output
+    
+- the `metacoder` package is very complicated, meaning:
+    - debugging errors is just frustrating
+    - if it fails in the future/or becomes incompatible with a future R or dependency version, I cannot fix it 
+      (it currently already uses deprecated tidyverse functions that throw warnings...)
+
+# Setting up some example data
+```{r}
+data(dietswap)
+ps <- dietswap
+
+ps <- ps %>% tax_filter(min_prevalence = 0.1, min_total_abundance = 1000)
+
+# This example dataset has some taxa with the same name for phylum and family... this needs to be fixed
+tt <- sapply(rank_names(ps), function(r){
+  tax_table(ps)[, r] <- as.vector(tax_table(ps)[, r]) %>% paste0(substr(r, 1, 1), ': ', .)
+})
+rownames(tt) <- taxa_names(ps)
+# this example dataset also has no root, this is unusual and needs to be fixed
+tax_table(ps) <- cbind(root = 'root', tt)
+
+# test non-unique genera problem handling
+tax_table(ps)[c(3,4,56), 'Genus'] <- "G: unknown"
+```
+
+# From phyloseq to tree/graph
+
+## Creating a circular tree graph layout
+
+Creating a graph/network object from a phyloseq will be incorporated into a function.
+
+```{r}
+# create taxon nodes and calculate basic info about each taxon (at all ranks)
+ranks <- phyloseq::rank_names(ps)
+n_samples <- phyloseq::nsamples(ps)
+
+node_info <- lapply(1:length(ranks), FUN = function(r){
+  
+  ps <- microbiome::aggregate_taxa(ps, level = ranks[[r]])
+  out <- 
+    data.frame(
+      taxon_name_unique = phyloseq::taxa_names(ps),
+      taxon_name = as.vector(phyloseq::tax_table(ps)[, ranks[[r]]]),
+      taxon_parent = as.vector(phyloseq::tax_table(ps)[, ranks[[max(r - 1, 1)]]]),
+      taxon_count = phyloseq::taxa_sums(ps)
+    )
+  out$taxon_mean <- out$taxon_count/n_samples
+  out
+})
+names(node_info) <- ranks
+node_df <- purrr::reduce(node_info, rbind.data.frame)
+
+# create edges df from node df
+edge_list <- lapply(
+  node_df$taxon_name_unique, 
+  function(unique_name){
+    data.frame(
+      from = node_df[node_df$taxon_name_unique == unique_name, "taxon_parent"],
+      to = unique_name
+    )  
+  })
+edge_df <- purrr::reduce(edge_list, rbind.data.frame)
+edge_df <- dplyr::distinct(edge_df, dplyr::across(tidyselect::everything()))
+edge_df <- edge_df[edge_df$from != edge_df$to,]
+# edge_df gets all attributes from the "to" node 
+edge_df <- edge_df %>% left_join(node_df, by = c('to' = 'taxon_name_unique'))
+
+# make a graph
+graph <- tbl_graph(nodes = node_df, node_key = 'taxon_name_unique', edges = edge_df, directed = TRUE)
+layout <- ggraph::create_layout(graph, layout = 'tree', circular = TRUE)
+```
+
+## Plotting the circular tree layout 
+
+Actually plotting the graph will probably be left to the user
+
+```{r, fig.height=4,fig.width=4}
+# plot a graph
+ggraph(layout) + 
+  theme_graph(base_family = 'sans') +
+  geom_edge_link(aes(edge_width = sqrt(taxon_mean),
+                     edge_colour = taxon_mean),
+                 show.legend = FALSE) +
+  geom_node_point(aes(size = sqrt(taxon_mean),
+                      fill = taxon_mean), 
+                  shape = 21,
+                  show.legend = FALSE) +
+  scale_edge_width_continuous(range = c(1, 3)) +
+  scale_edge_colour_viridis(direction = -1, end = 0.8) +
+  scale_fill_viridis(direction = -1, end = 0.8)
+```
+
+# Adjusting the layout
+
+Here I use the davidson-harel algorithm, with trial-and-error weights, to adjust the tree layout above, using a trial-and-error number of iterations.
+
+```{r}
+# adjust layout of graph with davidson-harel 
+# (allows weighting crossover avoidance and edge lengths etc)
+adjust_layout <- function(g, l) {
+  #
+  adjusted_coords <-
+    igraph::layout_with_dh(
+      graph = g,
+      coords = as.matrix(l[, c("x", "y")]),
+      maxiter = 3, fineiter = 10,
+      weight.edge.lengths = edge_density(graph) * 100,
+      weight.edge.crossings = edge_density(graph) * 100000,
+      weight.node.edge.dist = edge_density(graph) * 10,
+      weight.node.dist = edge_density(graph) * 1,
+      weight.border = edge_density(graph) * 1
+    )
+  
+  adjusted_layout <- layout
+  adjusted_layout[, c("x", "y")] <- adjusted_coords
+  
+  return(adjusted_layout)
+}
+```
+
+This is a stochastic process which I do not let find an optimum. So `set.seed` is important here.
+
+I will expose the weights of the dh algo (with my defaults).  
+I will document how to rerun a few times with RNG seed setting to help users find a layout they like and re-use it (as below).
+
+```{r}
+layouts_list <- lapply(1:9, function(i){
+  set.seed(i)
+  adjust_layout(g = graph, l = layout)
+})
+```
+
+## Plotting the adjusted layouts
+
+These differ only randomly, some are clearly more aesthetically pleasing than others. I like the top right one.
+
+```{r, fig.height=12, fig.width=12}
+plots <- lapply(layouts_list, function(al){
+  ggraph(graph = al) + 
+    theme_graph(base_family = 'sans') +
+    geom_edge_link(aes(edge_width = sqrt(taxon_mean),
+                       edge_colour = taxon_mean),
+                   show.legend = FALSE) +
+    geom_node_point(aes(size = sqrt(taxon_mean),
+                        fill = taxon_mean), 
+                    shape = 21,
+                    show.legend = FALSE) +
+    # geom_node_label(
+    # aes(label = taxon_name_unique), position = 'identity',
+    # size = 1
+    # ) +
+    scale_edge_width_continuous(range = c(1, 3)) +
+    scale_edge_colour_viridis(direction = -1, end = 0.8) +
+    scale_fill_viridis(direction = -1, end = 0.8) +
+    NULL
+})
+  
+patchwork::wrap_plots(plots, ncol = 3, byrow = TRUE)
+```
+
+## Selecting 1 of the adjusted layouts
+
+Besides just selecting the layout number 3 with `layouts_list[[3]]`, the whole generation can be rerun by setting the seed as equal to 3 again, as demonstrated below. You could use such a larger grey version with labels as a key.
+
+```{r fig.height=9, fig.width=9}
+set.seed(3)
+al <- adjust_layout(graph, l = layout)
+
+p <- ggraph(graph = al) + 
+  theme_graph(base_family = 'sans') +
+  geom_edge_link(aes(edge_width = sqrt(taxon_mean)),
+                 edge_colour = "grey",
+                 alpha = 0.5,
+                 show.legend = FALSE) +
+  geom_node_point(aes(size = sqrt(taxon_mean)),
+                  fill = "grey", 
+                  shape = 21,
+                  show.legend = FALSE) +
+  geom_node_label(
+    aes(label = if_else(grepl('^F', taxon_name_unique), taxon_name_unique, NA_character_),
+        size = log10(taxon_mean)),
+    repel = TRUE,
+    show.legend = FALSE
+  ) +
+  scale_size_continuous(range = c(3, 9)) +
+  scale_edge_width_continuous(range = c(2, 6)) +
+  NULL
+p
+```
+
+```{r}
+devtools::session_info()
+```
+
