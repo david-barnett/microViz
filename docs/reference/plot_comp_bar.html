@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Pretty &amp; flexible barplots of sample composition — plot_comp_bar" />
-<meta property="og:description" content="Stacked barplots showing composition of phyloseq samples for a specified number of coloured taxa.
+<meta property="og:description" content="Stacked barplots showing composition of phyloseq samples for a specified number of coloured taxa. plot_comp_bar performs the compositional transformation for you, so your phyloseq object should contain counts!
 sample_order: The bars are sorted by similarity, according to a specified distance measure (default aitchison), and seriation/ordering algorithm (default Ward hierarchical clustering with optimal leaf ordering.)
 groups: You can group the samples on distinct plots by levels of a variable in the phyloseq object. The list of ggplots produced can be arranged flexibly with the patchwork package functions.
 bar_width: No gaps between bars, unless you want them (decrease width argument).
@@ -136,7 +136,7 @@ palette: Default colouring is consistent across any groups, distinct, and fairly
     </div>
 
     <div class="ref-description">
-    <p>Stacked barplots showing composition of phyloseq samples for a specified number of coloured taxa.</p><ul>
+    <p>Stacked barplots showing composition of phyloseq samples for a specified number of coloured taxa. <code>plot_comp_bar</code> performs the compositional transformation for you, so your phyloseq object should contain counts!</p><ul>
 <li><p>sample_order: The bars are sorted by similarity, according to a specified distance measure (default aitchison), and seriation/ordering algorithm (default Ward hierarchical clustering with optimal leaf ordering.)</p></li>
 <li><p>groups: You can group the samples on distinct plots by levels of a variable in the phyloseq object. The list of ggplots produced can be arranged flexibly with the patchwork package functions.</p></li>
 <li><p>bar_width: No gaps between bars, unless you want them (decrease width argument).</p></li>
@@ -292,7 +292,8 @@ palette: Default colouring is consistent across any groups, distinct, and fairly
 <span class='co'># You could also pass a completely arbitrary order, naming all samples</span>
 
 <span class='co'># you can theme all plots with the &amp; operator</span>
-<span class='va'>patch</span> <span class='op'>&amp;</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_flip.html'>coord_flip</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>&amp;</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>axis.text.y <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>, legend.text <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>6</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>patch</span> <span class='op'>&amp;</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_flip.html'>coord_flip</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>&amp;</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>axis.text.y <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>, legend.text <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>6</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='img'><img src='plot_comp_bar-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># See https://patchwork.data-imaginist.com/index.html</span>
 </div></pre>
   </div>
