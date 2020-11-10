@@ -162,12 +162,14 @@ aitchison_dists <-
 
 # the more permutations you request, the longer it takes,
 # but also the more stable and precise your p-values become
-aitchison_perm <- permanova(aitchison_dists,
-  n_perms = 99, n_processes = 1,
+aitchison_perm <- permanova(
+  data = aitchison_dists,
+  seed = 1234, # for set.seed to ensure reproducibility of random process
+  n_perms = 99, n_processes = 1, 
   variables = c("bmi_group")
 )
-#> 2020-11-10 15:48:59 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2020-11-10 15:48:59 - Finished PERMANOVA
+#> 2020-11-10 20:06:27 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2020-11-10 20:06:27 - Finished PERMANOVA
 # view the permanova results
 aitchison_perm$permanova
 #> 
@@ -204,10 +206,10 @@ your permanova directly using the plot\_ordin8 function with
 constraints.
 
 ``` r
-perm2 <- permanova(aitchison_dists, variables = c("weight", "female"))
+perm2 <- permanova(data = aitchison_dists, variables = c("weight", "female"), seed = 321)
 #> WARNING: Dropping samples with NAs for "female". At least 2
-#> 2020-11-10 15:48:59 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2020-11-10 15:49:01 - Finished PERMANOVA
+#> 2020-11-10 20:06:27 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2020-11-10 20:06:29 - Finished PERMANOVA
 perm2$permanova
 #> 
 #> Call:
@@ -228,7 +230,8 @@ perm2$permanova
 
 ordin8(perm2, constraints = c("weight", "female")) %>%
   plot_ordin8(colour = "sex", constraint_label_length = 2) +
-  stat_ellipse(aes(colour = sex)) + scale_color_brewer(palette = "Dark2")
+  stat_ellipse(aes(colour = sex)) + scale_color_brewer(palette = "Dark2") +
+  theme(plot.subtitle = element_text(size = 8))
 #> 
 #> Centering (mean) and scaling (sd) the constraint and conditioning vars:
 #>  weight
@@ -243,14 +246,16 @@ me if you want this.
 
 ``` r
 # example with interactions
-permanova(aitchison_dists,
+permanova(
+  data = aitchison_dists,
   variables = c("bmi_group", "sex"),
   interactions = "bmi_group * sex",
+   seed = 123, 
   adonis2 = TRUE, # important when testing interactions
   return = "permanova" # return only the permanova output
 )
-#> 2020-11-10 15:49:01 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2020-11-10 15:49:03 - Finished PERMANOVA
+#> 2020-11-10 20:06:30 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2020-11-10 20:06:31 - Finished PERMANOVA
 #> Permutation test for adonis under reduced model
 #> Marginal effects of terms
 #> Permutation: free

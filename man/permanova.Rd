@@ -11,7 +11,7 @@ permanova(
   complete_cases = TRUE,
   n_processes = 1,
   n_perms = 999,
-  seed = 1,
+  seed = NULL,
   adonis2 = FALSE,
   verbose = TRUE,
   return = "all"
@@ -30,7 +30,7 @@ permanova(
 
 \item{n_perms}{how many permutations?}
 
-\item{seed}{sets a random number generator seed to ensure you get the same results each run}
+\item{seed}{set a random number generator seed to ensure you get the same results each run}
 
 \item{adonis2}{use adonis2 (with by = "margin") instead of adonis (better if you have interactions)}
 
@@ -62,6 +62,7 @@ testDist <- dietswap \%>\%
 
 PERM <- testDist \%>\%
   permanova(
+    seed = 1,
     variables = c("sex", "bmi_group"),
     n_processes = 1, n_perms = 99
   )
@@ -69,6 +70,7 @@ str(PERM, max.level = 1)
 
 PERM2 <- testDist \%>\%
   permanova(
+    seed = 1,
     variables = c("sex", "bmi_group"),
     interactions = "sex * bmi_group",
     n_processes = 1, n_perms = 99,

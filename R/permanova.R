@@ -9,7 +9,7 @@
 #' @param interactions interactions between variables, written in the style of e.g. "var_a * var_b"
 #' @param n_processes how many parallel processes to use? (uses parallel::makePSOCKcluster)
 #' @param n_perms how many permutations?
-#' @param seed sets a random number generator seed to ensure you get the same results each run
+#' @param seed set a random number generator seed to ensure you get the same results each run
 #' @param adonis2 use adonis2 (with by = "margin") instead of adonis (better if you have interactions)
 #' @param complete_cases if TRUE, drops observations if they contain missing values
 #' @param verbose sends messages about progress if true
@@ -33,6 +33,7 @@
 #'
 #' PERM <- testDist %>%
 #'   permanova(
+#'     seed = 1,
 #'     variables = c("sex", "bmi_group"),
 #'     n_processes = 1, n_perms = 99
 #'   )
@@ -40,6 +41,7 @@
 #'
 #' PERM2 <- testDist %>%
 #'   permanova(
+#'     seed = 1,
 #'     variables = c("sex", "bmi_group"),
 #'     interactions = "sex * bmi_group",
 #'     n_processes = 1, n_perms = 99,
@@ -59,7 +61,7 @@ permanova <- function(data,
                       complete_cases = TRUE,
                       n_processes = 1,
                       n_perms = 999,
-                      seed = 1,
+                      seed = NULL,
                       adonis2 = FALSE,
                       verbose = TRUE,
                       return = "all") {
@@ -74,7 +76,9 @@ permanova <- function(data,
   }
 
   # set seed for reproducibility
-  set.seed(seed)
+  if (isFALSE(is.null(seed))){
+    set.seed(seed)
+  }
 
   # Build the formula
   f <- paste0("distMat ~ ", paste(variables, collapse = " + "))
