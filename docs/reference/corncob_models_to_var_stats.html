@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • microViz</title>
+<title>Extract stats from corncob taxon model list — corncob_models_to_var_stats • microViz</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,8 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Extract stats from corncob taxon model list — corncob_models_to_var_stats" />
+<meta property="og:description" content="Use this function with the output of tax_model_corncob. corncob_models_to_var_stats splits the statistical results extracted from corncob models and groups them by the independent variable name that they refer to. One dataframe of this list can then be joined to the output of tax_tree_nodes to prepare for taxonomic heat tree graph visualisation of taxon-variable associations." />
 
 
 
@@ -58,7 +59,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -120,120 +121,33 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Extract stats from corncob taxon model list</h1>
+    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/tax_model_corncob.R'><code>R/tax_model_corncob.R</code></a></small>
+    <div class="hidden name"><code>corncob_models_to_var_stats.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Use this function with the output of <code>tax_model_corncob</code>. <code>corncob_models_to_var_stats</code> splits the statistical results extracted from corncob models and groups them by the independent variable name that they refer to. One dataframe of this list can then be joined to the output of tax_tree_nodes to prepare for taxonomic heat tree graph visualisation of taxon-variable associations.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>corncob_models_to_var_stats</span><span class='op'>(</span><span class='va'>taxon_models</span><span class='op'>)</span></pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="beta_disper.html">beta_disper()</a></code> </p>
-        </td>
-        <td><p>Wrapper for vegan::betadisper</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="calc_dist.html">calc_dist()</a></code> </p>
-        </td>
-        <td><p>Calculate distances between pairs of samples in phyloseq object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="distinct_palette.html">distinct_palette()</a></code> </p>
-        </td>
-        <td><p>Arbitrary expansion of the "Paired" colorbrewer palette</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ordin8.html">ordin8()</a></code> </p>
-        </td>
-        <td><p>Ordinate distance matrix computed by calc_dist</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="permanova.html">permanova()</a></code> </p>
-        </td>
-        <td><p>Calculate PERMANOVA after calc_dist</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="plot_comp_bar.html">plot_comp_bar()</a></code> </p>
-        </td>
-        <td><p>Pretty &amp; flexible barplots of sample composition</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="plot_ordin8.html">plot_ordin8()</a></code> </p>
-        </td>
-        <td><p>Customisable ggplot of ordin8 ordination result</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="tax_agg.html">tax_agg()</a></code> </p>
-        </td>
-        <td><p>Aggregate taxa if requested</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="tax_filter.html">tax_filter()</a></code> </p>
-        </td>
-        <td><p>Filter rare taxa from a phyloseq object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="tax_model_corncob.html">tax_model_corncob()</a></code> <code><a href="tax_model_corncob.html">corncob_models_to_var_stats()</a></code> </p>
-        </td>
-        <td><p>Beta binomial taxon models with corncob</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="tax_select.html">tax_select()</a></code> </p>
-        </td>
-        <td><p>Subset phyloseq object by (partial) taxa names</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="tax_table_helpers.html">tax_fill_unknowns()</a></code> <code><a href="tax_table_helpers.html">taxon_fill_unknowns()</a></code> <code><a href="tax_table_helpers.html">prepend_ranks()</a></code> </p>
-        </td>
-        <td><p>Fixing duplication problems in phyloseq tax_table</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="tax_transform.html">tax_transform()</a></code> </p>
-        </td>
-        <td><p>Transform taxa in phyloseq object and record transformation</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="tax_tree_funs.html">tax_tree_nodes()</a></code> <code><a href="tax_tree_funs.html">tax_tree_edges()</a></code> </p>
-        </td>
-        <td><p>Create node and edge dataframes for taxonomic tree graphs</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>taxon_models</th>
+      <td><p>named list output of <code>tax_model_corncob</code></p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>list of dataframes, one df per independent variable</p>
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>

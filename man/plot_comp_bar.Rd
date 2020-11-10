@@ -48,7 +48,7 @@ plot_comp_bar(
 ggplot or list of harmonised ggplots
 }
 \description{
-Stacked barplots showing composition of phyloseq samples for a specified number of coloured taxa.
+Stacked barplots showing composition of phyloseq samples for a specified number of coloured taxa. \code{plot_comp_bar} performs the compositional transformation for you, so your phyloseq object should contain counts!
 \itemize{
 \item sample_order: The bars are sorted by similarity, according to a specified distance measure (default aitchison), and seriation/ordering algorithm (default Ward hierarchical clustering with optimal leaf ordering.)
 \item groups: You can group the samples on distinct plots by levels of a variable in the phyloseq object. The list of ggplots produced can be arranged flexibly with the patchwork package functions.
@@ -115,6 +115,7 @@ patch[[2]] <- patch[[2]] + scale_x_discrete(limits = rev)
 # You could also pass a completely arbitrary order, naming all samples
 
 # you can theme all plots with the & operator
-patch & coord_flip() & theme(axis.text.y = element_text(size = 5), legend.text = element_text(size = 6))
+patch & coord_flip() &
+  theme(axis.text.y = element_text(size = 5), legend.text = element_text(size = 6))
 # See https://patchwork.data-imaginist.com/index.html
 }

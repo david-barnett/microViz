@@ -14,12 +14,17 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup, message=FALSE}
+```{r, message=FALSE}
+options(width = 100)
 library(microViz)
+library(phyloseq)
 library(microbiome)
 library(patchwork) # for arranging groups of plots
 data(dietswap)
-knitr::opts_chunk$set(fig.width = 9, fig.height = 6)
+knitr::opts_chunk$set(
+	fig.height = 6,
+	fig.width = 9
+)
 ```
 
 The `plot_comp_bar` function allows you to visualise the taxonomic compositions of your microbiome samples in a flexible, scalable, group-able, and visually appealing way.
@@ -112,5 +117,8 @@ patch &
 ```
 
 
+```{r}
+devtools::session_info()
+```
  
  

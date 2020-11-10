@@ -1,6 +1,6 @@
 #' Pretty & flexible barplots of sample composition
 #'
-#' Stacked barplots showing composition of phyloseq samples for a specified number of coloured taxa.
+#' Stacked barplots showing composition of phyloseq samples for a specified number of coloured taxa. `plot_comp_bar` performs the compositional transformation for you, so your phyloseq object should contain counts!
 #' - sample_order: The bars are sorted by similarity, according to a specified distance measure (default aitchison), and seriation/ordering algorithm (default Ward hierarchical clustering with optimal leaf ordering.)
 #' - groups: You can group the samples on distinct plots by levels of a variable in the phyloseq object. The list of ggplots produced can be arranged flexibly with the patchwork package functions.
 #' - bar_width: No gaps between bars, unless you want them (decrease width argument).
@@ -22,6 +22,7 @@
 #'
 #' @return ggplot or list of harmonised ggplots
 #' @export
+#' @importFrom ggplot2 ggplot aes aes_string element_blank geom_bar guide_legend labs scale_fill_manual scale_x_discrete theme
 #'
 #' @examples
 #' library(microbiome)
@@ -81,7 +82,8 @@
 #' # You could also pass a completely arbitrary order, naming all samples
 #'
 #' # you can theme all plots with the & operator
-#' patch & coord_flip() & theme(axis.text.y = element_text(size = 5), legend.text = element_text(size = 6))
+#' patch & coord_flip() &
+#'   theme(axis.text.y = element_text(size = 5), legend.text = element_text(size = 6))
 #' # See https://patchwork.data-imaginist.com/index.html
 plot_comp_bar <- function(
                           ps,
@@ -160,9 +162,7 @@ plot_comp_bar <- function(
     if (samples_ordered_by_similarity) {
       if (phyloseq::nsamples(ps) > 2) {
         # calculate distance between samples for pretty ordering
-        distMat <- ps %>%
-          # microbiome::transform(transform = "compositional") %>%
-          calc_dist(dist = sample_order) %>% .[["distMat"]]
+        distMat <- calc_dist(data = ps, dist = sample_order)[["distMat"]]
         ser <- seriation::seriate(x = distMat, method = seriate_method)
         s_order <- seriation::get_order(ser)
         ordered_samples <- attr(distMat, which = "Labels")[s_order]
@@ -212,7 +212,7 @@ plot_comp_bar <- function(
       plot_function(ps)
     })
     # set y axis title to group level
-    plots_list <- lapply(1:length(LEVELS), function(level) {
+    plots_list <- lapply(seq_along(LEVELS), function(level) {
       plots_list[[level]] + labs(title = LEVELS[[level]])
     })
     names(plots_list) <- LEVELS

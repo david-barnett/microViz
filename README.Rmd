@@ -11,6 +11,7 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
+options(width = 100)
 ```
 
 # microViz
@@ -18,12 +19,12 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of microViz is to make wrangling, stats and visualisation of microbiome (16S) sequencing readcount data easier, modular and reproducible.
-microViz wraps and extends core microbial ecology packages like phyloseq, vegan, and microbiome.
+microViz package provides functions for wrangling, stats and visualisation of microbiome (16S) sequencing readcount data. These functions are intended to be easy to use (with clear documentation) and modular (for extensibility and flexibility). 
+microViz wraps and extends popular microbial ecology packages like phyloseq, vegan, and microbiome.
 
 ## Installation
 
-You can install the latest available package version using the following instructions.
+You can install the latest available microViz package version using the following instructions.
 
 ``` r
 # # If you are on windows you will need to install RTools so that your computer can build this package
@@ -43,7 +44,7 @@ devtools::install_github("MUMC-MEDMIC/microViz")
 
 ## Setup
 
-```{r load, message=FALSE, warning=FALSE}
+```{r load, message=FALSE}
 library(microViz)
 library(phyloseq)
 library(vegan)
@@ -65,10 +66,31 @@ sample_data(dietswap)$female <-
 sample_data(dietswap)$female[c(3, 4)] <- NA
 ```
 
+## Looking at your data
+
+You have quite a few samples in your phyloseq object, and would like to visualise their compositions.
+Perhaps these example data differ across BMI groups?
+```{r fig.height=8, fig.width=10, dpi=300}
+composition_plot_list <- dietswap %>%
+  plot_comp_bar(
+    tax_level = "Genus",
+    n_taxa = 10, groups = "bmi_group"
+  )
+
+patchwork::wrap_plots(
+  composition_plot_list[c("lean", "overweight", "obese")],
+  ncol = 1, guides = "collect"
+) &
+  labs(x = NULL, y = NULL) & theme(axis.text.x = element_blank())
+```
+
+
+
 
 ## Example ordination plot workflow
 
-You want to visually see if overall microbial ecosystem composition differs markedly between groups, e.g. BMI.
+Maybe visually inspecting all your samples isn't quite what you want.
+Ordination methods can also help you to visualise if overall microbial ecosystem composition differs markedly between groups, e.g. BMI.
 
 Here is one option to try first:
 
@@ -81,22 +103,22 @@ Here is one option to try first:
 
 ```{r ordination-plot, dpi=300}
 # perform ordination
-unconstrained_aitchison_pca <- 
+unconstrained_aitchison_pca <-
   dietswap %>%
-  tax_filter(min_prevalence = 0.1, tax_level = 'Genus') %>% 
+  tax_filter(min_prevalence = 0.1, tax_level = "Genus") %>%
   tax_agg("Family") %>%
-  tax_transform('clr') %>%
-  ordin8(method = 'RDA')
+  tax_transform("clr") %>%
+  ordin8(method = "RDA")
 
 # create plot
 pca_plot <- unconstrained_aitchison_pca %>%
-  plot_ordin8(plot_taxa = 1:5, colour = 'bmi_group', auto_title = TRUE)
+  plot_ordin8(plot_taxa = 1:5, colour = "bmi_group", auto_title = TRUE)
 
 # customise plot
-customised_plot <- pca_plot + 
-  stat_ellipse(aes(linetype = bmi_group, colour = bmi_group)) + 
-  scale_colour_brewer(palette = 'Set1') + 
-  xlim(c(-1.5,2.75)) + theme(legend.position = 'bottom')
+customised_plot <- pca_plot +
+  stat_ellipse(aes(linetype = bmi_group, colour = bmi_group)) +
+  scale_colour_brewer(palette = "Set1") +
+  xlim(c(-1.5, 2.75)) + theme(legend.position = "bottom")
 
 # show plot
 customised_plot
@@ -109,16 +131,18 @@ Below you can see how to perform a PERMANOVA to test the significance of BMI.
 This example uses the Family-level aitchison distance to correspond with the plot above.
 ```{r}
 # calculate distances
-aitchison_dists <- 
+aitchison_dists <-
   dietswap %>%
-  tax_filter(min_prevalence = 0.1, tax_level = 'Genus') %>% 
+  tax_filter(min_prevalence = 0.1, tax_level = "Genus") %>%
   tax_agg("Family") %>%
-  calc_dist('aitchison')
+  calc_dist("aitchison")
 
-# the more permutations you request, the longer it takes, 
+# the more permutations you request, the longer it takes,
 # but also the more stable and precise your p-values become
-aitchison_perm <- permanova(aitchison_dists, n_perms = 99, n_processes = 1,
-                            variables = c('bmi_group'))
+aitchison_perm <- permanova(aitchison_dists,
+  n_perms = 99, n_processes = 1,
+  variables = c("bmi_group")
+)
 # view the permanova results
 aitchison_perm$permanova
 # view the info stored about the distance calculation
@@ -128,30 +152,28 @@ aitchison_perm$info
 You could visualise the effect of the (numeric/logical) variables in your permanova directly using the plot_ordin8 function with constraints.
 
 ```{r constrained-ord, dpi=300}
-perm2 <- permanova(aitchison_dists, variables = c('weight', 'female'))
+perm2 <- permanova(aitchison_dists, variables = c("weight", "female"))
 perm2$permanova
 
-ordin8(perm2, constraints = c('weight', 'female')) %>% 
-  plot_ordin8(colour = 'sex', constraint_label_length = 2) +
-  stat_ellipse(aes(colour = sex)) + scale_color_brewer(palette = "Set2")
+ordin8(perm2, constraints = c("weight", "female")) %>%
+  plot_ordin8(colour = "sex", constraint_label_length = 2) +
+  stat_ellipse(aes(colour = sex)) + scale_color_brewer(palette = "Dark2")
 ```
-
 
 You can make your model more complicated, including the addition of interactions.
 Currently I don't provide options for random effects. Ask me if you want this.
 ```{r}
 # example with interactions
-permanova(aitchison_dists, variables = c('bmi_group', 'sex'),
-          interactions = "bmi_group * sex", 
-          adonis2 = TRUE, # important when testing interactions
-          return = "permanova" # return only the permanova output
+permanova(aitchison_dists,
+  variables = c("bmi_group", "sex"),
+  interactions = "bmi_group * sex",
+  adonis2 = TRUE, # important when testing interactions
+  return = "permanova" # return only the permanova output
 )
 ```
 
 
 # Session info
 ```{r}
-options(width = 100)
 devtools::session_info()
 ```
-
