@@ -28,10 +28,19 @@ following instructions.
 # # click "generate token" on the webpage and then follow instructions in the R console.
 # # For more help see: https://happygitwithr.com/github-pat.html#step-by-step
 
+# If you don't already have the latest versions of phyloseq and microbiome, you can install these from bioconductor
+
+# if (!requireNamespace("BiocManager", quietly = TRUE))
+#   install.packages("BiocManager")
+# BiocManager::install(c("phyloseq", "microbiome"))
+
 # # Installing the latest version of this package # #
 # install.packages("devtools")
 devtools::install_github("MUMC-MEDMIC/microViz")
 # # advanced tip: add @<commit-hash> after microViz to install a particular version
+
+# optionally install the corncob package from github (for beta binomial models)
+devtools::install_github("bryandmartin/corncob@338323e9")
 ```
 
 ## Setup
@@ -157,8 +166,8 @@ aitchison_perm <- permanova(aitchison_dists,
   n_perms = 99, n_processes = 1,
   variables = c("bmi_group")
 )
-#> 2020-11-10 15:10:16 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2020-11-10 15:10:16 - Finished PERMANOVA
+#> 2020-11-10 15:48:59 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2020-11-10 15:48:59 - Finished PERMANOVA
 # view the permanova results
 aitchison_perm$permanova
 #> 
@@ -197,8 +206,8 @@ constraints.
 ``` r
 perm2 <- permanova(aitchison_dists, variables = c("weight", "female"))
 #> WARNING: Dropping samples with NAs for "female". At least 2
-#> 2020-11-10 15:10:16 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2020-11-10 15:10:18 - Finished PERMANOVA
+#> 2020-11-10 15:48:59 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2020-11-10 15:49:01 - Finished PERMANOVA
 perm2$permanova
 #> 
 #> Call:
@@ -240,8 +249,8 @@ permanova(aitchison_dists,
   adonis2 = TRUE, # important when testing interactions
   return = "permanova" # return only the permanova output
 )
-#> 2020-11-10 15:10:19 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2020-11-10 15:10:21 - Finished PERMANOVA
+#> 2020-11-10 15:49:01 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2020-11-10 15:49:03 - Finished PERMANOVA
 #> Permutation test for adonis under reduced model
 #> Marginal effects of terms
 #> Permutation: free

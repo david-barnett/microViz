@@ -36,10 +36,20 @@ You can install the latest available microViz package version using the followin
 # # click "generate token" on the webpage and then follow instructions in the R console.
 # # For more help see: https://happygitwithr.com/github-pat.html#step-by-step
 
+# If you don't already have the latest versions of phyloseq and microbiome, you can install these from bioconductor
+
+# if (!requireNamespace("BiocManager", quietly = TRUE))
+#   install.packages("BiocManager")
+# BiocManager::install(c("phyloseq", "microbiome"))
+
 # # Installing the latest version of this package # #
 # install.packages("devtools")
 devtools::install_github("MUMC-MEDMIC/microViz")
 # # advanced tip: add @<commit-hash> after microViz to install a particular version
+
+# optionally install the corncob package from github (for beta binomial models)
+devtools::install_github("bryandmartin/corncob@338323e9")
+
 ```
 
 ## Setup
