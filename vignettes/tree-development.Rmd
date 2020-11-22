@@ -94,7 +94,7 @@ It is first important to set up binary variables for the stats models, as heat_t
 sample_data(ps)$female <- if_else(sample_data(ps)$sex == "female", 1, 0, NaN)
 sample_data(ps)$overweight <- if_else(sample_data(ps)$bmi_group == "overweight", 1, 0, NaN)
 sample_data(ps)$obese <- if_else(sample_data(ps)$bmi_group == "obese", 1, 0, NaN)
-variables <- c("female", 'overweight', 'obese')
+variables <- c("female", "overweight", "obese")
 
 tax_models_list <- lapply(
   X = phyloseq::rank_names(ps)[-1],
@@ -166,10 +166,9 @@ Here I use the davidson-harel algorithm, with trial-and-error weights, to adjust
 ```{r}
 # Davidson-Harel allows weighting crossover avoidance and edge lengths etc.
 adjust_tree_layout <- function(graph, layout) {
-
   e_density <- igraph::edge_density(graph)
   original_layout_coords <- as.matrix(layout[, c("x", "y")])
-  
+
   new_layout_coords <- igraph::layout_with_dh(
     graph = graph,
     coords = original_layout_coords,
@@ -180,7 +179,7 @@ adjust_tree_layout <- function(graph, layout) {
     weight.node.dist = e_density * 1,
     weight.border = e_density * 1
   )
-  
+
   return(new_layout_coords)
 }
 ```
@@ -191,7 +190,7 @@ I will expose the weights of the dh algo (with my defaults).
 I will document how to rerun a few times with RNG seed setting to help users find a layout they like and re-use it (as below).
 
 ```{r}
-layouts_list <- lapply(1:9, function(i) {
+layouts_list <- lapply(1:4, function(i) {
   set.seed(i)
   adjust_tree_layout(g = graph, l = layout)
 })
@@ -199,38 +198,140 @@ layouts_list <- lapply(1:9, function(i) {
 
 ## Plotting the adjusted layouts
 
-These differ only randomly, some are clearly more aesthetically pleasing than others. I like the top right one.
+These differ only randomly, some might be more aesthetically pleasing than others. I like the top right one.
 
-```{r, fig.height=12, fig.width=13}
-plots <- lapply(layouts_list, function(al) {
-  ggraph(graph = graph, layout = al) +
-    theme_graph(base_family = "sans") +
-    geom_edge_link(aes(
-      edge_width = log(taxon_mean),
-      edge_colour = b_mu
-    ),
-    alpha = 0.6
-    ) +
-    geom_node_point(aes(
-      size = log(taxon_mean),
-      fill = b_mu,
-      stroke = if_else(p_mu < 0.05, 1.5, 0.5, 0.5)
-    ),
-    shape = 21,
-    show.legend = FALSE
+```{r, fig.height=7.5, fig.width=10, dpi=300}
+abs_sqrt <- scales::trans_new(
+  name = "abs_sqrt",
+  transform = function(x) {
+    sign(x) * sqrt(abs(x))
+  },
+  inverse = function(x) {
+    sign(x) * x^2
+  }
+)
+```
+
+
+```{r eval=FALSE, fig.height=7.5, fig.width=10, dpi=300, include=FALSE}
+tax_tree_plot <- function(
+  graph_object,
+  layout_coords,
+  size_stat = "taxon_mean",
+  colour_stat = "b_mu",
+  max_node_size = 8,
+  max_edge_width = max_node_size - 2,
+  sig_var = "p_mu",
+  sig_threshold = 0.05,
+  sig_stroke_width = 1.5,
+  colour_palette = "Green-Brown",
+  reverse_colours = FALSE,
+  luminance_l2 = 80,
+  trans_colour_scale = "abs_sqrt",
+  colour_lims = c(-2, 2)
+){
+  ggraph(graph = graph_object, layout = layout_coords) +
+    geom_edge_link(
+      mapping = aes(
+        edge_width = log(.data[[size_stat]]),
+        edge_colour = .data[[colour_stat]]
+      ),
+      alpha = 0.7
     ) +
     geom_node_point(
-      show.legend = FALSE,
-      mapping = aes(filter = taxon_level == 'root', size = log(taxon_mean))
-      ) +
-    scale_edge_width_continuous(range = c(1, 4), guide = "none") +
-    scale_fill_continuous_diverging(palette = "GreenOrange", aesthetics = c("edge_colour", "fill")) +
-    coord_equal() +
+      mapping = aes(
+        size = log(.data[[size_stat]]),
+        color = .data[[colour_stat]]
+      ),
+      shape = "circle"
+    ) +
+    # outlined circles for significance
+    geom_node_point(
+      data = ~ filter(.x, .data[[sig_var]] < sig_threshold),
+      mapping = aes(
+        size = log(.data[[size_stat]]),
+        color = dplyr::if_else(
+          condition = .data[[colour_stat]] < 0,
+          true = colour_lims[[1]],
+          false = colour_lims[[2]]
+        )
+      ),
+      stroke = sig_stroke_width,
+      shape = "circle open"
+    ) +
+    # central black node for root
+    geom_node_point(
+      mapping = aes(filter = taxon_level == "root", size = log(.data[[size_stat]]))
+    ) +
+    scale_size_continuous(range = c(1, max_node_size), guide = "none") +
+    scale_edge_width_continuous(range = c(1, max_edge_width), guide = "none") +
+    colorspace::scale_fill_continuous_diverging(
+      palette = colour_palette,
+      l2 = luminance_l2,
+      aesthetics = c("edge_colour", "fill"),
+      limits = colour_lims,
+      oob = scales::oob_squish,
+      trans = abs_sqrt,
+      rev = reverse_colours,
+      guide = guide_colorbar(
+        frame.colour = "black",
+        ticks.colour = "black",
+        barwidth = grid::unit(0.01, "npc")
+      )
+    ) +
+    # colour scale for sig. points stroke (which has no legend)
+    colorspace::scale_color_continuous_diverging(
+      palette = colour_palette,
+      l2 = luminance_l2,
+      aesthetics = "color",
+      trans = abs_sqrt,
+      rev = reverse_colours,
+      guide = "none"
+    ) +
+    coord_fixed(expand = FALSE, clip = "off") +
+    theme_graph(base_family = "sans", plot_margin = unit(x = rep(0.03, 4), "npc")) +
     NULL
+}
+```
+
+
+```{r, fig.height=7.5, fig.width=10, dpi=300}
+luminance_l2 = 80
+colour_palette = "Green-Brown"
+reverse_colours = FALSE
+luminance_l2 = 80
+colour_lims = c(-2, 2)
+
+plots <- lapply(layouts_list, function(layout_coords) {
+  tax_tree_plot(graph_object = graph, layout_coords = layout_coords) +
+    colorspace::scale_fill_continuous_diverging(
+      palette = colour_palette,
+      l2 = luminance_l2,
+      aesthetics = c("edge_colour", "fill"),
+      limits = colour_lims,
+      oob = scales::oob_squish,
+      rev = reverse_colours,
+      trans = abs_sqrt,
+      guide = guide_colorbar(
+        frame.colour = "black",
+        ticks.colour = "black",
+        barwidth = grid::unit(0.01, "npc")
+      )
+    ) +
+    # colour scale for sig. points stroke (which has no legend)
+    colorspace::scale_color_continuous_diverging(
+      palette = colour_palette,
+      l2 = luminance_l2,
+      aesthetics = "color",
+      rev = reverse_colours,
+      trans = abs_sqrt,
+      guide = "none"
+    )
 })
 
-patchwork::wrap_plots(plots[1:9], ncol = 3, byrow = TRUE, guides = "auto") +
-  patchwork::plot_annotation(tag_levels = '1')
+patchwork::wrap_plots(plots, ncol = 2, byrow = TRUE, guides = "keep") +
+  patchwork::plot_annotation(tag_levels = "1")
+
 ```
 
 ## Selecting 1 of the adjusted layouts
@@ -257,23 +358,25 @@ p <- ggraph(graph = graph, layout = al) +
   scale_edge_width_continuous(range = c(2, 6))
 
 # simpler way to add labels to families
-# p <- p + 
+# p <- p +
 #   geom_node_label(
 #     mapping = aes(
-#       label = taxon_name, 
+#       label = taxon_name,
 #       size = log(log(log(taxon_mean))),
 #       filter = grepl("^F:", taxon_name)
-#     ), 
+#     ),
 #     repel = TRUE,
 #     show.legend = FALSE
-#   ) 
+#   )
 
 # alternative way of setting labels with more control
 p <- p +
   ggrepel::geom_label_repel(
     data = ~ dplyr::filter(., grepl("^F:", taxon_name)),
-    mapping = aes(x = x, y = y, label = taxon_name,
-                  size = log(log(log(taxon_mean)))),
+    mapping = aes(
+      x = x, y = y, label = taxon_name,
+      size = log(log(log(taxon_mean)))
+    ),
     xlim = c(-Inf, Inf),
     min.segment.length = 0,
     show.legend = FALSE
@@ -281,8 +384,9 @@ p <- p +
 
 # add a black central node to mark the rook
 p <- p + geom_node_point(
-  mapping = aes(filter = taxon_level == 'root',
-                size = log(taxon_mean)
+  mapping = aes(
+    filter = taxon_level == "root",
+    size = log(taxon_mean)
   ),
   show.legend = FALSE
 )
