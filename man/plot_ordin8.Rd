@@ -12,6 +12,7 @@ plot_ordin8(
   plot_taxa = FALSE,
   taxon_label_length = 1,
   taxon_label_style = list(size = 2.5, colour = "black", alpha = 0.8),
+  taxon_renamer = function(x) identity(x),
   plot_samples = TRUE,
   auto_title = TRUE,
   ...
@@ -93,8 +94,10 @@ constrained_aitchison_rda \%>\%
 
 # ggplot allows additional customisation of the resulting plot
 p <- constrained_aitchison_rda \%>\%
-  plot_ordin8(colour = "bmi_group", constraint_label_length = 2,
-  plot_taxa = 1:3, taxon_label_length = 5) +
+  plot_ordin8(
+    colour = "bmi_group", constraint_label_length = 2,
+    plot_taxa = 1:3, taxon_label_length = 5
+  ) +
   lims(x = c(-5, 6), y = c(-5, 5)) +
   scale_colour_brewer(palette = "Set1")
 
@@ -112,6 +115,4 @@ unconstrained_aitchison_pca \%>\%
   plot_ordin8(color = "bmi_group", plot_samples = FALSE) +
   facet_wrap("sex") +
   stat_density2d_filled(show.legend = FALSE)
-
-
 }

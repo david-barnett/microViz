@@ -15,9 +15,11 @@
 #' @param plot_taxa if ordin8 method was "RDA" draw the taxa loading vectors (see details)
 #' @param taxon_label_length relative length of line segment drawn for any constraints
 #' @param taxon_label_style list of fixed aesthetics (colour, size etc) for the taxon labels
+#' @param taxon_renamer function that takes any plotted taxon names and returns modified names for labels
 #' @param plot_samples if TRUE, plot sample points with geom_point
 #' @param auto_title if TRUE, add a crude title and subtitle with info about the ordination
 #' @param ... pass aesthetics arguments for sample points, drawn with geom_point using aes_string
+
 #'
 #' @return ggplot
 #' @export
@@ -63,13 +65,25 @@
 #'
 #' # ggplot allows additional customisation of the resulting plot
 #' p <- constrained_aitchison_rda %>%
-#'   plot_ordin8(colour = "bmi_group", constraint_label_length = 2,
-#'   plot_taxa = 1:3, taxon_label_length = 5) +
+#'   plot_ordin8(
+#'     colour = "bmi_group", constraint_label_length = 2,
+#'     plot_taxa = 1:3, taxon_label_length = 5
+#'   ) +
 #'   lims(x = c(-5, 6), y = c(-5, 5)) +
 #'   scale_colour_brewer(palette = "Set1")
 #'
 #' p + stat_ellipse(aes(linetype = bmi_group, colour = bmi_group))
 #' p + stat_density2d(aes(colour = bmi_group))
+#'
+#' # you can rename the taxa on the labels with any function that takes a modifies a character vector
+#' constrained_aitchison_rda %>%
+#'   plot_ordin8(
+#'     colour = "bmi_group", constraint_label_length = 2,
+#'     plot_taxa = 1:3, taxon_label_length = 5,
+#'     taxon_renamer = function(x) stringr::str_extract(x, "^.")
+#'   ) +
+#'   lims(x = c(-5, 6), y = c(-5, 5)) +
+#'   scale_colour_brewer(palette = "Set1")
 #'
 #' # it is possible to facet only unconstrained ordination plots (with plot_taxa = FALSE)
 #' unconstrained_aitchison_pca %>%
@@ -82,8 +96,6 @@
 #'   plot_ordin8(color = "bmi_group", plot_samples = FALSE) +
 #'   facet_wrap("sex") +
 #'   stat_density2d_filled(show.legend = FALSE)
-#'
-#'
 plot_ordin8 <-
   function(data,
            axes = 1:2,
@@ -92,6 +104,7 @@ plot_ordin8 <-
            plot_taxa = FALSE,
            taxon_label_length = 1,
            taxon_label_style = list(size = 2.5, colour = "black", alpha = 0.8),
+           taxon_renamer = function(x) identity(x),
            plot_samples = TRUE,
            auto_title = TRUE,
            ...) {
@@ -182,20 +195,22 @@ plot_ordin8 <-
 
     # build ggplot ------------------------------------------------------------
 
-    p <- ggplot(df, aes_string(x = axesNames[1], y = axesNames[2])) +
-      theme_minimal() +
-      xlab(axeslabels[1]) +
-      ylab(axeslabels[2])
+    p <- ggplot2::ggplot(
+      data = df,
+      mapping = ggplot2::aes_string(x = axesNames[1], y = axesNames[2])
+    ) +
+      ggplot2::theme_minimal() +
+      ggplot2::labs(x = axeslabels[1], y = axeslabels[2])
 
     # set geom_point variable aesthetics
-    aesthetics <- do.call(what = aes_string, args = aestheticArgs)
+    aesthetics <- do.call(what = ggplot2::aes_string, args = aestheticArgs)
 
     # gather all args for use in geom_point (sample data)
     geompointArgs <- c(list(mapping = aesthetics), fixed_aesthetics)
 
     # add sample/site points, sized dynamically or fixed size
     if (plot_samples) {
-      p <- p + do.call(geom_point, args = geompointArgs)
+      p <- p + do.call(ggplot2::geom_point, args = geompointArgs)
     }
 
     # add loadings/ species-scores arrows for RDA/PCA methods
@@ -231,14 +246,16 @@ plot_ordin8 <-
 
       # if a selection of species scores was calculated, add lines and labels to plot
       if (!is.null(selectSpeciesScoresDf[[1]])) {
-        p <- p + geom_segment(aes_string(xend = 0, yend = 0),
+        p <- p + ggplot2::geom_segment(
+          mapping = ggplot2::aes_string(xend = 0, yend = 0),
           size = 0.5, linetype = "dashed",
           colour = taxon_label_style$colour,
           data = selectSpeciesScoresDf * taxon_label_length
         )
 
         if (taxon_label_length >= 1) {
-          p <- p + geom_segment(aes_string(xend = axesNames[1], yend = axesNames[2], x = 0, y = 0),
+          p <- p + ggplot2::geom_segment(
+            mapping = ggplot2::aes_string(xend = axesNames[1], yend = axesNames[2], x = 0, y = 0),
             # TODO could colour taxa by phylum?
             colour = taxon_label_style$colour,
             lineend = "round", linejoin = "mitre", size = 1,
@@ -248,10 +265,10 @@ plot_ordin8 <-
         }
 
         p <- p + do.call(
-          what = geom_label,
+          what = ggplot2::geom_label,
           args = c(
             list(
-              label = rownames(selectSpeciesScoresDf),
+              label = taxon_renamer(rownames(selectSpeciesScoresDf)),
               data = selectSpeciesScoresDf * taxon_label_length
             ),
             taxon_label_style
@@ -263,14 +280,16 @@ plot_ordin8 <-
     # if constrained ordination, plot constraints
     if (info[["constraints"]][[1]] != 1) {
       # draw narrow vector segments at length set by constraint_label_length argument (proportion of automatic length)
-      p <- p + geom_segment(aes_string(xend = 0, yend = 0),
+      p <- p + ggplot2::geom_segment(
+        mapping = ggplot2::aes_string(xend = 0, yend = 0),
         colour = constraint_label_style$colour, size = 0.5,
         data = constraintDf * constraint_label_length
       )
 
       # draw thick vector segments at automatic length
       if (constraint_label_length >= 1) {
-        p <- p + geom_segment(aes_string(xend = axesNames[1], yend = axesNames[2], x = 0, y = 0),
+        p <- p + ggplot2::geom_segment(
+          mapping = ggplot2::aes_string(xend = axesNames[1], yend = axesNames[2], x = 0, y = 0),
           size = 1.5, colour = constraint_label_style$colour,
           lineend = "round", linejoin = "mitre",
           arrow = grid::arrow(length = grid::unit(0.005, "npc"), type = "closed"),
@@ -279,7 +298,7 @@ plot_ordin8 <-
       }
       # draw vector tip labels at length set by constraint_label_length argument
       p <- p + do.call(
-        what = geom_label,
+        what = ggplot2::geom_label,
         args = c(
           list(
             label = rownames(constraintDf),
@@ -308,7 +327,7 @@ plot_ordin8 <-
       MAIN <- paste(stats::nobs(df), "samples &", phyloseq::ntaxa(ps), "taxa")
       SUB <- paste(infoElements, collapse = ". ")
 
-      p <- p + ggtitle(label = MAIN, subtitle = SUB)
+      p <- p + ggplot2::ggtitle(label = MAIN, subtitle = SUB)
     }
 
     return(p)
