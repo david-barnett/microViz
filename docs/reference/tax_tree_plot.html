@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Aggregate taxa if requested — tax_agg • microViz</title>
+<title>Plot taxonomic stats on a ggraph tree — tax_tree_plot • microViz</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,8 @@
 
 
 
-<meta property="og:title" content="Aggregate taxa if requested — tax_agg" />
-<meta property="og:description" content="This function is a simple wrapper around microbiome::aggregate_taxa.
-tax_agg allows you to pass 'none', 'asv', or 'given', to the level argument which will NOT aggregate the taxa.
-If you pass any valid rank name it will aggregate taxa with microbiome::aggregate_taxa." />
+<meta property="og:title" content="Plot taxonomic stats on a ggraph tree — tax_tree_plot" />
+<meta property="og:description" content="Uses ggraph. See tree-development vignette." />
 
 
 
@@ -125,66 +123,95 @@ If you pass any valid rank name it will aggregate taxa with microbiome::aggregat
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Aggregate taxa if requested</h1>
-    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/tax_agg.R'><code>R/tax_agg.R</code></a></small>
-    <div class="hidden name"><code>tax_agg.Rd</code></div>
+    <h1>Plot taxonomic stats on a ggraph tree</h1>
+    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/tax_tree_plot.R'><code>R/tax_tree_plot.R</code></a></small>
+    <div class="hidden name"><code>tax_tree_plot.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function is a simple wrapper around microbiome::aggregate_taxa.
-tax_agg allows you to pass 'none', 'asv', or 'given', to the level argument which will NOT aggregate the taxa.
-If you pass any valid rank name it will aggregate taxa with microbiome::aggregate_taxa.</p>
+    <p>Uses ggraph. See tree-development vignette.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>tax_agg</span><span class='op'>(</span><span class='va'>ps</span>, <span class='va'>agg_level</span>, return <span class='op'>=</span> <span class='st'>"all"</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>tax_tree_plot</span><span class='op'>(</span>
+  <span class='va'>graph_object</span>,
+  <span class='va'>layout_coords</span>,
+  size_stat <span class='op'>=</span> <span class='st'>"taxon_mean"</span>,
+  colour_stat <span class='op'>=</span> <span class='st'>"b_mu"</span>,
+  max_node_size <span class='op'>=</span> <span class='fl'>8</span>,
+  max_edge_width <span class='op'>=</span> <span class='va'>max_node_size</span> <span class='op'>-</span> <span class='fl'>2</span>,
+  sig_var <span class='op'>=</span> <span class='st'>"p_mu"</span>,
+  sig_threshold <span class='op'>=</span> <span class='fl'>0.05</span>,
+  sig_stroke_width <span class='op'>=</span> <span class='fl'>1.5</span>,
+  colour_palette <span class='op'>=</span> <span class='st'>"Green-Brown"</span>,
+  reverse_colours <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  luminance_l2 <span class='op'>=</span> <span class='fl'>80</span>,
+  colour_lims <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>2</span>, <span class='fl'>2</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>ps</th>
-      <td><p>phyloseq object</p></td>
+      <th>graph_object</th>
+      <td><p>tidygraph made with tax_tree_nodes tax_tree_edges</p></td>
     </tr>
     <tr>
-      <th>agg_level</th>
-      <td><p>"none", "asv", "given" or name of valid taxonomic rank (try phyloseq::rank_names(ps))</p></td>
+      <th>layout_coords</th>
+      <td><p>dataframe of x and y coordinates</p></td>
     </tr>
     <tr>
-      <th>return</th>
-      <td><p>choose which parts of list object to return</p></td>
+      <th>size_stat</th>
+      <td><p>name of variable to scale size of nodes and edges (natural log scale)</p></td>
+    </tr>
+    <tr>
+      <th>colour_stat</th>
+      <td><p>name of variable to scale colour/fill of nodes and edges (natural log scale)</p></td>
+    </tr>
+    <tr>
+      <th>max_node_size</th>
+      <td><p>set this to avoid overlapping nodes at different scales</p></td>
+    </tr>
+    <tr>
+      <th>max_edge_width</th>
+      <td><p>max edge width (optionally relative to max node size)</p></td>
+    </tr>
+    <tr>
+      <th>sig_var</th>
+      <td><p>name of variable used to define statistical significance (outlines significant nodes) - NULL for none</p></td>
+    </tr>
+    <tr>
+      <th>sig_threshold</th>
+      <td><p>value of sig_var below which statistical significance outlines are drawn</p></td>
+    </tr>
+    <tr>
+      <th>sig_stroke_width</th>
+      <td><p>fixed width of statistical significance node outlines</p></td>
+    </tr>
+    <tr>
+      <th>colour_palette</th>
+      <td><p>any diverging hcl colour palette name see: <code><a href='http://colorspace.R-Forge.R-project.org//reference/hcl_palettes.html'>colorspace::hcl_palettes("diverging", n = 7, plot = TRUE)</a></code></p></td>
+    </tr>
+    <tr>
+      <th>reverse_colours</th>
+      <td><p>reverse direction of colour scale?</p></td>
+    </tr>
+    <tr>
+      <th>luminance_l2</th>
+      <td><p>luminance of colourscale midpoint (higher is lighter)</p></td>
+    </tr>
+    <tr>
+      <th>colour_lims</th>
+      <td><p>limits of colour and fill scale, used to harmonise across several plots (values squished to fit this range!)</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>list including phyloseq object and (tax_)level argument value</p>
+    <p>ggraph ggplot</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://microbiome.github.io/microbiome'>microbiome</a></span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span>
-<span class='fu'>tax_agg</span><span class='op'>(</span>ps <span class='op'>=</span> <span class='va'>dietswap</span>, agg_level <span class='op'>=</span> <span class='st'>"none"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $ps
-#&gt; phyloseq-class experiment-level object
-#&gt; otu_table()   OTU Table:         [ 130 taxa and 222 samples ]
-#&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]
-#&gt; 
-#&gt; $info
-#&gt; $info$tax_level
-#&gt; [1] "none"
-#&gt; 
-#&gt; </div><div class='input'><span class='fu'>tax_agg</span><span class='op'>(</span>ps <span class='op'>=</span> <span class='va'>dietswap</span>, agg_level <span class='op'>=</span> <span class='st'>"Phylum"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $ps
-#&gt; phyloseq-class experiment-level object
-#&gt; otu_table()   OTU Table:         [ 8 taxa and 222 samples ]
-#&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 8 taxa by 2 taxonomic ranks ]
-#&gt; 
-#&gt; $info
-#&gt; $info$tax_level
-#&gt; [1] "Phylum"
-#&gt; 
-#&gt; </div></pre>
+    <pre class="examples"><div class='input'><span class='co'>#</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

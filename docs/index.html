@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Microbiome data wrangling, stats and visualisation • microViz</title>
+<title>Microbiome Data Wrangling, Stats and Visualisation • microViz</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="Microbiome data wrangling, stats and visualisation">
+<script src="pkgdown.js"></script><meta property="og:title" content="Microbiome Data Wrangling, Stats and Visualisation">
 <meta property="og:description" content="Microbiome data wrangling, stats and visualisation. ">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9002</span>
       </span>
     </div>
 
@@ -92,8 +92,8 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install the latest available microViz package version using the following instructions.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="co"># # If you are on windows you will need to install RTools so that your computer can build this package</span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># # If you are on windows you will need to install RTools so that your computer can build this package</span>
 <span class="co"># # Follow instructions here: http://jtleek.com/modules/01_DataScientistToolbox/02_10_rtools/</span>
 
 <span class="co"># # How to authenticate your R to install from this private github repo # #</span>
@@ -102,25 +102,34 @@
 <span class="co"># # click "generate token" on the webpage and then follow instructions in the R console.</span>
 <span class="co"># # For more help see: https://happygitwithr.com/github-pat.html#step-by-step</span>
 
+<span class="co"># If you don't already have the latest versions of phyloseq and microbiome, you can install these from bioconductor</span>
+
+<span class="co"># if (!requireNamespace("BiocManager", quietly = TRUE))</span>
+<span class="co">#   install.packages("BiocManager")</span>
+<span class="co"># BiocManager::install(c("phyloseq", "microbiome"))</span>
+
 <span class="co"># # Installing the latest version of this package # #</span>
 <span class="co"># install.packages("devtools")</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"MUMC-MEDMIC/microViz"</span><span class="op">)</span>
-<span class="co"># # advanced tip: add @&lt;commit-hash&gt; after microViz to install a particular version</span></pre></div>
+<span class="co"># # advanced tip: add @&lt;commit-hash&gt; after microViz to install a particular version</span>
+
+<span class="co"># optionally install the corncob package from github (for beta binomial models)</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"bryandmartin/corncob@338323e9"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="setup" class="section level2">
 <h2 class="hasAnchor">
 <a href="#setup" class="anchor"></a>Setup</h2>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/david-barnett/microViz">microViz</a></span><span class="op">)</span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/david-barnett/microViz">microViz</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://dx.plos.org/10.1371/journal.pone.0061217">phyloseq</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://cran.r-project.org">vegan</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://microbiome.github.io/microbiome">microbiome</a></span><span class="op">)</span>
 <span class="co">#&gt; Warning: package 'ggplot2' was built under R version 4.0.2</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
 <span class="co">#&gt; Warning: package 'dplyr' was built under R version 4.0.2</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="co"># get some example data</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># get some example data</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"dietswap"</span>, package <span class="op">=</span> <span class="st">"microbiome"</span><span class="op">)</span>
 
 <span class="co"># create a couple of numerical variables to use as constraints or conditions</span>
@@ -129,14 +138,14 @@
 <span class="co"># add a couple of missing values to demo automated dropping of observations with missings</span>
 <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html">sample_data</a></span><span class="op">(</span><span class="va">dietswap</span><span class="op">)</span><span class="op">$</span><span class="va">female</span> <span class="op">&lt;-</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html">sample_data</a></span><span class="op">(</span><span class="va">dietswap</span><span class="op">)</span><span class="op">$</span><span class="va">sex</span> <span class="op">==</span> <span class="st">"female"</span>, true <span class="op">=</span> <span class="fl">1</span>, false <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html">sample_data</a></span><span class="op">(</span><span class="va">dietswap</span><span class="op">)</span><span class="op">$</span><span class="va">female</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html">sample_data</a></span><span class="op">(</span><span class="va">dietswap</span><span class="op">)</span><span class="op">$</span><span class="va">female</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></code></pre></div>
 </div>
 <div id="looking-at-your-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#looking-at-your-data" class="anchor"></a>Looking at your data</h2>
 <p>You have quite a few samples in your phyloseq object, and would like to visualise their compositions. Perhaps these example data differ across BMI groups?</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="va">composition_plot_list</span> <span class="op">&lt;-</span> <span class="va">dietswap</span> <span class="op">%&gt;%</span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">composition_plot_list</span> <span class="op">&lt;-</span> <span class="va">dietswap</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="reference/plot_comp_bar.html">plot_comp_bar</a></span><span class="op">(</span>
     tax_level <span class="op">=</span> <span class="st">"Genus"</span>,
     n_taxa <span class="op">=</span> <span class="fl">10</span>, groups <span class="op">=</span> <span class="st">"bmi_group"</span>
@@ -149,7 +158,7 @@
   <span class="va">composition_plot_list</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"lean"</span>, <span class="st">"overweight"</span>, <span class="st">"obese"</span><span class="op">)</span><span class="op">]</span>,
   ncol <span class="op">=</span> <span class="fl">1</span>, guides <span class="op">=</span> <span class="st">"collect"</span>
 <span class="op">)</span> <span class="op">&amp;</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">&amp;</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></pre></div>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">&amp;</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-2-1.png" width="100%"></p>
 </div>
 <div id="example-ordination-plot-workflow" class="section level2">
@@ -170,8 +179,8 @@
 </li>
 <li>Customise the theme of the ggplot as you like and/or add features like ellipses or annotations</li>
 </ol>
-<!-- end list --><div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="co"># perform ordination</span>
+<!-- end list --><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># perform ordination</span>
 <span class="va">unconstrained_aitchison_pca</span> <span class="op">&lt;-</span>
   <span class="va">dietswap</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">0.1</span>, tax_level <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -191,15 +200,15 @@
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">xlim</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1.5</span>, <span class="fl">2.75</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span>
 
 <span class="co"># show plot</span>
-<span class="va">customised_plot</span></pre></div>
+<span class="va">customised_plot</span></code></pre></div>
 <p><img src="reference/figures/README-ordination-plot-1.png" width="100%"></p>
 </div>
 <div id="permanova" class="section level2">
 <h2 class="hasAnchor">
 <a href="#permanova" class="anchor"></a>PERMANOVA</h2>
 <p>You visualised your ordinated data in the plot above. Below you can see how to perform a PERMANOVA to test the significance of BMI. This example uses the Family-level aitchison distance to correspond with the plot above.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="co"># calculate distances</span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># calculate distances</span>
 <span class="va">aitchison_dists</span> <span class="op">&lt;-</span>
   <span class="va">dietswap</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">0.1</span>, tax_level <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -209,12 +218,14 @@
 
 <span class="co"># the more permutations you request, the longer it takes,</span>
 <span class="co"># but also the more stable and precise your p-values become</span>
-<span class="va">aitchison_perm</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/permanova.html">permanova</a></span><span class="op">(</span><span class="va">aitchison_dists</span>,
-  n_perms <span class="op">=</span> <span class="fl">99</span>, n_processes <span class="op">=</span> <span class="fl">1</span>,
+<span class="va">aitchison_perm</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/permanova.html">permanova</a></span><span class="op">(</span>
+  data <span class="op">=</span> <span class="va">aitchison_dists</span>,
+  seed <span class="op">=</span> <span class="fl">1234</span>, <span class="co"># for set.seed to ensure reproducibility of random process</span>
+  n_perms <span class="op">=</span> <span class="fl">99</span>, n_processes <span class="op">=</span> <span class="fl">1</span>, 
   variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"bmi_group"</span><span class="op">)</span>
 <span class="op">)</span>
-<span class="co">#&gt; 2020-11-10 15:10:16 - Starting PERMANOVA with 99 perms with 1 processes</span>
-<span class="co">#&gt; 2020-11-10 15:10:16 - Finished PERMANOVA</span>
+<span class="co">#&gt; 2020-11-10 20:06:27 - Starting PERMANOVA with 99 perms with 1 processes</span>
+<span class="co">#&gt; 2020-11-10 20:06:27 - Finished PERMANOVA</span>
 <span class="co"># view the permanova results</span>
 <span class="va">aitchison_perm</span><span class="op">$</span><span class="va">permanova</span>
 <span class="co">#&gt; </span>
@@ -241,17 +252,17 @@
 <span class="co">#&gt; [1] "none specified"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $distName</span>
-<span class="co">#&gt; [1] "aitchison"</span></pre></div>
+<span class="co">#&gt; [1] "aitchison"</span></code></pre></div>
 </div>
 <div id="constrained-ordination" class="section level2">
 <h2 class="hasAnchor">
 <a href="#constrained-ordination" class="anchor"></a>Constrained ordination</h2>
 <p>You could visualise the effect of the (numeric/logical) variables in your permanova directly using the plot_ordin8 function with constraints.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="va">perm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/permanova.html">permanova</a></span><span class="op">(</span><span class="va">aitchison_dists</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"female"</span><span class="op">)</span><span class="op">)</span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">perm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/permanova.html">permanova</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">aitchison_dists</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"female"</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">321</span><span class="op">)</span>
 <span class="co">#&gt; WARNING: Dropping samples with NAs for "female". At least 2</span>
-<span class="co">#&gt; 2020-11-10 15:10:16 - Starting PERMANOVA with 999 perms with 1 processes</span>
-<span class="co">#&gt; 2020-11-10 15:10:18 - Finished PERMANOVA</span>
+<span class="co">#&gt; 2020-11-10 20:06:27 - Starting PERMANOVA with 999 perms with 1 processes</span>
+<span class="co">#&gt; 2020-11-10 20:06:29 - Finished PERMANOVA</span>
 <span class="va">perm2</span><span class="op">$</span><span class="va">permanova</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Call:</span>
@@ -272,23 +283,26 @@
 
 <span class="fu"><a href="reference/ordin8.html">ordin8</a></span><span class="op">(</span><span class="va">perm2</span>, constraints <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"female"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="reference/plot_ordin8.html">plot_ordin8</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"sex"</span>, constraint_label_length <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/stat_ellipse.html">stat_ellipse</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="va">sex</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_color_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Dark2"</span><span class="op">)</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/stat_ellipse.html">stat_ellipse</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="va">sex</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_color_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Dark2"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>plot.subtitle <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">8</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Centering (mean) and scaling (sd) the constraint and conditioning vars:</span>
 <span class="co">#&gt;  weight</span>
-<span class="co">#&gt;  female</span></pre></div>
+<span class="co">#&gt;  female</span></code></pre></div>
 <p><img src="reference/figures/README-constrained-ord-1.png" width="100%"></p>
 <p>You can make your model more complicated, including the addition of interactions. Currently I don’t provide options for random effects. Ask me if you want this.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="co"># example with interactions</span>
-<span class="fu"><a href="reference/permanova.html">permanova</a></span><span class="op">(</span><span class="va">aitchison_dists</span>,
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># example with interactions</span>
+<span class="fu"><a href="reference/permanova.html">permanova</a></span><span class="op">(</span>
+  data <span class="op">=</span> <span class="va">aitchison_dists</span>,
   variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"bmi_group"</span>, <span class="st">"sex"</span><span class="op">)</span>,
   interactions <span class="op">=</span> <span class="st">"bmi_group * sex"</span>,
+   seed <span class="op">=</span> <span class="fl">123</span>, 
   adonis2 <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># important when testing interactions</span>
   return <span class="op">=</span> <span class="st">"permanova"</span> <span class="co"># return only the permanova output</span>
 <span class="op">)</span>
-<span class="co">#&gt; 2020-11-10 15:10:19 - Starting PERMANOVA with 999 perms with 1 processes</span>
-<span class="co">#&gt; 2020-11-10 15:10:21 - Finished PERMANOVA</span>
+<span class="co">#&gt; 2020-11-10 20:06:30 - Starting PERMANOVA with 999 perms with 1 processes</span>
+<span class="co">#&gt; 2020-11-10 20:06:31 - Finished PERMANOVA</span>
 <span class="co">#&gt; Permutation test for adonis under reduced model</span>
 <span class="co">#&gt; Marginal effects of terms</span>
 <span class="co">#&gt; Permutation: free</span>
@@ -300,14 +314,14 @@
 <span class="co">#&gt; Residual      217  2277.56 0.91419                  </span>
 <span class="co">#&gt; Total         221  2491.35 1.00000                  </span>
 <span class="co">#&gt; ---</span>
-<span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></pre></div>
+<span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></code></pre></div>
 </div>
 </div>
 <div id="session-info" class="section level1">
 <h1 class="hasAnchor">
 <a href="#session-info" class="anchor"></a>Session info</h1>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sessioninfo/man/session_info.html">session_info</a></span><span class="op">(</span><span class="op">)</span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sessioninfo/man/session_info.html">session_info</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; - Session info -----------------------------------------------------------------------------------</span>
 <span class="co">#&gt;  setting  value                       </span>
 <span class="co">#&gt;  version  R version 4.0.1 (2020-06-06)</span>
@@ -415,7 +429,7 @@
 <span class="co">#&gt;  yaml           2.2.1      2020-02-01 [1] CRAN (R 4.0.0)</span>
 <span class="co">#&gt;  zlibbioc       1.34.0     2020-04-27 [1] Bioconductor  </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; [1] C:/Program Files/R/R-4.0.1/library</span></pre></div>
+<span class="co">#&gt; [1] C:/Program Files/R/R-4.0.1/library</span></code></pre></div>
 </div>
 
   </div>

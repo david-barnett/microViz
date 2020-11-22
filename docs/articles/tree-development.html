@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9002</span>
       </span>
     </div>
 
@@ -94,29 +94,21 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/david-barnett/microViz">microViz</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://microbiome.github.io/microbiome">microbiome</a></span><span class="op">)</span>
-<span class="co">#&gt; Warning: package 'ggplot2' was built under R version 4.0.2</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://igraph.org">igraph</a></span><span class="op">)</span>
-<span class="co">#&gt; Warning: package 'igraph' was built under R version 4.0.3</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidygraph.data-imaginist.com">tidygraph</a></span><span class="op">)</span>
-<span class="co">#&gt; Warning: package 'tidygraph' was built under R version 4.0.3</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggraph.data-imaginist.com">ggraph</a></span><span class="op">)</span>
-<span class="co">#&gt; Warning: package 'ggraph' was built under R version 4.0.3</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com">patchwork</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
-<span class="co">#&gt; Warning: package 'dplyr' was built under R version 4.0.2</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tibble.tidyverse.org/">tibble</a></span><span class="op">)</span>
-<span class="co">#&gt; Warning: package 'tibble' was built under R version 4.0.3</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">corncob</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HenrikBengtsson/future">future</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HenrikBengtsson/future.apply">future.apply</a></span><span class="op">)</span>
-<span class="co">#&gt; Warning: package 'future.apply' was built under R version 4.0.3</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://colorspace.R-Forge.R-project.org">colorspace</a></span><span class="op">)</span>
-<span class="co">#&gt; Warning: package 'colorspace' was built under R version 4.0.3</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/knitr/man/opts_chunk.html">opts_chunk</a></span><span class="op">$</span><span class="fu">set</span><span class="op">(</span>fig.width <span class="op">=</span> <span class="fl">9</span>, fig.height <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/knitr/man/opts_chunk.html">opts_chunk</a></span><span class="op">$</span><span class="fu">set</span><span class="op">(</span>fig.width <span class="op">=</span> <span class="fl">9</span>, fig.height <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></code></pre></div>
 <div id="intro" class="section level1">
 <h1 class="hasAnchor">
 <a href="#intro" class="anchor"></a>Intro</h1>
@@ -146,8 +138,8 @@
 <h1 class="hasAnchor">
 <a href="#setting-up-some-example-data" class="anchor"></a>Setting up some example data</h1>
 <p>Getting example dataset <code>dietswap</code>.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"dietswap"</span>, package <span class="op">=</span> <span class="st">"microbiome"</span><span class="op">)</span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"dietswap"</span>, package <span class="op">=</span> <span class="st">"microbiome"</span><span class="op">)</span>
 <span class="va">ps</span> <span class="op">&lt;-</span> <span class="va">dietswap</span>
 
 <span class="co"># filter out rare taxa</span>
@@ -157,10 +149,10 @@
 <span class="co"># introduce some unclear taxonomic classifications</span>
 <span class="co"># (to demonstrate fixing these with helper functions)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html">tax_table</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">8</span>, <span class="fl">9</span><span class="op">)</span>, <span class="st">"Genus"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"unknown"</span>
-<span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html">tax_table</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span><span class="op">[</span><span class="fl">8</span>, <span class="st">"Family"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"unknown"</span></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html">tax_table</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span><span class="op">[</span><span class="fl">8</span>, <span class="st">"Family"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"unknown"</span></code></pre></div>
 <p>When preparing a phyloseq dataset for stats and tree-based plotting it is critically important that the taxonomic names at each rank are fully identifiable/unique both within and across ranks, as they will function as the unique node IDs for the taxonomic tree graph structure.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="co"># fix problem names</span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># fix problem names</span>
 <span class="va">ps</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tax_table_helpers.html">tax_fill_unknowns</a></span><span class="op">(</span><span class="va">ps</span>, unknowns <span class="op">=</span> <span class="st">"unknown"</span><span class="op">)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Attaching package: 'purrr'</span>
@@ -186,18 +178,18 @@
 <span class="co">#&gt; Bacteroides uniformis et rel.    "G: Bacteroidetes.unknown.Genus"      </span>
 <span class="co">#&gt; Bacteroides vulgatus et rel.     "G: Bacteroidetes.Bacteroidetes.Genus"</span>
 <span class="co">#&gt; Bifidobacterium                  "G: Bifidobacterium"                  </span>
-<span class="co">#&gt; Bryantella formatexigens et rel. "G: Bryantella formatexigens et rel."</span></pre></div>
+<span class="co">#&gt; Bryantella formatexigens et rel. "G: Bryantella formatexigens et rel."</span></code></pre></div>
 <div id="stats-to-decorate-trees" class="section level2">
 <h2 class="hasAnchor">
 <a href="#stats-to-decorate-trees" class="anchor"></a>Stats to decorate trees</h2>
 <p>To get stats for every node of a taxonomic tree we must statistically model taxa at all taxonomic levels (except root).</p>
 <p>It is first important to set up binary variables for the stats models, as heat_trees or other heatmap-type visualisations cannot be used with unordered categorical variables.</p>
 <p><strong>Note:</strong> <em>If you have continuous variables and wish to visualise the size of their microbial associations (e.g. regression coefs) on a similar (colour) scale as for associations with binary categorical variables, then you should scale the range of your continuous variable to between 0 and 1 (with e.g. min-max normalisation) if it is not already on a 0 to 1 scale.</em></p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html">sample_data</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span><span class="op">$</span><span class="va">female</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html">sample_data</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span><span class="op">$</span><span class="va">sex</span> <span class="op">==</span> <span class="st">"female"</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="cn">NaN</span><span class="op">)</span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html">sample_data</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span><span class="op">$</span><span class="va">female</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html">sample_data</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span><span class="op">$</span><span class="va">sex</span> <span class="op">==</span> <span class="st">"female"</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="cn">NaN</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html">sample_data</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span><span class="op">$</span><span class="va">overweight</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html">sample_data</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span><span class="op">$</span><span class="va">bmi_group</span> <span class="op">==</span> <span class="st">"overweight"</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="cn">NaN</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html">sample_data</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span><span class="op">$</span><span class="va">obese</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html">sample_data</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span><span class="op">$</span><span class="va">bmi_group</span> <span class="op">==</span> <span class="st">"obese"</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="cn">NaN</span><span class="op">)</span>
-<span class="va">variables</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"female"</span>, <span class="st">'overweight'</span>, <span class="st">'obese'</span><span class="op">)</span>
+<span class="va">variables</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"female"</span>, <span class="st">"overweight"</span>, <span class="st">"obese"</span><span class="op">)</span>
 
 <span class="va">tax_models_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span>
   X <span class="op">=</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/rank_names.html">rank_names</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>,
@@ -211,13 +203,13 @@
     <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">models</span><span class="op">)</span>
   <span class="op">}</span>
 <span class="op">)</span>
-<span class="co">#&gt; 2020-11-10 15:17:09 - modelling at level: Phylum</span>
-<span class="co">#&gt; 2020-11-10 15:17:11 - modelling at level: Family</span>
-<span class="co">#&gt; 2020-11-10 15:17:12 - modelling at level: Genus</span>
+<span class="co">#&gt; 2020-11-22 22:16:03 - modelling at level: Phylum</span>
+<span class="co">#&gt; 2020-11-22 22:16:04 - modelling at level: Family</span>
+<span class="co">#&gt; 2020-11-22 22:16:05 - modelling at level: Genus</span>
 <span class="co"># Flatten all taxonomic level lists into one list of models</span>
 <span class="co"># (this is why taxon names must be completely identifiable across ranks)</span>
 <span class="va">flat_models_list</span> <span class="op">&lt;-</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/flatten.html">flatten</a></span><span class="op">(</span><span class="va">tax_models_list</span><span class="op">)</span>
-<span class="va">var_stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tax_model_corncob.html">corncob_models_to_var_stats</a></span><span class="op">(</span><span class="va">flat_models_list</span><span class="op">)</span></pre></div>
+<span class="va">var_stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tax_model_corncob.html">corncob_models_to_var_stats</a></span><span class="op">(</span><span class="va">flat_models_list</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div id="from-phyloseq-to-treegraph" class="section level1">
@@ -231,17 +223,17 @@
 <li>Join stats about the associations with the variable <code>obese</code> to the augmented nodes dataframe</li>
 <li>Create a dataframe of edges from the nodes (edges join the nodes in the tree together)</li>
 </ol>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="va">nodes_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tax_tree_funs.html">tax_tree_nodes</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">nodes_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tax_tree_funs.html">tax_tree_nodes</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span>
 <span class="va">nodes_df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">nodes_df</span>, <span class="va">var_stats</span><span class="op">$</span><span class="va">obese</span>, by <span class="op">=</span> <span class="st">"taxon_name"</span><span class="op">)</span>
 <span class="va">edge_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tax_tree_funs.html">tax_tree_edges</a></span><span class="op">(</span><span class="va">nodes_df</span><span class="op">)</span>
-<span class="va">graph</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tidygraph.data-imaginist.com/reference/tbl_graph.html">tbl_graph</a></span><span class="op">(</span>nodes <span class="op">=</span> <span class="va">nodes_df</span>, node_key <span class="op">=</span> <span class="st">"taxon_name"</span>, edges <span class="op">=</span> <span class="va">edge_df</span>, directed <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></pre></div>
+<span class="va">graph</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tidygraph.data-imaginist.com/reference/tbl_graph.html">tbl_graph</a></span><span class="op">(</span>nodes <span class="op">=</span> <span class="va">nodes_df</span>, node_key <span class="op">=</span> <span class="st">"taxon_name"</span>, edges <span class="op">=</span> <span class="va">edge_df</span>, directed <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="creating-a-circular-tree-graph-layout" class="section level2">
 <h2 class="hasAnchor">
 <a href="#creating-a-circular-tree-graph-layout" class="anchor"></a>Creating a circular tree graph layout</h2>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="co"># create layout</span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># create layout</span>
 <span class="va">layout</span> <span class="op">&lt;-</span> <span class="fu">ggraph</span><span class="fu">::</span><span class="fu"><a href="https://ggraph.data-imaginist.com/reference/ggraph.html">create_layout</a></span><span class="op">(</span><span class="va">graph</span>, layout <span class="op">=</span> <span class="st">"tree"</span>, circular <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="co"># plot example with this layout</span>
@@ -265,7 +257,7 @@
   <span class="fu"><a href="https://ggraph.data-imaginist.com/reference/scale_edge_width.html">scale_edge_width_continuous</a></span><span class="op">(</span>range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggraph.data-imaginist.com/reference/scale_edge_colour.html">scale_edge_colour_gradient2</a></span><span class="op">(</span>low <span class="op">=</span> <span class="st">"#a6611a"</span>, mid <span class="op">=</span> <span class="st">"#DDDDDD"</span>, high <span class="op">=</span> <span class="st">"#018571"</span>, midpoint <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html">scale_fill_gradient2</a></span><span class="op">(</span>low <span class="op">=</span> <span class="st">"#a6611a"</span>, mid <span class="op">=</span> <span class="st">"#DDDDDD"</span>, high <span class="op">=</span> <span class="st">"#018571"</span>, midpoint <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span>
-  <span class="cn">NULL</span></pre></div>
+  <span class="cn">NULL</span></code></pre></div>
 <p><img src="tree-development_files/figure-html/unnamed-chunk-7-1.png" width="384"></p>
 </div>
 </div>
@@ -273,13 +265,12 @@
 <h1 class="hasAnchor">
 <a href="#adjusting-the-layout" class="anchor"></a>Adjusting the layout</h1>
 <p>Here I use the davidson-harel algorithm, with trial-and-error weights, to adjust the tree layout above, using a trial-and-error number of iterations.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="co"># Davidson-Harel allows weighting crossover avoidance and edge lengths etc.</span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Davidson-Harel allows weighting crossover avoidance and edge lengths etc.</span>
 <span class="va">adjust_tree_layout</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">graph</span>, <span class="va">layout</span><span class="op">)</span> <span class="op">{</span>
-
   <span class="va">e_density</span> <span class="op">&lt;-</span> <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/edge_density.html">edge_density</a></span><span class="op">(</span><span class="va">graph</span><span class="op">)</span>
   <span class="va">original_layout_coords</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="va">layout</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
-  
+
   <span class="va">new_layout_coords</span> <span class="op">&lt;-</span> <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/layout_with_dh.html">layout_with_dh</a></span><span class="op">(</span>
     graph <span class="op">=</span> <span class="va">graph</span>,
     coords <span class="op">=</span> <span class="va">original_layout_coords</span>,
@@ -290,59 +281,75 @@
     weight.node.dist <span class="op">=</span> <span class="va">e_density</span> <span class="op">*</span> <span class="fl">1</span>,
     weight.border <span class="op">=</span> <span class="va">e_density</span> <span class="op">*</span> <span class="fl">1</span>
   <span class="op">)</span>
-  
+
   <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">new_layout_coords</span><span class="op">)</span>
-<span class="op">}</span></pre></div>
+<span class="op">}</span></code></pre></div>
 <p>This is a stochastic process which I do not let find an optimum. So <code><a href="https://rdrr.io/r/base/Random.html">set.seed()</a></code> is important here.</p>
 <p>I will expose the weights of the dh algo (with my defaults).<br>
 I will document how to rerun a few times with RNG seed setting to help users find a layout they like and re-use it (as below).</p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="va">layouts_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">9</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="op">{</span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">layouts_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="va">i</span><span class="op">)</span>
   <span class="fu">adjust_tree_layout</span><span class="op">(</span>g <span class="op">=</span> <span class="va">graph</span>, l <span class="op">=</span> <span class="va">layout</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span></pre></div>
+<span class="op">}</span><span class="op">)</span></code></pre></div>
 <div id="plotting-the-adjusted-layouts" class="section level2">
 <h2 class="hasAnchor">
 <a href="#plotting-the-adjusted-layouts" class="anchor"></a>Plotting the adjusted layouts</h2>
-<p>These differ only randomly, some are clearly more aesthetically pleasing than others. I like the top right one.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="va">plots</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">layouts_list</span>, <span class="kw">function</span><span class="op">(</span><span class="va">al</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://ggraph.data-imaginist.com/reference/ggraph.html">ggraph</a></span><span class="op">(</span>graph <span class="op">=</span> <span class="va">graph</span>, layout <span class="op">=</span> <span class="va">al</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="https://ggraph.data-imaginist.com/reference/theme_graph.html">theme_graph</a></span><span class="op">(</span>base_family <span class="op">=</span> <span class="st">"sans"</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="https://ggraph.data-imaginist.com/reference/geom_edge_link.html">geom_edge_link</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>
-      edge_width <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">taxon_mean</span><span class="op">)</span>,
-      edge_colour <span class="op">=</span> <span class="va">b_mu</span>
-    <span class="op">)</span>,
-    alpha <span class="op">=</span> <span class="fl">0.6</span>
+<p>These differ only randomly, some might be more aesthetically pleasing than others. I like the top right one.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">abs_sqrt</span> <span class="op">&lt;-</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org//reference/trans_new.html">trans_new</a></span><span class="op">(</span>
+  name <span class="op">=</span> <span class="st">"abs_sqrt"</span>,
+  transform <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/sign.html">sign</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
+  <span class="op">}</span>,
+  inverse <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/sign.html">sign</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">*</span> <span class="va">x</span><span class="op">^</span><span class="fl">2</span>
+  <span class="op">}</span>
+<span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">luminance_l2</span> <span class="op">=</span> <span class="fl">80</span>
+<span class="va">colour_palette</span> <span class="op">=</span> <span class="st">"Green-Brown"</span>
+<span class="va">reverse_colours</span> <span class="op">=</span> <span class="cn">FALSE</span>
+<span class="va">luminance_l2</span> <span class="op">=</span> <span class="fl">80</span>
+<span class="va">colour_lims</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>
+
+<span class="va">plots</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">layouts_list</span>, <span class="kw">function</span><span class="op">(</span><span class="va">layout_coords</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="../reference/tax_tree_plot.html">tax_tree_plot</a></span><span class="op">(</span>graph_object <span class="op">=</span> <span class="va">graph</span>, layout_coords <span class="op">=</span> <span class="va">layout_coords</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu">colorspace</span><span class="fu">::</span><span class="fu"><a href="http://colorspace.R-Forge.R-project.org//reference/scale_colour_continuous_diverging.html">scale_fill_continuous_diverging</a></span><span class="op">(</span>
+      palette <span class="op">=</span> <span class="va">colour_palette</span>,
+      l2 <span class="op">=</span> <span class="va">luminance_l2</span>,
+      aesthetics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"edge_colour"</span>, <span class="st">"fill"</span><span class="op">)</span>,
+      limits <span class="op">=</span> <span class="va">colour_lims</span>,
+      oob <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org//reference/oob.html">oob_squish</a></span>,
+      rev <span class="op">=</span> <span class="va">reverse_colours</span>,
+      trans <span class="op">=</span> <span class="va">abs_sqrt</span>,
+      guide <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_colourbar.html">guide_colorbar</a></span><span class="op">(</span>
+        frame.colour <span class="op">=</span> <span class="st">"black"</span>,
+        ticks.colour <span class="op">=</span> <span class="st">"black"</span>,
+        barwidth <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html">unit</a></span><span class="op">(</span><span class="fl">0.01</span>, <span class="st">"npc"</span><span class="op">)</span>
+      <span class="op">)</span>
     <span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="https://ggraph.data-imaginist.com/reference/geom_node_point.html">geom_node_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>
-      size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">taxon_mean</span><span class="op">)</span>,
-      fill <span class="op">=</span> <span class="va">b_mu</span>,
-      stroke <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="va">p_mu</span> <span class="op">&lt;</span> <span class="fl">0.05</span>, <span class="fl">1.5</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span><span class="op">)</span>
-    <span class="op">)</span>,
-    shape <span class="op">=</span> <span class="fl">21</span>,
-    show.legend <span class="op">=</span> <span class="cn">FALSE</span>
-    <span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="https://ggraph.data-imaginist.com/reference/geom_node_point.html">geom_node_point</a></span><span class="op">(</span>
-      show.legend <span class="op">=</span> <span class="cn">FALSE</span>,
-      mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>filter <span class="op">=</span> <span class="va">taxon_level</span> <span class="op">==</span> <span class="st">'root'</span>, size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">taxon_mean</span><span class="op">)</span><span class="op">)</span>
-      <span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="https://ggraph.data-imaginist.com/reference/scale_edge_width.html">scale_edge_width_continuous</a></span><span class="op">(</span>range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span>, guide <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="http://colorspace.R-Forge.R-project.org//reference/scale_colour_continuous_diverging.html">scale_fill_continuous_diverging</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"GreenOrange"</span>, aesthetics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"edge_colour"</span>, <span class="st">"fill"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_fixed.html">coord_equal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-    <span class="cn">NULL</span>
+    <span class="co"># colour scale for sig. points stroke (which has no legend)</span>
+    <span class="fu">colorspace</span><span class="fu">::</span><span class="fu"><a href="http://colorspace.R-Forge.R-project.org//reference/scale_colour_continuous_diverging.html">scale_color_continuous_diverging</a></span><span class="op">(</span>
+      palette <span class="op">=</span> <span class="va">colour_palette</span>,
+      l2 <span class="op">=</span> <span class="va">luminance_l2</span>,
+      aesthetics <span class="op">=</span> <span class="st">"color"</span>,
+      rev <span class="op">=</span> <span class="va">reverse_colours</span>,
+      trans <span class="op">=</span> <span class="va">abs_sqrt</span>,
+      guide <span class="op">=</span> <span class="st">"none"</span>
+    <span class="op">)</span>
 <span class="op">}</span><span class="op">)</span>
 
-<span class="fu">patchwork</span><span class="fu">::</span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html">wrap_plots</a></span><span class="op">(</span><span class="va">plots</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">9</span><span class="op">]</span>, ncol <span class="op">=</span> <span class="fl">3</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span>, guides <span class="op">=</span> <span class="st">"auto"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">patchwork</span><span class="fu">::</span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_annotation.html">plot_annotation</a></span><span class="op">(</span>tag_levels <span class="op">=</span> <span class="st">'1'</span><span class="op">)</span></pre></div>
-<p><img src="tree-development_files/figure-html/unnamed-chunk-10-1.png" width="1248"></p>
+<span class="fu">patchwork</span><span class="fu">::</span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html">wrap_plots</a></span><span class="op">(</span><span class="va">plots</span>, ncol <span class="op">=</span> <span class="fl">2</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span>, guides <span class="op">=</span> <span class="st">"keep"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">patchwork</span><span class="fu">::</span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_annotation.html">plot_annotation</a></span><span class="op">(</span>tag_levels <span class="op">=</span> <span class="st">"1"</span><span class="op">)</span></code></pre></div>
+<p><img src="tree-development_files/figure-html/unnamed-chunk-12-1.png" width="3000"></p>
 </div>
 <div id="selecting-1-of-the-adjusted-layouts" class="section level2">
 <h2 class="hasAnchor">
 <a href="#selecting-1-of-the-adjusted-layouts" class="anchor"></a>Selecting 1 of the adjusted layouts</h2>
 <p>Besides just selecting the layout number 3 with <code>layouts_list[[3]]</code>, the adjustment of the original layout can be rerun exactly by setting the seed as equal to 3 again, as demonstrated below. You could use a larger grey tree version with labels as a key, as shown below.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span>
 <span class="va">al</span> <span class="op">&lt;-</span> <span class="fu">adjust_tree_layout</span><span class="op">(</span>graph <span class="op">=</span> <span class="va">graph</span>, layout <span class="op">=</span> <span class="va">layout</span><span class="op">)</span>
 
 <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggraph.data-imaginist.com/reference/ggraph.html">ggraph</a></span><span class="op">(</span>graph <span class="op">=</span> <span class="va">graph</span>, layout <span class="op">=</span> <span class="va">al</span><span class="op">)</span> <span class="op">+</span>
@@ -361,23 +368,25 @@ I will document how to rerun a few times with RNG seed setting to help users fin
   <span class="fu"><a href="https://ggraph.data-imaginist.com/reference/scale_edge_width.html">scale_edge_width_continuous</a></span><span class="op">(</span>range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span>
 
 <span class="co"># simpler way to add labels to families</span>
-<span class="co"># p &lt;- p + </span>
+<span class="co"># p &lt;- p +</span>
 <span class="co">#   geom_node_label(</span>
 <span class="co">#     mapping = aes(</span>
-<span class="co">#       label = taxon_name, </span>
+<span class="co">#       label = taxon_name,</span>
 <span class="co">#       size = log(log(log(taxon_mean))),</span>
 <span class="co">#       filter = grepl("^F:", taxon_name)</span>
-<span class="co">#     ), </span>
+<span class="co">#     ),</span>
 <span class="co">#     repel = TRUE,</span>
 <span class="co">#     show.legend = FALSE</span>
-<span class="co">#   ) </span>
+<span class="co">#   )</span>
 
 <span class="co"># alternative way of setting labels with more control</span>
 <span class="va">p</span> <span class="op">&lt;-</span> <span class="va">p</span> <span class="op">+</span>
   <span class="fu">ggrepel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggrepel/man/geom_text_repel.html">geom_label_repel</a></span><span class="op">(</span>
     data <span class="op">=</span> <span class="op">~</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">.</span>, <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="st">"^F:"</span>, <span class="va">taxon_name</span><span class="op">)</span><span class="op">)</span>,
-    mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, label <span class="op">=</span> <span class="va">taxon_name</span>,
-                  size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">taxon_mean</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,
+    mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>
+      x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, label <span class="op">=</span> <span class="va">taxon_name</span>,
+      size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">taxon_mean</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+    <span class="op">)</span>,
     xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="cn">Inf</span>, <span class="cn">Inf</span><span class="op">)</span>,
     min.segment.length <span class="op">=</span> <span class="fl">0</span>,
     show.legend <span class="op">=</span> <span class="cn">FALSE</span>
@@ -385,31 +394,32 @@ I will document how to rerun a few times with RNG seed setting to help users fin
 
 <span class="co"># add a black central node to mark the rook</span>
 <span class="va">p</span> <span class="op">&lt;-</span> <span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="https://ggraph.data-imaginist.com/reference/geom_node_point.html">geom_node_point</a></span><span class="op">(</span>
-  mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>filter <span class="op">=</span> <span class="va">taxon_level</span> <span class="op">==</span> <span class="st">'root'</span>,
-                size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">taxon_mean</span><span class="op">)</span>
+  mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>
+    filter <span class="op">=</span> <span class="va">taxon_level</span> <span class="op">==</span> <span class="st">"root"</span>,
+    size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">taxon_mean</span><span class="op">)</span>
   <span class="op">)</span>,
   show.legend <span class="op">=</span> <span class="cn">FALSE</span>
 <span class="op">)</span>
 
-<span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Note: Most of these are not really Family-level names, but\nthey are listed as such in the example dataset (dietswap)."</span><span class="op">)</span></pre></div>
-<p><img src="tree-development_files/figure-html/unnamed-chunk-11-1.png" width="672"></p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sessioninfo/man/session_info.html">session_info</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Note: Most of these are not really Family-level names, but\nthey are listed as such in the example dataset (dietswap)."</span><span class="op">)</span></code></pre></div>
+<p><img src="tree-development_files/figure-html/unnamed-chunk-13-1.png" width="672"></p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sessioninfo/man/session_info.html">session_info</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; - Session info -----------------------------------------------------------------------------------</span>
 <span class="co">#&gt;  setting  value                       </span>
-<span class="co">#&gt;  version  R version 4.0.1 (2020-06-06)</span>
+<span class="co">#&gt;  version  R version 4.0.3 (2020-10-10)</span>
 <span class="co">#&gt;  os       Windows 10 x64              </span>
 <span class="co">#&gt;  system   x86_64, mingw32             </span>
 <span class="co">#&gt;  ui       RTerm                       </span>
 <span class="co">#&gt;  language (EN)                        </span>
 <span class="co">#&gt;  collate  English_United Kingdom.1252 </span>
 <span class="co">#&gt;  ctype    English_United Kingdom.1252 </span>
-<span class="co">#&gt;  tz       Europe/Berlin               </span>
-<span class="co">#&gt;  date     2020-11-10                  </span>
+<span class="co">#&gt;  tz       Europe/London               </span>
+<span class="co">#&gt;  date     2020-11-22                  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; - Packages ---------------------------------------------------------------------------------------</span>
 <span class="co">#&gt;  package            * version      date       lib source                               </span>
-<span class="co">#&gt;  ade4                 1.7-15       2020-02-13 [3] CRAN (R 4.0.3)                       </span>
+<span class="co">#&gt;  ade4                 1.7-16       2020-10-28 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  ape                  5.4-1        2020-08-13 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  assertthat           0.2.1        2019-03-21 [3] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  backports            1.2.0        2020-11-02 [3] CRAN (R 4.0.3)                       </span>
@@ -419,16 +429,16 @@ I will document how to rerun a few times with RNG seed setting to help users fin
 <span class="co">#&gt;  Biostrings           2.56.0       2020-04-27 [3] Bioconductor                         </span>
 <span class="co">#&gt;  callr                3.5.1        2020-10-13 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  cli                  2.1.0        2020-10-12 [3] CRAN (R 4.0.3)                       </span>
-<span class="co">#&gt;  cluster              2.1.0        2019-06-19 [3] CRAN (R 4.0.1)                       </span>
-<span class="co">#&gt;  codetools            0.2-16       2018-12-24 [3] CRAN (R 4.0.1)                       </span>
-<span class="co">#&gt;  colorspace         * 1.4-1        2019-03-18 [3] CRAN (R 4.0.3)                       </span>
+<span class="co">#&gt;  cluster              2.1.0        2019-06-19 [3] CRAN (R 4.0.3)                       </span>
+<span class="co">#&gt;  codetools            0.2-18       2020-11-04 [3] CRAN (R 4.0.3)                       </span>
+<span class="co">#&gt;  colorspace         * 2.0-0        2020-11-11 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  corncob            * 0.1.0        2020-10-08 [3] Github (bryandmartin/corncob@338323e)</span>
 <span class="co">#&gt;  crayon               1.3.4        2017-09-16 [3] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  data.table           1.13.2       2020-10-19 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  desc                 1.2.0        2018-05-01 [3] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  detectseparation     0.1          2020-03-25 [3] CRAN (R 4.0.2)                       </span>
 <span class="co">#&gt;  devtools             2.3.2        2020-09-18 [3] CRAN (R 4.0.3)                       </span>
-<span class="co">#&gt;  digest               0.6.25       2020-02-23 [3] CRAN (R 4.0.0)                       </span>
+<span class="co">#&gt;  digest               0.6.27       2020-10-24 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  dplyr              * 1.0.2        2020-08-18 [3] CRAN (R 4.0.2)                       </span>
 <span class="co">#&gt;  ellipsis             0.3.1        2020-05-15 [3] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  evaluate             0.14         2019-05-28 [3] CRAN (R 4.0.0)                       </span>
@@ -449,6 +459,7 @@ I will document how to rerun a few times with RNG seed setting to help users fin
 <span class="co">#&gt;  graphlayouts         0.7.1        2020-10-26 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  gridExtra            2.3          2017-09-09 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  gtable               0.3.0        2019-03-25 [3] CRAN (R 4.0.0)                       </span>
+<span class="co">#&gt;  hms                  0.5.3        2020-01-08 [3] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  htmltools            0.5.0        2020-06-16 [3] CRAN (R 4.0.2)                       </span>
 <span class="co">#&gt;  igraph             * 1.2.6        2020-10-06 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  IRanges              2.22.2       2020-05-21 [3] Bioconductor                         </span>
@@ -456,17 +467,17 @@ I will document how to rerun a few times with RNG seed setting to help users fin
 <span class="co">#&gt;  jsonlite             1.7.1        2020-09-07 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  knitr                1.30         2020-09-22 [3] CRAN (R 4.0.2)                       </span>
 <span class="co">#&gt;  labeling             0.4.2        2020-10-20 [3] CRAN (R 4.0.3)                       </span>
-<span class="co">#&gt;  lattice              0.20-41      2020-04-02 [3] CRAN (R 4.0.1)                       </span>
+<span class="co">#&gt;  lattice              0.20-41      2020-04-02 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  lifecycle            0.2.0        2020-03-06 [3] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  listenv              0.8.0        2019-12-05 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  lpSolveAPI           5.5.2.0-17.7 2020-06-14 [3] CRAN (R 4.0.0)                       </span>
-<span class="co">#&gt;  magrittr             1.5          2014-11-22 [3] CRAN (R 4.0.0)                       </span>
+<span class="co">#&gt;  magrittr             2.0.1        2020-11-17 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  MASS                 7.3-53       2020-09-09 [3] CRAN (R 4.0.3)                       </span>
-<span class="co">#&gt;  Matrix               1.2-18       2019-11-27 [3] CRAN (R 4.0.1)                       </span>
+<span class="co">#&gt;  Matrix               1.2-18       2019-11-27 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  memoise              1.1.0        2017-04-21 [3] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  mgcv                 1.8-33       2020-08-27 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  microbiome         * 1.10.0       2020-04-27 [3] Bioconductor                         </span>
-<span class="co">#&gt;  microViz           * 0.0.0.9000   2020-11-10 [2] local                                </span>
+<span class="co">#&gt;  microViz           * 0.0.0.9002   2020-11-22 [2] local                                </span>
 <span class="co">#&gt;  multtest             2.44.0       2020-04-27 [3] Bioconductor                         </span>
 <span class="co">#&gt;  munsell              0.5.0        2018-06-12 [3] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  nlme                 3.1-150      2020-10-24 [3] CRAN (R 4.0.3)                       </span>
@@ -484,6 +495,7 @@ I will document how to rerun a few times with RNG seed setting to help users fin
 <span class="co">#&gt;  polyclip             1.10-0       2019-03-14 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  prettyunits          1.1.1        2020-01-24 [3] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  processx             3.4.4        2020-09-03 [3] CRAN (R 4.0.3)                       </span>
+<span class="co">#&gt;  progress             1.2.2        2019-05-16 [3] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  ps                   1.4.0        2020-10-07 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  purrr              * 0.3.4        2020-04-17 [3] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  R6                   2.5.0        2020-10-28 [3] CRAN (R 4.0.1)                       </span>
@@ -499,7 +511,7 @@ I will document how to rerun a few times with RNG seed setting to help users fin
 <span class="co">#&gt;  ROI                  1.0-0        2020-08-31 [3] CRAN (R 4.0.2)                       </span>
 <span class="co">#&gt;  ROI.plugin.lpsolve   1.0-0        2020-08-29 [3] CRAN (R 4.0.2)                       </span>
 <span class="co">#&gt;  rprojroot            1.3-2        2018-01-03 [3] CRAN (R 4.0.0)                       </span>
-<span class="co">#&gt;  rstudioapi           0.11         2020-02-07 [3] CRAN (R 4.0.0)                       </span>
+<span class="co">#&gt;  rstudioapi           0.13         2020-11-12 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  Rtsne                0.15         2018-11-10 [3] CRAN (R 4.0.2)                       </span>
 <span class="co">#&gt;  S4Vectors            0.26.1       2020-05-16 [3] Bioconductor                         </span>
 <span class="co">#&gt;  scales               1.1.1        2020-05-11 [3] CRAN (R 4.0.0)                       </span>
@@ -518,20 +530,20 @@ I will document how to rerun a few times with RNG seed setting to help users fin
 <span class="co">#&gt;  trust                0.1-8        2020-01-10 [3] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  tweenr               1.0.1        2018-12-14 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  usethis              1.6.3        2020-09-17 [3] CRAN (R 4.0.3)                       </span>
-<span class="co">#&gt;  vctrs                0.3.4        2020-08-29 [3] CRAN (R 4.0.3)                       </span>
+<span class="co">#&gt;  vctrs                0.3.5        2020-11-17 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  vegan                2.5-6        2019-09-01 [3] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  VGAM                 1.1-4        2020-10-23 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  viridis              0.5.1        2018-03-29 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  viridisLite          0.3.0        2018-02-01 [3] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  withr                2.3.0        2020-09-22 [3] CRAN (R 4.0.2)                       </span>
-<span class="co">#&gt;  xfun                 0.18         2020-09-29 [3] CRAN (R 4.0.3)                       </span>
+<span class="co">#&gt;  xfun                 0.19         2020-10-30 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  XVector              0.28.0       2020-04-27 [3] Bioconductor                         </span>
 <span class="co">#&gt;  yaml                 2.2.1        2020-02-01 [3] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  zlibbioc             1.34.0       2020-04-27 [3] Bioconductor                         </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; [1] C:/Users/david.barnett/AppData/Local/Temp/Rtmp0K7NrT/temp_libpath43905f0e2134</span>
-<span class="co">#&gt; [2] C:/Users/david.barnett/AppData/Local/Temp/Rtmp0K7NrT/temp_libpath43904b28694e</span>
-<span class="co">#&gt; [3] C:/Program Files/R/R-4.0.1/library</span></pre></div>
+<span class="co">#&gt; [1] C:/Users/david.barnett/AppData/Local/Temp/RtmpsDQd4F/temp_libpath3a4869076bce</span>
+<span class="co">#&gt; [2] C:/Users/david.barnett/AppData/Local/Temp/RtmpsDQd4F/temp_libpath3a486d2515e5</span>
+<span class="co">#&gt; [3] C:/Program Files/R/R-4.0.3/library</span></code></pre></div>
 </div>
 </div>
   </div>

@@ -75,7 +75,7 @@ Use this function with the output of tax_model_corncob. corncob_models_to_var_st
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9002</span>
       </span>
     </div>
 
@@ -180,18 +180,18 @@ Run a line like this beforehand: <code><a href='https://rdrr.io/pkg/future/man/p
     <pre class="examples"><div class='input'><span class='co'># corncob stats testing</span>
 
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: package 'dplyr' was built under R version 4.0.2</span></div><div class='output co'>#&gt; <span class='message'></span>
+</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Attaching package: 'dplyr'</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from 'package:stats':</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from 'package:base':</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tibble.tidyverse.org/'>tibble</a></span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: package 'tibble' was built under R version 4.0.3</span></div><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://dx.plos.org/10.1371/journal.pone.0061217'>phyloseq</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://dx.plos.org/10.1371/journal.pone.0061217'>phyloseq</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://microbiome.github.io/microbiome'>microbiome</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>corncob</span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/HenrikBengtsson/future'>future</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/HenrikBengtsson/future.apply'>future.apply</a></span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: package 'future.apply' was built under R version 4.0.3</span></div><div class='input'>
+
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>dietswap</span><span class='op'>)</span>
 <span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span>
 
@@ -226,7 +226,7 @@ Run a line like this beforehand: <code><a href='https://rdrr.io/pkg/future/man/p
     <span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='va'>models</span><span class='op'>)</span>
   <span class='op'>}</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>2020-11-10 15:16:51 - modelling at level: Phylum</span></div><div class='output co'>#&gt; <span class='message'>2020-11-10 15:16:52 - modelling at level: Family</span></div><div class='output co'>#&gt; <span class='message'>2020-11-10 15:16:53 - modelling at level: Genus</span></div><div class='input'><span class='co'># Flatten all taxonomic level lists into one list of models</span>
+</div><div class='output co'>#&gt; <span class='message'>2020-11-22 22:15:44 - modelling at level: Phylum</span></div><div class='output co'>#&gt; <span class='message'>2020-11-22 22:15:46 - modelling at level: Family</span></div><div class='output co'>#&gt; <span class='message'>2020-11-22 22:15:47 - modelling at level: Genus</span></div><div class='input'><span class='co'># Flatten all taxonomic level lists into one list of models</span>
 <span class='co'># (this is why taxon names must be completely identifiable across ranks)</span>
 <span class='va'>flat_models_list</span> <span class='op'>&lt;-</span> <span class='fu'>purrr</span><span class='fu'>::</span><span class='fu'><a href='https://purrr.tidyverse.org/reference/flatten.html'>flatten</a></span><span class='op'>(</span><span class='va'>tax_models_list</span><span class='op'>)</span>
 <span class='va'>var_stats</span> <span class='op'>&lt;-</span> <span class='fu'>corncob_models_to_var_stats</span><span class='op'>(</span><span class='va'>flat_models_list</span><span class='op'>)</span>
