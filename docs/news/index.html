@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Aggregate taxa if requested — tax_agg • microViz</title>
+<title>Changelog • microViz</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,7 @@
 
 
 
-<meta property="og:title" content="Aggregate taxa if requested — tax_agg" />
-<meta property="og:description" content="This function is a simple wrapper around microbiome::aggregate_taxa.
-tax_agg allows you to pass 'none', 'asv', or 'given', to the level argument which will NOT aggregate the taxa.
-If you pass any valid rank name it will aggregate taxa with microbiome::aggregate_taxa." />
+<meta property="og:title" content="Changelog" />
 
 
 
@@ -61,7 +58,7 @@ If you pass any valid rank name it will aggregate taxa with microbiome::aggregat
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-topic">
+    <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -128,72 +125,54 @@ If you pass any valid rank name it will aggregate taxa with microbiome::aggregat
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Aggregate taxa if requested</h1>
-    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/tax_agg.R'><code>R/tax_agg.R</code></a></small>
-    <div class="hidden name"><code>tax_agg.Rd</code></div>
+      <h1 data-toc-skip>Changelog <small></small></h1>
+      <small>Source: <a href='https://github.com/david-barnett/microViz/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div class="ref-description">
-    <p>This function is a simple wrapper around microbiome::aggregate_taxa.
-tax_agg allows you to pass 'none', 'asv', or 'given', to the level argument which will NOT aggregate the taxa.
-If you pass any valid rank name it will aggregate taxa with microbiome::aggregate_taxa.</p>
-    </div>
-
-    <pre class="usage"><span class='fu'>tax_agg</span><span class='op'>(</span><span class='va'>ps</span>, <span class='va'>agg_level</span>, return <span class='op'>=</span> <span class='st'>"all"</span><span class='op'>)</span></pre>
-
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>ps</th>
-      <td><p>phyloseq object</p></td>
-    </tr>
-    <tr>
-      <th>agg_level</th>
-      <td><p>"none", "asv", "given" or name of valid taxonomic rank (try phyloseq::rank_names(ps))</p></td>
-    </tr>
-    <tr>
-      <th>return</th>
-      <td><p>choose which parts of list object to return</p></td>
-    </tr>
-    </table>
-
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>list including phyloseq object and (tax_)level argument value</p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://microbiome.github.io/microbiome'>microbiome</a></span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span>
-<span class='fu'>tax_agg</span><span class='op'>(</span>ps <span class='op'>=</span> <span class='va'>dietswap</span>, agg_level <span class='op'>=</span> <span class='st'>"none"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $ps
-#&gt; phyloseq-class experiment-level object
-#&gt; otu_table()   OTU Table:         [ 130 taxa and 222 samples ]
-#&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]
-#&gt; 
-#&gt; $info
-#&gt; $info$tax_level
-#&gt; [1] "none"
-#&gt; 
-#&gt; </div><div class='input'><span class='fu'>tax_agg</span><span class='op'>(</span>ps <span class='op'>=</span> <span class='va'>dietswap</span>, agg_level <span class='op'>=</span> <span class='st'>"Phylum"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $ps
-#&gt; phyloseq-class experiment-level object
-#&gt; otu_table()   OTU Table:         [ 8 taxa and 222 samples ]
-#&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 8 taxa by 2 taxonomic ranks ]
-#&gt; 
-#&gt; $info
-#&gt; $info$tax_level
-#&gt; [1] "Phylum"
-#&gt; 
-#&gt; </div></pre>
+    <div id="microviz-001" class="section level1">
+<h1 class="page-header" data-toc-text="0.0.1">
+<a href="#microviz-001" class="anchor"></a>microViz 0.0.1</h1>
+<div id="main-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#main-changes" class="anchor"></a>Main changes</h2>
+<ul>
+<li><p><code>phyloseq_validate</code> now fixes otu_tables stored as integers and messages user about suspicious or NA tax_table entries and this happens as part of <code>plot_comp_bar</code> and <code>plot_ordin8</code></p></li>
+<li><p><code>plot_comp_bar</code> and <code>plot_ordin8</code> gain <code>taxon_renamer</code> argument to allow you to customise the taxon names on these plots</p></li>
+<li><p><code>plot_comp_bar</code> can now handle missing values in the grouping variable by converting NAs to “NA”s</p></li>
+<li>
+<p>Some functions renamed for naming consistency:</p>
+<ul>
+<li>
+<code>prepend_ranks</code> -&gt; <code>tax_prepend_ranks</code>
+</li>
+<li>
+<code>tax_model_corncob</code> -&gt; <code>model_tax_corncob</code>
+</li>
+<li>
+<code>corncob_models_to_var_stats</code> -&gt; <code>modelsmodels2stats_corncob</code>
+</li>
+<li>
+<code>tax_tree_</code> <code>nodes</code>/<code>edges</code>/<code>plot</code> -&gt; <code>taxatree_</code> …</li>
+</ul>
+</li>
+</ul>
+</div>
+<div id="other" class="section level2">
+<h2 class="hasAnchor">
+<a href="#other" class="anchor"></a>Other</h2>
+<ul>
+<li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
+</ul>
+</div>
+</div>
   </div>
+
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
     </nav>
   </div>
+
 </div>
 
 

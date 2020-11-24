@@ -44,7 +44,7 @@
 
 tax_fill_unknowns replaces any specified unknown names with a fully unique name made by pasting together all the higher taxonomic levels and the current rank
 taxon_fill_unknowns is an internal helper function for tax_fill_unknowns (so don't use this directly!)
-prepend_ranks is a helper function to prepend the start of rank name to each taxon at each rank (useful particularly in case of duplicated taxa names across ranks, e.g. dietswap dataset)
+tax_prepend_ranks is a helper function to prepend the start of rank name to each taxon at each rank (useful particularly in case of duplicated taxa names across ranks, e.g. dietswap dataset)
 
 " />
 
@@ -78,7 +78,7 @@ prepend_ranks is a helper function to prepend the start of rank name to each tax
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
       </span>
     </div>
 
@@ -107,6 +107,9 @@ prepend_ranks is a helper function to prepend the start of rank name to each tax
       <a href="../articles/Visualising-compositions.html">Visualising-compositions</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -139,16 +142,16 @@ prepend_ranks is a helper function to prepend the start of rank name to each tax
 <ul>
 <li><p><code>tax_fill_unknowns</code> replaces any specified unknown names with a fully unique name made by pasting together all the higher taxonomic levels and the current rank</p></li>
 <li><p><code>taxon_fill_unknowns</code> is an internal helper function for tax_fill_unknowns (so don't use this directly!)</p></li>
-<li><p><code>prepend_ranks</code> is a helper function to prepend the start of rank name to each taxon at each rank (useful particularly in case of duplicated taxa names across ranks, e.g. dietswap dataset)</p></li>
+<li><p><code>tax_prepend_ranks</code> is a helper function to prepend the start of rank name to each taxon at each rank (useful particularly in case of duplicated taxa names across ranks, e.g. dietswap dataset)</p></li>
 </ul>
 
     </div>
 
-    <pre class="usage"><span class='fu'>tax_fill_unknowns</span><span class='op'>(</span><span class='va'>ps</span>, <span class='va'>unknowns</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>tax_fill_unknowns</span><span class='op'>(</span><span class='va'>ps</span>, <span class='va'>unknowns</span>, uniq_from <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
 
-<span class='fu'>taxon_fill_unknowns</span><span class='op'>(</span><span class='va'>taxon_row</span>, <span class='va'>unknowns</span><span class='op'>)</span>
+<span class='fu'>taxon_fill_unknowns</span><span class='op'>(</span><span class='va'>taxon_row</span>, <span class='va'>unknowns</span>, <span class='va'>uniq_from</span><span class='op'>)</span>
 
-<span class='fu'>prepend_ranks</span><span class='op'>(</span><span class='va'>ps</span>, sep <span class='op'>=</span> <span class='st'>": "</span>, nchar <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></pre>
+<span class='fu'>tax_prepend_ranks</span><span class='op'>(</span><span class='va'>ps</span>, sep <span class='op'>=</span> <span class='st'>": "</span>, nchar <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -162,12 +165,16 @@ prepend_ranks is a helper function to prepend the start of rank name to each tax
       <td><p>character vector of names that should be 'fixed' e.g. c("", "unknown")</p></td>
     </tr>
     <tr>
+      <th>uniq_from</th>
+      <td><p>the taxonomic rank from which the new filled name should become unique</p></td>
+    </tr>
+    <tr>
       <th>taxon_row</th>
       <td><p>a row of a phyloseq tax_table object</p></td>
     </tr>
     <tr>
       <th>sep</th>
-      <td><p>for prepend_ranks (what to paste in between rank initial and taxon name)</p></td>
+      <td><p>for tax_prepend_ranks (what to paste in between rank initial and taxon name)</p></td>
     </tr>
     <tr>
       <th>nchar</th>
@@ -227,7 +234,11 @@ e.g. future::plan("future::multisession", workers = 3)</p>
 <span class='co'># useful if tax_table(ps) is massive (1000s rows)</span>
 <span class='co'># e.g. future::plan("future::multisession", workers = 3)</span>
 
-<span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='fu'>tax_fill_unknowns</span><span class='op'>(</span><span class='va'>ps</span>, unknowns <span class='op'>=</span> <span class='st'>"unknown"</span><span class='op'>)</span>
+<span class='co'># setting the uniq_from argument allows us to specify that the "unknown" genera</span>
+<span class='co'># can be uniquely identified using the 2nd taxonomic rank, which is Family in this example</span>
+<span class='co'># (and any ranks below that, which would be concatenated, e.g. try the default uniq_from = 1)</span>
+
+<span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='fu'>tax_fill_unknowns</span><span class='op'>(</span><span class='va'>ps</span>, unknowns <span class='op'>=</span> <span class='st'>"unknown"</span>, uniq_from <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
 
 <span class='co'># don't forget to close any parallel sessions</span>
 <span class='co'># future::plan("future::sequential")</span>
@@ -241,15 +252,15 @@ e.g. future::plan("future::multisession", workers = 3)</p>
 #&gt; Akkermansia                  "Verrucomicrobia" "Verrucomicrobia"
 #&gt; Alcaligenes faecalis et rel. "Proteobacteria"  "Proteobacteria" 
 #&gt; Allistipes et rel.           "Bacteroidetes"   "Bacteroidetes"  
-#&gt;                              Genus                                  
-#&gt; Actinomycetaceae             "Actinomycetaceae"                     
-#&gt; Aerococcus                   "Aerococcus"                           
-#&gt; Aeromonas                    "Proteobacteria.Proteobacteria.Genus"  
-#&gt; Akkermansia                  "Verrucomicrobia.Verrucomicrobia.Genus"
-#&gt; Alcaligenes faecalis et rel. "Alcaligenes faecalis et rel."         
-#&gt; Allistipes et rel.           "Allistipes et rel."                   </div><div class='input'>
+#&gt;                              Genus                         
+#&gt; Actinomycetaceae             "Actinomycetaceae"            
+#&gt; Aerococcus                   "Aerococcus"                  
+#&gt; Aeromonas                    "Proteobacteria.Genus"        
+#&gt; Akkermansia                  "Verrucomicrobia.Genus"       
+#&gt; Alcaligenes faecalis et rel. "Alcaligenes faecalis et rel."
+#&gt; Allistipes et rel.           "Allistipes et rel."          </div><div class='input'>
 <span class='va'>ps</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>prepend_ranks</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>tax_prepend_ranks</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html'>tax_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Taxonomy Table:     [6 taxa by 3 taxonomic ranks]:
@@ -260,13 +271,13 @@ e.g. future::plan("future::multisession", workers = 3)</p>
 #&gt; Akkermansia                  "P: Verrucomicrobia" "F: Verrucomicrobia"
 #&gt; Alcaligenes faecalis et rel. "P: Proteobacteria"  "F: Proteobacteria" 
 #&gt; Allistipes et rel.           "P: Bacteroidetes"   "F: Bacteroidetes"  
-#&gt;                              Genus                                     
-#&gt; Actinomycetaceae             "G: Actinomycetaceae"                     
-#&gt; Aerococcus                   "G: Aerococcus"                           
-#&gt; Aeromonas                    "G: Proteobacteria.Proteobacteria.Genus"  
-#&gt; Akkermansia                  "G: Verrucomicrobia.Verrucomicrobia.Genus"
-#&gt; Alcaligenes faecalis et rel. "G: Alcaligenes faecalis et rel."         
-#&gt; Allistipes et rel.           "G: Allistipes et rel."                   </div><div class='input'>
+#&gt;                              Genus                            
+#&gt; Actinomycetaceae             "G: Actinomycetaceae"            
+#&gt; Aerococcus                   "G: Aerococcus"                  
+#&gt; Aeromonas                    "G: Proteobacteria.Genus"        
+#&gt; Akkermansia                  "G: Verrucomicrobia.Genus"       
+#&gt; Alcaligenes faecalis et rel. "G: Alcaligenes faecalis et rel."
+#&gt; Allistipes et rel.           "G: Allistipes et rel."          </div><div class='input'>
 <span class='co'># end examples</span>
 </div></pre>
   </div>

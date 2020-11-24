@@ -1,4 +1,4 @@
-#' Pretty & flexible barplots of sample composition
+#' Plot (grouped and ordered) compositional barplots
 #'
 #' Stacked barplots showing composition of phyloseq samples for a specified number of coloured taxa. `plot_comp_bar` performs the compositional transformation for you, so your phyloseq object should contain counts!
 #' - sample_order: The bars are sorted by similarity, according to a specified distance measure (default aitchison), and seriation/ordering algorithm (default Ward hierarchical clustering with optimal leaf ordering.)
@@ -10,19 +10,19 @@
 #' @param ps phyloseq object
 #' @param tax_level taxonomic aggregation level (from rank_names(ps))
 #' @param n_taxa how many distinct taxa to colour in the plot (otherwise "other")
-#' @param tax_order or what? taxonomy grouping?
+#' @param tax_order currently only "abundance" works.
+#' @param taxon_renamer function that takes taxon names and returns modified names for legend
 #' @param palette palette for taxa fill colours
 #' @param sample_order any distance measure in calc_dist that does not require a phylogenetic tree (or a variable?)
 #' @param label could also consider arbitrary annotation with extra info, like in complex heatmap
 #' @param groups splits dataset by this variable (must be categorical) and uses patchwork to assemble multiple plots?
-#' @param bar_width  default 1 avoids random gapping otherwise seen with many samples (set to something less than 1 to introduce gaps between fewer samples)
+#' @param bar_width default 1 avoids random gapping otherwise seen with many samples (set to something less than 1 to introduce gaps between fewer samples)
 #' @param bar_outline_colour line colour separating taxa and samples (use NA for none)
 #' @param drop_unused_vars speeds up ps_melt but might limit future plot customisation options
 #' @param seriate_method name of any ordering method suitable for distance matrices (see ?seriation::seriate)
 #'
 #' @return ggplot or list of harmonised ggplots
 #' @export
-#' @importFrom ggplot2 ggplot aes aes_string element_blank geom_bar guide_legend labs scale_fill_manual scale_x_discrete theme
 #'
 #' @examples
 #' library(microbiome)
@@ -35,7 +35,8 @@
 #'   plot_comp_bar(
 #'     tax_level = "Family", n_taxa = 8,
 #'     bar_outline_colour = NA,
-#'     sample_order = "bray", bar_width = 0.7
+#'     sample_order = "bray", bar_width = 0.7,
+#'     taxon_renamer = toupper
 #'   ) + coord_flip()
 #'
 #' # Often to compare groups, average compositions are presented
@@ -90,6 +91,7 @@ plot_comp_bar <- function(
                           tax_level,
                           n_taxa = 8,
                           tax_order = "abundance",
+                          taxon_renamer = function(x) identity(x),
                           palette = c("lightgrey", rev(distinct_palette(n_taxa))),
                           sample_order = "aitchison",
                           label = "SAMPLE",
@@ -98,6 +100,9 @@ plot_comp_bar <- function(
                           bar_outline_colour = "black",
                           drop_unused_vars = TRUE,
                           seriate_method = "OLO_ward") {
+
+  # check phyloseq for common problems (and fix or message about this)
+  ps <- phyloseq_validate(ps, verbose = TRUE)
 
   # how many taxa to plot (otherwise group into other)
   ps <- microbiome::aggregate_top_taxa(ps, top = n_taxa, level = tax_level)
@@ -182,25 +187,37 @@ plot_comp_bar <- function(
     df[["SAMPLE"]] <- factor(df[["Sample"]], levels = ordered_samples, ordered = TRUE)
 
     # build plot
-    p <- ggplot(df, aes_string(x = "SAMPLE", y = "Abundance", fill = tax_level))
+    p <- ggplot2::ggplot(df, ggplot2::aes_string(x = "SAMPLE", y = "Abundance", fill = tax_level))
 
     if (is.na(bar_outline_colour)) {
-      p <- p + geom_bar(position = "stack", stat = "identity", width = bar_width)
+      p <- p + ggplot2::geom_bar(position = "stack", stat = "identity", width = bar_width)
     } else {
-      p <- p + geom_bar(position = "stack", stat = "identity", width = bar_width, colour = bar_outline_colour)
+      p <- p + ggplot2::geom_bar(position = "stack", stat = "identity", width = bar_width, colour = bar_outline_colour)
     }
 
     p <- p +
-      theme(panel.background = element_blank(), panel.grid = element_blank()) +
-      scale_x_discrete(
+      ggplot2::theme(
+        panel.background = ggplot2::element_blank(),
+        panel.grid = ggplot2::element_blank()
+      ) +
+      ggplot2::scale_x_discrete(
         breaks = ordered_samples,
         labels = LABELLER
       ) +
-      scale_fill_manual(values = palette, guide = guide_legend(reverse = TRUE))
+      ggplot2::scale_fill_manual(
+        values = palette,
+        labels = taxon_renamer,
+        guide = ggplot2::guide_legend(reverse = TRUE))
 
     p
   }
-  # grouping / splitting entire phyloseq (multiple susbset_sample calls)
+
+  # grouping / splitting entire phyloseq by the groups variable
+  groups_var <- phyloseq::sample_data(ps)[[groups]]
+  if(anyNA(groups_var)){
+    message("Warning: replacing NAs with 'NA's in grouping variable: ", groups)
+    phyloseq::sample_data(ps)[[groups]][is.na(groups_var)] <- "NA"
+  }
   LEVELS <- unique(phyloseq::sample_data(ps)[[groups]])
 
   if (isTRUE(is.null(LEVELS))) {
@@ -213,7 +230,7 @@ plot_comp_bar <- function(
     })
     # set y axis title to group level
     plots_list <- lapply(seq_along(LEVELS), function(level) {
-      plots_list[[level]] + labs(title = LEVELS[[level]])
+      plots_list[[level]] + ggplot2::labs(title = LEVELS[[level]])
     })
     names(plots_list) <- LEVELS
     return(plots_list)

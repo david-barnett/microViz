@@ -71,7 +71,7 @@ ordin8 <- function(data,
       message("\t", v)
       vec <- phyloseq::sample_data(ps)[[v]]
       if (!class(vec) %in% c("logical", "numeric", "integer")) {
-        stop(glue::glue("Constraints and conditions must be numeric, logical, or integer: {v} is '{class(vec)}'"))
+        stop(paste0("Constraints and conditions must be numeric, logical, or integer: ", v, " is ", class(vec)))
       }
       NAs <- is.na(vec)
       s <- sum(NAs)

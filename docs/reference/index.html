@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
       </span>
     </div>
 
@@ -100,6 +100,9 @@
       <a href="../articles/Visualising-compositions.html">Visualising-compositions</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -136,8 +139,8 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
+          <h2 id="section-manipulating-taxa" class="hasAnchor"><a href="#section-manipulating-taxa" class="anchor"></a>Manipulating taxa</h2>
+          <p class="section-desc"><p>Functions for editing or working with the taxonomic information contained within phyloseq objects.</p></p>
         </th>
       </tr>
       
@@ -146,48 +149,6 @@
       
       
       <tr>
-        
-        <td>
-          <p><code><a href="beta_disper.html">beta_disper()</a></code> </p>
-        </td>
-        <td><p>Wrapper for vegan::betadisper</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="calc_dist.html">calc_dist()</a></code> </p>
-        </td>
-        <td><p>Calculate distances between pairs of samples in phyloseq object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="distinct_palette.html">distinct_palette()</a></code> </p>
-        </td>
-        <td><p>Arbitrary expansion of the "Paired" colorbrewer palette</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ordin8.html">ordin8()</a></code> </p>
-        </td>
-        <td><p>Ordinate distance matrix computed by calc_dist</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="permanova.html">permanova()</a></code> </p>
-        </td>
-        <td><p>Calculate PERMANOVA after calc_dist</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="plot_comp_bar.html">plot_comp_bar()</a></code> </p>
-        </td>
-        <td><p>Pretty &amp; flexible barplots of sample composition</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="plot_ordin8.html">plot_ordin8()</a></code> </p>
-        </td>
-        <td><p>Customisable ggplot of ordin8 ordination result</p></td>
-      </tr><tr>
         
         <td>
           <p><code><a href="tax_agg.html">tax_agg()</a></code> </p>
@@ -202,19 +163,13 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="tax_model_corncob.html">tax_model_corncob()</a></code> <code><a href="tax_model_corncob.html">corncob_models_to_var_stats()</a></code> </p>
-        </td>
-        <td><p>Beta binomial taxon models with corncob</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="tax_select.html">tax_select()</a></code> </p>
         </td>
         <td><p>Subset phyloseq object by (partial) taxa names</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="tax_table_helpers.html">tax_fill_unknowns()</a></code> <code><a href="tax_table_helpers.html">taxon_fill_unknowns()</a></code> <code><a href="tax_table_helpers.html">prepend_ranks()</a></code> </p>
+          <p><code><a href="tax_table_helpers.html">tax_fill_unknowns()</a></code> <code><a href="tax_table_helpers.html">taxon_fill_unknowns()</a></code> <code><a href="tax_table_helpers.html">tax_prepend_ranks()</a></code> </p>
         </td>
         <td><p>Fixing duplication problems in phyloseq tax_table</p></td>
       </tr><tr>
@@ -223,18 +178,105 @@
           <p><code><a href="tax_transform.html">tax_transform()</a></code> </p>
         </td>
         <td><p>Transform taxa in phyloseq object and record transformation</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-ordination-and-related-methods" class="hasAnchor"><a href="#section-ordination-and-related-methods" class="anchor"></a>Ordination and related methods</h2>
+          <p class="section-desc"><p>Functions for assessing and visualising overall microbiota composition and its associations with phyloseq sample data variables.</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="calc_dist.html">calc_dist()</a></code> </p>
+        </td>
+        <td><p>Calculate distances between pairs of samples in phyloseq object</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="tax_tree_funs.html">tax_tree_nodes()</a></code> <code><a href="tax_tree_funs.html">tax_tree_edges()</a></code> </p>
+          <p><code><a href="ordin8.html">ordin8()</a></code> </p>
+        </td>
+        <td><p>Ordinate distance matrix computed by calc_dist</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="plot_ordin8.html">plot_ordin8()</a></code> </p>
+        </td>
+        <td><p>Customisable ggplot of ordin8 ordination result</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="permanova.html">permanova()</a></code> </p>
+        </td>
+        <td><p>Calculate PERMANOVA after calc_dist</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="beta_disper.html">beta_disper()</a></code> </p>
+        </td>
+        <td><p>Wrapper for vegan::betadisper</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-taxon-models-and-tree-visualisations" class="hasAnchor"><a href="#section-taxon-models-and-tree-visualisations" class="anchor"></a>Taxon models and tree visualisations</h2>
+          <p class="section-desc"><p>Functions for modelling and visualising associations between individual microbes and phyloseq sample data variables.</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="model_tax_corncob.html">model_tax_corncob()</a></code> <code><a href="model_tax_corncob.html">models2stats_corncob()</a></code> </p>
+        </td>
+        <td><p>Beta binomial taxon models with corncob</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="taxatree_funs.html">taxatree_nodes()</a></code> <code><a href="taxatree_funs.html">taxatree_edges()</a></code> </p>
         </td>
         <td><p>Create node and edge dataframes for taxonomic tree graphs</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="tax_tree_plot.html">tax_tree_plot()</a></code> </p>
+          <p><code><a href="taxatree_plot.html">taxatree_plot()</a></code> </p>
         </td>
         <td><p>Plot taxonomic stats on a ggraph tree</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-other-functions" class="hasAnchor"><a href="#section-other-functions" class="anchor"></a>Other functions</h2>
+          <p class="section-desc"><p>“Everything else”</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="distinct_palette.html">distinct_palette()</a></code> </p>
+        </td>
+        <td><p>Arbitrary expansion of the "Paired" colorbrewer palette</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="phyloseq_validate.html">phyloseq_validate()</a></code> </p>
+        </td>
+        <td><p>Check for (and fix) common problems with phyloseq objects</p></td>
       </tr>
     </tbody>
     </table>

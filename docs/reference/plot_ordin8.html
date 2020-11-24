@@ -73,7 +73,7 @@ Some inspiration was from here ref: https://ourcodingclub.github.io/2018/05/04/o
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
       </span>
     </div>
 
@@ -102,6 +102,9 @@ Some inspiration was from here ref: https://ourcodingclub.github.io/2018/05/04/o
       <a href="../articles/Visualising-compositions.html">Visualising-compositions</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -178,6 +181,10 @@ Some inspiration was from here ref: <a href='https://ourcodingclub.github.io/201
     <tr>
       <th>taxon_label_style</th>
       <td><p>list of fixed aesthetics (colour, size etc) for the taxon labels</p></td>
+    </tr>
+    <tr>
+      <th>taxon_renamer</th>
+      <td><p>function that takes any plotted taxon names and returns modified names for labels</p></td>
     </tr>
     <tr>
       <th>plot_samples</th>
@@ -257,18 +264,28 @@ Some inspiration was from here ref: <a href='https://ourcodingclub.github.io/201
 <span class='va'>p</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/stat_ellipse.html'>stat_ellipse</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>linetype <span class='op'>=</span> <span class='va'>bmi_group</span>, colour <span class='op'>=</span> <span class='va'>bmi_group</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='img'><img src='plot_ordin8-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>p</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_density_2d.html'>stat_density2d</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>colour <span class='op'>=</span> <span class='va'>bmi_group</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='img'><img src='plot_ordin8-5.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># you can rename the taxa on the labels with any function that takes a modifies a character vector</span>
+<span class='va'>constrained_aitchison_rda</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>plot_ordin8</span><span class='op'>(</span>
+    colour <span class='op'>=</span> <span class='st'>"bmi_group"</span>, constraint_label_length <span class='op'>=</span> <span class='fl'>2</span>,
+    plot_taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, taxon_label_length <span class='op'>=</span> <span class='fl'>5</span>,
+    taxon_renamer <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_extract.html'>str_extract</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"^."</span><span class='op'>)</span>
+  <span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/lims.html'>lims</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>5</span>, <span class='fl'>6</span><span class='op'>)</span>, y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>5</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_brewer.html'>scale_colour_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Set1"</span><span class='op'>)</span>
+</div><div class='img'><img src='plot_ordin8-6.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># it is possible to facet only unconstrained ordination plots (with plot_taxa = FALSE)</span>
 <span class='va'>unconstrained_aitchison_pca</span> <span class='op'>%&gt;%</span>
   <span class='fu'>plot_ordin8</span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"sex"</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_wrap.html'>facet_wrap</a></span><span class='op'>(</span><span class='st'>"sex"</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_density_2d.html'>stat_density2d</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>colour <span class='op'>=</span> <span class='va'>sex</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/guides.html'>guides</a></span><span class='op'>(</span>colour <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='img'><img src='plot_ordin8-6.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='img'><img src='plot_ordin8-7.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='va'>unconstrained_aitchison_pca</span> <span class='op'>%&gt;%</span>
   <span class='fu'>plot_ordin8</span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"bmi_group"</span>, plot_samples <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_wrap.html'>facet_wrap</a></span><span class='op'>(</span><span class='st'>"sex"</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_density_2d.html'>stat_density2d_filled</a></span><span class='op'>(</span>show.legend <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='img'><img src='plot_ordin8-7.png' alt='' width='700' height='433' /></div></pre>
+</div><div class='img'><img src='plot_ordin8-8.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

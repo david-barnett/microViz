@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
       </span>
     </div>
 
@@ -60,6 +60,9 @@
       <a href="../articles/Visualising-compositions.html">Visualising-compositions</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -161,7 +164,7 @@
 <span class="co">#&gt;     compose, simplify</span>
 
 <span class="co"># This example dataset has some taxa with the same name for phylum and family... this needs to be fixed</span>
-<span class="va">ps</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tax_table_helpers.html">prepend_ranks</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span>
+<span class="va">ps</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tax_table_helpers.html">tax_prepend_ranks</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span>
 <span class="co"># this example dataset also has no root level: this is unusual and needs to be fixed</span>
 <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html">tax_table</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span>root <span class="op">=</span> <span class="st">"root"</span>, <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html">tax_table</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span><span class="op">)</span>
 
@@ -195,7 +198,7 @@
   X <span class="op">=</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/rank_names.html">rank_names</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>,
   <span class="kw">function</span><span class="op">(</span><span class="va">r</span><span class="op">)</span> <span class="op">{</span>
     <span class="fu"><a href="https://rdrr.io/r/base/message.html">message</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">" - modelling at level: "</span>, <span class="va">r</span><span class="op">)</span>
-    <span class="va">models</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tax_model_corncob.html">tax_model_corncob</a></span><span class="op">(</span>
+    <span class="va">models</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_tax_corncob.html">model_tax_corncob</a></span><span class="op">(</span>
       ps <span class="op">=</span> <span class="va">ps</span>,
       tax_level <span class="op">=</span> <span class="va">r</span>, taxa <span class="op">=</span> <span class="st">"all"</span>,
       variables <span class="op">=</span> <span class="va">variables</span>
@@ -203,13 +206,13 @@
     <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">models</span><span class="op">)</span>
   <span class="op">}</span>
 <span class="op">)</span>
-<span class="co">#&gt; 2020-11-22 22:16:03 - modelling at level: Phylum</span>
-<span class="co">#&gt; 2020-11-22 22:16:04 - modelling at level: Family</span>
-<span class="co">#&gt; 2020-11-22 22:16:05 - modelling at level: Genus</span>
+<span class="co">#&gt; 2020-11-24 19:23:15 - modelling at level: Phylum</span>
+<span class="co">#&gt; 2020-11-24 19:23:17 - modelling at level: Family</span>
+<span class="co">#&gt; 2020-11-24 19:23:19 - modelling at level: Genus</span>
 <span class="co"># Flatten all taxonomic level lists into one list of models</span>
 <span class="co"># (this is why taxon names must be completely identifiable across ranks)</span>
 <span class="va">flat_models_list</span> <span class="op">&lt;-</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/flatten.html">flatten</a></span><span class="op">(</span><span class="va">tax_models_list</span><span class="op">)</span>
-<span class="va">var_stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tax_model_corncob.html">corncob_models_to_var_stats</a></span><span class="op">(</span><span class="va">flat_models_list</span><span class="op">)</span></code></pre></div>
+<span class="va">var_stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_tax_corncob.html">models2stats_corncob</a></span><span class="op">(</span><span class="va">flat_models_list</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div id="from-phyloseq-to-treegraph" class="section level1">
@@ -224,9 +227,9 @@
 <li>Create a dataframe of edges from the nodes (edges join the nodes in the tree together)</li>
 </ol>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">nodes_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tax_tree_funs.html">tax_tree_nodes</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">nodes_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/taxatree_funs.html">taxatree_nodes</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span>
 <span class="va">nodes_df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">nodes_df</span>, <span class="va">var_stats</span><span class="op">$</span><span class="va">obese</span>, by <span class="op">=</span> <span class="st">"taxon_name"</span><span class="op">)</span>
-<span class="va">edge_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tax_tree_funs.html">tax_tree_edges</a></span><span class="op">(</span><span class="va">nodes_df</span><span class="op">)</span>
+<span class="va">edge_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/taxatree_funs.html">taxatree_edges</a></span><span class="op">(</span><span class="va">nodes_df</span><span class="op">)</span>
 <span class="va">graph</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tidygraph.data-imaginist.com/reference/tbl_graph.html">tbl_graph</a></span><span class="op">(</span>nodes <span class="op">=</span> <span class="va">nodes_df</span>, node_key <span class="op">=</span> <span class="st">"taxon_name"</span>, edges <span class="op">=</span> <span class="va">edge_df</span>, directed <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="creating-a-circular-tree-graph-layout" class="section level2">
@@ -314,7 +317,7 @@ I will document how to rerun a few times with RNG seed setting to help users fin
 <span class="va">colour_lims</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>
 
 <span class="va">plots</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">layouts_list</span>, <span class="kw">function</span><span class="op">(</span><span class="va">layout_coords</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="../reference/tax_tree_plot.html">tax_tree_plot</a></span><span class="op">(</span>graph_object <span class="op">=</span> <span class="va">graph</span>, layout_coords <span class="op">=</span> <span class="va">layout_coords</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="../reference/taxatree_plot.html">taxatree_plot</a></span><span class="op">(</span>graph_object <span class="op">=</span> <span class="va">graph</span>, layout_coords <span class="op">=</span> <span class="va">layout_coords</span><span class="op">)</span> <span class="op">+</span>
     <span class="fu">colorspace</span><span class="fu">::</span><span class="fu"><a href="http://colorspace.R-Forge.R-project.org//reference/scale_colour_continuous_diverging.html">scale_fill_continuous_diverging</a></span><span class="op">(</span>
       palette <span class="op">=</span> <span class="va">colour_palette</span>,
       l2 <span class="op">=</span> <span class="va">luminance_l2</span>,
@@ -415,14 +418,13 @@ I will document how to rerun a few times with RNG seed setting to help users fin
 <span class="co">#&gt;  collate  English_United Kingdom.1252 </span>
 <span class="co">#&gt;  ctype    English_United Kingdom.1252 </span>
 <span class="co">#&gt;  tz       Europe/London               </span>
-<span class="co">#&gt;  date     2020-11-22                  </span>
+<span class="co">#&gt;  date     2020-11-24                  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; - Packages ---------------------------------------------------------------------------------------</span>
 <span class="co">#&gt;  package            * version      date       lib source                               </span>
 <span class="co">#&gt;  ade4                 1.7-16       2020-10-28 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  ape                  5.4-1        2020-08-13 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  assertthat           0.2.1        2019-03-21 [3] CRAN (R 4.0.0)                       </span>
-<span class="co">#&gt;  backports            1.2.0        2020-11-02 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  Biobase              2.48.0       2020-04-27 [3] Bioconductor                         </span>
 <span class="co">#&gt;  BiocGenerics         0.34.0       2020-04-27 [3] Bioconductor                         </span>
 <span class="co">#&gt;  biomformat           1.16.0       2020-04-27 [3] Bioconductor                         </span>
@@ -452,9 +454,9 @@ I will document how to rerun a few times with RNG seed setting to help users fin
 <span class="co">#&gt;  generics             0.1.0        2020-10-31 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  ggforce              0.3.2        2020-06-23 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  ggplot2            * 3.3.2        2020-06-19 [3] CRAN (R 4.0.2)                       </span>
-<span class="co">#&gt;  ggraph             * 2.0.3        2020-05-20 [3] CRAN (R 4.0.3)                       </span>
+<span class="co">#&gt;  ggraph             * 2.0.4        2020-11-16 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  ggrepel              0.8.2        2020-03-08 [3] CRAN (R 4.0.2)                       </span>
-<span class="co">#&gt;  globals              0.13.1       2020-10-11 [3] CRAN (R 4.0.3)                       </span>
+<span class="co">#&gt;  globals              0.14.0       2020-11-22 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  glue                 1.4.2        2020-08-27 [3] CRAN (R 4.0.2)                       </span>
 <span class="co">#&gt;  graphlayouts         0.7.1        2020-10-26 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  gridExtra            2.3          2017-09-09 [3] CRAN (R 4.0.3)                       </span>
@@ -477,7 +479,7 @@ I will document how to rerun a few times with RNG seed setting to help users fin
 <span class="co">#&gt;  memoise              1.1.0        2017-04-21 [3] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  mgcv                 1.8-33       2020-08-27 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  microbiome         * 1.10.0       2020-04-27 [3] Bioconductor                         </span>
-<span class="co">#&gt;  microViz           * 0.0.0.9002   2020-11-22 [2] local                                </span>
+<span class="co">#&gt;  microViz           * 0.0.1        2020-11-24 [2] local                                </span>
 <span class="co">#&gt;  multtest             2.44.0       2020-04-27 [3] Bioconductor                         </span>
 <span class="co">#&gt;  munsell              0.5.0        2018-06-12 [3] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  nlme                 3.1-150      2020-10-24 [3] CRAN (R 4.0.3)                       </span>
@@ -486,7 +488,7 @@ I will document how to rerun a few times with RNG seed setting to help users fin
 <span class="co">#&gt;  patchwork          * 1.1.0        2020-11-09 [3] CRAN (R 4.0.1)                       </span>
 <span class="co">#&gt;  permute              0.9-5        2019-03-12 [3] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  phyloseq           * 1.32.0       2020-04-27 [3] Bioconductor                         </span>
-<span class="co">#&gt;  pillar               1.4.6        2020-07-10 [3] CRAN (R 4.0.2)                       </span>
+<span class="co">#&gt;  pillar               1.4.7        2020-11-20 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  pkgbuild             1.1.0        2020-07-13 [3] CRAN (R 4.0.2)                       </span>
 <span class="co">#&gt;  pkgconfig            2.0.3        2019-09-22 [3] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  pkgdown              1.6.1        2020-09-12 [3] CRAN (R 4.0.3)                       </span>
@@ -510,7 +512,7 @@ I will document how to rerun a few times with RNG seed setting to help users fin
 <span class="co">#&gt;  rmarkdown            2.5          2020-10-21 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  ROI                  1.0-0        2020-08-31 [3] CRAN (R 4.0.2)                       </span>
 <span class="co">#&gt;  ROI.plugin.lpsolve   1.0-0        2020-08-29 [3] CRAN (R 4.0.2)                       </span>
-<span class="co">#&gt;  rprojroot            1.3-2        2018-01-03 [3] CRAN (R 4.0.0)                       </span>
+<span class="co">#&gt;  rprojroot            2.0.2        2020-11-15 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  rstudioapi           0.13         2020-11-12 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  Rtsne                0.15         2018-11-10 [3] CRAN (R 4.0.2)                       </span>
 <span class="co">#&gt;  S4Vectors            0.26.1       2020-05-16 [3] Bioconductor                         </span>
@@ -541,8 +543,8 @@ I will document how to rerun a few times with RNG seed setting to help users fin
 <span class="co">#&gt;  yaml                 2.2.1        2020-02-01 [3] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  zlibbioc             1.34.0       2020-04-27 [3] Bioconductor                         </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; [1] C:/Users/david.barnett/AppData/Local/Temp/RtmpsDQd4F/temp_libpath3a4869076bce</span>
-<span class="co">#&gt; [2] C:/Users/david.barnett/AppData/Local/Temp/RtmpsDQd4F/temp_libpath3a486d2515e5</span>
+<span class="co">#&gt; [1] C:/Users/david.barnett/AppData/Local/Temp/Rtmpu4oxWm/temp_libpath266440e9270d</span>
+<span class="co">#&gt; [2] C:/Users/david.barnett/AppData/Local/Temp/Rtmpu4oxWm/temp_libpath266430134dad</span>
 <span class="co">#&gt; [3] C:/Program Files/R/R-4.0.3/library</span></code></pre></div>
 </div>
 </div>

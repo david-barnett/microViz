@@ -75,7 +75,7 @@ When preparing a phyloseq dataset for stats and tree-based plotting it is critic
 ps <- tax_fill_unknowns(ps, unknowns = "unknown")
 
 # This example dataset has some taxa with the same name for phylum and family... this needs to be fixed
-ps <- prepend_ranks(ps)
+ps <- tax_prepend_ranks(ps)
 # this example dataset also has no root level: this is unusual and needs to be fixed
 tax_table(ps) <- cbind(root = "root", tax_table(ps))
 
@@ -100,7 +100,7 @@ tax_models_list <- lapply(
   X = phyloseq::rank_names(ps)[-1],
   function(r) {
     message(Sys.time(), " - modelling at level: ", r)
-    models <- tax_model_corncob(
+    models <- model_tax_corncob(
       ps = ps,
       tax_level = r, taxa = "all",
       variables = variables
@@ -111,7 +111,7 @@ tax_models_list <- lapply(
 # Flatten all taxonomic level lists into one list of models
 # (this is why taxon names must be completely identifiable across ranks)
 flat_models_list <- purrr::flatten(tax_models_list)
-var_stats <- corncob_models_to_var_stats(flat_models_list)
+var_stats <- models2stats_corncob(flat_models_list)
 ```
 
 # From phyloseq to tree/graph
@@ -123,9 +123,9 @@ var_stats <- corncob_models_to_var_stats(flat_models_list)
 3. Create a dataframe of edges from the nodes (edges join the nodes in the tree together)
 
 ```{r}
-nodes_df <- tax_tree_nodes(ps)
+nodes_df <- taxatree_nodes(ps)
 nodes_df <- dplyr::left_join(nodes_df, var_stats$obese, by = "taxon_name")
-edge_df <- tax_tree_edges(nodes_df)
+edge_df <- taxatree_edges(nodes_df)
 graph <- tbl_graph(nodes = nodes_df, node_key = "taxon_name", edges = edge_df, directed = TRUE)
 ```
 
@@ -214,7 +214,7 @@ abs_sqrt <- scales::trans_new(
 
 
 ```{r eval=FALSE, fig.height=7.5, fig.width=10, dpi=300, include=FALSE}
-tax_tree_plot <- function(
+taxatree_plot <- function(
   graph_object,
   layout_coords,
   size_stat = "taxon_mean",
@@ -303,7 +303,7 @@ luminance_l2 = 80
 colour_lims = c(-2, 2)
 
 plots <- lapply(layouts_list, function(layout_coords) {
-  tax_tree_plot(graph_object = graph, layout_coords = layout_coords) +
+  taxatree_plot(graph_object = graph, layout_coords = layout_coords) +
     colorspace::scale_fill_continuous_diverging(
       palette = colour_palette,
       l2 = luminance_l2,

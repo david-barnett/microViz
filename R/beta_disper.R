@@ -2,7 +2,7 @@
 #'
 #' Takes the output of calc_dist function. Or use with the result of the permanova function to ensure the results correspond to exactly the same input data.
 #' Runs betadisper for all categorical variables in variables argument.
-#' See help for vegan::betadisper.
+#' See help('betadisper', package = 'vegan').
 #'
 #' @param data list output from calc_dist
 #' @param variables list of variables to use as group

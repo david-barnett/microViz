@@ -23,7 +23,6 @@
 #'
 #' @return ggplot
 #' @export
-#' @importFrom ggplot2 ggplot aes aes_string geom_point geom_segment geom_label ggtitle theme_minimal xlab ylab
 #'
 #' @examples
 #' library(phyloseq)

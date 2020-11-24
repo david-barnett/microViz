@@ -2,7 +2,7 @@
 #'
 #' Uses ggraph. See tree-development vignette.
 #'
-#' @param graph_object tidygraph made with tax_tree_nodes tax_tree_edges
+#' @param graph_object tidygraph made with taxatree_nodes taxatree_edges
 #' @param layout_coords dataframe of x and y coordinates
 #' @param size_stat name of variable to scale size of nodes and edges (natural log scale)
 #' @param colour_stat name of variable to scale colour/fill of nodes and edges (natural log scale)
@@ -21,7 +21,7 @@
 #'
 #' @examples
 #' #
-tax_tree_plot <- function(
+taxatree_plot <- function(
                           graph_object,
                           layout_coords,
                           size_stat = "taxon_mean",
@@ -73,7 +73,7 @@ tax_tree_plot <- function(
     # central black node for root
     ggraph::geom_node_point(
       mapping = ggplot2::aes(
-        filter = taxon_level == "root",
+        filter = .data[["taxon_level"]] == "root",
         size = log(.data[[size_stat]])
       )
     ) +

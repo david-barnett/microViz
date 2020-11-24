@@ -4,23 +4,25 @@
 \alias{tax_table_helpers}
 \alias{tax_fill_unknowns}
 \alias{taxon_fill_unknowns}
-\alias{prepend_ranks}
+\alias{tax_prepend_ranks}
 \title{Fixing duplication problems in phyloseq tax_table}
 \usage{
-tax_fill_unknowns(ps, unknowns)
+tax_fill_unknowns(ps, unknowns, uniq_from = 1)
 
-taxon_fill_unknowns(taxon_row, unknowns)
+taxon_fill_unknowns(taxon_row, unknowns, uniq_from)
 
-prepend_ranks(ps, sep = ": ", nchar = 1)
+tax_prepend_ranks(ps, sep = ": ", nchar = 1)
 }
 \arguments{
 \item{ps}{phyloseq object}
 
 \item{unknowns}{character vector of names that should be 'fixed' e.g. c("", "unknown")}
 
+\item{uniq_from}{the taxonomic rank from which the new filled name should become unique}
+
 \item{taxon_row}{a row of a phyloseq tax_table object}
 
-\item{sep}{for prepend_ranks (what to paste in between rank initial and taxon name)}
+\item{sep}{for tax_prepend_ranks (what to paste in between rank initial and taxon name)}
 
 \item{nchar}{number of characters to use from rank_names}
 }
@@ -31,7 +33,7 @@ a modified phyloseq (or a 1-row matrix for \code{taxon_fill_unknowns})
 \itemize{
 \item \code{tax_fill_unknowns} replaces any specified unknown names with a fully unique name made by pasting together all the higher taxonomic levels and the current rank
 \item \code{taxon_fill_unknowns} is an internal helper function for tax_fill_unknowns (so don't use this directly!)
-\item \code{prepend_ranks} is a helper function to prepend the start of rank name to each taxon at each rank (useful particularly in case of duplicated taxa names across ranks, e.g. dietswap dataset)
+\item \code{tax_prepend_ranks} is a helper function to prepend the start of rank name to each taxon at each rank (useful particularly in case of duplicated taxa names across ranks, e.g. dietswap dataset)
 }
 }
 \details{
@@ -54,7 +56,11 @@ phyloseq::tax_table(ps) \%>\% head()
 # useful if tax_table(ps) is massive (1000s rows)
 # e.g. future::plan("future::multisession", workers = 3)
 
-ps <- tax_fill_unknowns(ps, unknowns = "unknown")
+# setting the uniq_from argument allows us to specify that the "unknown" genera
+# can be uniquely identified using the 2nd taxonomic rank, which is Family in this example
+# (and any ranks below that, which would be concatenated, e.g. try the default uniq_from = 1)
+
+ps <- tax_fill_unknowns(ps, unknowns = "unknown", uniq_from = 2)
 
 # don't forget to close any parallel sessions
 # future::plan("future::sequential")
@@ -62,7 +68,7 @@ ps <- tax_fill_unknowns(ps, unknowns = "unknown")
 phyloseq::tax_table(ps) \%>\% head()
 
 ps \%>\%
-  prepend_ranks() \%>\%
+  tax_prepend_ranks() \%>\%
   tax_table() \%>\%
   head()
 

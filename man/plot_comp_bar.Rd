@@ -2,13 +2,14 @@
 % Please edit documentation in R/plot_comp_bar.R
 \name{plot_comp_bar}
 \alias{plot_comp_bar}
-\title{Pretty & flexible barplots of sample composition}
+\title{Plot (grouped and ordered) compositional barplots}
 \usage{
 plot_comp_bar(
   ps,
   tax_level,
   n_taxa = 8,
   tax_order = "abundance",
+  taxon_renamer = function(x) identity(x),
   palette = c("lightgrey", rev(distinct_palette(n_taxa))),
   sample_order = "aitchison",
   label = "SAMPLE",
@@ -26,7 +27,9 @@ plot_comp_bar(
 
 \item{n_taxa}{how many distinct taxa to colour in the plot (otherwise "other")}
 
-\item{tax_order}{or what? taxonomy grouping?}
+\item{tax_order}{currently only "abundance" works.}
+
+\item{taxon_renamer}{function that takes taxon names and returns modified names for legend}
 
 \item{palette}{palette for taxa fill colours}
 
@@ -68,7 +71,8 @@ dietswap \%>\%
   plot_comp_bar(
     tax_level = "Family", n_taxa = 8,
     bar_outline_colour = NA,
-    sample_order = "bray", bar_width = 0.7
+    sample_order = "bray", bar_width = 0.7,
+    taxon_renamer = toupper
   ) + coord_flip()
 
 # Often to compare groups, average compositions are presented

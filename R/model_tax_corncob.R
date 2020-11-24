@@ -4,7 +4,7 @@
 #' Same independent variables for all models. Same variables for modelling both the abundance and dispersion parameters.
 #' P-values are from wald tests for simplicity and speed... maybe I will change this in the future.
 #'
-#' @details `tax_model_corncob` can use parallel processing with the `future` package.
+#' @details `model_tax_corncob` can use parallel processing with the `future` package.
 #' This speeds up analysis if you have many taxa to model.
 #' Run a line like this beforehand: `future::plan(future::multisession, workers = 3)`
 #'
@@ -35,8 +35,8 @@
 #' sample_data(ps)$obese <- if_else(sample_data(ps)$bmi_group == "obese", 1, 0, NaN)
 #'
 #' # This example dataset has some taxa with the same name for phylum and family...
-#' # We can fix problems like this with the prepend_ranks function
-#' ps <- prepend_ranks(ps)
+#' # We can fix problems like this with the tax_prepend_ranks function
+#' ps <- tax_prepend_ranks(ps)
 #' # this example dataset also has no root, this is unusual and needs to be fixed
 #' tax_table(ps) <- cbind(root = "root", tax_table(ps))
 #'
@@ -46,7 +46,7 @@
 #' # specify variables used for modelling
 #' variables <- c("female", "overweight", "obese")
 #'
-#' # tax_model_corncob can use parallel processing with the futures package
+#' # model_tax_corncob can use parallel processing with the futures package
 #' # this speeds up analysis if you have many taxa to model
 #' # e.g. # future::plan(future::multisession, workers = 3)
 #'
@@ -56,23 +56,26 @@
 #'   X = phyloseq::rank_names(ps)[-1],
 #'   function(r) {
 #'     message(Sys.time(), " - modelling at level: ", r)
-#'     models <- tax_model_corncob(ps, tax_level = r, variables = variables, taxa = "all")
+#'     models <- model_tax_corncob(ps, tax_level = r, variables = variables, taxa = "all")
 #'     return(models)
 #'   }
 #' )
 #' # Flatten all taxonomic level lists into one list of models
 #' # (this is why taxon names must be completely identifiable across ranks)
 #' flat_models_list <- purrr::flatten(tax_models_list)
-#' var_stats <- corncob_models_to_var_stats(flat_models_list)
+#' var_stats <- models2stats_corncob(flat_models_list)
 #'
 #' # future::plan(future::sequential) # to turn parallel processing back off
 #' @export
-#' @rdname tax_model_corncob
-tax_model_corncob <- function(
+#' @rdname model_tax_corncob
+model_tax_corncob <- function(
                               ps,
                               tax_level,
                               variables,
                               taxa = "all") {
+
+  # check phyloseq for common problems (and fix or message about this)
+  ps <- phyloseq_validate(ps, verbose = TRUE)
 
   # aggregate phyloseq at chosen rank level
   ps <- microbiome::aggregate_taxa(ps, level = tax_level)
@@ -117,14 +120,14 @@ tax_model_corncob <- function(
 
 #' @title Extract stats from corncob taxon model list
 #'
-#' @description Use this function with the output of `tax_model_corncob`. `corncob_models_to_var_stats` splits the statistical results extracted from corncob models and groups them by the independent variable name that they refer to. One dataframe of this list can then be joined to the output of tax_tree_nodes to prepare for taxonomic heat tree graph visualisation of taxon-variable associations.
+#' @description Use this function with the output of `model_tax_corncob`. `models2stats_corncob` splits the statistical results extracted from corncob models and groups them by the independent variable name that they refer to. One dataframe of this list can then be joined to the output of taxatree_nodes to prepare for taxonomic heat tree graph visualisation of taxon-variable associations.
 #'
-#' @param taxon_models named list output of `tax_model_corncob`
+#' @param taxon_models named list output of `model_tax_corncob`
 #'
 #' @return list of dataframes, one df per independent variable
 #' @export
-#' @rdname tax_model_corncob
-corncob_models_to_var_stats <- function(taxon_models) {
+#' @rdname model_tax_corncob
+models2stats_corncob <- function(taxon_models) {
   # get stats from models
   taxon_stats <- lapply(taxon_models, corncob::waldt)
   taxon_stats <- lapply(names(taxon_stats), function(name) {

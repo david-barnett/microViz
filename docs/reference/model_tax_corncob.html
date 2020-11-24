@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Beta binomial taxon models with corncob — tax_model_corncob • microViz</title>
+<title>Beta binomial taxon models with corncob — model_tax_corncob • microViz</title>
 
 
 <!-- jquery -->
@@ -39,11 +39,11 @@
 
 
 
-<meta property="og:title" content="Beta binomial taxon models with corncob — tax_model_corncob" />
+<meta property="og:title" content="Beta binomial taxon models with corncob — model_tax_corncob" />
 <meta property="og:description" content="Takes a phyloseq and returns a list of models, one for each taxon.
 Same independent variables for all models. Same variables for modelling both the abundance and dispersion parameters.
 P-values are from wald tests for simplicity and speed... maybe I will change this in the future.
-Use this function with the output of tax_model_corncob. corncob_models_to_var_stats splits the statistical results extracted from corncob models and groups them by the independent variable name that they refer to. One dataframe of this list can then be joined to the output of taxatree_nodes to prepare for taxonomic heat tree graph visualisation of taxon-variable associations." />
+Use this function with the output of model_tax_corncob. models2stats_corncob splits the statistical results extracted from corncob models and groups them by the independent variable name that they refer to. One dataframe of this list can then be joined to the output of taxatree_nodes to prepare for taxonomic heat tree graph visualisation of taxon-variable associations." />
 
 
 
@@ -75,7 +75,7 @@ Use this function with the output of tax_model_corncob. corncob_models_to_var_st
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
       </span>
     </div>
 
@@ -105,6 +105,9 @@ Use this function with the output of tax_model_corncob. corncob_models_to_var_st
     </li>
   </ul>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -127,20 +130,20 @@ Use this function with the output of tax_model_corncob. corncob_models_to_var_st
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Beta binomial taxon models with corncob</h1>
-    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/tax_model_corncob.R'><code>R/tax_model_corncob.R</code></a></small>
-    <div class="hidden name"><code>tax_model_corncob.Rd</code></div>
+    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/model_tax_corncob.R'><code>R/model_tax_corncob.R</code></a></small>
+    <div class="hidden name"><code>model_tax_corncob.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p>Takes a phyloseq and returns a list of models, one for each taxon.
 Same independent variables for all models. Same variables for modelling both the abundance and dispersion parameters.
 P-values are from wald tests for simplicity and speed... maybe I will change this in the future.</p>
-<p>Use this function with the output of <code>tax_model_corncob</code>. <code>corncob_models_to_var_stats</code> splits the statistical results extracted from corncob models and groups them by the independent variable name that they refer to. One dataframe of this list can then be joined to the output of taxatree_nodes to prepare for taxonomic heat tree graph visualisation of taxon-variable associations.</p>
+<p>Use this function with the output of <code>model_tax_corncob</code>. <code>models2stats_corncob</code> splits the statistical results extracted from corncob models and groups them by the independent variable name that they refer to. One dataframe of this list can then be joined to the output of taxatree_nodes to prepare for taxonomic heat tree graph visualisation of taxon-variable associations.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>tax_model_corncob</span><span class='op'>(</span><span class='va'>ps</span>, <span class='va'>tax_level</span>, <span class='va'>variables</span>, taxa <span class='op'>=</span> <span class='st'>"all"</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>model_tax_corncob</span><span class='op'>(</span><span class='va'>ps</span>, <span class='va'>tax_level</span>, <span class='va'>variables</span>, taxa <span class='op'>=</span> <span class='st'>"all"</span><span class='op'>)</span>
 
-<span class='fu'>corncob_models_to_var_stats</span><span class='op'>(</span><span class='va'>taxon_models</span><span class='op'>)</span></pre>
+<span class='fu'>models2stats_corncob</span><span class='op'>(</span><span class='va'>taxon_models</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -163,7 +166,7 @@ P-values are from wald tests for simplicity and speed... maybe I will change thi
     </tr>
     <tr>
       <th>taxon_models</th>
-      <td><p>named list output of <code>tax_model_corncob</code></p></td>
+      <td><p>named list output of <code>model_tax_corncob</code></p></td>
     </tr>
     </table>
 
@@ -172,7 +175,7 @@ P-values are from wald tests for simplicity and speed... maybe I will change thi
     <p>list of dataframes, one df per independent variable</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>tax_model_corncob</code> can use parallel processing with the <code>future</code> package.
+    <p><code>model_tax_corncob</code> can use parallel processing with the <code>future</code> package.
 This speeds up analysis if you have many taxa to model.
 Run a line like this beforehand: <code><a href='https://rdrr.io/pkg/future/man/plan.html'>future::plan(future::multisession, workers = 3)</a></code></p>
 
@@ -188,7 +191,20 @@ Run a line like this beforehand: <code><a href='https://rdrr.io/pkg/future/man/p
 #&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tibble.tidyverse.org/'>tibble</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://dx.plos.org/10.1371/journal.pone.0061217'>phyloseq</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://microbiome.github.io/microbiome'>microbiome</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>corncob</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Loading required package: ggplot2</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>microbiome R package (microbiome.github.com)</span>
+#&gt; <span class='message'>    </span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'> Copyright (C) 2011-2020 Leo Lahti, </span>
+#&gt; <span class='message'>    Sudarshan Shetty et al. &lt;microbiome.github.io&gt;</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: 'microbiome'</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:ggplot2':</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    alpha</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:vegan':</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    diversity</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:base':</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    transform</span></div><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>corncob</span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/HenrikBengtsson/future'>future</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/HenrikBengtsson/future.apply'>future.apply</a></span><span class='op'>)</span>
 
@@ -212,7 +228,7 @@ Run a line like this beforehand: <code><a href='https://rdrr.io/pkg/future/man/p
 <span class='co'># specify variables used for modelling</span>
 <span class='va'>variables</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"female"</span>, <span class='st'>"overweight"</span>, <span class='st'>"obese"</span><span class='op'>)</span>
 
-<span class='co'># tax_model_corncob can use parallel processing with the futures package</span>
+<span class='co'># model_tax_corncob can use parallel processing with the futures package</span>
 <span class='co'># this speeds up analysis if you have many taxa to model</span>
 <span class='co'># e.g. # future::plan(future::multisession, workers = 3)</span>
 
@@ -222,14 +238,14 @@ Run a line like this beforehand: <code><a href='https://rdrr.io/pkg/future/man/p
   X <span class='op'>=</span> <span class='fu'>phyloseq</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/rank_names.html'>rank_names</a></span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span><span class='op'>[</span><span class='op'>-</span><span class='fl'>1</span><span class='op'>]</span>,
   <span class='kw'>function</span><span class='op'>(</span><span class='va'>r</span><span class='op'>)</span> <span class='op'>{</span>
     <span class='fu'><a href='https://rdrr.io/r/base/message.html'>message</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>" - modelling at level: "</span>, <span class='va'>r</span><span class='op'>)</span>
-    <span class='va'>models</span> <span class='op'>&lt;-</span> <span class='fu'>tax_model_corncob</span><span class='op'>(</span><span class='va'>ps</span>, tax_level <span class='op'>=</span> <span class='va'>r</span>, variables <span class='op'>=</span> <span class='va'>variables</span>, taxa <span class='op'>=</span> <span class='st'>"all"</span><span class='op'>)</span>
+    <span class='va'>models</span> <span class='op'>&lt;-</span> <span class='fu'>model_tax_corncob</span><span class='op'>(</span><span class='va'>ps</span>, tax_level <span class='op'>=</span> <span class='va'>r</span>, variables <span class='op'>=</span> <span class='va'>variables</span>, taxa <span class='op'>=</span> <span class='st'>"all"</span><span class='op'>)</span>
     <span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='va'>models</span><span class='op'>)</span>
   <span class='op'>}</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>2020-11-24 14:40:05 - modelling at level: Phylum</span></div><div class='output co'>#&gt; <span class='message'>2020-11-24 14:40:06 - modelling at level: Family</span></div><div class='output co'>#&gt; <span class='message'>2020-11-24 14:40:08 - modelling at level: Genus</span></div><div class='input'><span class='co'># Flatten all taxonomic level lists into one list of models</span>
+</div><div class='output co'>#&gt; <span class='message'>2020-11-24 19:22:24 - modelling at level: Phylum</span></div><div class='output co'>#&gt; <span class='message'>2020-11-24 19:22:26 - modelling at level: Family</span></div><div class='output co'>#&gt; <span class='message'>2020-11-24 19:22:28 - modelling at level: Genus</span></div><div class='input'><span class='co'># Flatten all taxonomic level lists into one list of models</span>
 <span class='co'># (this is why taxon names must be completely identifiable across ranks)</span>
 <span class='va'>flat_models_list</span> <span class='op'>&lt;-</span> <span class='fu'>purrr</span><span class='fu'>::</span><span class='fu'><a href='https://purrr.tidyverse.org/reference/flatten.html'>flatten</a></span><span class='op'>(</span><span class='va'>tax_models_list</span><span class='op'>)</span>
-<span class='va'>var_stats</span> <span class='op'>&lt;-</span> <span class='fu'>corncob_models_to_var_stats</span><span class='op'>(</span><span class='va'>flat_models_list</span><span class='op'>)</span>
+<span class='va'>var_stats</span> <span class='op'>&lt;-</span> <span class='fu'>models2stats_corncob</span><span class='op'>(</span><span class='va'>flat_models_list</span><span class='op'>)</span>
 
 <span class='co'># future::plan(future::sequential) # to turn parallel processing back off</span>
 </div></pre>

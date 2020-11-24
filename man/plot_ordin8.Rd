@@ -33,6 +33,8 @@ plot_ordin8(
 
 \item{taxon_label_style}{list of fixed aesthetics (colour, size etc) for the taxon labels}
 
+\item{taxon_renamer}{function that takes any plotted taxon names and returns modified names for labels}
+
 \item{plot_samples}{if TRUE, plot sample points with geom_point}
 
 \item{auto_title}{if TRUE, add a crude title and subtitle with info about the ordination}
@@ -103,6 +105,16 @@ p <- constrained_aitchison_rda \%>\%
 
 p + stat_ellipse(aes(linetype = bmi_group, colour = bmi_group))
 p + stat_density2d(aes(colour = bmi_group))
+
+# you can rename the taxa on the labels with any function that takes a modifies a character vector
+constrained_aitchison_rda \%>\%
+  plot_ordin8(
+    colour = "bmi_group", constraint_label_length = 2,
+    plot_taxa = 1:3, taxon_label_length = 5,
+    taxon_renamer = function(x) stringr::str_extract(x, "^.")
+  ) +
+  lims(x = c(-5, 6), y = c(-5, 5)) +
+  scale_colour_brewer(palette = "Set1")
 
 # it is possible to facet only unconstrained ordination plots (with plot_taxa = FALSE)
 unconstrained_aitchison_pca \%>\%

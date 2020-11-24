@@ -32,7 +32,7 @@ list containing betadisper results list and input objects
 \description{
 Takes the output of calc_dist function. Or use with the result of the permanova function to ensure the results correspond to exactly the same input data.
 Runs betadisper for all categorical variables in variables argument.
-See help for vegan::betadisper.
+See help('betadisper', package = 'vegan').
 }
 \examples{
 library(phyloseq)

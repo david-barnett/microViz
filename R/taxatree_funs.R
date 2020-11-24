@@ -1,23 +1,23 @@
-#' @name tax_tree_funs
+#' @name taxatree_funs
 #'
 #' @title Create node and edge dataframes for taxonomic tree graphs
 #'
 #' @description
-#' - `tax_tree_nodes` creates taxon nodes and calculates basic info about each taxon. From a phyloseq object.
+#' - `taxatree_nodes` creates taxon nodes and calculates basic info about each taxon. From a phyloseq object.
 #'
-#' - `tax_tree_edges` uses the output of `tax_tree_nodes` to create a dataframe of edges.
+#' - `taxatree_edges` uses the output of `taxatree_nodes` to create a dataframe of edges.
 #'
-#' `tax_tree_nodes` makes nodes for taxa at all ranks or for a list of consecutive (rooted) ranks.
-#' You can also join at dataframe of additional taxon level information to the output of `tax_tree_nodes` before calling tax_tree_edges, e.g. the output of `corncob_models_to_var_stats`.
+#' `taxatree_nodes` makes nodes for taxa at all ranks or for a list of consecutive (rooted) ranks.
+#' You can also join at dataframe of additional taxon level information to the output of `taxatree_nodes` before calling taxatree_edges, e.g. the output of `models2stats_corncob`.
 #'
 #'
 #' @param ps phyloseq object
 #' @param ranks selection of taxonomic ranks to make nodes for (all, names or numbers)
-#' @param nodes_df the dataframe output of `tax_tree_nodes` (possibly with extra info/stats joined to it)
+#' @param nodes_df the dataframe output of `taxatree_nodes` (possibly with extra info/stats joined to it)
 #'
-#' @rdname tax_tree_funs
+#' @rdname taxatree_funs
 #' @export
-tax_tree_nodes <- function(ps, ranks = "all") {
+taxatree_nodes <- function(ps, ranks = "all") {
 
   # identify numerical selection of ranks (all, names or numbers)
   available_rank_names <- phyloseq::rank_names(ps)
@@ -52,9 +52,9 @@ tax_tree_nodes <- function(ps, ranks = "all") {
   return(node_df)
 }
 
-#' @rdname tax_tree_funs
+#' @rdname taxatree_funs
 #' @export
-tax_tree_edges <- function(nodes_df){
+taxatree_edges <- function(nodes_df){
 
   edge_list <- lapply(
     X = nodes_df$taxon_name,

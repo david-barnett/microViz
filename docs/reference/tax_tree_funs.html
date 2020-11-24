@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create node and edge dataframes for taxonomic tree graphs — tax_tree_funs • microViz</title>
+<title>Create node and edge dataframes for taxonomic tree graphs — taxatree_funs • microViz</title>
 
 
 <!-- jquery -->
@@ -39,15 +39,15 @@
 
 
 
-<meta property="og:title" content="Create node and edge dataframes for taxonomic tree graphs — tax_tree_funs" />
+<meta property="og:title" content="Create node and edge dataframes for taxonomic tree graphs — taxatree_funs" />
 <meta property="og:description" content="
 
-tax_tree_nodes creates taxon nodes and calculates basic info about each taxon. From a phyloseq object.
-tax_tree_edges uses the output of tax_tree_nodes to create a dataframe of edges.
+taxatree_nodes creates taxon nodes and calculates basic info about each taxon. From a phyloseq object.
+taxatree_edges uses the output of taxatree_nodes to create a dataframe of edges.
 
 
-tax_tree_nodes makes nodes for taxa at all ranks or for a list of consecutive (rooted) ranks.
-You can also join at dataframe of additional taxon level information to the output of tax_tree_nodes before calling tax_tree_edges, e.g. the output of corncob_models_to_var_stats." />
+taxatree_nodes makes nodes for taxa at all ranks or for a list of consecutive (rooted) ranks.
+You can also join at dataframe of additional taxon level information to the output of taxatree_nodes before calling taxatree_edges, e.g. the output of corncob_models_to_var_stats." />
 
 
 
@@ -79,7 +79,7 @@ You can also join at dataframe of additional taxon level information to the outp
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9003</span>
       </span>
     </div>
 
@@ -131,24 +131,24 @@ You can also join at dataframe of additional taxon level information to the outp
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Create node and edge dataframes for taxonomic tree graphs</h1>
-    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/tax_tree_funs.R'><code>R/tax_tree_funs.R</code></a></small>
-    <div class="hidden name"><code>tax_tree_funs.Rd</code></div>
+    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/taxatree_funs.R'><code>R/taxatree_funs.R</code></a></small>
+    <div class="hidden name"><code>taxatree_funs.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
 <ul>
-<li><p><code>tax_tree_nodes</code> creates taxon nodes and calculates basic info about each taxon. From a phyloseq object.</p></li>
-<li><p><code>tax_tree_edges</code> uses the output of <code>tax_tree_nodes</code> to create a dataframe of edges.</p></li>
+<li><p><code>taxatree_nodes</code> creates taxon nodes and calculates basic info about each taxon. From a phyloseq object.</p></li>
+<li><p><code>taxatree_edges</code> uses the output of <code>taxatree_nodes</code> to create a dataframe of edges.</p></li>
 </ul>
 
-<p><code>tax_tree_nodes</code> makes nodes for taxa at all ranks or for a list of consecutive (rooted) ranks.
-You can also join at dataframe of additional taxon level information to the output of <code>tax_tree_nodes</code> before calling tax_tree_edges, e.g. the output of <code>corncob_models_to_var_stats</code>.</p>
+<p><code>taxatree_nodes</code> makes nodes for taxa at all ranks or for a list of consecutive (rooted) ranks.
+You can also join at dataframe of additional taxon level information to the output of <code>taxatree_nodes</code> before calling taxatree_edges, e.g. the output of <code>corncob_models_to_var_stats</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>tax_tree_nodes</span><span class='op'>(</span><span class='va'>ps</span>, ranks <span class='op'>=</span> <span class='st'>"all"</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>taxatree_nodes</span><span class='op'>(</span><span class='va'>ps</span>, ranks <span class='op'>=</span> <span class='st'>"all"</span><span class='op'>)</span>
 
-<span class='fu'>tax_tree_edges</span><span class='op'>(</span><span class='va'>nodes_df</span><span class='op'>)</span></pre>
+<span class='fu'>taxatree_edges</span><span class='op'>(</span><span class='va'>nodes_df</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -163,7 +163,7 @@ You can also join at dataframe of additional taxon level information to the outp
     </tr>
     <tr>
       <th>nodes_df</th>
-      <td><p>the dataframe output of <code>tax_tree_nodes</code> (possibly with extra info/stats joined to it)</p></td>
+      <td><p>the dataframe output of <code>taxatree_nodes</code> (possibly with extra info/stats joined to it)</p></td>
     </tr>
     </table>
 
