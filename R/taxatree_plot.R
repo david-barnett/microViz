@@ -73,9 +73,11 @@ taxatree_plot <- function(
     # central black node for root
     ggraph::geom_node_point(
       mapping = ggplot2::aes(
-        filter = .data[["taxon_level"]] == "root",
+        filter = .data[["taxon_level"]] %in% c("kingdom","root"),
         size = log(.data[[size_stat]])
-      )
+      ),
+      colour = "black",
+      shape = "circle"
     ) +
     ggplot2::scale_size_continuous(range = c(1, max_node_size), guide = "none") +
     ggraph::scale_edge_width_continuous(range = c(1, max_edge_width), guide = "none") +
