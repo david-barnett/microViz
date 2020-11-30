@@ -1,4 +1,16 @@
-# microViz (development version)
+# microViz 0.0.2
+
+## Breaking changes
+
+* `plot_ordin8` arguments changed to allow easier sizing and styling of all vectors and labels
+* `plot_ordin8` default styling of taxon and constraint vectors and labels is changed: background vectors are now semi-transparent and dashed lines are not used any more by default (but can be set)
+
+## Other
+
+* `ordin8` and `plot_ordin8` get basic support for CCA and NMDS methods finally
+* `plot_comp_bar` gets `order_samples_with_all_taxa` and `tax_transform_for_ordering`
+* Documentation of manual sample ordering across `plot_comp_bar` groups added to Visualising Compositions article on website.
+* Documentation of experimental polar coordinates and PCA_angle sorting added in new article called PCA-sorted polar composition plots, on website.
 
 # microViz 0.0.1
 

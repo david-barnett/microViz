@@ -2,32 +2,35 @@
 % Please edit documentation in R/ordin8.R
 \name{ordin8}
 \alias{ordin8}
-\title{Ordinate distance matrix computed by calc_dist}
+\title{Ordinate phyloseq object or distance matrix computed by calc_dist}
 \usage{
 ordin8(
   data,
-  method = c("PCoA", "PCA", "NMDS")[1],
+  method = c("PCoA", "PCA", "CCA", "RDA", "CAP")[1],
   constraints = 1,
   conditions = NULL,
-  return = "all"
+  return = "all",
+  ...
 )
 }
 \arguments{
 \item{data}{list object output from calc_dist or tax_agg (if no distance calculation required e.g. for RDA)}
 
-\item{method}{which ordination method to use? currently one of 'PCoA', 'PCA' or 'NMDS'}
+\item{method}{which ordination method to use? currently one of 'PCoA', 'PCA' or 'CCA'}
 
 \item{constraints}{(a vector of) valid variable name(s) to constrain PCoA or RDA analyses, or leave as 1 for unconstrained ordination}
 
 \item{conditions}{(a vector of) valid variable name(s) to partial these out of PCoA or RDA analyses with Condition(), or leave as NULL}
 
 \item{return}{choose which parts of list object to return}
+
+\item{...}{optional arguments passed on to phyloseq::ordinate()}
 }
 \value{
 list object (or named parts)
 }
 \description{
-Extends functionality of phyloseq::ordinate()
+Extends functionality of phyloseq::ordinate(). Results can be used directly in plot_ordin8.
 }
 \examples{
 library(phyloseq)

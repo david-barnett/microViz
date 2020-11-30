@@ -1,21 +1,24 @@
 #' Plot (grouped and ordered) compositional barplots
 #'
 #' Stacked barplots showing composition of phyloseq samples for a specified number of coloured taxa. `plot_comp_bar` performs the compositional transformation for you, so your phyloseq object should contain counts!
-#' - sample_order: The bars are sorted by similarity, according to a specified distance measure (default aitchison), and seriation/ordering algorithm (default Ward hierarchical clustering with optimal leaf ordering.)
-#' - groups: You can group the samples on distinct plots by levels of a variable in the phyloseq object. The list of ggplots produced can be arranged flexibly with the patchwork package functions.
-#' - bar_width: No gaps between bars, unless you want them (decrease width argument).
+#' - sample_order: Either specify a list of sample names to order manually, or the bars/samples can/will be sorted by similarity, according to a specified distance measure (default aitchison),
+#' - seriate_method specifies a seriation/ordering algorithm (default Ward hierarchical clustering with optimal leaf ordering, see seriation::list_seriation_methods())
+#' - groups: You can group the samples on distinct plots by levels of a variable in the phyloseq object. The list of ggplots produced can be arranged flexibly with the patchwork package functions. If you want to group by several variables you can create an interaction variable with interaction(var1, var2) in the phyloseq sample_data BEFORE using plot_comp_bar.
+#' - bar_width: No gaps between bars, unless you want them (decrease width argument to add gaps between bars).
 #' - bar_outline_colour: Bar outlines default to "black". Set to NA if you don't want outlines.
-#' - palette: Default colouring is consistent across any groups, distinct, and fairly pleasant.
+#' - palette: Default colouring is consistent across multiple plots if created with the groups argument, and the defaults scheme retains the colouring of the most abundant taxa irrespective of n_taxa)
 #'
 #' @param ps phyloseq object
 #' @param tax_level taxonomic aggregation level (from rank_names(ps))
-#' @param n_taxa how many distinct taxa to colour in the plot (otherwise "other")
-#' @param tax_order currently only "abundance" works.
+#' @param n_taxa how many taxa to colour show distinct colours for (all other taxa grouped into "Other").
+#' @param tax_order order of taxa within the bars, currently only "abundance" works, which puts the most abundant taxa at the bottom (or left).
 #' @param taxon_renamer function that takes taxon names and returns modified names for legend
 #' @param palette palette for taxa fill colours
-#' @param sample_order any distance measure in calc_dist that does not require a phylogenetic tree (or a variable?)
+#' @param sample_order vector of sample names or any distance measure in calc_dist that does not require a phylogenetic tree
+#' @param order_samples_with_all_taxa if TRUE, this will use all taxa (not just the top n_taxa) to calculate distances for sample ordering
+#' @param tax_transform_for_ordering transformation of taxa values used before ordering samples by similarity
 #' @param label could also consider arbitrary annotation with extra info, like in complex heatmap
-#' @param groups splits dataset by this variable (must be categorical) and uses patchwork to assemble multiple plots?
+#' @param groups splits dataset by this variable (must be categorical) - resulting in a list of plots, one for each level of the grouping variable.
 #' @param bar_width default 1 avoids random gapping otherwise seen with many samples (set to something less than 1 to introduce gaps between fewer samples)
 #' @param bar_outline_colour line colour separating taxa and samples (use NA for none)
 #' @param drop_unused_vars speeds up ps_melt but might limit future plot customisation options
@@ -86,6 +89,9 @@
 #' patch & coord_flip() &
 #'   theme(axis.text.y = element_text(size = 5), legend.text = element_text(size = 6))
 #' # See https://patchwork.data-imaginist.com/index.html
+#'
+#'
+#'
 plot_comp_bar <- function(
                           ps,
                           tax_level,
@@ -94,6 +100,8 @@ plot_comp_bar <- function(
                           taxon_renamer = function(x) identity(x),
                           palette = c("lightgrey", rev(distinct_palette(n_taxa))),
                           sample_order = "aitchison",
+                          order_samples_with_all_taxa = FALSE,
+                          tax_transform_for_ordering = "identity",
                           label = "SAMPLE",
                           groups = NA,
                           bar_width = 1,
@@ -103,6 +111,9 @@ plot_comp_bar <- function(
 
   # check phyloseq for common problems (and fix or message about this)
   ps <- phyloseq_validate(ps, verbose = TRUE)
+
+  # save full unfiltered phyloseq for ordering
+  ps_original <- ps
 
   # how many taxa to plot (otherwise group into other)
   ps <- microbiome::aggregate_top_taxa(ps, top = n_taxa, level = tax_level)
@@ -119,7 +130,7 @@ plot_comp_bar <- function(
     names(palette) <- ordered_taxa
   }
   # determine sample ordering option
-  samples_ordered_by_similarity <- FALSE # default (overwritten if true)
+  samples_ordered_by_similarity <- FALSE # default (may be overwritten with true)
   if (identical(sample_order, "none")) {
     ordered_samples <- phyloseq::sample_names(ps)
   } else if (length(sample_order) == 1 && !sample_order %in% phyloseq::sample_variables(ps)) {
@@ -166,11 +177,23 @@ plot_comp_bar <- function(
     # sample ordering
     if (samples_ordered_by_similarity) {
       if (phyloseq::nsamples(ps) > 2) {
-        # calculate distance between samples for pretty ordering
-        distMat <- calc_dist(data = ps, dist = sample_order)[["distMat"]]
-        ser <- seriation::seriate(x = distMat, method = seriate_method)
+        # transform taxa for ordering (facilitated primarily for clr for PCA_angle method)
+        if (isTRUE(order_samples_with_all_taxa)) {
+          ps_transformed <- microbiome::transform(ps_original, transform = tax_transform_for_ordering)
+        } else {
+          ps_transformed <- microbiome::transform(ps, transform = tax_transform_for_ordering)
+        }
+        if (seriate_method %in% seriation::list_seriation_methods(kind = "matrix")) {
+          # directly seriate the otu matrix
+          otu_mat <- t(microbiome::abundances(ps_transformed))
+          ser <- seriation::seriate(x = otu_mat, method = seriate_method)
+        } else if (seriate_method %in% seriation::list_seriation_methods(kind = "dist")) {
+          # calculate distance between samples
+          distMat <- calc_dist(data = ps_transformed, dist = sample_order)[["distMat"]]
+          ser <- seriation::seriate(x = distMat, method = seriate_method)
+        }
         s_order <- seriation::get_order(ser)
-        ordered_samples <- attr(distMat, which = "Labels")[s_order]
+        ordered_samples <- phyloseq::sample_names(ps)[s_order]
       } else {
         ordered_samples <- phyloseq::sample_names(ps)
       }
@@ -207,14 +230,15 @@ plot_comp_bar <- function(
       ggplot2::scale_fill_manual(
         values = palette,
         labels = taxon_renamer,
-        guide = ggplot2::guide_legend(reverse = TRUE))
+        guide = ggplot2::guide_legend(reverse = TRUE)
+      )
 
     p
   }
 
   # grouping / splitting entire phyloseq by the groups variable
   groups_var <- phyloseq::sample_data(ps)[[groups]]
-  if(anyNA(groups_var)){
+  if (anyNA(groups_var)) {
     message("Warning: replacing NAs with 'NA's in grouping variable: ", groups)
     phyloseq::sample_data(ps)[[groups]][is.na(groups_var)] <- "NA"
   }

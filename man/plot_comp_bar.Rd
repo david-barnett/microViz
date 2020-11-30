@@ -12,6 +12,8 @@ plot_comp_bar(
   taxon_renamer = function(x) identity(x),
   palette = c("lightgrey", rev(distinct_palette(n_taxa))),
   sample_order = "aitchison",
+  order_samples_with_all_taxa = FALSE,
+  tax_transform_for_ordering = "identity",
   label = "SAMPLE",
   groups = NA,
   bar_width = 1,
@@ -25,19 +27,23 @@ plot_comp_bar(
 
 \item{tax_level}{taxonomic aggregation level (from rank_names(ps))}
 
-\item{n_taxa}{how many distinct taxa to colour in the plot (otherwise "other")}
+\item{n_taxa}{how many taxa to colour show distinct colours for (all other taxa grouped into "Other").}
 
-\item{tax_order}{currently only "abundance" works.}
+\item{tax_order}{order of taxa within the bars, currently only "abundance" works, which puts the most abundant taxa at the bottom (or left).}
 
 \item{taxon_renamer}{function that takes taxon names and returns modified names for legend}
 
 \item{palette}{palette for taxa fill colours}
 
-\item{sample_order}{any distance measure in calc_dist that does not require a phylogenetic tree (or a variable?)}
+\item{sample_order}{vector of sample names or any distance measure in calc_dist that does not require a phylogenetic tree}
+
+\item{order_samples_with_all_taxa}{if TRUE, this will use all taxa (not just the top n_taxa) to calculate distances for sample ordering}
+
+\item{tax_transform_for_ordering}{transformation of taxa values used before ordering samples by similarity}
 
 \item{label}{could also consider arbitrary annotation with extra info, like in complex heatmap}
 
-\item{groups}{splits dataset by this variable (must be categorical) and uses patchwork to assemble multiple plots?}
+\item{groups}{splits dataset by this variable (must be categorical) - resulting in a list of plots, one for each level of the grouping variable.}
 
 \item{bar_width}{default 1 avoids random gapping otherwise seen with many samples (set to something less than 1 to introduce gaps between fewer samples)}
 
@@ -53,11 +59,12 @@ ggplot or list of harmonised ggplots
 \description{
 Stacked barplots showing composition of phyloseq samples for a specified number of coloured taxa. \code{plot_comp_bar} performs the compositional transformation for you, so your phyloseq object should contain counts!
 \itemize{
-\item sample_order: The bars are sorted by similarity, according to a specified distance measure (default aitchison), and seriation/ordering algorithm (default Ward hierarchical clustering with optimal leaf ordering.)
-\item groups: You can group the samples on distinct plots by levels of a variable in the phyloseq object. The list of ggplots produced can be arranged flexibly with the patchwork package functions.
-\item bar_width: No gaps between bars, unless you want them (decrease width argument).
+\item sample_order: Either specify a list of sample names to order manually, or the bars/samples can/will be sorted by similarity, according to a specified distance measure (default aitchison),
+\item seriate_method specifies a seriation/ordering algorithm (default Ward hierarchical clustering with optimal leaf ordering, see seriation::list_seriation_methods())
+\item groups: You can group the samples on distinct plots by levels of a variable in the phyloseq object. The list of ggplots produced can be arranged flexibly with the patchwork package functions. If you want to group by several variables you can create an interaction variable with interaction(var1, var2) in the phyloseq sample_data BEFORE using plot_comp_bar.
+\item bar_width: No gaps between bars, unless you want them (decrease width argument to add gaps between bars).
 \item bar_outline_colour: Bar outlines default to "black". Set to NA if you don't want outlines.
-\item palette: Default colouring is consistent across any groups, distinct, and fairly pleasant.
+\item palette: Default colouring is consistent across multiple plots if created with the groups argument, and the defaults scheme retains the colouring of the most abundant taxa irrespective of n_taxa)
 }
 }
 \examples{
@@ -122,4 +129,7 @@ patch[[2]] <- patch[[2]] + scale_x_discrete(limits = rev)
 patch & coord_flip() &
   theme(axis.text.y = element_text(size = 5), legend.text = element_text(size = 6))
 # See https://patchwork.data-imaginist.com/index.html
+
+
+
 }

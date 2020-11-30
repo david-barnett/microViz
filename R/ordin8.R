@@ -1,12 +1,13 @@
-#' Ordinate distance matrix computed by calc_dist
+#' Ordinate phyloseq object or distance matrix computed by calc_dist
 #'
-#' Extends functionality of phyloseq::ordinate()
+#' Extends functionality of phyloseq::ordinate(). Results can be used directly in plot_ordin8.
 #'
 #' @param data list object output from calc_dist or tax_agg (if no distance calculation required e.g. for RDA)
-#' @param method which ordination method to use? currently one of 'PCoA', 'PCA' or 'NMDS'
+#' @param method which ordination method to use? currently one of 'PCoA', 'PCA' or 'CCA'
 #' @param constraints (a vector of) valid variable name(s) to constrain PCoA or RDA analyses, or leave as 1 for unconstrained ordination
 #' @param conditions (a vector of) valid variable name(s) to partial these out of PCoA or RDA analyses with Condition(), or leave as NULL
 #' @param return choose which parts of list object to return
+#' @param ... optional arguments passed on to phyloseq::ordinate()
 #'
 #' @return list object (or named parts)
 #' @export
@@ -43,10 +44,11 @@
 #' # plot with oldschool vegan graphics to show it returns a standard interoperable ordination object
 #' ordiplot(test2)
 ordin8 <- function(data,
-                   method = c("PCoA", "PCA", "NMDS")[1],
+                   method = c("PCoA", "PCA", "CCA", "RDA", "CAP")[1],
                    constraints = 1,
                    conditions = NULL,
-                   return = "all") {
+                   return = "all",
+                   ...) {
 
   # check input data object class
   if (inherits(data, "list")) {
@@ -63,7 +65,7 @@ ordin8 <- function(data,
 
   # constraint and condition handling in phyloseq object and distance matrix
   # drop missings and scale explanatory variables (constraints) if given (for RDA or dbRDA/constrained PCoA)
-  if (constraints[[1]] != 1 || !rlang::is_null(conditions)) {
+  if (!identical(constraints, 1) || !rlang::is_null(conditions)) {
     message("\nCentering (mean) and scaling (sd) the constraint and conditioning vars: ")
     # remove '1' in case conditions is set but constraints is still 1 (default)
     VARS <- setdiff(c(constraints, conditions), 1)
@@ -90,15 +92,15 @@ ordin8 <- function(data,
   if (method == "PCA") {
     method <- "RDA" # synonymous for this purpose (PCA is unconstrained RDA)
   }
-  if (method == "PCoA") {
+  if (method %in% c("PCoA", "MDS")) {
     # CAP causes phyloseq::ordinate to call vegan::capscale which, with formula DIST ~ 1, is PCoA (and gives scores!)
     method <- "CAP"
   }
 
-  # PCoA/capscale or RDA
-  if (method %in% c("RDA", "CAP")) {
-    if (method != "RDA" & rlang::is_null(distMat)) {
-      stop("CAP (PCoA) requires a distance matrix but you did not provide one.")
+  # PCoA/CAPscale or RDA/PCA or CCA
+  if (method %in% c("RDA", "CAP", "CCA")) {
+    if (method != "RDA" && rlang::is_null(distMat)) {
+      stop("Use calc_dist before using ordin8 with this method: ", method)
     }
 
     # set formula to include any given constraints on RHS (by default the RHS = 1)
@@ -113,17 +115,10 @@ ordin8 <- function(data,
     Formula <- stats::as.formula(f)
 
     # note RDA does not use distance arg (and distMat is not computed)
-    ORD <- phyloseq::ordinate(physeq = ps, method = method, distance = distMat, formula = Formula)
-  }
-
-
-  # other valid unconstrained phyloseq methods ----
-  # (have not been individually checked by DB necessarily)
-  if (method %in% c(
-    "DCA", "CCA", "DPCoA", "NMDS", "MDS"
-  ) && constraints[[1]] == 1 # unconstrained only
-  ) {
-    ORD <- phyloseq::ordinate(physeq = ps, method = method, distance = distMat)
+    ORD <- phyloseq::ordinate(physeq = ps, method = method, distance = distMat, formula = Formula, ...)
+  } else if (method %in% c("DCA", "DPCoA", "NMDS") && identical(constraints, 1)) {
+    # other valid unconstrained phyloseq methods
+    ORD <- phyloseq::ordinate(physeq = ps, method = method, distance = distMat, ...)
   }
 
   # return list output

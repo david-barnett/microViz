@@ -115,7 +115,49 @@ patch &
     theme = theme(plot.title = element_text(size = 16, face = 'bold'))
   )
 ```
+# Sorting samples manually
 
+Sorting across timepoint groups, example.
+
+```{r diet only}
+ps <- dietswap %>% subset_samples(group == 'DI')
+
+# subset to participants/"subjects" with samples for both timepoints
+timepoint_groups <- sample_data(ps) %>% data.frame() %>% split.data.frame(f = .$timepoint.within.group)
+have_both_timepoints <- intersect(timepoint_groups$`1`$subject, timepoint_groups$`2`$subject)
+ps <- ps %>% subset_samples(subject %in% have_both_timepoints)
+
+# sample
+sample_data(ps)$plot_groups <- interaction(sample_data(ps)$nationality, sample_data(ps)$timepoint.within.group)
+
+sample_order <- sample_data(ps) %>% 
+  data.frame() %>% 
+  dplyr::arrange(timepoint.within.group, nationality, desc(subject)) %>% 
+  rownames()
+```
+
+Grouped by both timepoint and another grouping factor, nationality in this example.
+
+```{r, fig.height=7.5, fig.width=10}
+times_list <- ps %>% 
+  plot_comp_bar(
+    tax_level = 'Genus', n_taxa = 10, sample_order = sample_order,
+    groups = 'plot_groups', bar_width = 0.7, label = "subject"
+  )
+
+times <- wrap_plots(
+  times_list[c('AAM.1', "AAM.2", "AFR.1", "AFR.2")], 
+  byrow = TRUE, ncol = 2, guides = 'collect', heights = c(5,4)) & 
+  coord_flip() & 
+  theme(
+    text = element_text(size = 10),
+    axis.title = element_blank())
+
+times
+```
+```{r}
+times[[2]] + scale_y_reverse()
+```
 
 ```{r}
 devtools::session_info()

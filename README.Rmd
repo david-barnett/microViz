@@ -122,7 +122,10 @@ unconstrained_aitchison_pca <-
 
 # create plot
 pca_plot <- unconstrained_aitchison_pca %>%
-  plot_ordin8(plot_taxa = 1:5, colour = "bmi_group", auto_title = TRUE)
+  plot_ordin8(
+    plot_taxa = 1:6, colour = "bmi_group", 
+    tax_vec_length = 0.8,
+    auto_title = TRUE)
 
 # customise plot
 customised_plot <- pca_plot +
@@ -168,7 +171,11 @@ perm2 <- permanova(data = aitchison_dists, variables = c("weight", "female"), se
 perm2$permanova
 
 ordin8(perm2, constraints = c("weight", "female")) %>%
-  plot_ordin8(colour = "sex", constraint_label_length = 2) +
+  plot_ordin8(
+    colour = "sex", 
+    constraint_vec_style = list(colour = "black", size = 1.15),
+    constraint_lab_style = list(colour = "black"),
+    constraint_vec_length = 1.5, constraint_lab_length = 1.8) +
   stat_ellipse(aes(colour = sex)) + scale_color_brewer(palette = "Dark2") +
   theme(plot.subtitle = element_text(size = 8))
 ```

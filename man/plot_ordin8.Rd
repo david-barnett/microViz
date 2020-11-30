@@ -7,11 +7,17 @@
 plot_ordin8(
   data,
   axes = 1:2,
-  constraint_label_length = 1,
-  constraint_label_style = list(size = 2.5, colour = "#D92027", alpha = 0.8),
+  constraint_vec_length = 1,
+  constraint_vec_style = list(),
+  constraint_lab_length = constraint_vec_length * 1.1,
+  constraint_lab_style = list(),
+  var_renamer = function(x) identity(x),
   plot_taxa = FALSE,
-  taxon_label_length = 1,
-  taxon_label_style = list(size = 2.5, colour = "black", alpha = 0.8),
+  tax_vec_length = 1,
+  tax_vec_style_all = list(),
+  tax_vec_style_sel = list(),
+  tax_lab_length = tax_vec_length * 1.1,
+  tax_lab_style = list(),
   taxon_renamer = function(x) identity(x),
   plot_samples = TRUE,
   auto_title = TRUE,
@@ -23,15 +29,27 @@ plot_ordin8(
 
 \item{axes}{which axes to plot: numerical vector of length 2}
 
-\item{constraint_label_length}{relative length of line segment drawn for any constraints (relative to default length which is defined by correlation with each drawn axis)}
+\item{constraint_vec_length}{relative length of line segment drawn for any constraints (relative to default length which is defined by correlation with each drawn axis)}
 
-\item{constraint_label_style}{list of fixed aesthetics (colour, size etc) for the constraint labels themselves}
+\item{constraint_vec_style}{list of aesthetics/arguments (colour, alpha etc) for the constraint vectors}
 
-\item{plot_taxa}{if ordin8 method was "RDA" draw the taxa loading vectors (see details)}
+\item{constraint_lab_length}{relative length of label drawn for any constraints (relative to default position which is defined by correlation with each drawn axis)}
 
-\item{taxon_label_length}{relative length of line segment drawn for any constraints}
+\item{constraint_lab_style}{list of aesthetics/arguments (colour, size etc) for the constraint labels}
 
-\item{taxon_label_style}{list of fixed aesthetics (colour, size etc) for the taxon labels}
+\item{var_renamer}{function to rename constraining variables for plotting their labels}
+
+\item{plot_taxa}{if ordin8 method was "PCA/RDA" draw the taxa loading vectors (see details)}
+
+\item{tax_vec_length}{length multiplier of line segment drawn for any taxa}
+
+\item{tax_vec_style_all}{list of named aesthetic attributes for all (background) taxon vectors}
+
+\item{tax_vec_style_sel}{list of named aesthetic attributes for taxon vectors for the taxa selected by plot_taxa}
+
+\item{tax_lab_length}{multiplier for label distance/position for any selected taxa}
+
+\item{tax_lab_style}{list of fixed aesthetics (colour, size etc) for the taxon labels}
 
 \item{taxon_renamer}{function that takes any plotted taxon names and returns modified names for labels}
 
@@ -46,12 +64,16 @@ ggplot
 }
 \description{
 Ordination visualisation. Utilises results of \code{ordin8}.
-Some inspiration was from here ref: \url{https://ourcodingclub.github.io/2018/05/04/ordination.html}
+\itemize{
+\item For interpretation see the the relevant pages on PCA, PCoA, RDA, or CCA on the "gusta me" website: \url{https://sites.google.com/site/mb3gustame/}
+\item Some other inspiration was from here: \url{https://ourcodingclub.github.io/2018/05/04/ordination.html}
+}
 }
 \details{
 How to specify the plot_taxa argument:
 \itemize{
-\item integer vector e.g. 1:3 --> plot labels for top 3 taxa (by line length)
+\item FALSE --> plot no taxa vectors or labels
+\item integer vector e.g. 1:3 --> plot labels for top 3 taxa (by longest line length)
 \item single numeric value e.g. 0.75 --> plot labels for taxa with line length > 0.75
 \item character vector e.g. c('g__Bacteroides', 'g__Veillonella') --> plot labels for the exactly named taxa
 }
@@ -75,7 +97,10 @@ unconstrained_aitchison_pca <- dietswap \%>\%
   ordin8(method = "RDA")
 
 unconstrained_aitchison_pca \%>\%
-  plot_ordin8(colour = "bmi_group") +
+  plot_ordin8(
+    colour = "bmi_group",
+    plot_taxa = 1:5, tax_vec_length = 0.75, tax_lab_length = 0.85,
+  ) +
   stat_ellipse(aes(linetype = bmi_group, colour = bmi_group))
 
 dietswap \%>\%
@@ -91,14 +116,14 @@ constrained_aitchison_rda <- dietswap \%>\%
   ordin8(method = "RDA", constraints = c("weight", "female"))
 
 constrained_aitchison_rda \%>\%
-  plot_ordin8(colour = "bmi_group", constraint_label_length = 2) +
+  plot_ordin8(colour = "bmi_group", constraint_vec_length = 2) +
   stat_ellipse(aes(linetype = bmi_group, colour = bmi_group))
 
 # ggplot allows additional customisation of the resulting plot
 p <- constrained_aitchison_rda \%>\%
   plot_ordin8(
-    colour = "bmi_group", constraint_label_length = 2,
-    plot_taxa = 1:3, taxon_label_length = 5
+    colour = "bmi_group", constraint_vec_length = 2,
+    plot_taxa = 1:3, tax_vec_length = 5
   ) +
   lims(x = c(-5, 6), y = c(-5, 5)) +
   scale_colour_brewer(palette = "Set1")
@@ -106,11 +131,11 @@ p <- constrained_aitchison_rda \%>\%
 p + stat_ellipse(aes(linetype = bmi_group, colour = bmi_group))
 p + stat_density2d(aes(colour = bmi_group))
 
-# you can rename the taxa on the labels with any function that takes a modifies a character vector
+# you can rename the taxa on the labels with any function that takes and modifies a character vector
 constrained_aitchison_rda \%>\%
   plot_ordin8(
-    colour = "bmi_group", constraint_label_length = 2,
-    plot_taxa = 1:3, taxon_label_length = 5,
+    colour = "bmi_group", constraint_vec_length = 2,
+    plot_taxa = 1:3, tax_vec_length = 5,
     taxon_renamer = function(x) stringr::str_extract(x, "^.")
   ) +
   lims(x = c(-5, 6), y = c(-5, 5)) +
