@@ -11,12 +11,23 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(microViz)
+library(dplyr)
 library(ggplot2)
 library(patchwork)
 data("dietswap", package = "microbiome")
 ```
 
-Objective = Circular composition plot with order corresponding to ordering on PCA axes 1 and 2?
+## Objective 
+
+Circular/polar composition stacked barplot with order corresponding to polar ordering on PCA (axes 1 and 2).
+
+This should allow approximation of the content of different samples positioned in grossly different regions of the plot.
+The comparison would work optimally if the PCA points were arranged in an equally spaced ring around the origin, which is unrealistic. 
+However this demo will show with real data that pairing these two plots can still provide intuitive insight into the composition of samples on the PCA plot.
+
+## Create plots
+
+Circular barplot:
 
 ```{r circular plot}
 circular <-
@@ -30,44 +41,112 @@ circular <-
     drop_unused_vars = FALSE
   )
 circular <- circular +
-  coord_polar(clip = "off") +
+  coord_polar(
+    direction = -1,
+    start = 3*pi/2,
+    clip = "off") +
   theme(
     axis.title = element_blank(),
     axis.text = element_blank(),
     axis.ticks = element_blank(),
+    legend.title = element_blank(),
     legend.text = element_text(size = 8)
-  ) +
-  # arrow pointing at starting sample (showing it is lowest level of factor)
-  geom_segment(
-    data = ~ dplyr::filter(., SAMPLE == levels(SAMPLE)[[1]]),
-    mapping = aes(xend = SAMPLE), 
-    color = 'red', y = -0.20, yend = -0.05, size = 1.5,
-    arrow = arrow(length = unit(0.01, "npc")), show.legend = FALSE
   ) +
   # points showing nationality of samples by shape
   geom_point(
     data = ~ dplyr::filter(., nationality == 'AFR'),
-    shape = 'circle open', y = 1.05, show.legend = FALSE
+    y = 1.05, shape = 'circle filled', 
+    fill = 'lightgrey', colour = 'black',
+    show.legend = FALSE
   ) +
   scale_y_continuous(expand = expansion(add = c(0.5, -0.1)))
 ```
 
-Corresponding PCA plot. 
+PCA plot: 
 
 ```{r}
 pca <- dietswap %>%
   tax_agg("Genus") %>%
   tax_transform("clr") %>%
   ordin8("PCA") %>%
-  plot_ordin8(plot_taxa = 1:5, taxon_label_length = 0.5, colour = "grey", auto_title = FALSE) +
-  geom_point(x = 0, y = 0, size = 4, shape = "circle", colour = "black") +
-  theme(panel.grid = element_blank()) +
-  geom_point(data = ~ dplyr::filter(., sample == "Sample-181"), color = "red") +
-  ggrepel::geom_text_repel(data = ~ dplyr::filter(., sample == "Sample-181"), color = "red", label = "starting sample??")
+  plot_ordin8(
+    shape = "nationality", fill = "lightgrey", colour = "nationality",
+    plot_taxa = 1:5, tax_vec_length = 0.5, auto_title = FALSE) +
+  # central point
+  geom_point(x = 0, y = 0, size = 2, shape = "circle filled", colour = "black", fill = "white") +
+  scale_shape_manual(values = c('AAM' = 'circle', 'AFR' = 'circle filled'), guide = "none") +
+  scale_colour_manual(values = c('AAM' = 'lightgrey', 'AFR' = 'black'),  guide = "none") +
+  theme(panel.grid = element_blank(), panel.background = element_rect(colour = 'black'))
 ```
 
+## Align plots
 
-```{r, fig.width=10, fig.height=7.5}
+Find "first" point on PCA by selecting sample with minimum PC2 in upper right quadrant:
+
+```{r}
+starter_sample <- pca$data[, 1:2] %>% 
+  filter(across(everything(), ~. > 0)) %>% 
+  filter(PC2 == min(PC2)) %>% 
+  rownames()
+
+pca$data[starter_sample, ]
+```
+
+```{r}
+pca <- pca + 
+  geom_point(
+    data = ~ dplyr::filter(., sample == starter_sample), 
+    color = "red", size = 1
+  ) +
+  geom_text(
+    data = ~ dplyr::filter(., sample == starter_sample), size = 2, 
+    label = starter_sample, color = "red", nudge_y = 0.125
+  )
+```
+
+Add arrow indicating the "first" point on PCA on the circular barplot:
+
+```{r}
+circular <- circular +
+  # arrow pointing at starting sample (showing it is lowest level of factor)
+  annotate(geom = 'segment', 
+           x = starter_sample, xend = starter_sample,
+           y = -0.20, yend = -0.01, color = 'red', size = 1,
+           arrow = arrow(length = unit(0.01, "npc"))
+  ) +
+  geom_text(
+    data = ~ dplyr::filter(., SAMPLE == starter_sample),
+    color = 'red', size = 2,
+    y = -0.4, label = starter_sample, 
+    check_overlap = TRUE, show.legend = FALSE
+  )
+```
+
+Reorder the circular barplot by releveling the "SAMPLE" factor (mapped to polar x axis):
+
+```{r}
+original_factor <- circular$data$SAMPLE
+start_index <- which(levels(original_factor) == starter_sample)
+
+circular$data$SAMPLE <- forcats::fct_relevel(
+  .f = original_factor, 
+  c(
+    levels(original_factor)[start_index:length(original_factor)],
+    levels(original_factor[1:start_index-1])
+  )
+)
+
+```
+## Draw plots 
+
+```{r plot pair, fig.width=10, fig.height=7.5}
 pca + circular + plot_layout(ncol = 2, guides = "collect") &
   theme(legend.position = "bottom", legend.direction = "horizontal")
 ```
+
+```{r}
+devtools::session_info()
+```
+ 
+ 
+

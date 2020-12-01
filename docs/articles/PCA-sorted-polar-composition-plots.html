@@ -101,10 +101,28 @@
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/david-barnett/microViz">microViz</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Attaching package: 'dplyr'</span>
+<span class="co">#&gt; The following objects are masked from 'package:stats':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     filter, lag</span>
+<span class="co">#&gt; The following objects are masked from 'package:base':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     intersect, setdiff, setequal, union</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com">patchwork</a></span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"dietswap"</span>, package <span class="op">=</span> <span class="st">"microbiome"</span><span class="op">)</span></code></pre></div>
-<p>Objective = Circular composition plot with order corresponding to ordering on PCA axes 1 and 2?</p>
+<div id="objective" class="section level2">
+<h2 class="hasAnchor">
+<a href="#objective" class="anchor"></a>Objective</h2>
+<p>Circular/polar composition stacked barplot with order corresponding to polar ordering on PCA (axes 1 and 2).</p>
+<p>This should allow approximation of the content of different samples positioned in grossly different regions of the plot. The comparison would work optimally if the PCA points were arranged in an equally spaced ring around the origin, which is unrealistic. However this demo will show with real data that pairing these two plots can still provide intuitive insight into the composition of samples on the PCA plot.</p>
+</div>
+<div id="create-plots" class="section level2">
+<h2 class="hasAnchor">
+<a href="#create-plots" class="anchor"></a>Create plots</h2>
+<p>Circular barplot:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">circular</span> <span class="op">&lt;-</span>
   <span class="fu">microViz</span><span class="fu">::</span><span class="fu"><a href="../reference/plot_comp_bar.html">plot_comp_bar</a></span><span class="op">(</span>
@@ -120,47 +138,228 @@
 <span class="co">#&gt;   method         from </span>
 <span class="co">#&gt;   reorder.hclust vegan</span>
 <span class="va">circular</span> <span class="op">&lt;-</span> <span class="va">circular</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_polar.html">coord_polar</a></span><span class="op">(</span>clip <span class="op">=</span> <span class="st">"off"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_polar.html">coord_polar</a></span><span class="op">(</span>
+    direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>,
+    start <span class="op">=</span> <span class="fl">3</span><span class="op">*</span><span class="va">pi</span><span class="op">/</span><span class="fl">2</span>,
+    clip <span class="op">=</span> <span class="st">"off"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>
     axis.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>,
     axis.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>,
     axis.ticks <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>,
+    legend.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>,
     legend.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">8</span><span class="op">)</span>
-  <span class="op">)</span> <span class="op">+</span>
-  <span class="co"># arrow pointing at starting sample (showing it is lowest level of factor)</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html">geom_segment</a></span><span class="op">(</span>
-    data <span class="op">=</span> <span class="op">~</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">.</span>, <span class="va">SAMPLE</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">SAMPLE</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,
-    mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>xend <span class="op">=</span> <span class="va">SAMPLE</span><span class="op">)</span>, 
-    color <span class="op">=</span> <span class="st">'red'</span>, y <span class="op">=</span> <span class="op">-</span><span class="fl">0.20</span>, yend <span class="op">=</span> <span class="op">-</span><span class="fl">0.05</span>, size <span class="op">=</span> <span class="fl">1.5</span>,
-    arrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/arrow.html">arrow</a></span><span class="op">(</span>length <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html">unit</a></span><span class="op">(</span><span class="fl">0.01</span>, <span class="st">"npc"</span><span class="op">)</span><span class="op">)</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span>
   <span class="op">)</span> <span class="op">+</span>
   <span class="co"># points showing nationality of samples by shape</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>
     data <span class="op">=</span> <span class="op">~</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">.</span>, <span class="va">nationality</span> <span class="op">==</span> <span class="st">'AFR'</span><span class="op">)</span>,
-    shape <span class="op">=</span> <span class="st">'circle open'</span>, y <span class="op">=</span> <span class="fl">1.05</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span>
+    y <span class="op">=</span> <span class="fl">1.05</span>, shape <span class="op">=</span> <span class="st">'circle filled'</span>, 
+    fill <span class="op">=</span> <span class="st">'lightgrey'</span>, colour <span class="op">=</span> <span class="st">'black'</span>,
+    show.legend <span class="op">=</span> <span class="cn">FALSE</span>
   <span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expansion.html">expansion</a></span><span class="op">(</span>add <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="op">-</span><span class="fl">0.1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p>Corresponding PCA plot.</p>
+<p>PCA plot:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pca</span> <span class="op">&lt;-</span> <span class="va">dietswap</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Genus"</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"clr"</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/ordin8.html">ordin8</a></span><span class="op">(</span><span class="st">"PCA"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/plot_ordin8.html">plot_ordin8</a></span><span class="op">(</span>plot_taxa <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, taxon_label_length <span class="op">=</span> <span class="fl">0.5</span>, colour <span class="op">=</span> <span class="st">"grey"</span>, auto_title <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">0</span>, y <span class="op">=</span> <span class="fl">0</span>, size <span class="op">=</span> <span class="fl">4</span>, shape <span class="op">=</span> <span class="st">"circle"</span>, colour <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>panel.grid <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="op">~</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">.</span>, <span class="va">sample</span> <span class="op">==</span> <span class="st">"Sample-181"</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">ggrepel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggrepel/man/geom_text_repel.html">geom_text_repel</a></span><span class="op">(</span>data <span class="op">=</span> <span class="op">~</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">.</span>, <span class="va">sample</span> <span class="op">==</span> <span class="st">"Sample-181"</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"red"</span>, label <span class="op">=</span> <span class="st">"starting sample??"</span><span class="op">)</span>
-<span class="co">#&gt; Warning: Ignoring unknown parameters: taxon_label_length</span></code></pre></div>
+  <span class="fu"><a href="../reference/plot_ordin8.html">plot_ordin8</a></span><span class="op">(</span>
+    shape <span class="op">=</span> <span class="st">"nationality"</span>, fill <span class="op">=</span> <span class="st">"lightgrey"</span>, colour <span class="op">=</span> <span class="st">"nationality"</span>,
+    plot_taxa <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, tax_vec_length <span class="op">=</span> <span class="fl">0.5</span>, auto_title <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span>
+  <span class="co"># central point</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">0</span>, y <span class="op">=</span> <span class="fl">0</span>, size <span class="op">=</span> <span class="fl">2</span>, shape <span class="op">=</span> <span class="st">"circle filled"</span>, colour <span class="op">=</span> <span class="st">"black"</span>, fill <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_shape_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'AAM'</span> <span class="op">=</span> <span class="st">'circle'</span>, <span class="st">'AFR'</span> <span class="op">=</span> <span class="st">'circle filled'</span><span class="op">)</span>, guide <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_colour_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'AAM'</span> <span class="op">=</span> <span class="st">'lightgrey'</span>, <span class="st">'AFR'</span> <span class="op">=</span> <span class="st">'black'</span><span class="op">)</span>,  guide <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>panel.grid <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>, panel.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_rect</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">'black'</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+</div>
+<div id="align-plots" class="section level2">
+<h2 class="hasAnchor">
+<a href="#align-plots" class="anchor"></a>Align plots</h2>
+<p>Find “first” point on PCA by selecting sample with minimum PC2 in upper right quadrant:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">starter_sample</span> <span class="op">&lt;-</span> <span class="va">pca</span><span class="op">$</span><span class="va">data</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html">across</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span><span class="op">(</span><span class="op">)</span>, <span class="op">~</span><span class="va">.</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">PC2</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">PC2</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html">rownames</a></span><span class="op">(</span><span class="op">)</span>
+
+<span class="va">pca</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="va">starter_sample</span>, <span class="op">]</span>
+<span class="co">#&gt;                 PC1        PC2 subject  sex nationality group    sample</span>
+<span class="co">#&gt; Sample-51 0.5858175 0.06214695     dwc male         AFR    ED Sample-51</span>
+<span class="co">#&gt;           timepoint timepoint.within.group bmi_group</span>
+<span class="co">#&gt; Sample-51         1                      1      lean</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">pca</span> <span class="op">&lt;-</span> <span class="va">pca</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>
+    data <span class="op">=</span> <span class="op">~</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">.</span>, <span class="va">sample</span> <span class="op">==</span> <span class="va">starter_sample</span><span class="op">)</span>, 
+    color <span class="op">=</span> <span class="st">"red"</span>, size <span class="op">=</span> <span class="fl">1</span>
+  <span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text</a></span><span class="op">(</span>
+    data <span class="op">=</span> <span class="op">~</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">.</span>, <span class="va">sample</span> <span class="op">==</span> <span class="va">starter_sample</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">2</span>, 
+    label <span class="op">=</span> <span class="va">starter_sample</span>, color <span class="op">=</span> <span class="st">"red"</span>, nudge_y <span class="op">=</span> <span class="fl">0.125</span>
+  <span class="op">)</span></code></pre></div>
+<p>Add arrow indicating the “first” point on PCA on the circular barplot:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">circular</span> <span class="op">&lt;-</span> <span class="va">circular</span> <span class="op">+</span>
+  <span class="co"># arrow pointing at starting sample (showing it is lowest level of factor)</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotate.html">annotate</a></span><span class="op">(</span>geom <span class="op">=</span> <span class="st">'segment'</span>, 
+           x <span class="op">=</span> <span class="va">starter_sample</span>, xend <span class="op">=</span> <span class="va">starter_sample</span>,
+           y <span class="op">=</span> <span class="op">-</span><span class="fl">0.20</span>, yend <span class="op">=</span> <span class="op">-</span><span class="fl">0.01</span>, color <span class="op">=</span> <span class="st">'red'</span>, size <span class="op">=</span> <span class="fl">1</span>,
+           arrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/arrow.html">arrow</a></span><span class="op">(</span>length <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html">unit</a></span><span class="op">(</span><span class="fl">0.01</span>, <span class="st">"npc"</span><span class="op">)</span><span class="op">)</span>
+  <span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text</a></span><span class="op">(</span>
+    data <span class="op">=</span> <span class="op">~</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">.</span>, <span class="va">SAMPLE</span> <span class="op">==</span> <span class="va">starter_sample</span><span class="op">)</span>,
+    color <span class="op">=</span> <span class="st">'red'</span>, size <span class="op">=</span> <span class="fl">2</span>,
+    y <span class="op">=</span> <span class="op">-</span><span class="fl">0.4</span>, label <span class="op">=</span> <span class="va">starter_sample</span>, 
+    check_overlap <span class="op">=</span> <span class="cn">TRUE</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span>
+  <span class="op">)</span></code></pre></div>
+<p>Reorder the circular barplot by releveling the “SAMPLE” factor (mapped to polar x axis):</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">original_factor</span> <span class="op">&lt;-</span> <span class="va">circular</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">SAMPLE</span>
+<span class="va">start_index</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">original_factor</span><span class="op">)</span> <span class="op">==</span> <span class="va">starter_sample</span><span class="op">)</span>
+
+<span class="va">circular</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">SAMPLE</span> <span class="op">&lt;-</span> <span class="fu">forcats</span><span class="fu">::</span><span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_relevel.html">fct_relevel</a></span><span class="op">(</span>
+  .f <span class="op">=</span> <span class="va">original_factor</span>, 
+  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">original_factor</span><span class="op">)</span><span class="op">[</span><span class="va">start_index</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">original_factor</span><span class="op">)</span><span class="op">]</span>,
+    <span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">original_factor</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">start_index</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>
+  <span class="op">)</span>
+<span class="op">)</span>
+<span class="co">#&gt; Warning: Unknown levels in `f`: NA</span></code></pre></div>
+</div>
+<div id="draw-plots" class="section level2">
+<h2 class="hasAnchor">
+<a href="#draw-plots" class="anchor"></a>Draw plots</h2>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pca</span> <span class="op">+</span> <span class="va">circular</span> <span class="op">+</span> <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_layout.html">plot_layout</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">2</span>, guides <span class="op">=</span> <span class="st">"collect"</span><span class="op">)</span> <span class="op">&amp;</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span>, legend.direction <span class="op">=</span> <span class="st">"horizontal"</span><span class="op">)</span></code></pre></div>
-<p><img src="PCA-sorted-polar-composition-plots_files/figure-html/unnamed-chunk-3-1.png" width="960"></p>
+<p><img src="PCA-sorted-polar-composition-plots_files/figure-html/plot%20pair-1.png" width="960"></p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sessioninfo/man/session_info.html">session_info</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; - Session info ---------------------------------------------------------------</span>
+<span class="co">#&gt;  setting  value                       </span>
+<span class="co">#&gt;  version  R version 4.0.3 (2020-10-10)</span>
+<span class="co">#&gt;  os       Windows 10 x64              </span>
+<span class="co">#&gt;  system   x86_64, mingw32             </span>
+<span class="co">#&gt;  ui       RTerm                       </span>
+<span class="co">#&gt;  language (EN)                        </span>
+<span class="co">#&gt;  collate  English_United Kingdom.1252 </span>
+<span class="co">#&gt;  ctype    English_United Kingdom.1252 </span>
+<span class="co">#&gt;  tz       Europe/London               </span>
+<span class="co">#&gt;  date     2020-12-01                  </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; - Packages -------------------------------------------------------------------</span>
+<span class="co">#&gt;  package      * version date       lib source        </span>
+<span class="co">#&gt;  ade4           1.7-16  2020-10-28 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  ape            5.4-1   2020-08-13 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  assertthat     0.2.1   2019-03-21 [3] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  Biobase        2.48.0  2020-04-27 [3] Bioconductor  </span>
+<span class="co">#&gt;  BiocGenerics   0.34.0  2020-04-27 [3] Bioconductor  </span>
+<span class="co">#&gt;  biomformat     1.16.0  2020-04-27 [3] Bioconductor  </span>
+<span class="co">#&gt;  Biostrings     2.56.0  2020-04-27 [3] Bioconductor  </span>
+<span class="co">#&gt;  callr          3.5.1   2020-10-13 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  cli            2.1.0   2020-10-12 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  cluster        2.1.0   2019-06-19 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  codetools      0.2-18  2020-11-04 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  colorspace     2.0-0   2020-11-11 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  crayon         1.3.4   2017-09-16 [3] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  data.table     1.13.2  2020-10-19 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  desc           1.2.0   2018-05-01 [3] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  devtools       2.3.2   2020-09-18 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  digest         0.6.27  2020-10-24 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  dplyr        * 1.0.2   2020-08-18 [3] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  ellipsis       0.3.1   2020-05-15 [3] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  evaluate       0.14    2019-05-28 [3] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  fansi          0.4.1   2020-01-08 [3] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  farver         2.0.3   2020-01-16 [3] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  forcats        0.5.0   2020-03-01 [3] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  foreach        1.5.1   2020-10-15 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  fs             1.5.0   2020-07-31 [3] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  generics       0.1.0   2020-10-31 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  ggplot2      * 3.3.2   2020-06-19 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  glue           1.4.2   2020-08-27 [3] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  gtable         0.3.0   2019-03-25 [3] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  hms            0.5.3   2020-01-08 [3] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  htmltools      0.5.0   2020-06-16 [3] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  igraph         1.2.6   2020-10-06 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  IRanges        2.22.2  2020-05-21 [3] Bioconductor  </span>
+<span class="co">#&gt;  iterators      1.0.13  2020-10-15 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  jsonlite       1.7.1   2020-09-07 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  knitr          1.30    2020-09-22 [3] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  labeling       0.4.2   2020-10-20 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  lattice        0.20-41 2020-04-02 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  lifecycle      0.2.0   2020-03-06 [3] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  magrittr       2.0.1   2020-11-17 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  MASS           7.3-53  2020-09-09 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  Matrix         1.2-18  2019-11-27 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  memoise        1.1.0   2017-04-21 [3] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  mgcv           1.8-33  2020-08-27 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  microbiome     1.10.0  2020-04-27 [3] Bioconductor  </span>
+<span class="co">#&gt;  microViz     * 0.0.2   2020-12-01 [2] local         </span>
+<span class="co">#&gt;  multtest       2.44.0  2020-04-27 [3] Bioconductor  </span>
+<span class="co">#&gt;  munsell        0.5.0   2018-06-12 [3] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  nlme           3.1-150 2020-10-24 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  patchwork    * 1.1.0   2020-11-09 [3] CRAN (R 4.0.1)</span>
+<span class="co">#&gt;  permute        0.9-5   2019-03-12 [3] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  phyloseq       1.32.0  2020-04-27 [3] Bioconductor  </span>
+<span class="co">#&gt;  pillar         1.4.7   2020-11-20 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  pkgbuild       1.1.0   2020-07-13 [3] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  pkgconfig      2.0.3   2019-09-22 [3] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  pkgdown        1.6.1   2020-09-12 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  pkgload        1.1.0   2020-05-29 [3] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  plyr           1.8.6   2020-03-03 [3] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  prettyunits    1.1.1   2020-01-24 [3] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  processx       3.4.4   2020-09-03 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  progress       1.2.2   2019-05-16 [3] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  ps             1.4.0   2020-10-07 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  purrr          0.3.4   2020-04-17 [3] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  R6             2.5.0   2020-10-28 [3] CRAN (R 4.0.1)</span>
+<span class="co">#&gt;  ragg           0.4.0   2020-10-05 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  RColorBrewer   1.1-2   2014-12-07 [3] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  Rcpp           1.0.5   2020-07-06 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  registry       0.5-1   2019-03-05 [3] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  remotes        2.2.0   2020-07-21 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  reshape2       1.4.4   2020-04-09 [3] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  rhdf5          2.32.4  2020-10-05 [3] Bioconductor  </span>
+<span class="co">#&gt;  Rhdf5lib       1.10.1  2020-07-09 [3] Bioconductor  </span>
+<span class="co">#&gt;  rlang          0.4.8   2020-10-08 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  rmarkdown      2.5     2020-10-21 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  rprojroot      2.0.2   2020-11-15 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  rstudioapi     0.13    2020-11-12 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  Rtsne          0.15    2018-11-10 [3] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  S4Vectors      0.26.1  2020-05-16 [3] Bioconductor  </span>
+<span class="co">#&gt;  scales         1.1.1   2020-05-11 [3] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  seriation      1.2-9   2020-10-01 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  sessioninfo    1.1.1   2018-11-05 [3] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  stringi        1.5.3   2020-09-09 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  stringr        1.4.0   2019-02-10 [3] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  survival       3.2-7   2020-09-28 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  systemfonts    0.3.2   2020-09-29 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  testthat       3.0.0   2020-10-31 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  textshaping    0.1.2   2020-10-08 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  tibble         3.0.4   2020-10-12 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  tidyr          1.1.2   2020-08-27 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  tidyselect     1.1.0   2020-05-11 [3] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  TSP            1.1-10  2020-04-17 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  usethis        1.6.3   2020-09-17 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  vctrs          0.3.5   2020-11-17 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  vegan          2.5-6   2019-09-01 [3] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  withr          2.3.0   2020-09-22 [3] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  xfun           0.19    2020-10-30 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  XVector        0.28.0  2020-04-27 [3] Bioconductor  </span>
+<span class="co">#&gt;  yaml           2.2.1   2020-02-01 [3] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  zlibbioc       1.34.0  2020-04-27 [3] Bioconductor  </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [1] C:/Users/david.barnett/AppData/Local/Temp/RtmpS0cnLt/temp_libpath3d5413a6717d</span>
+<span class="co">#&gt; [2] C:/Users/david.barnett/AppData/Local/Temp/RtmpS0cnLt/temp_libpath3d54e1748a6</span>
+<span class="co">#&gt; [3] C:/Program Files/R/R-4.0.3/library</span></code></pre></div>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-      </div>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
+</div>
 
 </div>
 
