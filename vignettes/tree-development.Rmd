@@ -215,21 +215,20 @@ abs_sqrt <- scales::trans_new(
 
 ```{r eval=FALSE, fig.height=7.5, fig.width=10, dpi=300, include=FALSE}
 taxatree_plot <- function(
-  graph_object,
-  layout_coords,
-  size_stat = "taxon_mean",
-  colour_stat = "b_mu",
-  max_node_size = 8,
-  max_edge_width = max_node_size - 2,
-  sig_var = "p_mu",
-  sig_threshold = 0.05,
-  sig_stroke_width = 1.5,
-  colour_palette = "Green-Brown",
-  reverse_colours = FALSE,
-  luminance_l2 = 80,
-  trans_colour_scale = "abs_sqrt",
-  colour_lims = c(-2, 2)
-){
+                          graph_object,
+                          layout_coords,
+                          size_stat = "taxon_mean",
+                          colour_stat = "b_mu",
+                          max_node_size = 8,
+                          max_edge_width = max_node_size - 2,
+                          sig_var = "p_mu",
+                          sig_threshold = 0.05,
+                          sig_stroke_width = 1.5,
+                          colour_palette = "Green-Brown",
+                          reverse_colours = FALSE,
+                          luminance_l2 = 80,
+                          trans_colour_scale = "abs_sqrt",
+                          colour_lims = c(-2, 2)) {
   ggraph(graph = graph_object, layout = layout_coords) +
     geom_edge_link(
       mapping = aes(
@@ -296,11 +295,11 @@ taxatree_plot <- function(
 
 
 ```{r, fig.height=7.5, fig.width=10, dpi=300}
-luminance_l2 = 80
-colour_palette = "Green-Brown"
-reverse_colours = FALSE
-luminance_l2 = 80
-colour_lims = c(-2, 2)
+luminance_l2 <- 80
+colour_palette <- "Green-Brown"
+reverse_colours <- FALSE
+luminance_l2 <- 80
+colour_lims <- c(-2, 2)
 
 plots <- lapply(layouts_list, function(layout_coords) {
   taxatree_plot(graph_object = graph, layout_coords = layout_coords) +
@@ -331,7 +330,6 @@ plots <- lapply(layouts_list, function(layout_coords) {
 
 patchwork::wrap_plots(plots, ncol = 2, byrow = TRUE, guides = "keep") +
   patchwork::plot_annotation(tag_levels = "1")
-
 ```
 
 ## Selecting 1 of the adjusted layouts

@@ -22,8 +22,8 @@ library(microbiome)
 library(patchwork) # for arranging groups of plots
 data(dietswap)
 knitr::opts_chunk$set(
-	fig.height = 6,
-	fig.width = 9
+  fig.height = 6,
+  fig.width = 9
 )
 ```
 
@@ -32,19 +32,19 @@ The `plot_comp_bar` function allows you to visualise the taxonomic compositions 
 ## Illustrative simple customised example
 ```{r}
 dietswap %>%
-   phyloseq::subset_samples(timepoint == 1) %>%
-   plot_comp_bar(
-     tax_level = "Family", n_taxa = 8,
-     bar_outline_colour = NA,
-     sample_order = "bray", bar_width = 0.7
-   ) + coord_flip()
+  phyloseq::subset_samples(timepoint == 1) %>%
+  plot_comp_bar(
+    tax_level = "Family", n_taxa = 8,
+    bar_outline_colour = NA,
+    sample_order = "bray", bar_width = 0.7
+  ) + coord_flip()
 ```
 
 ## Averages or everything?
 
 Often to compare groups, average compositions are presented.
 ```{r}
-p1 <- dietswap %>% 
+p1 <- dietswap %>%
   phyloseq::merge_samples(group = "group") %>%
   plot_comp_bar(
     tax_level = "Genus", n_taxa = 12,
@@ -57,16 +57,18 @@ p1
 
 However that "group-averaging" approach hides a lot of within-group variation.
 ```{r}
-p2 <- dietswap %>% 
+p2 <- dietswap %>%
   plot_comp_bar(
     tax_level = "Genus", n_taxa = 12, groups = "group",
     sample_order = "euclidean", bar_outline_colour = NA
   ) %>%
   patchwork::wrap_plots(nrow = 3, guides = "collect") &
-  coord_flip() & 
+  coord_flip() &
   labs(x = NULL, y = NULL) &
-  theme(axis.text.y = element_blank(), 
-        axis.ticks.y = element_blank())
+  theme(
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank()
+  )
 p2
 ```
 
@@ -105,14 +107,16 @@ Notice how you can theme all plots with the `&` operator.
 See https://patchwork.data-imaginist.com/index.html for more examples of arranging multiple plots.
 
 ```{r}
-patch & 
+patch &
   coord_flip() & labs(x = NULL, y = NULL) &
-  theme(axis.text.y = element_text(size = 5), 
-        legend.text = element_text(size = 8)) &
+  theme(
+    axis.text.y = element_text(size = 5),
+    legend.text = element_text(size = 8)
+  ) &
   plot_annotation(
     title = "Comparing microbial composition across sexes",
     caption = "Caption: patchwork is a great package!",
-    theme = theme(plot.title = element_text(size = 16, face = 'bold'))
+    theme = theme(plot.title = element_text(size = 16, face = "bold"))
   )
 ```
 
@@ -121,38 +125,42 @@ patch &
 Sorting across timepoint groups, example.
 
 ```{r diet only}
-ps <- dietswap %>% subset_samples(group == 'DI')
+ps <- dietswap %>% subset_samples(group == "DI")
 
 # subset to participants/"subjects" with samples for both timepoints
-timepoint_groups <- sample_data(ps) %>% data.frame() %>% split.data.frame(f = .$timepoint.within.group)
+timepoint_groups <- sample_data(ps) %>%
+  data.frame() %>%
+  split.data.frame(f = .$timepoint.within.group)
 have_both_timepoints <- intersect(timepoint_groups$`1`$subject, timepoint_groups$`2`$subject)
 ps <- ps %>% subset_samples(subject %in% have_both_timepoints)
 
 # sample
 sample_data(ps)$plot_groups <- interaction(sample_data(ps)$nationality, sample_data(ps)$timepoint.within.group)
 
-sample_order <- sample_data(ps) %>% 
-  data.frame() %>% 
-  dplyr::arrange(timepoint.within.group, nationality, desc(subject)) %>% 
+sample_order <- sample_data(ps) %>%
+  data.frame() %>%
+  dplyr::arrange(timepoint.within.group, nationality, desc(subject)) %>%
   rownames()
 ```
 
 Grouped by both timepoint and another grouping factor, nationality in this example.
 
 ```{r, fig.height=7.5, fig.width=10}
-times_list <- ps %>% 
+times_list <- ps %>%
   plot_comp_bar(
-    tax_level = 'Genus', n_taxa = 10, sample_order = sample_order,
-    groups = 'plot_groups', bar_width = 0.7, label = "subject"
+    tax_level = "Genus", n_taxa = 10, sample_order = sample_order,
+    groups = "plot_groups", bar_width = 0.7, label = "subject"
   )
 
 times <- wrap_plots(
-  times_list[c('AAM.1', "AAM.2", "AFR.1", "AFR.2")], 
-  byrow = TRUE, ncol = 2, guides = 'collect', heights = c(5,4)) & 
-  coord_flip() & 
+  times_list[c("AAM.1", "AAM.2", "AFR.1", "AFR.2")],
+  byrow = TRUE, ncol = 2, guides = "collect", heights = c(5, 4)
+) &
+  coord_flip() &
   theme(
     text = element_text(size = 10),
-    axis.title = element_blank())
+    axis.title = element_blank()
+  )
 
 times
 ```

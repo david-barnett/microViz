@@ -43,8 +43,9 @@ circular <-
 circular <- circular +
   coord_polar(
     direction = -1,
-    start = 3*pi/2,
-    clip = "off") +
+    start = 3 * pi / 2,
+    clip = "off"
+  ) +
   theme(
     axis.title = element_blank(),
     axis.text = element_blank(),
@@ -54,9 +55,9 @@ circular <- circular +
   ) +
   # points showing nationality of samples by shape
   geom_point(
-    data = ~ dplyr::filter(., nationality == 'AFR'),
-    y = 1.05, shape = 'circle filled', 
-    fill = 'lightgrey', colour = 'black',
+    data = ~ dplyr::filter(., nationality == "AFR"),
+    y = 1.05, shape = "circle filled",
+    fill = "lightgrey", colour = "black",
     show.legend = FALSE
   ) +
   scale_y_continuous(expand = expansion(add = c(0.5, -0.1)))
@@ -71,16 +72,17 @@ pca <- dietswap %>%
   ordin8("PCA") %>%
   plot_ordin8(
     shape = "nationality", fill = "lightgrey", colour = "nationality",
-    plot_taxa = 1:5, tax_vec_length = 0.5, auto_title = FALSE) +
+    plot_taxa = 1:5, tax_vec_length = 0.5, auto_title = FALSE
+  ) +
   # central point
   geom_point(x = 0, y = 0, size = 2, shape = "circle filled", colour = "black", fill = "white") +
   # theming
   lims(x = c(-1.5, 1.5), y = c(-2, 2)) +
-  scale_shape_manual(values = c('AAM' = 'circle', 'AFR' = 'circle filled'), guide = "none") +
-  scale_colour_manual(values = c('AAM' = 'lightgrey', 'AFR' = 'black'),  guide = "none") +
+  scale_shape_manual(values = c("AAM" = "circle", "AFR" = "circle filled"), guide = "none") +
+  scale_colour_manual(values = c("AAM" = "lightgrey", "AFR" = "black"), guide = "none") +
   theme(
-    panel.grid = element_blank(), 
-    panel.background = element_rect(colour = 'black')
+    panel.grid = element_blank(),
+    panel.background = element_rect(colour = "black")
   )
 ```
 
@@ -89,22 +91,22 @@ pca <- dietswap %>%
 Find "first" point on PCA by selecting sample with minimum PC2 in upper right quadrant:
 
 ```{r}
-starter_sample <- pca$data[, 1:2] %>% 
-  filter(across(everything(), ~. > 0)) %>% 
-  filter(PC2 == min(PC2)) %>% 
+starter_sample <- pca$data[, 1:2] %>%
+  filter(across(everything(), ~ . > 0)) %>%
+  filter(PC2 == min(PC2)) %>%
   rownames()
 
 pca$data[starter_sample, ]
 ```
 
 ```{r}
-pca <- pca + 
+pca <- pca +
   geom_point(
-    data = ~ dplyr::filter(., sample == starter_sample), 
+    data = ~ dplyr::filter(., sample == starter_sample),
     color = "red", size = 1
   ) +
   geom_text(
-    data = ~ dplyr::filter(., sample == starter_sample), size = 2, 
+    data = ~ dplyr::filter(., sample == starter_sample), size = 2,
     label = starter_sample, color = "red", nudge_y = 0.125
   )
 ```
@@ -114,15 +116,16 @@ Add arrow indicating the "first" point on PCA on the circular barplot:
 ```{r}
 circular <- circular +
   # arrow pointing at starting sample (showing it is lowest level of factor)
-  annotate(geom = 'segment', 
-           x = starter_sample, xend = starter_sample,
-           y = -0.20, yend = -0.01, color = 'red', size = 1,
-           arrow = arrow(length = unit(0.01, "npc"))
+  annotate(
+    geom = "segment",
+    x = starter_sample, xend = starter_sample,
+    y = -0.20, yend = -0.01, color = "red", size = 1,
+    arrow = arrow(length = unit(0.01, "npc"))
   ) +
   geom_text(
     data = ~ dplyr::filter(., SAMPLE == starter_sample),
-    color = 'red', size = 2,
-    y = -0.4, label = starter_sample, 
+    color = "red", size = 2,
+    y = -0.4, label = starter_sample,
     check_overlap = TRUE, show.legend = FALSE
   )
 ```
@@ -134,14 +137,14 @@ original_factor <- circular$data$SAMPLE
 start_index <- which(levels(original_factor) == starter_sample)
 
 circular$data$SAMPLE <- forcats::fct_relevel(
-  .f = original_factor, 
+  .f = original_factor,
   c(
     levels(original_factor)[start_index:length(original_factor)],
-    levels(original_factor[1:start_index-1])
+    levels(original_factor[1:start_index - 1])
   )
 )
-
 ```
+
 ## Draw plots 
 
 ```{r plot pair, fig.width=10, fig.height=7.5}
@@ -154,4 +157,3 @@ devtools::session_info()
 ```
  
  
-
