@@ -74,9 +74,14 @@ pca <- dietswap %>%
     plot_taxa = 1:5, tax_vec_length = 0.5, auto_title = FALSE) +
   # central point
   geom_point(x = 0, y = 0, size = 2, shape = "circle filled", colour = "black", fill = "white") +
+  # theming
+  lims(x = c(-1.5, 1.5), y = c(-2, 2)) +
   scale_shape_manual(values = c('AAM' = 'circle', 'AFR' = 'circle filled'), guide = "none") +
   scale_colour_manual(values = c('AAM' = 'lightgrey', 'AFR' = 'black'),  guide = "none") +
-  theme(panel.grid = element_blank(), panel.background = element_rect(colour = 'black'))
+  theme(
+    panel.grid = element_blank(), 
+    panel.background = element_rect(colour = 'black')
+  )
 ```
 
 ## Align plots
