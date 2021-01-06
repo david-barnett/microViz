@@ -9,7 +9,8 @@ calc_dist(
   dist = c("bray", "gunifrac", "unifrac", "wunifrac", "va-wunifrac", "aitchison",
     "euclidean")[1],
   return = "all",
-  gunifrac_alpha = 0.5
+  gunifrac_alpha = 0.5,
+  ...
 )
 }
 \arguments{
@@ -20,6 +21,8 @@ calc_dist(
 \item{return}{choose which parts of list object to return}
 
 \item{gunifrac_alpha}{setting alpha value only relevant if gunifrac distance used}
+
+\item{...}{optional distance-specific named args passed to phyloseq::distance()}
 }
 \value{
 list with distance matrix, phyloseq object, and name of distance used

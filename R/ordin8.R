@@ -99,7 +99,7 @@ ordin8 <- function(data,
 
   # PCoA/CAPscale or RDA/PCA or CCA
   if (method %in% c("RDA", "CAP", "CCA")) {
-    if (method != "RDA" && rlang::is_null(distMat)) {
+    if (method == "CAP" && rlang::is_null(distMat)) {
       stop("Use calc_dist before using ordin8 with this method: ", method)
     }
 
