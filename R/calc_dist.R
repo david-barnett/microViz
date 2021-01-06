@@ -16,6 +16,7 @@
 #' @param dist name of distance to calculate between pairs of samples
 #' @param return choose which parts of list object to return
 #' @param gunifrac_alpha setting alpha value only relevant if gunifrac distance used
+#' @param ... optional distance-specific named args passed to phyloseq::distance()
 #'
 #' @return list with distance matrix, phyloseq object, and name of distance used
 #' @export
@@ -37,7 +38,8 @@ calc_dist <- function(
                       data,
                       dist = c("bray", "gunifrac", "unifrac", "wunifrac", "va-wunifrac", "aitchison", "euclidean")[1],
                       return = "all",
-                      gunifrac_alpha = 0.5) {
+                      gunifrac_alpha = 0.5,
+                      ...) {
 
   # check input data object class
   if (inherits(data, "list")) {
@@ -76,6 +78,7 @@ calc_dist <- function(
       alpha = c(0, gunifrac_alpha, 1)
     )[["unifracs"]]
 
+    # TODO change to a switch ?
     if (dist == "unifrac") {
       gunifrac_alpha <- "UW"
     } else if (dist == "wunifrac") {
@@ -88,7 +91,7 @@ calc_dist <- function(
   } else if (dist %in% unlist(phyloseq::distanceMethodList)) {
 
     # calculate distance matrix if distance is supported in phyloseq
-    distMat <- phyloseq::distance(ps, method = dist, type = "samples")
+    distMat <- phyloseq::distance(ps, method = dist, type = "samples", ...)
   } else {
     stop(paste("Invalid distance measure named in dist argument:", dist))
   }
