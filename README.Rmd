@@ -68,11 +68,12 @@ library(ggplot2)
 data("dietswap", package = "microbiome")
 
 # create a couple of numerical variables to use as constraints or conditions
-sample_data(dietswap)$weight <-
-  recode(sample_data(dietswap)$bmi_group, obese = 3, overweight = 2, lean = 1)
-# add a couple of missing values to demo automated dropping of observations with missings
-sample_data(dietswap)$female <-
-  if_else(sample_data(dietswap)$sex == "female", true = 1, false = 0)
+dietswap <- dietswap %>% 
+  ps_mutate(
+    weight = recode(bmi_group, obese = 3, overweight = 2, lean = 1),
+    female = if_else(sex == "female", true = 1, false = 0)
+  )
+
 sample_data(dietswap)$female[c(3, 4)] <- NA
 ```
 
@@ -93,8 +94,6 @@ patchwork::wrap_plots(
 ) &
   labs(x = NULL, y = NULL) & theme(axis.text.x = element_blank())
 ```
-
-
 
 
 ## Example ordination plot workflow
@@ -124,6 +123,7 @@ unconstrained_aitchison_pca <-
 pca_plot <- unconstrained_aitchison_pca %>%
   plot_ordin8(
     plot_taxa = 1:6, colour = "bmi_group", 
+    size = 2,
     tax_vec_length = 0.8,
     auto_title = TRUE)
 
@@ -172,7 +172,7 @@ perm2$permanova
 
 ordin8(perm2, constraints = c("weight", "female")) %>%
   plot_ordin8(
-    colour = "sex", 
+    colour = "sex", size = 2,
     constraint_vec_style = list(colour = "black", size = 1.15),
     constraint_lab_style = list(colour = "black"),
     constraint_vec_length = 1.5, constraint_lab_length = 1.8) +

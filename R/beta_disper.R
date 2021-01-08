@@ -22,7 +22,7 @@
 #' # add some missings to demonstrate automated removal
 #' sample_data(dietswap)$sex[3:6] <- NA
 #' # create a numeric variable to show it will be skipped with a warning
-#' sample_data(dietswap)$timepoint <- as.numeric(sample_data(dietswap)$timepoint)
+#' dietswap <- ps_mutate(dietswap, timepoint = as.numeric(timepoint))
 #'
 #' # straight to the betadisp
 #' bd1 <- dietswap %>%

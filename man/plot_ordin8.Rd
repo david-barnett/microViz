@@ -80,15 +80,17 @@ How to specify the plot_taxa argument:
 }
 \examples{
 library(phyloseq)
+library(dplyr)
 library(vegan)
 library(microbiome)
 data("dietswap", package = "microbiome")
 
 # create a couple of numerical variables to use as constraints or conditions
-sample_data(dietswap)$female <-
-  dplyr::if_else(sample_data(dietswap)$sex == "female", true = 1, false = 0)
-sample_data(dietswap)$weight <-
-  dplyr::recode(sample_data(dietswap)$bmi_group, obese = 3, overweight = 2, lean = 1)
+dietswap <- dietswap \%>\%
+  ps_mutate(
+    weight = recode(bmi_group, obese = 3, overweight = 2, lean = 1),
+    female = if_else(sex == "female", true = 1, false = 0)
+  )
 
 # compute and plot ordinations for demonstration of conditioning
 unconstrained_aitchison_pca <- dietswap \%>\%
