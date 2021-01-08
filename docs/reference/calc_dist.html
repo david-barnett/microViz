@@ -75,7 +75,7 @@ Result intended to be piped into ordin8 or permanova functions." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.3</span>
       </span>
     </div>
 
@@ -149,7 +149,8 @@ Result intended to be piped into ordin8 or permanova functions.</p>
   dist <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"bray"</span>, <span class='st'>"gunifrac"</span>, <span class='st'>"unifrac"</span>, <span class='st'>"wunifrac"</span>, <span class='st'>"va-wunifrac"</span>, <span class='st'>"aitchison"</span>,
     <span class='st'>"euclidean"</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>,
   return <span class='op'>=</span> <span class='st'>"all"</span>,
-  gunifrac_alpha <span class='op'>=</span> <span class='fl'>0.5</span>
+  gunifrac_alpha <span class='op'>=</span> <span class='fl'>0.5</span>,
+  <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -170,6 +171,10 @@ Result intended to be piped into ordin8 or permanova functions.</p>
     <tr>
       <th>gunifrac_alpha</th>
       <td><p>setting alpha value only relevant if gunifrac distance used</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>optional distance-specific named args passed to phyloseq::distance()</p></td>
     </tr>
     </table>
 

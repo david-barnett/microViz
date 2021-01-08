@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.3</span>
       </span>
     </div>
 
@@ -107,8 +107,8 @@
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com">patchwork</a></span><span class="op">)</span> <span class="co"># for arranging groups of plots</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">dietswap</span><span class="op">)</span>
 <span class="fu">knitr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/knitr/man/opts_chunk.html">opts_chunk</a></span><span class="op">$</span><span class="fu">set</span><span class="op">(</span>
-    fig.height <span class="op">=</span> <span class="fl">6</span>,
-    fig.width <span class="op">=</span> <span class="fl">9</span>
+  fig.height <span class="op">=</span> <span class="fl">6</span>,
+  fig.width <span class="op">=</span> <span class="fl">9</span>
 <span class="op">)</span></code></pre></div>
 <p>The <code>plot_comp_bar</code> function allows you to visualise the taxonomic compositions of your microbiome samples in a flexible, scalable, group-able, and visually appealing way.</p>
 <div id="illustrative-simple-customised-example" class="section level2">
@@ -116,12 +116,12 @@
 <a href="#illustrative-simple-customised-example" class="anchor"></a>Illustrative simple customised example</h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dietswap</span> <span class="op">%&gt;%</span>
-   <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/subset_samples-methods.html">subset_samples</a></span><span class="op">(</span><span class="va">timepoint</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
-   <span class="fu"><a href="../reference/plot_comp_bar.html">plot_comp_bar</a></span><span class="op">(</span>
-     tax_level <span class="op">=</span> <span class="st">"Family"</span>, n_taxa <span class="op">=</span> <span class="fl">8</span>,
-     bar_outline_colour <span class="op">=</span> <span class="cn">NA</span>,
-     sample_order <span class="op">=</span> <span class="st">"bray"</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span>
-   <span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span>
+  <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/subset_samples-methods.html">subset_samples</a></span><span class="op">(</span><span class="va">timepoint</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/plot_comp_bar.html">plot_comp_bar</a></span><span class="op">(</span>
+    tax_level <span class="op">=</span> <span class="st">"Family"</span>, n_taxa <span class="op">=</span> <span class="fl">8</span>,
+    bar_outline_colour <span class="op">=</span> <span class="cn">NA</span>,
+    sample_order <span class="op">=</span> <span class="st">"bray"</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span>
+  <span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; Registered S3 method overwritten by 'seriation':</span>
 <span class="co">#&gt;   method         from </span>
 <span class="co">#&gt;   reorder.hclust vegan</span></code></pre></div>
@@ -132,7 +132,7 @@
 <a href="#averages-or-everything" class="anchor"></a>Averages or everything?</h2>
 <p>Often to compare groups, average compositions are presented.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">p1</span> <span class="op">&lt;-</span> <span class="va">dietswap</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">p1</span> <span class="op">&lt;-</span> <span class="va">dietswap</span> <span class="op">%&gt;%</span>
   <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/merge_samples-methods.html">merge_samples</a></span><span class="op">(</span>group <span class="op">=</span> <span class="st">"group"</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/plot_comp_bar.html">plot_comp_bar</a></span><span class="op">(</span>
     tax_level <span class="op">=</span> <span class="st">"Genus"</span>, n_taxa <span class="op">=</span> <span class="fl">12</span>,
@@ -145,16 +145,18 @@
 <p><img src="Visualising-compositions_files/figure-html/unnamed-chunk-4-1.png" width="864"></p>
 <p>However that “group-averaging” approach hides a lot of within-group variation.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">p2</span> <span class="op">&lt;-</span> <span class="va">dietswap</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">p2</span> <span class="op">&lt;-</span> <span class="va">dietswap</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/plot_comp_bar.html">plot_comp_bar</a></span><span class="op">(</span>
     tax_level <span class="op">=</span> <span class="st">"Genus"</span>, n_taxa <span class="op">=</span> <span class="fl">12</span>, groups <span class="op">=</span> <span class="st">"group"</span>,
     sample_order <span class="op">=</span> <span class="st">"euclidean"</span>, bar_outline_colour <span class="op">=</span> <span class="cn">NA</span>
   <span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu">patchwork</span><span class="fu">::</span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html">wrap_plots</a></span><span class="op">(</span>nrow <span class="op">=</span> <span class="fl">3</span>, guides <span class="op">=</span> <span class="st">"collect"</span><span class="op">)</span> <span class="op">&amp;</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">&amp;</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">&amp;</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">&amp;</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>, 
-        axis.ticks.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>
+    axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>,
+    axis.ticks.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>
+  <span class="op">)</span>
 <span class="va">p2</span></code></pre></div>
 <p><img src="Visualising-compositions_files/figure-html/unnamed-chunk-5-1.png" width="864"></p>
 <p>Only from p2 you can see that the apparently higher average relative abundance of Oscillospira in group DI is probably driven largely by a subgroup of DI samples with relatively high Oscillospira.</p>
@@ -185,14 +187,16 @@
 <p>Notice how you can theme all plots with the <code><a href="https://rdrr.io/r/base/Logic.html">&amp;</a></code> operator.</p>
 <p>See <a href="https://patchwork.data-imaginist.com/index.html" class="uri">https://patchwork.data-imaginist.com/index.html</a> for more examples of arranging multiple plots.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">patch</span> <span class="op">&amp;</span> 
+<code class="sourceCode R"><span class="va">patch</span> <span class="op">&amp;</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">&amp;</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">&amp;</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>, 
-        legend.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">8</span><span class="op">)</span><span class="op">)</span> <span class="op">&amp;</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>
+    axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>,
+    legend.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">8</span><span class="op">)</span>
+  <span class="op">)</span> <span class="op">&amp;</span>
   <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_annotation.html">plot_annotation</a></span><span class="op">(</span>
     title <span class="op">=</span> <span class="st">"Comparing microbial composition across sexes"</span>,
     caption <span class="op">=</span> <span class="st">"Caption: patchwork is a great package!"</span>,
-    theme <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">16</span>, face <span class="op">=</span> <span class="st">'bold'</span><span class="op">)</span><span class="op">)</span>
+    theme <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">16</span>, face <span class="op">=</span> <span class="st">"bold"</span><span class="op">)</span><span class="op">)</span>
   <span class="op">)</span></code></pre></div>
 <p><img src="Visualising-compositions_files/figure-html/unnamed-chunk-9-1.png" width="864"></p>
 </div>
@@ -201,35 +205,39 @@
 <a href="#sorting-samples-manually" class="anchor"></a>Sorting samples manually</h2>
 <p>Sorting across timepoint groups, example.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ps</span> <span class="op">&lt;-</span> <span class="va">dietswap</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/subset_samples-methods.html">subset_samples</a></span><span class="op">(</span><span class="va">group</span> <span class="op">==</span> <span class="st">'DI'</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">ps</span> <span class="op">&lt;-</span> <span class="va">dietswap</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/subset_samples-methods.html">subset_samples</a></span><span class="op">(</span><span class="va">group</span> <span class="op">==</span> <span class="st">"DI"</span><span class="op">)</span>
 
 <span class="co"># subset to participants/"subjects" with samples for both timepoints</span>
-<span class="va">timepoint_groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html">sample_data</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html">split.data.frame</a></span><span class="op">(</span>f <span class="op">=</span> <span class="va">.</span><span class="op">$</span><span class="va">timepoint.within.group</span><span class="op">)</span>
+<span class="va">timepoint_groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html">sample_data</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/split.html">split.data.frame</a></span><span class="op">(</span>f <span class="op">=</span> <span class="va">.</span><span class="op">$</span><span class="va">timepoint.within.group</span><span class="op">)</span>
 <span class="va">have_both_timepoints</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/setops.html">intersect</a></span><span class="op">(</span><span class="va">timepoint_groups</span><span class="op">$</span><span class="va">`1`</span><span class="op">$</span><span class="va">subject</span>, <span class="va">timepoint_groups</span><span class="op">$</span><span class="va">`2`</span><span class="op">$</span><span class="va">subject</span><span class="op">)</span>
 <span class="va">ps</span> <span class="op">&lt;-</span> <span class="va">ps</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/subset_samples-methods.html">subset_samples</a></span><span class="op">(</span><span class="va">subject</span> <span class="op">%in%</span> <span class="va">have_both_timepoints</span><span class="op">)</span>
 
 <span class="co"># sample</span>
 <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html">sample_data</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span><span class="op">$</span><span class="va">plot_groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/interaction.html">interaction</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html">sample_data</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span><span class="op">$</span><span class="va">nationality</span>, <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html">sample_data</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span><span class="op">$</span><span class="va">timepoint.within.group</span><span class="op">)</span>
 
-<span class="va">sample_order</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html">sample_data</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">timepoint.within.group</span>, <span class="va">nationality</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">subject</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+<span class="va">sample_order</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html">sample_data</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">timepoint.within.group</span>, <span class="va">nationality</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">subject</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html">rownames</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>Grouped by both timepoint and another grouping factor, nationality in this example.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">times_list</span> <span class="op">&lt;-</span> <span class="va">ps</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">times_list</span> <span class="op">&lt;-</span> <span class="va">ps</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/plot_comp_bar.html">plot_comp_bar</a></span><span class="op">(</span>
-    tax_level <span class="op">=</span> <span class="st">'Genus'</span>, n_taxa <span class="op">=</span> <span class="fl">10</span>, sample_order <span class="op">=</span> <span class="va">sample_order</span>,
-    groups <span class="op">=</span> <span class="st">'plot_groups'</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span>, label <span class="op">=</span> <span class="st">"subject"</span>
+    tax_level <span class="op">=</span> <span class="st">"Genus"</span>, n_taxa <span class="op">=</span> <span class="fl">10</span>, sample_order <span class="op">=</span> <span class="va">sample_order</span>,
+    groups <span class="op">=</span> <span class="st">"plot_groups"</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span>, label <span class="op">=</span> <span class="st">"subject"</span>
   <span class="op">)</span>
 
 <span class="va">times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html">wrap_plots</a></span><span class="op">(</span>
-  <span class="va">times_list</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'AAM.1'</span>, <span class="st">"AAM.2"</span>, <span class="st">"AFR.1"</span>, <span class="st">"AFR.2"</span><span class="op">)</span><span class="op">]</span>, 
-  byrow <span class="op">=</span> <span class="cn">TRUE</span>, ncol <span class="op">=</span> <span class="fl">2</span>, guides <span class="op">=</span> <span class="st">'collect'</span>, heights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">5</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span> <span class="op">&amp;</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">&amp;</span> 
+  <span class="va">times_list</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"AAM.1"</span>, <span class="st">"AAM.2"</span>, <span class="st">"AFR.1"</span>, <span class="st">"AFR.2"</span><span class="op">)</span><span class="op">]</span>,
+  byrow <span class="op">=</span> <span class="cn">TRUE</span>, ncol <span class="op">=</span> <span class="fl">2</span>, guides <span class="op">=</span> <span class="st">"collect"</span>, heights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">4</span><span class="op">)</span>
+<span class="op">)</span> <span class="op">&amp;</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">&amp;</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>
     text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,
-    axis.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+    axis.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>
+  <span class="op">)</span>
 
 <span class="va">times</span></code></pre></div>
 <p><img src="Visualising-compositions_files/figure-html/unnamed-chunk-10-1.png" width="960"></p>
@@ -244,8 +252,8 @@
 <span class="co">#&gt;  language (EN)                        </span>
 <span class="co">#&gt;  collate  English_United Kingdom.1252 </span>
 <span class="co">#&gt;  ctype    English_United Kingdom.1252 </span>
-<span class="co">#&gt;  tz       Europe/London               </span>
-<span class="co">#&gt;  date     2020-12-01                  </span>
+<span class="co">#&gt;  tz       Europe/Berlin               </span>
+<span class="co">#&gt;  date     2021-01-08                  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; - Packages ---------------------------------------------------------------------------------------</span>
 <span class="co">#&gt;  package      * version date       lib source        </span>
@@ -257,7 +265,7 @@
 <span class="co">#&gt;  biomformat     1.16.0  2020-04-27 [3] Bioconductor  </span>
 <span class="co">#&gt;  Biostrings     2.56.0  2020-04-27 [3] Bioconductor  </span>
 <span class="co">#&gt;  callr          3.5.1   2020-10-13 [3] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  cli            2.1.0   2020-10-12 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  cli            2.2.0   2020-11-20 [3] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  cluster        2.1.0   2019-06-19 [3] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  codetools      0.2-18  2020-11-04 [3] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  colorspace     2.0-0   2020-11-11 [3] CRAN (R 4.0.3)</span>
@@ -274,7 +282,7 @@
 <span class="co">#&gt;  foreach        1.5.1   2020-10-15 [3] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  fs             1.5.0   2020-07-31 [3] CRAN (R 4.0.2)</span>
 <span class="co">#&gt;  generics       0.1.0   2020-10-31 [3] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  ggplot2      * 3.3.2   2020-06-19 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  ggplot2      * 3.3.3   2020-12-30 [3] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  glue           1.4.2   2020-08-27 [3] CRAN (R 4.0.2)</span>
 <span class="co">#&gt;  gtable         0.3.0   2019-03-25 [3] CRAN (R 4.0.0)</span>
 <span class="co">#&gt;  hms            0.5.3   2020-01-08 [3] CRAN (R 4.0.0)</span>
@@ -282,7 +290,7 @@
 <span class="co">#&gt;  igraph         1.2.6   2020-10-06 [3] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  IRanges        2.22.2  2020-05-21 [3] Bioconductor  </span>
 <span class="co">#&gt;  iterators      1.0.13  2020-10-15 [3] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  jsonlite       1.7.1   2020-09-07 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  jsonlite       1.7.2   2020-12-09 [3] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  knitr          1.30    2020-09-22 [3] CRAN (R 4.0.2)</span>
 <span class="co">#&gt;  labeling       0.4.2   2020-10-20 [3] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  lattice        0.20-41 2020-04-02 [3] CRAN (R 4.0.3)</span>
@@ -293,23 +301,23 @@
 <span class="co">#&gt;  memoise        1.1.0   2017-04-21 [3] CRAN (R 4.0.0)</span>
 <span class="co">#&gt;  mgcv           1.8-33  2020-08-27 [3] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  microbiome   * 1.10.0  2020-04-27 [3] Bioconductor  </span>
-<span class="co">#&gt;  microViz     * 0.0.2   2020-12-01 [2] local         </span>
+<span class="co">#&gt;  microViz     * 0.0.3   2021-01-08 [1] local         </span>
 <span class="co">#&gt;  multtest       2.44.0  2020-04-27 [3] Bioconductor  </span>
 <span class="co">#&gt;  munsell        0.5.0   2018-06-12 [3] CRAN (R 4.0.0)</span>
 <span class="co">#&gt;  nlme           3.1-150 2020-10-24 [3] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  patchwork    * 1.1.0   2020-11-09 [3] CRAN (R 4.0.1)</span>
+<span class="co">#&gt;  patchwork    * 1.1.1   2020-12-17 [3] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  permute        0.9-5   2019-03-12 [3] CRAN (R 4.0.0)</span>
 <span class="co">#&gt;  phyloseq     * 1.32.0  2020-04-27 [3] Bioconductor  </span>
 <span class="co">#&gt;  pillar         1.4.7   2020-11-20 [3] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  pkgbuild       1.1.0   2020-07-13 [3] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  pkgbuild       1.2.0   2020-12-15 [3] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  pkgconfig      2.0.3   2019-09-22 [3] CRAN (R 4.0.0)</span>
 <span class="co">#&gt;  pkgdown        1.6.1   2020-09-12 [3] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  pkgload        1.1.0   2020-05-29 [3] CRAN (R 4.0.0)</span>
 <span class="co">#&gt;  plyr           1.8.6   2020-03-03 [3] CRAN (R 4.0.0)</span>
 <span class="co">#&gt;  prettyunits    1.1.1   2020-01-24 [3] CRAN (R 4.0.0)</span>
-<span class="co">#&gt;  processx       3.4.4   2020-09-03 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  processx       3.4.5   2020-11-30 [3] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  progress       1.2.2   2019-05-16 [3] CRAN (R 4.0.0)</span>
-<span class="co">#&gt;  ps             1.4.0   2020-10-07 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  ps             1.5.0   2020-12-05 [3] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  purrr          0.3.4   2020-04-17 [3] CRAN (R 4.0.0)</span>
 <span class="co">#&gt;  R6             2.5.0   2020-10-28 [3] CRAN (R 4.0.1)</span>
 <span class="co">#&gt;  ragg           0.4.0   2020-10-05 [3] CRAN (R 4.0.3)</span>
@@ -320,7 +328,7 @@
 <span class="co">#&gt;  reshape2       1.4.4   2020-04-09 [3] CRAN (R 4.0.0)</span>
 <span class="co">#&gt;  rhdf5          2.32.4  2020-10-05 [3] Bioconductor  </span>
 <span class="co">#&gt;  Rhdf5lib       1.10.1  2020-07-09 [3] Bioconductor  </span>
-<span class="co">#&gt;  rlang          0.4.8   2020-10-08 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  rlang          0.4.10  2020-12-30 [3] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  rmarkdown      2.5     2020-10-21 [3] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  rprojroot      2.0.2   2020-11-15 [3] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  rstudioapi     0.13    2020-11-12 [3] CRAN (R 4.0.3)</span>
@@ -333,23 +341,23 @@
 <span class="co">#&gt;  stringr        1.4.0   2019-02-10 [3] CRAN (R 4.0.0)</span>
 <span class="co">#&gt;  survival       3.2-7   2020-09-28 [3] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  systemfonts    0.3.2   2020-09-29 [3] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  testthat       3.0.0   2020-10-31 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  testthat       3.0.1   2020-12-17 [3] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  textshaping    0.1.2   2020-10-08 [3] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  tibble         3.0.4   2020-10-12 [3] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  tidyr          1.1.2   2020-08-27 [3] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  tidyselect     1.1.0   2020-05-11 [3] CRAN (R 4.0.0)</span>
 <span class="co">#&gt;  TSP            1.1-10  2020-04-17 [3] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  usethis        1.6.3   2020-09-17 [3] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  vctrs          0.3.5   2020-11-17 [3] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  vegan          2.5-6   2019-09-01 [3] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  vctrs          0.3.6   2020-12-17 [3] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  vegan          2.5-7   2020-11-28 [3] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  withr          2.3.0   2020-09-22 [3] CRAN (R 4.0.2)</span>
 <span class="co">#&gt;  xfun           0.19    2020-10-30 [3] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  XVector        0.28.0  2020-04-27 [3] Bioconductor  </span>
 <span class="co">#&gt;  yaml           2.2.1   2020-02-01 [3] CRAN (R 4.0.0)</span>
 <span class="co">#&gt;  zlibbioc       1.34.0  2020-04-27 [3] Bioconductor  </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; [1] C:/Users/david.barnett/AppData/Local/Temp/RtmpS0cnLt/temp_libpath3d5413a6717d</span>
-<span class="co">#&gt; [2] C:/Users/david.barnett/AppData/Local/Temp/RtmpS0cnLt/temp_libpath3d54e1748a6</span>
+<span class="co">#&gt; [1] C:/Users/david.barnett/AppData/Local/Temp/RtmpQJsWZn/temp_libpath35fc74b07425</span>
+<span class="co">#&gt; [2] C:/Users/david.barnett/AppData/Local/Temp/RtmpQJsWZn/temp_libpath35fc2174349a</span>
 <span class="co">#&gt; [3] C:/Program Files/R/R-4.0.3/library</span></code></pre></div>
 </div>
   </div>

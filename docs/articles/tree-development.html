@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.3</span>
       </span>
     </div>
 
@@ -209,9 +209,9 @@
     <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">models</span><span class="op">)</span>
   <span class="op">}</span>
 <span class="op">)</span>
-<span class="co">#&gt; 2020-12-01 18:14:17 - modelling at level: Phylum</span>
-<span class="co">#&gt; 2020-12-01 18:14:19 - modelling at level: Family</span>
-<span class="co">#&gt; 2020-12-01 18:14:20 - modelling at level: Genus</span>
+<span class="co">#&gt; 2021-01-08 20:50:56 - modelling at level: Phylum</span>
+<span class="co">#&gt; 2021-01-08 20:50:58 - modelling at level: Family</span>
+<span class="co">#&gt; 2021-01-08 20:50:59 - modelling at level: Genus</span>
 <span class="co"># Flatten all taxonomic level lists into one list of models</span>
 <span class="co"># (this is why taxon names must be completely identifiable across ranks)</span>
 <span class="va">flat_models_list</span> <span class="op">&lt;-</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/flatten.html">flatten</a></span><span class="op">(</span><span class="va">tax_models_list</span><span class="op">)</span>
@@ -313,11 +313,11 @@ I will document how to rerun a few times with RNG seed setting to help users fin
   <span class="op">}</span>
 <span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">luminance_l2</span> <span class="op">=</span> <span class="fl">80</span>
-<span class="va">colour_palette</span> <span class="op">=</span> <span class="st">"Green-Brown"</span>
-<span class="va">reverse_colours</span> <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="va">luminance_l2</span> <span class="op">=</span> <span class="fl">80</span>
-<span class="va">colour_lims</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">luminance_l2</span> <span class="op">&lt;-</span> <span class="fl">80</span>
+<span class="va">colour_palette</span> <span class="op">&lt;-</span> <span class="st">"Green-Brown"</span>
+<span class="va">reverse_colours</span> <span class="op">&lt;-</span> <span class="cn">FALSE</span>
+<span class="va">luminance_l2</span> <span class="op">&lt;-</span> <span class="fl">80</span>
+<span class="va">colour_lims</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>
 
 <span class="va">plots</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">layouts_list</span>, <span class="kw">function</span><span class="op">(</span><span class="va">layout_coords</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="../reference/taxatree_plot.html">taxatree_plot</a></span><span class="op">(</span>graph_object <span class="op">=</span> <span class="va">graph</span>, layout_coords <span class="op">=</span> <span class="va">layout_coords</span><span class="op">)</span> <span class="op">+</span>
@@ -420,8 +420,8 @@ I will document how to rerun a few times with RNG seed setting to help users fin
 <span class="co">#&gt;  language (EN)                        </span>
 <span class="co">#&gt;  collate  English_United Kingdom.1252 </span>
 <span class="co">#&gt;  ctype    English_United Kingdom.1252 </span>
-<span class="co">#&gt;  tz       Europe/London               </span>
-<span class="co">#&gt;  date     2020-12-01                  </span>
+<span class="co">#&gt;  tz       Europe/Berlin               </span>
+<span class="co">#&gt;  date     2021-01-08                  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; - Packages ---------------------------------------------------------------------------------------</span>
 <span class="co">#&gt;  package            * version      date       lib source                               </span>
@@ -433,7 +433,7 @@ I will document how to rerun a few times with RNG seed setting to help users fin
 <span class="co">#&gt;  biomformat           1.16.0       2020-04-27 [3] Bioconductor                         </span>
 <span class="co">#&gt;  Biostrings           2.56.0       2020-04-27 [3] Bioconductor                         </span>
 <span class="co">#&gt;  callr                3.5.1        2020-10-13 [3] CRAN (R 4.0.3)                       </span>
-<span class="co">#&gt;  cli                  2.1.0        2020-10-12 [3] CRAN (R 4.0.3)                       </span>
+<span class="co">#&gt;  cli                  2.2.0        2020-11-20 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  cluster              2.1.0        2019-06-19 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  codetools            0.2-18       2020-11-04 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  colorspace         * 2.0-0        2020-11-11 [3] CRAN (R 4.0.3)                       </span>
@@ -452,13 +452,13 @@ I will document how to rerun a few times with RNG seed setting to help users fin
 <span class="co">#&gt;  foreach              1.5.1        2020-10-15 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  fs                   1.5.0        2020-07-31 [3] CRAN (R 4.0.2)                       </span>
 <span class="co">#&gt;  furrr                0.2.1        2020-10-21 [3] CRAN (R 4.0.3)                       </span>
-<span class="co">#&gt;  future             * 1.20.1       2020-11-03 [3] CRAN (R 4.0.1)                       </span>
-<span class="co">#&gt;  future.apply       * 1.6.0        2020-07-01 [3] CRAN (R 4.0.3)                       </span>
+<span class="co">#&gt;  future             * 1.21.0       2020-12-10 [3] CRAN (R 4.0.3)                       </span>
+<span class="co">#&gt;  future.apply       * 1.7.0        2021-01-04 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  generics             0.1.0        2020-10-31 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  ggforce              0.3.2        2020-06-23 [3] CRAN (R 4.0.3)                       </span>
-<span class="co">#&gt;  ggplot2            * 3.3.2        2020-06-19 [3] CRAN (R 4.0.3)                       </span>
+<span class="co">#&gt;  ggplot2            * 3.3.3        2020-12-30 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  ggraph             * 2.0.4        2020-11-16 [3] CRAN (R 4.0.3)                       </span>
-<span class="co">#&gt;  ggrepel              0.8.2        2020-03-08 [3] CRAN (R 4.0.2)                       </span>
+<span class="co">#&gt;  ggrepel              0.9.0        2020-12-16 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  globals              0.14.0       2020-11-22 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  glue                 1.4.2        2020-08-27 [3] CRAN (R 4.0.2)                       </span>
 <span class="co">#&gt;  graphlayouts         0.7.1        2020-10-26 [3] CRAN (R 4.0.3)                       </span>
@@ -469,7 +469,7 @@ I will document how to rerun a few times with RNG seed setting to help users fin
 <span class="co">#&gt;  igraph             * 1.2.6        2020-10-06 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  IRanges              2.22.2       2020-05-21 [3] Bioconductor                         </span>
 <span class="co">#&gt;  iterators            1.0.13       2020-10-15 [3] CRAN (R 4.0.3)                       </span>
-<span class="co">#&gt;  jsonlite             1.7.1        2020-09-07 [3] CRAN (R 4.0.3)                       </span>
+<span class="co">#&gt;  jsonlite             1.7.2        2020-12-09 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  knitr                1.30         2020-09-22 [3] CRAN (R 4.0.2)                       </span>
 <span class="co">#&gt;  labeling             0.4.2        2020-10-20 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  lattice              0.20-41      2020-04-02 [3] CRAN (R 4.0.3)                       </span>
@@ -482,26 +482,26 @@ I will document how to rerun a few times with RNG seed setting to help users fin
 <span class="co">#&gt;  memoise              1.1.0        2017-04-21 [3] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  mgcv                 1.8-33       2020-08-27 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  microbiome         * 1.10.0       2020-04-27 [3] Bioconductor                         </span>
-<span class="co">#&gt;  microViz           * 0.0.2        2020-12-01 [2] local                                </span>
+<span class="co">#&gt;  microViz           * 0.0.3        2021-01-08 [1] local                                </span>
 <span class="co">#&gt;  multtest             2.44.0       2020-04-27 [3] Bioconductor                         </span>
 <span class="co">#&gt;  munsell              0.5.0        2018-06-12 [3] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  nlme                 3.1-150      2020-10-24 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  numDeriv             2016.8-1.1   2019-06-06 [3] CRAN (R 4.0.0)                       </span>
-<span class="co">#&gt;  parallelly           1.21.0       2020-10-27 [3] CRAN (R 4.0.3)                       </span>
-<span class="co">#&gt;  patchwork          * 1.1.0        2020-11-09 [3] CRAN (R 4.0.1)                       </span>
+<span class="co">#&gt;  parallelly           1.23.0       2021-01-04 [3] CRAN (R 4.0.3)                       </span>
+<span class="co">#&gt;  patchwork          * 1.1.1        2020-12-17 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  permute              0.9-5        2019-03-12 [3] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  phyloseq           * 1.32.0       2020-04-27 [3] Bioconductor                         </span>
 <span class="co">#&gt;  pillar               1.4.7        2020-11-20 [3] CRAN (R 4.0.3)                       </span>
-<span class="co">#&gt;  pkgbuild             1.1.0        2020-07-13 [3] CRAN (R 4.0.2)                       </span>
+<span class="co">#&gt;  pkgbuild             1.2.0        2020-12-15 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  pkgconfig            2.0.3        2019-09-22 [3] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  pkgdown              1.6.1        2020-09-12 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  pkgload              1.1.0        2020-05-29 [3] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  plyr                 1.8.6        2020-03-03 [3] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  polyclip             1.10-0       2019-03-14 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  prettyunits          1.1.1        2020-01-24 [3] CRAN (R 4.0.0)                       </span>
-<span class="co">#&gt;  processx             3.4.4        2020-09-03 [3] CRAN (R 4.0.3)                       </span>
+<span class="co">#&gt;  processx             3.4.5        2020-11-30 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  progress             1.2.2        2019-05-16 [3] CRAN (R 4.0.0)                       </span>
-<span class="co">#&gt;  ps                   1.4.0        2020-10-07 [3] CRAN (R 4.0.3)                       </span>
+<span class="co">#&gt;  ps                   1.5.0        2020-12-05 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  purrr              * 0.3.4        2020-04-17 [3] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  R6                   2.5.0        2020-10-28 [3] CRAN (R 4.0.1)                       </span>
 <span class="co">#&gt;  ragg                 0.4.0        2020-10-05 [3] CRAN (R 4.0.3)                       </span>
@@ -511,7 +511,7 @@ I will document how to rerun a few times with RNG seed setting to help users fin
 <span class="co">#&gt;  reshape2             1.4.4        2020-04-09 [3] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  rhdf5                2.32.4       2020-10-05 [3] Bioconductor                         </span>
 <span class="co">#&gt;  Rhdf5lib             1.10.1       2020-07-09 [3] Bioconductor                         </span>
-<span class="co">#&gt;  rlang                0.4.8        2020-10-08 [3] CRAN (R 4.0.3)                       </span>
+<span class="co">#&gt;  rlang                0.4.10       2020-12-30 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  rmarkdown            2.5          2020-10-21 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  ROI                  1.0-0        2020-08-31 [3] CRAN (R 4.0.2)                       </span>
 <span class="co">#&gt;  ROI.plugin.lpsolve   1.0-0        2020-08-29 [3] CRAN (R 4.0.2)                       </span>
@@ -526,7 +526,7 @@ I will document how to rerun a few times with RNG seed setting to help users fin
 <span class="co">#&gt;  stringr              1.4.0        2019-02-10 [3] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  survival             3.2-7        2020-09-28 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  systemfonts          0.3.2        2020-09-29 [3] CRAN (R 4.0.3)                       </span>
-<span class="co">#&gt;  testthat             3.0.0        2020-10-31 [3] CRAN (R 4.0.3)                       </span>
+<span class="co">#&gt;  testthat             3.0.1        2020-12-17 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  textshaping          0.1.2        2020-10-08 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  tibble             * 3.0.4        2020-10-12 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  tidygraph          * 1.2.0        2020-05-12 [3] CRAN (R 4.0.3)                       </span>
@@ -535,8 +535,8 @@ I will document how to rerun a few times with RNG seed setting to help users fin
 <span class="co">#&gt;  trust                0.1-8        2020-01-10 [3] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  tweenr               1.0.1        2018-12-14 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  usethis              1.6.3        2020-09-17 [3] CRAN (R 4.0.3)                       </span>
-<span class="co">#&gt;  vctrs                0.3.5        2020-11-17 [3] CRAN (R 4.0.3)                       </span>
-<span class="co">#&gt;  vegan                2.5-6        2019-09-01 [3] CRAN (R 4.0.0)                       </span>
+<span class="co">#&gt;  vctrs                0.3.6        2020-12-17 [3] CRAN (R 4.0.3)                       </span>
+<span class="co">#&gt;  vegan                2.5-7        2020-11-28 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  VGAM                 1.1-4        2020-10-23 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  viridis              0.5.1        2018-03-29 [3] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  viridisLite          0.3.0        2018-02-01 [3] CRAN (R 4.0.0)                       </span>
@@ -546,8 +546,8 @@ I will document how to rerun a few times with RNG seed setting to help users fin
 <span class="co">#&gt;  yaml                 2.2.1        2020-02-01 [3] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  zlibbioc             1.34.0       2020-04-27 [3] Bioconductor                         </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; [1] C:/Users/david.barnett/AppData/Local/Temp/RtmpS0cnLt/temp_libpath3d5413a6717d</span>
-<span class="co">#&gt; [2] C:/Users/david.barnett/AppData/Local/Temp/RtmpS0cnLt/temp_libpath3d54e1748a6</span>
+<span class="co">#&gt; [1] C:/Users/david.barnett/AppData/Local/Temp/RtmpQJsWZn/temp_libpath35fc74b07425</span>
+<span class="co">#&gt; [2] C:/Users/david.barnett/AppData/Local/Temp/RtmpQJsWZn/temp_libpath35fc2174349a</span>
 <span class="co">#&gt; [3] C:/Program Files/R/R-4.0.3/library</span></code></pre></div>
 </div>
 </div>
