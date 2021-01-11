@@ -75,7 +75,7 @@ Use this function with the output of model_tax_corncob. models2stats_corncob spl
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.4</span>
       </span>
     </div>
 
@@ -245,7 +245,7 @@ Run a line like this beforehand: <code><a href='https://rdrr.io/pkg/future/man/p
     <span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='va'>models</span><span class='op'>)</span>
   <span class='op'>}</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>2021-01-09 09:46:08 - modelling at level: Phylum</span></div><div class='output co'>#&gt; <span class='message'>2021-01-09 09:46:10 - modelling at level: Family</span></div><div class='output co'>#&gt; <span class='message'>2021-01-09 09:46:11 - modelling at level: Genus</span></div><div class='input'><span class='co'># Flatten all taxonomic level lists into one list of models</span>
+</div><div class='output co'>#&gt; <span class='message'>2021-01-11 09:29:24 - modelling at level: Phylum</span></div><div class='output co'>#&gt; <span class='message'>2021-01-11 09:29:25 - modelling at level: Family</span></div><div class='output co'>#&gt; <span class='message'>2021-01-11 09:29:27 - modelling at level: Genus</span></div><div class='input'><span class='co'># Flatten all taxonomic level lists into one list of models</span>
 <span class='co'># (this is why taxon names must be completely identifiable across ranks)</span>
 <span class='va'>flat_models_list</span> <span class='op'>&lt;-</span> <span class='fu'>purrr</span><span class='fu'>::</span><span class='fu'><a href='https://purrr.tidyverse.org/reference/flatten.html'>flatten</a></span><span class='op'>(</span><span class='va'>tax_models_list</span><span class='op'>)</span>
 <span class='va'>var_stats</span> <span class='op'>&lt;-</span> <span class='fu'>models2stats_corncob</span><span class='op'>(</span><span class='va'>flat_models_list</span><span class='op'>)</span>
