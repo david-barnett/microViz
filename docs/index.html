@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5</span>
       </span>
     </div>
 
@@ -116,7 +116,7 @@
 
 <span class="co"># # Installing the latest version of this package # #</span>
 <span class="co"># install.packages("devtools")</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"MUMC-MEDMIC/microViz"</span><span class="op">)</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"MUMC-MEDMIC/microViz@version"</span><span class="op">)</span>
 <span class="co"># # advanced tip: add @&lt;commit-hash&gt; after microViz to install a particular version</span>
 
 <span class="co"># optionally install the corncob package from github (for beta binomial models)</span>
@@ -233,8 +233,8 @@
   n_perms <span class="op">=</span> <span class="fl">99</span>, n_processes <span class="op">=</span> <span class="fl">1</span>, 
   variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"bmi_group"</span><span class="op">)</span>
 <span class="op">)</span>
-<span class="co">#&gt; 2021-01-07 11:36:25 - Starting PERMANOVA with 99 perms with 1 processes</span>
-<span class="co">#&gt; 2021-01-07 11:36:25 - Finished PERMANOVA</span>
+<span class="co">#&gt; 2021-01-11 11:47:36 - Starting PERMANOVA with 99 perms with 1 processes</span>
+<span class="co">#&gt; 2021-01-11 11:47:36 - Finished PERMANOVA</span>
 <span class="co"># view the permanova results</span>
 <span class="va">aitchison_perm</span><span class="op">$</span><span class="va">permanova</span>
 <span class="co">#&gt; </span>
@@ -270,8 +270,8 @@
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">perm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/permanova.html">permanova</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">aitchison_dists</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"female"</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">321</span><span class="op">)</span>
 <span class="co">#&gt; WARNING: Dropping samples with NAs for "female". At least 2</span>
-<span class="co">#&gt; 2021-01-07 11:36:25 - Starting PERMANOVA with 999 perms with 1 processes</span>
-<span class="co">#&gt; 2021-01-07 11:36:27 - Finished PERMANOVA</span>
+<span class="co">#&gt; 2021-01-11 11:47:36 - Starting PERMANOVA with 999 perms with 1 processes</span>
+<span class="co">#&gt; 2021-01-11 11:47:38 - Finished PERMANOVA</span>
 <span class="va">perm2</span><span class="op">$</span><span class="va">permanova</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Call:</span>
@@ -314,8 +314,8 @@
   adonis2 <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># important when testing interactions</span>
   return <span class="op">=</span> <span class="st">"permanova"</span> <span class="co"># return only the permanova output</span>
 <span class="op">)</span>
-<span class="co">#&gt; 2021-01-07 11:36:28 - Starting PERMANOVA with 999 perms with 1 processes</span>
-<span class="co">#&gt; 2021-01-07 11:36:30 - Finished PERMANOVA</span>
+<span class="co">#&gt; 2021-01-11 11:47:39 - Starting PERMANOVA with 999 perms with 1 processes</span>
+<span class="co">#&gt; 2021-01-11 11:47:41 - Finished PERMANOVA</span>
 <span class="co">#&gt; Permutation test for adonis under reduced model</span>
 <span class="co">#&gt; Marginal effects of terms</span>
 <span class="co">#&gt; Permutation: free</span>
@@ -345,7 +345,7 @@
 <span class="co">#&gt;  collate  English_United Kingdom.1252 </span>
 <span class="co">#&gt;  ctype    English_United Kingdom.1252 </span>
 <span class="co">#&gt;  tz       Europe/Berlin               </span>
-<span class="co">#&gt;  date     2021-01-07                  </span>
+<span class="co">#&gt;  date     2021-01-11                  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; - Packages ---------------------------------------------------------------------------------------</span>
 <span class="co">#&gt;  package      * version date       lib source        </span>
@@ -393,7 +393,7 @@
 <span class="co">#&gt;  memoise        1.1.0   2017-04-21 [1] CRAN (R 4.0.0)</span>
 <span class="co">#&gt;  mgcv           1.8-33  2020-08-27 [1] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  microbiome   * 1.10.0  2020-04-27 [1] Bioconductor  </span>
-<span class="co">#&gt;  microViz     * 0.0.2   2021-01-07 [1] local         </span>
+<span class="co">#&gt;  microViz     * 0.0.4   2021-01-11 [1] local         </span>
 <span class="co">#&gt;  multtest       2.44.0  2020-04-27 [1] Bioconductor  </span>
 <span class="co">#&gt;  munsell        0.5.0   2018-06-12 [1] CRAN (R 4.0.0)</span>
 <span class="co">#&gt;  nlme           3.1-150 2020-10-24 [1] CRAN (R 4.0.3)</span>

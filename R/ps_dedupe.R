@@ -48,6 +48,7 @@ ps_dedupe <- function(ps,
   ps_df[[".temp_grouping_var"]] <- interaction(ps_df[, vars])
 
   dupe_names <- unique(ps_df[[".temp_grouping_var"]][duplicated(ps_df[, ".temp_grouping_var"])])
+  no_dupe_samples <- rownames(ps_df)[!ps_df[[".temp_grouping_var"]] %in% dupe_names]
 
   rejects_message <- function(rejects) {
     message(length(rejects), " samples being removed:\n", paste0(rejects, collapse = "; "))
@@ -84,7 +85,7 @@ ps_dedupe <- function(ps,
         rejects <- ps_df$.temp_sample_id_var[!ps_df$.temp_sample_id_var %in% keepers]
         rejects_message(rejects)
       }
-      keepers
+      union(keepers, no_dupe_samples)
     },
     "first" = {
       keepers <- !duplicated(ps_df[[".temp_grouping_var"]])

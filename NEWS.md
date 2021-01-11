@@ -1,3 +1,9 @@
+# microViz 0.0.5
+
+## Features
+
+* `ps_dedupe` bug fix method = "readcount" now correctly keeps all samples that "first" or "last" methods do
+
 # microViz 0.0.4
 
 ## Features
