@@ -36,7 +36,7 @@ following instructions.
 
 # # Installing the latest version of this package # #
 # install.packages("devtools")
-devtools::install_github("MUMC-MEDMIC/microViz")
+devtools::install_github("MUMC-MEDMIC/microViz@version")
 # # advanced tip: add @<commit-hash> after microViz to install a particular version
 
 # optionally install the corncob package from github (for beta binomial models)
@@ -171,8 +171,8 @@ aitchison_perm <- permanova(
   n_perms = 99, n_processes = 1, 
   variables = c("bmi_group")
 )
-#> 2021-01-07 11:36:25 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2021-01-07 11:36:25 - Finished PERMANOVA
+#> 2021-01-11 11:47:36 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2021-01-11 11:47:36 - Finished PERMANOVA
 # view the permanova results
 aitchison_perm$permanova
 #> 
@@ -211,8 +211,8 @@ constraints.
 ``` r
 perm2 <- permanova(data = aitchison_dists, variables = c("weight", "female"), seed = 321)
 #> WARNING: Dropping samples with NAs for "female". At least 2
-#> 2021-01-07 11:36:25 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2021-01-07 11:36:27 - Finished PERMANOVA
+#> 2021-01-11 11:47:36 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2021-01-11 11:47:38 - Finished PERMANOVA
 perm2$permanova
 #> 
 #> Call:
@@ -261,8 +261,8 @@ permanova(
   adonis2 = TRUE, # important when testing interactions
   return = "permanova" # return only the permanova output
 )
-#> 2021-01-07 11:36:28 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2021-01-07 11:36:30 - Finished PERMANOVA
+#> 2021-01-11 11:47:39 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2021-01-11 11:47:41 - Finished PERMANOVA
 #> Permutation test for adonis under reduced model
 #> Marginal effects of terms
 #> Permutation: free
@@ -291,7 +291,7 @@ devtools::session_info()
 #>  collate  English_United Kingdom.1252 
 #>  ctype    English_United Kingdom.1252 
 #>  tz       Europe/Berlin               
-#>  date     2021-01-07                  
+#>  date     2021-01-11                  
 #> 
 #> - Packages ---------------------------------------------------------------------------------------
 #>  package      * version date       lib source        
@@ -339,7 +339,7 @@ devtools::session_info()
 #>  memoise        1.1.0   2017-04-21 [1] CRAN (R 4.0.0)
 #>  mgcv           1.8-33  2020-08-27 [1] CRAN (R 4.0.3)
 #>  microbiome   * 1.10.0  2020-04-27 [1] Bioconductor  
-#>  microViz     * 0.0.2   2021-01-07 [1] local         
+#>  microViz     * 0.0.4   2021-01-11 [1] local         
 #>  multtest       2.44.0  2020-04-27 [1] Bioconductor  
 #>  munsell        0.5.0   2018-06-12 [1] CRAN (R 4.0.0)
 #>  nlme           3.1-150 2020-10-24 [1] CRAN (R 4.0.3)
