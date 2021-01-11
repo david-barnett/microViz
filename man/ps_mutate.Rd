@@ -4,16 +4,16 @@
 \alias{ps_mutate}
 \title{Mutate sample data in phyloseq object}
 \usage{
-ps_mutate(ps, .target = "sample_data", .across = NULL, ...)
+ps_mutate(ps, ..., .target = "sample_data", .across = NULL)
 }
 \arguments{
 \item{ps}{phyloseq object with sample data}
 
+\item{...}{passed straight to dplyr::mutate (see examples and dplyr::mutate help)}
+
 \item{.target}{which slot to mutate, currently only "sample_data" supported}
 
 \item{.across}{placeholder for future implementation of working dplyr::across functionality}
-
-\item{...}{passed straight to dplyr::mutate (see examples and dplyr::mutate help)}
 }
 \value{
 phyloseq object with modified sample_data

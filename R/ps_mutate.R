@@ -3,10 +3,10 @@
 #' Wrapper for dplyr::mutate. Use mutate syntax with all the non-standard evaluation.
 #'
 #' @param ps phyloseq object with sample data
+#' @param ... passed straight to dplyr::mutate (see examples and dplyr::mutate help)
 #' @param .target which slot to mutate, currently only "sample_data" supported
 #' @param .across placeholder for future implementation of working dplyr::across functionality
-#' @param ... passed straight to dplyr::mutate (see examples and dplyr::mutate help)
-#'
+
 #' @return phyloseq object with modified sample_data
 #' @export
 #'
@@ -38,7 +38,7 @@
 #'
 #' sample_data(ps)[1:10, ]
 #'
-ps_mutate <- function(ps, .target = "sample_data", .across = NULL, ...) {
+ps_mutate <- function(ps, ..., .target = "sample_data", .across = NULL) {
   if (!inherits(ps, "phyloseq")) {
     stop("ps must be a phyloseq object. It is of class: ", class(ps))
   }
