@@ -40,7 +40,8 @@
 
 
 <meta property="og:title" content="Mutate sample data in phyloseq object — ps_mutate" />
-<meta property="og:description" content="Wrapper for dplyr::mutate. Use mutate syntax with all the non-standard evaluation." />
+<meta property="og:description" content="Wrapper for dplyr::mutate. Use mutate syntax with all the non-standard evaluation.
+Add or compute new phyloseq sample_data variables." />
 
 
 
@@ -72,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6</span>
       </span>
     </div>
 
@@ -135,10 +136,11 @@
     </div>
 
     <div class="ref-description">
-    <p>Wrapper for dplyr::mutate. Use mutate syntax with all the non-standard evaluation.</p>
+    <p>Wrapper for dplyr::mutate. Use mutate syntax with all the non-standard evaluation.
+Add or compute new phyloseq sample_data variables.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ps_mutate</span><span class='op'>(</span><span class='va'>ps</span>, <span class='va'>...</span>, .target <span class='op'>=</span> <span class='st'>"sample_data"</span>, .across <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>ps_mutate</span><span class='op'>(</span><span class='va'>ps</span>, <span class='va'>...</span>, .target <span class='op'>=</span> <span class='st'>"sample_data"</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -154,10 +156,6 @@
     <tr>
       <th>.target</th>
       <td><p>which slot to mutate, currently only "sample_data" supported</p></td>
-    </tr>
-    <tr>
-      <th>.across</th>
-      <td><p>placeholder for future implementation of working dplyr::across functionality</p></td>
     </tr>
     </table>
 
@@ -226,13 +224,11 @@
 #&gt; DA.AD.3    49          obese        588      TRUE        Word
 #&gt; DA.AD.3T   NA           &lt;NA&gt;         NA        NA        Word
 #&gt; DA.AD.4    59          obese        708      TRUE        Word</div><div class='input'>
-<span class='co'># Using the dplyr::across functionality is a little different,</span>
-<span class='co'># but is possible using the dedicated .across argument.</span>
-<span class='co'># Further expressions can be passed to dots at the same time as using .across.</span>
-  <span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>ps</span> <span class='op'>%&gt;%</span>
+<span class='co'># Using the dplyr::across functionality is also possible</span>
+<span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>ps</span> <span class='op'>%&gt;%</span>
   <span class='fu'>ps_mutate</span><span class='op'>(</span>
-    .across <span class='op'>=</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/across.html'>across</a></span><span class='op'>(</span><span class='fu'>where</span><span class='op'>(</span><span class='va'>is.factor</span><span class='op'>)</span>, <span class='va'>toupper</span><span class='op'>)</span>,
-    dots_still_work <span class='op'>=</span> <span class='cn'>TRUE</span>
+    <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/across.html'>across</a></span><span class='op'>(</span><span class='fu'>where</span><span class='op'>(</span><span class='va'>is.factor</span><span class='op'>)</span>, <span class='va'>toupper</span><span class='op'>)</span>,
+    another_var <span class='op'>=</span> <span class='cn'>TRUE</span>
   <span class='op'>)</span>
 
 <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='op'>]</span>
@@ -248,18 +244,17 @@
 #&gt; DA.AD.3            3   DA.AD.3  SANGER   DA.AD.3     METAHIT      DANISH      F
 #&gt; DA.AD.3T        &lt;NA&gt;  DA.AD.3T  SANGER      &lt;NA&gt;        &lt;NA&gt;        &lt;NA&gt;   &lt;NA&gt;
 #&gt; DA.AD.4            2   DA.AD.4  SANGER   DA.AD.4     METAHIT      DANISH      M
-#&gt;           Age ClinicalStatus age_months IDs_match placeholder dots_still_work
-#&gt; AM.AD.1    28        HEALTHY        336      TRUE        Word            TRUE
-#&gt; AM.AD.2    37        HEALTHY        444      TRUE        Word            TRUE
-#&gt; AM.F10.T1  NA          OBESE         NA      TRUE        Word            TRUE
-#&gt; AM.F10.T2  NA          OBESE         NA      TRUE        Word            TRUE
-#&gt; DA.AD.1    59        HEALTHY        708      TRUE        Word            TRUE
-#&gt; DA.AD.1T   NA           &lt;NA&gt;         NA        NA        Word            TRUE
-#&gt; DA.AD.2    54        HEALTHY        648      TRUE        Word            TRUE
-#&gt; DA.AD.3    49          OBESE        588      TRUE        Word            TRUE
-#&gt; DA.AD.3T   NA           &lt;NA&gt;         NA        NA        Word            TRUE
-#&gt; DA.AD.4    59          OBESE        708      TRUE        Word            TRUE</div><div class='input'>
-</div></pre>
+#&gt;           Age ClinicalStatus age_months IDs_match placeholder another_var
+#&gt; AM.AD.1    28        HEALTHY        336      TRUE        Word        TRUE
+#&gt; AM.AD.2    37        HEALTHY        444      TRUE        Word        TRUE
+#&gt; AM.F10.T1  NA          OBESE         NA      TRUE        Word        TRUE
+#&gt; AM.F10.T2  NA          OBESE         NA      TRUE        Word        TRUE
+#&gt; DA.AD.1    59        HEALTHY        708      TRUE        Word        TRUE
+#&gt; DA.AD.1T   NA           &lt;NA&gt;         NA        NA        Word        TRUE
+#&gt; DA.AD.2    54        HEALTHY        648      TRUE        Word        TRUE
+#&gt; DA.AD.3    49          OBESE        588      TRUE        Word        TRUE
+#&gt; DA.AD.3T   NA           &lt;NA&gt;         NA        NA        Word        TRUE
+#&gt; DA.AD.4    59          OBESE        708      TRUE        Word        TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

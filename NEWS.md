@@ -1,3 +1,5 @@
+# microViz 0.0.6
+
 # microViz 0.0.5
 
 ## Features

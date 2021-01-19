@@ -4,7 +4,7 @@
 \alias{ps_mutate}
 \title{Mutate sample data in phyloseq object}
 \usage{
-ps_mutate(ps, ..., .target = "sample_data", .across = NULL)
+ps_mutate(ps, ..., .target = "sample_data")
 }
 \arguments{
 \item{ps}{phyloseq object with sample data}
@@ -12,14 +12,13 @@ ps_mutate(ps, ..., .target = "sample_data", .across = NULL)
 \item{...}{passed straight to dplyr::mutate (see examples and dplyr::mutate help)}
 
 \item{.target}{which slot to mutate, currently only "sample_data" supported}
-
-\item{.across}{placeholder for future implementation of working dplyr::across functionality}
 }
 \value{
 phyloseq object with modified sample_data
 }
 \description{
 Wrapper for dplyr::mutate. Use mutate syntax with all the non-standard evaluation.
+Add or compute new phyloseq sample_data variables.
 }
 \examples{
 library(phyloseq)
@@ -38,15 +37,12 @@ ps <- enterotype \%>\%
 
 sample_data(ps)[1:10, ]
 
-# Using the dplyr::across functionality is a little different,
-# but is possible using the dedicated .across argument.
-# Further expressions can be passed to dots at the same time as using .across.
-  ps <- ps \%>\%
+# Using the dplyr::across functionality is also possible
+ps <- ps \%>\%
   ps_mutate(
-    .across = dplyr::across(where(is.factor), toupper),
-    dots_still_work = TRUE
+    dplyr::across(where(is.factor), toupper),
+    another_var = TRUE
   )
 
 sample_data(ps)[1:10, ]
-
 }
