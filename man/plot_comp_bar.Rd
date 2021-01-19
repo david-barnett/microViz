@@ -35,7 +35,7 @@ plot_comp_bar(
 
 \item{palette}{palette for taxa fill colours}
 
-\item{sample_order}{vector of sample names or any distance measure in calc_dist that does not require a phylogenetic tree}
+\item{sample_order}{vector of sample names, any distance measure in calc_dist that does not require a phylogenetic tree, or "default" for the order returned by phyloseq::sample_names(ps)}
 
 \item{order_samples_with_all_taxa}{if TRUE, this will use all taxa (not just the top n_taxa) to calculate distances for sample ordering}
 
@@ -71,16 +71,32 @@ Stacked barplots showing composition of phyloseq samples for a specified number 
 library(microbiome)
 data(dietswap)
 
-
 # illustrative simple customised example
 dietswap \%>\%
   ps_filter(timepoint == 1) \%>\%
   plot_comp_bar(
     tax_level = "Family", n_taxa = 8,
     bar_outline_colour = NA,
-    sample_order = "bray", bar_width = 0.7,
+    sample_order = "bray",
+    bar_width = 0.7,
     taxon_renamer = toupper
   ) + coord_flip()
+
+# Order samples by the value of one of more sample_data variables.
+# Use ps_arrange and set sample_order = "default" in plot_comp_bar.
+# ps_mutate is also used here to create an informative variable for axis labelling
+dietswap \%>\%
+  ps_mutate(subject_timepoint = interaction(subject, timepoint)) \%>\%
+  ps_filter(nationality == "AAM", group == "DI", sex == "female") \%>\%
+  ps_arrange(desc(subject), desc(timepoint)) \%>\%
+  plot_comp_bar(
+    tax_level = "Genus", n_taxa = 12,
+    bar_outline_colour = NA,
+    sample_order = "default",
+    bar_width = 0.7,
+    label = "subject_timepoint"
+  ) + coord_flip()
+
 
 # Often to compare groups, average compositions are presented
 p1 <- phyloseq::merge_samples(dietswap, group = "group") \%>\%
@@ -129,7 +145,4 @@ patch[[2]] <- patch[[2]] + scale_x_discrete(limits = rev)
 patch & coord_flip() &
   theme(axis.text.y = element_text(size = 5), legend.text = element_text(size = 6))
 # See https://patchwork.data-imaginist.com/index.html
-
-
-
 }

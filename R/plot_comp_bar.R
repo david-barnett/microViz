@@ -48,7 +48,7 @@
 #' dietswap %>%
 #'   ps_mutate(subject_timepoint = interaction(subject, timepoint)) %>%
 #'   ps_filter(nationality == "AAM", group == "DI", sex == "female") %>%
-#'   ps_arrange(desc(subject), desc()) %>%
+#'   ps_arrange(desc(subject), desc(timepoint)) %>%
 #'   plot_comp_bar(
 #'     tax_level = "Genus", n_taxa = 12,
 #'     bar_outline_colour = NA,
