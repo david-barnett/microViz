@@ -33,7 +33,15 @@ ps_join(
 phyloseq with modified sample_data (and possibly filtered)
 }
 \description{
-You can use most types of join from the dplyr::*_join function family, including:
+You can use most types of join from the dplyr::*_join function family, including e.g. "inner", "left", "semi", "anti" (see details below).
+Defaults to type = "left" which calls left_join(), this supports x as a phyloseq and y as a dataframe.
+This wrapper simply:
+\enumerate{
+\item extracts the sample_data from the phyloseq as a dataframe
+\item performs the chosen type of join (with the given arguments)
+\item filters the phyloseq if type = inner, semi or anti
+\item reattaches the modified sample_data to the phyloseq and returns the phyloseq
+}
 }
 \details{
 \strong{Mutating joins}, which will add columns from a dataframe to phyloseq sample data, matching rows based on the key columns named in the \code{by} argument:
@@ -52,15 +60,6 @@ This will cause this function to fail, as additional rows cannot be added to the
 \itemize{
 \item "semi": return all rows from x with a match in y.
 \item "anti": return all rows from x without a match in y.
-}
-
-This wrapper simply:
-\enumerate{
-\item extracts the sample_data from the phyloseq as a dataframe
-\item performs the chosen type of join (with the given arguments)
-\item filters the phyloseq if type = inner, semi or anti
-\item reattaches the modified sample_data to the phyloseq and returns the phyloseq
-Defaults to type = "left" which calls left_join(), this supports x as a phyloseq and y as a dataframe.
 }
 }
 \examples{

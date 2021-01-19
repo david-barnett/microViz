@@ -14,7 +14,7 @@
 #' @param tax_order order of taxa within the bars, currently only "abundance" works, which puts the most abundant taxa at the bottom (or left).
 #' @param taxon_renamer function that takes taxon names and returns modified names for legend
 #' @param palette palette for taxa fill colours
-#' @param sample_order vector of sample names or any distance measure in calc_dist that does not require a phylogenetic tree
+#' @param sample_order vector of sample names, any distance measure in calc_dist that does not require a phylogenetic tree, or "default" for the order returned by phyloseq::sample_names(ps)
 #' @param order_samples_with_all_taxa if TRUE, this will use all taxa (not just the top n_taxa) to calculate distances for sample ordering
 #' @param tax_transform_for_ordering transformation of taxa values used before ordering samples by similarity
 #' @param label could also consider arbitrary annotation with extra info, like in complex heatmap
@@ -31,16 +31,32 @@
 #' library(microbiome)
 #' data(dietswap)
 #'
-#'
 #' # illustrative simple customised example
 #' dietswap %>%
-#'   subset_samples(timepoint == 1) %>%
+#'   ps_filter(timepoint == 1) %>%
 #'   plot_comp_bar(
 #'     tax_level = "Family", n_taxa = 8,
 #'     bar_outline_colour = NA,
-#'     sample_order = "bray", bar_width = 0.7,
+#'     sample_order = "bray",
+#'     bar_width = 0.7,
 #'     taxon_renamer = toupper
 #'   ) + coord_flip()
+#'
+#' # Order samples by the value of one of more sample_data variables.
+#' # Use ps_arrange and set sample_order = "default" in plot_comp_bar.
+#' # ps_mutate is also used here to create an informative variable for axis labelling
+#' dietswap %>%
+#'   ps_mutate(subject_timepoint = interaction(subject, timepoint)) %>%
+#'   ps_filter(nationality == "AAM", group == "DI", sex == "female") %>%
+#'   ps_arrange(desc(subject), desc()) %>%
+#'   plot_comp_bar(
+#'     tax_level = "Genus", n_taxa = 12,
+#'     bar_outline_colour = NA,
+#'     sample_order = "default",
+#'     bar_width = 0.7,
+#'     label = "subject_timepoint"
+#'   ) + coord_flip()
+#'
 #'
 #' # Often to compare groups, average compositions are presented
 #' p1 <- phyloseq::merge_samples(dietswap, group = "group") %>%
@@ -89,9 +105,6 @@
 #' patch & coord_flip() &
 #'   theme(axis.text.y = element_text(size = 5), legend.text = element_text(size = 6))
 #' # See https://patchwork.data-imaginist.com/index.html
-#'
-#'
-#'
 plot_comp_bar <- function(
                           ps,
                           tax_level,
@@ -131,7 +144,7 @@ plot_comp_bar <- function(
   }
   # determine sample ordering option
   samples_ordered_by_similarity <- FALSE # default (may be overwritten with true)
-  if (identical(sample_order, "none")) {
+  if (identical(sample_order, "default")) {
     ordered_samples <- phyloseq::sample_names(ps)
   } else if (length(sample_order) == 1 && !sample_order %in% phyloseq::sample_variables(ps)) {
     samples_ordered_by_similarity <- TRUE
@@ -164,7 +177,7 @@ plot_comp_bar <- function(
     if (isFALSE(is.na(groups))) {
       kept_vars <- c(union(kept_vars, groups))
     }
-    if (!samples_ordered_by_similarity && length(sample_order) == 1 && sample_order != "none") {
+    if (!samples_ordered_by_similarity && length(sample_order) == 1 && sample_order != "default") {
       kept_vars <- c(union(kept_vars, sample_order))
     }
     phyloseq::sample_data(ps) <- microbiome::meta(ps)[, kept_vars, drop = FALSE]

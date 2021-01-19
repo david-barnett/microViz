@@ -74,7 +74,7 @@ data(dietswap)
 
 # illustrative simple customised example
 dietswap \%>\%
-  subset_samples(timepoint == 1) \%>\%
+  ps_filter(timepoint == 1) \%>\%
   plot_comp_bar(
     tax_level = "Family", n_taxa = 8,
     bar_outline_colour = NA,

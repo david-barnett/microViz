@@ -1,5 +1,13 @@
 # microViz 0.0.6
 
+## Features
+
+* `ps_filter` allows filtering of `phyloseq` samples by values of variables in `sample_data`  (wrapper around `dplyr`'s `filter` function)
+
+## Breaking changes
+
+* `ps_mutate` no longer needs `.across` argument to use `dplyr::across()`
+
 # microViz 0.0.5
 
 ## Features

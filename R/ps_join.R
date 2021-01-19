@@ -1,6 +1,12 @@
 #' Join a dataframe to phyloseq sample data
 #'
-#' You can use most types of join from the dplyr::*_join function family, including:
+#' You can use most types of join from the dplyr::*_join function family, including e.g. "inner", "left", "semi", "anti" (see details below).
+#' Defaults to type = "left" which calls left_join(), this supports x as a phyloseq and y as a dataframe.
+#' This wrapper simply:
+#'  1. extracts the sample_data from the phyloseq as a dataframe
+#'  2. performs the chosen type of join (with the given arguments)
+#'  3. filters the phyloseq if type = inner, semi or anti
+#'  4. reattaches the modified sample_data to the phyloseq and returns the phyloseq
 #'
 #' __Mutating joins__, which will add columns from a dataframe to phyloseq sample data, matching rows based on the key columns named in the `by` argument:
 #'
@@ -17,14 +23,6 @@
 #'
 #' - "semi": return all rows from x with a match in y.
 #' - "anti": return all rows from x without a match in y.
-#'
-#' This wrapper simply:
-#'  1. extracts the sample_data from the phyloseq as a dataframe
-#'  2. performs the chosen type of join (with the given arguments)
-#'  3. filters the phyloseq if type = inner, semi or anti
-#'  4. reattaches the modified sample_data to the phyloseq and returns the phyloseq
-#' Defaults to type = "left" which calls left_join(), this supports x as a phyloseq and y as a dataframe.
-#'
 #'
 #' @param x phyloseq (or dataframe)
 #' @param y dataframe (or phyloseq for e.g. type = "right")

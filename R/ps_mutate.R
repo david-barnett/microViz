@@ -6,7 +6,7 @@
 #' @param ps phyloseq object with sample data
 #' @param ... passed straight to dplyr::mutate (see examples and dplyr::mutate help)
 #' @param .target which slot to mutate, currently only "sample_data" supported
-
+#'
 #' @return phyloseq object with modified sample_data
 #' @export
 #'
