@@ -7,6 +7,7 @@
 ord_plot(
   data,
   axes = 1:2,
+  scaling = "species",
   constraint_vec_length = 1,
   constraint_vec_style = list(),
   constraint_lab_length = constraint_vec_length * 1.1,
@@ -28,6 +29,8 @@ ord_plot(
 \item{data}{list object output from ord_calc}
 
 \item{axes}{which axes to plot: numerical vector of length 2}
+
+\item{scaling}{either "species" (2) or "site" (1) scores are scaled by eigenvalues, and the other set of scores is left unscaled (from ?vegan::scores.cca)}
 
 \item{constraint_vec_length}{relative length of line segment drawn for any constraints (relative to default length which is defined by correlation with each drawn axis)}
 

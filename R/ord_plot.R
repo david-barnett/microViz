@@ -12,6 +12,7 @@
 #'
 #' @param data list object output from ord_calc
 #' @param axes which axes to plot: numerical vector of length 2
+#' @param scaling either "species" (2) or "site" (1) scores are scaled by eigenvalues, and the other set of scores is left unscaled (from ?vegan::scores.cca)
 #' @param constraint_vec_length relative length of line segment drawn for any constraints (relative to default length which is defined by correlation with each drawn axis)
 #' @param constraint_vec_style list of aesthetics/arguments (colour, alpha etc) for the constraint vectors
 #' @param constraint_lab_length relative length of label drawn for any constraints (relative to default position which is defined by correlation with each drawn axis)
@@ -110,6 +111,7 @@
 ord_plot <-
   function(data,
            axes = 1:2,
+           scaling = "species",
            constraint_vec_length = 1,
            constraint_vec_style = list(),
            constraint_lab_length = constraint_vec_length * 1.1,
@@ -192,7 +194,7 @@ ord_plot <-
     } else {
 
       # compute summary of ordination object to ensure consistent scaling of components
-      ordsum <- summary(ordination, scaling = "species")
+      ordsum <- summary(ordination, scaling = scaling)
 
       # retrieve scores from model object
       siteScoresDf <- as.data.frame(ordsum[["sites"]][, axes, drop = FALSE])
@@ -340,7 +342,7 @@ ord_plot <-
         infoElements[["cs"]] <- paste("constraints =", paste(info[["constraints"]], collapse = "+"))
       }
 
-      caption <- paste(stats::nobs(df), "samples &", phyloseq::ntaxa(ps), "taxa.")
+      caption <- paste(stats::nobs(df), "samples &", phyloseq::ntaxa(ps), "taxa.", scaling, "scaling.")
       caption <- paste(caption, paste(infoElements, collapse = ". "))
 
       p <- p + ggplot2::labs(caption = caption) +
