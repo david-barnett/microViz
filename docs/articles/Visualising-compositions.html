@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -147,8 +147,8 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">p2</span> <span class="op">&lt;-</span> <span class="va">dietswap</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/plot_comp_bar.html">plot_comp_bar</a></span><span class="op">(</span>
-    tax_level <span class="op">=</span> <span class="st">"Genus"</span>, n_taxa <span class="op">=</span> <span class="fl">12</span>, groups <span class="op">=</span> <span class="st">"group"</span>,
-    sample_order <span class="op">=</span> <span class="st">"euclidean"</span>, bar_outline_colour <span class="op">=</span> <span class="cn">NA</span>
+    tax_level <span class="op">=</span> <span class="st">"Genus"</span>, n_taxa <span class="op">=</span> <span class="fl">12</span>, group_by <span class="op">=</span> <span class="st">"group"</span>,
+    sample_order <span class="op">=</span> <span class="st">"euclidean"</span>, bar_outline_colour <span class="op">=</span> <span class="cn">NA</span>, keep_all_vars <span class="op">=</span> <span class="cn">TRUE</span>
   <span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu">patchwork</span><span class="fu">::</span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html">wrap_plots</a></span><span class="op">(</span>nrow <span class="op">=</span> <span class="fl">3</span>, guides <span class="op">=</span> <span class="st">"collect"</span><span class="op">)</span> <span class="op">&amp;</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">&amp;</span>
@@ -157,28 +157,52 @@
     axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>,
     axis.ticks.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>
   <span class="op">)</span>
-<span class="va">p2</span></code></pre></div>
+<span class="va">p2</span> </code></pre></div>
 <p><img src="Visualising-compositions_files/figure-html/unnamed-chunk-5-1.png" width="864"></p>
 <p>Only from p2 you can see that the apparently higher average relative abundance of Oscillospira in group DI is probably driven largely by a subgroup of DI samples with relatively high Oscillospira.</p>
+</div>
+<div id="faceting-tips" class="section level2">
+<h2 class="hasAnchor">
+<a href="#faceting-tips" class="anchor"></a>Faceting tips:</h2>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">facets_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_comp_bar.html">plot_comp_bar</a></span><span class="op">(</span>
+  <span class="va">dietswap</span>,
+  n_taxa <span class="op">=</span> <span class="fl">15</span>, tax_level <span class="op">=</span> <span class="st">"Genus"</span>,
+  bar_outline_colour <span class="op">=</span> <span class="st">"black"</span>,
+  sample_order <span class="op">=</span> <span class="st">"aitchison"</span>, facet_by <span class="op">=</span> <span class="st">"sex"</span>
+<span class="op">)</span>
+<span class="va">facets_plot</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>
+    axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>,
+    legend.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">8</span><span class="op">)</span>,
+    plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">16</span>, face <span class="op">=</span> <span class="st">"bold"</span><span class="op">)</span>
+  <span class="op">)</span> </code></pre></div>
+<p><img src="Visualising-compositions_files/figure-html/unnamed-chunk-6-1.png" width="864"></p>
+<p>Faceting grouped plots post-hoc is possible: You can apply faceting to all plots with <code><a href="https://rdrr.io/r/base/Logic.html">&amp;</a></code>. Below is an example with plot list object p2 from above.</p>
+<p>(remembered that <code>facet_wrap</code> with scales = “free” is normally desired).</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">p2</span> <span class="op">&amp;</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="st">'sex'</span>, scales <span class="op">=</span> <span class="st">'free'</span><span class="op">)</span></code></pre></div>
+<p><img src="Visualising-compositions_files/figure-html/unnamed-chunk-7-1.png" width="864"></p>
 </div>
 <div id="customising-grouped-plots" class="section level2">
 <h2 class="hasAnchor">
 <a href="#customising-grouped-plots" class="anchor"></a>Customising grouped plots</h2>
-<p>Make a list of 2 harmonised composition plots grouped by sex.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<p>Remake the 2 harmonised composition plots grouped by sex, but using group_by and patchwork. (Note that the ordering of the samples may differ between facet and group_by approaches. In the group_by method, the ordering of the samples by similarity is done separately for each group, whereas in the facet_by method, similarity-based ordering is done with all samples and then the samples are separated by facet afterwards).</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">plot_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_comp_bar.html">plot_comp_bar</a></span><span class="op">(</span>
   <span class="va">dietswap</span>,
   n_taxa <span class="op">=</span> <span class="fl">15</span>, tax_level <span class="op">=</span> <span class="st">"Genus"</span>,
   bar_outline_colour <span class="op">=</span> <span class="st">"black"</span>,
-  sample_order <span class="op">=</span> <span class="st">"aitchison"</span>, groups <span class="op">=</span> <span class="st">"sex"</span>
+  sample_order <span class="op">=</span> <span class="st">"aitchison"</span>, group_by <span class="op">=</span> <span class="st">"sex"</span>
 <span class="op">)</span></code></pre></div>
 <p>Plot them side by side with the patchwork package.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">patch</span> <span class="op">&lt;-</span> <span class="fu">patchwork</span><span class="fu">::</span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html">wrap_plots</a></span><span class="op">(</span><span class="va">plot_list</span>, ncol <span class="op">=</span> <span class="fl">2</span>, guides <span class="op">=</span> <span class="st">"collect"</span><span class="op">)</span>
 <span class="va">patch</span> <span class="op">&amp;</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># make bars in all plots horizontal (note: use &amp; instead of +)</span></code></pre></div>
-<p><img src="Visualising-compositions_files/figure-html/unnamed-chunk-7-1.png" width="864"></p>
+<p><img src="Visualising-compositions_files/figure-html/unnamed-chunk-9-1.png" width="864"></p>
 <p>Modify one plot in place (flip the order of the samples in the 2nd plot). <em>Notice that the scaling is for the x-axis. That’s because</em> <code>coord_flip</code> <em>is used afterwards when displaying the plots</em></p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">patch</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">patch</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_discrete.html">scale_x_discrete</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="va">rev</span><span class="op">)</span>
 <span class="co">#&gt; Scale for 'x' is already present. Adding another scale for 'x', which will replace the existing</span>
 <span class="co">#&gt; scale.</span>
@@ -186,7 +210,7 @@
 <span class="co"># You could also pass a completely arbitrary order to limits, naming all samples.</span></code></pre></div>
 <p>Notice how you can theme all plots with the <code><a href="https://rdrr.io/r/base/Logic.html">&amp;</a></code> operator.</p>
 <p>See <a href="https://patchwork.data-imaginist.com/index.html" class="uri">https://patchwork.data-imaginist.com/index.html</a> for more examples of arranging multiple plots.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">patch</span> <span class="op">&amp;</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">&amp;</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">&amp;</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>
@@ -198,13 +222,13 @@
     caption <span class="op">=</span> <span class="st">"Caption: patchwork is a great package!"</span>,
     theme <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">16</span>, face <span class="op">=</span> <span class="st">"bold"</span><span class="op">)</span><span class="op">)</span>
   <span class="op">)</span></code></pre></div>
-<p><img src="Visualising-compositions_files/figure-html/unnamed-chunk-9-1.png" width="864"></p>
+<p><img src="Visualising-compositions_files/figure-html/unnamed-chunk-11-1.png" width="864"></p>
 </div>
 <div id="sorting-samples-manually" class="section level2">
 <h2 class="hasAnchor">
 <a href="#sorting-samples-manually" class="anchor"></a>Sorting samples manually</h2>
 <p>Sorting across timepoint groups, example.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ps</span> <span class="op">&lt;-</span> <span class="va">dietswap</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">group</span> <span class="op">==</span> <span class="st">"DI"</span><span class="op">)</span>
 
 <span class="co"># subset to participants/"subjects" with samples for both timepoints</span>
@@ -219,12 +243,12 @@
   plot_groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/interaction.html">interaction</a></span><span class="op">(</span><span class="va">nationality</span>, <span class="va">timepoint.within.group</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
 <p>Grouped by both timepoint and another grouping factor, nationality in this example.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">times_list</span> <span class="op">&lt;-</span> <span class="va">ps</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/ps_arrange.html">ps_arrange</a></span><span class="op">(</span><span class="va">timepoint.within.group</span>, <span class="va">nationality</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">subject</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/plot_comp_bar.html">plot_comp_bar</a></span><span class="op">(</span>
     tax_level <span class="op">=</span> <span class="st">"Genus"</span>, n_taxa <span class="op">=</span> <span class="fl">10</span>, sample_order <span class="op">=</span> <span class="st">"default"</span>,
-    groups <span class="op">=</span> <span class="st">"plot_groups"</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span>, label <span class="op">=</span> <span class="st">"subject"</span>
+    group_by <span class="op">=</span> <span class="st">"plot_groups"</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span>, label <span class="op">=</span> <span class="st">"subject"</span>
   <span class="op">)</span>
 
 <span class="va">times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html">wrap_plots</a></span><span class="op">(</span>
@@ -238,8 +262,8 @@
   <span class="op">)</span>
 
 <span class="va">times</span></code></pre></div>
-<p><img src="Visualising-compositions_files/figure-html/unnamed-chunk-10-1.png" width="960"></p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<p><img src="Visualising-compositions_files/figure-html/unnamed-chunk-12-1.png" width="960"></p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sessioninfo/man/session_info.html">session_info</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; - Session info -----------------------------------------------------------------------------------</span>
 <span class="co">#&gt;  setting  value                       </span>
@@ -251,7 +275,7 @@
 <span class="co">#&gt;  collate  English_United Kingdom.1252 </span>
 <span class="co">#&gt;  ctype    English_United Kingdom.1252 </span>
 <span class="co">#&gt;  tz       Europe/Berlin               </span>
-<span class="co">#&gt;  date     2021-01-19                  </span>
+<span class="co">#&gt;  date     2021-01-24                  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; - Packages ---------------------------------------------------------------------------------------</span>
 <span class="co">#&gt;  package      * version date       lib source        </span>
@@ -300,7 +324,7 @@
 <span class="co">#&gt;  memoise        1.1.0   2017-04-21 [2] CRAN (R 4.0.0)</span>
 <span class="co">#&gt;  mgcv           1.8-33  2020-08-27 [2] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  microbiome   * 1.10.0  2020-04-27 [2] Bioconductor  </span>
-<span class="co">#&gt;  microViz     * 0.0.6   2021-01-19 [2] local         </span>
+<span class="co">#&gt;  microViz     * 0.1.0   2021-01-24 [2] local         </span>
 <span class="co">#&gt;  multtest       2.44.0  2020-04-27 [2] Bioconductor  </span>
 <span class="co">#&gt;  munsell        0.5.0   2018-06-12 [2] CRAN (R 4.0.0)</span>
 <span class="co">#&gt;  nlme           3.1-150 2020-10-24 [2] CRAN (R 4.0.3)</span>
@@ -321,7 +345,7 @@
 <span class="co">#&gt;  R6             2.5.0   2020-10-28 [2] CRAN (R 4.0.1)</span>
 <span class="co">#&gt;  ragg           0.4.0   2020-10-05 [2] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  RColorBrewer   1.1-2   2014-12-07 [2] CRAN (R 4.0.0)</span>
-<span class="co">#&gt;  Rcpp           1.0.5   2020-07-06 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  Rcpp           1.0.6   2021-01-15 [2] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  registry       0.5-1   2019-03-05 [2] CRAN (R 4.0.0)</span>
 <span class="co">#&gt;  remotes        2.2.0   2020-07-21 [2] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  reshape2       1.4.4   2020-04-09 [2] CRAN (R 4.0.0)</span>
@@ -355,7 +379,7 @@
 <span class="co">#&gt;  yaml           2.2.1   2020-02-01 [2] CRAN (R 4.0.0)</span>
 <span class="co">#&gt;  zlibbioc       1.34.0  2020-04-27 [2] Bioconductor  </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; [1] C:/Users/david.barnett/AppData/Local/Temp/RtmpkZMWof/temp_libpath4fbc51a062c2</span>
+<span class="co">#&gt; [1] C:/Users/david.barnett/AppData/Local/Temp/Rtmp61iH4u/temp_libpathfe826db4832</span>
 <span class="co">#&gt; [2] C:/Program Files/R/R-4.0.3/library</span></code></pre></div>
 </div>
   </div>

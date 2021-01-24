@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Filter rare taxa from a phyloseq object — tax_filter • microViz</title>
+<title>Calculate distances between pairs of samples in phyloseq object — dist_calc • microViz</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,11 @@
 
 
 
-<meta property="og:title" content="Filter rare taxa from a phyloseq object — tax_filter" />
-<meta property="og:description" content="Takes a phyloseq object and filtering criteria arguments" />
+<meta property="og:title" content="Calculate distances between pairs of samples in phyloseq object — dist_calc" />
+<meta property="og:description" content="For use directly with phyloseq object or with list output of tax_agg.
+Computes various unifrac distances, aitchison distance or any distance from vegdist.
+Returns phyloseq and name of distance in addition to the distance matrix itself!
+Result intended to be piped into ord_calc or permanova functions." />
 
 
 
@@ -129,103 +132,79 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Filter rare taxa from a phyloseq object</h1>
-    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/tax_filter.R'><code>R/tax_filter.R</code></a></small>
-    <div class="hidden name"><code>tax_filter.Rd</code></div>
+    <h1>Calculate distances between pairs of samples in phyloseq object</h1>
+    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/dist_calc.R'><code>R/dist_calc.R</code></a></small>
+    <div class="hidden name"><code>dist_calc.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Takes a phyloseq object and filtering criteria arguments</p>
+    <p>For use directly with phyloseq object or with list output of tax_agg.
+Computes various unifrac distances, aitchison distance or any distance from vegdist.
+Returns phyloseq and name of distance in addition to the distance matrix itself!
+Result intended to be piped into ord_calc or permanova functions.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>tax_filter</span><span class='op'>(</span>
-  ps <span class='op'>=</span> <span class='va'>ps</span>,
-  min_prevalence <span class='op'>=</span> <span class='fl'>1</span>,
-  prev_detection_threshold <span class='op'>=</span> <span class='fl'>1</span>,
-  min_total_abundance <span class='op'>=</span> <span class='fl'>1</span>,
-  min_sample_abundance <span class='op'>=</span> <span class='fl'>1</span>,
-  tax_level <span class='op'>=</span> <span class='cn'>NA</span>,
-  names_only <span class='op'>=</span> <span class='cn'>FALSE</span>
+    <pre class="usage"><span class='fu'>dist_calc</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  dist <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"bray"</span>, <span class='st'>"gunifrac"</span>, <span class='st'>"unifrac"</span>, <span class='st'>"wunifrac"</span>, <span class='st'>"va-wunifrac"</span>, <span class='st'>"aitchison"</span>,
+    <span class='st'>"euclidean"</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>,
+  return <span class='op'>=</span> <span class='st'>"all"</span>,
+  gunifrac_alpha <span class='op'>=</span> <span class='fl'>0.5</span>,
+  <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>ps</th>
-      <td><p>phyloseq object with unfiltered COUNTS</p></td>
+      <th>data</th>
+      <td><p>phyloseq object or list object output from tax_agg</p></td>
     </tr>
     <tr>
-      <th>min_prevalence</th>
-      <td><p>number or proportion of samples that a taxon must be present in</p></td>
+      <th>dist</th>
+      <td><p>name of distance to calculate between pairs of samples</p></td>
     </tr>
     <tr>
-      <th>prev_detection_threshold</th>
-      <td><p>min counts for a taxon to be considered present in that sample</p></td>
+      <th>return</th>
+      <td><p>choose which parts of list object to return</p></td>
     </tr>
     <tr>
-      <th>min_total_abundance</th>
-      <td><p>minimum total readcount of a taxon, summed across all samples (can be proportion of all counts)</p></td>
+      <th>gunifrac_alpha</th>
+      <td><p>setting alpha value only relevant if gunifrac distance used</p></td>
     </tr>
     <tr>
-      <th>min_sample_abundance</th>
-      <td><p>if 1 or greater, treat as absolute min abundance, if &lt;1 treat as proportion of sample counts</p></td>
-    </tr>
-    <tr>
-      <th>tax_level</th>
-      <td><p>if given, aggregates data at named taxonomic rank before filtering, but returns phyloseq at the ORIGINAL level of aggregation!</p></td>
-    </tr>
-    <tr>
-      <th>names_only</th>
-      <td><p>if names_only is true return only names of taxa, not the phyloseq</p></td>
+      <th>...</th>
+      <td><p>optional distance-specific named args passed to phyloseq::distance()</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>filtered phyloseq object AT ORIGINAL LEVEL OF AGGREGATION (not at the level in tax_level)</p>
+    <p>list with distance matrix, phyloseq object, and name of distance used</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Removes taxa (from all samples) that do not meet a given criterion or combination of criteria.
-If a value is 1 or greater, it is treatd as an absolute minimum number of samples/reads. If &lt;1, it is treated as proportion of all samples/reads.</p>
+    <p>Aitchison distance note: You should EITHER</p><ol>
+<li><p>skip the dist_calc function and call ord_calc(method = "RDA") directly on an object with taxa transformed with tax_transform(transformation = "clr")</p></li>
+<li><p>pass an object with untransformed (or 'identity' transformed) taxa to the data argument of dist_calc and specify dist = "aitchison".
+If ordination plots with taxon loading distances are desired, users should prefer option 1.
+If the distance matrix is required for permanova, users should prefer option 2.</p></li>
+</ol>
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span>
-<span class='co'># Dropping rare and low abundance taxa #</span>
-<span class='co'># Filter at unique taxa level, keeping only those with a prevalence of 10% or more</span>
-<span class='co'># and at least 10 thousand reads when summed across all samples.</span>
-<span class='co'># Then aggregate to Family level taxonomy.</span>
-<span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>tax_filter</span><span class='op'>(</span>min_prevalence <span class='op'>=</span> <span class='fl'>0.1</span>, min_total_abundance <span class='op'>=</span> <span class='fl'>10000</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='st'>"Family"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Proportional min_prevalence given: 0.1 --&gt; min 23/222 samples.</span></div><div class='output co'>#&gt; $ps
-#&gt; phyloseq-class experiment-level object
-#&gt; otu_table()   OTU Table:         [ 9 taxa and 222 samples ]
-#&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 9 taxa by 3 taxonomic ranks ]
-#&gt; 
-#&gt; $info
-#&gt; $info$tax_level
-#&gt; [1] "Family"
-#&gt; 
-#&gt; </div><div class='input'>
-<span class='co'># Keeping ubiquitous families #</span>
-<span class='co'># keep only families that have at least 1000 counts present in 90% of samples</span>
-<span class='co'># then aggregate the remaining taxa at 'Genus' level</span>
-<span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>tax_filter</span><span class='op'>(</span>tax_level <span class='op'>=</span> <span class='st'>"Family"</span>, min_prevalence <span class='op'>=</span> <span class='fl'>0.90</span>, prev_detection_threshold <span class='op'>=</span> <span class='fl'>1000</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='st'>"Genus"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Proportional min_prevalence given: 0.9 --&gt; min 200/222 samples.</span></div><div class='output co'>#&gt; $ps
-#&gt; phyloseq-class experiment-level object
-#&gt; otu_table()   OTU Table:         [ 28 taxa and 222 samples ]
-#&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 28 taxa by 3 taxonomic ranks ]
-#&gt; 
-#&gt; $info
-#&gt; $info$tax_level
-#&gt; [1] "Genus"
-#&gt; 
-#&gt; </div></pre>
+    <pre class="examples"><div class='input'><span class='co'># bray curtis distance on genera-level features</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span>
+<span class='va'>bc</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dist_calc</span><span class='op'>(</span><span class='st'>"bray"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='va'>bc</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "list"</div><div class='input'>
+<span class='co'># gunifrac distance using phyloseq input</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"esophagus"</span>, package <span class='op'>=</span> <span class='st'>"phyloseq"</span><span class='op'>)</span>
+<span class='va'>gunifrac</span> <span class='op'>&lt;-</span> <span class='va'>esophagus</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dist_calc</span><span class='op'>(</span><span class='st'>"gunifrac"</span>, return <span class='op'>=</span> <span class='st'>"distMat"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='va'>gunifrac</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "dist"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

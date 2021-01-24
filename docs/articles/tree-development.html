@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -201,7 +201,7 @@
   X <span class="op">=</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/rank_names.html">rank_names</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>,
   <span class="kw">function</span><span class="op">(</span><span class="va">r</span><span class="op">)</span> <span class="op">{</span>
     <span class="fu"><a href="https://rdrr.io/r/base/message.html">message</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">" - modelling at level: "</span>, <span class="va">r</span><span class="op">)</span>
-    <span class="va">models</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_tax_corncob.html">model_tax_corncob</a></span><span class="op">(</span>
+    <span class="va">models</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tax_model_corncob.html">tax_model_corncob</a></span><span class="op">(</span>
       ps <span class="op">=</span> <span class="va">ps</span>,
       tax_level <span class="op">=</span> <span class="va">r</span>, taxa <span class="op">=</span> <span class="st">"all"</span>,
       variables <span class="op">=</span> <span class="va">variables</span>
@@ -209,13 +209,13 @@
     <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">models</span><span class="op">)</span>
   <span class="op">}</span>
 <span class="op">)</span>
-<span class="co">#&gt; 2021-01-19 19:24:33 - modelling at level: Phylum</span>
-<span class="co">#&gt; 2021-01-19 19:24:35 - modelling at level: Family</span>
-<span class="co">#&gt; 2021-01-19 19:24:36 - modelling at level: Genus</span>
+<span class="co">#&gt; 2021-01-24 19:41:11 - modelling at level: Phylum</span>
+<span class="co">#&gt; 2021-01-24 19:41:12 - modelling at level: Family</span>
+<span class="co">#&gt; 2021-01-24 19:41:14 - modelling at level: Genus</span>
 <span class="co"># Flatten all taxonomic level lists into one list of models</span>
 <span class="co"># (this is why taxon names must be completely identifiable across ranks)</span>
 <span class="va">flat_models_list</span> <span class="op">&lt;-</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/flatten.html">flatten</a></span><span class="op">(</span><span class="va">tax_models_list</span><span class="op">)</span>
-<span class="va">var_stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_tax_corncob.html">models2stats_corncob</a></span><span class="op">(</span><span class="va">flat_models_list</span><span class="op">)</span></code></pre></div>
+<span class="va">var_stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tax_model_corncob.html">models2stats_corncob</a></span><span class="op">(</span><span class="va">flat_models_list</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div id="from-phyloseq-to-treegraph" class="section level1">
@@ -421,7 +421,7 @@ I will document how to rerun a few times with RNG seed setting to help users fin
 <span class="co">#&gt;  collate  English_United Kingdom.1252 </span>
 <span class="co">#&gt;  ctype    English_United Kingdom.1252 </span>
 <span class="co">#&gt;  tz       Europe/Berlin               </span>
-<span class="co">#&gt;  date     2021-01-19                  </span>
+<span class="co">#&gt;  date     2021-01-24                  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; - Packages ---------------------------------------------------------------------------------------</span>
 <span class="co">#&gt;  package            * version      date       lib source                               </span>
@@ -483,7 +483,7 @@ I will document how to rerun a few times with RNG seed setting to help users fin
 <span class="co">#&gt;  memoise              1.1.0        2017-04-21 [2] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  mgcv                 1.8-33       2020-08-27 [2] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  microbiome         * 1.10.0       2020-04-27 [2] Bioconductor                         </span>
-<span class="co">#&gt;  microViz           * 0.0.6        2021-01-19 [2] local                                </span>
+<span class="co">#&gt;  microViz           * 0.1.0        2021-01-24 [2] local                                </span>
 <span class="co">#&gt;  multtest             2.44.0       2020-04-27 [2] Bioconductor                         </span>
 <span class="co">#&gt;  munsell              0.5.0        2018-06-12 [2] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  nlme                 3.1-150      2020-10-24 [2] CRAN (R 4.0.3)                       </span>
@@ -506,7 +506,7 @@ I will document how to rerun a few times with RNG seed setting to help users fin
 <span class="co">#&gt;  purrr              * 0.3.4        2020-04-17 [2] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  R6                   2.5.0        2020-10-28 [2] CRAN (R 4.0.1)                       </span>
 <span class="co">#&gt;  ragg                 0.4.0        2020-10-05 [2] CRAN (R 4.0.3)                       </span>
-<span class="co">#&gt;  Rcpp                 1.0.5        2020-07-06 [2] CRAN (R 4.0.3)                       </span>
+<span class="co">#&gt;  Rcpp                 1.0.6        2021-01-15 [2] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  registry             0.5-1        2019-03-05 [2] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  remotes              2.2.0        2020-07-21 [2] CRAN (R 4.0.3)                       </span>
 <span class="co">#&gt;  reshape2             1.4.4        2020-04-09 [2] CRAN (R 4.0.0)                       </span>
@@ -547,7 +547,7 @@ I will document how to rerun a few times with RNG seed setting to help users fin
 <span class="co">#&gt;  yaml                 2.2.1        2020-02-01 [2] CRAN (R 4.0.0)                       </span>
 <span class="co">#&gt;  zlibbioc             1.34.0       2020-04-27 [2] Bioconductor                         </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; [1] C:/Users/david.barnett/AppData/Local/Temp/RtmpkZMWof/temp_libpath4fbc51a062c2</span>
+<span class="co">#&gt; [1] C:/Users/david.barnett/AppData/Local/Temp/Rtmp61iH4u/temp_libpathfe826db4832</span>
 <span class="co">#&gt; [2] C:/Program Files/R/R-4.0.3/library</span></code></pre></div>
 </div>
 </div>

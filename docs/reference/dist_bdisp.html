@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate PERMANOVA after dist_calc — permanova • microViz</title>
+<title>Wrapper for vegan::betadisper — dist_bdisp • microViz</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,10 @@
 
 
 
-<meta property="og:title" content="Calculate PERMANOVA after dist_calc — permanova" />
-<meta property="og:description" content="Wrapper for vegan adonis/adonis2, takes the output of dist_calc (a list containing a phyloseq object and calculated distance matrix)" />
+<meta property="og:title" content="Wrapper for vegan::betadisper — dist_bdisp" />
+<meta property="og:description" content="Takes the output of dist_calc function. Or use with the result of the permanova function to ensure the results correspond to exactly the same input data.
+Runs betadisper for all categorical variables in variables argument.
+See help('betadisper', package = 'vegan')." />
 
 
 
@@ -129,24 +131,22 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculate PERMANOVA after dist_calc</h1>
-    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/permanova.R'><code>R/permanova.R</code></a></small>
-    <div class="hidden name"><code>permanova.Rd</code></div>
+    <h1>Wrapper for vegan::betadisper</h1>
+    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/dist_bdisp.R'><code>R/dist_bdisp.R</code></a></small>
+    <div class="hidden name"><code>dist_bdisp.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Wrapper for vegan adonis/adonis2, takes the output of dist_calc (a list containing a phyloseq object and calculated distance matrix)</p>
+    <p>Takes the output of dist_calc function. Or use with the result of the permanova function to ensure the results correspond to exactly the same input data.
+Runs betadisper for all categorical variables in variables argument.
+See help('betadisper', package = 'vegan').</p>
     </div>
 
-    <pre class="usage"><span class='fu'>permanova</span><span class='op'>(</span>
+    <pre class="usage"><span class='fu'>dist_bdisp</span><span class='op'>(</span>
   <span class='va'>data</span>,
   <span class='va'>variables</span>,
-  interactions <span class='op'>=</span> <span class='cn'>NULL</span>,
+  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"centroid"</span>, <span class='st'>"median"</span><span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>,
   complete_cases <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  n_processes <span class='op'>=</span> <span class='fl'>1</span>,
-  n_perms <span class='op'>=</span> <span class='fl'>999</span>,
-  seed <span class='op'>=</span> <span class='cn'>NULL</span>,
-  adonis2 <span class='op'>=</span> <span class='cn'>FALSE</span>,
   verbose <span class='op'>=</span> <span class='cn'>TRUE</span>,
   return <span class='op'>=</span> <span class='st'>"all"</span>
 <span class='op'>)</span></pre>
@@ -160,31 +160,15 @@
     </tr>
     <tr>
       <th>variables</th>
-      <td><p>character vector of variables to include in model</p></td>
+      <td><p>list of variables to use as group</p></td>
     </tr>
     <tr>
-      <th>interactions</th>
-      <td><p>interactions between variables, written in the style of e.g. "var_a * var_b"</p></td>
+      <th>method</th>
+      <td><p>centroid or median</p></td>
     </tr>
     <tr>
       <th>complete_cases</th>
-      <td><p>if TRUE, drops observations if they contain missing values</p></td>
-    </tr>
-    <tr>
-      <th>n_processes</th>
-      <td><p>how many parallel processes to use? (uses parallel::makePSOCKcluster)</p></td>
-    </tr>
-    <tr>
-      <th>n_perms</th>
-      <td><p>how many permutations?</p></td>
-    </tr>
-    <tr>
-      <th>seed</th>
-      <td><p>set a random number generator seed to ensure you get the same results each run</p></td>
-    </tr>
-    <tr>
-      <th>adonis2</th>
-      <td><p>use adonis2 (with by = "margin") instead of adonis (better if you have interactions)</p></td>
+      <td><p>drop samples with NAs in any of the variables listed</p></td>
     </tr>
     <tr>
       <th>verbose</th>
@@ -198,31 +182,38 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>list containing permanova results and input objects</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>Drops observations with missing values if complete_cases is TRUE, otherwises throws an error.</p>
+    <p>list containing betadisper results list and input objects</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://dx.plos.org/10.1371/journal.pone.0061217'>phyloseq</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://cran.r-project.org'>vegan</a></span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Loading required package: permute</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: lattice</span></div><div class='output co'>#&gt; <span class='message'>This is vegan 2.5-7</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span>
 
 <span class='co'># add some missings to demonstrate automated removal</span>
 <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='va'>dietswap</span><span class='op'>)</span><span class='op'>$</span><span class='va'>sex</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='cn'>NA</span>
+<span class='co'># create a numeric variable to show it will be skipped with a warning</span>
+<span class='va'>dietswap</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ps_mutate.html'>ps_mutate</a></span><span class='op'>(</span><span class='va'>dietswap</span>, timepoint <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>timepoint</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='co'># compute distance</span>
+<span class='co'># straight to the betadisp</span>
+<span class='va'>bd1</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='dist_calc.html'>dist_calc</a></span><span class='op'>(</span><span class='st'>"aitchison"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dist_bdisp</span><span class='op'>(</span>variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"sex"</span>, <span class='st'>"bmi_group"</span>, <span class='st'>"timepoint"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 4</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Variable timepoint is skipped as it cannot be used for grouping (class = numeric)</span></div><div class='input'><span class='co'># quick vegan plotting methods</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>bd1</span><span class='op'>$</span><span class='va'>dist_bdisp</span><span class='op'>$</span><span class='va'>sex</span><span class='op'>$</span><span class='va'>model</span>, label.cex <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span>
+</div><div class='img'><img src='dist_bdisp-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/boxplot.html'>boxplot</a></span><span class='op'>(</span><span class='va'>bd1</span><span class='op'>$</span><span class='va'>dist_bdisp</span><span class='op'>$</span><span class='va'>sex</span><span class='op'>$</span><span class='va'>model</span><span class='op'>)</span>
+</div><div class='img'><img src='dist_bdisp-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># compute distance and use for both permanova and dist_bdisp</span>
 <span class='va'>testDist</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='dist_calc.html'>dist_calc</a></span><span class='op'>(</span><span class='st'>"bray"</span><span class='op'>)</span>
 
 <span class='va'>PERM</span> <span class='op'>&lt;-</span> <span class='va'>testDist</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>permanova</span><span class='op'>(</span>
-    seed <span class='op'>=</span> <span class='fl'>1</span>,
+  <span class='fu'><a href='permanova.html'>permanova</a></span><span class='op'>(</span>
     variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"sex"</span>, <span class='st'>"bmi_group"</span><span class='op'>)</span>,
     n_processes <span class='op'>=</span> <span class='fl'>1</span>, n_perms <span class='op'>=</span> <span class='fl'>99</span>
   <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 4</span></div><div class='output co'>#&gt; <span class='message'>2021-01-24 19:40:18 - Starting PERMANOVA with 99 perms with 1 processes</span></div><div class='output co'>#&gt; <span class='message'>2021-01-24 19:40:18 - Finished PERMANOVA</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>PERM</span>, max.level <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 4</span></div><div class='output co'>#&gt; <span class='message'>2021-01-24 19:40:09 - Starting PERMANOVA with 99 perms with 1 processes</span></div><div class='output co'>#&gt; <span class='message'>2021-01-24 19:40:10 - Finished PERMANOVA</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>PERM</span>, max.level <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; List of 4
 #&gt;  $ info     :List of 3
 #&gt;  $ permanova:List of 7
@@ -234,34 +225,50 @@
 #&gt;   ..- attr(*, "Diag")= logi FALSE
 #&gt;   ..- attr(*, "Upper")= logi FALSE
 #&gt;  $ ps       :Formal class 'phyloseq' [package "phyloseq"] with 5 slots</div><div class='input'>
-<span class='va'>PERM2</span> <span class='op'>&lt;-</span> <span class='va'>testDist</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>permanova</span><span class='op'>(</span>
-    seed <span class='op'>=</span> <span class='fl'>1</span>,
-    variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"sex"</span>, <span class='st'>"bmi_group"</span><span class='op'>)</span>,
-    interactions <span class='op'>=</span> <span class='st'>"sex * bmi_group"</span>,
-    n_processes <span class='op'>=</span> <span class='fl'>1</span>, n_perms <span class='op'>=</span> <span class='fl'>99</span>,
-    adonis2 <span class='op'>=</span> <span class='cn'>TRUE</span>
-  <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 4</span></div><div class='output co'>#&gt; <span class='message'>2021-01-24 19:40:18 - Starting PERMANOVA with 99 perms with 1 processes</span></div><div class='output co'>#&gt; <span class='message'>2021-01-24 19:40:18 - Finished PERMANOVA</span></div><div class='input'><span class='va'>PERM2</span><span class='op'>$</span><span class='va'>permanova</span>
-</div><div class='output co'>#&gt; Permutation test for adonis under reduced model
-#&gt; Marginal effects of terms
-#&gt; Permutation: free
-#&gt; Number of permutations: 99
+<span class='va'>bd</span> <span class='op'>&lt;-</span> <span class='va'>PERM</span> <span class='op'>%&gt;%</span> <span class='fu'>dist_bdisp</span><span class='op'>(</span>variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"sex"</span>, <span class='st'>"bmi_group"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 0</span></div><div class='input'><span class='va'>bd</span><span class='op'>$</span><span class='va'>dist_bdisp</span><span class='op'>$</span><span class='va'>bmi_group</span>
+</div><div class='output co'>#&gt; $model
 #&gt; 
-#&gt; vegan::adonis2(formula = FORMULA, data = metadata, permutations = n_perms, by = "margin", parallel = cl)
-#&gt;                Df SumOfSqs      R2      F Pr(&gt;F)   
-#&gt; sex:bmi_group   1    0.916 0.02369 5.5843   0.01 **
-#&gt; Residual      213   34.958 0.90351                 
-#&gt; Total         217   38.691 1.00000                 
+#&gt; 	Homogeneity of multivariate dispersions
+#&gt; 
+#&gt; Call: vegan::betadisper(d = distMat, group = metadata[[V]], type =
+#&gt; method)
+#&gt; 
+#&gt; No. of Positive Eigenvalues: 91
+#&gt; No. of Negative Eigenvalues: 126
+#&gt; 
+#&gt; Average distance to centroid:
+#&gt;       lean overweight      obese 
+#&gt;     0.3617     0.4146     0.4069 
+#&gt; 
+#&gt; Eigenvalues for PCoA axes:
+#&gt; (Showing 8 of 217 eigenvalues)
+#&gt;  PCoA1  PCoA2  PCoA3  PCoA4  PCoA5  PCoA6  PCoA7  PCoA8 
+#&gt; 16.545  6.630  2.822  2.640  1.892  1.735  1.320  1.115 
+#&gt; 
+#&gt; $anova
+#&gt; Analysis of Variance Table
+#&gt; 
+#&gt; Response: Distances
+#&gt;            Df  Sum Sq  Mean Sq F value   Pr(&gt;F)   
+#&gt; Groups      2 0.10092 0.050460  6.7068 0.001495 **
+#&gt; Residuals 215 1.61759 0.007524                    
 #&gt; ---
-#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</div><div class='input'>
-<span class='co'># take the same distance matrix used for the permanova and plot an ordination</span>
-<span class='va'>PERM2</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span><span class='st'>"PCoA"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"bmi_group"</span><span class='op'>)</span>
-</div><div class='img'><img src='permanova-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># this ensures any samples dropped from the permanova for having missing values</span>
-<span class='co'># in the covariates are NOT included in the corresponding ordination plot</span>
-</div></pre>
+#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#&gt; 
+#&gt; $tukeyHSD
+#&gt;   Tukey multiple comparisons of means
+#&gt;     95% family-wise confidence level
+#&gt; 
+#&gt; Fit: aov(formula = distances ~ group, data = df)
+#&gt; 
+#&gt; $group
+#&gt;                          diff         lwr        upr     p adj
+#&gt; overweight-lean   0.052809318  0.01655168 0.08906696 0.0020297
+#&gt; obese-lean        0.045195616  0.01020242 0.08018882 0.0072818
+#&gt; obese-overweight -0.007613702 -0.03990147 0.02467407 0.8432370
+#&gt; 
+#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

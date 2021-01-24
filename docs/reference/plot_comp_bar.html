@@ -43,10 +43,11 @@
 <meta property="og:description" content="Stacked barplots showing composition of phyloseq samples for a specified number of coloured taxa. plot_comp_bar performs the compositional transformation for you, so your phyloseq object should contain counts!
 sample_order: Either specify a list of sample names to order manually, or the bars/samples can/will be sorted by similarity, according to a specified distance measure (default aitchison),
 seriate_method specifies a seriation/ordering algorithm (default Ward hierarchical clustering with optimal leaf ordering, see seriation::list_seriation_methods())
-groups: You can group the samples on distinct plots by levels of a variable in the phyloseq object. The list of ggplots produced can be arranged flexibly with the patchwork package functions. If you want to group by several variables you can create an interaction variable with interaction(var1, var2) in the phyloseq sample_data BEFORE using plot_comp_bar.
+group_by: You can group the samples on distinct plots by levels of a variable in the phyloseq object. The list of ggplots produced can be arranged flexibly with the patchwork package functions. If you want to group by several variables you can create an interaction variable with interaction(var1, var2) in the phyloseq sample_data BEFORE using plot_comp_bar.
+facet_by can allow faceting of your plot(s) by a grouping variable. Using this approach is less flexible than using group_by but means you don't have to arrange a list of plots yourself like with the group_by argument. Using facet_by is equivalent to adding a call to facet_wrap(facets = facet_by, scales = &quot;free&quot;) to your plot(s). Calling facet_wrap() yourself is itself a more flexible option as you can add other arguments like the number of rows etc. However you must use keep_all_vars = TRUE if you will add faceting manually.
 bar_width: No gaps between bars, unless you want them (decrease width argument to add gaps between bars).
 bar_outline_colour: Bar outlines default to &quot;black&quot;. Set to NA if you don't want outlines.
-palette: Default colouring is consistent across multiple plots if created with the groups argument, and the defaults scheme retains the colouring of the most abundant taxa irrespective of n_taxa)
+palette: Default colouring is consistent across multiple plots if created with the group_by argument, and the defaults scheme retains the colouring of the most abundant taxa irrespective of n_taxa
 
 " />
 
@@ -80,7 +81,7 @@ palette: Default colouring is consistent across multiple plots if created with t
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -146,10 +147,11 @@ palette: Default colouring is consistent across multiple plots if created with t
     <p>Stacked barplots showing composition of phyloseq samples for a specified number of coloured taxa. <code>plot_comp_bar</code> performs the compositional transformation for you, so your phyloseq object should contain counts!</p><ul>
 <li><p>sample_order: Either specify a list of sample names to order manually, or the bars/samples can/will be sorted by similarity, according to a specified distance measure (default aitchison),</p></li>
 <li><p>seriate_method specifies a seriation/ordering algorithm (default Ward hierarchical clustering with optimal leaf ordering, see seriation::list_seriation_methods())</p></li>
-<li><p>groups: You can group the samples on distinct plots by levels of a variable in the phyloseq object. The list of ggplots produced can be arranged flexibly with the patchwork package functions. If you want to group by several variables you can create an interaction variable with interaction(var1, var2) in the phyloseq sample_data BEFORE using plot_comp_bar.</p></li>
+<li><p>group_by: You can group the samples on distinct plots by levels of a variable in the phyloseq object. The list of ggplots produced can be arranged flexibly with the patchwork package functions. If you want to group by several variables you can create an interaction variable with interaction(var1, var2) in the phyloseq sample_data BEFORE using plot_comp_bar.</p></li>
+<li><p>facet_by can allow faceting of your plot(s) by a grouping variable. Using this approach is less flexible than using group_by but means you don't have to arrange a list of plots yourself like with the group_by argument. Using facet_by is equivalent to adding a call to facet_wrap(facets = facet_by, scales = "free") to your plot(s). Calling facet_wrap() yourself is itself a more flexible option as you can add other arguments like the number of rows etc. However you must use keep_all_vars = TRUE if you will add faceting manually.</p></li>
 <li><p>bar_width: No gaps between bars, unless you want them (decrease width argument to add gaps between bars).</p></li>
 <li><p>bar_outline_colour: Bar outlines default to "black". Set to NA if you don't want outlines.</p></li>
-<li><p>palette: Default colouring is consistent across multiple plots if created with the groups argument, and the defaults scheme retains the colouring of the most abundant taxa irrespective of n_taxa)</p></li>
+<li><p>palette: Default colouring is consistent across multiple plots if created with the group_by argument, and the defaults scheme retains the colouring of the most abundant taxa irrespective of n_taxa</p></li>
 </ul>
 
     </div>
@@ -162,13 +164,14 @@ palette: Default colouring is consistent across multiple plots if created with t
   taxon_renamer <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
   palette <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"lightgrey"</span>, <span class='fu'><a href='https://rdrr.io/r/base/rev.html'>rev</a></span><span class='op'>(</span><span class='fu'><a href='distinct_palette.html'>distinct_palette</a></span><span class='op'>(</span><span class='va'>n_taxa</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>,
   sample_order <span class='op'>=</span> <span class='st'>"aitchison"</span>,
-  order_samples_with_all_taxa <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  order_with_all_taxa <span class='op'>=</span> <span class='cn'>FALSE</span>,
   tax_transform_for_ordering <span class='op'>=</span> <span class='st'>"identity"</span>,
   label <span class='op'>=</span> <span class='st'>"SAMPLE"</span>,
-  groups <span class='op'>=</span> <span class='cn'>NA</span>,
+  group_by <span class='op'>=</span> <span class='cn'>NA</span>,
+  facet_by <span class='op'>=</span> <span class='cn'>NA</span>,
   bar_width <span class='op'>=</span> <span class='fl'>1</span>,
   bar_outline_colour <span class='op'>=</span> <span class='st'>"black"</span>,
-  drop_unused_vars <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  keep_all_vars <span class='op'>=</span> <span class='cn'>TRUE</span>,
   seriate_method <span class='op'>=</span> <span class='st'>"OLO_ward"</span>
 <span class='op'>)</span></pre>
 
@@ -201,10 +204,10 @@ palette: Default colouring is consistent across multiple plots if created with t
     </tr>
     <tr>
       <th>sample_order</th>
-      <td><p>vector of sample names, any distance measure in calc_dist that does not require a phylogenetic tree, or "default" for the order returned by phyloseq::sample_names(ps)</p></td>
+      <td><p>vector of sample names, any distance measure in dist_calc that does not require a phylogenetic tree, or "default" for the order returned by phyloseq::sample_names(ps)</p></td>
     </tr>
     <tr>
-      <th>order_samples_with_all_taxa</th>
+      <th>order_with_all_taxa</th>
       <td><p>if TRUE, this will use all taxa (not just the top n_taxa) to calculate distances for sample ordering</p></td>
     </tr>
     <tr>
@@ -216,8 +219,12 @@ palette: Default colouring is consistent across multiple plots if created with t
       <td><p>could also consider arbitrary annotation with extra info, like in complex heatmap</p></td>
     </tr>
     <tr>
-      <th>groups</th>
-      <td><p>splits dataset by this variable (must be categorical) - resulting in a list of plots, one for each level of the grouping variable.</p></td>
+      <th>group_by</th>
+      <td><p>splits dataset by this variable (must be categorical) - resulting in a list of plots, one for each level of the group_by variable.</p></td>
+    </tr>
+    <tr>
+      <th>facet_by</th>
+      <td><p>facets plots by this variable (must be categorical) - if group_by is also set, the faceting with occur separately in the plot for each group.</p></td>
     </tr>
     <tr>
       <th>bar_width</th>
@@ -228,8 +235,8 @@ palette: Default colouring is consistent across multiple plots if created with t
       <td><p>line colour separating taxa and samples (use NA for none)</p></td>
     </tr>
     <tr>
-      <th>drop_unused_vars</th>
-      <td><p>speeds up ps_melt but might limit future plot customisation options</p></td>
+      <th>keep_all_vars</th>
+      <td><p>slows down ps_melt but is required for future plot customisation options like faceting</p></td>
     </tr>
     <tr>
       <th>seriate_method</th>
@@ -286,7 +293,7 @@ palette: Default colouring is consistent across multiple plots if created with t
 </div><div class='img'><img src='plot_comp_bar-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># However that "group-averaging" approach hides a lot of within-group variation</span>
 <span class='va'>p2</span> <span class='op'>&lt;-</span> <span class='fu'>plot_comp_bar</span><span class='op'>(</span><span class='va'>dietswap</span>,
-  tax_level <span class='op'>=</span> <span class='st'>"Genus"</span>, n_taxa <span class='op'>=</span> <span class='fl'>12</span>, groups <span class='op'>=</span> <span class='st'>"group"</span>,
+  tax_level <span class='op'>=</span> <span class='st'>"Genus"</span>, n_taxa <span class='op'>=</span> <span class='fl'>12</span>, group_by <span class='op'>=</span> <span class='st'>"group"</span>,
   sample_order <span class='op'>=</span> <span class='st'>"euclidean"</span>, bar_outline_colour <span class='op'>=</span> <span class='cn'>NA</span>
 <span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>patchwork</span><span class='fu'>::</span><span class='fu'><a href='https://patchwork.data-imaginist.com/reference/wrap_plots.html'>wrap_plots</a></span><span class='op'>(</span>nrow <span class='op'>=</span> <span class='fl'>3</span>, guides <span class='op'>=</span> <span class='st'>"collect"</span><span class='op'>)</span> <span class='op'>&amp;</span>
@@ -302,7 +309,7 @@ palette: Default colouring is consistent across multiple plots if created with t
 <span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'>plot_comp_bar</span><span class='op'>(</span><span class='va'>dietswap</span>,
   n_taxa <span class='op'>=</span> <span class='fl'>15</span>, tax_level <span class='op'>=</span> <span class='st'>"Genus"</span>,
   bar_outline_colour <span class='op'>=</span> <span class='st'>"black"</span>,
-  sample_order <span class='op'>=</span> <span class='st'>"aitchison"</span>, groups <span class='op'>=</span> <span class='st'>"sex"</span>
+  sample_order <span class='op'>=</span> <span class='st'>"aitchison"</span>, group_by <span class='op'>=</span> <span class='st'>"sex"</span>
 <span class='op'>)</span>
 
 <span class='co'># plot them side by side with patchwork package</span>

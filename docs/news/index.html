@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -132,12 +132,58 @@
       <small>Source: <a href='https://github.com/david-barnett/microViz/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="microviz-006" class="section level1">
-<h1 class="page-header" data-toc-text="0.0.6">
-<a href="#microviz-006" class="anchor"></a>microViz 0.0.6</h1>
+    <div id="microviz-010" class="section level1">
+<h1 class="page-header" data-toc-text="0.1.0">
+<a href="#microviz-010" class="anchor"></a>microViz 0.1.0</h1>
+<div id="major-renaming" class="section level2">
+<h2 class="hasAnchor">
+<a href="#major-renaming" class="anchor"></a>Major renaming</h2>
+<ul>
+<li>
+<code>calc_dist</code> –&gt; <code>dist_calc</code>
+</li>
+<li>
+<code>beta_disper</code> –&gt; <code>dist_bdisp</code>
+</li>
+<li>
+<code>ordin8</code> –&gt; <code>ord_calc</code>
+</li>
+<li>
+<code>plot_ordin8</code> –&gt; <code>ord_plot</code>
+</li>
+<li>
+<code>model_tax_corncob</code> –&gt; <code>tax_model_corncob</code>
+</li>
+</ul>
+</div>
+<div id="other-breaking-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#other-breaking-changes" class="anchor"></a>Other breaking changes</h2>
+<ul>
+<li>
+<code>plot_comp_bar</code>
+<ul>
+<li>groups argument renamed to group_by for consistency with new facet_by argument</li>
+<li>drop_unused_vars replaced with keep_all_vars which defaults to TRUE</li>
+</ul>
+</li>
+</ul>
+</div>
 <div id="features" class="section level2">
 <h2 class="hasAnchor">
 <a href="#features" class="anchor"></a>Features</h2>
+<ul>
+<li>
+<code>ps_seriate</code> for ordering phyloseq samples by similarity</li>
+</ul>
+</div>
+</div>
+    <div id="microviz-006" class="section level1">
+<h1 class="page-header" data-toc-text="0.0.6">
+<a href="#microviz-006" class="anchor"></a>microViz 0.0.6</h1>
+<div id="features-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#features-1" class="anchor"></a>Features</h2>
 <ul>
 <li>
 <code>ps_filter</code> allows filtering of <code>phyloseq</code> samples by values of variables in <code>sample_data</code> (wrapper around <code>dplyr</code>’s <code>filter</code> function)</li>
@@ -156,9 +202,9 @@
     <div id="microviz-005" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.5">
 <a href="#microviz-005" class="anchor"></a>microViz 0.0.5</h1>
-<div id="features-1" class="section level2">
+<div id="features-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-1" class="anchor"></a>Features</h2>
+<a href="#features-2" class="anchor"></a>Features</h2>
 <ul>
 <li>
 <code>ps_dedupe</code> bug fix method = “readcount” now correctly keeps all samples that “first” or “last” methods do</li>
@@ -168,9 +214,9 @@
     <div id="microviz-004" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.4">
 <a href="#microviz-004" class="anchor"></a>microViz 0.0.4</h1>
-<div id="features-2" class="section level2">
+<div id="features-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-2" class="anchor"></a>Features</h2>
+<a href="#features-3" class="anchor"></a>Features</h2>
 <ul>
 <li>
 <code>ps_arrange</code> allows reordering of <code>phyloseq</code> samples by values of variables in <code>sample_data</code> or <code>otu_table</code> (wrapper around <code>dplyr</code>’s <code>arrange</code> function)</li>
@@ -182,9 +228,9 @@
     <div id="microviz-003" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.3">
 <a href="#microviz-003" class="anchor"></a>microViz 0.0.3</h1>
-<div id="features-3" class="section level2">
+<div id="features-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-3" class="anchor"></a>Features</h2>
+<a href="#features-4" class="anchor"></a>Features</h2>
 <ul>
 <li>
 <code>ps_mutate</code> allowing easy and piped modification of <code>phyloseq</code> <code>sample_data</code> (wrapper around <code>dplyr</code>’s <code>mutate</code> function)</li>

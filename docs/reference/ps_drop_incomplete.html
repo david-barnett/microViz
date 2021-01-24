@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Filter rare taxa from a phyloseq object — tax_filter • microViz</title>
+<title>Deselect phyloseq samples with sample_data missings — ps_drop_incomplete • microViz</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Filter rare taxa from a phyloseq object — tax_filter" />
-<meta property="og:description" content="Takes a phyloseq object and filtering criteria arguments" />
+<meta property="og:title" content="Deselect phyloseq samples with sample_data missings — ps_drop_incomplete" />
+<meta property="og:description" content="Wrapper for stats::complete.cases function." />
 
 
 
@@ -129,103 +129,67 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Filter rare taxa from a phyloseq object</h1>
-    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/tax_filter.R'><code>R/tax_filter.R</code></a></small>
-    <div class="hidden name"><code>tax_filter.Rd</code></div>
+    <h1>Deselect phyloseq samples with sample_data missings</h1>
+    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/ps_drop_incomplete.R'><code>R/ps_drop_incomplete.R</code></a></small>
+    <div class="hidden name"><code>ps_drop_incomplete.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Takes a phyloseq object and filtering criteria arguments</p>
+    <p>Wrapper for stats::complete.cases function.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>tax_filter</span><span class='op'>(</span>
-  ps <span class='op'>=</span> <span class='va'>ps</span>,
-  min_prevalence <span class='op'>=</span> <span class='fl'>1</span>,
-  prev_detection_threshold <span class='op'>=</span> <span class='fl'>1</span>,
-  min_total_abundance <span class='op'>=</span> <span class='fl'>1</span>,
-  min_sample_abundance <span class='op'>=</span> <span class='fl'>1</span>,
-  tax_level <span class='op'>=</span> <span class='cn'>NA</span>,
-  names_only <span class='op'>=</span> <span class='cn'>FALSE</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>ps_drop_incomplete</span><span class='op'>(</span><span class='va'>ps</span>, vars <span class='op'>=</span> <span class='cn'>NA</span>, verbose <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>ps</th>
-      <td><p>phyloseq object with unfiltered COUNTS</p></td>
+      <td><p>phyloseq with sample_data</p></td>
     </tr>
     <tr>
-      <th>min_prevalence</th>
-      <td><p>number or proportion of samples that a taxon must be present in</p></td>
+      <th>vars</th>
+      <td><p>vector of variable names to check for missings (or NA, which uses all variables in sample data)</p></td>
     </tr>
     <tr>
-      <th>prev_detection_threshold</th>
-      <td><p>min counts for a taxon to be considered present in that sample</p></td>
-    </tr>
-    <tr>
-      <th>min_total_abundance</th>
-      <td><p>minimum total readcount of a taxon, summed across all samples (can be proportion of all counts)</p></td>
-    </tr>
-    <tr>
-      <th>min_sample_abundance</th>
-      <td><p>if 1 or greater, treat as absolute min abundance, if &lt;1 treat as proportion of sample counts</p></td>
-    </tr>
-    <tr>
-      <th>tax_level</th>
-      <td><p>if given, aggregates data at named taxonomic rank before filtering, but returns phyloseq at the ORIGINAL level of aggregation!</p></td>
-    </tr>
-    <tr>
-      <th>names_only</th>
-      <td><p>if names_only is true return only names of taxa, not the phyloseq</p></td>
+      <th>verbose</th>
+      <td><p>message about number of samples dropped if not FALSE, and number per variable in vars if "max"</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>filtered phyloseq object AT ORIGINAL LEVEL OF AGGREGATION (not at the level in tax_level)</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>Removes taxa (from all samples) that do not meet a given criterion or combination of criteria.
-If a value is 1 or greater, it is treatd as an absolute minimum number of samples/reads. If &lt;1, it is treated as proportion of all samples/reads.</p>
+    <p>phyloseq</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span>
-<span class='co'># Dropping rare and low abundance taxa #</span>
-<span class='co'># Filter at unique taxa level, keeping only those with a prevalence of 10% or more</span>
-<span class='co'># and at least 10 thousand reads when summed across all samples.</span>
-<span class='co'># Then aggregate to Family level taxonomy.</span>
-<span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>tax_filter</span><span class='op'>(</span>min_prevalence <span class='op'>=</span> <span class='fl'>0.1</span>, min_total_abundance <span class='op'>=</span> <span class='fl'>10000</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='st'>"Family"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Proportional min_prevalence given: 0.1 --&gt; min 23/222 samples.</span></div><div class='output co'>#&gt; $ps
-#&gt; phyloseq-class experiment-level object
-#&gt; otu_table()   OTU Table:         [ 9 taxa and 222 samples ]
-#&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 9 taxa by 3 taxonomic ranks ]
-#&gt; 
-#&gt; $info
-#&gt; $info$tax_level
-#&gt; [1] "Family"
-#&gt; 
-#&gt; </div><div class='input'>
-<span class='co'># Keeping ubiquitous families #</span>
-<span class='co'># keep only families that have at least 1000 counts present in 90% of samples</span>
-<span class='co'># then aggregate the remaining taxa at 'Genus' level</span>
-<span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>tax_filter</span><span class='op'>(</span>tax_level <span class='op'>=</span> <span class='st'>"Family"</span>, min_prevalence <span class='op'>=</span> <span class='fl'>0.90</span>, prev_detection_threshold <span class='op'>=</span> <span class='fl'>1000</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='st'>"Genus"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Proportional min_prevalence given: 0.9 --&gt; min 200/222 samples.</span></div><div class='output co'>#&gt; $ps
-#&gt; phyloseq-class experiment-level object
-#&gt; otu_table()   OTU Table:         [ 28 taxa and 222 samples ]
-#&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 28 taxa by 3 taxonomic ranks ]
-#&gt; 
-#&gt; $info
-#&gt; $info$tax_level
-#&gt; [1] "Genus"
-#&gt; 
-#&gt; </div></pre>
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://dx.plos.org/10.1371/journal.pone.0061217'>phyloseq</a></span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"enterotype"</span>, package <span class='op'>=</span> <span class='st'>"phyloseq"</span><span class='op'>)</span>
+
+<span class='va'>enterotype</span>
+</div><div class='output co'>#&gt; phyloseq-class experiment-level object
+#&gt; otu_table()   OTU Table:         [ 553 taxa and 280 samples ]
+#&gt; sample_data() Sample Data:       [ 280 samples by 9 sample variables ]
+#&gt; tax_table()   Taxonomy Table:    [ 553 taxa by 1 taxonomic ranks ]</div><div class='input'><span class='fu'>ps_drop_incomplete</span><span class='op'>(</span><span class='va'>enterotype</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; phyloseq-class experiment-level object
+#&gt; otu_table()   OTU Table:         [ 553 taxa and 31 samples ]
+#&gt; sample_data() Sample Data:       [ 31 samples by 9 sample variables ]
+#&gt; tax_table()   Taxonomy Table:    [ 553 taxa by 1 taxonomic ranks ]</div><div class='input'><span class='fu'>ps_drop_incomplete</span><span class='op'>(</span><span class='va'>enterotype</span>, vars <span class='op'>=</span> <span class='st'>"Enterotype"</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 9</span></div><div class='output co'>#&gt; phyloseq-class experiment-level object
+#&gt; otu_table()   OTU Table:         [ 553 taxa and 271 samples ]
+#&gt; sample_data() Sample Data:       [ 271 samples by 9 sample variables ]
+#&gt; tax_table()   Taxonomy Table:    [ 553 taxa by 1 taxonomic ranks ]</div><div class='input'><span class='fu'>ps_drop_incomplete</span><span class='op'>(</span><span class='va'>enterotype</span>, vars <span class='op'>=</span> <span class='st'>"Sample_ID"</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 0</span></div><div class='output co'>#&gt; phyloseq-class experiment-level object
+#&gt; otu_table()   OTU Table:         [ 553 taxa and 280 samples ]
+#&gt; sample_data() Sample Data:       [ 280 samples by 9 sample variables ]
+#&gt; tax_table()   Taxonomy Table:    [ 553 taxa by 1 taxonomic ranks ]</div><div class='input'><span class='fu'>ps_drop_incomplete</span><span class='op'>(</span><span class='va'>enterotype</span>, vars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Enterotype"</span>, <span class='st'>"Sample_ID"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; phyloseq-class experiment-level object
+#&gt; otu_table()   OTU Table:         [ 553 taxa and 271 samples ]
+#&gt; sample_data() Sample Data:       [ 271 samples by 9 sample variables ]
+#&gt; tax_table()   Taxonomy Table:    [ 553 taxa by 1 taxonomic ranks ]</div><div class='input'><span class='fu'>ps_drop_incomplete</span><span class='op'>(</span><span class='va'>enterotype</span>, verbose <span class='op'>=</span> <span class='st'>"max"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 249</span></div><div class='output co'>#&gt; <span class='message'>Enterotype has NAs: 9</span></div><div class='output co'>#&gt; <span class='message'>SampleID has NAs: 241</span></div><div class='output co'>#&gt; <span class='message'>Project has NAs: 241</span></div><div class='output co'>#&gt; <span class='message'>Nationality has NAs: 241</span></div><div class='output co'>#&gt; <span class='message'>Gender has NAs: 241</span></div><div class='output co'>#&gt; <span class='message'>Age has NAs: 243</span></div><div class='output co'>#&gt; <span class='message'>ClinicalStatus has NAs: 241</span></div><div class='output co'>#&gt; phyloseq-class experiment-level object
+#&gt; otu_table()   OTU Table:         [ 553 taxa and 31 samples ]
+#&gt; sample_data() Sample Data:       [ 31 samples by 9 sample variables ]
+#&gt; tax_table()   Taxonomy Table:    [ 553 taxa by 1 taxonomic ranks ]</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
