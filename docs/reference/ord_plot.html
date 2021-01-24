@@ -76,7 +76,7 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -149,6 +149,7 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
     <pre class="usage"><span class='fu'>ord_plot</span><span class='op'>(</span>
   <span class='va'>data</span>,
   axes <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>,
+  scaling <span class='op'>=</span> <span class='st'>"species"</span>,
   constraint_vec_length <span class='op'>=</span> <span class='fl'>1</span>,
   constraint_vec_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
   constraint_lab_length <span class='op'>=</span> <span class='va'>constraint_vec_length</span> <span class='op'>*</span> <span class='fl'>1.1</span>,
@@ -176,6 +177,10 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
     <tr>
       <th>axes</th>
       <td><p>which axes to plot: numerical vector of length 2</p></td>
+    </tr>
+    <tr>
+      <th>scaling</th>
+      <td><p>either "species" (2) or "site" (1) scores are scaled by eigenvalues, and the other set of scores is left unscaled (from ?vegan::scores.cca)</p></td>
     </tr>
     <tr>
       <th>constraint_vec_length</th>
