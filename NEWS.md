@@ -1,3 +1,11 @@
+# microViz 0.1.1
+
+## Features
+
+* `ord_plot_iris` for pca-ordered circular compositional barplots to pair with `ord_plot` output
+* `ps_select` for easily selecting variables within phyloseq sample data
+* `ord_plot` exposes scaling argument
+
 # microViz 0.1.0
 
 ## Major renaming

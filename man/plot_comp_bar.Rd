@@ -52,7 +52,7 @@ plot_comp_bar(
 
 \item{bar_outline_colour}{line colour separating taxa and samples (use NA for none)}
 
-\item{keep_all_vars}{slows down ps_melt but is required for future plot customisation options like faceting}
+\item{keep_all_vars}{slows down processing but is required for future plot customisation options like faceting}
 
 \item{seriate_method}{name of any ordering method suitable for distance matrices (see ?seriation::seriate)}
 }

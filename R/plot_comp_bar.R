@@ -23,7 +23,7 @@
 #' @param facet_by facets plots by this variable (must be categorical) - if group_by is also set, the faceting with occur separately in the plot for each group.
 #' @param bar_width default 1 avoids random gapping otherwise seen with many samples (set to something less than 1 to introduce gaps between fewer samples)
 #' @param bar_outline_colour line colour separating taxa and samples (use NA for none)
-#' @param keep_all_vars slows down ps_melt but is required for future plot customisation options like faceting
+#' @param keep_all_vars slows down processing but is required for future plot customisation options like faceting
 #' @param seriate_method name of any ordering method suitable for distance matrices (see ?seriation::seriate)
 #'
 #' @return ggplot or list of harmonised ggplots
