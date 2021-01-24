@@ -27,48 +27,27 @@
 #' pst <- dietswap %>% ps_arrange(desc(Akkermansia), .target = "otu_table")
 #' otu_table(pst)[1:8, 1:8]
 #' sample_data(pst) %>% head(8)
-#'
-#'
 ps_arrange <- function(ps, ..., .target = "sample_data") {
-  otu <- switch(
+  sample_order <- switch(
     .target,
     "sample_data" = {
       df <- data.frame(phyloseq::sample_data(ps))
       df <- tibble::rownames_to_column(df, var = ".temp_sample_name_var")
-
       df <- dplyr::arrange(df, ...)
-      df <- tibble::column_to_rownames(df, var = ".temp_sample_name_var")
-
-      sample_order <- rownames(df)
-
-      # ordering of samples is a phyloseq is controlled from the otu_table slot!
-      otu <- phyloseq::otu_table(ps)
-      if (phyloseq::taxa_are_rows(ps)) {
-        otu <- otu[, sample_order]
-      } else {
-        otu <- otu[sample_order, ]
-      }
-      otu
+      df[[".temp_sample_name_var"]]
     },
     "otu_table" = {
       otu <- phyloseq::otu_table(ps)
-      if (phyloseq::taxa_are_rows(ps)) {
-        samplenames <- colnames(otu)
-        otu_df <- as.data.frame.matrix(t(otu))
-        otu_df[["samplenames"]] <- samplenames
-        otu_df <- dplyr::arrange(otu_df, ...)
-        otu <- otu[, otu_df[["samplenames"]]]
-      } else {
-        samplenames <- rownames(otu)
-        otu_df <- as.data.frame.matrix(otu)
-        otu_df[["samplenames"]] <- samplenames
-        otu_df <- dplyr::arrange(otu_df, ...)
-        otu <- otu[, otu_df[["samplenames"]]]
-      }
+      if (phyloseq::taxa_are_rows(ps)) otu <- t(otu)
+      samplenames <- rownames(otu)
+      otu_df <- as.data.frame.matrix(otu)
+      otu_df[["samplenames"]] <- samplenames
+      otu_df <- dplyr::arrange(otu_df, ...)
+      otu_df[["samplenames"]]
     }
   )
 
-  phyloseq::otu_table(ps) <- otu
+  ps <- ps_reorder(ps, sample_order = sample_order)
 
   return(ps)
 }

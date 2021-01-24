@@ -37,6 +37,4 @@ otu_table(ps)[1:8, 1:8]
 pst <- dietswap \%>\% ps_arrange(desc(Akkermansia), .target = "otu_table")
 otu_table(pst)[1:8, 1:8]
 sample_data(pst) \%>\% head(8)
-
-
 }
