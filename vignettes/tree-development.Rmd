@@ -100,7 +100,7 @@ tax_models_list <- lapply(
   X = phyloseq::rank_names(ps)[-1],
   function(r) {
     message(Sys.time(), " - modelling at level: ", r)
-    models <- model_tax_corncob(
+    models <- tax_model_corncob(
       ps = ps,
       tax_level = r, taxa = "all",
       variables = variables

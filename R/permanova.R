@@ -1,10 +1,10 @@
-#' Calculate PERMANOVA after calc_dist
+#' Calculate PERMANOVA after dist_calc
 #'
-#' Wrapper for vegan adonis/adonis2, takes the output of calc_dist (a list containing a phyloseq object and calculated distance matrix)
+#' Wrapper for vegan adonis/adonis2, takes the output of dist_calc (a list containing a phyloseq object and calculated distance matrix)
 #'
 #' Drops observations with missing values if complete_cases is TRUE, otherwises throws an error.
 #'
-#' @param data list output from calc_dist
+#' @param data list output from dist_calc
 #' @param variables character vector of variables to include in model
 #' @param interactions interactions between variables, written in the style of e.g. "var_a * var_b"
 #' @param n_processes how many parallel processes to use? (uses parallel::makePSOCKcluster)
@@ -29,7 +29,7 @@
 #' # compute distance
 #' testDist <- dietswap %>%
 #'   tax_agg("Genus") %>%
-#'   calc_dist("bray")
+#'   dist_calc("bray")
 #'
 #' PERM <- testDist %>%
 #'   permanova(
@@ -51,8 +51,8 @@
 #'
 #' # take the same distance matrix used for the permanova and plot an ordination
 #' PERM2 %>%
-#'   ordin8("PCoA") %>%
-#'   plot_ordin8(color = "bmi_group")
+#'   ord_calc("PCoA") %>%
+#'   ord_plot(color = "bmi_group")
 #' # this ensures any samples dropped from the permanova for having missing values
 #' # in the covariates are NOT included in the corresponding ordination plot
 permanova <- function(data,
@@ -72,11 +72,11 @@ permanova <- function(data,
     distMat <- data[["distMat"]]
     info <- data[["info"]]
   } else {
-    stop("data argument must be an output object from calc_dist")
+    stop("data argument must be an output object from dist_calc")
   }
 
   # set seed for reproducibility
-  if (isFALSE(is.null(seed))){
+  if (isFALSE(is.null(seed))) {
     set.seed(seed)
   }
 
@@ -88,29 +88,25 @@ permanova <- function(data,
   FORMULA <- stats::as.formula(f)
 
   # drop observations with missings
-  for (v in variables) {
-    vec <- phyloseq::sample_data(ps)[[v]]
-    NAs <- is.na(vec)
-    s <- sum(NAs)
-    if (s > 0) {
-      if (complete_cases) {
-        if (verbose) {
-          message('WARNING: Dropping samples with NAs for "', v, '". At least ', s)
-        }
-        ps <- phyloseq::prune_samples(samples = !NAs, x = ps)
-        if (exists("distMat") && !rlang::is_null(distMat)) {
-          distMat <- stats::as.dist(as.matrix(distMat)[!NAs, !NAs])
-        }
-      } else {
-        stop(v, " contains missings, at least: ", s, "\n\tTry `drop_incomplete()`")
-      }
+  if (isFALSE(complete_cases)) {
+    if (anyNA(phyloseq::sample_data(ps)[, variables])) {
+      stop(
+        "phyloseq contains missings within at least one of the specified variables",
+        "\n\tTry complete_cases = TRUE or manually call `ps_drop_incomplete()`"
+      )
     }
+  }
+  ps <- ps_drop_incomplete(ps, vars = variables, verbose = verbose)
+  # drop samples from any pre-existing distMat if no longer in ps after dropping incomplete
+  if (exists("distMat") && !identical(distMat, NULL)) {
+    keepers <- phyloseq::sample_names(ps)
+    distMat <- stats::as.dist(as.matrix(distMat)[keepers, keepers])
   }
 
   # extract sample metadata from phyloseq object
-  metadata <- microbiome::meta(ps)[, variables, drop = FALSE]
+  metadata <- data.frame(phyloseq::sample_data(ps))[, variables, drop = FALSE]
 
-  if (verbose) {
+  if (!isFALSE(verbose)) {
     message(Sys.time(), " - Starting PERMANOVA with ", n_perms, " perms with ", n_processes, " processes")
   }
   # perform PERMANOVA, in parallel (socket cluster)
@@ -126,7 +122,7 @@ permanova <- function(data,
   } else {
     results <- vegan::adonis(formula = FORMULA, data = metadata, permutations = n_perms, parallel = cl)
   }
-  if (verbose) {
+  if (!isFALSE(verbose)) {
     message(Sys.time(), " - Finished PERMANOVA")
   }
 
@@ -135,7 +131,7 @@ permanova <- function(data,
     info = info, permanova = results, distMat = distMat, ps = ps
   )
 
-  if (return == "all") {
+  if (identical(return, "all")) {
     return(out)
   } else if (length(return) == 1) {
     return(out[[return]])

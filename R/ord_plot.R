@@ -1,6 +1,6 @@
-#' Customisable ggplot of ordin8 ordination result
+#' Customisable ggplot of ord_calc ordination result
 #'
-#' Ordination visualisation. Utilises results of \code{ordin8}.
+#' Ordination visualisation. Utilises results of \code{ord_calc}.
 #' - For interpretation see the the relevant pages on PCA, PCoA, RDA, or CCA on the "gusta me" website: \url{https://sites.google.com/site/mb3gustame/}
 #' - Some other inspiration was from here: \url{https://ourcodingclub.github.io/2018/05/04/ordination.html}
 #'
@@ -10,14 +10,14 @@
 #' - single numeric value e.g. 0.75 --> plot labels for taxa with line length > 0.75
 #' - character vector e.g. c('g__Bacteroides', 'g__Veillonella') --> plot labels for the exactly named taxa
 #'
-#' @param data list object output from ordin8
+#' @param data list object output from ord_calc
 #' @param axes which axes to plot: numerical vector of length 2
 #' @param constraint_vec_length relative length of line segment drawn for any constraints (relative to default length which is defined by correlation with each drawn axis)
 #' @param constraint_vec_style list of aesthetics/arguments (colour, alpha etc) for the constraint vectors
 #' @param constraint_lab_length relative length of label drawn for any constraints (relative to default position which is defined by correlation with each drawn axis)
 #' @param constraint_lab_style list of aesthetics/arguments (colour, size etc) for the constraint labels
 #' @param var_renamer function to rename constraining variables for plotting their labels
-#' @param plot_taxa if ordin8 method was "PCA/RDA" draw the taxa loading vectors (see details)
+#' @param plot_taxa if ord_calc method was "PCA/RDA" draw the taxa loading vectors (see details)
 #' @param tax_vec_length length multiplier of line segment drawn for any taxa
 #' @param tax_vec_style_all list of named aesthetic attributes for all (background) taxon vectors
 #' @param tax_vec_style_sel list of named aesthetic attributes for taxon vectors for the taxa selected by plot_taxa
@@ -25,7 +25,7 @@
 #' @param tax_lab_style list of fixed aesthetics (colour, size etc) for the taxon labels
 #' @param taxon_renamer function that takes any plotted taxon names and returns modified names for labels
 #' @param plot_samples if TRUE, plot sample points with geom_point
-#' @param auto_title if TRUE, add a crude title and subtitle with info about the ordination
+#' @param auto_caption if TRUE, add a small font caption with info about the ordination
 #' @param ... pass aesthetics arguments for sample points, drawn with geom_point using aes_string
 #'
 #' @return ggplot
@@ -49,10 +49,10 @@
 #' unconstrained_aitchison_pca <- dietswap %>%
 #'   tax_agg("Genus") %>%
 #'   tax_transform("clr") %>%
-#'   ordin8(method = "RDA")
+#'   ord_calc(method = "RDA")
 #'
 #' unconstrained_aitchison_pca %>%
-#'   plot_ordin8(
+#'   ord_plot(
 #'     colour = "bmi_group",
 #'     plot_taxa = 1:5, tax_vec_length = 0.75, tax_lab_length = 0.85,
 #'   ) +
@@ -61,22 +61,22 @@
 #' dietswap %>%
 #'   tax_agg("Genus") %>%
 #'   tax_transform("clr") %>%
-#'   ordin8(method = "RDA", conditions = "weight") %>%
-#'   plot_ordin8(colour = "bmi_group") +
+#'   ord_calc(method = "RDA", conditions = "weight") %>%
+#'   ord_plot(colour = "bmi_group") +
 #'   stat_ellipse(aes(linetype = bmi_group, colour = bmi_group))
 #'
 #' constrained_aitchison_rda <- dietswap %>%
 #'   tax_agg("Genus") %>%
 #'   tax_transform("clr") %>%
-#'   ordin8(method = "RDA", constraints = c("weight", "female"))
+#'   ord_calc(method = "RDA", constraints = c("weight", "female"))
 #'
 #' constrained_aitchison_rda %>%
-#'   plot_ordin8(colour = "bmi_group", constraint_vec_length = 2) +
+#'   ord_plot(colour = "bmi_group", constraint_vec_length = 2) +
 #'   stat_ellipse(aes(linetype = bmi_group, colour = bmi_group))
 #'
 #' # ggplot allows additional customisation of the resulting plot
 #' p <- constrained_aitchison_rda %>%
-#'   plot_ordin8(
+#'   ord_plot(
 #'     colour = "bmi_group", constraint_vec_length = 2,
 #'     plot_taxa = 1:3, tax_vec_length = 5
 #'   ) +
@@ -88,7 +88,7 @@
 #'
 #' # you can rename the taxa on the labels with any function that takes and modifies a character vector
 #' constrained_aitchison_rda %>%
-#'   plot_ordin8(
+#'   ord_plot(
 #'     colour = "bmi_group", constraint_vec_length = 2,
 #'     plot_taxa = 1:3, tax_vec_length = 5,
 #'     taxon_renamer = function(x) stringr::str_extract(x, "^.")
@@ -98,16 +98,16 @@
 #'
 #' # it is possible to facet only unconstrained ordination plots (with plot_taxa = FALSE)
 #' unconstrained_aitchison_pca %>%
-#'   plot_ordin8(color = "sex") +
+#'   ord_plot(color = "sex") +
 #'   facet_wrap("sex") +
 #'   stat_density2d(aes(colour = sex)) +
 #'   guides(colour = FALSE)
 #'
 #' unconstrained_aitchison_pca %>%
-#'   plot_ordin8(color = "bmi_group", plot_samples = FALSE) +
+#'   ord_plot(color = "bmi_group", plot_samples = FALSE) +
 #'   facet_wrap("sex") +
 #'   stat_density2d_filled(show.legend = FALSE)
-plot_ordin8 <-
+ord_plot <-
   function(data,
            axes = 1:2,
            constraint_vec_length = 1,
@@ -123,9 +123,9 @@ plot_ordin8 <-
            tax_lab_style = list(),
            taxon_renamer = function(x) identity(x),
            plot_samples = TRUE,
-           auto_title = TRUE,
+           auto_caption = TRUE,
            ...) {
-    data_arg_reminder <- "data argument should be a list, specifically the output from ordin8"
+    data_arg_reminder <- "data argument should be a list, specifically the output from ord_calc"
 
     # check input data object class and extract the most used objects to function env
     if (inherits(data, "list")) {
@@ -160,11 +160,11 @@ plot_ordin8 <-
       }
     }
 
-    # double-check ordination size against phyloseq (should never fail if ordin8 used)
+    # double-check ordination size against phyloseq (should never fail if ord_calc used)
     stopifnot(stats::nobs(ordination) == phyloseq::nsamples(ps))
 
     # get and transform aesthetic metadata ------------------------------------
-    meta <- microbiome::meta(ps)
+    meta <- data.frame(phyloseq::sample_data(ps))
 
     # set variable and fixed ggplot aesthetics based on metadata names check
     aestheticArgs <- ellipses[ellipses %in% colnames(meta)]
@@ -326,7 +326,7 @@ plot_ordin8 <-
     }
 
     # add automated title if requested (default TRUE)
-    if (auto_title) {
+    if (auto_caption) {
       infoElements <- list(
         m = paste("method =", info[["method"]]),
         t = paste("tax_level =", info[["tax_level"]])
@@ -340,10 +340,11 @@ plot_ordin8 <-
         infoElements[["cs"]] <- paste("constraints =", paste(info[["constraints"]], collapse = "+"))
       }
 
-      MAIN <- paste(stats::nobs(df), "samples &", phyloseq::ntaxa(ps), "taxa")
-      SUB <- paste(infoElements, collapse = ". ")
+      caption <- paste(stats::nobs(df), "samples &", phyloseq::ntaxa(ps), "taxa.")
+      caption <- paste(caption, paste(infoElements, collapse = ". "))
 
-      p <- p + ggplot2::ggtitle(label = MAIN, subtitle = SUB)
+      p <- p + ggplot2::labs(caption = caption) +
+        ggplot2::theme(plot.caption = ggplot2::element_text(size = 6))
     }
 
     return(p)

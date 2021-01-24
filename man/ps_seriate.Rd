@@ -17,7 +17,7 @@ ps_seriate(
 
 \item{method}{seriation method for ordering samples, from seriation::seriate}
 
-\item{dist}{distance method for calc_dist (only used if required for particular seriation method!)}
+\item{dist}{distance method for dist_calc (only used if required for particular seriation method!)}
 
 \item{tax_transform}{transformation to apply before seriation or any distance calculation}
 
@@ -27,7 +27,7 @@ ps_seriate(
 phyloseq
 }
 \description{
-Uses seriation methods from seriation::seriate and often calc_dist (depending on if seriation method requires a distance matrix)
+Uses seriation methods from seriation::seriate and often dist_calc (depending on if seriation method requires a distance matrix)
 }
 \examples{
 library(phyloseq)

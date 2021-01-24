@@ -1,3 +1,24 @@
+# microViz 0.1.0
+
+## Major renaming
+
+* `calc_dist` --> `dist_calc`
+* `beta_disper` --> `dist_bdisp`
+* `ordin8` --> `ord_calc`
+* `plot_ordin8` --> `ord_plot`
+* `model_tax_corncob` --> `tax_model_corncob`
+
+## Other breaking changes
+
+* `plot_comp_bar` 
+    * groups argument renamed to group_by for consistency with new facet_by argument
+    * drop_unused_vars replaced with keep_all_vars which defaults to TRUE
+
+## Features
+
+* `ps_seriate` for ordering phyloseq samples by similarity
+
+
 # microViz 0.0.6
 
 ## Features

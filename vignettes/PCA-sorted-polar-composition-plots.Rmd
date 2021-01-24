@@ -34,11 +34,11 @@ circular <-
   microViz::plot_comp_bar(
     ps = dietswap,
     tax_level = "Genus", n_taxa = 11,
-    order_samples_with_all_taxa = TRUE,
+    order_with_all_taxa = TRUE,
     seriate_method = "PCA_angle",
     tax_transform_for_ordering = "clr",
     bar_outline_colour = NA,
-    drop_unused_vars = FALSE
+    keep_all_vars = TRUE
   )
 circular <- circular +
   coord_polar(
@@ -69,8 +69,8 @@ PCA plot:
 pca <- dietswap %>%
   tax_agg("Genus") %>%
   tax_transform("clr") %>%
-  ordin8("PCA") %>%
-  plot_ordin8(
+  ord_calc("PCA") %>%
+  ord_plot(
     shape = "nationality", fill = "lightgrey", colour = "nationality",
     plot_taxa = 1:5, tax_vec_length = 0.5, auto_title = FALSE
   ) +

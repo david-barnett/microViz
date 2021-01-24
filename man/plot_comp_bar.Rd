@@ -19,7 +19,7 @@ plot_comp_bar(
   facet_by = NA,
   bar_width = 1,
   bar_outline_colour = "black",
-  drop_unused_vars = TRUE,
+  keep_all_vars = TRUE,
   seriate_method = "OLO_ward"
 )
 }
@@ -36,7 +36,7 @@ plot_comp_bar(
 
 \item{palette}{palette for taxa fill colours}
 
-\item{sample_order}{vector of sample names, any distance measure in calc_dist that does not require a phylogenetic tree, or "default" for the order returned by phyloseq::sample_names(ps)}
+\item{sample_order}{vector of sample names, any distance measure in dist_calc that does not require a phylogenetic tree, or "default" for the order returned by phyloseq::sample_names(ps)}
 
 \item{order_with_all_taxa}{if TRUE, this will use all taxa (not just the top n_taxa) to calculate distances for sample ordering}
 
@@ -52,7 +52,7 @@ plot_comp_bar(
 
 \item{bar_outline_colour}{line colour separating taxa and samples (use NA for none)}
 
-\item{drop_unused_vars}{speeds up ps_melt but might limit future plot customisation options}
+\item{keep_all_vars}{slows down ps_melt but is required for future plot customisation options like faceting}
 
 \item{seriate_method}{name of any ordering method suitable for distance matrices (see ?seriation::seriate)}
 }
@@ -65,7 +65,7 @@ Stacked barplots showing composition of phyloseq samples for a specified number 
 \item sample_order: Either specify a list of sample names to order manually, or the bars/samples can/will be sorted by similarity, according to a specified distance measure (default aitchison),
 \item seriate_method specifies a seriation/ordering algorithm (default Ward hierarchical clustering with optimal leaf ordering, see seriation::list_seriation_methods())
 \item group_by: You can group the samples on distinct plots by levels of a variable in the phyloseq object. The list of ggplots produced can be arranged flexibly with the patchwork package functions. If you want to group by several variables you can create an interaction variable with interaction(var1, var2) in the phyloseq sample_data BEFORE using plot_comp_bar.
-\item facet_by can allow faceting of your plot(s) by a grouping variable. Using this approach is less flexible than using group_by but means you don't have to arrange a list of plots yourself like with the group_by argument. Using facet_by is equivalent to adding a call to facet_wrap(facets = facet_by, scales = "free") to your plot(s). Calling facet_wrap() yourself is itself a more flexible option as you can add other arguments like the number of rows etc.
+\item facet_by can allow faceting of your plot(s) by a grouping variable. Using this approach is less flexible than using group_by but means you don't have to arrange a list of plots yourself like with the group_by argument. Using facet_by is equivalent to adding a call to facet_wrap(facets = facet_by, scales = "free") to your plot(s). Calling facet_wrap() yourself is itself a more flexible option as you can add other arguments like the number of rows etc. However you must use keep_all_vars = TRUE if you will add faceting manually.
 \item bar_width: No gaps between bars, unless you want them (decrease width argument to add gaps between bars).
 \item bar_outline_colour: Bar outlines default to "black". Set to NA if you don't want outlines.
 \item palette: Default colouring is consistent across multiple plots if created with the group_by argument, and the defaults scheme retains the colouring of the most abundant taxa irrespective of n_taxa

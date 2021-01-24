@@ -1,10 +1,10 @@
 #' Wrapper for vegan::betadisper
 #'
-#' Takes the output of calc_dist function. Or use with the result of the permanova function to ensure the results correspond to exactly the same input data.
+#' Takes the output of dist_calc function. Or use with the result of the permanova function to ensure the results correspond to exactly the same input data.
 #' Runs betadisper for all categorical variables in variables argument.
 #' See help('betadisper', package = 'vegan').
 #'
-#' @param data list output from calc_dist
+#' @param data list output from dist_calc
 #' @param variables list of variables to use as group
 #' @param method centroid or median
 #' @param complete_cases drop samples with NAs in any of the variables listed
@@ -27,16 +27,16 @@
 #' # straight to the betadisp
 #' bd1 <- dietswap %>%
 #'   tax_agg("Genus") %>%
-#'   calc_dist("aitchison") %>%
-#'   beta_disper(variables = c("sex", "bmi_group", "timepoint"))
+#'   dist_calc("aitchison") %>%
+#'   dist_bdisp(variables = c("sex", "bmi_group", "timepoint"))
 #' # quick vegan plotting methods
-#' plot(bd1$beta_disper$sex$model, label.cex = 0.5)
-#' boxplot(bd1$beta_disper$sex$model)
+#' plot(bd1$dist_bdisp$sex$model, label.cex = 0.5)
+#' boxplot(bd1$dist_bdisp$sex$model)
 #'
-#' # compute distance and use for both permanova and beta_disper
+#' # compute distance and use for both permanova and dist_bdisp
 #' testDist <- dietswap %>%
 #'   tax_agg("Genus") %>%
-#'   calc_dist("bray")
+#'   dist_calc("bray")
 #'
 #' PERM <- testDist %>%
 #'   permanova(
@@ -45,9 +45,9 @@
 #'   )
 #' str(PERM, max.level = 1)
 #'
-#' bd <- PERM %>% beta_disper(variables = c("sex", "bmi_group"))
-#' bd$beta_disper$bmi_group
-beta_disper <- function(data,
+#' bd <- PERM %>% dist_bdisp(variables = c("sex", "bmi_group"))
+#' bd$dist_bdisp$bmi_group
+dist_bdisp <- function(data,
                         variables,
                         method = c("centroid", "median")[[1]],
                         complete_cases = TRUE,
@@ -60,27 +60,23 @@ beta_disper <- function(data,
     distMat <- data[["distMat"]]
     info <- data[["info"]]
   } else {
-    stop("data argument must be an output object from calc_dist")
+    stop("data argument must be an output object from dist_calc")
   }
 
-  # drop observations with missings
-  for (v in variables) {
-    vec <- phyloseq::sample_data(ps)[[v]]
-    NAs <- is.na(vec)
-    s <- sum(NAs)
-    if (s > 0) {
-      if (complete_cases) {
-        if (verbose) {
-          message('WARNING: Dropping samples with NAs for "', v, '". At least ', s)
-        }
-        ps <- phyloseq::prune_samples(samples = !NAs, x = ps)
-        if (exists("distMat") && !rlang::is_null(distMat)) {
-          distMat <- stats::as.dist(as.matrix(distMat)[!NAs, !NAs])
-        }
-      } else {
-        stop(v, " contains missings, at least: ", s, "\n\tTry `drop_incomplete()`")
-      }
+  if (isFALSE(complete_cases)) {
+    if (anyNA(phyloseq::sample_data(ps)[, variables])) {
+      stop(
+        "phyloseq contains missings within at least one of the specified variables",
+        "\n\tTry complete_cases = TRUE or manually call `ps_drop_incomplete()`"
+      )
     }
+  }
+  # drop observations with missings
+  ps <- ps_drop_incomplete(ps, vars = variables, verbose = verbose)
+  # drop samples from any pre-existing distMat if no longer in ps after dropping incomplete
+  if (exists("distMat") && !identical(distMat, NULL)) {
+    keepers <- phyloseq::sample_names(ps)
+    distMat <- stats::as.dist(as.matrix(distMat)[keepers, keepers])
   }
 
   # extract sample metadata from phyloseq object
@@ -103,7 +99,7 @@ beta_disper <- function(data,
 
   # return object (results and processing info)
   out <- list(
-    info = info, beta_disper = bdisp, distMat = distMat, ps = ps
+    info = info, dist_bdisp = bdisp, distMat = distMat, ps = ps
   )
 
   if (identical(return, "all")) {

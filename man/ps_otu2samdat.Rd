@@ -33,9 +33,9 @@ sample_variables(ps_all)[1:15]
 # this could be useful for colouring ordination plots, for example
 ps \%>\%
   ps_mutate(log_akkermansia = log(Akkermansia)) \%>\%
-  calc_dist("bray") \%>\%
-  ordin8("PCoA") \%>\%
-  plot_ordin8(
+  dist_calc("bray") \%>\%
+  ord_calc("PCoA") \%>\%
+  ord_plot(
     colour = "log_akkermansia",
     size = 3, shape = "nationality"
   )

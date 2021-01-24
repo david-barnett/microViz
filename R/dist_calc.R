@@ -3,11 +3,11 @@
 #' For use directly with phyloseq object or with list output of tax_agg.
 #' Computes various unifrac distances, aitchison distance or any distance from vegdist.
 #' Returns phyloseq and name of distance in addition to the distance matrix itself!
-#' Result intended to be piped into ordin8 or permanova functions.
+#' Result intended to be piped into ord_calc or permanova functions.
 #'
 #' Aitchison distance note: You should EITHER
-#' 1. skip the calc_dist function and call ordin8(method = "RDA") directly on an object with taxa transformed with tax_transform(transformation = "clr")
-#' 2. pass an object with untransformed (or 'identity' transformed) taxa to the data argument of calc_dist and specify dist = "aitchison".
+#' 1. skip the dist_calc function and call ord_calc(method = "RDA") directly on an object with taxa transformed with tax_transform(transformation = "clr")
+#' 2. pass an object with untransformed (or 'identity' transformed) taxa to the data argument of dist_calc and specify dist = "aitchison".
 #' If ordination plots with taxon loading distances are desired, users should prefer option 1.
 #' If the distance matrix is required for permanova, users should prefer option 2.
 #'
@@ -26,15 +26,15 @@
 #' data("dietswap", package = "microbiome")
 #' bc <- dietswap %>%
 #'   tax_agg("Genus") %>%
-#'   calc_dist("bray")
+#'   dist_calc("bray")
 #' class(bc)
 #'
 #' # gunifrac distance using phyloseq input
 #' data("esophagus", package = "phyloseq")
 #' gunifrac <- esophagus %>%
-#'   calc_dist("gunifrac", return = "distMat")
+#'   dist_calc("gunifrac", return = "distMat")
 #' class(gunifrac)
-calc_dist <- function(
+dist_calc <- function(
                       data,
                       dist = c("bray", "gunifrac", "unifrac", "wunifrac", "va-wunifrac", "aitchison", "euclidean")[1],
                       return = "all",
@@ -61,7 +61,7 @@ calc_dist <- function(
   # aitchison distance
   if (dist == "aitchison") {
     if (isTRUE(info[["tax_transformation"]] == "clr")) {
-      stop("aitchison distance requested on data that are already clr-transformed, see the ?calc_dist details section!")
+      stop("aitchison distance requested on data that are already clr-transformed, see the ?dist_calc details section!")
     }
     distMat <- ps %>%
       microbiome::abundances(transform = "clr") %>%

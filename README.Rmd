@@ -58,7 +58,7 @@ devtools::install_github("bryandmartin/corncob@338323e9")
 
 ```
 
-## Setup
+## Examples below
 
 ```{r load, message=FALSE}
 library(microViz)
@@ -88,17 +88,17 @@ sample_data(dietswap)$female[c(3, 4)] <- NA
 You have quite a few samples in your phyloseq object, and would like to visualise their compositions.
 Perhaps these example data differ across BMI groups?
 ```{r fig.height=8, fig.width=10, dpi=300}
-composition_plot_list <- dietswap %>%
+dietswap %>%
   plot_comp_bar(
     tax_level = "Genus",
-    n_taxa = 10, groups = "bmi_group"
+    n_taxa = 10
+  ) + 
+  facet_wrap("bmi_group", nrow = 3, scales = "free") +
+  labs(x = NULL, y = NULL) + 
+  theme(
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank()
   )
-
-patchwork::wrap_plots(
-  composition_plot_list[c("lean", "overweight", "obese")],
-  ncol = 1, guides = "collect"
-) &
-  labs(x = NULL, y = NULL) & theme(axis.text.x = element_blank())
 ```
 
 
@@ -112,8 +112,8 @@ Here is one option to try first:
 1. Filter out rare taxa (e.g. remove Genera not present in at least 10% of samples) - use `tax_filter()`
 2. Aggregate the taxa into bacterial families (for example) - use `tax_agg()`
 3. Transform the microbial data with the centre-log-ratio transformation - use `tax_transform()`
-4. Perform PCA with the clr-transformed features (equivalent to aitchison distance PCoA) - use `ordin8()`
-5. Plot the first 2 axes of this PCA ordination, colouring samples by group and adding taxon loading arrows to visualise which taxa generally differ across your samples - use `plot_ordin8()`
+4. Perform PCA with the clr-transformed features (equivalent to aitchison distance PCoA) - use `ord_calc()`
+5. Plot the first 2 axes of this PCA ordination, colouring samples by group and adding taxon loading arrows to visualise which taxa generally differ across your samples - use `ord_plot()`
 6. Customise the theme of the ggplot as you like and/or add features like ellipses or annotations
 
 ```{r ordination-plot, dpi=300}
@@ -123,15 +123,15 @@ unconstrained_aitchison_pca <-
   tax_filter(min_prevalence = 0.1, tax_level = "Genus") %>%
   tax_agg("Family") %>%
   tax_transform("clr") %>%
-  ordin8(method = "RDA")
+  ord_calc(method = "RDA")
 
 # create plot
 pca_plot <- unconstrained_aitchison_pca %>%
-  plot_ordin8(
+  ord_plot(
     plot_taxa = 1:6, colour = "bmi_group", 
     size = 2,
     tax_vec_length = 0.8,
-    auto_title = TRUE)
+    auto_caption = TRUE)
 
 # customise plot
 customised_plot <- pca_plot +
@@ -154,7 +154,7 @@ aitchison_dists <-
   dietswap %>%
   tax_filter(min_prevalence = 0.1, tax_level = "Genus") %>%
   tax_agg("Family") %>%
-  calc_dist("aitchison")
+  dist_calc("aitchison")
 
 # the more permutations you request, the longer it takes,
 # but also the more stable and precise your p-values become
@@ -170,35 +170,21 @@ aitchison_perm$permanova
 aitchison_perm$info
 ```
 ## Constrained ordination
-You could visualise the effect of the (numeric/logical) variables in your permanova directly using the plot_ordin8 function with constraints.
+You could visualise the effect of the (numeric/logical) variables in your permanova directly using the ord_plot function with constraints.
 
 ```{r constrained-ord, fig.height=5, fig.width=7, dpi=300}
 perm2 <- permanova(data = aitchison_dists, variables = c("weight", "female"), seed = 321)
 perm2$permanova
 
-ordin8(perm2, constraints = c("weight", "female")) %>%
-  plot_ordin8(
+ord_calc(perm2, constraints = c("weight", "female")) %>%
+  ord_plot(
     colour = "sex", size = 2,
     constraint_vec_style = list(colour = "black", size = 1.15),
     constraint_lab_style = list(colour = "black"),
     constraint_vec_length = 1.5, constraint_lab_length = 1.8) +
-  stat_ellipse(aes(colour = sex)) + scale_color_brewer(palette = "Dark2") +
-  theme(plot.subtitle = element_text(size = 8))
+  stat_ellipse(aes(colour = sex)) + scale_color_brewer(palette = "Dark2")
 ```
 
-You can make your model more complicated, including the addition of interactions.
-Currently I don't provide options for random effects. Ask me if you want this.
-```{r}
-# example with interactions
-permanova(
-  data = aitchison_dists,
-  variables = c("bmi_group", "sex"),
-  interactions = "bmi_group * sex",
-   seed = 123, 
-  adonis2 = TRUE, # important when testing interactions
-  return = "permanova" # return only the permanova output
-)
-```
 
 
 # Session info

@@ -59,8 +59,8 @@ However that "group-averaging" approach hides a lot of within-group variation.
 ```{r}
 p2 <- dietswap %>%
   plot_comp_bar(
-    tax_level = "Genus", n_taxa = 12, groups = "group",
-    sample_order = "euclidean", bar_outline_colour = NA
+    tax_level = "Genus", n_taxa = 12, group_by = "group",
+    sample_order = "euclidean", bar_outline_colour = NA, keep_all_vars = TRUE
   ) %>%
   patchwork::wrap_plots(nrow = 3, guides = "collect") &
   coord_flip() &
@@ -69,21 +69,48 @@ p2 <- dietswap %>%
     axis.text.y = element_blank(),
     axis.ticks.y = element_blank()
   )
-p2
+p2 
 ```
 
 
 Only from p2 you can see that the apparently higher average relative abundance of Oscillospira in group DI is probably driven largely by a subgroup of DI samples with relatively high Oscillospira.
 
+## Faceting tips: 
+
+```{r}
+facets_plot <- plot_comp_bar(
+  dietswap,
+  n_taxa = 15, tax_level = "Genus",
+  bar_outline_colour = "black",
+  sample_order = "aitchison", facet_by = "sex"
+)
+facets_plot + 
+  coord_flip() +
+  theme(
+    axis.text.y = element_text(size = 5),
+    legend.text = element_text(size = 8),
+    plot.title = element_text(size = 16, face = "bold")
+  ) 
+```
+
+Faceting grouped plots post-hoc is possible: You can apply faceting to all plots with `&`. Below is an example with plot list object p2 from above.
+
+(remembered that `facet_wrap` with scales = "free" is normally desired).
+
+```{r}
+p2 & facet_wrap('sex', scales = 'free')
+```
+
 ## Customising grouped plots
 
-Make a list of 2 harmonised composition plots grouped by sex.
+Remake the 2 harmonised composition plots grouped by sex, but using group_by and patchwork. (Note that the ordering of the samples may differ between facet and group_by approaches. In the group_by method, the ordering of the samples by similarity is done separately for each group, whereas in the facet_by method, similarity-based ordering is done with all samples and then the samples are separated by facet afterwards).
+
 ```{r}
 plot_list <- plot_comp_bar(
   dietswap,
   n_taxa = 15, tax_level = "Genus",
   bar_outline_colour = "black",
-  sample_order = "aitchison", groups = "sex"
+  sample_order = "aitchison", group_by = "sex"
 )
 ```
 
@@ -147,7 +174,7 @@ times_list <- ps %>%
   ps_arrange(timepoint.within.group, nationality, desc(subject)) %>%
   plot_comp_bar(
     tax_level = "Genus", n_taxa = 10, sample_order = "default",
-    groups = "plot_groups", bar_width = 0.7, label = "subject"
+    group_by = "plot_groups", bar_width = 0.7, label = "subject"
   )
 
 times <- wrap_plots(

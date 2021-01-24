@@ -2,7 +2,7 @@
 % Please edit documentation in R/permanova.R
 \name{permanova}
 \alias{permanova}
-\title{Calculate PERMANOVA after calc_dist}
+\title{Calculate PERMANOVA after dist_calc}
 \usage{
 permanova(
   data,
@@ -18,7 +18,7 @@ permanova(
 )
 }
 \arguments{
-\item{data}{list output from calc_dist}
+\item{data}{list output from dist_calc}
 
 \item{variables}{character vector of variables to include in model}
 
@@ -42,7 +42,7 @@ permanova(
 list containing permanova results and input objects
 }
 \description{
-Wrapper for vegan adonis/adonis2, takes the output of calc_dist (a list containing a phyloseq object and calculated distance matrix)
+Wrapper for vegan adonis/adonis2, takes the output of dist_calc (a list containing a phyloseq object and calculated distance matrix)
 }
 \details{
 Drops observations with missing values if complete_cases is TRUE, otherwises throws an error.
@@ -58,7 +58,7 @@ sample_data(dietswap)$sex[3:6] <- NA
 # compute distance
 testDist <- dietswap \%>\%
   tax_agg("Genus") \%>\%
-  calc_dist("bray")
+  dist_calc("bray")
 
 PERM <- testDist \%>\%
   permanova(
@@ -80,8 +80,8 @@ PERM2$permanova
 
 # take the same distance matrix used for the permanova and plot an ordination
 PERM2 \%>\%
-  ordin8("PCoA") \%>\%
-  plot_ordin8(color = "bmi_group")
+  ord_calc("PCoA") \%>\%
+  ord_plot(color = "bmi_group")
 # this ensures any samples dropped from the permanova for having missing values
 # in the covariates are NOT included in the corresponding ordination plot
 }
