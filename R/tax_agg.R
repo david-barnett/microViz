@@ -25,7 +25,7 @@ tax_agg <- function(ps, agg_level, return = "all") {
   info <- list(tax_level = agg_level)
 
   out <- list(ps = ps, info = info)
-  if (return == "all") {
+  if (identical(return, "all")) {
     return(out)
   } else if (length(return) == 1) {
     return(out[[return]])

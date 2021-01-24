@@ -84,7 +84,7 @@ beta_disper <- function(data,
   }
 
   # extract sample metadata from phyloseq object
-  metadata <- microbiome::meta(ps)[, variables, drop = FALSE]
+  metadata <- data.frame(phyloseq::sample_data(ps))[, variables, drop = FALSE]
 
   # calculate bdisp and anova and tukeyHSD confidence/significance for all variables
   bdisp <- lapply(variables, function(V) {
@@ -106,7 +106,7 @@ beta_disper <- function(data,
     info = info, beta_disper = bdisp, distMat = distMat, ps = ps
   )
 
-  if (return == "all") {
+  if (identical(return, "all")) {
     return(out)
   } else if (length(return) == 1) {
     return(out[[return]])

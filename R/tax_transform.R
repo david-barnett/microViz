@@ -35,7 +35,7 @@ tax_transform <- function(data, transformation, return = "all") {
   info[["tax_transform"]] <- transformation
   out <- list(ps = ps, info = info)
 
-  if (return == "all") {
+  if (identical(return, "all")) {
     return(out)
   } else if (length(return) == 1) {
     return(out[[return]])

@@ -131,7 +131,7 @@ ordin8 <- function(data,
     distMat = distMat, ps = ps
   )
 
-  if (return == "all") {
+  if (identical(return, "all")) {
     return(out)
   } else if (length(return) == 1) {
     return(out[[return]])
