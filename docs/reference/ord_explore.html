@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Select phyloseq sample_data using dplyr::select syntax — ps_select • microViz</title>
+<title>Interactively explore compositions of ordinated samples — ord_explore • microViz</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,9 @@
 
 
 
-<meta property="og:title" content="Select phyloseq sample_data using dplyr::select syntax — ps_select" />
-<meta property="og:description" content="Simple selection of phyloseq sample_data variables, might be useful for printing reduced sample_data, or inside other functions" />
+<meta property="og:title" content="Interactively explore compositions of ordinated samples — ord_explore" />
+<meta property="og:description" content="Once running: click and drag to draw box over 2 or more samples to view their compositions.
+You can style the ordination plot points using the options on the left panel." />
 
 
 
@@ -129,67 +130,65 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Select phyloseq sample_data using dplyr::select syntax</h1>
-    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/ps_select.R'><code>R/ps_select.R</code></a></small>
-    <div class="hidden name"><code>ps_select.Rd</code></div>
+    <h1>Interactively explore compositions of ordinated samples</h1>
+    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/ord_explore.R'><code>R/ord_explore.R</code></a></small>
+    <div class="hidden name"><code>ord_explore.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Simple selection of phyloseq sample_data variables, might be useful for printing reduced sample_data, or inside other functions</p>
+    <p>Once running: click and drag to draw box over 2 or more samples to view their compositions.
+You can style the ordination plot points using the options on the left panel.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ps_select</span><span class='op'>(</span><span class='va'>ps</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>ord_explore</span><span class='op'>(</span>
+  <span class='va'>ord</span>,
+  seriate_method <span class='op'>=</span> <span class='st'>"OLO_ward"</span>,
+  tax_transform_for_ordering <span class='op'>=</span> <span class='st'>"identity"</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>ps</th>
-      <td><p>phyloseq with sample_data</p></td>
+      <th>ord</th>
+      <td><p>list output of ord_calc</p></td>
+    </tr>
+    <tr>
+      <th>seriate_method</th>
+      <td><p>seriation method to order phyloseq samples by similarity</p></td>
+    </tr>
+    <tr>
+      <th>tax_transform_for_ordering</th>
+      <td><p>transform tax before ordering with ps_seriate</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>passed straight to dplyr::select</p></td>
+      <td><p>additional arguments passed to ord_plot</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>phyloseq object</p>
+    <p>nothing, opens html viewer</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://dx.plos.org/10.1371/journal.pone.0061217'>phyloseq</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"enterotype"</span>, package <span class='op'>=</span> <span class='st'>"phyloseq"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: 'dplyr'</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from 'package:stats':</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from 'package:base':</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"enterotype"</span><span class='op'>)</span>
 
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='va'>enterotype</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Sample Data:        [6 samples by 9 sample variables]:
-#&gt;           Enterotype Sample_ID SeqTech  SampleID     Project Nationality Gender
-#&gt; AM.AD.1         &lt;NA&gt;   AM.AD.1  Sanger   AM.AD.1      gill06    american      F
-#&gt; AM.AD.2         &lt;NA&gt;   AM.AD.2  Sanger   AM.AD.2      gill06    american      M
-#&gt; AM.F10.T1       &lt;NA&gt; AM.F10.T1  Sanger AM.F10.T1 turnbaugh09    american      F
-#&gt; AM.F10.T2          3 AM.F10.T2  Sanger AM.F10.T2 turnbaugh09    american      F
-#&gt; DA.AD.1            2   DA.AD.1  Sanger   DA.AD.1     MetaHIT      danish      F
-#&gt; DA.AD.1T        &lt;NA&gt;  DA.AD.1T  Sanger      &lt;NA&gt;        &lt;NA&gt;        &lt;NA&gt;   &lt;NA&gt;
-#&gt;           Age ClinicalStatus
-#&gt; AM.AD.1    28        healthy
-#&gt; AM.AD.2    37        healthy
-#&gt; AM.F10.T1  NA          obese
-#&gt; AM.F10.T2  NA          obese
-#&gt; DA.AD.1    59        healthy
-#&gt; DA.AD.1T   NA           &lt;NA&gt;</div><div class='input'>
-<span class='va'>enterotype</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>ps_select</span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://tidyselect.r-lib.org/reference/starts_with.html'>contains</a></span><span class='op'>(</span><span class='st'>"Sample"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Sample Data:        [6 samples by 7 sample variables]:
-#&gt;           Enterotype SeqTech     Project Nationality Gender Age ClinicalStatus
-#&gt; AM.AD.1         &lt;NA&gt;  Sanger      gill06    american      F  28        healthy
-#&gt; AM.AD.2         &lt;NA&gt;  Sanger      gill06    american      M  37        healthy
-#&gt; AM.F10.T1       &lt;NA&gt;  Sanger turnbaugh09    american      F  NA          obese
-#&gt; AM.F10.T2          3  Sanger turnbaugh09    american      F  NA          obese
-#&gt; DA.AD.1            2  Sanger     MetaHIT      danish      F  59        healthy
-#&gt; DA.AD.1T        &lt;NA&gt;  Sanger        &lt;NA&gt;        &lt;NA&gt;   &lt;NA&gt;  NA           &lt;NA&gt;</div></pre>
+<span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>enterotype</span>
+<span class='va'>ord1</span> <span class='op'>&lt;-</span> <span class='va'>ps</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='dist_calc.html'>dist_calc</a></span><span class='op'>(</span><span class='st'>"bray"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span><span class='st'>"PCoA"</span><span class='op'>)</span>
+
+<span class='co'># ord_explore(ord = ord1)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
