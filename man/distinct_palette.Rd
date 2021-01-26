@@ -4,7 +4,7 @@
 \alias{distinct_palette}
 \title{Arbitrary expansion of the "Paired" colorbrewer palette}
 \usage{
-distinct_palette(n)
+distinct_palette(n = NA)
 }
 \arguments{
 \item{n}{number of colours to return}

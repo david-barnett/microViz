@@ -1,3 +1,9 @@
+# microViz 0.1.2
+
+## Features
+
+* `ord_explore` allows interactive exploration of the composition of ordinated samples using `Shiny`
+
 # microViz 0.1.1
 
 ## Features

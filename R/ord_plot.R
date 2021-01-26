@@ -151,7 +151,7 @@ ord_plot <-
     # check there are still ellipses args left after removing nulls
     if (length(ellipses) > 0) {
       # check aesthetics colour, shape, size and alpha are all in dataset (or numeric-esque)
-      variables <- colnames(microbiome::meta(ps))
+      variables <- phyloseq::sample_variables(ps)
       for (v in ellipses) {
         if (
           !is.null(v) && !(class(v) %in% c("logical", "numeric", "integer")) &&

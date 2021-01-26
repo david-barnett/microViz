@@ -39,6 +39,11 @@ ps_seriate <- function(ps, method = "OLO_ward", dist = "bray", tax_transform = "
       # calculate distance between samples
       distMat <- dist_calc(data = ps_transformed, dist = dist)[["distMat"]]
       ser <- seriation::seriate(x = distMat, method = method)
+    } else {
+      stop(
+        method, " is not a valid method in seriation::seriate!\n",
+        "Nearest match is: ", agrep(method, seriation::list_seriation_methods(), value = TRUE, ignore.case = TRUE)[[1]]
+      )
     }
     s_order <- seriation::get_order(ser)
     if (isTRUE(add_variable)) {
