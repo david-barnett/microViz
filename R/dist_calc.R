@@ -45,14 +45,14 @@ dist_calc <- function(
   if (inherits(data, "list")) {
     ps <- data[["ps"]]
     info <- data[["info"]]
-    if (is.null(info[["tax_transformation"]])) {
-      info[["tax_transformation"]] <- "none specified"
+    if (is.null(info[["tax_transform"]])) {
+      info[["tax_transform"]] <- "none specified"
     }
   } else if (inherits(data, "phyloseq")) {
     ps <- data
     info <- list(
       tax_level = "not specified",
-      tax_transformation = "none specified"
+      tax_transform = "none specified"
     )
   } else {
     stop("data argument is wrong class")
@@ -60,7 +60,7 @@ dist_calc <- function(
 
   # aitchison distance
   if (dist == "aitchison") {
-    if (isTRUE(info[["tax_transformation"]] == "clr")) {
+    if (isTRUE(info[["tax_transform"]] == "clr")) {
       stop("aitchison distance requested on data that are already clr-transformed, see the ?dist_calc details section!")
     }
     distMat <- ps %>%
