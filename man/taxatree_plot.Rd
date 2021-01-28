@@ -5,8 +5,8 @@
 \title{Plot taxonomic stats on a ggraph tree}
 \usage{
 taxatree_plot(
-  graph_object,
-  layout_coords,
+  graph,
+  preset_style = NA,
   size_stat = "taxon_mean",
   colour_stat = "b_mu",
   max_node_size = 8,
@@ -17,13 +17,12 @@ taxatree_plot(
   colour_palette = "Green-Brown",
   reverse_colours = FALSE,
   luminance_l2 = 80,
-  colour_lims = c(-2, 2)
+  colour_lims = c(-3, 3),
+  layout = "tree"
 )
 }
 \arguments{
-\item{graph_object}{tidygraph made with taxatree_nodes taxatree_edges}
-
-\item{layout_coords}{dataframe of x and y coordinates}
+\item{graph}{tidygraph made with taxatree_nodes and taxatree_edges}
 
 \item{size_stat}{name of variable to scale size of nodes and edges (natural log scale)}
 
@@ -46,13 +45,13 @@ taxatree_plot(
 \item{luminance_l2}{luminance of colourscale midpoint (higher is lighter)}
 
 \item{colour_lims}{limits of colour and fill scale, used to harmonise across several plots (values squished to fit this range!)}
+
+\item{layout}{name of ggraph layout or manually specified layout with data.frame of x and y coordinates}
 }
 \value{
 ggraph ggplot
 }
 \description{
-Uses ggraph. See tree-development vignette.
-}
-\examples{
-#
+Uses ggraph (see help for main underlying graphing function with ?ggraph::ggraph)
+See tree-development vignette 2021.
 }

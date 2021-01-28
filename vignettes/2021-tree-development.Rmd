@@ -1,0 +1,201 @@
+---
+title: "tree-development"
+author: "David Barnett"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r, message=FALSE}
+options(width = 100)
+library(microViz)
+library(microbiome)
+library(igraph)
+library(tidygraph)
+library(ggraph)
+library(patchwork)
+library(dplyr)
+library(tibble)
+library(corncob)
+library(future)
+library(future.apply)
+library(colorspace)
+knitr::opts_chunk$set(fig.width = 9, fig.height = 6)
+```
+
+# Intro
+
+This is a work in progress script about visualising taxon-specific statistics on a taxonomic tree (kinda like a phylogenetic tree with arbitrary branch lengths and with connections not directly defined by phylogenetic similarity).
+
+In the future I will turn this process into a (couple of) function(s) with documentation for visualising any statistic/numbers as the colour and size of the nodes and edges of this tree.
+
+The layout should be somewhat like a circular tree, rooted at e.g. kingdom, but not uniformly arranged. 
+The characteristic/quasi-stochastic visual arrangement of the tree actually will be a feature that allows easy visual orientation across multiple copies of the same tree.
+
+Much of this can be done with `metacoder::heat_tree()` but this package has several limitations in my opinion:
+
+- it generates a kind of ugly "legend" for which the breaks and sig.figs etc cannot be customised
+- it draws the nodes with `geom_polygon`
+    - preventing addition of customised legends 
+    - preventing flexible (re)styling of the ggplot output
+    - preventing the straightforward addition of further (filtered) geoms (e.g. for highlighting points)
+    
+- the `metacoder` package is very complicated, meaning:
+    - debugging errors is just frustrating
+    - if it fails in the future/or becomes incompatible with a future R or dependency version, I cannot fix it 
+      (it currently already uses deprecated tidyverse functions that throw warnings...)
+      
+- it is slow to draw multiple plots in a grid because it has to calculate the layout again for each one
+
+# Setting up some example data
+
+Getting example dataset `dietswap`.
+
+```{r}
+data("dietswap", package = "microbiome")
+ps <- dietswap
+
+# filter out rare taxa
+ps <- ps %>% tax_filter(min_prevalence = 0.2, min_total_abundance = 10000)
+
+# introduce some unclear taxonomic classifications
+# (to demonstrate fixing these with helper functions)
+tax_table(ps)[c(8, 9), "Genus"] <- "unknown"
+tax_table(ps)[8, "Family"] <- "unknown"
+```
+
+When preparing a phyloseq dataset for stats and tree-based plotting it is critically important that the taxonomic names at each rank are fully identifiable/unique both within and across ranks, as they will function as the unique node IDs for the taxonomic tree graph structure.
+
+```{r}
+# fix problem names
+ps <- tax_fill_unknowns(ps, unknowns = "unknown")
+
+# This example dataset has some taxa with the same name for phylum and family... this needs to be fixed
+ps <- tax_prepend_ranks(ps)
+# this example dataset also has no root level: this is unusual and needs to be fixed
+tax_table(ps) <- cbind(root = "root", tax_table(ps))
+
+tax_table(ps)[7:11, ]
+```
+
+## Stats to decorate trees
+
+To get stats for every node of a taxonomic tree we must statistically model taxa at all taxonomic levels (except root).
+
+It is first important to set up binary variables for the stats models, as heat_trees or other heatmap-type visualisations cannot be used with unordered categorical variables. 
+
+**Note:** *If you have continuous variables and wish to visualise the size of their microbial associations (e.g. regression coefs) on a similar (colour) scale as for associations with binary categorical variables, then you should scale the range of your continuous variable to between 0 and 1 (with e.g. min-max normalisation) if it is not already on a 0 to 1 scale.*
+
+```{r}
+sample_data(ps)$female <- if_else(sample_data(ps)$sex == "female", 1, 0, NaN)
+sample_data(ps)$overweight <- if_else(sample_data(ps)$bmi_group == "overweight", 1, 0, NaN)
+sample_data(ps)$obese <- if_else(sample_data(ps)$bmi_group == "obese", 1, 0, NaN)
+variables <- c("female", "overweight", "obese")
+
+tax_models_list <- lapply(
+  X = phyloseq::rank_names(ps)[-1],
+  function(r) {
+    message(Sys.time(), " - modelling at level: ", r)
+    models <- tax_model_corncob(
+      ps = ps,
+      tax_level = r, taxa = "all",
+      variables = variables
+    )
+    return(models)
+  }
+)
+# Flatten all taxonomic level lists into one list of models
+# (this is why taxon names must be completely identifiable across ranks)
+flat_models_list <- purrr::flatten(tax_models_list)
+var_stats <- models2stats_corncob(flat_models_list)
+```
+
+# From phyloseq to tree/graph
+
+## Nodes and edges
+
+1. Create a dataframe of taxon nodes (nodes are the points on the tree graph)
+2. Join stats about the associations with the variable `obese` to the augmented nodes dataframe
+3. Create a dataframe of edges from the nodes (edges join the nodes in the tree together)
+
+```{r}
+nodes_df <- taxatree_nodes(ps)
+nodes_df <- dplyr::left_join(nodes_df, var_stats$obese, by = "taxon_name")
+edge_df <- taxatree_edges(nodes_df)
+graph <- tbl_graph(nodes = nodes_df, edges = edge_df, node_key = "taxon_name", directed = TRUE)
+```
+
+# Graphing
+```{r}
+taxatree_plot(graph = graph)
+```
+
+# old below
+
+## Selecting 1 of the adjusted layouts
+
+Besides just selecting the layout number 3 with `layouts_list[[3]]`, the adjustment of the original layout can be rerun exactly by setting the seed as equal to 3 again, as demonstrated below. You could use a larger grey tree version with labels as a key, as shown below.
+
+```{r fig.height=7, fig.width=7}
+set.seed(3)
+al <- adjust_tree_layout(graph = graph, layout = layout)
+
+p <- ggraph(graph = graph, layout = al) +
+  theme_graph(base_family = "sans") +
+  geom_edge_link(aes(edge_width = log(taxon_mean)),
+    edge_colour = "grey",
+    alpha = 0.5,
+    show.legend = FALSE
+  ) +
+  geom_node_point(aes(size = log(taxon_mean)),
+    fill = "grey",
+    shape = 21,
+    show.legend = FALSE
+  ) +
+  scale_size_continuous(range = c(3, 9)) +
+  scale_edge_width_continuous(range = c(2, 6))
+
+# simpler way to add labels to families
+# p <- p +
+#   geom_node_label(
+#     mapping = aes(
+#       label = taxon_name,
+#       size = log(log(log(taxon_mean))),
+#       filter = grepl("^F:", taxon_name)
+#     ),
+#     repel = TRUE,
+#     show.legend = FALSE
+#   )
+
+# alternative way of setting labels with more control
+p <- p +
+  ggrepel::geom_label_repel(
+    data = ~ dplyr::filter(., grepl("^F:", taxon_name)),
+    mapping = aes(
+      x = x, y = y, label = taxon_name,
+      size = log(log(log(taxon_mean)))
+    ),
+    xlim = c(-Inf, Inf),
+    min.segment.length = 0,
+    show.legend = FALSE
+  )
+
+# add a black central node to mark the rook
+p <- p + geom_node_point(
+  mapping = aes(
+    filter = taxon_level == "root",
+    size = log(taxon_mean)
+  ),
+  show.legend = FALSE
+)
+
+p + labs(caption = "Note: Most of these are not really Family-level names, but\nthey are listed as such in the example dataset (dietswap).")
+```
+
+```{r}
+devtools::session_info()
+```
