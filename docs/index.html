@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -71,7 +71,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/david-barnett/microViz/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -105,25 +105,32 @@
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install the latest available microViz package version using the following instructions.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># # If you are on windows you will need to install RTools so that your computer can build this package</span>
-<span class="co"># # Follow instructions here: http://jtleek.com/modules/01_DataScientistToolbox/02_10_rtools/</span>
+<code class="sourceCode R"><span class="co"># If you are on windows you will need to install RTools so that your computer can build this package</span>
+<span class="co"># Follow instructions here: http://jtleek.com/modules/01_DataScientistToolbox/02_10_rtools/</span>
 
 <span class="co"># # How to authenticate your R to install from this private github repo # #</span>
-<span class="co"># install.packages("usethis")</span>
-<span class="co"># usethis::browse_github_pat() </span>
-<span class="co"># # click "generate token" on the webpage and then follow instructions in the R console.</span>
-<span class="co"># # For more help see: https://happygitwithr.com/github-pat.html#step-by-step</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"usethis"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"credentials"</span><span class="op">)</span>
+<span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/github-token.html">create_github_token</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co"># a github webpage will open (you might need to log in)</span>
+<span class="co"># Enter a PAT name that reminds you which computer you are currently on</span>
+<span class="co"># Click "generate token" at the bottom of the webpage, then run the following code in R, then copy/paste the PAT when requested:</span>
+<span class="fu">credentials</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/credentials/reference/set_github_pat.html">set_github_pat</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co"># More help/instructions may be found on: https://happygitwithr.com/credential-caching.html#how-to-get-a-pat</span>
 
-<span class="co"># If you don't already have the latest versions of phyloseq and microbiome, you can install these from bioconductor</span>
+<span class="co"># If you don't already have the latest versions of phyloseq and microbiome, you should install these from bioconductor:</span>
 
-<span class="co"># if (!requireNamespace("BiocManager", quietly = TRUE))</span>
-<span class="co">#   install.packages("BiocManager")</span>
-<span class="co"># BiocManager::install(c("phyloseq", "microbiome"))</span>
+<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
+ <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
+<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"phyloseq"</span>, <span class="st">"microbiome"</span><span class="op">)</span><span class="op">)</span>
 
 <span class="co"># # Installing the latest version of this package # #</span>
-<span class="co"># install.packages("devtools")</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"MUMC-MEDMIC/microViz@version"</span><span class="op">)</span>
-<span class="co"># # advanced tip: add @&lt;commit-hash&gt; after microViz to install a particular version</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"MUMC-MEDMIC/microViz@0.1.2"</span><span class="op">)</span> <span class="co"># change 0.1.2 to the latest release version</span>
+<span class="co"># advanced tip: add @&lt;commit-hash&gt; after microViz to install a version from a particular commit</span>
+<span class="co"># If you get an error including something like: </span>
+<span class="co"># "check that you have the required permissions" </span>
+<span class="co"># then setting your credentials/PAT may have failed</span>
 
 <span class="co"># optionally install the corncob package from github (for beta binomial models)</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"bryandmartin/corncob@338323e9"</span><span class="op">)</span></code></pre></div>
@@ -240,8 +247,8 @@
   variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"bmi_group"</span><span class="op">)</span>
 <span class="op">)</span>
 <span class="co">#&gt; Dropping samples with missings: 0</span>
-<span class="co">#&gt; 2021-01-24 17:24:38 - Starting PERMANOVA with 99 perms with 1 processes</span>
-<span class="co">#&gt; 2021-01-24 17:24:38 - Finished PERMANOVA</span>
+<span class="co">#&gt; 2021-01-28 08:47:01 - Starting PERMANOVA with 99 perms with 1 processes</span>
+<span class="co">#&gt; 2021-01-28 08:47:01 - Finished PERMANOVA</span>
 <span class="co"># view the permanova results</span>
 <span class="va">aitchison_perm</span><span class="op">$</span><span class="va">permanova</span>
 <span class="co">#&gt; </span>
@@ -264,7 +271,7 @@
 <span class="co">#&gt; $tax_level</span>
 <span class="co">#&gt; [1] "Family"</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; $tax_transformation</span>
+<span class="co">#&gt; $tax_transform</span>
 <span class="co">#&gt; [1] "none specified"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $distName</span>
@@ -277,8 +284,8 @@
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">perm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/permanova.html">permanova</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">aitchison_dists</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"female"</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">321</span><span class="op">)</span>
 <span class="co">#&gt; Dropping samples with missings: 2</span>
-<span class="co">#&gt; 2021-01-24 17:24:38 - Starting PERMANOVA with 999 perms with 1 processes</span>
-<span class="co">#&gt; 2021-01-24 17:24:40 - Finished PERMANOVA</span>
+<span class="co">#&gt; 2021-01-28 08:47:01 - Starting PERMANOVA with 999 perms with 1 processes</span>
+<span class="co">#&gt; 2021-01-28 08:47:03 - Finished PERMANOVA</span>
 <span class="va">perm2</span><span class="op">$</span><span class="va">permanova</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Call:</span>
@@ -327,105 +334,109 @@
 <span class="co">#&gt;  collate  English_United Kingdom.1252 </span>
 <span class="co">#&gt;  ctype    English_United Kingdom.1252 </span>
 <span class="co">#&gt;  tz       Europe/Berlin               </span>
-<span class="co">#&gt;  date     2021-01-24                  </span>
+<span class="co">#&gt;  date     2021-01-28                  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; - Packages ---------------------------------------------------------------------------------------</span>
 <span class="co">#&gt;  package      * version date       lib source        </span>
-<span class="co">#&gt;  ade4           1.7-16  2020-10-28 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  ape            5.4-1   2020-08-13 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  assertthat     0.2.1   2019-03-21 [1] CRAN (R 4.0.0)</span>
-<span class="co">#&gt;  Biobase        2.48.0  2020-04-27 [1] Bioconductor  </span>
-<span class="co">#&gt;  BiocGenerics   0.34.0  2020-04-27 [1] Bioconductor  </span>
-<span class="co">#&gt;  biomformat     1.16.0  2020-04-27 [1] Bioconductor  </span>
-<span class="co">#&gt;  Biostrings     2.56.0  2020-04-27 [1] Bioconductor  </span>
-<span class="co">#&gt;  callr          3.5.1   2020-10-13 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  cli            2.2.0   2020-11-20 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  cluster        2.1.0   2019-06-19 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  codetools      0.2-18  2020-11-04 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  colorspace     2.0-0   2020-11-11 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  crayon         1.3.4   2017-09-16 [1] CRAN (R 4.0.0)</span>
-<span class="co">#&gt;  data.table     1.13.2  2020-10-19 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  DBI            1.1.0   2019-12-15 [1] CRAN (R 4.0.0)</span>
-<span class="co">#&gt;  desc           1.2.0   2018-05-01 [1] CRAN (R 4.0.0)</span>
-<span class="co">#&gt;  devtools       2.3.2   2020-09-18 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  digest         0.6.27  2020-10-24 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  dplyr        * 1.0.3   2021-01-15 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  ellipsis       0.3.1   2020-05-15 [1] CRAN (R 4.0.0)</span>
-<span class="co">#&gt;  evaluate       0.14    2019-05-28 [1] CRAN (R 4.0.0)</span>
-<span class="co">#&gt;  fansi          0.4.2   2021-01-15 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  farver         2.0.3   2020-01-16 [1] CRAN (R 4.0.0)</span>
-<span class="co">#&gt;  foreach        1.5.1   2020-10-15 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  fs             1.5.0   2020-07-31 [1] CRAN (R 4.0.2)</span>
-<span class="co">#&gt;  generics       0.1.0   2020-10-31 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  ggplot2      * 3.3.3   2020-12-30 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  glue           1.4.2   2020-08-27 [1] CRAN (R 4.0.2)</span>
-<span class="co">#&gt;  gtable         0.3.0   2019-03-25 [1] CRAN (R 4.0.0)</span>
-<span class="co">#&gt;  hms            0.5.3   2020-01-08 [1] CRAN (R 4.0.0)</span>
-<span class="co">#&gt;  htmltools      0.5.0   2020-06-16 [1] CRAN (R 4.0.2)</span>
-<span class="co">#&gt;  igraph         1.2.6   2020-10-06 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  IRanges        2.22.2  2020-05-21 [1] Bioconductor  </span>
-<span class="co">#&gt;  iterators      1.0.13  2020-10-15 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  jsonlite       1.7.2   2020-12-09 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  knitr          1.30    2020-09-22 [1] CRAN (R 4.0.2)</span>
-<span class="co">#&gt;  labeling       0.4.2   2020-10-20 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  lattice      * 0.20-41 2020-04-02 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  lifecycle      0.2.0   2020-03-06 [1] CRAN (R 4.0.0)</span>
-<span class="co">#&gt;  magrittr       2.0.1   2020-11-17 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  MASS           7.3-53  2020-09-09 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  Matrix         1.2-18  2019-11-27 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  memoise        1.1.0   2017-04-21 [1] CRAN (R 4.0.0)</span>
-<span class="co">#&gt;  mgcv           1.8-33  2020-08-27 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  microbiome   * 1.10.0  2020-04-27 [1] Bioconductor  </span>
-<span class="co">#&gt;  microViz     * 0.1.0   2021-01-24 [1] local         </span>
-<span class="co">#&gt;  multtest       2.44.0  2020-04-27 [1] Bioconductor  </span>
-<span class="co">#&gt;  munsell        0.5.0   2018-06-12 [1] CRAN (R 4.0.0)</span>
-<span class="co">#&gt;  nlme           3.1-150 2020-10-24 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  permute      * 0.9-5   2019-03-12 [1] CRAN (R 4.0.0)</span>
-<span class="co">#&gt;  phyloseq     * 1.32.0  2020-04-27 [1] Bioconductor  </span>
-<span class="co">#&gt;  pillar         1.4.7   2020-11-20 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  pkgbuild       1.2.0   2020-12-15 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  pkgconfig      2.0.3   2019-09-22 [1] CRAN (R 4.0.0)</span>
-<span class="co">#&gt;  pkgload        1.1.0   2020-05-29 [1] CRAN (R 4.0.0)</span>
-<span class="co">#&gt;  plyr           1.8.6   2020-03-03 [1] CRAN (R 4.0.0)</span>
-<span class="co">#&gt;  prettyunits    1.1.1   2020-01-24 [1] CRAN (R 4.0.0)</span>
-<span class="co">#&gt;  processx       3.4.5   2020-11-30 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  progress       1.2.2   2019-05-16 [1] CRAN (R 4.0.0)</span>
-<span class="co">#&gt;  ps             1.5.0   2020-12-05 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  purrr          0.3.4   2020-04-17 [1] CRAN (R 4.0.0)</span>
-<span class="co">#&gt;  R6             2.5.0   2020-10-28 [1] CRAN (R 4.0.1)</span>
-<span class="co">#&gt;  RColorBrewer   1.1-2   2014-12-07 [1] CRAN (R 4.0.0)</span>
-<span class="co">#&gt;  Rcpp           1.0.6   2021-01-15 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  registry       0.5-1   2019-03-05 [1] CRAN (R 4.0.0)</span>
-<span class="co">#&gt;  remotes        2.2.0   2020-07-21 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  reshape2       1.4.4   2020-04-09 [1] CRAN (R 4.0.0)</span>
-<span class="co">#&gt;  rhdf5          2.32.4  2020-10-05 [1] Bioconductor  </span>
-<span class="co">#&gt;  Rhdf5lib       1.10.1  2020-07-09 [1] Bioconductor  </span>
-<span class="co">#&gt;  rlang          0.4.10  2020-12-30 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  rmarkdown      2.5     2020-10-21 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  rprojroot      2.0.2   2020-11-15 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  Rtsne          0.15    2018-11-10 [1] CRAN (R 4.0.2)</span>
-<span class="co">#&gt;  S4Vectors      0.26.1  2020-05-16 [1] Bioconductor  </span>
-<span class="co">#&gt;  scales         1.1.1   2020-05-11 [1] CRAN (R 4.0.0)</span>
-<span class="co">#&gt;  seriation      1.2-9   2020-10-01 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  sessioninfo    1.1.1   2018-11-05 [1] CRAN (R 4.0.0)</span>
-<span class="co">#&gt;  stringi        1.5.3   2020-09-09 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  stringr        1.4.0   2019-02-10 [1] CRAN (R 4.0.0)</span>
-<span class="co">#&gt;  survival       3.2-7   2020-09-28 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  testthat       3.0.1   2020-12-17 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  tibble         3.0.5   2021-01-15 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  tidyr          1.1.2   2020-08-27 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  tidyselect     1.1.0   2020-05-11 [1] CRAN (R 4.0.0)</span>
-<span class="co">#&gt;  TSP            1.1-10  2020-04-17 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  usethis        1.6.3   2020-09-17 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  vctrs          0.3.6   2020-12-17 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  vegan        * 2.5-7   2020-11-28 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  withr          2.4.0   2021-01-16 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  xfun           0.19    2020-10-30 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  XVector        0.28.0  2020-04-27 [1] Bioconductor  </span>
-<span class="co">#&gt;  yaml           2.2.1   2020-02-01 [1] CRAN (R 4.0.0)</span>
-<span class="co">#&gt;  zlibbioc       1.34.0  2020-04-27 [1] Bioconductor  </span>
+<span class="co">#&gt;  ade4           1.7-16  2020-10-28 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  ape            5.4-1   2020-08-13 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  assertthat     0.2.1   2019-03-21 [2] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  Biobase        2.48.0  2020-04-27 [2] Bioconductor  </span>
+<span class="co">#&gt;  BiocGenerics   0.34.0  2020-04-27 [2] Bioconductor  </span>
+<span class="co">#&gt;  biomformat     1.16.0  2020-04-27 [2] Bioconductor  </span>
+<span class="co">#&gt;  Biostrings     2.56.0  2020-04-27 [2] Bioconductor  </span>
+<span class="co">#&gt;  cachem         1.0.1   2021-01-21 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  callr          3.5.1   2020-10-13 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  cli            2.2.0   2020-11-20 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  cluster        2.1.0   2019-06-19 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  codetools      0.2-18  2020-11-04 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  colorspace     2.0-0   2020-11-11 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  crayon         1.3.4   2017-09-16 [2] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  data.table     1.13.6  2020-12-30 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  DBI            1.1.1   2021-01-15 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  desc           1.2.0   2018-05-01 [2] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  devtools       2.3.2   2020-09-18 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  digest         0.6.27  2020-10-24 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  dplyr        * 1.0.3   2021-01-15 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  ellipsis       0.3.1   2020-05-15 [2] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  evaluate       0.14    2019-05-28 [2] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  fansi          0.4.2   2021-01-15 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  farver         2.0.3   2020-01-16 [2] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  fastmap        1.1.0   2021-01-25 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  foreach        1.5.1   2020-10-15 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  fs             1.5.0   2020-07-31 [2] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  generics       0.1.0   2020-10-31 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  ggplot2      * 3.3.3   2020-12-30 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  glue           1.4.2   2020-08-27 [2] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  gtable         0.3.0   2019-03-25 [2] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  highr          0.8     2019-03-20 [2] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  hms            1.0.0   2021-01-13 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  htmltools      0.5.1.1 2021-01-22 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  igraph         1.2.6   2020-10-06 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  IRanges        2.22.2  2020-05-21 [2] Bioconductor  </span>
+<span class="co">#&gt;  iterators      1.0.13  2020-10-15 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  jsonlite       1.7.2   2020-12-09 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  knitr          1.31    2021-01-27 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  labeling       0.4.2   2020-10-20 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  lattice      * 0.20-41 2020-04-02 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  lifecycle      0.2.0   2020-03-06 [2] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  magrittr       2.0.1   2020-11-17 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  MASS           7.3-53  2020-09-09 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  Matrix         1.2-18  2019-11-27 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  memoise        2.0.0   2021-01-26 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  mgcv           1.8-33  2020-08-27 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  microbiome   * 1.10.0  2020-04-27 [2] Bioconductor  </span>
+<span class="co">#&gt;  microViz     * 0.1.2   2021-01-28 [1] local         </span>
+<span class="co">#&gt;  multtest       2.44.0  2020-04-27 [2] Bioconductor  </span>
+<span class="co">#&gt;  munsell        0.5.0   2018-06-12 [2] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  nlme           3.1-151 2020-12-10 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  permute      * 0.9-5   2019-03-12 [2] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  phyloseq     * 1.34.0  2020-10-27 [2] Bioconductor  </span>
+<span class="co">#&gt;  pillar         1.4.7   2020-11-20 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  pkgbuild       1.2.0   2020-12-15 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  pkgconfig      2.0.3   2019-09-22 [2] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  pkgload        1.1.0   2020-05-29 [2] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  plyr           1.8.6   2020-03-03 [2] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  prettyunits    1.1.1   2020-01-24 [2] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  processx       3.4.5   2020-11-30 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  progress       1.2.2   2019-05-16 [2] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  ps             1.5.0   2020-12-05 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  purrr          0.3.4   2020-04-17 [2] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  R6             2.5.0   2020-10-28 [2] CRAN (R 4.0.1)</span>
+<span class="co">#&gt;  RColorBrewer   1.1-2   2014-12-07 [2] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  Rcpp           1.0.6   2021-01-15 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  registry       0.5-1   2019-03-05 [2] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  remotes        2.2.0   2020-07-21 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  reshape2       1.4.4   2020-04-09 [2] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  rhdf5          2.32.4  2020-10-05 [2] Bioconductor  </span>
+<span class="co">#&gt;  Rhdf5lib       1.10.1  2020-07-09 [2] Bioconductor  </span>
+<span class="co">#&gt;  rlang          0.4.10  2020-12-30 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  rmarkdown      2.6     2020-12-14 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  rprojroot      2.0.2   2020-11-15 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  Rtsne          0.15    2018-11-10 [2] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  S4Vectors      0.26.1  2020-05-16 [2] Bioconductor  </span>
+<span class="co">#&gt;  scales         1.1.1   2020-05-11 [2] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  seriation      1.2-9   2020-10-01 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  sessioninfo    1.1.1   2018-11-05 [2] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  stringi        1.5.3   2020-09-09 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  stringr        1.4.0   2019-02-10 [2] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  survival       3.2-7   2020-09-28 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  testthat       3.0.1   2020-12-17 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  tibble         3.0.5   2021-01-15 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  tidyr          1.1.2   2020-08-27 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  tidyselect     1.1.0   2020-05-11 [2] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  TSP            1.1-10  2020-04-17 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  usethis        2.0.0   2020-12-10 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  vctrs          0.3.6   2020-12-17 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  vegan        * 2.5-7   2020-11-28 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  withr          2.4.1   2021-01-26 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  xfun           0.20    2021-01-06 [2] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  XVector        0.28.0  2020-04-27 [2] Bioconductor  </span>
+<span class="co">#&gt;  yaml           2.2.1   2020-02-01 [2] CRAN (R 4.0.0)</span>
+<span class="co">#&gt;  zlibbioc       1.34.0  2020-04-27 [2] Bioconductor  </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; [1] C:/Program Files/R/R-4.0.3/library</span></code></pre></div>
+<span class="co">#&gt; [1] C:/Users/david.barnett/AppData/Local/Temp/RtmpATlQcq/temp_libpathabc1f9738d0</span>
+<span class="co">#&gt; [2] C:/Program Files/R/R-4.0.3/library</span></code></pre></div>
 </div>
 
   </div>
