@@ -50,11 +50,12 @@ taxatree_models(
 list of model objects or list of lists
 }
 \description{
-Takes a phyloseq and returns a list of models, one for each taxon.
-Same independent variables for all models, as specified in \code{variables} or \code{formula} argument (latter takes precedence).
-For \code{type = "bbdml"} the same variables/formula arg is used for modelling both the abundance and dispersion parameters.
-
-Specify ranks to run over.
+\itemize{
+\item \code{tax_model} takes a phyloseq and returns a list of models, one for each taxon
+\item Same independent variables are used for all models, as specified in \code{variables} or \code{formula} argument (latter takes precedence).
+\item For \code{type = "bbdml"} the same variables/formula arg is used for modelling both the abundance and dispersion parameters.
+\item \code{taxatree_models} runs \code{tax_model} at multiple taxonomic ranks. Specify ranks to run over in \code{tax_levels} (plural!) argument.
+}
 }
 \details{
 \code{tax_model} can use parallel processing with the \code{future} package.

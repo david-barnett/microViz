@@ -2,9 +2,10 @@
 #' @title Statistical modelling for individual taxa in a phyloseq
 #'
 #' @description
-#' Takes a phyloseq and returns a list of models, one for each taxon.
-#' Same independent variables for all models, as specified in `variables` or `formula` argument (latter takes precedence).
-#' For `type = "bbdml"` the same variables/formula arg is used for modelling both the abundance and dispersion parameters.
+#' - `tax_model` takes a phyloseq and returns a list of models, one for each taxon
+#' - Same independent variables are used for all models, as specified in `variables` or `formula` argument (latter takes precedence).
+#' - For `type = "bbdml"` the same variables/formula arg is used for modelling both the abundance and dispersion parameters.
+#' - `taxatree_models` runs `tax_model` at multiple taxonomic ranks. Specify ranks to run over in `tax_levels` (plural!) argument.
 #'
 #' @details
 #' `tax_model` can use parallel processing with the `future` package.
@@ -13,6 +14,7 @@
 #'
 #' @param ps phyloseq object
 #' @param tax_level name of taxonomic rank to aggregate to and model taxa at
+#' @param tax_levels names of ranks to model taxa at (or their index) or defaults to all ranks except the first
 #' @param type name of modelling function to use
 #' @param variables vector of variable names to use in statistical model as right hand side
 #' @param formula right hand side of a formula, as a formula object or character value
@@ -123,6 +125,7 @@ tax_model <- function(ps, tax_level, type = "bbdml", variables = NULL, formula =
 
     # define specific formulas and model each taxon individually
     taxon_models <- future.apply::future_lapply(
+      future.seed = TRUE,
       X = taxons,
       FUN = function(taxon) {
         if (!isFALSE(verbose)) message("Modelling: ", taxon)
@@ -142,11 +145,6 @@ tax_model <- function(ps, tax_level, type = "bbdml", variables = NULL, formula =
   return(taxon_models)
 }
 
-#' @title Run tax_model at multiple taxonomic ranks
-#'
-#' @description Specify ranks to run over.
-#'
-#' @param tax_levels names of ranks to model taxa at (or their index) or defaults to all ranks except the first
 #'
 #' @rdname Taxon-modelling
 #' @export
@@ -178,4 +176,35 @@ taxatree_models <- function(ps, tax_levels = NULL, type = "bbdml", variables = N
   )
   names(tax_models_list) <- tax_levels
   return(tax_models_list)
+}
+
+# `models2stats_corncob`extracts stats from corncob taxon model list
+#
+# models2stats_corncob is used inside taxatree_plots, with the output of `tax_model(type = "bbdml")`.
+# It splits the statistical results extracted from corncob models and groups them by the independent variable name that they refer to.
+# One dataframe of this list can then be joined to the output of taxatree_nodes to prepare for taxonomic heat tree graph visualisation of taxon-variable associations.
+#
+# @param taxon_models named list output of `tax_model(type = "bbdml")`
+# @return list of dataframes, one df per independent variable
+models2stats_corncob <- function(taxon_models) {
+  # get stats from models
+  taxon_stats <- lapply(taxon_models, corncob::waldt)
+  taxon_stats <- lapply(names(taxon_stats), function(name) {
+    df <- as.data.frame(taxon_stats[[name]])
+    df$taxon_name <- name
+    df <- tibble::rownames_to_column(df, var = "stat")
+    df <- dplyr::rename(df, p = "Pr(>|t|)", t = "t value", se = "Std. Error", b = "Estimate")
+    df <- dplyr::filter(df, !grepl("(Intercept)", .data$stat))
+  })
+  taxon_stats_df <- purrr::reduce(taxon_stats, rbind.data.frame)
+  taxon_stats_df <- tidyr::separate(taxon_stats_df,
+                                    col = "stat", into = c("param", "model_var"),
+                                    extra = "merge", sep = "[.]", remove = TRUE
+  )
+  taxon_stats_wide <- tidyr::pivot_wider(
+    data = taxon_stats_df,
+    names_from = .data$param, values_from = dplyr::all_of(c("b", "se", "t", "p"))
+  )
+  stats_per_var <- split.data.frame(taxon_stats_wide, taxon_stats_wide$model_var)
+  return(stats_per_var)
 }
