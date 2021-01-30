@@ -68,8 +68,6 @@ library(tibble)
 library(phyloseq)
 library(microbiome)
 library(corncob)
-library(future)
-library(future.apply)
 
 data(dietswap)
 ps <- dietswap
@@ -85,9 +83,6 @@ ps <- ps \%>\% ps_mutate(
 # We can fix problems like this with the tax_prepend_ranks function
 ps <- tax_prepend_ranks(ps)
 
-# this example dataset also has no root, this is unusual and needs to be fixed
-tax_table(ps) <- cbind(root = "root", tax_table(ps))
-
 # filter out rare taxa
 ps <- ps \%>\% tax_filter(min_prevalence = 0.1, min_total_abundance = 10000)
 
@@ -100,7 +95,8 @@ models <- tax_model(ps, tax_level = "Genus", taxa = 1:3, variables = VARS)
 models2 <- tax_model(ps, tax_level = "Genus", taxa = 1:3, formula = ~ female + overweight + obese)
 all.equal(models, models2) # should be TRUE
 # Model only one genus, NOTE the modified name, which was returned by tax_prepend_ranks defaults
-models3 <- tax_model(ps, tax_level = "Genus", taxa = "G: Bacteroides fragilis et rel.", variables = VARS)
-# Model all taxa at multiple taxonomic ranks (ranks 2 and 3) using only female variable as predictor
-models4 <- taxatree_models(ps, tax_levels = 2:3, formula = ~female, verbose = FALSE)
+models3 <- ps \%>\%
+  tax_model(tax_level = "Genus", taxa = "G: Bacteroides fragilis et rel.", variables = VARS)
+# Model all taxa at multiple taxonomic ranks (ranks 1 and 2) using only female variable as predictor
+models4 <- taxatree_models(ps, tax_levels = 1:2, formula = ~female, verbose = FALSE)
 }
