@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Copy phyloseq otu_table data to sample_data — ps_otu2samdat • microViz</title>
+<title>Add rank prefixes to tax table values — tax_prepend_ranks • microViz</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Copy phyloseq otu_table data to sample_data — ps_otu2samdat" />
-<meta property="og:description" content="Copy phyloseq otu_table data to sample_data" />
+<meta property="og:title" content="Add rank prefixes to tax table values — tax_prepend_ranks" />
+<meta property="og:description" content="Prepend the start of rank names to each taxon at each rank (useful particularly in case of duplicated taxa names across ranks, e.g. dietswap dataset)" />
 
 
 
@@ -123,66 +123,76 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Copy phyloseq otu_table data to sample_data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/ps_otu2samdat.R'><code>R/ps_otu2samdat.R</code></a></small>
-    <div class="hidden name"><code>ps_otu2samdat.Rd</code></div>
+    <h1>Add rank prefixes to tax table values</h1>
+    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/tax_prepend_ranks.R'><code>R/tax_prepend_ranks.R</code></a></small>
+    <div class="hidden name"><code>tax_prepend_ranks.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Copy phyloseq otu_table data to sample_data</p>
+    <p>Prepend the start of rank names to each taxon at each rank (useful particularly in case of duplicated taxa names across ranks, e.g. dietswap dataset)</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ps_otu2samdat</span><span class='op'>(</span><span class='va'>ps</span>, taxa <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>tax_prepend_ranks</span><span class='op'>(</span><span class='va'>ps</span>, sep <span class='op'>=</span> <span class='st'>": "</span>, nchar <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>ps</th>
-      <td><p>phyloseq with sample_data</p></td>
+      <td><p>phyloseq object</p></td>
     </tr>
     <tr>
-      <th>taxa</th>
-      <td><p>list of taxa_names to copy to sample_data, or NULL (which selects all with <code><a href='https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html'>phyloseq::taxa_names()</a></code>)</p></td>
+      <th>sep</th>
+      <td><p>for tax_prepend_ranks (what to paste in between rank initial and taxon name)</p></td>
+    </tr>
+    <tr>
+      <th>nchar</th>
+      <td><p>number of characters to use from start of rank_names</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>phyloseq with augmented sample_data</p>
+    <p>phyloseq</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://dx.plos.org/10.1371/journal.pone.0061217'>phyloseq</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://microbiome.github.io/microbiome'>microbiome</a></span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span><span class='op'>)</span>
-
-<span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span> <span class='op'>%&gt;%</span> <span class='fu'>ps_otu2samdat</span><span class='op'>(</span><span class='st'>"Akkermansia"</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_variables.html'>sample_variables</a></span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "subject"                "sex"                    "nationality"           
-#&gt; [4] "group"                  "sample"                 "timepoint"             
-#&gt; [7] "timepoint.within.group" "bmi_group"              "Akkermansia"           </div><div class='input'>
-<span class='co'># or if you do not specify any taxa, all are copied</span>
-<span class='va'>ps_all</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span> <span class='op'>%&gt;%</span> <span class='fu'>ps_otu2samdat</span><span class='op'>(</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_variables.html'>sample_variables</a></span><span class='op'>(</span><span class='va'>ps_all</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>15</span><span class='op'>]</span>
-</div><div class='output co'>#&gt;  [1] "subject"                      "sex"                         
-#&gt;  [3] "nationality"                  "group"                       
-#&gt;  [5] "sample"                       "timepoint"                   
-#&gt;  [7] "timepoint.within.group"       "bmi_group"                   
-#&gt;  [9] "Actinomycetaceae"             "Aerococcus"                  
-#&gt; [11] "Aeromonas"                    "Akkermansia"                 
-#&gt; [13] "Alcaligenes faecalis et rel." "Allistipes et rel."          
-#&gt; [15] "Anaerobiospirillum"          </div><div class='input'>
-<span class='co'># this could be useful for colouring ordination plots, for example</span>
-<span class='va'>ps</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ps_mutate.html'>ps_mutate</a></span><span class='op'>(</span>log_akkermansia <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>Akkermansia</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='dist_calc.html'>dist_calc</a></span><span class='op'>(</span><span class='st'>"bray"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span><span class='st'>"PCoA"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span>
-    colour <span class='op'>=</span> <span class='st'>"log_akkermansia"</span>,
-    size <span class='op'>=</span> <span class='fl'>3</span>, shape <span class='op'>=</span> <span class='st'>"nationality"</span>
-  <span class='op'>)</span>
-</div><div class='img'><img src='ps_otu2samdat-1.png' alt='' width='700' height='433' /></div></pre>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>dietswap</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html'>tax_table</a></span><span class='op'>(</span><span class='va'>dietswap</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Taxonomy Table:     [6 taxa by 3 taxonomic ranks]:
+#&gt;                              Phylum            Family           
+#&gt; Actinomycetaceae             "Actinobacteria"  "Actinobacteria" 
+#&gt; Aerococcus                   "Firmicutes"      "Bacilli"        
+#&gt; Aeromonas                    "Proteobacteria"  "Proteobacteria" 
+#&gt; Akkermansia                  "Verrucomicrobia" "Verrucomicrobia"
+#&gt; Alcaligenes faecalis et rel. "Proteobacteria"  "Proteobacteria" 
+#&gt; Allistipes et rel.           "Bacteroidetes"   "Bacteroidetes"  
+#&gt;                              Genus                         
+#&gt; Actinomycetaceae             "Actinomycetaceae"            
+#&gt; Aerococcus                   "Aerococcus"                  
+#&gt; Aeromonas                    "Aeromonas"                   
+#&gt; Akkermansia                  "Akkermansia"                 
+#&gt; Alcaligenes faecalis et rel. "Alcaligenes faecalis et rel."
+#&gt; Allistipes et rel.           "Allistipes et rel."          </div><div class='input'><span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>tax_prepend_ranks</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html'>tax_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Taxonomy Table:     [6 taxa by 3 taxonomic ranks]:
+#&gt;                              Phylum               Family              
+#&gt; Actinomycetaceae             "P: Actinobacteria"  "F: Actinobacteria" 
+#&gt; Aerococcus                   "P: Firmicutes"      "F: Bacilli"        
+#&gt; Aeromonas                    "P: Proteobacteria"  "F: Proteobacteria" 
+#&gt; Akkermansia                  "P: Verrucomicrobia" "F: Verrucomicrobia"
+#&gt; Alcaligenes faecalis et rel. "P: Proteobacteria"  "F: Proteobacteria" 
+#&gt; Allistipes et rel.           "P: Bacteroidetes"   "F: Bacteroidetes"  
+#&gt;                              Genus                            
+#&gt; Actinomycetaceae             "G: Actinomycetaceae"            
+#&gt; Aerococcus                   "G: Aerococcus"                  
+#&gt; Aeromonas                    "G: Aeromonas"                   
+#&gt; Akkermansia                  "G: Akkermansia"                 
+#&gt; Alcaligenes faecalis et rel. "G: Alcaligenes faecalis et rel."
+#&gt; Allistipes et rel.           "G: Allistipes et rel."          </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

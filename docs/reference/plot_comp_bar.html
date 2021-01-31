@@ -81,7 +81,7 @@ palette: Default colouring is consistent across multiple plots if created with t
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -103,12 +103,6 @@ palette: Default colouring is consistent across multiple plots if created with t
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/PCA-sorted-polar-composition-plots.html">PCA-sorted polar composition plots</a>
-    </li>
-    <li>
-      <a href="../articles/tree-development.html">tree-development</a>
-    </li>
     <li>
       <a href="../articles/Visualising-compositions.html">Visualising-compositions</a>
     </li>
@@ -262,7 +256,9 @@ palette: Default colouring is consistent across multiple plots if created with t
     bar_width <span class='op'>=</span> <span class='fl'>0.7</span>,
     taxon_renamer <span class='op'>=</span> <span class='va'>toupper</span>
   <span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_flip.html'>coord_flip</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'seriation':</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: 'microbiome::aggregate_top_taxa' is deprecated.</span>
+#&gt; <span class='warning'>Use 'aggregate_rare' instead.</span>
+#&gt; <span class='warning'>See help("Deprecated") and help("The microbiome::aggregate_top_taxa function is deprecated.-deprecated").</span></div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'seriation':</span>
 #&gt; <span class='message'>  method         from </span>
 #&gt; <span class='message'>  reorder.hclust vegan</span></div><div class='img'><img src='plot_comp_bar-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Order samples by the value of one of more sample_data variables.</span>
@@ -279,7 +275,9 @@ palette: Default colouring is consistent across multiple plots if created with t
     bar_width <span class='op'>=</span> <span class='fl'>0.7</span>,
     label <span class='op'>=</span> <span class='st'>"subject_timepoint"</span>
   <span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_flip.html'>coord_flip</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='img'><img src='plot_comp_bar-2.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: 'microbiome::aggregate_top_taxa' is deprecated.</span>
+#&gt; <span class='warning'>Use 'aggregate_rare' instead.</span>
+#&gt; <span class='warning'>See help("Deprecated") and help("The microbiome::aggregate_top_taxa function is deprecated.-deprecated").</span></div><div class='img'><img src='plot_comp_bar-2.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='co'># Often to compare groups, average compositions are presented</span>
 <span class='va'>p1</span> <span class='op'>&lt;-</span> <span class='fu'>phyloseq</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/merge_samples-methods.html'>merge_samples</a></span><span class='op'>(</span><span class='va'>dietswap</span>, group <span class='op'>=</span> <span class='st'>"group"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
@@ -289,7 +287,9 @@ palette: Default colouring is consistent across multiple plots if created with t
     bar_width <span class='op'>=</span> <span class='fl'>0.8</span>
   <span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_flip.html'>coord_flip</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='cn'>NULL</span>, y <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='input'><span class='va'>p1</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'microbiome::aggregate_top_taxa' is deprecated.</span>
+#&gt; <span class='warning'>Use 'aggregate_rare' instead.</span>
+#&gt; <span class='warning'>See help("Deprecated") and help("The microbiome::aggregate_top_taxa function is deprecated.-deprecated").</span></div><div class='input'><span class='va'>p1</span>
 </div><div class='img'><img src='plot_comp_bar-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># However that "group-averaging" approach hides a lot of within-group variation</span>
 <span class='va'>p2</span> <span class='op'>&lt;-</span> <span class='fu'>plot_comp_bar</span><span class='op'>(</span><span class='va'>dietswap</span>,
@@ -299,7 +299,9 @@ palette: Default colouring is consistent across multiple plots if created with t
   <span class='fu'>patchwork</span><span class='fu'>::</span><span class='fu'><a href='https://patchwork.data-imaginist.com/reference/wrap_plots.html'>wrap_plots</a></span><span class='op'>(</span>nrow <span class='op'>=</span> <span class='fl'>3</span>, guides <span class='op'>=</span> <span class='st'>"collect"</span><span class='op'>)</span> <span class='op'>&amp;</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_flip.html'>coord_flip</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>&amp;</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='cn'>NULL</span>, y <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span> <span class='op'>&amp;</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>axis.text.y <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_blank</a></span><span class='op'>(</span><span class='op'>)</span>, axis.ticks.y <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_blank</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>p2</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: 'microbiome::aggregate_top_taxa' is deprecated.</span>
+#&gt; <span class='warning'>Use 'aggregate_rare' instead.</span>
+#&gt; <span class='warning'>See help("Deprecated") and help("The microbiome::aggregate_top_taxa function is deprecated.-deprecated").</span></div><div class='input'><span class='va'>p2</span>
 </div><div class='img'><img src='plot_comp_bar-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Only from p2 you can see that the apparently higher average relative abundance</span>
 <span class='co'># of Oscillospira in group DI is probably driven largely by a subgroup</span>
@@ -311,7 +313,9 @@ palette: Default colouring is consistent across multiple plots if created with t
   bar_outline_colour <span class='op'>=</span> <span class='st'>"black"</span>,
   sample_order <span class='op'>=</span> <span class='st'>"aitchison"</span>, group_by <span class='op'>=</span> <span class='st'>"sex"</span>
 <span class='op'>)</span>
-
+</div><div class='output co'>#&gt; <span class='warning'>Warning: 'microbiome::aggregate_top_taxa' is deprecated.</span>
+#&gt; <span class='warning'>Use 'aggregate_rare' instead.</span>
+#&gt; <span class='warning'>See help("Deprecated") and help("The microbiome::aggregate_top_taxa function is deprecated.-deprecated").</span></div><div class='input'>
 <span class='co'># plot them side by side with patchwork package</span>
 <span class='va'>patch</span> <span class='op'>&lt;-</span> <span class='fu'>patchwork</span><span class='fu'>::</span><span class='fu'><a href='https://patchwork.data-imaginist.com/reference/wrap_plots.html'>wrap_plots</a></span><span class='op'>(</span><span class='va'>p</span>, ncol <span class='op'>=</span> <span class='fl'>2</span>, guides <span class='op'>=</span> <span class='st'>"collect"</span><span class='op'>)</span>
 <span class='va'>patch</span> <span class='op'>&amp;</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_flip.html'>coord_flip</a></span><span class='op'>(</span><span class='op'>)</span> <span class='co'># make bars in all plots horizontal (note: use &amp; instead of +)</span>

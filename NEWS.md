@@ -1,3 +1,14 @@
+# microViz 0.2.0
+
+## Features
+
+* `taxatree_models` and `taxatree_plots` bring tree-based visualisations of statistical models
+
+## Breaking changes
+
+* `tax_model` replaces `tax_model_corncob` as a function that will eventually be generalised to use other model types 
+* `taxatree_plots` and `taxatree_plotkey` replaces the rudimentary `taxatree_plot`
+
 # microViz 0.1.2
 
 ## Features
