@@ -1,3 +1,11 @@
+# microViz 0.3.0
+
+## Breaking changes
+* `ord_plot_iris` the `data` arg is replaced with `ord` and conditionally optional `ps` arg for when data in `ord` have been transformed
+
+## Other fixes
+* `ord_plot_iris` annotation args are now NULL by default. 
+
 # microViz 0.2.0
 
 ## Features

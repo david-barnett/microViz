@@ -5,20 +5,25 @@
 \title{Circular compositional barplot sorted by ordination angle}
 \usage{
 ord_plot_iris(
-  data,
+  ord,
+  ps = NULL,
   axes = 1:2,
   scaling = "species",
   tax_level,
   n_taxa = 10,
+  taxon_renamer = function(x) identity(x),
+  palette = c("lightgrey", rev(distinct_palette(n_taxa))),
   keep_all_vars = FALSE,
-  anno_colour,
+  anno_colour = NULL,
   anno_colour_style = list(),
-  anno_binary,
+  anno_binary = NULL,
   anno_binary_style = list()
 )
 }
 \arguments{
-\item{data}{list output of ord_calc}
+\item{ord}{list output of ord_calc}
+
+\item{ps}{phyloseq object containing untransformed counts if needed (must otherwise be identical to ps used to make ord!)}
 
 \item{axes}{which 2 axes of ordination to use for ordering}
 
@@ -27,6 +32,10 @@ ord_plot_iris(
 \item{tax_level}{taxonomic aggregation level (from rank_names(ps))}
 
 \item{n_taxa}{how many taxa to colour show distinct colours for (all other taxa grouped into "Other").}
+
+\item{taxon_renamer}{function to rename taxa in the legend}
+
+\item{palette}{colour palette}
 
 \item{keep_all_vars}{slows down processing but is required for any post-hoc plot customisation options}
 
@@ -42,36 +51,78 @@ ord_plot_iris(
 ggplot
 }
 \description{
-Circular compositional barplot sorted by ordination angle
+\itemize{
+\item Order of samples extracted from ordination axes in \code{ord}. (\code{ord_calc} output)
+\item \code{ord_plot_iris} Uses the phyloseq from \code{ord} for plotting compositions if no problematic transform mentioned in \code{ord$info}
+\item Otherwise, ps must be a phyloseq object containing untransformed counts.
+\item (\code{ps} must be otherwise identical to the ps used to make \code{ord}!)
+}
 }
 \examples{
 library(dplyr)
+library(ggplot2)
 data("dietswap", package = "microbiome")
 
 ps <- dietswap \%>\%
-ps_filter(timepoint \%in\% c(1,2)) \%>\%
+  ps_filter(timepoint \%in\% c(1, 2)) \%>\%
   ps_otu2samdat("Prevotella melaninogenica et rel.") \%>\%
   ps_mutate(
     female = sex == "female",
     log_P.melaninogenica = log10(Prevotella.melaninogenica.et.rel. + 1)
   )
 
+# define a function for taking end off the long genus names in this dataset
+tax_renamer <- function(tax) {
+  stringr::str_remove(tax, " [ae]t rel.")
+}
+
 ord <- ps \%>\%
+  tax_agg("Genus") \%>\%
   dist_calc("aitchison") \%>\%
   ord_calc("PCoA")
 
 # ordination plot for comparison
-ord_plot(ord, color = "log_P.melaninogenica", size = 3)
+ord \%>\% ord_plot(
+  color = "log_P.melaninogenica", size = 3
+)
 
 ord_plot_iris(
-  data = ord,
+  ord = ord,
   tax_level = "Genus",
-  n_taxa = 12,
+  n_taxa = 10,
   anno_colour = "nationality",
   anno_colour_style = list(size = 3),
   anno_binary = "female",
-  anno_binary_style = list(shape = "F", size = 3)
+  anno_binary_style = list(shape = "F", size = 3),
+  taxon_renamer = tax_renamer
 ) +
-ggplot2::scale_colour_brewer(palette = "Dark2")
+  scale_colour_brewer(palette = "Dark2")
 
+# Using PCA for ordination after transformations (e.g. clr) means the untransformed taxonomic
+# data are not available for plotting as compositions.
+# This means you also need to provide the untransformed phyloseq object e.g.
+
+clr_pca <- ps \%>\%
+  tax_agg("Genus") \%>\%
+  tax_transform("clr") \%>\%
+  ord_calc("PCA")
+
+plot1 <- clr_pca \%>\% ord_plot(
+  plot_taxa = 1:6, tax_vec_length = 0.7,
+  color = "grey", auto_caption = FALSE,
+  taxon_renamer = tax_renamer
+) +
+  # avoid clipping long labels
+  coord_cartesian(clip = "off")
+
+iris <- ord_plot_iris(
+  ord = clr_pca,
+  ps = ps, n_taxa = 10,
+  tax_level = "Genus",
+  taxon_renamer = tax_renamer
+) +
+  # shrink legend text size
+  theme(legend.text = element_text(size = 7))
+
+patchwork::wrap_plots(plot1, iris, nrow = 1)
 }
