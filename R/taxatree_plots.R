@@ -1,8 +1,9 @@
-#' Plot taxonomic stats on a ggraph tree
+#' Plot taxonomic stats on a ggraph tree (and draw key)
 #'
 #' - Uses a phyloseq object to make a tree graph structure from the taxonomic table.
 #' - Then adds statistical results, i.e. the output out taxatree_models (from the same phyloseq).
 #' - Arguments `colour_stat` and (optionally) `sig_var` must be variables that can be extracted from the model objects in `models_list`.
+#' - `taxatree_plotkey` plots same layout as `taxatree_plots`, but in a fixed colour
 #'
 #' Uses ggraph (see help for main underlying graphing function with ?ggraph::ggraph)
 #'
@@ -23,6 +24,7 @@
 #' @param colour_lims limits of colour and fill scale, used to harmonise across several plots (values squished to fit this range!)
 #' @param layout name of ggraph layout or manually specified layout with data.frame of x and y coordinates
 #' @param drop_tax_levels remove taxonomic levels from tree plots if stats are not available for them from models list
+#' @param add_circles draw grey background circles, 1 circle per taxonomic rank plotted
 #'
 #' @return ggraph ggplot (or list of)
 #'
@@ -54,7 +56,9 @@
 #' # specify variables used for modelling
 #' models <- taxatree_models(ps, tax_levels = 1:3, formula = ~ female + obese, verbose = FALSE)
 #' plots <- taxatree_plots(ps, models, preset_style = "bbdml")
-#' wrap_plots(plots, guides = "collect") & theme(legend.position = "bottom")
+#' wrap_plots(plots, guides = "collect")
+#' key <- taxatree_plotkey(ps)
+#' key
 #' @export
 #' @rdname taxatree_plots
 taxatree_plots <- function(
@@ -64,8 +68,8 @@ taxatree_plots <- function(
                            var_selection = NULL,
                            size_stat = "taxon_mean",
                            colour_stat = NULL,
-                           max_node_size = 8,
-                           max_edge_width = max_node_size - 2,
+                           max_node_size = 7,
+                           max_edge_width = max_node_size - 3,
                            sig_var = NULL,
                            sig_threshold = 0.05,
                            sig_stroke_width = 1.5,
@@ -74,7 +78,8 @@ taxatree_plots <- function(
                            luminance_l2 = 80,
                            colour_lims = c(-3, 3),
                            layout = "tree",
-                           drop_tax_levels = TRUE) {
+                           drop_tax_levels = TRUE,
+                           add_circles = TRUE) {
   # handle any presets for styling
   if (!identical(preset_style, NULL)) {
     if (identical(preset_style, "bbdml")) {
@@ -124,8 +129,18 @@ taxatree_plots <- function(
       edge_df <- taxatree_edges(nodes_df = nodes_df)
       graph <- tidygraph::tbl_graph(nodes = nodes_df, edges = edge_df, node_key = "taxon_name", directed = TRUE)
 
+      if (inherits(layout, "character")) {
+        layout <- ggraph::create_layout(graph = graph, layout = layout, circular = TRUE)
+      }
+
       # create plots from graphs
-      p <- ggraph::ggraph(graph = graph, layout = layout, circular = TRUE) +
+      p <- ggraph::ggraph(graph = layout)
+
+      if (isTRUE(add_circles)) {
+        p <- add_circles(p = p, layout = layout)
+      }
+
+      p <- p +
         ggraph::geom_edge_link(
           mapping = ggplot2::aes(
             edge_width = log(.data[[size_stat]]),
@@ -214,29 +229,11 @@ taxatree_plots <- function(
   return(plots_list)
 }
 
-#' @title Labelled key to accompany taxatree_plots output
-#'
-#' @description Plots same layout as `taxatree_plots`, but in a fixed colour and intended to be shown bigger than the other (so different size defaults)
-#'
 #' @param colour fixed colour of points and edges
 #' @param label names of taxonomic ranks at which to label taxa
 #' @param tax_levels names of tax ranks to include in plot
+#' @param label_style list to style labels: passed as arguments to geom_label_repel()
 #'
-#' @examples
-#' library(dplyr)
-#' library(phyloseq)
-#' library(microbiome)
-#'
-#' data(dietswap)
-#' ps <- dietswap
-#'
-#' # This example dataset has some taxa with the same name for phylum and family...
-#' # We can fix problems like this with the tax_prepend_ranks function
-#' ps <- tax_prepend_ranks(ps)
-#'
-#' # filter out rare taxa
-#' ps <- ps %>% tax_filter(min_prevalence = 0.1, min_total_abundance = 10000)
-#' taxatree_plotkey(ps)
 #' @rdname taxatree_plots
 #' @export
 taxatree_plotkey <- function(
@@ -247,7 +244,10 @@ taxatree_plotkey <- function(
                              max_edge_width = max_node_size - 3,
                              layout = "tree",
                              label = utils::tail(phyloseq::rank_names(ps), 2)[1],
-                             tax_levels = phyloseq::rank_names(ps)) {
+                             label_style = list(size = 2.5, alpha = 0.8),
+                             tax_levels = phyloseq::rank_names(ps),
+                             add_circles = TRUE
+                             ) {
 
   # get tax_table values at desired ranks, to filter taxa for labelling
   taxa_to_label <- unique(as.character(unclass(phyloseq::tax_table(ps)[, label])))
@@ -267,7 +267,18 @@ taxatree_plotkey <- function(
   edge_df <- taxatree_edges(nodes_df = nodes_df)
   graph <- tidygraph::tbl_graph(nodes = nodes_df, edges = edge_df, node_key = "taxon_name", directed = TRUE)
 
-  p <- ggraph::ggraph(graph = graph, layout = layout, circular = TRUE) +
+  if (inherits(layout, "character")) {
+    layout <- ggraph::create_layout(graph = graph, layout = layout, circular = TRUE)
+  }
+
+  # create plot from graph
+  p <- ggraph::ggraph(graph = layout)
+
+  if (isTRUE(add_circles)) {
+    p <- add_circles(p = p, layout = layout)
+  }
+
+  p <- p +
     ggraph::geom_edge_link(
       mapping = ggplot2::aes(edge_width = log(.data[[size_stat]])),
       edge_colour = "grey", alpha = 0.5,
@@ -287,19 +298,6 @@ taxatree_plotkey <- function(
     ggplot2::scale_size_continuous(range = c(3, max_node_size)) +
     ggraph::scale_edge_width_continuous(range = c(2, max_edge_width))
 
-  # setting labels
-  p <- p +
-    ggrepel::geom_label_repel(
-      data = ~ dplyr::filter(., .data[["taxon_name"]] %in% taxa_to_label),
-      mapping = ggplot2::aes(
-        x = .data[["x"]], y = .data[["y"]], label = .data[["taxon_name"]],
-        size = log(log(log(.data[[size_stat]])))
-      ),
-      xlim = c(-Inf, Inf),
-      min.segment.length = 0,
-      show.legend = FALSE
-    )
-
   # add a black central node to mark the rook
   p <- p + ggraph::geom_node_point(
     mapping = ggplot2::aes(
@@ -309,10 +307,25 @@ taxatree_plotkey <- function(
     show.legend = FALSE
   )
 
+  # setting labels
+  label_args <- list(
+    data = ~ dplyr::filter(., .data[["taxon_name"]] %in% taxa_to_label),
+    mapping = ggplot2::aes(
+      x = .data[["x"]], y = .data[["y"]], label = .data[["taxon_name"]],
+    ),
+    xlim = c(-Inf, Inf),
+    min.segment.length = 0,
+    show.legend = FALSE
+  )
+  # set user values
+  label_args[names(label_style)] <- label_style
+  # add labels
+  p <- p + do.call(ggrepel::geom_label_repel, args = label_args)
+
   return(p)
 }
 
-# helper function
+# helper function for colour scale
 abs_sqrt <- function() {
   scales::trans_new(
     name = "abs_sqrt",
@@ -323,4 +336,22 @@ abs_sqrt <- function() {
       sign(x) * x^2
     }
   )
+}
+
+# helper function for drawing circles
+add_circles <- function(p, layout) {
+  # find radii of circles
+  # dividing by 2 seems to be necessary for grob drawing
+  radii <- sqrt(layout[["x"]]^2 + layout[["y"]]^2) / 2
+  radii <- unique(round(radii, digits = 5))
+  radii <- radii[radii != 0]
+  # message(paste(radii, collapse = " "))
+
+  # add background circles
+  for (r in radii) {
+    p <- p + ggplot2::annotation_custom(
+      grid::circleGrob(r = r, gp = grid::gpar(fill = NA, col = "grey80", lwd = 0.3))
+    )
+  }
+  return(p)
 }
