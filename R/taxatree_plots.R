@@ -11,6 +11,7 @@
 #' @param models_list list of lists of models, as output by taxatree_models
 #' @param preset_style e.g. "bbdml", optional character string for quick presets
 #' @param var_selection optionally only plot trees for this selection of predictor variables
+#' @param var_renamer function to rename variables (called AFTER any var selection)
 #' @param size_stat name of variable to scale size of nodes and edges (natural log scale)
 #' @param colour_stat name of variable to scale colour/fill of nodes and edges (natural log scale)
 #' @param max_node_size set this to avoid overlapping nodes at different scales
@@ -55,9 +56,9 @@
 #'
 #' # specify variables used for modelling
 #' models <- taxatree_models(ps, tax_levels = 1:3, formula = ~ female + obese, verbose = FALSE)
-#' plots <- taxatree_plots(ps, models, preset_style = "bbdml")
+#' plots <- taxatree_plots(ps, models, preset_style = "bbdml", var_renamer = toupper)
 #' wrap_plots(plots, guides = "collect")
-#' key <- taxatree_plotkey(ps)
+#' key <- taxatree_plotkey(ps, taxon_renamer = function(x) stringr::str_remove(x, "^F: "))
 #' key
 #' @export
 #' @rdname taxatree_plots
@@ -66,6 +67,7 @@ taxatree_plots <- function(
                            models_list,
                            preset_style = NULL,
                            var_selection = NULL,
+                           var_renamer = function(x) identity(x),
                            size_stat = "taxon_mean",
                            colour_stat = NULL,
                            max_node_size = 7,
@@ -104,6 +106,9 @@ taxatree_plots <- function(
   if (!identical(var_selection, NULL)) {
     var_stats <- var_stats[var_selection]
   }
+
+  # rename vars optionally
+  names(var_stats) <- var_renamer(names(var_stats))
 
   # check if there is more than one value in top level
   # if so, add a root level
@@ -151,9 +156,10 @@ taxatree_plots <- function(
         ggraph::geom_node_point(
           mapping = ggplot2::aes(
             size = log(.data[[size_stat]]),
-            color = .data[[colour_stat]]
+            color = .data[[colour_stat]],
+            fill = .data[[colour_stat]]
           ),
-          shape = "circle"
+          shape = "circle filled"
         ) +
         ggplot2::ggtitle(label = var)
 
@@ -196,7 +202,7 @@ taxatree_plots <- function(
         colorspace::scale_color_continuous_diverging(
           palette = colour_palette,
           l2 = luminance_l2,
-          aesthetics = c("edge_colour", "fill"),
+          aesthetics = c("edge_colour", "fill", "colour"),
           limits = colour_lims,
           oob = scales::oob_squish,
           rev = reverse_colours,
@@ -207,18 +213,10 @@ taxatree_plots <- function(
             # barwidth = grid::unit(0.01, "npc")
           )
         ) +
-        # colour scale for sig. points stroke (which has no legend)
-        colorspace::scale_color_continuous_diverging(
-          palette = colour_palette,
-          l2 = luminance_l2,
-          aesthetics = "color",
-          rev = reverse_colours,
-          trans = abs_sqrt(),
-          guide = "none"
-        ) +
         ggplot2::coord_fixed(expand = FALSE, clip = "off") +
         ggraph::theme_graph(
           base_family = "sans",
+          title_size = 10,
           plot_margin = grid::unit(x = rep(0.03, 4), "npc")
         )
 
@@ -230,9 +228,11 @@ taxatree_plots <- function(
 }
 
 #' @param colour fixed colour of points and edges
+#'
 #' @param label names of taxonomic ranks at which to label taxa
 #' @param tax_levels names of tax ranks to include in plot
 #' @param label_style list to style labels: passed as arguments to geom_label_repel()
+#' @param taxon_renamer function to rename taxa when labelling (e.g. removing g__ etc.)
 #'
 #' @rdname taxatree_plots
 #' @export
@@ -245,6 +245,7 @@ taxatree_plotkey <- function(
                              layout = "tree",
                              label = utils::tail(phyloseq::rank_names(ps), 2)[1],
                              label_style = list(size = 2.5, alpha = 0.8),
+                             taxon_renamer = function(x) identity(x),
                              tax_levels = phyloseq::rank_names(ps),
                              add_circles = TRUE
                              ) {
@@ -281,12 +282,13 @@ taxatree_plotkey <- function(
   p <- p +
     ggraph::geom_edge_link(
       mapping = ggplot2::aes(edge_width = log(.data[[size_stat]])),
-      edge_colour = "grey", alpha = 0.5,
+      edge_colour = colour, alpha = 0.7,
       show.legend = FALSE
     ) +
     ggraph::geom_node_point(
       mapping = ggplot2::aes(size = log(.data[[size_stat]])),
-      fill = "grey", shape = 21,
+      fill = colour, colour = colour,
+      shape = "circle filled",
       show.legend = FALSE
     ) +
     ggplot2::coord_fixed(expand = FALSE, clip = "off") +
@@ -311,7 +313,8 @@ taxatree_plotkey <- function(
   label_args <- list(
     data = ~ dplyr::filter(., .data[["taxon_name"]] %in% taxa_to_label),
     mapping = ggplot2::aes(
-      x = .data[["x"]], y = .data[["y"]], label = .data[["taxon_name"]],
+      x = .data[["x"]], y = .data[["y"]],
+      label = taxon_renamer(.data[["taxon_name"]]),
     ),
     xlim = c(-Inf, Inf),
     min.segment.length = 0,

@@ -10,6 +10,7 @@ taxatree_plots(
   models_list,
   preset_style = NULL,
   var_selection = NULL,
+  var_renamer = function(x) identity(x),
   size_stat = "taxon_mean",
   colour_stat = NULL,
   max_node_size = 7,
@@ -35,6 +36,7 @@ taxatree_plotkey(
   layout = "tree",
   label = utils::tail(phyloseq::rank_names(ps), 2)[1],
   label_style = list(size = 2.5, alpha = 0.8),
+  taxon_renamer = function(x) identity(x),
   tax_levels = phyloseq::rank_names(ps),
   add_circles = TRUE
 )
@@ -47,6 +49,8 @@ taxatree_plotkey(
 \item{preset_style}{e.g. "bbdml", optional character string for quick presets}
 
 \item{var_selection}{optionally only plot trees for this selection of predictor variables}
+
+\item{var_renamer}{function to rename variables (called AFTER any var selection)}
 
 \item{size_stat}{name of variable to scale size of nodes and edges (natural log scale)}
 
@@ -81,6 +85,8 @@ taxatree_plotkey(
 \item{label}{names of taxonomic ranks at which to label taxa}
 
 \item{label_style}{list to style labels: passed as arguments to geom_label_repel()}
+
+\item{taxon_renamer}{function to rename taxa when labelling (e.g. removing g__ etc.)}
 
 \item{tax_levels}{names of tax ranks to include in plot}
 }
@@ -125,8 +131,8 @@ ps <- ps \%>\% tax_filter(min_prevalence = 0.1, min_total_abundance = 10000)
 
 # specify variables used for modelling
 models <- taxatree_models(ps, tax_levels = 1:3, formula = ~ female + obese, verbose = FALSE)
-plots <- taxatree_plots(ps, models, preset_style = "bbdml")
+plots <- taxatree_plots(ps, models, preset_style = "bbdml", var_renamer = toupper)
 wrap_plots(plots, guides = "collect")
-key <- taxatree_plotkey(ps)
+key <- taxatree_plotkey(ps, taxon_renamer = function(x) stringr::str_remove(x, "^F: "))
 key
 }
