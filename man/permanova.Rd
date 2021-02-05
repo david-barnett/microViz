@@ -6,46 +6,53 @@
 \usage{
 permanova(
   data,
-  variables,
+  variables = NULL,
   interactions = NULL,
   complete_cases = TRUE,
   n_processes = 1,
   n_perms = 999,
   seed = NULL,
-  adonis2 = FALSE,
+  by = "margin",
   verbose = TRUE,
-  return = "all"
+  return = "all",
+  ...
 )
 }
 \arguments{
 \item{data}{list output from dist_calc}
 
-\item{variables}{character vector of variables to include in model}
+\item{variables}{character vector of variables to include in model or character representation of the right-hand side of a formula, e.g "varA + varB + varA:varB"}
 
-\item{interactions}{interactions between variables, written in the style of e.g. "var_a * var_b"}
+\item{interactions}{optional argument to define any interactions between variables, written in the style of e.g. "var_a * var_b"}
 
-\item{complete_cases}{if TRUE, drops observations if they contain missing values}
+\item{complete_cases}{if TRUE, drops observations if they contain missing values (otherwise stops if missings are detected)}
 
-\item{n_processes}{how many parallel processes to use? (uses parallel::makePSOCKcluster)}
+\item{n_processes}{how many parallel processes to use? (on windows this uses parallel::makePSOCKcluster)}
 
-\item{n_perms}{how many permutations?}
+\item{n_perms}{how many permutations? e.g. 9999 less is faster but more is better!}
 
 \item{seed}{set a random number generator seed to ensure you get the same results each run}
 
-\item{adonis2}{use adonis2 (with by = "margin") instead of adonis (better if you have interactions)}
+\item{by}{passed to adonis2 \code{by} argument: what type of sums of squares to calculate? "margin" or "terms"}
 
-\item{verbose}{sends messages about progress if true}
+\item{verbose}{sends messages about progress if TRUE}
 
 \item{return}{what parts of return list to return, defaults to all parts}
+
+\item{...}{additional arguments are passed directly to adonis2 (e.g. strata, add, sqrt.dist etc.)}
 }
 \value{
 list containing permanova results and input objects
 }
 \description{
-Wrapper for vegan adonis/adonis2, takes the output of dist_calc (a list containing a phyloseq object and calculated distance matrix)
-}
-\details{
-Drops observations with missing values if complete_cases is TRUE, otherwises throws an error.
+This function is a wrapper around vegan's adonis2 function. See ?vegan::adonis2 for more insight.
+Test for the statistical significance of (independent) associations between variables in your phyloseq sample_data,
+and a microbiota distance matrix you have already calculated with dist_calc.
+The variables argument will be collapsed into one string (if length > 1) by pasting together, separated by "+".
+Any interaction terms described in the interactions argument will be pasted onto the end of the pasted variables argument.
+Alternatively, you can supply the complete right hand side of the formula yourself e.g variables = "varA + varB + varC\emph{varD"
+Watch out, if any of your variable names contain characters that would normally separate variables in a formula then
+you should rename the offending variable (e.g. avoid any of "+" "}" "|" or ":" ) otherwise permanova will split that variable into pieces.
 }
 \examples{
 library(phyloseq)
@@ -64,24 +71,37 @@ PERM <- testDist \%>\%
   permanova(
     seed = 1,
     variables = c("sex", "bmi_group"),
-    n_processes = 1, n_perms = 99
+    n_processes = 1,
+    n_perms = 99 # only 99 perms used in examples for speed (use 999, 9999 or more!)
   )
 str(PERM, max.level = 1)
 
+# try permanova with interaction terms
 PERM2 <- testDist \%>\%
   permanova(
     seed = 1,
-    variables = c("sex", "bmi_group"),
-    interactions = "sex * bmi_group",
-    n_processes = 1, n_perms = 99,
-    adonis2 = TRUE
+    variables = "nationality + sex * bmi_group",
+    n_processes = 1, n_perms = 99
   )
 PERM2$permanova
+
+# specify the same model in alternative way
+PERM3 <- testDist \%>\%
+  permanova(
+    seed = 1,
+    variables = c("nationality", "sex", "bmi_group"),
+    interactions = "sex * bmi_group",
+    n_processes = 1, n_perms = 99
+  )
+PERM3$permanova
+
+identical(PERM3, PERM2) # TRUE
 
 # take the same distance matrix used for the permanova and plot an ordination
 PERM2 \%>\%
   ord_calc("PCoA") \%>\%
   ord_plot(color = "bmi_group")
-# this ensures any samples dropped from the permanova for having missing values
+# this trick ensures any samples dropped from the permanova for having missing values
 # in the covariates are NOT included in the corresponding ordination plot
+
 }

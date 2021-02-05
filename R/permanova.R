@@ -1,19 +1,25 @@
 #' Calculate PERMANOVA after dist_calc
 #'
-#' Wrapper for vegan adonis/adonis2, takes the output of dist_calc (a list containing a phyloseq object and calculated distance matrix)
-#'
-#' Drops observations with missing values if complete_cases is TRUE, otherwises throws an error.
+#' This function is a wrapper around vegan's adonis2 function. See ?vegan::adonis2 for more insight.
+#' Test for the statistical significance of (independent) associations between variables in your phyloseq sample_data,
+#' and a microbiota distance matrix you have already calculated with dist_calc.
+#' The variables argument will be collapsed into one string (if length > 1) by pasting together, separated by "+".
+#' Any interaction terms described in the interactions argument will be pasted onto the end of the pasted variables argument.
+#' Alternatively, you can supply the complete right hand side of the formula yourself e.g variables = "varA + varB + varC*varD"
+#' Watch out, if any of your variable names contain characters that would normally separate variables in a formula then
+#' you should rename the offending variable (e.g. avoid any of "+" "*" "|" or ":" ) otherwise permanova will split that variable into pieces.
 #'
 #' @param data list output from dist_calc
-#' @param variables character vector of variables to include in model
-#' @param interactions interactions between variables, written in the style of e.g. "var_a * var_b"
-#' @param n_processes how many parallel processes to use? (uses parallel::makePSOCKcluster)
-#' @param n_perms how many permutations?
+#' @param variables character vector of variables to include in model or character representation of the right-hand side of a formula, e.g "varA + varB + varA:varB"
+#' @param interactions optional argument to define any interactions between variables, written in the style of e.g. "var_a * var_b"
+#' @param n_processes how many parallel processes to use? (on windows this uses parallel::makePSOCKcluster)
+#' @param n_perms how many permutations? e.g. 9999 less is faster but more is better!
 #' @param seed set a random number generator seed to ensure you get the same results each run
-#' @param adonis2 use adonis2 (with by = "margin") instead of adonis (better if you have interactions)
-#' @param complete_cases if TRUE, drops observations if they contain missing values
-#' @param verbose sends messages about progress if true
+#' @param complete_cases if TRUE, drops observations if they contain missing values (otherwise stops if missings are detected)
+#' @param verbose sends messages about progress if TRUE
 #' @param return what parts of return list to return, defaults to all parts
+#' @param by passed to adonis2 `by` argument: what type of sums of squares to calculate? "margin" or "terms"
+#' @param ... additional arguments are passed directly to adonis2 (e.g. strata, add, sqrt.dist etc.)
 #'
 #' @return list containing permanova results and input objects
 #' @export
@@ -35,36 +41,50 @@
 #'   permanova(
 #'     seed = 1,
 #'     variables = c("sex", "bmi_group"),
-#'     n_processes = 1, n_perms = 99
+#'     n_processes = 1,
+#'     n_perms = 99 # only 99 perms used in examples for speed (use 999, 9999 or more!)
 #'   )
 #' str(PERM, max.level = 1)
 #'
+#' # try permanova with interaction terms
 #' PERM2 <- testDist %>%
 #'   permanova(
 #'     seed = 1,
-#'     variables = c("sex", "bmi_group"),
-#'     interactions = "sex * bmi_group",
-#'     n_processes = 1, n_perms = 99,
-#'     adonis2 = TRUE
+#'     variables = "nationality + sex * bmi_group",
+#'     n_processes = 1, n_perms = 99
 #'   )
 #' PERM2$permanova
+#'
+#' # specify the same model in alternative way
+#' PERM3 <- testDist %>%
+#'   permanova(
+#'     seed = 1,
+#'     variables = c("nationality", "sex", "bmi_group"),
+#'     interactions = "sex * bmi_group",
+#'     n_processes = 1, n_perms = 99
+#'   )
+#' PERM3$permanova
+#'
+#' identical(PERM3, PERM2) # TRUE
 #'
 #' # take the same distance matrix used for the permanova and plot an ordination
 #' PERM2 %>%
 #'   ord_calc("PCoA") %>%
 #'   ord_plot(color = "bmi_group")
-#' # this ensures any samples dropped from the permanova for having missing values
+#' # this trick ensures any samples dropped from the permanova for having missing values
 #' # in the covariates are NOT included in the corresponding ordination plot
+#'
 permanova <- function(data,
-                      variables,
+                      variables = NULL,
                       interactions = NULL,
                       complete_cases = TRUE,
                       n_processes = 1,
                       n_perms = 999,
                       seed = NULL,
-                      adonis2 = FALSE,
+                      by = "margin",
                       verbose = TRUE,
-                      return = "all") {
+                      return = "all",
+                      ...) {
 
   # check input data object class
   if (inherits(data, "list")) {
@@ -75,61 +95,61 @@ permanova <- function(data,
     stop("data argument must be an output object from dist_calc")
   }
 
-  # set seed for reproducibility
-  if (isFALSE(is.null(seed))) {
-    set.seed(seed)
-  }
+  # Build the formula if supplied as a string
+  formula <- paste0("~ ", paste(variables, collapse = " + "))
+  if (!identical(interactions, NULL)) formula <- paste0(formula, " + ", paste(interactions, collapse = " + "))
+  formula <- paste("distMat", formula)
+  # split variables in case they were provided in any part as formula
+  split_vars <- variables %>%
+    stringr::str_split("[+*|:]") %>%
+    unlist() %>%
+    stringr::str_trim() %>%
+    unique()
 
-  # Build the formula
-  f <- paste0("distMat ~ ", paste(variables, collapse = " + "))
-  if (!rlang::is_null(interactions)) {
-    f <- paste0(f, " + ", paste(interactions, collapse = " + "))
+  if (any(!split_vars %in% phyloseq::sample_variables(ps))) {
+    stop(
+      "Some variables are not found in phyloseq sample data:\n",
+      paste(split_vars[!split_vars %in% phyloseq::sample_variables(ps)], collapse = "\n")
+    )
   }
-  FORMULA <- stats::as.formula(f)
-
   # drop observations with missings
   if (isFALSE(complete_cases)) {
-    if (anyNA(phyloseq::sample_data(ps)[, variables])) {
+    if (anyNA(phyloseq::sample_data(ps)[, split_vars])) {
       stop(
         "phyloseq contains missings within at least one of the specified variables",
         "\n\tTry complete_cases = TRUE or manually call `ps_drop_incomplete()`"
       )
     }
   }
-  ps <- ps_drop_incomplete(ps, vars = variables, verbose = verbose)
-  # drop samples from any pre-existing distMat if no longer in ps after dropping incomplete
-  if (exists("distMat") && !identical(distMat, NULL)) {
-    keepers <- phyloseq::sample_names(ps)
-    distMat <- stats::as.dist(as.matrix(distMat)[keepers, keepers])
-  }
+  ps <- ps_drop_incomplete(ps, vars = split_vars, verbose = verbose)
+
+  # drop samples from pre-existing distMat if no longer in ps after dropping incomplete
+  keepers <- phyloseq::sample_names(ps)
+  distMat <- stats::as.dist(as.matrix(distMat)[keepers, keepers])
 
   # extract sample metadata from phyloseq object
-  metadata <- data.frame(phyloseq::sample_data(ps))[, variables, drop = FALSE]
+  metadata <- data.frame(phyloseq::sample_data(ps))[, split_vars, drop = FALSE]
 
-  if (!isFALSE(verbose)) {
-    message(Sys.time(), " - Starting PERMANOVA with ", n_perms, " perms with ", n_processes, " processes")
-  }
-  # perform PERMANOVA, in parallel (socket cluster)
-  if (n_processes > 1) {
-    cl <- parallel::makePSOCKcluster(n_processes)
-    on.exit(parallel::stopCluster(cl))
-  } else {
-    cl <- 1
-  }
+  # set seed for reproducibility
+  if (!identical(seed, NULL)) set.seed(seed)
 
-  if (isTRUE(adonis2)) {
-    results <- vegan::adonis2(formula = FORMULA, data = metadata, permutations = n_perms, parallel = cl, by = "margin")
+  if (!isFALSE(verbose)) message(Sys.time(), " - Starting PERMANOVA with ", n_perms, " perms with ", n_processes, " processes")
+
+  # on windows: set up perform PERMANOVA in parallel with socket cluster
+  if (n_processes > 1 && grepl("Windows", utils::osVersion)) {
+    parall <- parallel::makePSOCKcluster(n_processes)
+    if (!isFALSE(verbose)) message(Sys.time(), " - Started PSOCK cluster with with ", n_processes, " workers")
+    on.exit(parallel::stopCluster(parall))
   } else {
-    results <- vegan::adonis(formula = FORMULA, data = metadata, permutations = n_perms, parallel = cl)
+    parall <- n_processes
   }
-  if (!isFALSE(verbose)) {
-    message(Sys.time(), " - Finished PERMANOVA")
-  }
+  # perform permanova
+  formula <- stats::as.formula(formula)
+  results <- vegan::adonis2(formula = formula, data = metadata, permutations = n_perms, parallel = parall, by = by, ...)
+  if (!isFALSE(verbose)) message(Sys.time(), " - Finished PERMANOVA")
 
   # return object (results and processing info)
-  out <- list(
-    info = info, permanova = results, distMat = distMat, ps = ps
-  )
+  out <- list(info = info, permanova = results, distMat = distMat, ps = ps)
 
   if (identical(return, "all")) {
     return(out)
