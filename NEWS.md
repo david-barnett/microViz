@@ -1,12 +1,17 @@
-# microViz (development version)
-
-# microViz 0.3.0
+# microViz 0.3.1
 
 ## Breaking changes
 * `ord_plot_iris` the `data` arg is replaced with `ord` and conditionally optional `ps` arg for when data in `ord` have been transformed
+* `permanova` always uses adonis2 now, so that arg is **removed**, and replaced with `by` argument to set sums of squares choice
+
+## Features
+* `ord_plot` gets a `center` argument to center expand the plot limits to center around zero (useful when pairing with `ord_plot_iris`)
+* `ord_explore` can now also display ordinations that don't use distances like PCA and RDA (as well as PCoA of course)
+* `ord_explore` gains a `ps` arg (for untransformed version) and other tweaks to facilitate using transformed data in `ord`
 
 ## Other fixes
 * `ord_plot_iris` annotation args are now NULL by default. 
+* `microbiome::aggregate_top_taxa` is copied directly into `microViz` to avoid its coming deprecation and the current warning.
 
 # microViz 0.2.0
 
