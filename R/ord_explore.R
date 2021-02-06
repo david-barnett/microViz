@@ -4,9 +4,10 @@
 #' You can style the ordination plot points using the options on the left panel.
 #'
 #' @param ord list output of ord_calc
+#' @param ps phyloseq object containing untransformed counts if needed (must otherwise be identical to ps used to make ord!)
 #' @param seriate_method seriation method to order phyloseq samples by similarity
-#' @param ... additional arguments passed to ord_plot
 #' @param tax_transform_for_ordering transform tax before ordering with ps_seriate
+#' @param ... additional arguments passed to ord_plot
 #'
 #' @return nothing, opens html viewer
 #' @export
@@ -16,24 +17,58 @@
 #' library(dplyr)
 #' data("enterotype")
 #'
+#' # simple example #
 #' ps <- enterotype
 #' ord1 <- ps %>%
 #'   dist_calc("bray") %>%
 #'   ord_calc("PCoA")
 #'
 #' # ord_explore(ord = ord1)
-
-ord_explore <- function(ord, seriate_method = "OLO_ward", tax_transform_for_ordering = "identity", ...) {
+#'
+#' # constrained biplot example #
+#' data("dietswap", package = "microbiome")
+#'
+#' # create a couple of numerical variables to use as constraints
+#' dietswap <- dietswap %>%
+#'   ps_mutate(
+#'     weight = recode(bmi_group, obese = 3, overweight = 2, lean = 1),
+#'     female = if_else(sex == "female", true = 1, false = 0)
+#'   ) %>%
+#'   tax_agg("Genus")
+#'
+#' ord2 <- constrained_aitchison_rda <- dietswap %>%
+#'   tax_transform("clr") %>%
+#'   ord_calc(method = "RDA", constraints = c("weight", "female"))
+#'
+#' # note if you want to visualise an ordination that required transformation
+#' # you must take care to provide an untransformed phyloseq to ps,
+#' # otherwise the compositions plotted will be also transformed!
+#' # constrained_aitchison_rda %>%
+#' #   ord_explore(
+#' #     ps = dietswap, plot_taxa = 1:5, tax_lab_style = list(size = 3),
+#' #     constraint_lab_style = list(size = 4)
+#' #   )
+#' # try changing the point colour to bmi_group or similar
+#' # (style interactively! e.g. colour doesn't work as argument to ord_explore)
+#'
+ord_explore <- function(ord, ps = NULL, seriate_method = "OLO_ward", tax_transform_for_ordering = "identity", ...) {
   # SETUP -------------------------------------------------------------------
 
-  library(shiny)
-  ps <- ord$ps
+  if (identical(ps, NULL)) ps <- ord$ps
+  if (inherits(ps, "list")) ps <- ps$ps
   ordination <- ord$ordination
+  dist <- ord$info$distName
+  # handle missing distances e.g. if RDA is used (needed if a distance-based seriate_method is requested, as is default)
+  if (identical(dist, NULL)) {
+    dist <- "euclidean"
+    tax_transform_for_ordering <- ord$info$tax_transform
+  }
+
   # calculate sample order based on hierarchical clustering of first PCs
   message("- ordering samples")
   ps_ordered <- ps_seriate(
     ps,
-    dist = ord$info$distName, method = seriate_method,
+    dist = dist, method = seriate_method,
     tax_transform = tax_transform_for_ordering
   )
 
@@ -226,7 +261,6 @@ ord_explore <- function(ord, seriate_method = "OLO_ward", tax_transform_for_orde
         p_comp <- ggplot2::ggplot()
       }
     })
-
   }
 
   # Run the application
@@ -246,7 +280,8 @@ ord_explore_palet_fun <- function(ps, tax_level) {
 
   palet <- distinct_palette(n = NA)
 
-  top_tax <- ps %>% microbiome::aggregate_taxa(level = tax_level) %>%
+  top_tax <- ps %>%
+    microbiome::aggregate_taxa(level = tax_level) %>%
     microbiome::top_taxa()
 
   numb <- min(length(top_tax), length(palet))
@@ -258,4 +293,3 @@ ord_explore_palet_fun <- function(ps, tax_level) {
 
   return(palet)
 }
-

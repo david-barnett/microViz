@@ -6,6 +6,7 @@
 \usage{
 ord_explore(
   ord,
+  ps = NULL,
   seriate_method = "OLO_ward",
   tax_transform_for_ordering = "identity",
   ...
@@ -13,6 +14,8 @@ ord_explore(
 }
 \arguments{
 \item{ord}{list output of ord_calc}
+
+\item{ps}{phyloseq object containing untransformed counts if needed (must otherwise be identical to ps used to make ord!)}
 
 \item{seriate_method}{seriation method to order phyloseq samples by similarity}
 
@@ -32,10 +35,38 @@ library(phyloseq)
 library(dplyr)
 data("enterotype")
 
+# simple example #
 ps <- enterotype
 ord1 <- ps \%>\%
   dist_calc("bray") \%>\%
   ord_calc("PCoA")
 
 # ord_explore(ord = ord1)
+
+# constrained biplot example #
+data("dietswap", package = "microbiome")
+
+# create a couple of numerical variables to use as constraints
+dietswap <- dietswap \%>\%
+  ps_mutate(
+    weight = recode(bmi_group, obese = 3, overweight = 2, lean = 1),
+    female = if_else(sex == "female", true = 1, false = 0)
+  ) \%>\%
+  tax_agg("Genus")
+
+ord2 <- constrained_aitchison_rda <- dietswap \%>\%
+  tax_transform("clr") \%>\%
+  ord_calc(method = "RDA", constraints = c("weight", "female"))
+
+# note if you want to visualise an ordination that required transformation
+# you must take care to provide an untransformed phyloseq to ps,
+# otherwise the compositions plotted will be also transformed!
+# constrained_aitchison_rda \%>\%
+#   ord_explore(
+#     ps = dietswap, plot_taxa = 1:5, tax_lab_style = list(size = 3),
+#     constraint_lab_style = list(size = 4)
+#   )
+# try changing the point colour to bmi_group or similar
+# (style interactively! e.g. colour doesn't work as argument to ord_explore)
+
 }
