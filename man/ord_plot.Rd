@@ -2,19 +2,19 @@
 % Please edit documentation in R/ord_plot.R
 \name{ord_plot}
 \alias{ord_plot}
-\title{Customisable ggplot of ord_calc ordination result}
+\title{Customisable ggplot ordination (using ord_calc result)}
 \usage{
 ord_plot(
   data,
   axes = 1:2,
   scaling = "species",
-  constraint_vec_length = 1,
+  constraint_vec_length = NA,
   constraint_vec_style = list(),
   constraint_lab_length = constraint_vec_length * 1.1,
   constraint_lab_style = list(),
   var_renamer = function(x) identity(x),
   plot_taxa = FALSE,
-  tax_vec_length = 1,
+  tax_vec_length = NA,
   tax_vec_style_all = list(),
   tax_vec_style_sel = list(),
   tax_lab_length = tax_vec_length * 1.1,
@@ -22,6 +22,7 @@ ord_plot(
   taxon_renamer = function(x) identity(x),
   plot_samples = TRUE,
   auto_caption = TRUE,
+  center = FALSE,
   ...
 )
 }
@@ -32,7 +33,7 @@ ord_plot(
 
 \item{scaling}{either "species" (2) or "site" (1) scores are scaled by eigenvalues, and the other set of scores is left unscaled (from ?vegan::scores.cca)}
 
-\item{constraint_vec_length}{relative length of line segment drawn for any constraints (relative to default length which is defined by correlation with each drawn axis)}
+\item{constraint_vec_length}{NA = auto-scaling for line segment drawn for any constraints. Alternatively provide a numeric length multiplier yourself.}
 
 \item{constraint_vec_style}{list of aesthetics/arguments (colour, alpha etc) for the constraint vectors}
 
@@ -44,7 +45,7 @@ ord_plot(
 
 \item{plot_taxa}{if ord_calc method was "PCA/RDA" draw the taxa loading vectors (see details)}
 
-\item{tax_vec_length}{length multiplier of line segment drawn for any taxa}
+\item{tax_vec_length}{NA = auto-scaling for line segment drawn for any taxa. Alternatively provide a numeric length multiplier yourself.}
 
 \item{tax_vec_style_all}{list of named aesthetic attributes for all (background) taxon vectors}
 
@@ -59,6 +60,8 @@ ord_plot(
 \item{plot_samples}{if TRUE, plot sample points with geom_point}
 
 \item{auto_caption}{if TRUE, add a small font caption with info about the ordination}
+
+\item{center}{expand plot limits to center around origin point (0,0)}
 
 \item{...}{pass aesthetics arguments for sample points, drawn with geom_point using aes_string}
 }
@@ -102,12 +105,10 @@ unconstrained_aitchison_pca <- dietswap \%>\%
   ord_calc(method = "RDA")
 
 unconstrained_aitchison_pca \%>\%
-  ord_plot(
-    colour = "bmi_group",
-    plot_taxa = 1:5, tax_vec_length = 0.75, tax_lab_length = 0.85,
-  ) +
+  ord_plot(colour = "bmi_group", plot_taxa = 1:5) +
   stat_ellipse(aes(linetype = bmi_group, colour = bmi_group))
 
+# remove effect of weight with conditions arg
 dietswap \%>\%
   tax_agg("Genus") \%>\%
   tax_transform("clr") \%>\%
@@ -115,6 +116,7 @@ dietswap \%>\%
   ord_plot(colour = "bmi_group") +
   stat_ellipse(aes(linetype = bmi_group, colour = bmi_group))
 
+# or instead constrain on weight and female
 constrained_aitchison_rda <- dietswap \%>\%
   tax_agg("Genus") \%>\%
   tax_transform("clr") \%>\%
@@ -126,10 +128,7 @@ constrained_aitchison_rda \%>\%
 
 # ggplot allows additional customisation of the resulting plot
 p <- constrained_aitchison_rda \%>\%
-  ord_plot(
-    colour = "bmi_group", constraint_vec_length = 2,
-    plot_taxa = 1:3, tax_vec_length = 5
-  ) +
+  ord_plot(colour = "bmi_group", plot_taxa = 1:3) +
   lims(x = c(-5, 6), y = c(-5, 5)) +
   scale_colour_brewer(palette = "Set1")
 
@@ -139,8 +138,8 @@ p + stat_density2d(aes(colour = bmi_group))
 # you can rename the taxa on the labels with any function that takes and modifies a character vector
 constrained_aitchison_rda \%>\%
   ord_plot(
-    colour = "bmi_group", constraint_vec_length = 2,
-    plot_taxa = 1:3, tax_vec_length = 5,
+    colour = "bmi_group",
+    plot_taxa = 1:3,
     taxon_renamer = function(x) stringr::str_extract(x, "^.")
   ) +
   lims(x = c(-5, 6), y = c(-5, 5)) +

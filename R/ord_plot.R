@@ -1,4 +1,4 @@
-#' Customisable ggplot of ord_calc ordination result
+#' Customisable ggplot ordination (using ord_calc result)
 #'
 #' Ordination visualisation. Utilises results of \code{ord_calc}.
 #' - For interpretation see the the relevant pages on PCA, PCoA, RDA, or CCA on the "gusta me" website: \url{https://sites.google.com/site/mb3gustame/}
@@ -13,13 +13,13 @@
 #' @param data list object output from ord_calc
 #' @param axes which axes to plot: numerical vector of length 2
 #' @param scaling either "species" (2) or "site" (1) scores are scaled by eigenvalues, and the other set of scores is left unscaled (from ?vegan::scores.cca)
-#' @param constraint_vec_length relative length of line segment drawn for any constraints (relative to default length which is defined by correlation with each drawn axis)
+#' @param constraint_vec_length NA = auto-scaling for line segment drawn for any constraints. Alternatively provide a numeric length multiplier yourself.
 #' @param constraint_vec_style list of aesthetics/arguments (colour, alpha etc) for the constraint vectors
 #' @param constraint_lab_length relative length of label drawn for any constraints (relative to default position which is defined by correlation with each drawn axis)
 #' @param constraint_lab_style list of aesthetics/arguments (colour, size etc) for the constraint labels
 #' @param var_renamer function to rename constraining variables for plotting their labels
 #' @param plot_taxa if ord_calc method was "PCA/RDA" draw the taxa loading vectors (see details)
-#' @param tax_vec_length length multiplier of line segment drawn for any taxa
+#' @param tax_vec_length NA = auto-scaling for line segment drawn for any taxa. Alternatively provide a numeric length multiplier yourself.
 #' @param tax_vec_style_all list of named aesthetic attributes for all (background) taxon vectors
 #' @param tax_vec_style_sel list of named aesthetic attributes for taxon vectors for the taxa selected by plot_taxa
 #' @param tax_lab_length multiplier for label distance/position for any selected taxa
@@ -27,6 +27,7 @@
 #' @param taxon_renamer function that takes any plotted taxon names and returns modified names for labels
 #' @param plot_samples if TRUE, plot sample points with geom_point
 #' @param auto_caption if TRUE, add a small font caption with info about the ordination
+#' @param center expand plot limits to center around origin point (0,0)
 #' @param ... pass aesthetics arguments for sample points, drawn with geom_point using aes_string
 #'
 #' @return ggplot
@@ -53,12 +54,10 @@
 #'   ord_calc(method = "RDA")
 #'
 #' unconstrained_aitchison_pca %>%
-#'   ord_plot(
-#'     colour = "bmi_group",
-#'     plot_taxa = 1:5, tax_vec_length = 0.75, tax_lab_length = 0.85,
-#'   ) +
+#'   ord_plot(colour = "bmi_group", plot_taxa = 1:5) +
 #'   stat_ellipse(aes(linetype = bmi_group, colour = bmi_group))
 #'
+#' # remove effect of weight with conditions arg
 #' dietswap %>%
 #'   tax_agg("Genus") %>%
 #'   tax_transform("clr") %>%
@@ -66,6 +65,7 @@
 #'   ord_plot(colour = "bmi_group") +
 #'   stat_ellipse(aes(linetype = bmi_group, colour = bmi_group))
 #'
+#' # or instead constrain on weight and female
 #' constrained_aitchison_rda <- dietswap %>%
 #'   tax_agg("Genus") %>%
 #'   tax_transform("clr") %>%
@@ -77,10 +77,7 @@
 #'
 #' # ggplot allows additional customisation of the resulting plot
 #' p <- constrained_aitchison_rda %>%
-#'   ord_plot(
-#'     colour = "bmi_group", constraint_vec_length = 2,
-#'     plot_taxa = 1:3, tax_vec_length = 5
-#'   ) +
+#'   ord_plot(colour = "bmi_group", plot_taxa = 1:3) +
 #'   lims(x = c(-5, 6), y = c(-5, 5)) +
 #'   scale_colour_brewer(palette = "Set1")
 #'
@@ -90,8 +87,8 @@
 #' # you can rename the taxa on the labels with any function that takes and modifies a character vector
 #' constrained_aitchison_rda %>%
 #'   ord_plot(
-#'     colour = "bmi_group", constraint_vec_length = 2,
-#'     plot_taxa = 1:3, tax_vec_length = 5,
+#'     colour = "bmi_group",
+#'     plot_taxa = 1:3,
 #'     taxon_renamer = function(x) stringr::str_extract(x, "^.")
 #'   ) +
 #'   lims(x = c(-5, 6), y = c(-5, 5)) +
@@ -112,13 +109,13 @@ ord_plot <-
   function(data,
            axes = 1:2,
            scaling = "species",
-           constraint_vec_length = 1,
+           constraint_vec_length = NA,
            constraint_vec_style = list(),
            constraint_lab_length = constraint_vec_length * 1.1,
            constraint_lab_style = list(),
            var_renamer = function(x) identity(x),
            plot_taxa = FALSE,
-           tax_vec_length = 1,
+           tax_vec_length = NA,
            tax_vec_style_all = list(),
            tax_vec_style_sel = list(),
            tax_lab_length = tax_vec_length * 1.1,
@@ -126,6 +123,7 @@ ord_plot <-
            taxon_renamer = function(x) identity(x),
            plot_samples = TRUE,
            auto_caption = TRUE,
+           center = FALSE,
            ...) {
     data_arg_reminder <- "data argument should be a list, specifically the output from ord_calc"
 
@@ -225,7 +223,8 @@ ord_plot <-
       mapping = ggplot2::aes_string(x = axesNames[1], y = axesNames[2])
     ) +
       ggplot2::theme_minimal() +
-      ggplot2::labs(x = axeslabels[1], y = axeslabels[2])
+      ggplot2::labs(x = axeslabels[1], y = axeslabels[2]) +
+      ggplot2::coord_cartesian(clip = "off", default = TRUE)
 
     # set geom_point variable aesthetics
     aesthetics <- do.call(what = ggplot2::aes_string, args = aestheticArgs)
@@ -271,12 +270,17 @@ ord_plot <-
 
       # if a selection of species scores was calculated, add lines and labels to plot
       if (!identical(selectSpeciesScoresDf, NULL)) {
+        # automatic taxa vector length setting
+        if (identical(tax_vec_length, NA)) {
+          x <- max(siteScoresDf[[1]]) / max(speciesScoresDf[[1]])
+          tax_vec_length <- x * 0.85
+        }
 
         # (semi-transparent) lines for all taxa
         tax_vec_all_args <- list(
           data = speciesScoresDf * tax_vec_length,
           mapping = ggplot2::aes_string(xend = axesNames[1], yend = axesNames[2], x = 0, y = 0),
-          size = 0.5, alpha = 0.2
+          size = 0.5, alpha = 0.25
         )
         tax_vec_all_args[names(tax_vec_style_all)] <- tax_vec_style_all
         p <- p + do.call(what = ggplot2::geom_segment, args = tax_vec_all_args)
@@ -305,7 +309,11 @@ ord_plot <-
 
     # if constrained ordination, plot constraints
     if (!identical(info[["constraints"]], 1)) {
-
+      # automatic constraint length setting
+      if (identical(constraint_vec_length, NA)) {
+        x <- max(abs(siteScoresDf[[1]])) / max(abs(constraintDf[[1]]))
+        constraint_vec_length <- x * 0.45
+      }
       # draw vector segments at length set by constraint_vec_length argument (proportion of automatic length)
       constraint_vec_args <- list(
         mapping = ggplot2::aes_string(xend = axesNames[1], yend = axesNames[2], x = 0, y = 0),
@@ -349,5 +357,32 @@ ord_plot <-
         ggplot2::theme(plot.caption = ggplot2::element_text(size = 6))
     }
 
+    # center the plot if requested using helper function
+    if (isTRUE(center)) p <- center_plot(p)
+
     return(p)
   }
+
+# helper functions
+center_plot <- function(plot) {
+  lims <- get_plot_limits(plot)
+  plot + ggplot2::coord_cartesian(
+    xlim = c(-max(abs(lims$x)), max(abs(lims$x))),
+    ylim = c(-max(abs(lims$y)), max(abs(lims$y))),
+    default = TRUE
+  )
+}
+
+get_plot_limits <- function(plot) {
+  gb <- ggplot2::ggplot_build(plot)
+  list(
+    x = c(
+      min = gb$layout$panel_params[[1]]$x.range[1],
+      max = gb$layout$panel_params[[1]]$x.range[2]
+    ),
+    y = c(
+      min = gb$layout$panel_params[[1]]$y.range[1],
+      max = gb$layout$panel_params[[1]]$y.range[2]
+    )
+  )
+}
