@@ -132,7 +132,7 @@ plot_comp_bar <- function(
   ps_original <- ps
 
   # how many taxa to plot (otherwise group into other)
-  ps <- microbiome::aggregate_top_taxa(ps, top = n_taxa, level = tax_level)
+  ps <- aggregate_top_taxa(ps, top = n_taxa, level = tax_level)
 
   # set taxa order
   if (tax_order == "abundance") {
@@ -188,13 +188,14 @@ plot_comp_bar <- function(
 
     # sample ordering
     if (samples_ordered_by_similarity) {
-      if (isTRUE(order_with_all_taxa)){
+      if (isTRUE(order_with_all_taxa)) {
         ps_ordered <- ps_original
       } else {
         ps_ordered <- ps
       }
       ps_ordered <- ps_seriate(
-        ps_ordered, method = seriate_method, dist = sample_order, tax_transform = tax_transform_for_ordering
+        ps_ordered,
+        method = seriate_method, dist = sample_order, tax_transform = tax_transform_for_ordering
       )
       ordered_samples <- phyloseq::sample_names(ps_ordered)
     }
@@ -264,4 +265,19 @@ plot_comp_bar <- function(
     names(plots_list) <- LEVELS
     return(plots_list)
   }
+}
+
+# helper function, copied from microbiome::aggregate_top_taxa this function is marked for deprecation!
+aggregate_top_taxa <- function(x, top, level) {
+  # microbiome R package (microbiome.github.com)
+  # Copyright (C) 2011-2020 Leo Lahti, Sudarshan Shetty et al. <microbiome.github.io>
+  x <- microbiome::aggregate_taxa(x, level)
+  tops <- microbiome::top_taxa(x, top)
+  tax <- phyloseq::tax_table(x)
+  inds <- which(!rownames(tax) %in% tops)
+  tax[inds, level] <- "Other"
+  phyloseq::tax_table(x) <- tax
+  tt <- phyloseq::tax_table(x)[, level]
+  phyloseq::tax_table(x) <- phyloseq::tax_table(tt)
+  microbiome::aggregate_taxa(x, level)
 }
