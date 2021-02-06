@@ -97,10 +97,7 @@ Perhaps these example data differ across BMI groups?
 
 ```{r fig.height=8, fig.width=10, dpi=300}
 dietswap %>%
-  plot_comp_bar(
-    tax_level = "Genus",
-    n_taxa = 10
-  ) +
+  plot_comp_bar(tax_level = "Genus",  n_taxa = 10) +
   facet_wrap("bmi_group", nrow = 3, scales = "free") +
   labs(x = NULL, y = NULL) +
   theme(
@@ -136,9 +133,7 @@ unconstrained_aitchison_pca <-
 # create plot
 pca_plot <- unconstrained_aitchison_pca %>%
   ord_plot(
-    plot_taxa = 1:6, colour = "bmi_group",
-    size = 2,
-    tax_vec_length = 0.8,
+    plot_taxa = 1:6, colour = "bmi_group", size = 2,
     auto_caption = TRUE
   )
 
@@ -146,7 +141,7 @@ pca_plot <- unconstrained_aitchison_pca %>%
 customised_plot <- pca_plot +
   stat_ellipse(aes(linetype = bmi_group, colour = bmi_group)) +
   scale_colour_brewer(palette = "Set1") +
-  xlim(c(-1.5, 2.75)) + theme(legend.position = "bottom")
+  theme(legend.position = "bottom")
 
 # show plot
 customised_plot
@@ -192,8 +187,7 @@ ord_calc(perm2, constraints = c("weight", "female")) %>%
   ord_plot(
     colour = "sex", size = 2,
     constraint_vec_style = list(colour = "black", size = 1.15),
-    constraint_lab_style = list(colour = "black"),
-    constraint_vec_length = 1.5, constraint_lab_length = 1.8
+    constraint_lab_style = list(colour = "black")
   ) +
   stat_ellipse(aes(colour = sex)) + scale_color_brewer(palette = "Dark2")
 ```

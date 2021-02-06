@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Customisable ggplot of ord_calc ordination result — ord_plot • microViz</title>
+<title>Customisable ggplot ordination (using ord_calc result) — ord_plot • microViz</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Customisable ggplot of ord_calc ordination result — ord_plot" />
+<meta property="og:title" content="Customisable ggplot ordination (using ord_calc result) — ord_plot" />
 <meta property="og:description" content="Ordination visualisation. Utilises results of ord_calc.
 For interpretation see the the relevant pages on PCA, PCoA, RDA, or CCA on the &quot;gusta me&quot; website: https://sites.google.com/site/mb3gustame/
 Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04/ordination.html
@@ -76,7 +76,7 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -127,7 +127,7 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Customisable ggplot of ord_calc ordination result</h1>
+    <h1>Customisable ggplot ordination (using ord_calc result)</h1>
     <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/ord_plot.R'><code>R/ord_plot.R</code></a></small>
     <div class="hidden name"><code>ord_plot.Rd</code></div>
     </div>
@@ -144,13 +144,13 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
   <span class='va'>data</span>,
   axes <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>,
   scaling <span class='op'>=</span> <span class='st'>"species"</span>,
-  constraint_vec_length <span class='op'>=</span> <span class='fl'>1</span>,
+  constraint_vec_length <span class='op'>=</span> <span class='cn'>NA</span>,
   constraint_vec_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
   constraint_lab_length <span class='op'>=</span> <span class='va'>constraint_vec_length</span> <span class='op'>*</span> <span class='fl'>1.1</span>,
   constraint_lab_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
   var_renamer <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
   plot_taxa <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  tax_vec_length <span class='op'>=</span> <span class='fl'>1</span>,
+  tax_vec_length <span class='op'>=</span> <span class='cn'>NA</span>,
   tax_vec_style_all <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
   tax_vec_style_sel <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
   tax_lab_length <span class='op'>=</span> <span class='va'>tax_vec_length</span> <span class='op'>*</span> <span class='fl'>1.1</span>,
@@ -158,6 +158,7 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
   taxon_renamer <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
   plot_samples <span class='op'>=</span> <span class='cn'>TRUE</span>,
   auto_caption <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  center <span class='op'>=</span> <span class='cn'>FALSE</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
@@ -178,7 +179,7 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
     </tr>
     <tr>
       <th>constraint_vec_length</th>
-      <td><p>relative length of line segment drawn for any constraints (relative to default length which is defined by correlation with each drawn axis)</p></td>
+      <td><p>NA = auto-scaling for line segment drawn for any constraints. Alternatively provide a numeric length multiplier yourself.</p></td>
     </tr>
     <tr>
       <th>constraint_vec_style</th>
@@ -202,7 +203,7 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
     </tr>
     <tr>
       <th>tax_vec_length</th>
-      <td><p>length multiplier of line segment drawn for any taxa</p></td>
+      <td><p>NA = auto-scaling for line segment drawn for any taxa. Alternatively provide a numeric length multiplier yourself.</p></td>
     </tr>
     <tr>
       <th>tax_vec_style_all</th>
@@ -231,6 +232,10 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
     <tr>
       <th>auto_caption</th>
       <td><p>if TRUE, add a small font caption with info about the ordination</p></td>
+    </tr>
+    <tr>
+      <th>center</th>
+      <td><p>expand plot limits to center around origin point (0,0)</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -272,12 +277,10 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
   <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"RDA"</span><span class='op'>)</span>
 
 <span class='va'>unconstrained_aitchison_pca</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>ord_plot</span><span class='op'>(</span>
-    colour <span class='op'>=</span> <span class='st'>"bmi_group"</span>,
-    plot_taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, tax_vec_length <span class='op'>=</span> <span class='fl'>0.75</span>, tax_lab_length <span class='op'>=</span> <span class='fl'>0.85</span>,
-  <span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>ord_plot</span><span class='op'>(</span>colour <span class='op'>=</span> <span class='st'>"bmi_group"</span>, plot_taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/stat_ellipse.html'>stat_ellipse</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>linetype <span class='op'>=</span> <span class='va'>bmi_group</span>, colour <span class='op'>=</span> <span class='va'>bmi_group</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='img'><img src='ord_plot-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># remove effect of weight with conditions arg</span>
 <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
@@ -286,6 +289,7 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/stat_ellipse.html'>stat_ellipse</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>linetype <span class='op'>=</span> <span class='va'>bmi_group</span>, colour <span class='op'>=</span> <span class='va'>bmi_group</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 0</span></div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Centering (mean) and scaling (sd) the constraint and conditioning vars: </span></div><div class='output co'>#&gt; <span class='message'>	weight</span></div><div class='img'><img src='ord_plot-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># or instead constrain on weight and female</span>
 <span class='va'>constrained_aitchison_rda</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
@@ -298,10 +302,7 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
 </div><div class='img'><img src='ord_plot-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># ggplot allows additional customisation of the resulting plot</span>
 <span class='va'>p</span> <span class='op'>&lt;-</span> <span class='va'>constrained_aitchison_rda</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>ord_plot</span><span class='op'>(</span>
-    colour <span class='op'>=</span> <span class='st'>"bmi_group"</span>, constraint_vec_length <span class='op'>=</span> <span class='fl'>2</span>,
-    plot_taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, tax_vec_length <span class='op'>=</span> <span class='fl'>5</span>
-  <span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>ord_plot</span><span class='op'>(</span>colour <span class='op'>=</span> <span class='st'>"bmi_group"</span>, plot_taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/lims.html'>lims</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>5</span>, <span class='fl'>6</span><span class='op'>)</span>, y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>5</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_brewer.html'>scale_colour_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Set1"</span><span class='op'>)</span>
 
@@ -311,8 +312,8 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
 <span class='co'># you can rename the taxa on the labels with any function that takes and modifies a character vector</span>
 <span class='va'>constrained_aitchison_rda</span> <span class='op'>%&gt;%</span>
   <span class='fu'>ord_plot</span><span class='op'>(</span>
-    colour <span class='op'>=</span> <span class='st'>"bmi_group"</span>, constraint_vec_length <span class='op'>=</span> <span class='fl'>2</span>,
-    plot_taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, tax_vec_length <span class='op'>=</span> <span class='fl'>5</span>,
+    colour <span class='op'>=</span> <span class='st'>"bmi_group"</span>,
+    plot_taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>,
     taxon_renamer <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_extract.html'>str_extract</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"^."</span><span class='op'>)</span>
   <span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/lims.html'>lims</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>5</span>, <span class='fl'>6</span><span class='op'>)</span>, y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>5</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>

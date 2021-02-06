@@ -79,7 +79,7 @@ taxatree_plotkey plots same layout as taxatree_plots, but in a fixed colour
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -151,6 +151,7 @@ taxatree_plotkey plots same layout as taxatree_plots, but in a fixed colour
   <span class='va'>models_list</span>,
   preset_style <span class='op'>=</span> <span class='cn'>NULL</span>,
   var_selection <span class='op'>=</span> <span class='cn'>NULL</span>,
+  var_renamer <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
   size_stat <span class='op'>=</span> <span class='st'>"taxon_mean"</span>,
   colour_stat <span class='op'>=</span> <span class='cn'>NULL</span>,
   max_node_size <span class='op'>=</span> <span class='fl'>7</span>,
@@ -176,6 +177,7 @@ taxatree_plotkey plots same layout as taxatree_plots, but in a fixed colour
   layout <span class='op'>=</span> <span class='st'>"tree"</span>,
   label <span class='op'>=</span> <span class='fu'>utils</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='fu'>phyloseq</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/rank_names.html'>rank_names</a></span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>,
   label_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>2.5</span>, alpha <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span>,
+  taxon_renamer <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
   tax_levels <span class='op'>=</span> <span class='fu'>phyloseq</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/rank_names.html'>rank_names</a></span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span>,
   add_circles <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span></pre>
@@ -198,6 +200,10 @@ taxatree_plotkey plots same layout as taxatree_plots, but in a fixed colour
     <tr>
       <th>var_selection</th>
       <td><p>optionally only plot trees for this selection of predictor variables</p></td>
+    </tr>
+    <tr>
+      <th>var_renamer</th>
+      <td><p>function to rename variables (called AFTER any var selection)</p></td>
     </tr>
     <tr>
       <th>size_stat</th>
@@ -268,6 +274,10 @@ taxatree_plotkey plots same layout as taxatree_plots, but in a fixed colour
       <td><p>list to style labels: passed as arguments to geom_label_repel()</p></td>
     </tr>
     <tr>
+      <th>taxon_renamer</th>
+      <td><p>function to rename taxa when labelling (e.g. removing g__ etc.)</p></td>
+    </tr>
+    <tr>
       <th>tax_levels</th>
       <td><p>names of tax ranks to include in plot</p></td>
     </tr>
@@ -307,9 +317,9 @@ taxatree_plotkey plots same layout as taxatree_plots, but in a fixed colour
 </div><div class='output co'>#&gt; <span class='message'>Proportional min_prevalence given: 0.1 --&gt; min 23/222 samples.</span></div><div class='input'>
 <span class='co'># specify variables used for modelling</span>
 <span class='va'>models</span> <span class='op'>&lt;-</span> <span class='fu'><a href='Taxon-modelling.html'>taxatree_models</a></span><span class='op'>(</span><span class='va'>ps</span>, tax_levels <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, formula <span class='op'>=</span> <span class='op'>~</span> <span class='va'>female</span> <span class='op'>+</span> <span class='va'>obese</span>, verbose <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>2021-01-31 16:18:06 - modelling at level: Phylum</span></div><div class='output co'>#&gt; <span class='message'>2021-01-31 16:18:06 - modelling at level: Family</span></div><div class='output co'>#&gt; <span class='message'>2021-01-31 16:18:07 - modelling at level: Genus</span></div><div class='input'><span class='va'>plots</span> <span class='op'>&lt;-</span> <span class='fu'>taxatree_plots</span><span class='op'>(</span><span class='va'>ps</span>, <span class='va'>models</span>, preset_style <span class='op'>=</span> <span class='st'>"bbdml"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>2021-02-06 21:19:06 - modelling at level: Phylum</span></div><div class='output co'>#&gt; <span class='message'>2021-02-06 21:19:06 - modelling at level: Family</span></div><div class='output co'>#&gt; <span class='message'>2021-02-06 21:19:07 - modelling at level: Genus</span></div><div class='input'><span class='va'>plots</span> <span class='op'>&lt;-</span> <span class='fu'>taxatree_plots</span><span class='op'>(</span><span class='va'>ps</span>, <span class='va'>models</span>, preset_style <span class='op'>=</span> <span class='st'>"bbdml"</span>, var_renamer <span class='op'>=</span> <span class='va'>toupper</span><span class='op'>)</span>
 <span class='fu'><a href='https://patchwork.data-imaginist.com/reference/wrap_plots.html'>wrap_plots</a></span><span class='op'>(</span><span class='va'>plots</span>, guides <span class='op'>=</span> <span class='st'>"collect"</span><span class='op'>)</span>
-</div><div class='img'><img src='taxatree_plots-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>key</span> <span class='op'>&lt;-</span> <span class='fu'>taxatree_plotkey</span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span>
+</div><div class='img'><img src='taxatree_plots-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>key</span> <span class='op'>&lt;-</span> <span class='fu'>taxatree_plotkey</span><span class='op'>(</span><span class='va'>ps</span>, taxon_renamer <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_remove.html'>str_remove</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"^F: "</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>key</span>
 </div><div class='img'><img src='taxatree_plots-2.png' alt='' width='700' height='433' /></div></pre>
   </div>

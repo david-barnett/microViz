@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -126,20 +126,57 @@
       <small>Source: <a href='https://github.com/david-barnett/microViz/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="microviz-020" class="section level1">
-<h1 class="page-header" data-toc-text="0.2.0">
-<a href="#microviz-020" class="anchor"></a>microViz 0.2.0</h1>
+    <div id="microviz-031" class="section level1">
+<h1 class="page-header" data-toc-text="0.3.1">
+<a href="#microviz-031" class="anchor"></a>microViz 0.3.1</h1>
+<div id="breaking-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#breaking-changes" class="anchor"></a>Breaking changes</h2>
+<ul>
+<li>
+<code>ord_plot_iris</code> the <code>data</code> arg is replaced with <code>ord</code> and conditionally optional <code>ps</code> arg for when data in <code>ord</code> have been transformed</li>
+<li>
+<code>permanova</code> always uses adonis2 now, so that arg is <strong>removed</strong>, and replaced with <code>by</code> argument to set sums of squares choice</li>
+</ul>
+</div>
 <div id="features" class="section level2">
 <h2 class="hasAnchor">
 <a href="#features" class="anchor"></a>Features</h2>
 <ul>
 <li>
+<code>ord_plot</code> gets a <code>center</code> argument to center expand the plot limits to center around zero (useful when pairing with <code>ord_plot_iris</code>)</li>
+<li>
+<code>ord_explore</code> can now also display ordinations that don’t use distances like PCA and RDA (as well as PCoA of course)</li>
+<li>
+<code>ord_explore</code> gains a <code>ps</code> arg (for untransformed version) and other tweaks to facilitate using transformed data in <code>ord</code>
+</li>
+</ul>
+</div>
+<div id="other-fixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#other-fixes" class="anchor"></a>Other fixes</h2>
+<ul>
+<li>
+<code>ord_plot_iris</code> annotation args are now NULL by default.</li>
+<li>
+<code><a href="https://rdrr.io/pkg/microbiome/man/aggregate_top_taxa.html">microbiome::aggregate_top_taxa</a></code> is copied directly into <code>microViz</code> to avoid its coming deprecation and the current warning.</li>
+</ul>
+</div>
+</div>
+    <div id="microviz-020" class="section level1">
+<h1 class="page-header" data-toc-text="0.2.0">
+<a href="#microviz-020" class="anchor"></a>microViz 0.2.0</h1>
+<div id="features-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#features-1" class="anchor"></a>Features</h2>
+<ul>
+<li>
 <code>taxatree_models</code> and <code>taxatree_plots</code> bring tree-based visualisations of statistical models</li>
 </ul>
 </div>
-<div id="breaking-changes" class="section level2">
+<div id="breaking-changes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#breaking-changes" class="anchor"></a>Breaking changes</h2>
+<a href="#breaking-changes-1" class="anchor"></a>Breaking changes</h2>
 <ul>
 <li>
 <code>tax_model</code> replaces <code>tax_model_corncob</code> as a function that will eventually be generalised to use other model types</li>
@@ -152,9 +189,9 @@
     <div id="microviz-012" class="section level1">
 <h1 class="page-header" data-toc-text="0.1.2">
 <a href="#microviz-012" class="anchor"></a>microViz 0.1.2</h1>
-<div id="features-1" class="section level2">
+<div id="features-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-1" class="anchor"></a>Features</h2>
+<a href="#features-2" class="anchor"></a>Features</h2>
 <ul>
 <li>
 <code>ord_explore</code> allows interactive exploration of the composition of ordinated samples using <code>Shiny</code>
@@ -165,9 +202,9 @@
     <div id="microviz-011" class="section level1">
 <h1 class="page-header" data-toc-text="0.1.1">
 <a href="#microviz-011" class="anchor"></a>microViz 0.1.1</h1>
-<div id="features-2" class="section level2">
+<div id="features-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-2" class="anchor"></a>Features</h2>
+<a href="#features-3" class="anchor"></a>Features</h2>
 <ul>
 <li>
 <code>ord_plot_iris</code> for pca-ordered circular compositional barplots to pair with <code>ord_plot</code> output</li>
@@ -215,9 +252,9 @@
 </li>
 </ul>
 </div>
-<div id="features-3" class="section level2">
+<div id="features-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-3" class="anchor"></a>Features</h2>
+<a href="#features-4" class="anchor"></a>Features</h2>
 <ul>
 <li>
 <code>ps_seriate</code> for ordering phyloseq samples by similarity</li>
@@ -227,17 +264,17 @@
     <div id="microviz-006" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.6">
 <a href="#microviz-006" class="anchor"></a>microViz 0.0.6</h1>
-<div id="features-4" class="section level2">
+<div id="features-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-4" class="anchor"></a>Features</h2>
+<a href="#features-5" class="anchor"></a>Features</h2>
 <ul>
 <li>
 <code>ps_filter</code> allows filtering of <code>phyloseq</code> samples by values of variables in <code>sample_data</code> (wrapper around <code>dplyr</code>’s <code>filter</code> function)</li>
 </ul>
 </div>
-<div id="breaking-changes-1" class="section level2">
+<div id="breaking-changes-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#breaking-changes-1" class="anchor"></a>Breaking changes</h2>
+<a href="#breaking-changes-2" class="anchor"></a>Breaking changes</h2>
 <ul>
 <li>
 <code>ps_mutate</code> no longer needs <code>.across</code> argument to use <code><a href="https://dplyr.tidyverse.org/reference/across.html">dplyr::across()</a></code>
@@ -248,9 +285,9 @@
     <div id="microviz-005" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.5">
 <a href="#microviz-005" class="anchor"></a>microViz 0.0.5</h1>
-<div id="features-5" class="section level2">
+<div id="features-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-5" class="anchor"></a>Features</h2>
+<a href="#features-6" class="anchor"></a>Features</h2>
 <ul>
 <li>
 <code>ps_dedupe</code> bug fix method = “readcount” now correctly keeps all samples that “first” or “last” methods do</li>
@@ -260,9 +297,9 @@
     <div id="microviz-004" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.4">
 <a href="#microviz-004" class="anchor"></a>microViz 0.0.4</h1>
-<div id="features-6" class="section level2">
+<div id="features-7" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-6" class="anchor"></a>Features</h2>
+<a href="#features-7" class="anchor"></a>Features</h2>
 <ul>
 <li>
 <code>ps_arrange</code> allows reordering of <code>phyloseq</code> samples by values of variables in <code>sample_data</code> or <code>otu_table</code> (wrapper around <code>dplyr</code>’s <code>arrange</code> function)</li>
@@ -274,9 +311,9 @@
     <div id="microviz-003" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.3">
 <a href="#microviz-003" class="anchor"></a>microViz 0.0.3</h1>
-<div id="features-7" class="section level2">
+<div id="features-8" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-7" class="anchor"></a>Features</h2>
+<a href="#features-8" class="anchor"></a>Features</h2>
 <ul>
 <li>
 <code>ps_mutate</code> allowing easy and piped modification of <code>phyloseq</code> <code>sample_data</code> (wrapper around <code>dplyr</code>’s <code>mutate</code> function)</li>
@@ -288,9 +325,9 @@
     <div id="microviz-002" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.2">
 <a href="#microviz-002" class="anchor"></a>microViz 0.0.2</h1>
-<div id="breaking-changes-2" class="section level2">
+<div id="breaking-changes-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#breaking-changes-2" class="anchor"></a>Breaking changes</h2>
+<a href="#breaking-changes-3" class="anchor"></a>Breaking changes</h2>
 <ul>
 <li>
 <code>plot_ordin8</code> arguments changed to allow easier sizing and styling of all vectors and labels</li>
