@@ -5,6 +5,7 @@
 
 <!-- badges: start -->
 
+[![R-CMD-check](https://github.com/david-barnett/microViz/workflows/R-CMD-check/badge.svg)](https://github.com/david-barnett/microViz/actions)
 <!-- badges: end -->
 
 microViz package provides functions for wrangling, stats and
@@ -53,7 +54,7 @@ BiocManager::install(c("phyloseq", "microbiome"))
 
 # # Installing the latest version of this package # #
 install.packages("devtools")
-devtools::install_github("MUMC-MEDMIC/microViz@0.3.0") # change 0.3.0 to the latest release version
+devtools::install_github("MUMC-MEDMIC/microViz@0.3.2") # check 0.3.2 is the latest version?
 # advanced tip: add @<commit-hash> after microViz to install a version from a particular commit
 # If you get an error including something like: 
 # "check that you have the required permissions" 
@@ -189,8 +190,8 @@ aitchison_perm <- permanova(
   variables = "bmi_group + female"
 )
 #> Dropping samples with missings: 2
-#> 2021-02-06 21:21:48 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2021-02-06 21:21:48 - Finished PERMANOVA
+#> 2021-02-10 17:34:58 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2021-02-10 17:34:58 - Finished PERMANOVA
 # view the permanova results
 aitchison_perm$permanova
 #> Permutation test for adonis under reduced model
@@ -226,8 +227,8 @@ your permanova directly using the ord\_plot function with constraints.
 ``` r
 perm2 <- permanova(data = aitchison_dists, variables = c("weight", "female"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2021-02-06 21:21:48 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2021-02-06 21:21:49 - Finished PERMANOVA
+#> 2021-02-10 17:34:58 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2021-02-10 17:34:59 - Finished PERMANOVA
 perm2$permanova
 #> Permutation test for adonis under reduced model
 #> Marginal effects of terms
@@ -273,7 +274,7 @@ devtools::session_info()
 #>  collate  en_GB.UTF-8                 
 #>  ctype    en_GB.UTF-8                 
 #>  tz       Europe/Amsterdam            
-#>  date     2021-02-06                  
+#>  date     2021-02-10                  
 #> 
 #> ─ Packages ───────────────────────────────────────────────────────────────────────────────────────
 #>  package      * version date       lib source        
