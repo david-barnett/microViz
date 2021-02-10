@@ -26,13 +26,10 @@
 #'
 #' @examples
 #' # corncob stats testing
-#' library(dplyr)
-#' library(tibble)
-#' library(phyloseq)
-#' library(microbiome)
 #' library(corncob)
+#' library(dplyr)
 #'
-#' data(dietswap)
+#' data(dietswap, package = "microbiome")
 #' ps <- dietswap
 #'
 #' # create some binary variables for easy visualisation
@@ -62,6 +59,10 @@
 #'   tax_model(tax_level = "Genus", taxa = "G: Bacteroides fragilis et rel.", variables = VARS)
 #' # Model all taxa at multiple taxonomic ranks (ranks 1 and 2) using only female variable as predictor
 #' models4 <- taxatree_models(ps, tax_levels = 1:2, formula = ~female, verbose = FALSE)
+#'
+#' models_lm <- ps %>%
+#'   microbiome::transform("compositional") %>%
+#'   tax_model(tax_level = "Genus", taxa = 1:3, variables = VARS, type = "lm")
 #' @rdname Taxon-modelling
 #' @export
 tax_model <- function(ps, tax_level, type = "bbdml", variables = NULL, formula = NULL, taxa = NULL, verbose = TRUE, ...) {
@@ -107,7 +108,6 @@ tax_model <- function(ps, tax_level, type = "bbdml", variables = NULL, formula =
     phyloseq::taxa_names(ps)[taxa] <- taxons
   }
 
-
   # handle formula or variables
   # defines right hand side of formula (which is same for all taxa)
   if (
@@ -121,26 +121,29 @@ tax_model <- function(ps, tax_level, type = "bbdml", variables = NULL, formula =
     rhs <- stats::as.formula(paste(" ~", paste(variables, collapse = " + ")))
   }
 
-  if (identical(type, "bbdml")) {
+  # define specific formulas and model each taxon individually
+  taxon_models <- future.apply::future_lapply(
+    future.seed = TRUE,
+    X = taxons,
+    FUN = function(taxon) {
+      if (!isFALSE(verbose)) message("Modelling: ", taxon)
+      # combine lhs and rhs formula
+      f <- stats::update.formula(rhs, stats::as.formula(paste0("`", taxon, "`", " ~ .")))
+      args <- list(formula = f, data = ps, ...)
 
-    # define specific formulas and model each taxon individually
-    taxon_models <- future.apply::future_lapply(
-      future.seed = TRUE,
-      X = taxons,
-      FUN = function(taxon) {
-        if (!isFALSE(verbose)) message("Modelling: ", taxon)
-        # combine lhs and rhs formula
-        f <- stats::update.formula(rhs, stats::as.formula(paste0("`", taxon, "`", " ~ .")))
-        # create bbdml model
-        # phi.formula is for modelling dispersion (this is probably why it does NOT take a reponse var)
-        if (!exists(x = "phi.formula", inherits = FALSE)) phi.formula <- rhs
-        res <- corncob::bbdml(formula = f, phi.formula = phi.formula, data = ps, ...)
-        return(res)
+      if (identical(type, "bbdml") || identical(type, corncob::bbdml)) {
+        # phi.formula is for modelling dispersion (this is probably why it does NOT take a response var)
+        if (identical(args[["phi.formula"]], NULL)) args[["phi.formula"]] <- rhs
+      } else {
+        ps <- ps_otu2samdat(ps = ps, taxa = taxon)
+        args[["data"]] <- data.frame(phyloseq::sample_data(ps), check.names = FALSE)
       }
-    )
-  } else {
-    stop("So far only beta binomial taxon models with corncob::bbdml are supported, with type = 'bbdml'")
-  }
+      res <- do.call(type, args = args)
+      # replace junk call slot with something informative (albeit not actually a call)
+      res[["call"]] <- f
+      return(res)
+    }
+  )
   names(taxon_models) <- taxons
   return(taxon_models)
 }
@@ -170,7 +173,7 @@ taxatree_models <- function(ps, tax_levels = NULL, type = "bbdml", variables = N
     X = tax_levels,
     function(r) {
       message(Sys.time(), " - modelling at level: ", r)
-      models <- tax_model(ps = ps, tax_level = r, type = "bbdml", variables = variables, formula = formula, verbose = verbose, ...)
+      models <- tax_model(ps = ps, tax_level = r, type = type, variables = variables, formula = formula, verbose = verbose, ...)
       return(models)
     }
   )
@@ -178,33 +181,50 @@ taxatree_models <- function(ps, tax_levels = NULL, type = "bbdml", variables = N
   return(tax_models_list)
 }
 
-# `models2stats_corncob`extracts stats from corncob taxon model list
+# `models2stats`extracts stats from taxon model list
 #
-# models2stats_corncob is used inside taxatree_plots, with the output of `tax_model(type = "bbdml")`.
-# It splits the statistical results extracted from corncob models and groups them by the independent variable name that they refer to.
-# One dataframe of this list can then be joined to the output of taxatree_nodes to prepare for taxonomic heat tree graph visualisation of taxon-variable associations.
+# models2stats is used inside taxatree_plots, with the output of `tax_model()`.
+# It can extract the statistical results from various models and labels them by the independent variable name that they refer to.
+# Rows for one model_var from this df can then be joined to the output of taxatree_nodes to prepare for taxonomic heat tree graph visualisation of taxon-variable associations.
+# Use `split.data.frame(taxon_stats_df, taxon_stats_df[["model_var"]])` to split into variable-specific dataframes
 #
-# @param taxon_models named list output of `tax_model(type = "bbdml")`
+# @param taxon_models named list output of `tax_model`
 # @return list of dataframes, one df per independent variable
-models2stats_corncob <- function(taxon_models) {
-  # get stats from models
-  taxon_stats <- lapply(taxon_models, corncob::waldt)
-  taxon_stats <- lapply(names(taxon_stats), function(name) {
-    df <- as.data.frame(taxon_stats[[name]])
-    df$taxon_name <- name
-    df <- tibble::rownames_to_column(df, var = "stat")
-    df <- dplyr::rename(df, p = "Pr(>|t|)", t = "t value", se = "Std. Error", b = "Estimate")
-    df <- dplyr::filter(df, !grepl("(Intercept)", .data$stat))
-  })
-  taxon_stats_df <- purrr::reduce(taxon_stats, rbind.data.frame)
-  taxon_stats_df <- tidyr::separate(taxon_stats_df,
-                                    col = "stat", into = c("param", "model_var"),
-                                    extra = "merge", sep = "[.]", remove = TRUE
-  )
-  taxon_stats_wide <- tidyr::pivot_wider(
-    data = taxon_stats_df,
-    names_from = .data$param, values_from = dplyr::all_of(c("b", "se", "t", "p"))
-  )
-  stats_per_var <- split.data.frame(taxon_stats_wide, taxon_stats_wide$model_var)
-  return(stats_per_var)
+models2stats <- function(taxon_models) {
+  if (inherits(taxon_models[[1]], "bbdml")) {
+    # get stats from models
+    taxon_stats <- lapply(taxon_models, corncob::waldt)
+    taxon_stats <- lapply(names(taxon_stats), function(name) {
+      df <- as.data.frame(taxon_stats[[name]])
+      df[["taxon_name"]] <- name
+      df <- tibble::rownames_to_column(df, var = "stat")
+      df <- dplyr::rename(df, p = "Pr(>|t|)", t = "t value", se = "Std. Error", b = "Estimate")
+      df <- dplyr::filter(df, !grepl("(Intercept)", .data$stat))
+    })
+    taxon_stats_df <- purrr::reduce(taxon_stats, rbind.data.frame)
+    taxon_stats_df <- tidyr::separate(
+      data = taxon_stats_df,
+      col = "stat", into = c("param", "model_var"),
+      extra = "merge", sep = "[.]", remove = TRUE
+    )
+    taxon_stats_df <- tidyr::pivot_wider(
+      data = taxon_stats_df,
+      names_from = .data[["param"]],
+      values_from = dplyr::all_of(c("b", "se", "t", "p"))
+    )
+  } else {
+    # for other models, assume broom::tidy has an appropriate method
+    taxon_stats <- lapply(
+      X = names(taxon_models),
+      FUN = function(name) {
+        df <- broom::tidy(taxon_models[[name]])
+        df[["taxon_name"]] <- name
+        df <- dplyr::rename(df, model_var = "term")
+        df <- dplyr::relocate(df, dplyr::all_of(c("model_var", "taxon_name")))
+        df <- dplyr::filter(df, !grepl("(Intercept)", .data[["model_var"]]))
+      }
+    )
+    taxon_stats_df <- purrr::reduce(taxon_stats, rbind.data.frame)
+  }
+  return(taxon_stats_df)
 }

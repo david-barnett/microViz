@@ -1,3 +1,10 @@
+# microViz 0.3.2
+
+## Features
+* Taxon modelling updates: 
+    * `tax_model` and `taxatree_models` can handle linear modeling e.g. on compositional (TS-Scaled) data
+    * `taxatree_plots` has more sensible defaults (automatic symmetrical colour limits and variable selection based on model type)
+
 # microViz 0.3.1
 
 ## Breaking changes

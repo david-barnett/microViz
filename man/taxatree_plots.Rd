@@ -8,20 +8,19 @@
 taxatree_plots(
   ps,
   models_list,
-  preset_style = NULL,
   var_selection = NULL,
   var_renamer = function(x) identity(x),
   size_stat = "taxon_mean",
   colour_stat = NULL,
-  max_node_size = 7,
-  max_edge_width = max_node_size - 3,
-  sig_var = NULL,
+  max_node_size = 5,
+  max_edge_width = round(max_node_size * 3/4),
+  sig_var = TRUE,
   sig_threshold = 0.05,
   sig_stroke_width = 1.5,
   colour_palette = "Green-Brown",
   reverse_colours = FALSE,
   luminance_l2 = 80,
-  colour_lims = c(-3, 3),
+  colour_lims = NULL,
   layout = "tree",
   drop_tax_levels = TRUE,
   add_circles = TRUE
@@ -32,7 +31,7 @@ taxatree_plotkey(
   size_stat = "taxon_mean",
   colour = "grey",
   max_node_size = 8,
-  max_edge_width = max_node_size - 3,
+  max_edge_width = round(max_node_size * 3/4),
   layout = "tree",
   label = utils::tail(phyloseq::rank_names(ps), 2)[1],
   label_style = list(size = 2.5, alpha = 0.8),
@@ -45,8 +44,6 @@ taxatree_plotkey(
 \item{ps}{phyloseq object}
 
 \item{models_list}{list of lists of models, as output by taxatree_models}
-
-\item{preset_style}{e.g. "bbdml", optional character string for quick presets}
 
 \item{var_selection}{optionally only plot trees for this selection of predictor variables}
 
@@ -107,7 +104,6 @@ Uses ggraph (see help for main underlying graphing function with ?ggraph::ggraph
 \examples{
 # corncob stats testing
 library(dplyr)
-library(phyloseq)
 library(microbiome)
 library(corncob)
 library(patchwork) # for arranging grid of plots
@@ -118,6 +114,7 @@ ps <- dietswap
 # create some binary variables for easy visualisation
 ps <- ps \%>\% ps_mutate(
   female = if_else(sex == "female", 1, 0, NaN),
+  african = if_else(nationality == "AFR", 1, 0, NaN),
   overweight = if_else(bmi_group == "overweight", 1, 0, NaN),
   obese = if_else(bmi_group == "obese", 1, 0, NaN)
 )
@@ -130,9 +127,26 @@ ps <- tax_prepend_ranks(ps)
 ps <- ps \%>\% tax_filter(min_prevalence = 0.1, min_total_abundance = 10000)
 
 # specify variables used for modelling
-models <- taxatree_models(ps, tax_levels = 1:3, formula = ~ female + obese, verbose = FALSE)
-plots <- taxatree_plots(ps, models, preset_style = "bbdml", var_renamer = toupper)
-wrap_plots(plots, guides = "collect")
+models <- taxatree_models(ps, tax_levels = 1:3, formula = ~ female + african, verbose = FALSE)
+plots <- taxatree_plots(ps, models_list = models, max_node_size = 4)
+patchwork::wrap_plots(plots, guides = "collect")
 key <- taxatree_plotkey(ps, taxon_renamer = function(x) stringr::str_remove(x, "^F: "))
+key
+
+# cowplot is easiest for arranging trees and key and colourbar legend
+colourbar <- cowplot::get_legend(plots[[1]])
+keyrow <- cowplot::plot_grid(key, colourbar, rel_widths = c(9, 1))
+plot_col <- cowplot::plot_grid(
+  plots[[1]] + theme(legend.position = "none"),
+  plots[[2]] + theme(legend.position = "none"),
+  ncol = 1
+)
+cowplot::plot_grid(keyrow, plot_col, nrow = 1, rel_widths = c(2, 1))
+
+models_lm <- ps \%>\%
+  microbiome::transform("compositional") \%>\%
+  taxatree_models(type = "lm", tax_levels = 1:3, formula = ~ female + african, verbose = FALSE)
+plots_lm <- taxatree_plots(ps, models_lm, max_node_size = 5)
+patchwork::wrap_plots(plots_lm, nrow = 1, guides = "collect")
 key
 }

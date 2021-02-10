@@ -9,7 +9,6 @@
 #'
 #' @param ps phyloseq object
 #' @param models_list list of lists of models, as output by taxatree_models
-#' @param preset_style e.g. "bbdml", optional character string for quick presets
 #' @param var_selection optionally only plot trees for this selection of predictor variables
 #' @param var_renamer function to rename variables (called AFTER any var selection)
 #' @param size_stat name of variable to scale size of nodes and edges (natural log scale)
@@ -32,7 +31,6 @@
 #' @examples
 #' # corncob stats testing
 #' library(dplyr)
-#' library(phyloseq)
 #' library(microbiome)
 #' library(corncob)
 #' library(patchwork) # for arranging grid of plots
@@ -43,6 +41,7 @@
 #' # create some binary variables for easy visualisation
 #' ps <- ps %>% ps_mutate(
 #'   female = if_else(sex == "female", 1, 0, NaN),
+#'   african = if_else(nationality == "AFR", 1, 0, NaN),
 #'   overweight = if_else(bmi_group == "overweight", 1, 0, NaN),
 #'   obese = if_else(bmi_group == "obese", 1, 0, NaN)
 #' )
@@ -55,51 +54,79 @@
 #' ps <- ps %>% tax_filter(min_prevalence = 0.1, min_total_abundance = 10000)
 #'
 #' # specify variables used for modelling
-#' models <- taxatree_models(ps, tax_levels = 1:3, formula = ~ female + obese, verbose = FALSE)
-#' plots <- taxatree_plots(ps, models, preset_style = "bbdml", var_renamer = toupper)
-#' wrap_plots(plots, guides = "collect")
+#' models <- taxatree_models(ps, tax_levels = 1:3, formula = ~ female + african, verbose = FALSE)
+#' plots <- taxatree_plots(ps, models_list = models, max_node_size = 4)
+#' patchwork::wrap_plots(plots, guides = "collect")
 #' key <- taxatree_plotkey(ps, taxon_renamer = function(x) stringr::str_remove(x, "^F: "))
+#' key
+#'
+#' # cowplot is easiest for arranging trees and key and colourbar legend
+#' colourbar <- cowplot::get_legend(plots[[1]])
+#' keyrow <- cowplot::plot_grid(key, colourbar, rel_widths = c(9, 1))
+#' plot_col <- cowplot::plot_grid(
+#'   plots[[1]] + theme(legend.position = "none"),
+#'   plots[[2]] + theme(legend.position = "none"),
+#'   ncol = 1
+#' )
+#' cowplot::plot_grid(keyrow, plot_col, nrow = 1, rel_widths = c(2, 1))
+#'
+#' models_lm <- ps %>%
+#'   microbiome::transform("compositional") %>%
+#'   taxatree_models(type = "lm", tax_levels = 1:3, formula = ~ female + african, verbose = FALSE)
+#' plots_lm <- taxatree_plots(ps, models_lm, max_node_size = 5)
+#' patchwork::wrap_plots(plots_lm, nrow = 1, guides = "collect")
 #' key
 #' @export
 #' @rdname taxatree_plots
 taxatree_plots <- function(
                            ps,
                            models_list,
-                           preset_style = NULL,
                            var_selection = NULL,
                            var_renamer = function(x) identity(x),
                            size_stat = "taxon_mean",
                            colour_stat = NULL,
-                           max_node_size = 7,
-                           max_edge_width = max_node_size - 3,
-                           sig_var = NULL,
+                           max_node_size = 5,
+                           max_edge_width = round(max_node_size * 3 / 4),
+                           sig_var = TRUE,
                            sig_threshold = 0.05,
                            sig_stroke_width = 1.5,
                            colour_palette = "Green-Brown",
                            reverse_colours = FALSE,
                            luminance_l2 = 80,
-                           colour_lims = c(-3, 3),
+                           colour_lims = NULL,
                            layout = "tree",
                            drop_tax_levels = TRUE,
                            add_circles = TRUE) {
-  # handle any presets for styling
-  if (!identical(preset_style, NULL)) {
-    if (identical(preset_style, "bbdml")) {
-      size_stat <- "taxon_mean"
-      colour_stat <- "b_mu"
-      sig_var <- "p_mu"
-    }
-  } else if (identical(colour_stat, NULL)) {
-    stop("You must set colour_stat to a non-NULL value or use a valid preset_style")
+
+  # check name are in rank names
+  if (any(!names(models_list) %in% phyloseq::rank_names(ps))) {
+    stop(
+      "Did you use taxatree_models to generate models list?\n",
+      "The following names in the models_list are not in rank_names of ps:\n",
+      paste(names(models_list)[!names(models_list) %in% phyloseq::rank_names(ps)], collapse = "\n")
+    )
+  }
+  # handle defaults for styling particular classes of model results
+  if (inherits(models_list[[1]][[1]], "bbdml")) {
+    if (identical(NULL, colour_stat)) colour_stat <- "b_mu"
+    if (isTRUE(sig_var)) sig_var <- "p_mu"
+  } else {
+    if (identical(NULL, colour_stat)) colour_stat <- "estimate"
+    if (isTRUE(sig_var)) sig_var <- "p.value"
   }
 
-  # convert models to stats
-  flat_models_list <- purrr::flatten(models_list)
-  # check class of models and extract stats
-  if (inherits(flat_models_list[[1]], what = "bbdml")) {
-    var_stats <- models2stats_corncob(flat_models_list)
-  } else {
-    stop("So far only beta binomial taxon models produced with corncob::bbdml are supported")
+  # convert models to stats and split
+  modelstats_list <- lapply(models_list, models2stats)
+  # TODO allow computing an adjusted p.value variable (adjustment per rank)
+  # modelstats_list <- lapply(..... ?)
+
+  stats_df <- purrr::reduce(modelstats_list, rbind.data.frame)
+  var_stats <- split.data.frame(stats_df, stats_df[["model_var"]])
+
+  # get full range of colour stat variable
+  if (identical(colour_lims, NULL)) {
+    colour_var <- purrr::map_dbl(var_stats, .f = ~ max(abs(.x[[colour_stat]]), na.rm = TRUE))
+    colour_lims <- c(-max(colour_var) * 1.25, max(colour_var) * 1.25)
   }
 
   # make a selection of variables for plotting, if requested
@@ -169,6 +196,7 @@ taxatree_plots <- function(
           data = ~ dplyr::filter(.x, .data[[sig_var]] < sig_threshold),
           mapping = ggplot2::aes(
             size = log(.data[[size_stat]]),
+            fill = .data[[colour_stat]],
             color = dplyr::if_else(
               condition = .data[[colour_stat]] < 0,
               true = colour_lims[[1]],
@@ -176,14 +204,14 @@ taxatree_plots <- function(
             )
           ),
           stroke = sig_stroke_width,
-          shape = "circle open"
+          shape = "circle filled"
         )
       }
       # central black node for root
       p <- p +
         ggraph::geom_node_point(
           mapping = ggplot2::aes(
-            filter = .data[["taxon_level"]] %in% c("kingdom", "root"),
+            filter = .data[["taxon_level"]] %in% c("Kingdom", "kingdom", "Root", "root"),
             size = log(.data[[size_stat]])
           ),
           colour = "black",
@@ -213,13 +241,16 @@ taxatree_plots <- function(
             # barwidth = grid::unit(0.01, "npc")
           )
         ) +
-        ggplot2::coord_fixed(expand = FALSE, clip = "off") +
         ggraph::theme_graph(
           base_family = "sans",
           title_size = 10,
           plot_margin = grid::unit(x = rep(0.03, 4), "npc")
         )
 
+      # trick to set new coordinates as "default", see: https://github.com/tidyverse/ggplot2/issues/2799
+      cf <- ggplot2::coord_fixed(expand = FALSE, clip = "off")
+      cf$default <- TRUE
+      p <- p + cf
       return(p)
     }
   )
@@ -241,14 +272,13 @@ taxatree_plotkey <- function(
                              size_stat = "taxon_mean",
                              colour = "grey",
                              max_node_size = 8,
-                             max_edge_width = max_node_size - 3,
+                             max_edge_width = round(max_node_size * 3 / 4),
                              layout = "tree",
                              label = utils::tail(phyloseq::rank_names(ps), 2)[1],
                              label_style = list(size = 2.5, alpha = 0.8),
                              taxon_renamer = function(x) identity(x),
                              tax_levels = phyloseq::rank_names(ps),
-                             add_circles = TRUE
-                             ) {
+                             add_circles = TRUE) {
 
   # get tax_table values at desired ranks, to filter taxa for labelling
   taxa_to_label <- unique(as.character(unclass(phyloseq::tax_table(ps)[, label])))

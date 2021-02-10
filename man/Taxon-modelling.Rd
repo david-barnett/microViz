@@ -64,13 +64,10 @@ Run a line like this beforehand: \code{future::plan(future::multisession, worker
 }
 \examples{
 # corncob stats testing
-library(dplyr)
-library(tibble)
-library(phyloseq)
-library(microbiome)
 library(corncob)
+library(dplyr)
 
-data(dietswap)
+data(dietswap, package = "microbiome")
 ps <- dietswap
 
 # create some binary variables for easy visualisation
@@ -100,4 +97,8 @@ models3 <- ps \%>\%
   tax_model(tax_level = "Genus", taxa = "G: Bacteroides fragilis et rel.", variables = VARS)
 # Model all taxa at multiple taxonomic ranks (ranks 1 and 2) using only female variable as predictor
 models4 <- taxatree_models(ps, tax_levels = 1:2, formula = ~female, verbose = FALSE)
+
+models_lm <- ps \%>\%
+  microbiome::transform("compositional") \%>\%
+  tax_model(tax_level = "Genus", taxa = 1:3, variables = VARS, type = "lm")
 }
