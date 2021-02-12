@@ -8,17 +8,14 @@ dist_calc(
   data,
   dist = c("bray", "gunifrac", "unifrac", "wunifrac", "va-wunifrac", "aitchison",
     "euclidean")[1],
-  return = "all",
   gunifrac_alpha = 0.5,
   ...
 )
 }
 \arguments{
-\item{data}{phyloseq object or list object output from tax_agg}
+\item{data}{phyloseq object or ps_extra object output from tax_agg}
 
 \item{dist}{name of distance to calculate between pairs of samples}
-
-\item{return}{choose which parts of list object to return}
 
 \item{gunifrac_alpha}{setting alpha value only relevant if gunifrac distance used}
 
@@ -28,19 +25,20 @@ dist_calc(
 list with distance matrix, phyloseq object, and name of distance used
 }
 \description{
-For use directly with phyloseq object or with list output of tax_agg.
-Computes various unifrac distances, aitchison distance or any distance from vegdist.
-Returns phyloseq and name of distance in addition to the distance matrix itself!
+For use directly with phyloseq object or with output of tax_agg or tax_transform.
+Computes various unifrac distances, aitchison distance or any distance from vegan::vegdist().
+Returns ps_extra object containing phyloseq and name of distance in addition to the distance matrix itself!
 Result intended to be piped into ord_calc or permanova functions.
 }
 \details{
-Aitchison distance note: You should EITHER
+Aitchison distance note: You should EITHER:
 \enumerate{
 \item skip the dist_calc function and call ord_calc(method = "RDA") directly on an object with taxa transformed with tax_transform(transformation = "clr")
 \item pass an object with untransformed (or 'identity' transformed) taxa to the data argument of dist_calc and specify dist = "aitchison".
-If ordination plots with taxon loading distances are desired, users should prefer option 1.
-If the distance matrix is required for permanova, users should prefer option 2.
 }
+
+If ordination plots with taxon loading distances are desired, users require option 1.
+If the distance matrix is required for permanova, users require option 2.
 }
 \examples{
 # bray curtis distance on genera-level features
@@ -53,6 +51,6 @@ class(bc)
 # gunifrac distance using phyloseq input
 data("esophagus", package = "phyloseq")
 gunifrac <- esophagus \%>\%
-  dist_calc("gunifrac", return = "distMat")
+  dist_calc("gunifrac") \%>\% dist_get()
 class(gunifrac)
 }

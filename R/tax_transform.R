@@ -5,7 +5,7 @@
 #'
 #' @param data list output from tax_agg, or a phyloseq object
 #' @param transformation any valid taxa transformation from microbiome::transform
-#' @param return choose which parts of list object to return
+#' @param ... any extra arguments passed to microbiome::transform()
 #'
 #' @return list including phyloseq object and level argument value
 #' @export
@@ -15,31 +15,22 @@
 #' data("dietswap", package = "microbiome")
 #' tax_agg(ps = dietswap, agg_level = "none") %>% tax_transform("identity")
 #' tax_agg(ps = dietswap, agg_level = "Phylum") %>% tax_transform("clr")
-tax_transform <- function(data, transformation, return = "all") {
+tax_transform <- function(data, transformation, ...) {
 
   # check input data object class
-  if (inherits(data, "list")) {
-    ps <- data[["ps"]]
-    info <- data[["info"]]
-  } else if (inherits(data, "phyloseq")) {
+  if (inherits(data, "ps_extra")) {
+    ps <- ps_get(data)
+    info <- info_get(data)
+    info[["tax_transform"]] <- transformation
+  } else if (methods::is(data, "phyloseq")) {
     ps <- data
-    info <- list(tax_level = "not specified")
+    info <- new_ps_extra_info(tax_transform = transformation)
   } else {
-    stop("data is wrong class, should be list output of tax_agg, or a phyloseq")
+    stop("data is wrong class, should be ps_extra output of tax_agg, or a phyloseq")
   }
 
   # transform phyloseq with microbiome::transform
-  ps <- microbiome::transform(x = ps, transform = transformation, target = "OTU", scale = 1, shift = 0)
+  ps <- microbiome::transform(x = ps, transform = transformation, target = "OTU", ...)
+  new_ps_extra(ps = ps, info = info)
 
-  # return list output
-  info[["tax_transform"]] <- transformation
-  out <- list(ps = ps, info = info)
-
-  if (identical(return, "all")) {
-    return(out)
-  } else if (length(return) == 1) {
-    return(out[[return]])
-  } else {
-    return(out[return])
-  }
 }

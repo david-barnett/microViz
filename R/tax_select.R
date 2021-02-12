@@ -42,6 +42,7 @@ tax_select <- function(
                        strict_matches = FALSE,
                        n_typos = 1,
                        deselect = FALSE) {
+  if (inherits(ps, "ps_extra")) ps <- ps_get(ps)
 
   # collapse tax_list to a string of regex OR patterns
   taxaString <- paste(tax_list, collapse = "|")
@@ -51,9 +52,11 @@ tax_select <- function(
 
   if (!identical(ranks_searched, "all")) {
     # check valid taxonomic ranks given for searching
-    if(any(!ranks_searched %in% phyloseq::rank_names(ps))){
-      stop("Invalid rank names given: ", paste(ranks_searched, collapse = ' '),
-           "\n- Should be any/some of: ", paste(phyloseq::rank_names(ps), collapse = '/'))
+    if (any(!ranks_searched %in% phyloseq::rank_names(ps))) {
+      stop(
+        "Invalid rank names given: ", paste(ranks_searched, collapse = " "),
+        "\n- Should be any/some of: ", paste(phyloseq::rank_names(ps), collapse = "/")
+      )
     }
 
     Taxa <- Taxa[, ranks_searched, drop = FALSE]

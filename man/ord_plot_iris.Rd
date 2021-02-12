@@ -5,7 +5,7 @@
 \title{Circular compositional barplot sorted by ordination angle}
 \usage{
 ord_plot_iris(
-  ord,
+  data,
   ps = NULL,
   axes = 1:2,
   scaling = "species",
@@ -21,9 +21,9 @@ ord_plot_iris(
 )
 }
 \arguments{
-\item{ord}{list output of ord_calc}
+\item{data}{ps_extra list output of ord_calc}
 
-\item{ps}{phyloseq object containing untransformed counts if needed (must otherwise be identical to ps used to make ord!)}
+\item{ps}{phyloseq object containing untransformed counts if needed (must otherwise be identical to ps used to make data!)}
 
 \item{axes}{which 2 axes of ordination to use for ordering}
 
@@ -52,10 +52,10 @@ ggplot
 }
 \description{
 \itemize{
-\item Order of samples extracted from ordination axes in \code{ord}. (\code{ord_calc} output)
-\item \code{ord_plot_iris} Uses the phyloseq from \code{ord} for plotting compositions if no problematic transform mentioned in \code{ord$info}
+\item Order of samples extracted from ordination axes in \code{data}. (\code{ord_calc} output)
+\item \code{ord_plot_iris} Uses the phyloseq from \code{data} for plotting compositions if no problematic transform mentioned in \code{data$info}
 \item Otherwise, ps must be a phyloseq object containing untransformed counts.
-\item (\code{ps} must be otherwise identical to the ps used to make \code{ord}!)
+\item (\code{ps} must be otherwise identical to the ps used to make \code{data}!)
 }
 }
 \examples{
@@ -87,7 +87,7 @@ ord \%>\% ord_plot(
 )
 
 ord_plot_iris(
-  ord = ord,
+  data = ord,
   tax_level = "Genus",
   n_taxa = 10,
   anno_colour = "nationality",
@@ -116,7 +116,7 @@ plot1 <- clr_pca \%>\% ord_plot(
   coord_cartesian(clip = "off")
 
 iris <- ord_plot_iris(
-  ord = clr_pca,
+  data = clr_pca,
   ps = ps, n_taxa = 10,
   tax_level = "Genus",
   taxon_renamer = tax_renamer

@@ -9,12 +9,11 @@ dist_bdisp(
   variables,
   method = c("centroid", "median")[[1]],
   complete_cases = TRUE,
-  verbose = TRUE,
-  return = "all"
+  verbose = TRUE
 )
 }
 \arguments{
-\item{data}{list output from dist_calc}
+\item{data}{ps_extra output from dist_calc}
 
 \item{variables}{list of variables to use as group}
 
@@ -23,11 +22,9 @@ dist_bdisp(
 \item{complete_cases}{drop samples with NAs in any of the variables listed}
 
 \item{verbose}{sends messages about progress if true}
-
-\item{return}{what parts of return list to return, defaults to all parts}
 }
 \value{
-list containing betadisper results list and input objects
+list containing betadisper results
 }
 \description{
 Takes the output of dist_calc function. Or use with the result of the permanova function to ensure the results correspond to exactly the same input data.
@@ -48,10 +45,11 @@ dietswap <- ps_mutate(dietswap, timepoint = as.numeric(timepoint))
 bd1 <- dietswap \%>\%
   tax_agg("Genus") \%>\%
   dist_calc("aitchison") \%>\%
-  dist_bdisp(variables = c("sex", "bmi_group", "timepoint"))
+  dist_bdisp(variables = c("sex", "bmi_group", "timepoint")) \%>\%
+  bdisp_get()
 # quick vegan plotting methods
-plot(bd1$dist_bdisp$sex$model, label.cex = 0.5)
-boxplot(bd1$dist_bdisp$sex$model)
+plot(bd1$sex$model, label.cex = 0.5)
+boxplot(bd1$sex$model)
 
 # compute distance and use for both permanova and dist_bdisp
 testDist <- dietswap \%>\%
@@ -59,12 +57,12 @@ testDist <- dietswap \%>\%
   dist_calc("bray")
 
 PERM <- testDist \%>\%
-  permanova(
+  dist_permanova(
     variables = c("sex", "bmi_group"),
     n_processes = 1, n_perms = 99
   )
 str(PERM, max.level = 1)
 
 bd <- PERM \%>\% dist_bdisp(variables = c("sex", "bmi_group"))
-bd$dist_bdisp$bmi_group
+bd
 }

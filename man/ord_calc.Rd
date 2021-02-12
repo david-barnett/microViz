@@ -7,23 +7,20 @@
 ord_calc(
   data,
   method = c("PCoA", "PCA", "CCA", "RDA", "CAP")[1],
-  constraints = 1,
+  constraints = NULL,
   conditions = NULL,
-  return = "all",
   verbose = TRUE,
   ...
 )
 }
 \arguments{
-\item{data}{list object output from dist_calc or tax_agg (if no distance calculation required e.g. for RDA)}
+\item{data}{ps_extra list object output from dist_calc(), or tax_transform() (if no distance calculation required e.g. for RDA)}
 
 \item{method}{which ordination method to use? currently one of 'PCoA', 'PCA' or 'CCA'}
 
 \item{constraints}{(a vector of) valid variable name(s) to constrain PCoA or RDA analyses, or leave as 1 for unconstrained ordination}
 
 \item{conditions}{(a vector of) valid variable name(s) to partial these out of PCoA or RDA analyses with Condition(), or leave as NULL}
-
-\item{return}{choose which parts of list object to return}
 
 \item{verbose}{if TRUE or "max", message about scaling and missings etc.}
 
@@ -56,13 +53,14 @@ test <- dietswap \%>\%
   dist_calc("bray") \%>\%
   ord_calc(constraints = c("weight", "female"))
 # familiarise yourself with the structure of the returned list object
+test
 str(test, max.level = 1)
 
 # compute RDA ("aitchison distance") directly from phyloseq (and demo return argument)
 test2 <- dietswap \%>\%
   tax_agg("Genus") \%>\%
   tax_transform("clr") \%>\%
-  ord_calc(method = "RDA", constraints = c("weight", "female"), return = "ordination")
+  ord_calc(method = "RDA", constraints = c("weight", "female"))
 # plot with oldschool vegan graphics to show it returns a standard interoperable ordination object
-ordiplot(test2)
+ord_get(test2) \%>\% ordiplot()
 }

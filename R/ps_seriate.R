@@ -37,7 +37,7 @@ ps_seriate <- function(ps, method = "OLO_ward", dist = "bray", tax_transform = "
       ser <- seriation::seriate(x = otu_mat, method = method)
     } else if (method %in% seriation::list_seriation_methods(kind = "dist")) {
       # calculate distance between samples
-      distMat <- dist_calc(data = ps_transformed, dist = dist)[["distMat"]]
+      distMat <- dist_get(dist_calc(data = ps_transformed, dist = dist))
       ser <- seriation::seriate(x = distMat, method = method)
     } else {
       stop(

@@ -125,18 +125,14 @@ ord_plot <-
            auto_caption = TRUE,
            center = FALSE,
            ...) {
-    data_arg_reminder <- "data argument should be a list, specifically the output from ord_calc"
+    ps <- ps_get(data)
+    ordination <- ord_get(data)
 
     # check input data object class and extract the most used objects to function env
-    if (inherits(data, "list")) {
-      ps <- data[["ps"]]
-      info <- data[["info"]]
-      ordination <- data[["ordination"]]
-      if (is.null(ordination)) {
-        stop(data_arg_reminder)
-      }
+    if (inherits(data, "ps_extra") && !identical(ordination, NULL)) {
+      info <- info_get(data)
     } else {
-      stop(data_arg_reminder)
+      stop("data argument should be a ps_extra list, specifically the output from ord_calc")
     }
 
     # get ellipses optional arguments (aesthetics for geom_point)
@@ -164,7 +160,7 @@ ord_plot <-
     stopifnot(stats::nobs(ordination) == phyloseq::nsamples(ps))
 
     # get and transform aesthetic metadata ------------------------------------
-    meta <- data.frame(phyloseq::sample_data(ps))
+    meta <- data.frame(phyloseq::sample_data(ps), check.names = FALSE)
 
     # set variable and fixed ggplot aesthetics based on metadata names check
     aestheticArgs <- ellipses[ellipses %in% colnames(meta)]
@@ -198,12 +194,12 @@ ord_plot <-
       siteScoresDf <- as.data.frame(ordsum[["sites"]][, axes, drop = FALSE])
 
       # if RDA/PCA method: get species scores (aka feature loadings)
-      if (info[["method"]] %in% c("RDA", "CCA")) {
+      if (info[["ordMethod"]] %in% c("RDA", "CCA")) {
         speciesScoresDf <- as.data.frame(ordsum[["species"]][, axes, drop = FALSE])
       }
 
       # if constrained model: get constraints coordinates for plotting
-      if (!identical(info[["constraints"]], 1)) {
+      if (!identical(info[["constraints"]], NA_character_)) {
         constraintDf <- as.data.frame(ordsum[["biplot"]][, axes, drop = FALSE])
       }
 
@@ -238,7 +234,7 @@ ord_plot <-
     }
 
     # add loadings/ species-scores arrows for RDA/PCA methods
-    if (info[["method"]] == "RDA") {
+    if (info[["ordMethod"]] %in% c("RDA", "PCA")) {
 
       # calculate line length for taxa vectors
       speciesLineLength <- sqrt(speciesScoresDf[, 1]^2 + speciesScoresDf[, 2]^2)
@@ -308,7 +304,7 @@ ord_plot <-
     }
 
     # if constrained ordination, plot constraints
-    if (!identical(info[["constraints"]], 1)) {
+    if (!identical(info[["constraints"]], NA_character_)) {
       # automatic constraint length setting
       if (identical(constraint_vec_length, NA)) {
         x <- max(abs(siteScoresDf[[1]])) / max(abs(constraintDf[[1]]))
@@ -338,19 +334,20 @@ ord_plot <-
     # add automated title if requested (default TRUE)
     if (auto_caption) {
       infoElements <- list(
-        m = paste("method =", info[["method"]]),
-        t = paste("tax_level =", info[["tax_level"]])
+        m = paste("method =", info[["ordMethod"]], paste0("(", scaling, " scaling)")),
+        t = paste("tax_agg =", info[["tax_agg"]])
       )
-      for (i in setdiff(names(info), c("method", "tax_level", "constraints"))) {
-        if (!rlang::is_null(info[[i]])) {
+      # add further non-NA elements
+      for (i in setdiff(names(info), c("ordMethod", "tax_agg", "constraints"))) {
+        if (!is.na(info[[i]])) {
           infoElements[[i]] <- paste(i, "=", info[[i]])
         }
       }
-      if (!identical(info[["constraints"]], 1)) {
+      if (!identical(info[["constraints"]], NA_character_)) {
         infoElements[["cs"]] <- paste("constraints =", paste(info[["constraints"]], collapse = "+"))
       }
 
-      caption <- paste(stats::nobs(df), "samples &", phyloseq::ntaxa(ps), "taxa.", scaling, "scaling.")
+      caption <- paste(stats::nobs(df), "samples &", phyloseq::ntaxa(ps), "taxa.")
       caption <- paste(caption, paste(infoElements, collapse = ". "))
 
       p <- p + ggplot2::labs(caption = caption) +

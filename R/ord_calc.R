@@ -2,13 +2,12 @@
 #'
 #' Extends functionality of phyloseq::ordinate(). Results can be used directly in ord_plot.
 #'
-#' @param data list object output from dist_calc or tax_agg (if no distance calculation required e.g. for RDA)
+#' @param data ps_extra list object output from dist_calc(), or tax_transform() (if no distance calculation required e.g. for RDA)
 #' @param method which ordination method to use? currently one of 'PCoA', 'PCA' or 'CCA'
 #' @param constraints (a vector of) valid variable name(s) to constrain PCoA or RDA analyses, or leave as 1 for unconstrained ordination
 #' @param conditions (a vector of) valid variable name(s) to partial these out of PCoA or RDA analyses with Condition(), or leave as NULL
-#' @param return choose which parts of list object to return
-#' @param ... optional arguments passed on to phyloseq::ordinate()
 #' @param verbose if TRUE or "max", message about scaling and missings etc.
+#' @param ... optional arguments passed on to phyloseq::ordinate()
 #'
 #' @return list object (or named parts)
 #' @export
@@ -34,34 +33,34 @@
 #'   dist_calc("bray") %>%
 #'   ord_calc(constraints = c("weight", "female"))
 #' # familiarise yourself with the structure of the returned list object
+#' test
 #' str(test, max.level = 1)
 #'
 #' # compute RDA ("aitchison distance") directly from phyloseq (and demo return argument)
 #' test2 <- dietswap %>%
 #'   tax_agg("Genus") %>%
 #'   tax_transform("clr") %>%
-#'   ord_calc(method = "RDA", constraints = c("weight", "female"), return = "ordination")
+#'   ord_calc(method = "RDA", constraints = c("weight", "female"))
 #' # plot with oldschool vegan graphics to show it returns a standard interoperable ordination object
-#' ordiplot(test2)
+#' ord_get(test2) %>% ordiplot()
 ord_calc <- function(data,
                      method = c("PCoA", "PCA", "CCA", "RDA", "CAP")[1],
-                     constraints = 1,
+                     constraints = NULL,
                      conditions = NULL,
-                     return = "all",
                      verbose = TRUE,
                      ...) {
+  ps <- ps_get(data)
+  if (identical(constraints, NULL)) constraints <- 1
 
   # check input data object class
-  if (inherits(data, "list")) {
-    ps <- data[["ps"]]
-    distMat <- data[["distMat"]]
-    info <- data[["info"]]
+  if (inherits(data, "ps_extra")) {
+    distMat <- dist_get(data)
+    info <- info_get(data)
   } else if (inherits(data, "phyloseq")) {
-    ps <- data
     distMat <- NULL
-    info <- list(tax_level = "not specified", distName = "not specified")
+    info <- new_ps_extra_info()
   } else {
-    stop("data is wrong class, should be list output of dist_calc or tax_agg, or a phyloseq")
+    stop("data should be ps_extra list output of dist_calc or tax_transform, or a phyloseq\n", "data is class: ", class(data))
   }
 
   # constraint and condition handling in phyloseq object and distance matrix
@@ -117,21 +116,14 @@ ord_calc <- function(data,
     ORD <- phyloseq::ordinate(physeq = ps, method = method, distance = distMat, ...)
   }
 
-  # return list output
-  info[["method"]] <- method
-  info[["constraints"]] <- constraints
-  info[["conditions"]] <- conditions
+  # build return object
+  info[["ordMethod"]] <- method
+  if (!identical(constraints, 1)) info[["constraints"]] <- paste(constraints, collapse = "+")
+  if (!identical(conditions, NULL)) info[["conditions"]] <- paste(conditions, collapse = "+")
 
-  out <- list(
-    info = info, ordination = ORD,
-    distMat = distMat, ps = ps
-  )
+  data[["info"]] <- info
+  data[["dist"]] <- distMat
+  data[["ord"]] <- ORD
 
-  if (identical(return, "all")) {
-    return(out)
-  } else if (length(return) == 1) {
-    return(out[[return]])
-  } else {
-    return(out[return])
-  }
+  return(data)
 }

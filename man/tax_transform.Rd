@@ -4,14 +4,14 @@
 \alias{tax_transform}
 \title{Transform taxa in phyloseq object and record transformation}
 \usage{
-tax_transform(data, transformation, return = "all")
+tax_transform(data, transformation, ...)
 }
 \arguments{
 \item{data}{list output from tax_agg, or a phyloseq object}
 
 \item{transformation}{any valid taxa transformation from microbiome::transform}
 
-\item{return}{choose which parts of list object to return}
+\item{...}{any extra arguments passed to microbiome::transform()}
 }
 \value{
 list including phyloseq object and level argument value

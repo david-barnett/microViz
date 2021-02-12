@@ -4,14 +4,12 @@
 \alias{tax_agg}
 \title{Aggregate taxa if requested}
 \usage{
-tax_agg(ps, agg_level, return = "all")
+tax_agg(ps, agg_level)
 }
 \arguments{
 \item{ps}{phyloseq object}
 
 \item{agg_level}{"none", "asv", "given" or name of valid taxonomic rank (try phyloseq::rank_names(ps))}
-
-\item{return}{choose which parts of list object to return}
 }
 \value{
 list including phyloseq object and (tax_)level argument value

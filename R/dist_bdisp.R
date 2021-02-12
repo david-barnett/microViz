@@ -4,14 +4,13 @@
 #' Runs betadisper for all categorical variables in variables argument.
 #' See help('betadisper', package = 'vegan').
 #'
-#' @param data list output from dist_calc
+#' @param data ps_extra output from dist_calc
 #' @param variables list of variables to use as group
 #' @param method centroid or median
 #' @param complete_cases drop samples with NAs in any of the variables listed
 #' @param verbose sends messages about progress if true
-#' @param return what parts of return list to return, defaults to all parts
 #'
-#' @return list containing betadisper results list and input objects
+#' @return list containing betadisper results
 #' @export
 #'
 #' @examples
@@ -28,10 +27,11 @@
 #' bd1 <- dietswap %>%
 #'   tax_agg("Genus") %>%
 #'   dist_calc("aitchison") %>%
-#'   dist_bdisp(variables = c("sex", "bmi_group", "timepoint"))
+#'   dist_bdisp(variables = c("sex", "bmi_group", "timepoint")) %>%
+#'   bdisp_get()
 #' # quick vegan plotting methods
-#' plot(bd1$dist_bdisp$sex$model, label.cex = 0.5)
-#' boxplot(bd1$dist_bdisp$sex$model)
+#' plot(bd1$sex$model, label.cex = 0.5)
+#' boxplot(bd1$sex$model)
 #'
 #' # compute distance and use for both permanova and dist_bdisp
 #' testDist <- dietswap %>%
@@ -39,28 +39,27 @@
 #'   dist_calc("bray")
 #'
 #' PERM <- testDist %>%
-#'   permanova(
+#'   dist_permanova(
 #'     variables = c("sex", "bmi_group"),
 #'     n_processes = 1, n_perms = 99
 #'   )
 #' str(PERM, max.level = 1)
 #'
 #' bd <- PERM %>% dist_bdisp(variables = c("sex", "bmi_group"))
-#' bd$dist_bdisp$bmi_group
+#' bd
 dist_bdisp <- function(data,
                         variables,
                         method = c("centroid", "median")[[1]],
                         complete_cases = TRUE,
-                        verbose = TRUE,
-                        return = "all") {
+                        verbose = TRUE
+                       ) {
 
   # check input data object class
-  if (inherits(data, "list")) {
+  if (inherits(data, "ps_extra") && !identical(dist_get(data), NULL)) {
     ps <- data[["ps"]]
-    distMat <- data[["distMat"]]
-    info <- data[["info"]]
+    distMat <- data[["dist"]]
   } else {
-    stop("data argument must be an output object from dist_calc")
+    stop("data argument must be a ps_extra object from dist_calc")
   }
 
   if (isFALSE(complete_cases)) {
@@ -96,18 +95,7 @@ dist_bdisp <- function(data,
   })
 
   names(bdisp) <- variables
-
-  # return object (results and processing info)
-  out <- list(
-    info = info, dist_bdisp = bdisp, distMat = distMat, ps = ps
-  )
-
-  if (identical(return, "all")) {
-    return(out)
-  } else if (length(return) == 1) {
-    return(out[[return]])
-  } else {
-    return(out[return])
-  }
-  return(bdisp)
+  data[["dist"]] <- distMat
+  data[["bdisp"]] <- bdisp
+  return(data)
 }
