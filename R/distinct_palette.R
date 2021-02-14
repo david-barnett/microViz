@@ -1,6 +1,6 @@
 #' Arbitrary expansion of the "Paired" colorbrewer palette
 #'
-#' Good for generating palettes for large sets of categories, e.g. in the plot_comp_bar function
+#' Good for generating palettes for large sets of categories, e.g. in the comp_barplot function
 #'
 #' @param n number of colours to return
 #'

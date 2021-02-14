@@ -1,27 +1,27 @@
 #' Calculate PERMANOVA after dist_calc
 #'
-#' This function is a wrapper around vegan's adonis2 function. See ?vegan::adonis2 for more insight.
-#' Test for the statistical significance of (independent) associations between variables in your phyloseq sample_data,
-#' and a microbiota distance matrix you have already calculated with dist_calc.
+#' This function is a wrapper around vegan's adonis2() function. See ?vegan::adonis2() for more insight.
+#' Test for the statistical significance of (independent) associations between variables in your phyloseq::sample_data(),
+#' and a microbiota distance matrix you have already calculated with dist_calc().
 #' The variables argument will be collapsed into one string (if length > 1) by pasting together, separated by "+".
 #' Any interaction terms described in the interactions argument will be pasted onto the end of the pasted variables argument.
 #' Alternatively, you can supply the complete right hand side of the formula yourself e.g variables = "varA + varB + varC*varD"
 #' Watch out, if any of your variable names contain characters that would normally separate variables in a formula then
 #' you should rename the offending variable (e.g. avoid any of "+" "*" "|" or ":" ) otherwise permanova will split that variable into pieces.
 #'
-#' @param data list output from dist_calc
+#' @param data ps_extra output from dist_calc()
 #' @param variables character vector of variables to include in model or character representation of the right-hand side of a formula, e.g "varA + varB + varA:varB"
 #' @param interactions optional argument to define any interactions between variables, written in the style of e.g. "var_a * var_b"
-#' @param n_processes how many parallel processes to use? (on windows this uses parallel::makePSOCKcluster)
-#' @param n_perms how many permutations? e.g. 9999 less is faster but more is better!
+#' @param n_processes how many parallel processes to use? (on windows this uses parallel::makePSOCKcluster())
+#' @param n_perms how many permutations? e.g. 9999. Less is faster but more is better!
 #' @param seed set a random number generator seed to ensure you get the same results each run
 #' @param complete_cases if TRUE, drops observations if they contain missing values (otherwise stops if missings are detected)
 #' @param verbose sends messages about progress if TRUE
 #' @param return what parts of return list to return, defaults to all parts
 #' @param by passed to adonis2 `by` argument: what type of sums of squares to calculate? "margin" or "terms"
-#' @param ... additional arguments are passed directly to adonis2 (e.g. strata, add, sqrt.dist etc.)
+#' @param ... additional arguments are passed directly to vegan::adonis2() (e.g. strata, add, sqrt.dist etc.)
 #'
-#' @return list containing permanova results and input objects
+#' @return ps_extra list containing permanova results and (filtered) input objects
 #' @export
 #'
 #' @examples
@@ -38,7 +38,7 @@
 #'   dist_calc("bray")
 #'
 #' PERM <- testDist %>%
-#'   permanova(
+#'   dist_permanova(
 #'     seed = 1,
 #'     variables = c("sex", "bmi_group"),
 #'     n_processes = 1,
@@ -48,7 +48,7 @@
 #'
 #' # try permanova with interaction terms
 #' PERM2 <- testDist %>%
-#'   permanova(
+#'   dist_permanova(
 #'     seed = 1,
 #'     variables = "nationality + sex * bmi_group",
 #'     n_processes = 1, n_perms = 99
@@ -57,7 +57,7 @@
 #'
 #' # specify the same model in alternative way
 #' PERM3 <- testDist %>%
-#'   permanova(
+#'   dist_permanova(
 #'     seed = 1,
 #'     variables = c("nationality", "sex", "bmi_group"),
 #'     interactions = "sex * bmi_group",
@@ -74,22 +74,22 @@
 #' # this trick ensures any samples dropped from the permanova for having missing values
 #' # in the covariates are NOT included in the corresponding ordination plot
 #'
-permanova <- function(data,
-                      variables = NULL,
-                      interactions = NULL,
-                      complete_cases = TRUE,
-                      n_processes = 1,
-                      n_perms = 999,
-                      seed = NULL,
-                      by = "margin",
-                      verbose = TRUE,
-                      return = "all",
-                      ...) {
+dist_permanova <- function(data,
+                           variables = NULL,
+                           interactions = NULL,
+                           complete_cases = TRUE,
+                           n_processes = 1,
+                           n_perms = 999,
+                           seed = NULL,
+                           by = "margin",
+                           verbose = TRUE,
+                           return = "all",
+                           ...) {
 
   # check input data object class
   if (inherits(data, "list")) {
     ps <- data[["ps"]]
-    distMat <- data[["distMat"]]
+    distMat <- data[["dist"]]
     info <- data[["info"]]
   } else {
     stop("data argument must be an output object from dist_calc")
@@ -148,14 +148,10 @@ permanova <- function(data,
   results <- vegan::adonis2(formula = formula, data = metadata, permutations = n_perms, parallel = parall, by = by, ...)
   if (!isFALSE(verbose)) message(Sys.time(), " - Finished PERMANOVA")
 
-  # return object (results and processing info)
-  out <- list(info = info, permanova = results, distMat = distMat, ps = ps)
+  data[["ps"]] <- ps
+  data[["info"]] <- info
+  data[["permanova"]] <- results
+  data[["dist"]] <- distMat
 
-  if (identical(return, "all")) {
-    return(out)
-  } else if (length(return) == 1) {
-    return(out[[return]])
-  } else {
-    return(out[return])
-  }
+  return(data)
 }

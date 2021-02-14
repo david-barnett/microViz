@@ -27,13 +27,13 @@ knitr::opts_chunk$set(
 )
 ```
 
-The `plot_comp_bar` function allows you to visualise the taxonomic compositions of your microbiome samples in a flexible, scalable, group-able, and visually appealing way.
+The `comp_barplot` function allows you to visualise the taxonomic compositions of your microbiome samples in a flexible, scalable, group-able, and visually appealing way.
 
 ## Illustrative simple customised example
 ```{r}
 dietswap %>%
   ps_filter(timepoint == 1) %>%
-  plot_comp_bar(
+  comp_barplot(
     tax_level = "Family", n_taxa = 8,
     bar_outline_colour = NA,
     sample_order = "bray", bar_width = 0.7
@@ -46,7 +46,7 @@ Often to compare groups, average compositions are presented.
 ```{r}
 p1 <- dietswap %>%
   phyloseq::merge_samples(group = "group") %>%
-  plot_comp_bar(
+  comp_barplot(
     tax_level = "Genus", n_taxa = 12,
     sample_order = c("ED", "HE", "DI"),
     bar_width = 0.8
@@ -58,7 +58,7 @@ p1
 However that "group-averaging" approach hides a lot of within-group variation.
 ```{r}
 p2 <- dietswap %>%
-  plot_comp_bar(
+  comp_barplot(
     tax_level = "Genus", n_taxa = 12, group_by = "group",
     sample_order = "euclidean", bar_outline_colour = NA, keep_all_vars = TRUE
   ) %>%
@@ -78,7 +78,7 @@ Only from p2 you can see that the apparently higher average relative abundance o
 ## Faceting tips: 
 
 ```{r}
-facets_plot <- plot_comp_bar(
+facets_plot <- comp_barplot(
   dietswap,
   n_taxa = 15, tax_level = "Genus",
   bar_outline_colour = "black",
@@ -106,7 +106,7 @@ p2 & facet_wrap('sex', scales = 'free')
 Remake the 2 harmonised composition plots grouped by sex, but using group_by and patchwork. (Note that the ordering of the samples may differ between facet and group_by approaches. In the group_by method, the ordering of the samples by similarity is done separately for each group, whereas in the facet_by method, similarity-based ordering is done with all samples and then the samples are separated by facet afterwards).
 
 ```{r}
-plot_list <- plot_comp_bar(
+plot_list <- comp_barplot(
   dietswap,
   n_taxa = 15, tax_level = "Genus",
   bar_outline_colour = "black",
@@ -172,7 +172,7 @@ Grouped by both timepoint and another grouping factor, nationality in this examp
 ```{r, fig.height=7.5, fig.width=10}
 times_list <- ps %>%
   ps_arrange(timepoint.within.group, nationality, desc(subject)) %>%
-  plot_comp_bar(
+  comp_barplot(
     tax_level = "Genus", n_taxa = 10, sample_order = "default",
     group_by = "plot_groups", bar_width = 0.7, label = "subject"
   )

@@ -1,9 +1,9 @@
 #' Plot (grouped and ordered) compositional barplots
 #'
-#' Stacked barplots showing composition of phyloseq samples for a specified number of coloured taxa. `plot_comp_bar` performs the compositional transformation for you, so your phyloseq object should contain counts!
+#' Stacked barplots showing composition of phyloseq samples for a specified number of coloured taxa. `comp_barplot` performs the compositional transformation for you, so your phyloseq object should contain counts!
 #' - sample_order: Either specify a list of sample names to order manually, or the bars/samples can/will be sorted by similarity, according to a specified distance measure (default aitchison),
 #' - seriate_method specifies a seriation/ordering algorithm (default Ward hierarchical clustering with optimal leaf ordering, see seriation::list_seriation_methods())
-#' - group_by: You can group the samples on distinct plots by levels of a variable in the phyloseq object. The list of ggplots produced can be arranged flexibly with the patchwork package functions. If you want to group by several variables you can create an interaction variable with interaction(var1, var2) in the phyloseq sample_data BEFORE using plot_comp_bar.
+#' - group_by: You can group the samples on distinct plots by levels of a variable in the phyloseq object. The list of ggplots produced can be arranged flexibly with the patchwork package functions. If you want to group by several variables you can create an interaction variable with interaction(var1, var2) in the phyloseq sample_data BEFORE using comp_barplot.
 #' - facet_by can allow faceting of your plot(s) by a grouping variable. Using this approach is less flexible than using group_by but means you don't have to arrange a list of plots yourself like with the group_by argument. Using facet_by is equivalent to adding a call to facet_wrap(facets = facet_by, scales = "free") to your plot(s). Calling facet_wrap() yourself is itself a more flexible option as you can add other arguments like the number of rows etc. However you must use keep_all_vars = TRUE if you will add faceting manually.
 #' - bar_width: No gaps between bars, unless you want them (decrease width argument to add gaps between bars).
 #' - bar_outline_colour: Bar outlines default to "black". Set to NA if you don't want outlines.
@@ -36,7 +36,7 @@
 #' # illustrative simple customised example
 #' dietswap %>%
 #'   ps_filter(timepoint == 1) %>%
-#'   plot_comp_bar(
+#'   comp_barplot(
 #'     tax_level = "Family", n_taxa = 8,
 #'     bar_outline_colour = NA,
 #'     sample_order = "bray",
@@ -45,13 +45,13 @@
 #'   ) + coord_flip()
 #'
 #' # Order samples by the value of one of more sample_data variables.
-#' # Use ps_arrange and set sample_order = "default" in plot_comp_bar.
+#' # Use ps_arrange and set sample_order = "default" in comp_barplot.
 #' # ps_mutate is also used here to create an informative variable for axis labelling
 #' dietswap %>%
 #'   ps_mutate(subject_timepoint = interaction(subject, timepoint)) %>%
 #'   ps_filter(nationality == "AAM", group == "DI", sex == "female") %>%
 #'   ps_arrange(desc(subject), desc(timepoint)) %>%
-#'   plot_comp_bar(
+#'   comp_barplot(
 #'     tax_level = "Genus", n_taxa = 12,
 #'     bar_outline_colour = NA,
 #'     sample_order = "default",
@@ -62,7 +62,7 @@
 #'
 #' # Often to compare groups, average compositions are presented
 #' p1 <- phyloseq::merge_samples(dietswap, group = "group") %>%
-#'   plot_comp_bar(
+#'   comp_barplot(
 #'     tax_level = "Genus", n_taxa = 12,
 #'     sample_order = c("ED", "HE", "DI"),
 #'     bar_width = 0.8
@@ -71,7 +71,7 @@
 #' p1
 #'
 #' # However that "group-averaging" approach hides a lot of within-group variation
-#' p2 <- plot_comp_bar(dietswap,
+#' p2 <- comp_barplot(dietswap,
 #'   tax_level = "Genus", n_taxa = 12, group_by = "group",
 #'   sample_order = "euclidean", bar_outline_colour = NA
 #' ) %>%
@@ -85,7 +85,7 @@
 #' # of DI samples with relatively high Oscillospira.
 #'
 #' # make a list of 2 harmonised composition plots (grouped by sex)
-#' p <- plot_comp_bar(dietswap,
+#' p <- comp_barplot(dietswap,
 #'   n_taxa = 15, tax_level = "Genus",
 #'   bar_outline_colour = "black",
 #'   sample_order = "aitchison", group_by = "sex"
@@ -107,7 +107,7 @@
 #' patch & coord_flip() &
 #'   theme(axis.text.y = element_text(size = 5), legend.text = element_text(size = 6))
 #' # See https://patchwork.data-imaginist.com/index.html
-plot_comp_bar <- function(
+comp_barplot <- function(
                           ps,
                           tax_level,
                           n_taxa = 8,
@@ -157,7 +157,7 @@ plot_comp_bar <- function(
 
   # create a sample names variable if this will be used for labelling
   if (identical(label, "SAMPLE")) {
-    phyloseq::sample_data(ps)$SAMPLE <- phyloseq::sample_names(ps)
+    phyloseq::sample_data(ps)[["SAMPLE"]] <- phyloseq::sample_names(ps)
   }
 
   # establish a labelling function (for the samples)

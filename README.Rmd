@@ -98,7 +98,7 @@ Perhaps these example data differ across BMI groups?
 
 ```{r fig.height=8, fig.width=10, dpi=300}
 dietswap %>%
-  plot_comp_bar(tax_level = "Genus",  n_taxa = 10) +
+  comp_barplot(tax_level = "Genus",  n_taxa = 10) +
   facet_wrap("bmi_group", nrow = 3, scales = "free") +
   labs(x = NULL, y = NULL) +
   theme(
@@ -164,7 +164,7 @@ aitchison_dists <-
 
 # the more permutations you request, the longer it takes
 # but also the more stable and precise your p-values become
-aitchison_perm <- permanova(
+aitchison_perm <- dist_permanova(
   data = aitchison_dists,
   seed = 1234, # for set.seed to ensure reproducibility of random process
   n_perms = 99, # you should use at least 999!
@@ -181,7 +181,7 @@ aitchison_perm$info
 You could visualise the effect of the (numeric/logical) variables in your permanova directly using the ord_plot function with constraints.
 
 ```{r constrained-ord, fig.height=5, fig.width=7, dpi=300}
-perm2 <- permanova(data = aitchison_dists, variables = c("weight", "female"), seed = 321)
+perm2 <- dist_permanova(data = aitchison_dists, variables = c("weight", "female"), seed = 321)
 perm2$permanova
 
 ord_calc(perm2, constraints = c("weight", "female")) %>%

@@ -244,7 +244,7 @@ ord_explore <- function(ord, ps = NULL, seriate_method = "OLO_ward", tax_transfo
 
         # plot composition of selected samples
         p_comp <- ps_sel %>%
-          plot_comp_bar(
+          comp_barplot(
             n_taxa = input$ntaxa,
             tax_level = input$tax_level_comp,
             palette = palet(),

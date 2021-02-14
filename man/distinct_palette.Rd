@@ -13,5 +13,5 @@ distinct_palette(n = NA)
 vector of colours
 }
 \description{
-Good for generating palettes for large sets of categories, e.g. in the plot_comp_bar function
+Good for generating palettes for large sets of categories, e.g. in the comp_barplot function
 }

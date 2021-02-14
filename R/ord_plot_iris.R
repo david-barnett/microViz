@@ -1,13 +1,13 @@
 #' Circular compositional barplot sorted by ordination angle
 #'
-#' - Order of samples extracted from ordination axes in `ord`. (`ord_calc` output)
-#' - `ord_plot_iris` Uses the phyloseq from `ord` for plotting compositions if no problematic transform mentioned in `ord$info`
+#' - Order of samples extracted from ordination axes in `data`. (`ord_calc` output)
+#' - `ord_plot_iris` Uses the phyloseq from `data` for plotting compositions if no problematic transform mentioned in `data$info`
 #' - Otherwise, ps must be a phyloseq object containing untransformed counts.
-#' - (`ps` must be otherwise identical to the ps used to make `ord`!)
+#' - (`ps` must be otherwise identical to the ps used to make `data`!)
 #'
 #'
-#' @param ord list output of ord_calc
-#' @param ps phyloseq object containing untransformed counts if needed (must otherwise be identical to ps used to make ord!)
+#' @param data ps_extra list output of ord_calc
+#' @param ps phyloseq object containing untransformed counts if needed (must otherwise be identical to ps used to make data!)
 #' @param axes which 2 axes of ordination to use for ordering
 #' @param scaling ordination scaling option: "species" or "sites" scaled?
 #' @param tax_level taxonomic aggregation level (from rank_names(ps))
@@ -54,7 +54,7 @@
 #' )
 #'
 #' ord_plot_iris(
-#'   ord = ord,
+#'   data = ord,
 #'   tax_level = "Genus",
 #'   n_taxa = 10,
 #'   anno_colour = "nationality",
@@ -83,7 +83,7 @@
 #'   coord_cartesian(clip = "off")
 #'
 #' iris <- ord_plot_iris(
-#'   ord = clr_pca,
+#'   data = clr_pca,
 #'   ps = ps, n_taxa = 10,
 #'   tax_level = "Genus",
 #'   taxon_renamer = tax_renamer
@@ -93,7 +93,7 @@
 #'
 #' patchwork::wrap_plots(plot1, iris, nrow = 1)
 ord_plot_iris <- function(
-                          ord,
+                          data,
                           ps = NULL,
                           axes = 1:2,
                           scaling = "species",
@@ -107,23 +107,23 @@ ord_plot_iris <- function(
                           anno_binary = NULL,
                           anno_binary_style = list()) {
   if (identical(ps, NULL)) {
-    transf <- ord[["info"]][["tax_transform"]]
-    # check for mention of transformed taxonomic data in ord$info$transform
-    if (!identical(transf, NULL) && !transf %in% c("none specified", "identity")) {
+    transf <- info_get(data)[["tax_transform"]]
+    # check for mention of transformed taxonomic data in data$info$tax_transform
+    if (!is.na(transf) && !identical(transf, "identity")) {
       stop(
-        "The ord argument object info specifies a ", transf, " transformation has been applied, so compositions cannot be plotted.\n",
-        "To resolve this, please also supply the untransformed phyloseq data to the ps argument."
+        "The `data` argument object's info specifies a ", transf, " transformation has been applied, so compositions cannot be plotted.\n",
+        "To resolve this, please also supply the untransformed phyloseq data to the `ps` argument."
       )
     } else {
-      # use the phyloseq from ord if no problematic transform mentioned
-      ps <- ord[["ps"]]
+      # use the phyloseq from data if no problematic transform mentioned
+      ps <- ps_get(data)
     }
   }
 
   # get axes
   df <- as.data.frame.matrix(
     vegan::scores(
-      ord$ordination,
+      ord_get(data),
       choices = axes, display = "sites", scaling = scaling
     )
   )
@@ -147,7 +147,7 @@ ord_plot_iris <- function(
     ps <- ps_select(ps, dplyr::all_of(annos))
   }
 
-  iris <- microViz::plot_comp_bar(
+  iris <- microViz::comp_barplot(
     ps = ps,
     tax_level = tax_level,
     taxon_renamer = taxon_renamer,
