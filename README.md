@@ -54,7 +54,7 @@ BiocManager::install(c("phyloseq", "microbiome"))
 
 # # Installing the latest version of this package # #
 install.packages("devtools")
-devtools::install_github("MUMC-MEDMIC/microViz@0.3.2") # check 0.3.2 is the latest version?
+devtools::install_github("MUMC-MEDMIC/microViz@0.4.0") # check 0.4.0 is the latest version?
 # advanced tip: add @<commit-hash> after microViz to install a version from a particular commit
 # If you get an error including something like: 
 # "check that you have the required permissions" 
@@ -97,7 +97,7 @@ BMI groups?
 
 ``` r
 dietswap %>%
-  plot_comp_bar(tax_level = "Genus",  n_taxa = 10) +
+  comp_barplot(tax_level = "Genus",  n_taxa = 10) +
   facet_wrap("bmi_group", nrow = 3, scales = "free") +
   labs(x = NULL, y = NULL) +
   theme(
@@ -182,7 +182,7 @@ aitchison_dists <-
 
 # the more permutations you request, the longer it takes
 # but also the more stable and precise your p-values become
-aitchison_perm <- permanova(
+aitchison_perm <- dist_permanova(
   data = aitchison_dists,
   seed = 1234, # for set.seed to ensure reproducibility of random process
   n_perms = 99, # you should use at least 999!
@@ -190,10 +190,10 @@ aitchison_perm <- permanova(
   variables = "bmi_group + female"
 )
 #> Dropping samples with missings: 2
-#> 2021-02-10 17:34:58 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2021-02-10 17:34:58 - Finished PERMANOVA
+#> 2021-02-14 15:45:07 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2021-02-14 15:45:07 - Finished PERMANOVA
 # view the permanova results
-aitchison_perm$permanova
+perm_get(aitchison_perm)
 #> Permutation test for adonis under reduced model
 #> Marginal effects of terms
 #> Permutation: free
@@ -208,15 +208,9 @@ aitchison_perm$permanova
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 # view the info stored about the distance calculation
-aitchison_perm$info
-#> $tax_level
-#> [1] "Family"
-#> 
-#> $tax_transform
-#> [1] "none specified"
-#> 
-#> $distName
-#> [1] "aitchison"
+info_get(aitchison_perm)
+#> phyloseq info:
+#> tax_agg = Family tax_transform = NA
 ```
 
 ## Constrained ordination
@@ -225,11 +219,11 @@ You could visualise the effect of the (numeric/logical) variables in
 your permanova directly using the ord\_plot function with constraints.
 
 ``` r
-perm2 <- permanova(data = aitchison_dists, variables = c("weight", "female"), seed = 321)
+perm2 <- dist_permanova(data = aitchison_dists, variables = c("weight", "female"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2021-02-10 17:34:58 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2021-02-10 17:34:59 - Finished PERMANOVA
-perm2$permanova
+#> 2021-02-14 15:45:07 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2021-02-14 15:45:07 - Finished PERMANOVA
+perm_get(perm2)
 #> Permutation test for adonis under reduced model
 #> Marginal effects of terms
 #> Permutation: free
@@ -274,7 +268,7 @@ devtools::session_info()
 #>  collate  en_GB.UTF-8                 
 #>  ctype    en_GB.UTF-8                 
 #>  tz       Europe/Amsterdam            
-#>  date     2021-02-10                  
+#>  date     2021-02-14                  
 #> 
 #> ─ Packages ───────────────────────────────────────────────────────────────────────────────────────
 #>  package      * version date       lib source        
@@ -285,13 +279,13 @@ devtools::session_info()
 #>  BiocGenerics   0.36.0  2020-10-27 [1] Bioconductor  
 #>  biomformat     1.18.0  2020-10-27 [1] Bioconductor  
 #>  Biostrings     2.58.0  2020-10-27 [1] Bioconductor  
-#>  cachem         1.0.3   2021-02-04 [1] CRAN (R 4.0.3)
+#>  cachem         1.0.4   2021-02-13 [1] CRAN (R 4.0.3)
 #>  callr          3.5.1   2020-10-13 [1] CRAN (R 4.0.3)
 #>  cli            2.3.0   2021-01-31 [1] CRAN (R 4.0.3)
 #>  cluster        2.1.0   2019-06-19 [2] CRAN (R 4.0.3)
 #>  codetools      0.2-18  2020-11-04 [1] CRAN (R 4.0.3)
 #>  colorspace     2.0-0   2020-11-11 [1] CRAN (R 4.0.3)
-#>  crayon         1.4.0   2021-01-30 [1] CRAN (R 4.0.3)
+#>  crayon         1.4.1   2021-02-08 [1] CRAN (R 4.0.3)
 #>  data.table     1.13.6  2020-12-30 [1] CRAN (R 4.0.3)
 #>  desc           1.2.0   2018-05-01 [1] CRAN (R 4.0.3)
 #>  devtools     * 2.3.2   2020-09-18 [1] CRAN (R 4.0.3)
@@ -324,7 +318,7 @@ devtools::session_info()
 #>  memoise        2.0.0   2021-01-26 [1] CRAN (R 4.0.3)
 #>  mgcv           1.8-33  2020-08-27 [2] CRAN (R 4.0.3)
 #>  microbiome   * 1.12.0  2020-10-27 [1] Bioconductor  
-#>  microViz     * 0.3.1   2021-02-06 [1] local         
+#>  microViz     * 0.4.0   2021-02-14 [1] local         
 #>  multtest       2.46.0  2020-10-27 [1] Bioconductor  
 #>  munsell        0.5.0   2018-06-12 [1] CRAN (R 4.0.3)
 #>  nlme           3.1-149 2020-08-23 [2] CRAN (R 4.0.3)

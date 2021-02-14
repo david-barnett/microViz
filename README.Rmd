@@ -55,7 +55,7 @@ BiocManager::install(c("phyloseq", "microbiome"))
 
 # # Installing the latest version of this package # #
 install.packages("devtools")
-devtools::install_github("MUMC-MEDMIC/microViz@0.3.2") # check 0.3.2 is the latest version?
+devtools::install_github("MUMC-MEDMIC/microViz@0.4.0") # check 0.4.0 is the latest version?
 # advanced tip: add @<commit-hash> after microViz to install a version from a particular commit
 # If you get an error including something like: 
 # "check that you have the required permissions" 
@@ -172,9 +172,9 @@ aitchison_perm <- dist_permanova(
   variables = "bmi_group + female"
 )
 # view the permanova results
-aitchison_perm$permanova
+perm_get(aitchison_perm)
 # view the info stored about the distance calculation
-aitchison_perm$info
+info_get(aitchison_perm)
 ```
 
 ## Constrained ordination
@@ -182,7 +182,7 @@ You could visualise the effect of the (numeric/logical) variables in your perman
 
 ```{r constrained-ord, fig.height=5, fig.width=7, dpi=300}
 perm2 <- dist_permanova(data = aitchison_dists, variables = c("weight", "female"), seed = 321)
-perm2$permanova
+perm_get(perm2)
 
 ord_calc(perm2, constraints = c("weight", "female")) %>%
   ord_plot(

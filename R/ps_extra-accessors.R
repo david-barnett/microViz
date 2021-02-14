@@ -1,6 +1,7 @@
 #' @name ps_extra-accessors
 #' @title Extract elements from ps_extra class
 #'
+#' @description
 #' - `ps_get`    returns phyloseq
 #' - `info_get`  returns ps_extra_info object
 #' - `dist_get`  returns distance matrix (or NULL)
