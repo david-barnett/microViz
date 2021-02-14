@@ -68,5 +68,4 @@ ord2 <- constrained_aitchison_rda <- dietswap \%>\%
 #   )
 # try changing the point colour to bmi_group or similar
 # (style interactively! e.g. colour doesn't work as argument to ord_explore)
-
 }

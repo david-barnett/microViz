@@ -12,7 +12,7 @@ tax_agg(ps, agg_level)
 \item{agg_level}{"none", "asv", "given" or name of valid taxonomic rank (try phyloseq::rank_names(ps))}
 }
 \value{
-list including phyloseq object and (tax_)level argument value
+ps_extra list object including phyloseq and tax_agg level info
 }
 \description{
 This function is a simple wrapper around microbiome::aggregate_taxa.

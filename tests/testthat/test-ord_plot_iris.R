@@ -8,5 +8,6 @@ clr_pca <- dietswap %>%
 
 test_that("ord_plot_iris stops and requests ps arg if data is noted as transformed", {
   expect_error(
-    ord_plot_iris(ord = clr_pca,  tax_level = "Genus"))
+    ord_plot_iris(ord = clr_pca, tax_level = "Genus")
+  )
 })

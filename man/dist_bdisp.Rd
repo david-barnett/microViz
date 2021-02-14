@@ -2,7 +2,7 @@
 % Please edit documentation in R/dist_bdisp.R
 \name{dist_bdisp}
 \alias{dist_bdisp}
-\title{Wrapper for vegan::betadisper}
+\title{Wrapper for vegan::betadisper()}
 \usage{
 dist_bdisp(
   data,
@@ -24,7 +24,7 @@ dist_bdisp(
 \item{verbose}{sends messages about progress if true}
 }
 \value{
-list containing betadisper results
+ps_extra list containing betadisper results
 }
 \description{
 Takes the output of dist_calc function. Or use with the result of the permanova function to ensure the results correspond to exactly the same input data.
@@ -47,6 +47,7 @@ bd1 <- dietswap \%>\%
   dist_calc("aitchison") \%>\%
   dist_bdisp(variables = c("sex", "bmi_group", "timepoint")) \%>\%
   bdisp_get()
+bd1$sex
 # quick vegan plotting methods
 plot(bd1$sex$model, label.cex = 0.5)
 boxplot(bd1$sex$model)

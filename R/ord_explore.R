@@ -50,7 +50,6 @@
 #' #   )
 #' # try changing the point colour to bmi_group or similar
 #' # (style interactively! e.g. colour doesn't work as argument to ord_explore)
-#'
 ord_explore <- function(ord, ps = NULL, seriate_method = "OLO_ward", tax_transform_for_ordering = "identity", ...) {
   # SETUP -------------------------------------------------------------------
 

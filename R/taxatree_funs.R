@@ -54,8 +54,7 @@ taxatree_nodes <- function(ps, ranks = "all") {
 
 #' @rdname taxatree_funs
 #' @export
-taxatree_edges <- function(nodes_df){
-
+taxatree_edges <- function(nodes_df) {
   edge_list <- lapply(
     X = nodes_df$taxon_name,
     FUN = function(unique_name) {
@@ -72,9 +71,7 @@ taxatree_edges <- function(nodes_df){
   # remove nodes that point to themselves (root level always will)
   edge_df <- edge_df[edge_df$from != edge_df$to, ]
   # edge_df gets all attributes from the "to" node
-  edge_df <- dplyr::left_join(x = edge_df, y= nodes_df, by = c("to" = "taxon_name"))
+  edge_df <- dplyr::left_join(x = edge_df, y = nodes_df, by = c("to" = "taxon_name"))
 
   return(edge_df)
 }
-
-

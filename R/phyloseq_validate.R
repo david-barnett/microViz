@@ -10,11 +10,10 @@
 #' @export
 #'
 #' @examples
-#' data(dietswap, package = 'microbiome')
+#' data(dietswap, package = "microbiome")
 #'
 #' phyloseq_validate(dietswap, verbose = TRUE)
 #' # no messages means no problems detected
-#'
 phyloseq_validate <- function(ps, verbose = TRUE) {
 
   # check and fix storage mode
@@ -27,7 +26,7 @@ phyloseq_validate <- function(ps, verbose = TRUE) {
 
   # check tax_table for uninformative entries
   suspicious_names <- c("g__", "f__", "unknown", "Unknown", "", " ", "NA")
-  if (anyNA(phyloseq::tax_table(ps))){
+  if (anyNA(phyloseq::tax_table(ps))) {
     message("NAs detected in phyloseq tax_table:\nConsider using tax_fill_unknowns() to help make taxa uniquely identifiable\n")
   }
   if (any(phyloseq::tax_table(ps) %in% suspicious_names)) {

@@ -13,7 +13,7 @@ dist_calc(
 )
 }
 \arguments{
-\item{data}{phyloseq object or ps_extra object output from tax_agg}
+\item{data}{ps_extra object output from tax_agg() or a phyloseq object}
 
 \item{dist}{name of distance to calculate between pairs of samples}
 
@@ -34,7 +34,7 @@ Result intended to be piped into ord_calc or permanova functions.
 Aitchison distance note: You should EITHER:
 \enumerate{
 \item skip the dist_calc function and call ord_calc(method = "RDA") directly on an object with taxa transformed with tax_transform(transformation = "clr")
-\item pass an object with untransformed (or 'identity' transformed) taxa to the data argument of dist_calc and specify dist = "aitchison".
+\item pass an object with untransformed (or 'identity' transformed) taxa to the data argument of dist_calc() and specify dist = "aitchison".
 }
 
 If ordination plots with taxon loading distances are desired, users require option 1.
@@ -46,11 +46,13 @@ data("dietswap", package = "microbiome")
 bc <- dietswap \%>\%
   tax_agg("Genus") \%>\%
   dist_calc("bray")
+bc
 class(bc)
 
 # gunifrac distance using phyloseq input
 data("esophagus", package = "phyloseq")
 gunifrac <- esophagus \%>\%
-  dist_calc("gunifrac") \%>\% dist_get()
+  dist_calc("gunifrac") \%>\%
+  dist_get()
 class(gunifrac)
 }

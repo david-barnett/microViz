@@ -7,13 +7,13 @@
 #'
 #' Aitchison distance note: You should EITHER:
 #' 1. skip the dist_calc function and call ord_calc(method = "RDA") directly on an object with taxa transformed with tax_transform(transformation = "clr")
-#' 2. pass an object with untransformed (or 'identity' transformed) taxa to the data argument of dist_calc and specify dist = "aitchison".
+#' 2. pass an object with untransformed (or 'identity' transformed) taxa to the data argument of dist_calc() and specify dist = "aitchison".
 #'
 #' If ordination plots with taxon loading distances are desired, users require option 1.
 #' If the distance matrix is required for permanova, users require option 2.
 #'
 #'
-#' @param data phyloseq object or ps_extra object output from tax_agg
+#' @param data ps_extra object output from tax_agg() or a phyloseq object
 #' @param dist name of distance to calculate between pairs of samples
 #' @param gunifrac_alpha setting alpha value only relevant if gunifrac distance used
 #' @param ... optional distance-specific named args passed to phyloseq::distance()
@@ -27,19 +27,20 @@
 #' bc <- dietswap %>%
 #'   tax_agg("Genus") %>%
 #'   dist_calc("bray")
+#' bc
 #' class(bc)
 #'
 #' # gunifrac distance using phyloseq input
 #' data("esophagus", package = "phyloseq")
 #' gunifrac <- esophagus %>%
-#'   dist_calc("gunifrac") %>% dist_get()
+#'   dist_calc("gunifrac") %>%
+#'   dist_get()
 #' class(gunifrac)
 dist_calc <- function(
                       data,
                       dist = c("bray", "gunifrac", "unifrac", "wunifrac", "va-wunifrac", "aitchison", "euclidean")[1],
                       gunifrac_alpha = 0.5,
                       ...) {
-
   ps <- ps_get(data)
 
   # check input data object class
@@ -99,5 +100,4 @@ dist_calc <- function(
   data[["info"]] <- info
 
   return(data)
-
 }

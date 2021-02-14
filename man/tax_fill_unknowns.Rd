@@ -68,5 +68,4 @@ tax_fill_unknowns(tt, unknowns = NULL, levels = "Genus") \%>\% head(50)
 # library(microbiomeutilities)
 # data("hmp2")
 # tax_fill_unknowns(hmp2)
-
 }

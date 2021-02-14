@@ -39,5 +39,4 @@ dietswap \%>\%
   ps_reorder(random_order) \%>\%
   sample_data() \%>\%
   head(8)
-
 }

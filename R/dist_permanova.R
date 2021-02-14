@@ -1,4 +1,4 @@
-#' Calculate PERMANOVA after dist_calc
+#' Calculate PERMANOVA after dist_calc()
 #'
 #' This function is a wrapper around vegan's adonis2() function. See ?vegan::adonis2() for more insight.
 #' Test for the statistical significance of (independent) associations between variables in your phyloseq::sample_data(),
@@ -18,7 +18,7 @@
 #' @param complete_cases if TRUE, drops observations if they contain missing values (otherwise stops if missings are detected)
 #' @param verbose sends messages about progress if TRUE
 #' @param return what parts of return list to return, defaults to all parts
-#' @param by passed to adonis2 `by` argument: what type of sums of squares to calculate? "margin" or "terms"
+#' @param by passed to vegan::adonis2() `by` argument: what type of sums of squares to calculate? "margin" or "terms"
 #' @param ... additional arguments are passed directly to vegan::adonis2() (e.g. strata, add, sqrt.dist etc.)
 #'
 #' @return ps_extra list containing permanova results and (filtered) input objects
@@ -73,7 +73,6 @@
 #'   ord_plot(color = "bmi_group")
 #' # this trick ensures any samples dropped from the permanova for having missing values
 #' # in the covariates are NOT included in the corresponding ordination plot
-#'
 dist_permanova <- function(data,
                            variables = NULL,
                            interactions = NULL,

@@ -21,9 +21,8 @@ possibly modified phyloseq object
 }
 }
 \examples{
-data(dietswap, package = 'microbiome')
+data(dietswap, package = "microbiome")
 
 phyloseq_validate(dietswap, verbose = TRUE)
 # no messages means no problems detected
-
 }

@@ -8,7 +8,15 @@
 \alias{info_get}
 \alias{perm_get}
 \alias{bdisp_get}
-\title{Extract elements from ps_extra class}
+\title{Extract elements from ps_extra class
+\itemize{
+\item \code{ps_get}    returns phyloseq
+\item \code{info_get}  returns ps_extra_info object
+\item \code{dist_get}  returns distance matrix (or NULL)
+\item \code{ord_get}   returns ordination object (or NULL)
+\item \code{perm_get}  returns adonis2() permanova model (or NULL)
+\item \code{bdisp_get} returns results of betadisper() (or NULL)
+}}
 \usage{
 ps_get(ps_extra)
 
@@ -26,13 +34,20 @@ bdisp_get(ps_extra)
 \item{ps_extra}{ps_extra class object}
 }
 \value{
-element of ps_extra class object
+element of ps_extra class object (or NULL)
 }
 \description{
 Extract elements from ps_extra class
+\itemize{
+\item \code{ps_get}    returns phyloseq
+\item \code{info_get}  returns ps_extra_info object
+\item \code{dist_get}  returns distance matrix (or NULL)
+\item \code{ord_get}   returns ordination object (or NULL)
+\item \code{perm_get}  returns adonis2() permanova model (or NULL)
+\item \code{bdisp_get} returns results of betadisper() (or NULL)
+}
 }
 \examples{
 library(phyloseq)
 data("esophagus")
-
 }

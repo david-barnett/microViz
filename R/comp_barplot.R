@@ -108,22 +108,22 @@
 #'   theme(axis.text.y = element_text(size = 5), legend.text = element_text(size = 6))
 #' # See https://patchwork.data-imaginist.com/index.html
 comp_barplot <- function(
-                          ps,
-                          tax_level,
-                          n_taxa = 8,
-                          tax_order = "abundance",
-                          taxon_renamer = function(x) identity(x),
-                          palette = c("lightgrey", rev(distinct_palette(n_taxa))),
-                          sample_order = "aitchison",
-                          order_with_all_taxa = FALSE,
-                          tax_transform_for_ordering = "identity",
-                          label = "SAMPLE",
-                          group_by = NA,
-                          facet_by = NA,
-                          bar_width = 1,
-                          bar_outline_colour = "black",
-                          keep_all_vars = TRUE,
-                          seriate_method = "OLO_ward") {
+                         ps,
+                         tax_level,
+                         n_taxa = 8,
+                         tax_order = "abundance",
+                         taxon_renamer = function(x) identity(x),
+                         palette = c("lightgrey", rev(distinct_palette(n_taxa))),
+                         sample_order = "aitchison",
+                         order_with_all_taxa = FALSE,
+                         tax_transform_for_ordering = "identity",
+                         label = "SAMPLE",
+                         group_by = NA,
+                         facet_by = NA,
+                         bar_width = 1,
+                         bar_outline_colour = "black",
+                         keep_all_vars = TRUE,
+                         seriate_method = "OLO_ward") {
 
   # check phyloseq for common problems (and fix or message about this)
   ps <- phyloseq_validate(ps, verbose = TRUE)

@@ -28,7 +28,8 @@ tax_prepend_ranks <- function(ps, sep = ": ", nchar = 1) {
       taxa <- tt[, r]
       rank_stub <- substr(r, start = 1, stop = nchar)
       paste0(rank_stub, sep, taxa)
-    })
+    }
+  )
   rownames(tt) <- phyloseq::taxa_names(ps)
   phyloseq::tax_table(ps) <- tt
   return(ps)

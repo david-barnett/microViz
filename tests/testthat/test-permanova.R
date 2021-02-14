@@ -8,11 +8,11 @@ testDist <- dietswap %>%
 test_that("permanova detects variables not in sample data", {
   expect_error(
     testDist %>%
-    dist_permanova(
-      seed = 1,
-      variables = "nationality + sex * bmi_group + fake_Var",
-      n_perms = 9
-    ),
+      dist_permanova(
+        seed = 1,
+        variables = "nationality + sex * bmi_group + fake_Var",
+        n_perms = 9
+      ),
     regexp = "variables are not found"
   )
 })

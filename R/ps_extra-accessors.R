@@ -1,21 +1,27 @@
 #' @name ps_extra-accessors
 #' @title Extract elements from ps_extra class
 #'
+#' - `ps_get`    returns phyloseq
+#' - `info_get`  returns ps_extra_info object
+#' - `dist_get`  returns distance matrix (or NULL)
+#' - `ord_get`   returns ordination object (or NULL)
+#' - `perm_get`  returns adonis2() permanova model (or NULL)
+#' - `bdisp_get` returns results of betadisper() (or NULL)
+#'
 #' @param ps_extra ps_extra class object
 #'
-#' @return element of ps_extra class object
+#' @return element of ps_extra class object (or NULL)
 #' @export
 #'
 #' @examples
 #' library(phyloseq)
 #' data("esophagus")
-#'
 #' @export
 #' @rdname ps_extra-accessors
-ps_get <- function(ps_extra){
-  if (inherits(ps_extra, "ps_extra")){
+ps_get <- function(ps_extra) {
+  if (inherits(ps_extra, "ps_extra")) {
     return(ps_extra[["ps"]])
-  } else if (methods::is(ps_extra, "phyloseq")){
+  } else if (methods::is(ps_extra, "phyloseq")) {
     return(ps_extra)
   } else {
     stop('class of argument should be "ps_extra" or "phyloseq", not: ', class(ps_extra))
@@ -23,31 +29,31 @@ ps_get <- function(ps_extra){
 }
 #' @rdname ps_extra-accessors
 #' @export
-dist_get <- function(ps_extra){
+dist_get <- function(ps_extra) {
   stopifnot(inherits(ps_extra, "ps_extra"))
   ps_extra[["dist"]]
 }
 #' @rdname ps_extra-accessors
 #' @export
-ord_get <- function(ps_extra){
+ord_get <- function(ps_extra) {
   stopifnot(inherits(ps_extra, "ps_extra"))
   ps_extra[["ord"]]
 }
 #' @rdname ps_extra-accessors
 #' @export
-info_get <- function(ps_extra){
+info_get <- function(ps_extra) {
   stopifnot(inherits(ps_extra, "ps_extra"))
   ps_extra[["info"]]
 }
 #' @rdname ps_extra-accessors
 #' @export
-perm_get <- function(ps_extra){
+perm_get <- function(ps_extra) {
   stopifnot(inherits(ps_extra, "ps_extra"))
   ps_extra[["permanova"]]
 }
 #' @rdname ps_extra-accessors
 #' @export
-bdisp_get <- function(ps_extra){
+bdisp_get <- function(ps_extra) {
   stopifnot(inherits(ps_extra, "ps_extra"))
   ps_extra[["bdisp"]]
 }

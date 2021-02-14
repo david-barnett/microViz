@@ -10,7 +10,7 @@
 distinct_palette <- function(n = NA) {
   pal <-
     c(
-      RColorBrewer::brewer.pal(n = 12, name = 'Paired'),
+      RColorBrewer::brewer.pal(n = 12, name = "Paired"),
       # list below generated with iwanthue all colours soft kmeans 20
       "#4b6a53",
       "#b249d5",

@@ -50,7 +50,6 @@
 #' # library(microbiomeutilities)
 #' # data("hmp2")
 #' # tax_fill_unknowns(hmp2)
-#'
 tax_fill_unknowns <- function(
                               x,
                               min_length = 4,

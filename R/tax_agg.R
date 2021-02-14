@@ -7,7 +7,7 @@
 #' @param ps phyloseq object
 #' @param agg_level "none", "asv", "given" or name of valid taxonomic rank (try phyloseq::rank_names(ps))
 #'
-#' @return list including phyloseq object and (tax_)level argument value
+#' @return ps_extra list object including phyloseq and tax_agg level info
 #' @export
 #'
 #' @examples
@@ -16,7 +16,7 @@
 #' tax_agg(ps = dietswap, agg_level = "none")
 #' tax_agg(ps = dietswap, agg_level = "Phylum")
 tax_agg <- function(ps, agg_level) {
-  if (inherits(ps, "ps_extra")){
+  if (inherits(ps, "ps_extra")) {
     # currently just reset info
     warning("class of ps is ps_extra, any extra info will be lost (tax_transform, dist, etc.)")
     ps <- ps_get(ps)
@@ -27,5 +27,4 @@ tax_agg <- function(ps, agg_level) {
   }
 
   new_ps_extra(ps = ps, info = new_ps_extra_info(tax_agg = agg_level))
-
 }

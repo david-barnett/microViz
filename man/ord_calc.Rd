@@ -62,5 +62,5 @@ test2 <- dietswap \%>\%
   tax_transform("clr") \%>\%
   ord_calc(method = "RDA", constraints = c("weight", "female"))
 # plot with oldschool vegan graphics to show it returns a standard interoperable ordination object
-ord_get(test2) \%>\% ordiplot()
+ord_get(test2) \%>\% vegan::ordiplot()
 }

@@ -1,3 +1,13 @@
+# microViz 0.4.0
+
+## Breaking changes
+* `dist_permanova` replaces `permanova` for naming consistency and guiding user
+* `comp_barplot` replaces `plot_comp_bar` in anticipation of (a) future heatmap function(s) named comp_heatmap or similar
+
+## Features
+
+New **"ps_extra"** class (S3) conveniently stores phyloseq object alongside any calculated distance matrix, ordination and permanova models, as well as records of `tax_agg` and `tax_transform` calls. "ps_extra" class objects have a pretty and compact print method, a simple list structure, and convenient accessor functions to return each component: `ps_get`, `info_get`, `dist_get`, `ord_get`, `perm_get`, `bdisp_get`.
+
 # microViz 0.3.2
 
 ## Features

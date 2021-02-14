@@ -30,9 +30,7 @@
 #'   ps_reorder(random_order) %>%
 #'   sample_data() %>%
 #'   head(8)
-#'
-ps_reorder <- function(ps, sample_order){
-
+ps_reorder <- function(ps, sample_order) {
   otu <- phyloseq::otu_table(ps)
   if (phyloseq::taxa_are_rows(ps)) {
     otu <- otu[, sample_order]
@@ -43,5 +41,3 @@ ps_reorder <- function(ps, sample_order){
 
   return(ps)
 }
-
-

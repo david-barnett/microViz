@@ -26,5 +26,3 @@ test_that("ps_dedupe method = first example works", {
 test_that("ps_dedupe dietswap readcount example works", {
   expect_equal(nsamples(ps2), 18)
 })
-
-

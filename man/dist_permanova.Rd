@@ -2,7 +2,7 @@
 % Please edit documentation in R/dist_permanova.R
 \name{dist_permanova}
 \alias{dist_permanova}
-\title{Calculate PERMANOVA after dist_calc}
+\title{Calculate PERMANOVA after dist_calc()}
 \usage{
 dist_permanova(
   data,
@@ -33,7 +33,7 @@ dist_permanova(
 
 \item{seed}{set a random number generator seed to ensure you get the same results each run}
 
-\item{by}{passed to adonis2 \code{by} argument: what type of sums of squares to calculate? "margin" or "terms"}
+\item{by}{passed to vegan::adonis2() \code{by} argument: what type of sums of squares to calculate? "margin" or "terms"}
 
 \item{verbose}{sends messages about progress if TRUE}
 
@@ -103,5 +103,4 @@ PERM2 \%>\%
   ord_plot(color = "bmi_group")
 # this trick ensures any samples dropped from the permanova for having missing values
 # in the covariates are NOT included in the corresponding ordination plot
-
 }

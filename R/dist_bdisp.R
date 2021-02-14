@@ -1,4 +1,4 @@
-#' Wrapper for vegan::betadisper
+#' Wrapper for vegan::betadisper()
 #'
 #' Takes the output of dist_calc function. Or use with the result of the permanova function to ensure the results correspond to exactly the same input data.
 #' Runs betadisper for all categorical variables in variables argument.
@@ -10,7 +10,7 @@
 #' @param complete_cases drop samples with NAs in any of the variables listed
 #' @param verbose sends messages about progress if true
 #'
-#' @return list containing betadisper results
+#' @return ps_extra list containing betadisper results
 #' @export
 #'
 #' @examples
@@ -29,6 +29,7 @@
 #'   dist_calc("aitchison") %>%
 #'   dist_bdisp(variables = c("sex", "bmi_group", "timepoint")) %>%
 #'   bdisp_get()
+#' bd1$sex
 #' # quick vegan plotting methods
 #' plot(bd1$sex$model, label.cex = 0.5)
 #' boxplot(bd1$sex$model)
@@ -48,11 +49,10 @@
 #' bd <- PERM %>% dist_bdisp(variables = c("sex", "bmi_group"))
 #' bd
 dist_bdisp <- function(data,
-                        variables,
-                        method = c("centroid", "median")[[1]],
-                        complete_cases = TRUE,
-                        verbose = TRUE
-                       ) {
+                       variables,
+                       method = c("centroid", "median")[[1]],
+                       complete_cases = TRUE,
+                       verbose = TRUE) {
 
   # check input data object class
   if (inherits(data, "ps_extra") && !identical(dist_get(data), NULL)) {

@@ -7,22 +7,28 @@
 tax_transform(data, transformation, ...)
 }
 \arguments{
-\item{data}{list output from tax_agg, or a phyloseq object}
+\item{data}{ps_extra list output from tax_agg, or a phyloseq object}
 
 \item{transformation}{any valid taxa transformation from microbiome::transform}
 
 \item{...}{any extra arguments passed to microbiome::transform()}
 }
 \value{
-list including phyloseq object and level argument value
+ps_extra list including phyloseq object and info
 }
 \description{
 Pipe the results of tax_agg into this function to transform the (aggregated) taxa features. (Or pass it a phyloseq object).
-This function is a simple wrapper around microbiome::transform can perform all the same transformations but returns a list, containing ps (the transformed phyloseq object), tax_transform (a string recording the transformation), and tax_level (a string recording the taxonomic aggregation level if specified in a preceding tax_agg function call.
+This function is a simple wrapper around microbiome::transform() that can perform all the same transformations but returns a ps_extra list
+containing ps (the transformed phyloseq object) and extra info: tax_transform (a string recording the transformation), and tax_agg
+(a string recording the taxonomic aggregation level if specified in a preceding tax_agg function call).
 }
 \examples{
 library(microbiome)
 data("dietswap", package = "microbiome")
-tax_agg(ps = dietswap, agg_level = "none") \%>\% tax_transform("identity")
+
+# aggregate taxa at Phylum level and perform the center log ratio transform on the phyla counts
 tax_agg(ps = dietswap, agg_level = "Phylum") \%>\% tax_transform("clr")
+
+# do nothing except record tax_agg as "none" and tax_transform as "identity" in ps_extra info
+tax_agg(ps = dietswap, agg_level = "none") \%>\% tax_transform("identity")
 }
