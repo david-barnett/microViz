@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -103,14 +103,14 @@
   fig.height <span class="op">=</span> <span class="fl">6</span>,
   fig.width <span class="op">=</span> <span class="fl">9</span>
 <span class="op">)</span></code></pre></div>
-<p>The <code>plot_comp_bar</code> function allows you to visualise the taxonomic compositions of your microbiome samples in a flexible, scalable, group-able, and visually appealing way.</p>
+<p>The <code>comp_barplot</code> function allows you to visualise the taxonomic compositions of your microbiome samples in a flexible, scalable, group-able, and visually appealing way.</p>
 <div id="illustrative-simple-customised-example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#illustrative-simple-customised-example" class="anchor"></a>Illustrative simple customised example</h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dietswap</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">timepoint</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/plot_comp_bar.html">plot_comp_bar</a></span><span class="op">(</span>
+  <span class="fu"><a href="../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span>
     tax_level <span class="op">=</span> <span class="st">"Family"</span>, n_taxa <span class="op">=</span> <span class="fl">8</span>,
     bar_outline_colour <span class="op">=</span> <span class="cn">NA</span>,
     sample_order <span class="op">=</span> <span class="st">"bray"</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span>
@@ -127,7 +127,7 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">p1</span> <span class="op">&lt;-</span> <span class="va">dietswap</span> <span class="op">%&gt;%</span>
   <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/merge_samples-methods.html">merge_samples</a></span><span class="op">(</span>group <span class="op">=</span> <span class="st">"group"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/plot_comp_bar.html">plot_comp_bar</a></span><span class="op">(</span>
+  <span class="fu"><a href="../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span>
     tax_level <span class="op">=</span> <span class="st">"Genus"</span>, n_taxa <span class="op">=</span> <span class="fl">12</span>,
     sample_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ED"</span>, <span class="st">"HE"</span>, <span class="st">"DI"</span><span class="op">)</span>,
     bar_width <span class="op">=</span> <span class="fl">0.8</span>
@@ -139,7 +139,7 @@
 <p>However that “group-averaging” approach hides a lot of within-group variation.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">p2</span> <span class="op">&lt;-</span> <span class="va">dietswap</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/plot_comp_bar.html">plot_comp_bar</a></span><span class="op">(</span>
+  <span class="fu"><a href="../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span>
     tax_level <span class="op">=</span> <span class="st">"Genus"</span>, n_taxa <span class="op">=</span> <span class="fl">12</span>, group_by <span class="op">=</span> <span class="st">"group"</span>,
     sample_order <span class="op">=</span> <span class="st">"euclidean"</span>, bar_outline_colour <span class="op">=</span> <span class="cn">NA</span>, keep_all_vars <span class="op">=</span> <span class="cn">TRUE</span>
   <span class="op">)</span> <span class="op">%&gt;%</span>
@@ -158,7 +158,7 @@
 <h2 class="hasAnchor">
 <a href="#faceting-tips" class="anchor"></a>Faceting tips:</h2>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">facets_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_comp_bar.html">plot_comp_bar</a></span><span class="op">(</span>
+<code class="sourceCode R"><span class="va">facets_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span>
   <span class="va">dietswap</span>,
   n_taxa <span class="op">=</span> <span class="fl">15</span>, tax_level <span class="op">=</span> <span class="st">"Genus"</span>,
   bar_outline_colour <span class="op">=</span> <span class="st">"black"</span>,
@@ -183,7 +183,7 @@
 <a href="#customising-grouped-plots" class="anchor"></a>Customising grouped plots</h2>
 <p>Remake the 2 harmonised composition plots grouped by sex, but using group_by and patchwork. (Note that the ordering of the samples may differ between facet and group_by approaches. In the group_by method, the ordering of the samples by similarity is done separately for each group, whereas in the facet_by method, similarity-based ordering is done with all samples and then the samples are separated by facet afterwards).</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">plot_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_comp_bar.html">plot_comp_bar</a></span><span class="op">(</span>
+<code class="sourceCode R"><span class="va">plot_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span>
   <span class="va">dietswap</span>,
   n_taxa <span class="op">=</span> <span class="fl">15</span>, tax_level <span class="op">=</span> <span class="st">"Genus"</span>,
   bar_outline_colour <span class="op">=</span> <span class="st">"black"</span>,
@@ -239,7 +239,7 @@
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">times_list</span> <span class="op">&lt;-</span> <span class="va">ps</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/ps_arrange.html">ps_arrange</a></span><span class="op">(</span><span class="va">timepoint.within.group</span>, <span class="va">nationality</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">subject</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/plot_comp_bar.html">plot_comp_bar</a></span><span class="op">(</span>
+  <span class="fu"><a href="../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span>
     tax_level <span class="op">=</span> <span class="st">"Genus"</span>, n_taxa <span class="op">=</span> <span class="fl">10</span>, sample_order <span class="op">=</span> <span class="st">"default"</span>,
     group_by <span class="op">=</span> <span class="st">"plot_groups"</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span>, label <span class="op">=</span> <span class="st">"subject"</span>
   <span class="op">)</span>
@@ -268,7 +268,7 @@
 <span class="co">#&gt;  collate  en_US.UTF-8                 </span>
 <span class="co">#&gt;  ctype    en_US.UTF-8                 </span>
 <span class="co">#&gt;  tz       UTC                         </span>
-<span class="co">#&gt;  date     2021-02-10                  </span>
+<span class="co">#&gt;  date     2021-02-14                  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ─ Packages ───────────────────────────────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt;  package      * version date       lib source        </span>
@@ -279,7 +279,7 @@
 <span class="co">#&gt;  BiocGenerics   0.36.0  2020-10-27 [1] Bioconductor  </span>
 <span class="co">#&gt;  biomformat     1.18.0  2020-10-27 [1] Bioconductor  </span>
 <span class="co">#&gt;  Biostrings     2.58.0  2020-10-27 [1] Bioconductor  </span>
-<span class="co">#&gt;  cachem         1.0.3   2021-02-04 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  cachem         1.0.4   2021-02-13 [1] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  callr          3.5.1   2020-10-13 [1] CRAN (R 4.0.2)</span>
 <span class="co">#&gt;  cli            2.3.0   2021-01-31 [1] CRAN (R 4.0.2)</span>
 <span class="co">#&gt;  cluster        2.1.0   2019-06-19 [2] CRAN (R 4.0.3)</span>
@@ -318,7 +318,7 @@
 <span class="co">#&gt;  memoise        2.0.0   2021-01-26 [1] CRAN (R 4.0.2)</span>
 <span class="co">#&gt;  mgcv           1.8-33  2020-08-27 [2] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  microbiome   * 1.12.0  2020-10-27 [1] Bioconductor  </span>
-<span class="co">#&gt;  microViz     * 0.3.2   2021-02-10 [1] local         </span>
+<span class="co">#&gt;  microViz     * 0.4.0   2021-02-14 [1] local         </span>
 <span class="co">#&gt;  multtest       2.46.0  2020-10-27 [1] Bioconductor  </span>
 <span class="co">#&gt;  munsell        0.5.0   2018-06-12 [1] CRAN (R 4.0.2)</span>
 <span class="co">#&gt;  nlme           3.1-149 2020-08-23 [2] CRAN (R 4.0.3)</span>
@@ -368,7 +368,7 @@
 <span class="co">#&gt;  vctrs          0.3.6   2020-12-17 [1] CRAN (R 4.0.2)</span>
 <span class="co">#&gt;  vegan          2.5-7   2020-11-28 [1] CRAN (R 4.0.2)</span>
 <span class="co">#&gt;  withr          2.4.1   2021-01-26 [1] CRAN (R 4.0.2)</span>
-<span class="co">#&gt;  xfun           0.20    2021-01-06 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  xfun           0.21    2021-02-10 [1] CRAN (R 4.0.2)</span>
 <span class="co">#&gt;  XVector        0.30.0  2020-10-28 [1] Bioconductor  </span>
 <span class="co">#&gt;  yaml           2.2.1   2020-02-01 [1] CRAN (R 4.0.2)</span>
 <span class="co">#&gt;  zlibbioc       1.36.0  2020-10-28 [1] Bioconductor  </span>

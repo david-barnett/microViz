@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -135,9 +135,8 @@
     <pre class="usage"><span class='fu'>ord_calc</span><span class='op'>(</span>
   <span class='va'>data</span>,
   method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"PCoA"</span>, <span class='st'>"PCA"</span>, <span class='st'>"CCA"</span>, <span class='st'>"RDA"</span>, <span class='st'>"CAP"</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>,
-  constraints <span class='op'>=</span> <span class='fl'>1</span>,
+  constraints <span class='op'>=</span> <span class='cn'>NULL</span>,
   conditions <span class='op'>=</span> <span class='cn'>NULL</span>,
-  return <span class='op'>=</span> <span class='st'>"all"</span>,
   verbose <span class='op'>=</span> <span class='cn'>TRUE</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
@@ -147,7 +146,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>list object output from dist_calc or tax_agg (if no distance calculation required e.g. for RDA)</p></td>
+      <td><p>ps_extra list object output from dist_calc(), or tax_transform() (if no distance calculation required e.g. for RDA)</p></td>
     </tr>
     <tr>
       <th>method</th>
@@ -160,10 +159,6 @@
     <tr>
       <th>conditions</th>
       <td><p>(a vector of) valid variable name(s) to partial these out of PCoA or RDA analyses with Condition(), or leave as NULL</p></td>
-    </tr>
-    <tr>
-      <th>return</th>
-      <td><p>choose which parts of list object to return</p></td>
     </tr>
     <tr>
       <th>verbose</th>
@@ -201,26 +196,44 @@
   <span class='fu'>ord_calc</span><span class='op'>(</span>constraints <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"weight"</span>, <span class='st'>"female"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 2</span></div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Centering (mean) and scaling (sd) the constraint and conditioning vars: </span></div><div class='output co'>#&gt; <span class='message'>	weight</span></div><div class='output co'>#&gt; <span class='message'>	female</span></div><div class='input'><span class='co'># familiarise yourself with the structure of the returned list object</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>test</span>, max.level <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+<span class='va'>test</span>
+</div><div class='output co'>#&gt; ps_extra object - a list with phyloseq and extras:
+#&gt; 
+#&gt; phyloseq-class experiment-level object
+#&gt; otu_table()   OTU Table:         [ 130 taxa and 222 samples ]
+#&gt; sample_data() Sample Data:       [ 222 samples by 10 sample variables ]
+#&gt; tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]
+#&gt; 
+#&gt; phyloseq info:
+#&gt; tax_agg = Genus tax_transform = NA
+#&gt; 
+#&gt; bray distance matrix of size 220 
+#&gt; 0.7639533 0.7699252 0.80507 0.731024 0.7283254 ...
+#&gt; 
+#&gt; ordination of class: capscale rda cca 
+#&gt; capscale(formula = distance ~ weight + female, data = data)
+#&gt; constraints: weight+female</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>test</span>, max.level <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; List of 4
-#&gt;  $ info      :List of 5
-#&gt;  $ ordination:List of 13
-#&gt;   ..- attr(*, "class")= chr [1:3] "capscale" "rda" "cca"
-#&gt;  $ distMat   : 'dist' num [1:24090] 0.764 0.77 0.805 0.731 0.728 ...
+#&gt;  $ ps  :Formal class 'phyloseq' [package "phyloseq"] with 5 slots
+#&gt;  $ dist: 'dist' num [1:24090] 0.764 0.77 0.805 0.731 0.728 ...
 #&gt;   ..- attr(*, "Labels")= chr [1:220] "Sample-1" "Sample-2" "Sample-5" "Sample-6" ...
 #&gt;   ..- attr(*, "Size")= int 220
 #&gt;   ..- attr(*, "call")= language as.dist.default(m = as.matrix(distMat)[keepers, keepers])
 #&gt;   ..- attr(*, "Diag")= logi FALSE
 #&gt;   ..- attr(*, "Upper")= logi FALSE
-#&gt;  $ ps        :Formal class 'phyloseq' [package "phyloseq"] with 5 slots</div><div class='input'>
+#&gt;  $ ord :List of 13
+#&gt;   ..- attr(*, "class")= chr [1:3] "capscale" "rda" "cca"
+#&gt;  $ info: 'ps_extra_info' Named chr [1:6] "Genus" NA "bray" "CAP" ...
+#&gt;   ..- attr(*, "names")= chr [1:6] "tax_agg" "tax_transform" "distMethod" "ordMethod" ...
+#&gt;  - attr(*, "class")= chr [1:2] "ps_extra" "list"</div><div class='input'>
 <span class='co'># compute RDA ("aitchison distance") directly from phyloseq (and demo return argument)</span>
 <span class='va'>test2</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>ord_calc</span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"RDA"</span>, constraints <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"weight"</span>, <span class='st'>"female"</span><span class='op'>)</span>, return <span class='op'>=</span> <span class='st'>"ordination"</span><span class='op'>)</span>
+  <span class='fu'>ord_calc</span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"RDA"</span>, constraints <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"weight"</span>, <span class='st'>"female"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 2</span></div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Centering (mean) and scaling (sd) the constraint and conditioning vars: </span></div><div class='output co'>#&gt; <span class='message'>	weight</span></div><div class='output co'>#&gt; <span class='message'>	female</span></div><div class='input'><span class='co'># plot with oldschool vegan graphics to show it returns a standard interoperable ordination object</span>
-<span class='fu'><a href='https://rdrr.io/pkg/vegan/man/ordiplot.html'>ordiplot</a></span><span class='op'>(</span><span class='va'>test2</span><span class='op'>)</span>
+<span class='fu'><a href='ps_extra-accessors.html'>ord_get</a></span><span class='op'>(</span><span class='va'>test2</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'>vegan</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/vegan/man/ordiplot.html'>ordiplot</a></span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='img'><img src='ord_calc-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -192,34 +192,30 @@ If a value is 1 or greater, it is treatd as an absolute minimum number of sample
 <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
   <span class='fu'>tax_filter</span><span class='op'>(</span>min_prevalence <span class='op'>=</span> <span class='fl'>0.1</span>, min_total_abundance <span class='op'>=</span> <span class='fl'>10000</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='st'>"Family"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Proportional min_prevalence given: 0.1 --&gt; min 23/222 samples.</span></div><div class='output co'>#&gt; $ps
+</div><div class='output co'>#&gt; <span class='message'>Proportional min_prevalence given: 0.1 --&gt; min 23/222 samples.</span></div><div class='output co'>#&gt; ps_extra object - a list with phyloseq and extras:
+#&gt; 
 #&gt; phyloseq-class experiment-level object
 #&gt; otu_table()   OTU Table:         [ 9 taxa and 222 samples ]
 #&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
 #&gt; tax_table()   Taxonomy Table:    [ 9 taxa by 3 taxonomic ranks ]
 #&gt; 
-#&gt; $info
-#&gt; $info$tax_level
-#&gt; [1] "Family"
-#&gt; 
-#&gt; </div><div class='input'>
+#&gt; phyloseq info:
+#&gt; tax_agg = Family tax_transform = NA</div><div class='input'>
 <span class='co'># Keeping ubiquitous families #</span>
 <span class='co'># keep only families that have at least 1000 counts present in 90% of samples</span>
 <span class='co'># then aggregate the remaining taxa at 'Genus' level</span>
 <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
   <span class='fu'>tax_filter</span><span class='op'>(</span>tax_level <span class='op'>=</span> <span class='st'>"Family"</span>, min_prevalence <span class='op'>=</span> <span class='fl'>0.90</span>, prev_detection_threshold <span class='op'>=</span> <span class='fl'>1000</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='st'>"Genus"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Proportional min_prevalence given: 0.9 --&gt; min 200/222 samples.</span></div><div class='output co'>#&gt; $ps
+</div><div class='output co'>#&gt; <span class='message'>Proportional min_prevalence given: 0.9 --&gt; min 200/222 samples.</span></div><div class='output co'>#&gt; ps_extra object - a list with phyloseq and extras:
+#&gt; 
 #&gt; phyloseq-class experiment-level object
 #&gt; otu_table()   OTU Table:         [ 28 taxa and 222 samples ]
 #&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
 #&gt; tax_table()   Taxonomy Table:    [ 28 taxa by 3 taxonomic ranks ]
 #&gt; 
-#&gt; $info
-#&gt; $info$tax_level
-#&gt; [1] "Genus"
-#&gt; 
-#&gt; </div></pre>
+#&gt; phyloseq info:
+#&gt; tax_agg = Genus tax_transform = NA</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

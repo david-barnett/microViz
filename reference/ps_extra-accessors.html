@@ -6,7 +6,15 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Transform taxa in phyloseq object and record transformation — tax_transform • microViz</title>
+<title>Extract elements from ps_extra class
+
+ps_get    returns phyloseq
+info_get  returns ps_extra_info object
+dist_get  returns distance matrix (or NULL)
+ord_get   returns ordination object (or NULL)
+perm_get  returns adonis2() permanova model (or NULL)
+bdisp_get returns results of betadisper() (or NULL)
+ — ps_extra-accessors • microViz</title>
 
 
 <!-- jquery -->
@@ -39,11 +47,24 @@
 
 
 
-<meta property="og:title" content="Transform taxa in phyloseq object and record transformation — tax_transform" />
-<meta property="og:description" content="Pipe the results of tax_agg into this function to transform the (aggregated) taxa features. (Or pass it a phyloseq object).
-This function is a simple wrapper around microbiome::transform() that can perform all the same transformations but returns a ps_extra list
-containing ps (the transformed phyloseq object) and extra info: tax_transform (a string recording the transformation), and tax_agg
-(a string recording the taxonomic aggregation level if specified in a preceding tax_agg function call)." />
+<meta property="og:title" content="Extract elements from ps_extra class
+
+ps_get    returns phyloseq
+info_get  returns ps_extra_info object
+dist_get  returns distance matrix (or NULL)
+ord_get   returns ordination object (or NULL)
+perm_get  returns adonis2() permanova model (or NULL)
+bdisp_get returns results of betadisper() (or NULL)
+ — ps_extra-accessors" />
+<meta property="og:description" content="Extract elements from ps_extra class
+ps_get    returns phyloseq
+info_get  returns ps_extra_info object
+dist_get  returns distance matrix (or NULL)
+ord_get   returns ordination object (or NULL)
+perm_get  returns adonis2() permanova model (or NULL)
+bdisp_get returns results of betadisper() (or NULL)
+
+" />
 
 
 
@@ -126,67 +147,60 @@ containing ps (the transformed phyloseq object) and extra info: tax_transform (a
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Transform taxa in phyloseq object and record transformation</h1>
-    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/tax_transform.R'><code>R/tax_transform.R</code></a></small>
-    <div class="hidden name"><code>tax_transform.Rd</code></div>
+    <h1>Extract elements from ps_extra class
+<ul>
+<li><p><code>ps_get</code>    returns phyloseq</p></li>
+<li><p><code>info_get</code>  returns ps_extra_info object</p></li>
+<li><p><code>dist_get</code>  returns distance matrix (or NULL)</p></li>
+<li><p><code>ord_get</code>   returns ordination object (or NULL)</p></li>
+<li><p><code>perm_get</code>  returns adonis2() permanova model (or NULL)</p></li>
+<li><p><code>bdisp_get</code> returns results of betadisper() (or NULL)</p></li>
+</ul></h1>
+    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/ps_extra-accessors.R'><code>R/ps_extra-accessors.R</code></a></small>
+    <div class="hidden name"><code>ps_extra-accessors.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Pipe the results of tax_agg into this function to transform the (aggregated) taxa features. (Or pass it a phyloseq object).
-This function is a simple wrapper around microbiome::transform() that can perform all the same transformations but returns a ps_extra list
-containing ps (the transformed phyloseq object) and extra info: tax_transform (a string recording the transformation), and tax_agg
-(a string recording the taxonomic aggregation level if specified in a preceding tax_agg function call).</p>
+    <p>Extract elements from ps_extra class</p><ul>
+<li><p><code>ps_get</code>    returns phyloseq</p></li>
+<li><p><code>info_get</code>  returns ps_extra_info object</p></li>
+<li><p><code>dist_get</code>  returns distance matrix (or NULL)</p></li>
+<li><p><code>ord_get</code>   returns ordination object (or NULL)</p></li>
+<li><p><code>perm_get</code>  returns adonis2() permanova model (or NULL)</p></li>
+<li><p><code>bdisp_get</code> returns results of betadisper() (or NULL)</p></li>
+</ul>
+
     </div>
 
-    <pre class="usage"><span class='fu'>tax_transform</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>transformation</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>ps_get</span><span class='op'>(</span><span class='va'>ps_extra</span><span class='op'>)</span>
+
+<span class='fu'>dist_get</span><span class='op'>(</span><span class='va'>ps_extra</span><span class='op'>)</span>
+
+<span class='fu'>ord_get</span><span class='op'>(</span><span class='va'>ps_extra</span><span class='op'>)</span>
+
+<span class='fu'>info_get</span><span class='op'>(</span><span class='va'>ps_extra</span><span class='op'>)</span>
+
+<span class='fu'>perm_get</span><span class='op'>(</span><span class='va'>ps_extra</span><span class='op'>)</span>
+
+<span class='fu'>bdisp_get</span><span class='op'>(</span><span class='va'>ps_extra</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data</th>
-      <td><p>ps_extra list output from tax_agg, or a phyloseq object</p></td>
-    </tr>
-    <tr>
-      <th>transformation</th>
-      <td><p>any valid taxa transformation from microbiome::transform</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>any extra arguments passed to microbiome::transform()</p></td>
+      <th>ps_extra</th>
+      <td><p>ps_extra class object</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>ps_extra list including phyloseq object and info</p>
+    <p>element of ps_extra class object (or NULL)</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://microbiome.github.io/microbiome'>microbiome</a></span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span>
-
-<span class='co'># aggregate taxa at Phylum level and perform the center log ratio transform on the phyla counts</span>
-<span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span>ps <span class='op'>=</span> <span class='va'>dietswap</span>, agg_level <span class='op'>=</span> <span class='st'>"Phylum"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'>tax_transform</span><span class='op'>(</span><span class='st'>"clr"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; ps_extra object - a list with phyloseq and extras:
-#&gt; 
-#&gt; phyloseq-class experiment-level object
-#&gt; otu_table()   OTU Table:         [ 8 taxa and 222 samples ]
-#&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 8 taxa by 2 taxonomic ranks ]
-#&gt; 
-#&gt; phyloseq info:
-#&gt; tax_agg = Phylum tax_transform = clr</div><div class='input'>
-<span class='co'># do nothing except record tax_agg as "none" and tax_transform as "identity" in ps_extra info</span>
-<span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span>ps <span class='op'>=</span> <span class='va'>dietswap</span>, agg_level <span class='op'>=</span> <span class='st'>"none"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'>tax_transform</span><span class='op'>(</span><span class='st'>"identity"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; ps_extra object - a list with phyloseq and extras:
-#&gt; 
-#&gt; phyloseq-class experiment-level object
-#&gt; otu_table()   OTU Table:         [ 130 taxa and 222 samples ]
-#&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]
-#&gt; 
-#&gt; phyloseq info:
-#&gt; tax_agg = none tax_transform = identity</div></pre>
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://dx.plos.org/10.1371/journal.pone.0061217'>phyloseq</a></span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"esophagus"</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

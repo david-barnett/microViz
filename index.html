@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -158,7 +158,7 @@
 <p>You have quite a few samples in your phyloseq object, and would like to visualise their compositions. Perhaps these example data differ across BMI groups?</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dietswap</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="reference/plot_comp_bar.html">plot_comp_bar</a></span><span class="op">(</span>tax_level <span class="op">=</span> <span class="st">"Genus"</span>,  n_taxa <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">plot_comp_bar</span><span class="op">(</span>tax_level <span class="op">=</span> <span class="st">"Genus"</span>,  n_taxa <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="st">"bmi_group"</span>, nrow <span class="op">=</span> <span class="fl">3</span>, scales <span class="op">=</span> <span class="st">"free"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>
@@ -230,7 +230,7 @@
 
 <span class="co"># the more permutations you request, the longer it takes</span>
 <span class="co"># but also the more stable and precise your p-values become</span>
-<span class="va">aitchison_perm</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/permanova.html">permanova</a></span><span class="op">(</span>
+<span class="va">aitchison_perm</span> <span class="op">&lt;-</span> <span class="fu">permanova</span><span class="op">(</span>
   data <span class="op">=</span> <span class="va">aitchison_dists</span>,
   seed <span class="op">=</span> <span class="fl">1234</span>, <span class="co"># for set.seed to ensure reproducibility of random process</span>
   n_perms <span class="op">=</span> <span class="fl">99</span>, <span class="co"># you should use at least 999!</span>
@@ -271,7 +271,7 @@
 <a href="#constrained-ordination" class="anchor"></a>Constrained ordination</h2>
 <p>You could visualise the effect of the (numeric/logical) variables in your permanova directly using the ord_plot function with constraints.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">perm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/permanova.html">permanova</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">aitchison_dists</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"female"</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">321</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">perm2</span> <span class="op">&lt;-</span> <span class="fu">permanova</span><span class="op">(</span>data <span class="op">=</span> <span class="va">aitchison_dists</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"female"</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">321</span><span class="op">)</span>
 <span class="co">#&gt; Dropping samples with missings: 2</span>
 <span class="co">#&gt; 2021-02-10 17:34:58 - Starting PERMANOVA with 999 perms with 1 processes</span>
 <span class="co">#&gt; 2021-02-10 17:34:59 - Finished PERMANOVA</span>
