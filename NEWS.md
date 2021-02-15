@@ -1,3 +1,9 @@
+# microViz 0.4.1
+
+## Bug fixes:
+* `ord_calc` now correctly returns subsetted phyloseq in ps_extra obj after constrained ordination
+* `taxatree_plots` and `taxatree_plotkey` now have reactive automatic **minimum** node and edge sizes that depend on the set maxes
+
 # microViz 0.4.0
 
 ## Breaking changes

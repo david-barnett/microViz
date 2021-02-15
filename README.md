@@ -54,7 +54,7 @@ BiocManager::install(c("phyloseq", "microbiome"))
 
 # # Installing the latest version of this package # #
 install.packages("devtools")
-devtools::install_github("MUMC-MEDMIC/microViz@0.4.0") # check 0.4.0 is the latest version?
+devtools::install_github("MUMC-MEDMIC/microViz@0.4.1") # check 0.4.1 is the latest version?
 # advanced tip: add @<commit-hash> after microViz to install a version from a particular commit
 # If you get an error including something like: 
 # "check that you have the required permissions" 
@@ -190,8 +190,8 @@ aitchison_perm <- dist_permanova(
   variables = "bmi_group + female"
 )
 #> Dropping samples with missings: 2
-#> 2021-02-14 15:45:07 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2021-02-14 15:45:07 - Finished PERMANOVA
+#> 2021-02-15 12:29:35 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2021-02-15 12:29:35 - Finished PERMANOVA
 # view the permanova results
 perm_get(aitchison_perm)
 #> Permutation test for adonis under reduced model
@@ -221,8 +221,8 @@ your permanova directly using the ord\_plot function with constraints.
 ``` r
 perm2 <- dist_permanova(data = aitchison_dists, variables = c("weight", "female"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2021-02-14 15:45:07 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2021-02-14 15:45:07 - Finished PERMANOVA
+#> 2021-02-15 12:29:35 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2021-02-15 12:29:35 - Finished PERMANOVA
 perm_get(perm2)
 #> Permutation test for adonis under reduced model
 #> Marginal effects of terms
@@ -268,7 +268,7 @@ devtools::session_info()
 #>  collate  en_GB.UTF-8                 
 #>  ctype    en_GB.UTF-8                 
 #>  tz       Europe/Amsterdam            
-#>  date     2021-02-14                  
+#>  date     2021-02-15                  
 #> 
 #> ─ Packages ───────────────────────────────────────────────────────────────────────────────────────
 #>  package      * version date       lib source        
@@ -318,7 +318,7 @@ devtools::session_info()
 #>  memoise        2.0.0   2021-01-26 [1] CRAN (R 4.0.3)
 #>  mgcv           1.8-33  2020-08-27 [2] CRAN (R 4.0.3)
 #>  microbiome   * 1.12.0  2020-10-27 [1] Bioconductor  
-#>  microViz     * 0.4.0   2021-02-14 [1] local         
+#>  microViz     * 0.4.1   2021-02-15 [1] local         
 #>  multtest       2.46.0  2020-10-27 [1] Bioconductor  
 #>  munsell        0.5.0   2018-06-12 [1] CRAN (R 4.0.3)
 #>  nlme           3.1-149 2020-08-23 [2] CRAN (R 4.0.3)
@@ -355,7 +355,7 @@ devtools::session_info()
 #>  stringi        1.5.3   2020-09-09 [1] CRAN (R 4.0.3)
 #>  stringr        1.4.0   2019-02-10 [1] CRAN (R 4.0.3)
 #>  survival       3.2-7   2020-09-28 [2] CRAN (R 4.0.3)
-#>  testthat       3.0.1   2020-12-17 [1] CRAN (R 4.0.3)
+#>  testthat       3.0.2   2021-02-14 [1] CRAN (R 4.0.3)
 #>  tibble         3.0.6   2021-01-29 [1] CRAN (R 4.0.3)
 #>  tidyr          1.1.2   2020-08-27 [1] CRAN (R 4.0.3)
 #>  tidyselect     1.1.0   2020-05-11 [1] CRAN (R 4.0.3)
