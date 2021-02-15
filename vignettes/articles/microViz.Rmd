@@ -1,0 +1,269 @@
+---
+title: "microViz: getting started"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{microViz}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+This document shows an example `microViz` analysis workflow using example data `atlas1006` from the `microbiome` package.
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+options(width = 100)
+```
+
+## Load necessary packages
+
+```{r load packages, message=FALSE}
+library(dplyr)
+library(ggplot2)
+library(patchwork)
+library(phyloseq)
+library(microbiome)
+library(microViz)
+```
+
+## Get example data
+
+```{r data setup}
+# get some example data
+data("atlas1006", package = "microbiome")
+
+# create a couple of numerical variables (often more useful than character strings)
+ps <- atlas1006 %>%
+  ps_mutate(
+    weight = recode(bmi_group, morbidobese = 5, severeobese = 4, obese = 3, overweight = 2, lean = 1, underweight = 0),
+    lean = if_else(weight < 2, true = 1, false = 0, missing = 0),
+    extract_P = if_else(DNA_extraction_method == "p", true = 1, false = 0),
+    female = if_else(sex == "female", true = 1, false = 0)
+  ) %>%
+  # only look at the baseline time point if multiple samples available
+  # and drop samples with no DNA extraction method info
+  ps_filter(time == 0, !is.na(DNA_extraction_method)) %>%
+  # remove the sample data variables about time
+  ps_select(-time)
+
+# add a couple of missing values to show how microViz handles missing data
+sample_data(ps)$female[c(3, 4)] <- NA
+
+# look at phyloseq object description
+ps
+```
+
+```{r data prep}
+# this example data has a slightly odd tax_table because it comes from HITChip data (instead of sequencing)
+# the taxonomic assignment is done differently, so we need to ensure taxon names are not repeated across columns
+# it can otherwise be used the same as sequencing data for this example
+tax_table(ps) %>% head(3)
+ps <- ps %>% tax_prepend_ranks()
+tax_table(ps) %>% head(3)
+# replace any uninformative tax_table values
+ps <- ps %>% tax_fill_unknowns()
+
+# look at the effect of removing rare Genera, e.g. how many Genera are present in at least 5% of samples?
+ps %>% tax_filter(min_prevalence = 5 / 100, tax_level = "Genus")
+# we will use this udring other analyses, but not overwrite the original phyloseq object as the
+# unfiltered set of taxa would be required if we were performing e.g. alpha diversity analyses
+```
+
+
+## Exploring your data 
+
+### Ordination plots
+
+Ordination methods can help you to visualize variation in overall microbial ecosystem composition, and look at whether it might differ markedly between groups, e.g. weight.
+
+Here is one option to try first: 
+
+1. Filter out rare taxa (e.g. remove Genera not present in at least 5% of samples) - use `tax_filter()`
+2. Aggregate the taxa into bacterial families (for example) - use `tax_agg()`
+3. Transform the microbial data with the centered-log-ratio transformation - use `tax_transform()`
+4. Perform PCA with the CLR-transformed features (equivalent to Aitchison distance PCoA) - use `ord_calc()`
+5. Plot the first 2 axes of this PCA ordination, colouring samples by group and adding taxon loading arrows to visualise which taxa generally differ across your samples - use `ord_plot()`
+6. Customise the theme of the ggplot as you like and/or add features like ellipses or annotations
+
+```{r calculate clr pca}
+clr_pca <- ps %>%
+  tax_filter(min_prevalence = 5 / 100, tax_level = "Genus") %>%
+  tax_agg("Genus") %>% # aggregate taxa at Genus level
+  tax_transform("clr") %>% # centered log ratio transformation
+  ord_calc("PCA") # Note: PCA is RDA without constraints (& ord_calc uses an RDA method to perform PCA)
+```
+
+```{r print clr pca}
+clr_pca
+```
+
+```{r visualize clr pca}
+clr_pca %>%
+  ord_plot(colour = "weight", shape = "DNA_extraction_method", alpha = 0.7, size = 1.5) +
+  scale_colour_viridis_c(option = "inferno", direction = -1, end = 0.8) +
+  scale_shape_manual(
+    values = c(o = "square open", r = "triangle open", p = "circle"),
+    name = "DNA\nextraction\nmethod"
+  )
+```
+
+### Taxonomic compositions?
+
+Using a PCA ordination allows us reliably draw biplots, showing which taxa are associated with this major variation in sample microbiota composition as represented on axes PC1 and PC2.
+
+```{r clr pca with tax loading}
+pca <- clr_pca %>%
+  ord_plot(
+    colour = "weight", shape = "DNA_extraction_method", alpha = 0.7, size = 1,
+    plot_taxa = 12:1, tax_vec_length = 0.45, center = TRUE
+  ) +
+  scale_colour_viridis_c(option = "inferno", direction = -1, end = 0.8) +
+  scale_shape_manual(
+    values = c(o = "square open", r = "triangle open", p = "circle"),
+    name = "DNA\nextraction\nmethod"
+  )
+```
+
+```{r plot clr pca with tax loading}
+pca
+```
+
+What about the actual compositions of these 800 samples?
+
+```{r iris plot}
+iris <- clr_pca %>%
+  ord_plot_iris(
+    ps = ps, tax_level = "Genus", n_taxa = 15,
+    anno_binary = "extract_P",
+    anno_binary_style = list(y = 1.1, size = 0.5, alpha = 0.3, shape = 1),
+    taxon_renamer = function(x) stringr::str_remove_all(x, "^G: | [ae]t rel.")
+  )
+
+iris
+```
+
+You can arrange both plots together with patchwork package.
+
+```{r paired plots, fig.height=10, fig.width=8, dpi=300}
+pca / iris 
+```
+
+
+## Testing hypotheses
+
+### PERMANOVA
+
+What variables is the overall microbial community variation associated with?
+
+```{r permanova}
+ps %>%
+  tax_filter(min_prevalence = 5 / 100, tax_level = "Genus") %>%
+  tax_agg("Genus") %>%
+  dist_calc("aitchison") %>%
+  dist_permanova(
+    variables = c("DNA_extraction_method", "weight", "female"),
+    n_perms = 99, # this is a low number of permutations for speed, you should set more e.g. 9999
+    seed = 12345, complete_cases = TRUE, verbose = "max"
+  )
+```
+
+### Visualising significant predictors?
+
+(Partial) Constrained ordination can be useful to show microbial variation explained by predictors significant in PERMANOVA analyses.
+
+```{r constraining prep}
+# constraints need to be on the same or similar scales for comparability
+# so make binary variables and scale the weight variable
+ps <- ps %>%
+  ps_mutate(
+    wt_scaled = c(scale(weight, center = TRUE, scale = TRUE)),
+    P = if_else(DNA_extraction_method == "p", 1, 0),
+    R = if_else(DNA_extraction_method == "r", 1, 0),
+    O = if_else(DNA_extraction_method == "o", 1, 0)
+  )
+```
+
+```{r constrained ord}
+constr_ord <- ps %>%
+  tax_filter(min_prevalence = 5 / 100, tax_level = "Genus") %>%
+  tax_agg("Genus") %>%
+  tax_transform("clr") %>%
+  ord_calc(method = "RDA", constraints = c("female", "wt_scaled", "P", "R", "O"))
+```
+
+```{r print constrained ord}
+constr_ord
+```
+
+```{r constrained ord plot}
+ord_plot(constr_ord, plot_taxa = 10:1, colour = "DNA_extraction_method", shape = 1) +
+  scale_color_brewer(palette = "Set2", name = "DNA\nextraction\nmethod")
+```
+
+As DNA extraction method dominates the plot above, we could try "partialing out" the variation explained by DNA extraction method, prior to constraining on the other factors of interest.
+
+```{r partial constrained ord}
+ps %>%
+  tax_filter(min_prevalence = 5 / 100, tax_level = "Genus") %>%
+  tax_agg("Genus") %>%
+  tax_transform("clr") %>%
+  ord_calc(
+    method = "RDA", conditions = c("P", "R", "O"),
+    constraints = c("female", "wt_scaled")
+  ) %>%
+  ord_plot(plot_taxa = 10:1, colour = "DNA_extraction_method", shape = 1) +
+  scale_color_brewer(palette = "Set2", name = "DNA\nextraction\nmethod")
+```
+
+### Taxon models
+
+What are the effects of these factors on individual taxa? Let's use beta binomial regression models to find out.
+
+```{r taxon modelling}
+library(corncob)
+tt_models <- ps %>%
+  tax_filter(min_prevalence = 5 / 100, tax_level = "Genus") %>%
+  taxatree_models(
+    tax_levels = c("Phylum", "Family"), # skipping genera for speed of generating this example
+    variables = c("female", "wt_scaled", "P", "R"), type = "bbdml", verbose = "max"
+  )
+```
+
+Visualize the results compactly on a microViz taxonomic association tree.
+
+```{r taxa tree key, fig.height=6}
+ps %>%
+  tax_filter(min_prevalence = 5 / 100, tax_level = "Genus") %>%
+  taxatree_plotkey(
+    max_node_size = 8, tax_levels = c("Phylum", "Family"),
+    taxon_renamer = function(x) stringr::str_remove_all(x, "^.: | [ae]t rel.")
+  )
+```
+
+```{r taxatree plots, fig.height=7}
+ps %>%
+  tax_filter(min_prevalence = 5 / 100, tax_level = "Genus") %>%
+  taxatree_plots(
+    models_list = tt_models, var_selection = c("P", "R", "female", "wt_scaled"),
+    max_node_size = 4,
+  ) %>%
+  wrap_plots(., ncol = 2, guides = "collect")
+```
+
+#### Example interpretation (illustrative only): 
+
+- DNA extraction methods P and R are associated with significantly higher levels of Actinobacteria and lower Bacteroides, relative to the reference of extraction method O. 
+- There are associations between weight and various taxa, but these are not as strong as the associations with extraction method.
+
+## Final disclaimer
+
+This document is intended only to be an example of the kind of analyses and visualization you can do with microViz.
+The analysis of the atlas1006 data is not intended to be considered theoretically sound or biologically interpretable.
+
+## Session info
+
+```{r}
+devtools::session_info()
+```
