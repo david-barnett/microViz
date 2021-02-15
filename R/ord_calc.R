@@ -121,6 +121,7 @@ ord_calc <- function(data,
   if (!identical(constraints, 1)) info[["constraints"]] <- paste(constraints, collapse = "+")
   if (!identical(conditions, NULL)) info[["conditions"]] <- paste(conditions, collapse = "+")
 
+  data[["ps"]] <- ps
   data[["info"]] <- info
   data[["dist"]] <- distMat
   data[["ord"]] <- ORD
