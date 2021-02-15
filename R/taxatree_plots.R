@@ -220,8 +220,8 @@ taxatree_plots <- function(
 
       # styling
       p <- p +
-        ggplot2::scale_size_continuous(range = c(1, max_node_size), guide = "none") +
-        ggraph::scale_edge_width_continuous(range = c(1, max_edge_width), guide = "none") +
+        ggplot2::scale_size_continuous(range = c(max(max_node_size/3, 0.2), max_node_size), guide = "none") +
+        ggraph::scale_edge_width_continuous(range = c(max(max_edge_width/3, 0.2), max_edge_width), guide = "none") +
 
         # previously colorspace block was THROWING ERRORS about can't find objects specified in its args... when used INSIDE function:
         # solution, bizarrely, was just to use scale_colour_continuous_diverging (with aesthetics = "fill")
@@ -327,8 +327,8 @@ taxatree_plotkey <- function(
       plot_margin = grid::unit(x = rep(0.03, 4), "npc")
     ) +
     ggplot2::ggtitle(label = "KEY") +
-    ggplot2::scale_size_continuous(range = c(3, max_node_size)) +
-    ggraph::scale_edge_width_continuous(range = c(2, max_edge_width))
+    ggplot2::scale_size_continuous(range = c(max(max_node_size/3, 0.2), max_node_size)) +
+    ggraph::scale_edge_width_continuous(range = c(max(max_edge_width/3, 0.1), max_edge_width))
 
   # add a black central node to mark the rook
   p <- p + ggraph::geom_node_point(
