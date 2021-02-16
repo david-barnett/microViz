@@ -1,3 +1,8 @@
+# microViz (development version)
+
+## Bug fixes
+* `tax_fill_unknowns` gives informative error on data with only one taxonomic rank
+
 # microViz 0.4.1
 
 ## Bug fixes:

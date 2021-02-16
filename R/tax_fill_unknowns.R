@@ -5,7 +5,7 @@
 #' - Values in `unknowns` are also removed, even if longer than `min_length`. It is up to the user to specify sensible values in `unknowns` if their dataset has other unwanted values.
 #' - NA values are also replaced.
 #'
-#' @param x phyloseq or tax_table (taxonomyTable)
+#' @param x phyloseq or tax_table (taxonomyTable) with at least two ranks
 #' @param min_length replace strings shorter than this
 #' @param unknowns also replace strings matching any in this vector
 #' @param levels names of taxonomic levels to modify, defaults to all
@@ -62,6 +62,7 @@ tax_fill_unknowns <- function(
   } else {
     stop("x must be phyloseq or taxonomyTable class, it is class: ", paste(class(x), collapse = " "))
   }
+  if (identical(ncol(tt), 1L)) stop ("tax_table(x) has only one rank/column!")
   # get rownames to ensure order doesn't change
   original_rownames <- rownames(tt)
   ranknames <- colnames(tt)
