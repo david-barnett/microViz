@@ -2,6 +2,7 @@
 
 ## Bug fixes
 * `tax_fill_unknowns` gives informative error on data with only one taxonomic rank
+* `tax_filter` ps argument default removed
 
 # microViz 0.4.1
 

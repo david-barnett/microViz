@@ -34,7 +34,7 @@
 #'   tax_filter(tax_level = "Family", min_prevalence = 0.90, prev_detection_threshold = 1000) %>%
 #'   tax_agg("Genus")
 tax_filter <- function(
-                       ps = ps,
+                       ps,
                        min_prevalence = 1,
                        prev_detection_threshold = 1,
                        min_total_abundance = 1,

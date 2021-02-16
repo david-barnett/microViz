@@ -5,7 +5,7 @@
 \title{Filter rare taxa from a phyloseq object}
 \usage{
 tax_filter(
-  ps = ps,
+  ps,
   min_prevalence = 1,
   prev_detection_threshold = 1,
   min_total_abundance = 1,
