@@ -1,6 +1,7 @@
-# microViz (development version)
+# microViz 0.4.2
 
 ## Bug fixes
+* `ord_explore` now works with ps_extra classes
 * `tax_fill_unknowns` gives informative error on data with only one taxonomic rank
 * `tax_filter` ps argument default removed
 

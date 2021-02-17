@@ -1,0 +1,11 @@
+app <- ShinyDriver$new("../../")
+app$snapshotInit("mytest")
+
+app$setInputs(ord_shape_num = 12)
+app$setInputs(ord_shape_var = "SeqTech")
+app$setInputs(shape_var_type = "variable")
+app$setInputs(ord_size_num = 5)
+app$setInputs(size_var_type = "variable")
+app$setInputs(ntaxa = 14)
+app$setInputs(comp_label = "Enterotype")
+app$snapshot()

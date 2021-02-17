@@ -36,7 +36,7 @@
 #'   ) %>%
 #'   tax_agg("Genus")
 #'
-#' ord2 <- constrained_aitchison_rda <- dietswap %>%
+#' constrained_aitchison_rda <- dietswap %>%
 #'   tax_transform("clr") %>%
 #'   ord_calc(method = "RDA", constraints = c("weight", "female"))
 #'
@@ -53,15 +53,16 @@
 ord_explore <- function(ord, ps = NULL, seriate_method = "OLO_ward", tax_transform_for_ordering = "identity", ...) {
   # SETUP -------------------------------------------------------------------
 
-  if (identical(ps, NULL)) ps <- ord$ps
-  if (inherits(ps, "list")) ps <- ps$ps
-  ordination <- ord$ordination
-  dist <- ord$info$distName
+  if (identical(ps, NULL)) ps <- ps_get(ord)
+  if (inherits(ps, "ps_extra")) ps <- ps_get(ps)
+  ordination <- ord_get(ord)
+  dist <- info_get(ord)[["distMethod"]]
   # handle missing distances e.g. if RDA is used (needed if a distance-based seriate_method is requested, as is default)
-  if (identical(dist, NULL)) {
+  if (is.na(dist)) {
     dist <- "euclidean"
-    tax_transform_for_ordering <- ord$info$tax_transform
+    tax_transform_for_ordering <- info_get(ord)[["tax_transform"]]
   }
+  samdat <- phyloseq::sample_data(ps)
 
   # calculate sample order based on hierarchical clustering of first PCs
   message("- ordering samples")
@@ -82,9 +83,9 @@ ord_explore <- function(ord, ps = NULL, seriate_method = "OLO_ward", tax_transfo
           width = 3,
           shiny::fluidRow(
             shiny::selectInput(
-              inputId = "ord_colour", label = "Point colour",
-              choices = list(Variable = phyloseq::sample_variables(ps), Fixed = grDevices::colors()),
-              selected = "grey0"
+              inputId = "ord_colour", label = "Point colour (fixed or variable)",
+              choices = list(Variable = phyloseq::sample_variables(ps), Fixed = grDevices::colors(distinct = TRUE)),
+              selected = "gray"
             ),
             # shape
             shiny::radioButtons(
@@ -121,7 +122,7 @@ ord_explore <- function(ord, ps = NULL, seriate_method = "OLO_ward", tax_transfo
             ),
             shiny::selectInput(
               inputId = "ord_size_var", label = "Variable point size",
-              choices = phyloseq::sample_variables(ps),
+              choices = names(samdat[, sapply(X = samdat, function(x) !is.character(x) & !is.factor(x))]),
               selected = NULL
             )
           ),
@@ -207,7 +208,8 @@ ord_explore <- function(ord, ps = NULL, seriate_method = "OLO_ward", tax_transfo
           size = size(),
           colour = input$ord_colour,
           ...
-        )
+        ) +
+          ggplot2::scale_shape_discrete(na.translate = TRUE, na.value = 1)
       },
       cacheKeyExpr = {
         list(

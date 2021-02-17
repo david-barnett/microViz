@@ -54,7 +54,7 @@ dietswap <- dietswap \%>\%
   ) \%>\%
   tax_agg("Genus")
 
-ord2 <- constrained_aitchison_rda <- dietswap \%>\%
+constrained_aitchison_rda <- dietswap \%>\%
   tax_transform("clr") \%>\%
   ord_calc(method = "RDA", constraints = c("weight", "female"))
 
