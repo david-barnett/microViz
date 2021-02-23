@@ -9,9 +9,10 @@
 #' @param min_prevalence number or proportion of samples that a taxon must be present in
 #' @param prev_detection_threshold min counts for a taxon to be considered present in that sample
 #' @param min_total_abundance minimum total readcount of a taxon, summed across all samples (can be proportion of all counts)
-#' @param min_sample_abundance if 1 or greater, treat as absolute min abundance, if <1 treat as proportion of sample counts
+#' @param min_sample_abundance taxa must have at least this many reads in one or more samples (or proportion of that sample's reads)
 #' @param tax_level if given, aggregates data at named taxonomic rank before filtering, but returns phyloseq at the ORIGINAL level of aggregation!
 #' @param names_only if names_only is true return only names of taxa, not the phyloseq
+#' @param is_counts expect count data in phyloseq otu_table? default is TRUE
 #'
 #' @return filtered phyloseq object AT ORIGINAL LEVEL OF AGGREGATION (not at the level in tax_level)
 #' @export
@@ -37,10 +38,12 @@ tax_filter <- function(
                        ps,
                        min_prevalence = 1,
                        prev_detection_threshold = 1,
-                       min_total_abundance = 1,
-                       min_sample_abundance = 1,
+                       min_total_abundance = 0,
+                       min_sample_abundance = 0,
                        tax_level = NA,
-                       names_only = FALSE) {
+                       names_only = FALSE,
+                       is_counts = TRUE
+                       ) {
 
   # preserve original phyloseq
   ps1 <- ps
@@ -56,7 +59,7 @@ tax_filter <- function(
     message("Proportional min_prevalence given: ", mp_prop, " --> min ", min_prevalence, "/", nsamp, " samples.")
   }
   # convert min total abundance to an absolute number (if given as a proportion of total reads i.e. <1)
-  if (min_total_abundance < 1) {
+  if (min_total_abundance < 1 && min_total_abundance > 0) {
     counts <- sum(microbiome::readcount(ps))
     mtotAb_prop <- min_total_abundance
     min_total_abundance <- ceiling(min_total_abundance * counts)
@@ -76,6 +79,12 @@ tax_filter <- function(
 
   # otu table
   otu <- microbiome::abundances(ps)
+  if (isTRUE(is_counts) && any(otu[1:5,] < 1 & otu[1:5,] > 0)) {
+    stop(
+      "otu_table(ps) contains proportions or transformed values which might lead to unexpected behaviour",
+      "\n(use counts or avoid this error with is_counts = FALSE and setting an appropriate prev_detection_threshold, e.g. 1e-5)."
+    )
+  }
   # tax ranks table
   taxtab <- as.data.frame(phyloseq::tax_table(ps))
 

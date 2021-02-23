@@ -8,10 +8,11 @@ tax_filter(
   ps,
   min_prevalence = 1,
   prev_detection_threshold = 1,
-  min_total_abundance = 1,
-  min_sample_abundance = 1,
+  min_total_abundance = 0,
+  min_sample_abundance = 0,
   tax_level = NA,
-  names_only = FALSE
+  names_only = FALSE,
+  is_counts = TRUE
 )
 }
 \arguments{
@@ -23,11 +24,13 @@ tax_filter(
 
 \item{min_total_abundance}{minimum total readcount of a taxon, summed across all samples (can be proportion of all counts)}
 
-\item{min_sample_abundance}{if 1 or greater, treat as absolute min abundance, if <1 treat as proportion of sample counts}
+\item{min_sample_abundance}{taxa must have at least this many reads in one or more samples (or proportion of that sample's reads)}
 
 \item{tax_level}{if given, aggregates data at named taxonomic rank before filtering, but returns phyloseq at the ORIGINAL level of aggregation!}
 
 \item{names_only}{if names_only is true return only names of taxa, not the phyloseq}
+
+\item{is_counts}{expect count data in phyloseq otu_table? default is TRUE}
 }
 \value{
 filtered phyloseq object AT ORIGINAL LEVEL OF AGGREGATION (not at the level in tax_level)
