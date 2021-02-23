@@ -14,7 +14,6 @@ dist_permanova(
   seed = NULL,
   by = "margin",
   verbose = TRUE,
-  return = "all",
   ...
 )
 }
@@ -36,8 +35,6 @@ dist_permanova(
 \item{by}{passed to vegan::adonis2() \code{by} argument: what type of sums of squares to calculate? "margin" or "terms"}
 
 \item{verbose}{sends messages about progress if TRUE}
-
-\item{return}{what parts of return list to return, defaults to all parts}
 
 \item{...}{additional arguments are passed directly to vegan::adonis2() (e.g. strata, add, sqrt.dist etc.)}
 }

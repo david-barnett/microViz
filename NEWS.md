@@ -1,3 +1,9 @@
+# microViz (development version)
+
+# Bug fixes
+* `dist_permanova`'s obsolete return arg removed
+* `tax_filter` gets explicit handling of compositional input
+
 # microViz 0.4.2
 
 ## Bug fixes

@@ -16,9 +16,8 @@
 #' @param n_perms how many permutations? e.g. 9999. Less is faster but more is better!
 #' @param seed set a random number generator seed to ensure you get the same results each run
 #' @param complete_cases if TRUE, drops observations if they contain missing values (otherwise stops if missings are detected)
-#' @param verbose sends messages about progress if TRUE
-#' @param return what parts of return list to return, defaults to all parts
 #' @param by passed to vegan::adonis2() `by` argument: what type of sums of squares to calculate? "margin" or "terms"
+#' @param verbose sends messages about progress if TRUE
 #' @param ... additional arguments are passed directly to vegan::adonis2() (e.g. strata, add, sqrt.dist etc.)
 #'
 #' @return ps_extra list containing permanova results and (filtered) input objects
@@ -82,7 +81,6 @@ dist_permanova <- function(data,
                            seed = NULL,
                            by = "margin",
                            verbose = TRUE,
-                           return = "all",
                            ...) {
 
   # check input data object class
