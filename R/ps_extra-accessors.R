@@ -58,3 +58,14 @@ bdisp_get <- function(ps_extra) {
   stopifnot(inherits(ps_extra, "ps_extra"))
   ps_extra[["bdisp"]]
 }
+
+
+# @param data phyloseq or ps_Extra
+# @return phyloseq otu_table matrix with taxa as columns
+otu_get <- function(data) {
+  ps <- ps_get(data)
+  otu <- phyloseq::otu_table(ps)
+  if (phyloseq::taxa_are_rows(otu)) otu <- t(otu)
+  return(otu)
+}
+
