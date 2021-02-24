@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9001</span>
       </span>
     </div>
 
@@ -139,10 +139,11 @@
   <span class='va'>ps</span>,
   min_prevalence <span class='op'>=</span> <span class='fl'>1</span>,
   prev_detection_threshold <span class='op'>=</span> <span class='fl'>1</span>,
-  min_total_abundance <span class='op'>=</span> <span class='fl'>1</span>,
-  min_sample_abundance <span class='op'>=</span> <span class='fl'>1</span>,
+  min_total_abundance <span class='op'>=</span> <span class='fl'>0</span>,
+  min_sample_abundance <span class='op'>=</span> <span class='fl'>0</span>,
   tax_level <span class='op'>=</span> <span class='cn'>NA</span>,
-  names_only <span class='op'>=</span> <span class='cn'>FALSE</span>
+  names_only <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  is_counts <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -166,7 +167,7 @@
     </tr>
     <tr>
       <th>min_sample_abundance</th>
-      <td><p>if 1 or greater, treat as absolute min abundance, if &lt;1 treat as proportion of sample counts</p></td>
+      <td><p>taxa must have at least this many reads in one or more samples (or proportion of that sample's reads)</p></td>
     </tr>
     <tr>
       <th>tax_level</th>
@@ -175,6 +176,10 @@
     <tr>
       <th>names_only</th>
       <td><p>if names_only is true return only names of taxa, not the phyloseq</p></td>
+    </tr>
+    <tr>
+      <th>is_counts</th>
+      <td><p>expect count data in phyloseq otu_table? default is TRUE</p></td>
     </tr>
     </table>
 
