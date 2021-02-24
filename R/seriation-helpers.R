@@ -18,8 +18,8 @@ mat_seriate <- function(mat, method, dist, col_method = method, col_dist = dist)
     col_ser <- mat_ser_dist(t(mat), method = method, dist = dist)
     row_order <- seriation::get_order(row_ser)
     col_order <- seriation::get_order(col_ser)
-    row_tree <- if(inherits(row_ser[[1]], "hclust")) { as.dendrogram(row_ser[[1]]) } else { FALSE }
-    col_tree <- if(inherits(col_ser[[1]], "hclust")) { as.dendrogram(col_ser[[1]]) } else { FALSE }
+    row_tree <- if(inherits(row_ser[[1]], "hclust")) { stats::as.dendrogram(row_ser[[1]]) } else { FALSE }
+    col_tree <- if(inherits(col_ser[[1]], "hclust")) { stats::as.dendrogram(col_ser[[1]]) } else { FALSE }
   } else {
     stop(
       method, " is not a valid method in seriation::seriate! See seriation::list_seriation_methods()\n",

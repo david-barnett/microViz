@@ -1,6 +1,10 @@
 # microViz (development version)
 
-# Bug fixes
+## Features
+* `cor_heatmap` for microbe-metadata correlation heatmaps
+* `taxAnnotation` to plot taxon prevalence and abundance alongside heatmaps with the help of `anno_prev` and `anno_abund` respectively
+
+## Bug fixes
 * `dist_permanova`'s obsolete return arg removed
 * `tax_filter` gets explicit handling of compositional input
 

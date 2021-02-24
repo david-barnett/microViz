@@ -16,9 +16,8 @@
 #' @param seriation_method_col method to order the columns (in seriation::seriate)
 #' @param seriation_dist_col distance to use in seriation_method_col (if needed)
 #' @param tax_transform transformation applied to otu_table before correlating
-#' @param ...
+#' @param ... extra args, for cor_heatmap passed to viz_heatmap (for heat_numbers() dots are passed to grid::gpar for grid::grid.text)
 #'
-#' @return ComplexHeatmap heatmap
 #' @export
 #'
 #' @examples
@@ -117,59 +116,6 @@ cor_heatmap <- function(data,
   p
 }
 
-viz_heatmap <- function(mat,
-                        colors = heat_colors(),
-                        numbers = heat_numbers(),
-                        seriation_method = "OLO_ward",
-                        seriation_dist = "euclidean",
-                        seriation_method_col = seriation_method, seriation_dist_col = seriation_dist,
-                        right_annotation = NULL,
-                        ...) {
-  dots <- list(...)
-  # order matrix
-  ser <- mat_seriate(mat = mat, method = seriation_method, dist = seriation_dist)
-
-  # work in progress handling
-  if (identical(numbers, NULL)){
-    cell_fun = NULL
-  } else if (inherits(numbers, "function")){
-    cell_fun = numbers
-    # set closure env's parent env to current env so cell_fun can find object mat!
-    # ref https://bookdown.org/rdpeng/rprogdatascience/scoping-rules-of-r.html
-    # ref https://adv-r.hadley.nz/function-factories.html
-    parent.env(environment(cell_fun)) <- environment()
-  } else {
-    cell_fun <- switch(
-      EXPR = numbers,
-      "values" = {
-        function(j, i, x, y, width, height, fill) {
-          val <- mat[i, j]
-          grid::grid.text(label = sprintf("%.1f", val), x = x, y = y, gp = grid::gpar(fontsize = 7))
-        }
-      }
-      # TODO support compositions by transforming mat
-    )
-  }
-  args <- list(
-    matrix = mat, name = "Value", col = colors,
-    right_annotation = right_annotation,
-    row_order = ser$row_order,
-    cluster_rows = ser$row_tree,
-    column_order = ser$col_order,
-    cluster_columns = ser$col_tree,
-    column_names_rot = 45,
-    column_dend_side = "bottom",
-    column_names_side = "top",
-    row_names_gp = grid::gpar(fontsize = 8),
-    column_names_gp = grid::gpar(fontsize = 8),
-    rect_gp = grid::gpar(col = "white", lwd = 0.75),
-    cell_fun = cell_fun
-  )
-  args[names(dots)] <- dots
-
-  p <- do.call(ComplexHeatmap::Heatmap, args = args)
-  return(p)
-}
 
 #' @title Easy palettes for ComplexHeatmap
 #'
@@ -180,7 +126,7 @@ viz_heatmap <- function(mat,
 #' @param rev_palette reverse the colorspace palette
 #'
 #' @export
-#' @rdname heatmaps
+#' @rdname heat_colors
 heat_colors <- function(palette = "Green-Orange", breaks = c(-1, 0, 1), rev_palette = FALSE){
   if(length(palette) == 1 && palette %in% rownames(colorspace::hcl_palettes(type = "diverging"))){
     palette <- colorspace::diverge_hcl(palette = palette, n = 3)
@@ -192,17 +138,15 @@ heat_colors <- function(palette = "Green-Orange", breaks = c(-1, 0, 1), rev_pale
   return(col_fun)
 }
 
-#' @title Setup for drawing numbers on heatmap tiles
-#'
-#' @description
+#' @title helps for drawing numbers on heatmap tiles
 #'
 #' @param what what numbers to print (currently only "values" is supported)
 #' @param fmt number print format
 #' @param fontsize fontsize specification,
-#' @param ... passed to grid::gpar() for grid.text
+# @param ... passed to grid::gpar() for grid.text
 #'
 #' @export
-#' @rdname heatmaps
+#' @rdname heat_numbers
 heat_numbers <- function(what = "values", fmt = "%.1f", fontsize = 7, ...){
     force(fmt)
     force(fontsize)
@@ -218,8 +162,16 @@ heat_numbers <- function(what = "values", fmt = "%.1f", fontsize = 7, ...){
 #' @title taxAnnotation for ComplexHeatmap
 #' @description taxAnnotation is used for cor_heatmap, comp_heatmap & tax_model_heatmap (will be)
 #'
+#' @param data phyloseq or ps-extra
+#' @param taxa names of taxa
+#' @param undetected value above which taxa are considered present/detected in a sample
+#' @param which 'row' or 'column' annotation
+#' @param prev if TRUE, prevalence annotation plot drawn with anno_prev
+#' @param abun if TRUE, abundance annotation plot drawn with anno_abund
+#' @param ... additional args passed to ComplexHeatmap::HeatmapAnnotation
+#'
 #' @export
-#' @rdname heatmaps
+#' @rdname heatmap-annotations
 taxAnnotation <- function(data, taxa, undetected = 0, which = "row", prev = TRUE, abun = TRUE, ...){
   ps <- ps_get(data)
   dots <- list(...)
@@ -232,8 +184,10 @@ taxAnnotation <- function(data, taxa, undetected = 0, which = "row", prev = TRUE
   do.call(ComplexHeatmap::HeatmapAnnotation, args = args)
 }
 
-# @param ... args passed to anno_barplot
-# @return a ComplexHeatmap anno_barplot
+#' @param ... args passed to anno_barplot
+#' @return a ComplexHeatmap anno_barplot
+#' @export
+#' @rdname heatmap-annotations
 anno_prev <- function(data, taxa, undetected = 0, which = "row", ...){
   dots <- list(...)
   prevs <- prev_calc(data = data, taxa = taxa, undetected = undetected)
@@ -246,10 +200,10 @@ anno_prev <- function(data, taxa, undetected = 0, which = "row", ...){
   return(anno)
 }
 
-
-# Computing a complexheatmap annotation for abundance distributions
 # @param ... args passed to anno_boxplot
 # @return anno_boxplot
+#' @export
+#' @rdname heatmap-annotations
 anno_abund <- function(data, taxa, undetected = 0, which = "row", ...){
   dots <- list(...)
   abunds <- abund_calc(data = data, taxa = taxa, undetected = undetected)

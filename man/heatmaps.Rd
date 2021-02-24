@@ -2,9 +2,6 @@
 % Please edit documentation in R/heatmaps.R
 \name{cor_heatmap}
 \alias{cor_heatmap}
-\alias{heat_colors}
-\alias{heat_numbers}
-\alias{taxAnnotation}
 \title{Microbe-to-sample-data correlation heatmap}
 \usage{
 cor_heatmap(
@@ -22,24 +19,6 @@ cor_heatmap(
   seriation_method_col = seriation_method,
   seriation_dist_col = seriation_dist,
   tax_transform = "identity",
-  ...
-)
-
-heat_colors(
-  palette = "Green-Orange",
-  breaks = c(-1, 0, 1),
-  rev_palette = FALSE
-)
-
-heat_numbers(what = "values", fmt = "\%.1f", fontsize = 7, ...)
-
-taxAnnotation(
-  data,
-  taxa,
-  undetected = 0,
-  which = "row",
-  prev = TRUE,
-  abun = TRUE,
   ...
 )
 }
@@ -72,31 +51,10 @@ taxAnnotation(
 
 \item{tax_transform}{transformation applied to otu_table before correlating}
 
-\item{...}{passed to grid::gpar() for grid.text}
-
-\item{palette}{named palette from colorspace::hcl_palettes(type = "diverging") or a vector of 3 colour names (low, middle, high)}
-
-\item{breaks}{numeric vector of values for colour scale breaks (low, middle, high)}
-
-\item{rev_palette}{reverse the colorspace palette}
-
-\item{what}{what numbers to print (currently only "values" is supported)}
-
-\item{fmt}{number print format}
-
-\item{fontsize}{fontsize specification,}
-}
-\value{
-ComplexHeatmap heatmap
+\item{...}{extra args, for cor_heatmap passed to viz_heatmap (for heat_numbers() dots are passed to grid::gpar for grid::grid.text)}
 }
 \description{
 Correlate microbial abundances to numeric sample_data variables
-
-Pass a named diverging colorspace hcl palette to circlize::colorRamp2
-
-
-
-taxAnnotation is used for cor_heatmap, comp_heatmap & tax_model_heatmap (will be)
 }
 \examples{
 library(dplyr)
