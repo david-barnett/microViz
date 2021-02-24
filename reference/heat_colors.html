@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract elements from ps_extra class — ps_extra-accessors • microViz</title>
+<title>Easy palettes for ComplexHeatmap — heat_colors • microViz</title>
 
 
 <!-- jquery -->
@@ -39,17 +39,8 @@
 
 
 
-<meta property="og:title" content="Extract elements from ps_extra class — ps_extra-accessors" />
-<meta property="og:description" content="
-
-ps_get    returns phyloseq
-info_get  returns ps_extra_info object
-dist_get  returns distance matrix (or NULL)
-ord_get   returns ordination object (or NULL)
-perm_get  returns adonis2() permanova model (or NULL)
-bdisp_get returns results of betadisper() (or NULL)
-
-" />
+<meta property="og:title" content="Easy palettes for ComplexHeatmap — heat_colors" />
+<meta property="og:description" content="Pass a named diverging colorspace hcl palette to circlize::colorRamp2" />
 
 
 
@@ -135,53 +126,39 @@ bdisp_get returns results of betadisper() (or NULL)
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract elements from ps_extra class</h1>
-    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/ps_extra-accessors.R'><code>R/ps_extra-accessors.R</code></a></small>
-    <div class="hidden name"><code>ps_extra-accessors.Rd</code></div>
+    <h1>Easy palettes for ComplexHeatmap</h1>
+    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/heatmaps.R'><code>R/heatmaps.R</code></a></small>
+    <div class="hidden name"><code>heat_colors.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
-<ul>
-<li><p><code>ps_get</code>    returns phyloseq</p></li>
-<li><p><code>info_get</code>  returns ps_extra_info object</p></li>
-<li><p><code>dist_get</code>  returns distance matrix (or NULL)</p></li>
-<li><p><code>ord_get</code>   returns ordination object (or NULL)</p></li>
-<li><p><code>perm_get</code>  returns adonis2() permanova model (or NULL)</p></li>
-<li><p><code>bdisp_get</code> returns results of betadisper() (or NULL)</p></li>
-</ul>
-
+    <p>Pass a named diverging colorspace hcl palette to circlize::colorRamp2</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ps_get</span><span class='op'>(</span><span class='va'>ps_extra</span><span class='op'>)</span>
-
-<span class='fu'>dist_get</span><span class='op'>(</span><span class='va'>ps_extra</span><span class='op'>)</span>
-
-<span class='fu'>ord_get</span><span class='op'>(</span><span class='va'>ps_extra</span><span class='op'>)</span>
-
-<span class='fu'>info_get</span><span class='op'>(</span><span class='va'>ps_extra</span><span class='op'>)</span>
-
-<span class='fu'>perm_get</span><span class='op'>(</span><span class='va'>ps_extra</span><span class='op'>)</span>
-
-<span class='fu'>bdisp_get</span><span class='op'>(</span><span class='va'>ps_extra</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>heat_colors</span><span class='op'>(</span>
+  palette <span class='op'>=</span> <span class='st'>"Green-Orange"</span>,
+  breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span><span class='op'>)</span>,
+  rev_palette <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>ps_extra</th>
-      <td><p>ps_extra class object</p></td>
+      <th>palette</th>
+      <td><p>named palette from colorspace::hcl_palettes(type = "diverging") or a vector of 3 colour names (low, middle, high)</p></td>
+    </tr>
+    <tr>
+      <th>breaks</th>
+      <td><p>numeric vector of values for colour scale breaks (low, middle, high)</p></td>
+    </tr>
+    <tr>
+      <th>rev_palette</th>
+      <td><p>reverse the colorspace palette</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>element of ps_extra class object (or NULL)</p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://dx.plos.org/10.1371/journal.pone.0061217'>phyloseq</a></span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"esophagus"</span><span class='op'>)</span>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

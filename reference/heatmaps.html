@@ -40,11 +40,7 @@
 
 
 <meta property="og:title" content="Microbe-to-sample-data correlation heatmap — cor_heatmap" />
-<meta property="og:description" content="Correlate microbial abundances to numeric sample_data variables
-Pass a named diverging colorspace hcl palette to circlize::colorRamp2
-
-
-taxAnnotation is used for cor_heatmap, comp_heatmap &amp;amp; tax_model_heatmap (will be)" />
+<meta property="og:description" content="Correlate microbial abundances to numeric sample_data variables" />
 
 
 
@@ -76,7 +72,7 @@ taxAnnotation is used for cor_heatmap, comp_heatmap &amp;amp; tax_model_heatmap 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9002</span>
       </span>
     </div>
 
@@ -137,10 +133,6 @@ taxAnnotation is used for cor_heatmap, comp_heatmap &amp;amp; tax_model_heatmap 
 
     <div class="ref-description">
     <p>Correlate microbial abundances to numeric sample_data variables</p>
-<p>Pass a named diverging colorspace hcl palette to circlize::colorRamp2</p>
-
-
-<p>taxAnnotation is used for cor_heatmap, comp_heatmap &amp; tax_model_heatmap (will be)</p>
     </div>
 
     <pre class="usage"><span class='fu'>cor_heatmap</span><span class='op'>(</span>
@@ -150,32 +142,14 @@ taxAnnotation is used for cor_heatmap, comp_heatmap &amp;amp; tax_model_heatmap 
   vars <span class='op'>=</span> <span class='cn'>NA</span>,
   cor <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"pearson"</span>, <span class='st'>"kendall"</span>, <span class='st'>"spearman"</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>,
   cor_use <span class='op'>=</span> <span class='st'>"everything"</span>,
-  colors <span class='op'>=</span> <span class='fu'>heat_colors</span><span class='op'>(</span><span class='op'>)</span>,
-  numbers <span class='op'>=</span> <span class='fu'>heat_numbers</span><span class='op'>(</span><span class='op'>)</span>,
+  colors <span class='op'>=</span> <span class='fu'><a href='heat_colors.html'>heat_colors</a></span><span class='op'>(</span><span class='op'>)</span>,
+  numbers <span class='op'>=</span> <span class='fu'><a href='heat_numbers.html'>heat_numbers</a></span><span class='op'>(</span><span class='op'>)</span>,
   taxa_which <span class='op'>=</span> <span class='st'>"row"</span>,
   seriation_method <span class='op'>=</span> <span class='st'>"OLO_ward"</span>,
   seriation_dist <span class='op'>=</span> <span class='st'>"euclidean"</span>,
   seriation_method_col <span class='op'>=</span> <span class='va'>seriation_method</span>,
   seriation_dist_col <span class='op'>=</span> <span class='va'>seriation_dist</span>,
   tax_transform <span class='op'>=</span> <span class='st'>"identity"</span>,
-  <span class='va'>...</span>
-<span class='op'>)</span>
-
-<span class='fu'>heat_colors</span><span class='op'>(</span>
-  palette <span class='op'>=</span> <span class='st'>"Green-Orange"</span>,
-  breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span><span class='op'>)</span>,
-  rev_palette <span class='op'>=</span> <span class='cn'>FALSE</span>
-<span class='op'>)</span>
-
-<span class='fu'>heat_numbers</span><span class='op'>(</span>what <span class='op'>=</span> <span class='st'>"values"</span>, fmt <span class='op'>=</span> <span class='st'>"%.1f"</span>, fontsize <span class='op'>=</span> <span class='fl'>7</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='fu'>taxAnnotation</span><span class='op'>(</span>
-  <span class='va'>data</span>,
-  <span class='va'>taxa</span>,
-  undetected <span class='op'>=</span> <span class='fl'>0</span>,
-  which <span class='op'>=</span> <span class='st'>"row"</span>,
-  prev <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  abun <span class='op'>=</span> <span class='cn'>TRUE</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
@@ -240,37 +214,10 @@ taxAnnotation is used for cor_heatmap, comp_heatmap &amp;amp; tax_model_heatmap 
     </tr>
     <tr>
       <th>...</th>
-      <td><p>passed to grid::gpar() for grid.text</p></td>
-    </tr>
-    <tr>
-      <th>palette</th>
-      <td><p>named palette from colorspace::hcl_palettes(type = "diverging") or a vector of 3 colour names (low, middle, high)</p></td>
-    </tr>
-    <tr>
-      <th>breaks</th>
-      <td><p>numeric vector of values for colour scale breaks (low, middle, high)</p></td>
-    </tr>
-    <tr>
-      <th>rev_palette</th>
-      <td><p>reverse the colorspace palette</p></td>
-    </tr>
-    <tr>
-      <th>what</th>
-      <td><p>what numbers to print (currently only "values" is supported)</p></td>
-    </tr>
-    <tr>
-      <th>fmt</th>
-      <td><p>number print format</p></td>
-    </tr>
-    <tr>
-      <th>fontsize</th>
-      <td><p>fontsize specification,</p></td>
+      <td><p>extra args, for cor_heatmap passed to viz_heatmap (for heat_numbers() dots are passed to grid::gpar for grid::grid.text)</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>ComplexHeatmap heatmap</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
@@ -288,11 +235,21 @@ taxAnnotation is used for cor_heatmap, comp_heatmap &amp;amp; tax_model_heatmap 
 
 <span class='va'>taxa</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'>microbiome</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/microbiome/man/top_taxa.html'>top_taxa</a></span><span class='op'>(</span><span class='va'>psq</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>50</span><span class='op'>]</span>, size <span class='op'>=</span> <span class='fl'>30</span><span class='op'>)</span>
 
-<span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'>cor_heatmap</span><span class='op'>(</span><span class='va'>psq</span>, <span class='va'>taxa</span>, tax_anno <span class='op'>=</span> <span class='fu'>taxAnnotation</span><span class='op'>(</span><span class='va'>psq</span>, <span class='va'>taxa</span>, undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in loadNamespace(name): there is no package called ‘ComplexHeatmap’</span></div><div class='input'><span class='va'>p</span>
+<span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'>cor_heatmap</span><span class='op'>(</span><span class='va'>psq</span>, <span class='va'>taxa</span>, tax_anno <span class='op'>=</span> <span class='fu'><a href='taxAnnotation.html'>taxAnnotation</a></span><span class='op'>(</span><span class='va'>psq</span>, <span class='va'>taxa</span>, undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='error'>Error: .onLoad failed in loadNamespace() for 'Cairo', details:</span>
+#&gt; <span class='error'>  call: dyn.load(file, DLLpath = DLLpath, ...)</span>
+#&gt; <span class='error'>  error: unable to load shared object '/Users/runner/work/_temp/Library/Cairo/libs/Cairo.so':</span>
+#&gt; <span class='error'>  dlopen(/Users/runner/work/_temp/Library/Cairo/libs/Cairo.so, 6): Library not loaded: /opt/X11/lib/libXrender.1.dylib</span>
+#&gt; <span class='error'>  Referenced from: /Users/runner/work/_temp/Library/Cairo/libs/Cairo.so</span>
+#&gt; <span class='error'>  Reason: image not found</span></div><div class='input'><span class='va'>p</span>
 </div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'p' not found</span></div><div class='input'>
-<span class='va'>p2</span> <span class='op'>&lt;-</span> <span class='fu'>cor_heatmap</span><span class='op'>(</span><span class='va'>psq</span>, <span class='va'>taxa</span>, tax_anno <span class='op'>=</span> <span class='fu'>taxAnnotation</span><span class='op'>(</span><span class='va'>psq</span>, <span class='va'>taxa</span>, undetected <span class='op'>=</span> <span class='fl'>50</span>, which <span class='op'>=</span> <span class='st'>"column"</span><span class='op'>)</span>, taxa_which <span class='op'>=</span> <span class='st'>"column"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in loadNamespace(name): there is no package called ‘ComplexHeatmap’</span></div><div class='input'><span class='va'>p2</span>
+<span class='va'>p2</span> <span class='op'>&lt;-</span> <span class='fu'>cor_heatmap</span><span class='op'>(</span><span class='va'>psq</span>, <span class='va'>taxa</span>, tax_anno <span class='op'>=</span> <span class='fu'><a href='taxAnnotation.html'>taxAnnotation</a></span><span class='op'>(</span><span class='va'>psq</span>, <span class='va'>taxa</span>, undetected <span class='op'>=</span> <span class='fl'>50</span>, which <span class='op'>=</span> <span class='st'>"column"</span><span class='op'>)</span>, taxa_which <span class='op'>=</span> <span class='st'>"column"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='error'>Error: .onLoad failed in loadNamespace() for 'Cairo', details:</span>
+#&gt; <span class='error'>  call: dyn.load(file, DLLpath = DLLpath, ...)</span>
+#&gt; <span class='error'>  error: unable to load shared object '/Users/runner/work/_temp/Library/Cairo/libs/Cairo.so':</span>
+#&gt; <span class='error'>  dlopen(/Users/runner/work/_temp/Library/Cairo/libs/Cairo.so, 6): Library not loaded: /opt/X11/lib/libXrender.1.dylib</span>
+#&gt; <span class='error'>  Referenced from: /Users/runner/work/_temp/Library/Cairo/libs/Cairo.so</span>
+#&gt; <span class='error'>  Reason: image not found</span></div><div class='input'><span class='va'>p2</span>
 </div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'p2' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
