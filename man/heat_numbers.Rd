@@ -4,14 +4,21 @@
 \alias{heat_numbers}
 \title{helps for drawing numbers on heatmap tiles}
 \usage{
-heat_numbers(what = "values", fmt = "\%.1f", fontsize = 7, ...)
+heat_numbers(
+  decimals = 1,
+  fmt = "\%.1f",
+  fontsize = 6,
+  col = "black",
+  fontface = "plain",
+  ...
+)
 }
 \arguments{
-\item{what}{what numbers to print (currently only "values" is supported)}
-
 \item{fmt}{number print format}
 
 \item{fontsize}{fontsize specification,}
+
+\item{what}{what numbers to print (currently only "values" is supported)}
 }
 \description{
 helps for drawing numbers on heatmap tiles

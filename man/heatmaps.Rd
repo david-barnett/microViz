@@ -7,11 +7,11 @@
 cor_heatmap(
   data,
   taxa = NA,
-  tax_anno = NULL,
+  anno_tax = NULL,
   vars = NA,
   cor = c("pearson", "kendall", "spearman")[1],
   cor_use = "everything",
-  colors = heat_colors(),
+  colors = heat_palette(palette = "Green-Orange", sym = TRUE),
   numbers = heat_numbers(),
   taxa_which = "row",
   seriation_method = "OLO_ward",
@@ -27,7 +27,7 @@ cor_heatmap(
 
 \item{taxa}{list of taxa to include, or NA for all}
 
-\item{tax_anno}{taxAnnotation output describing taxa distribution or NULL}
+\item{anno_tax}{taxAnnotation output describing taxa distribution or NULL}
 
 \item{vars}{selection of variable names from sample_data}
 
@@ -35,7 +35,7 @@ cor_heatmap(
 
 \item{cor_use}{passed to cor(use = cor_use)}
 
-\item{colors}{output of heat_colors() to set heatmap fill color scheme}
+\item{colors}{output of heat_palette() to set heatmap fill color scheme}
 
 \item{numbers}{output of heat_numbers() to draw numbers on heatmap cells}
 
@@ -49,7 +49,7 @@ cor_heatmap(
 
 \item{seriation_dist_col}{distance to use in seriation_method_col (if needed)}
 
-\item{tax_transform}{transformation applied to otu_table before correlating}
+\item{tax_transform}{transformation applied to otu_table before correlating (and BEFORE selection of taxa)}
 
 \item{...}{extra args, for cor_heatmap passed to viz_heatmap (for heat_numbers() dots are passed to grid::gpar for grid::grid.text)}
 }
@@ -69,12 +69,15 @@ psq <- dietswap \%>\%
 psq <- tax_filter(ps = psq, min_prevalence = 1 / 10, min_sample_abundance = 1 / 10)
 psq <- tax_agg(psq, "Genus") \%>\% ps_get()
 
-
+set.seed(123)
 taxa <- sample(microbiome::top_taxa(psq)[1:50], size = 30)
 
-p <- cor_heatmap(psq, taxa, tax_anno = taxAnnotation(psq, taxa, undetected = 50))
+p <- cor_heatmap(psq, taxa, anno_tax = taxAnnotation(psq, taxa, undetected = 50))
 p
 
-p2 <- cor_heatmap(psq, taxa, tax_anno = taxAnnotation(psq, taxa, undetected = 50, which = "column"), taxa_which = "column")
+p2 <- cor_heatmap(psq, taxa, anno_tax = taxAnnotation(psq, taxa, undetected = 50, which = "column"), taxa_which = "column")
 p2
+
+p3 <- comp_heatmap(data = psq, taxa = taxa)
+p3
 }

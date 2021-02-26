@@ -2,7 +2,8 @@
 
 ## Features
 * `cor_heatmap` for microbe-metadata correlation heatmaps
-* `taxAnnotation` to plot taxon prevalence and abundance alongside heatmaps with the help of `anno_prev` and `anno_abund` respectively
+* `comp_heatmap` for visualising taxonomic composition across samples (ordered/clustered)
+* `tax_scale` for applying `base::scale()` to phyloseq otu_table
 
 ## Bug fixes
 * `dist_permanova`'s obsolete return arg removed

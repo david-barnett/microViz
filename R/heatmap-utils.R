@@ -3,7 +3,7 @@
 #' Used inside cor_heatmap, comp_heatmap & tax_model_heatmap (will be)
 #'
 #' @param mat matrix for ComplexHeatmap
-#' @param colors output of heat_colors() to set heatmap fill color scheme
+#' @param colors output of heat_palette() to set heatmap fill color scheme
 #' @param numbers output of heat_numbers() to draw numbers on heatmap cells
 #' @param seriation_method method to order the rows (in seriation::seriate)
 #' @param seriation_dist distance to use in seriation_method (if needed)
@@ -12,8 +12,10 @@
 #' @param right_annotation heatmap annotation for right hand side, e.g. taxAnnotation
 #' @param ... extra args passed to ComplexHeatmap::Heatmap()
 #' @noRd
-viz_heatmap <- function(mat,
-                        colors = heat_colors(),
+viz_heatmap <- function(mat, # used for seriation and colours
+                        numbers_mat, # used only for numbers
+                        name = "value",
+                        colors = heat_palette(),
                         numbers = heat_numbers(),
                         seriation_method = "OLO_ward",
                         seriation_dist = "euclidean",
@@ -33,20 +35,27 @@ viz_heatmap <- function(mat,
     # ref https://bookdown.org/rdpeng/rprogdatascience/scoping-rules-of-r.html
     # ref https://adv-r.hadley.nz/function-factories.html
     parent.env(environment(cell_fun)) <- environment()
-  } else {
-    cell_fun <- switch(
-      EXPR = numbers,
-      "values" = {
-        function(j, i, x, y, width, height, fill) {
-          val <- mat[i, j]
-          grid::grid.text(label = sprintf("%.1f", val), x = x, y = y, gp = grid::gpar(fontsize = 7))
-        }
-      }
-      # TODO support compositions by transforming mat
-    )
-  }
+  } else if (inherits(numbers, "list")) {
+    cell_fun <- function(j, i, x, y, width, height, fill) {
+      grid::grid.text(label = sprintf(numbers[["fmt"]], numbers_mat[i, j]), x = x, y = y, gp = numbers[["gp"]])
+    }
+  } #else {
+  #   cell_fun <- switch(
+  #     EXPR = numbers,
+  #     "values" = {
+  #       function(j, i, x, y, width, height, fill) {
+  #         val <- numbers_mat[i, j]
+  #         grid::grid.text(label = sprintf("%.1f", val), x = x, y = y, gp = grid::gpar(fontsize = 7))
+  #       }
+  #     }
+  #   )
+  # }
+
+  # getting colour range from data if necessary
+  if (inherits(colors, "function")) colors <- colors(range = range(mat))
+
   args <- list(
-    matrix = mat, name = "Value", col = colors,
+    matrix = mat, name = name, col = colors,
     right_annotation = right_annotation,
     row_order = ser$row_order,
     cluster_rows = ser$row_tree,
