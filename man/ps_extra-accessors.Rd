@@ -8,6 +8,7 @@
 \alias{info_get}
 \alias{perm_get}
 \alias{bdisp_get}
+\alias{otu_get}
 \title{Extract elements from ps_extra class}
 \usage{
 ps_get(ps_extra)
@@ -21,6 +22,8 @@ info_get(ps_extra)
 perm_get(ps_extra)
 
 bdisp_get(ps_extra)
+
+otu_get(data)
 }
 \arguments{
 \item{ps_extra}{ps_extra class object}

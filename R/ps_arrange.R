@@ -38,7 +38,7 @@ ps_arrange <- function(ps, ..., .target = "sample_data") {
     },
     "otu_table" = {
       otu <- phyloseq::otu_table(ps)
-      if (phyloseq::taxa_are_rows(ps)) otu <- t(otu)
+      if (phyloseq::taxa_are_rows(ps)) otu <- phyloseq::t(otu)
       samplenames <- rownames(otu)
       otu_df <- as.data.frame.matrix(otu)
       otu_df[["samplenames"]] <- samplenames

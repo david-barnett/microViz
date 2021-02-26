@@ -41,7 +41,7 @@ ps_otu2samdat <- function(ps, taxa = NULL) {
   ps_df <- data.frame(phyloseq::sample_data(ps))
   otu <- phyloseq::otu_table(ps)
 
-  if (phyloseq::taxa_are_rows(ps)) otu <- t(otu)
+  if (phyloseq::taxa_are_rows(ps)) otu <- phyloseq::t(otu)
 
   otu <- otu[, taxa]
   otu_df <- as.data.frame.matrix(otu)

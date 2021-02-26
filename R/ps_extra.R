@@ -48,8 +48,15 @@ print.ps_extra <- function(x, ...) {
 #' @noRd
 print.ps_extra_info <- function(x, ..., all = FALSE) {
   cat("phyloseq info:\n")
-  if (isFALSE(all)) cat("tax_agg =", x[["tax_agg"]], "tax_transform =", x[["tax_transform"]])
-  if (isTRUE(all)) for (i in names(x)) cat(i, "=", x[[i]], "\n")
+  if (isFALSE(all)){
+    out <- paste("tax_agg =", x[["tax_agg"]], "tax_transform =", x[["tax_transform"]])
+    if (!identical(x[["tax_scale"]], NA_character_)) out <- paste(out, paste("tax_scale =", x[["tax_scale"]]))
+    cat(out)
+  } else if (isTRUE(all)){
+    for (i in names(x)) cat(i, "=", x[[i]], "\n")
+  } else {
+    stop("all must be TRUE or FALSE, it is: ", all)
+  }
 }
 
 #' @param ps phyloseq object
@@ -70,6 +77,7 @@ new_ps_extra <- function(
 
 #' @param tax_agg aggregation level from tax_agg() (if any)
 #' @param tax_transform transformation name from tax_transform() (if any)
+#' @param tax_scale scaling specified in tax_scale() if any
 #' @param distMethod distance method in dist_calc()
 #' @param ordMethod ordination method in ord_calc()
 #' @param constraints constraints (if any) for ord_calc()
@@ -78,12 +86,14 @@ new_ps_extra <- function(
 new_ps_extra_info <- function(
                               tax_agg = NA_character_,
                               tax_transform = NA_character_,
+                              tax_scale = NA_character_,
                               distMethod = NA_character_,
                               ordMethod = NA_character_,
                               constraints = NA_character_,
                               conditions = NA_character_) {
   info <- c(
     tax_agg = tax_agg, tax_transform = tax_transform,
+    tax_scale = tax_scale,
     distMethod = distMethod,
     ordMethod = ordMethod, constraints = constraints, conditions = conditions
   )

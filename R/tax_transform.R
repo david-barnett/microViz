@@ -23,13 +23,14 @@
 #' tax_agg(ps = dietswap, agg_level = "none") %>% tax_transform("identity")
 tax_transform <- function(data, transformation, ...) {
 
+  ps <- ps_get(data)
+
   # check input data object class
   if (inherits(data, "ps_extra")) {
-    ps <- ps_get(data)
     info <- info_get(data)
+    if (!is.na(info[["tax_transform"]])) warning("data were already transformed: ", info[["tax_transform"]])
     info[["tax_transform"]] <- transformation
   } else if (methods::is(data, "phyloseq")) {
-    ps <- data
     info <- new_ps_extra_info(tax_transform = transformation)
   } else {
     stop("data is wrong class, should be ps_extra output of tax_agg, or a phyloseq")

@@ -62,10 +62,16 @@ bdisp_get <- function(ps_extra) {
 
 # @param data phyloseq or ps_Extra
 # @return phyloseq otu_table matrix with taxa as columns
+#' @rdname ps_extra-accessors
+#' @export
 otu_get <- function(data) {
-  ps <- ps_get(data)
-  otu <- phyloseq::otu_table(ps)
-  if (phyloseq::taxa_are_rows(otu)) otu <- t(otu)
+  if (methods::is(data, "otu_table")){
+    otu <- data
+  } else {
+    ps <- ps_get(data)
+    otu <- phyloseq::otu_table(ps)
+  }
+  if (phyloseq::taxa_are_rows(otu)) otu <- phyloseq::t(otu)
   return(otu)
 }
 
