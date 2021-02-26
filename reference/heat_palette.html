@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Check for (and fix) common problems with phyloseq objects — phyloseq_validate • microViz</title>
+<title>Easy palettes for ComplexHeatmap — heat_palette • microViz</title>
 
 
 <!-- jquery -->
@@ -39,13 +39,8 @@
 
 
 
-<meta property="og:title" content="Check for (and fix) common problems with phyloseq objects — phyloseq_validate" />
-<meta property="og:description" content="
-
-Ensures the storage mode of a phyloseq object's otu table is &quot;double&quot; instead of e.g. &quot;integer&quot;.
-Checks for, and warns about, common uninformative entries in the tax_table which often cause unwanted results in
-
-" />
+<meta property="og:title" content="Easy palettes for ComplexHeatmap — heat_palette" />
+<meta property="og:description" content="Pass a named diverging colorspace hcl palette to circlize::colorRamp2" />
 
 
 
@@ -131,48 +126,48 @@ Checks for, and warns about, common uninformative entries in the tax_table which
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Check for (and fix) common problems with phyloseq objects</h1>
-    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/phyloseq_validate.R'><code>R/phyloseq_validate.R</code></a></small>
-    <div class="hidden name"><code>phyloseq_validate.Rd</code></div>
+    <h1>Easy palettes for ComplexHeatmap</h1>
+    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/heatmaps.R'><code>R/heatmaps.R</code></a></small>
+    <div class="hidden name"><code>heat_palette.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
-<ul>
-<li><p>Ensures the storage mode of a phyloseq object's otu table is "double" instead of e.g. "integer".</p></li>
-<li><p>Checks for, and warns about, common uninformative entries in the tax_table which often cause unwanted results in</p></li>
-</ul>
-
+    <p>Pass a named diverging colorspace hcl palette to circlize::colorRamp2</p>
     </div>
 
-    <pre class="usage"><span class='fu'>phyloseq_validate</span><span class='op'>(</span><span class='va'>ps</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>heat_palette</span><span class='op'>(</span>
+  palette <span class='op'>=</span> <span class='st'>"Greens"</span>,
+  breaks <span class='op'>=</span> <span class='fl'>5</span>,
+  range <span class='op'>=</span> <span class='cn'>NA</span>,
+  rev_palette <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  sym <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>ps</th>
-      <td><p>phyloseq object</p></td>
+      <th>palette</th>
+      <td><p>named palette from colorspace::hcl_palettes(type = "diverging") or a vector of colour names (same length as indicated by breaks)</p></td>
     </tr>
     <tr>
-      <th>verbose</th>
-      <td><p>print informative messages if true</p></td>
+      <th>breaks</th>
+      <td><p>integer number of breaks, or numeric vector of values for colour scale breaks (including ends)</p></td>
+    </tr>
+    <tr>
+      <th>range</th>
+      <td><p>NA to return palette generating function that takes a range, or numeric vector indicating the range, to return a palette</p></td>
+    </tr>
+    <tr>
+      <th>rev_palette</th>
+      <td><p>reverse the colorspace palette</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>possibly modified phyloseq object</p>
+    <p>circlize::colorRamp2 palette if !is.na(range), or function returning a palette when given a range</p>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>dietswap</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span>
-
-<span class='fu'>phyloseq_validate</span><span class='op'>(</span><span class='va'>dietswap</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; phyloseq-class experiment-level object
-#&gt; otu_table()   OTU Table:         [ 130 taxa and 222 samples ]
-#&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]</div><div class='input'><span class='co'># no messages means no problems detected</span>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

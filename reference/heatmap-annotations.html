@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>taxAnnotation for ComplexHeatmap — taxAnnotation • microViz</title>
+<title>Create list describing taxa annotation — tax_anno • microViz</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="taxAnnotation for ComplexHeatmap — taxAnnotation" />
-<meta property="og:description" content="taxAnnotation is used for cor_heatmap, comp_heatmap &amp;amp; tax_model_heatmap (will be)" />
+<meta property="og:title" content="Create list describing taxa annotation — tax_anno" />
+<meta property="og:description" content="main usefulness of tax_anno function is to give sane defaults and prompt user which annotation options are available" />
 
 
 
@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9004</span>
       </span>
     </div>
 
@@ -126,24 +126,16 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>taxAnnotation for ComplexHeatmap</h1>
+    <h1>Create list describing taxa annotation</h1>
     <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/heatmaps.R'><code>R/heatmaps.R</code></a></small>
     <div class="hidden name"><code>heatmap-annotations.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>taxAnnotation is used for cor_heatmap, comp_heatmap &amp; tax_model_heatmap (will be)</p>
+    <p>main usefulness of tax_anno function is to give sane defaults and prompt user which annotation options are available</p>
     </div>
 
-    <pre class="usage"><span class='fu'>taxAnnotation</span><span class='op'>(</span>
-  <span class='va'>data</span>,
-  <span class='va'>taxa</span>,
-  undetected <span class='op'>=</span> <span class='fl'>0</span>,
-  which <span class='op'>=</span> <span class='st'>"row"</span>,
-  prev <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  abun <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  <span class='va'>...</span>
-<span class='op'>)</span>
+    <pre class="usage"><span class='fu'>tax_anno</span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>0</span>, which <span class='op'>=</span> <span class='st'>"row"</span>, prev <span class='op'>=</span> <span class='fl'>1</span>, abund <span class='op'>=</span> <span class='fl'>2</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='fu'>anno_prev</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>taxa</span>, undetected <span class='op'>=</span> <span class='fl'>0</span>, which <span class='op'>=</span> <span class='st'>"row"</span>, <span class='va'>...</span><span class='op'>)</span>
 
@@ -153,38 +145,27 @@
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data</th>
-      <td><p>phyloseq or ps-extra</p></td>
-    </tr>
-    <tr>
-      <th>taxa</th>
-      <td><p>names of taxa</p></td>
-    </tr>
-    <tr>
       <th>undetected</th>
       <td><p>value above which taxa are considered present/detected in a sample</p></td>
     </tr>
     <tr>
       <th>which</th>
-      <td><p>'row' or 'column' annotation</p></td>
+      <td><p>"row" or "column" annotation?</p></td>
     </tr>
     <tr>
       <th>prev</th>
-      <td><p>if TRUE, prevalence annotation plot drawn with anno_prev</p></td>
+      <td><p>order in which prevalence annotation shown (number, or NA)</p></td>
     </tr>
     <tr>
-      <th>abun</th>
-      <td><p>if TRUE, abundance annotation plot drawn with anno_abund</p></td>
+      <th>abund</th>
+      <td><p>order in which abundance annotation shown (number, or NA)</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>args passed to anno_barplot</p></td>
+      <td><p>further args passed HeatmapAnnotation</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>a ComplexHeatmap anno_barplot</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
