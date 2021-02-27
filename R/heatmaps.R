@@ -39,7 +39,7 @@
 #'
 #' # make simple correlation heatmap with all numeric-like variables
 #' p <- cor_heatmap(psq, taxa, anno_tax = tax_anno(undetected = 50))
-#' # NOTE: detection threshold set to 50 as example data is HITchip (seems to have background noise)
+#' # NOTE: detection threshold set to 50 as HITchip example data seems to have background noise
 #' p
 #'
 #' # optionally you can set the absolute width and height of the heatmap body manually
@@ -57,7 +57,11 @@
 #' p2
 #'
 #' # make the same correlation heatmap, but rotated
-#' p3 <- cor_heatmap(psq, taxa, anno_tax = tax_anno(undetected = 50, which = "column"), taxa_which = "column")
+#' p3 <- cor_heatmap(
+#'   psq, taxa,
+#'   taxa_which = "column",
+#'   anno_tax = tax_anno(undetected = 50, which = "column")
+#' )
 #' p3
 cor_heatmap <- function(data,
                         taxa = phyloseq::taxa_names(ps_get(data)),
@@ -175,6 +179,8 @@ cor_heatmap <- function(data,
 #' @param tax_scale_numbers scaling applied to numbers otu_table after transformation
 #' @param tax_show selection of taxa to show on heatmap, AFTER transformation (and scaling) of taxa
 #' @param samples_show selection of samples to show on heatmap, AFTER transformation (and scaling) of taxa
+#' @param gridlines list output of heat_grid() for setting gridline style
+#'
 #' @param ... extra args, passed to viz_heatmap internal function
 #'
 #' @export
@@ -385,7 +391,7 @@ heat_grid <- function(col = "white",
 #'
 #' @export
 #' @rdname heatmap-annotations
-tax_anno <- function(undetected = 0, which = "row", prev = 1, abund = 2, size = 30, gap = 2, rel_sizes = c(1, 1),  ...) {
+tax_anno <- function(undetected = 0, which = "row", prev = 1, abund = 2, size = 30, gap = 2, rel_sizes = c(1, 1), ...) {
   annos <- c(prev = prev, abund = abund) # written to support further annos in future
   annos <- sort(annos[!is.na(annos)])
 
@@ -393,7 +399,9 @@ tax_anno <- function(undetected = 0, which = "row", prev = 1, abund = 2, size = 
     stop("prev and abund must not be the same number, and neither should have a value greater than the number of non-NA entries")
     # TODO ensure that the order of values is used instead of the values (and remove the last part of this error)
   }
-  if(length(rel_sizes) != length(annos)){stop("length of rel_sizes must be equal to the number of non-NA annotations")}
+  if (length(rel_sizes) != length(annos)) {
+    stop("length of rel_sizes must be equal to the number of non-NA annotations")
+  }
   sizes <- size * rel_sizes / sum(rel_sizes, na.rm = TRUE)
   list(what = names(annos), undetected = undetected, which = which, sizes = sizes, gap = gap, ...)
 }

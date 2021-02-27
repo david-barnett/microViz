@@ -96,7 +96,8 @@
 #'   lims(x = c(-5, 6), y = c(-5, 5)) +
 #'   scale_colour_brewer(palette = "Set1")
 #'
-#' # it is possible to facet these plots, but only unconstrained ordination plots and with plot_taxa = FALSE
+#' # it is possible to facet these plots,
+#' # but only unconstrained ordination plots and with plot_taxa = FALSE
 #' unconstrained_aitchison_pca %>%
 #'   ord_plot(color = "sex", auto_caption = NA) +
 #'   facet_wrap("sex") +

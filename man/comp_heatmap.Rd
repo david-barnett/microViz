@@ -65,6 +65,8 @@ comp_heatmap(
 
 \item{samples_show}{selection of samples to show on heatmap, AFTER transformation (and scaling) of taxa}
 
+\item{gridlines}{list output of heat_grid() for setting gridline style}
+
 \item{...}{extra args, passed to viz_heatmap internal function}
 }
 \description{

@@ -4,6 +4,9 @@
 * `cor_heatmap` for microbe-metadata correlation heatmaps
 * `comp_heatmap` for visualising taxonomic composition across samples (ordered/clustered)
 * `tax_scale` for applying `base::scale()` to phyloseq otu_table
+* `ord_plot` auto_caption size can now be set, and it also now exposes the `coord_*` args: expand and clip 
+* `ord_plot_iris` now handles multiple rings of anno_binary annotations, and anno_binary position is now closer when no anno_colour is set
+* `ord_explore` shiny app menu styling is a little cleaner (but still needs some love)
 
 ## Bug fixes
 * `dist_permanova`'s obsolete return arg removed

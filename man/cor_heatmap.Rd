@@ -76,7 +76,7 @@ taxa <- sample(microbiome::top_taxa(ps_get(psq))[1:50], size = 30)
 
 # make simple correlation heatmap with all numeric-like variables
 p <- cor_heatmap(psq, taxa, anno_tax = tax_anno(undetected = 50))
-# NOTE: detection threshold set to 50 as example data is HITchip (seems to have background noise)
+# NOTE: detection threshold set to 50 as HITchip example data seems to have background noise
 p
 
 # optionally you can set the absolute width and height of the heatmap body manually
@@ -94,6 +94,10 @@ p2 <- cor_heatmap(psq, taxa,
 p2
 
 # make the same correlation heatmap, but rotated
-p3 <- cor_heatmap(psq, taxa, anno_tax = tax_anno(undetected = 50, which = "column"), taxa_which = "column")
+p3 <- cor_heatmap(
+  psq, taxa,
+  taxa_which = "column",
+  anno_tax = tax_anno(undetected = 50, which = "column")
+)
 p3
 }

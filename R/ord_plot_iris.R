@@ -201,7 +201,7 @@ ord_plot_iris <- function(
     )
     # overwrite defaults and add any other args
     ac_args[names(anno_colour_style)] <- anno_colour_style
-
+    # add to plot
     iris <- iris + do.call(ggplot2::geom_segment, args = ac_args)
   } else {
     # for default positioning of anno_binary
@@ -216,12 +216,12 @@ ord_plot_iris <- function(
       ab_args <- list(
         # paste formula together to ensure anno_binary[i] evalutates
         # otherwise all do.calls use formula with last i value
-        data = as.formula(paste0("~ .[.[['", anno_binary[i], "']] == TRUE, ]")),
+        data = stats::as.formula(paste0("~ .[.[['", anno_binary[i], "']] == TRUE, ]")),
         y = y, shape = "circle", size = 1, colour = "black", show.legend = FALSE
       )
       # overwrite defaults and add any other args
       ab_args[names(anno_binary_style)] <- purrr::map(anno_binary_style, .f = i)
-
+      # add to plot
       iris <- iris + do.call(ggplot2::geom_point, args = ab_args)
     }
   }
