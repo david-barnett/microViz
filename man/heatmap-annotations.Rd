@@ -6,11 +6,20 @@
 \alias{anno_abund}
 \title{Create list describing taxa annotation}
 \usage{
-tax_anno(undetected = 0, which = "row", prev = 1, abund = 2, ...)
+tax_anno(
+  undetected = 0,
+  which = "row",
+  prev = 1,
+  abund = 2,
+  size = 30,
+  gap = 2,
+  rel_sizes = c(1, 1),
+  ...
+)
 
-anno_prev(data, taxa, undetected = 0, which = "row", ...)
+anno_prev(data, taxa, undetected = 0, which = "row", size = 15, ...)
 
-anno_abund(data, taxa, undetected = 0, which = "row", ...)
+anno_abund(data, taxa, undetected = 0, which = "row", size = 15, ...)
 }
 \arguments{
 \item{undetected}{value above which taxa are considered present/detected in a sample}
@@ -20,6 +29,12 @@ anno_abund(data, taxa, undetected = 0, which = "row", ...)
 \item{prev}{order in which prevalence annotation shown (number, or NA)}
 
 \item{abund}{order in which abundance annotation shown (number, or NA)}
+
+\item{size}{total size of all annotations in mm, excluding gaps (used as width or height, depending on value of which)}
+
+\item{gap}{size of gap between annotations (in mm)}
+
+\item{rel_sizes}{relative sizes of non-NA annotations (in given order)}
 
 \item{...}{further args passed HeatmapAnnotation}
 }

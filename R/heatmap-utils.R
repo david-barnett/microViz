@@ -19,7 +19,8 @@ viz_heatmap <- function(mat, # used for seriation and colours
                         numbers = heat_numbers(),
                         seriation_method = "OLO_ward",
                         seriation_dist = "euclidean",
-                        seriation_method_col = seriation_method, seriation_dist_col = seriation_dist,
+                        seriation_method_col = seriation_method,
+                        seriation_dist_col = seriation_dist,
                         right_annotation = NULL,
                         ...) {
   dots <- list(...)
@@ -27,10 +28,10 @@ viz_heatmap <- function(mat, # used for seriation and colours
   ser <- mat_seriate(mat = mat, method = seriation_method, dist = seriation_dist)
 
   # work in progress handling
-  if (identical(numbers, NULL)){
-    cell_fun = NULL
-  } else if (inherits(numbers, "function")){
-    cell_fun = numbers
+  if (identical(numbers, NULL)) {
+    cell_fun <- NULL
+  } else if (inherits(numbers, "function")) {
+    cell_fun <- numbers
     # set closure env's parent env to current env so cell_fun can find object mat!
     # ref https://bookdown.org/rdpeng/rprogdatascience/scoping-rules-of-r.html
     # ref https://adv-r.hadley.nz/function-factories.html
@@ -39,35 +40,23 @@ viz_heatmap <- function(mat, # used for seriation and colours
     cell_fun <- function(j, i, x, y, width, height, fill) {
       grid::grid.text(label = sprintf(numbers[["fmt"]], numbers_mat[i, j]), x = x, y = y, gp = numbers[["gp"]])
     }
-  } #else {
-  #   cell_fun <- switch(
-  #     EXPR = numbers,
-  #     "values" = {
-  #       function(j, i, x, y, width, height, fill) {
-  #         val <- numbers_mat[i, j]
-  #         grid::grid.text(label = sprintf("%.1f", val), x = x, y = y, gp = grid::gpar(fontsize = 7))
-  #       }
-  #     }
-  #   )
-  # }
+  }
 
   # getting colour range from data if necessary
   if (inherits(colors, "function")) colors <- colors(range = range(mat))
 
   args <- list(
-    matrix = mat, name = name, col = colors,
+    matrix = mat,
+    name = name,
+    col = colors,
     right_annotation = right_annotation,
     row_order = ser$row_order,
     cluster_rows = ser$row_tree,
     column_order = ser$col_order,
     cluster_columns = ser$col_tree,
-    column_names_rot = 45,
-    column_dend_side = "bottom",
-    column_names_side = "top",
-    row_names_gp = grid::gpar(fontsize = 8),
-    column_names_gp = grid::gpar(fontsize = 8),
-    rect_gp = grid::gpar(col = "white", lwd = 0.75),
-    cell_fun = cell_fun
+    cell_fun = cell_fun,
+    column_names_gp = grid::gpar(fontsize = 7),
+    row_names_gp = grid::gpar(fontsize = 7)
   )
   args[names(dots)] <- dots
 
@@ -105,6 +94,3 @@ abund_calc <- function(data, taxa, undetected = 0) {
   props <- apply(props, MARGIN = 2, function(x) ifelse(test = x > prop_threshold, yes = x, no = NaN))
   return(props)
 }
-
-
-

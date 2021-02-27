@@ -6,29 +6,95 @@
 \usage{
 comp_heatmap(
   data,
-  taxa = NA,
-  samples = NA,
+  taxa = phyloseq::taxa_names(ps_get(data)),
+  samples = phyloseq::sample_names(ps_get(data)),
   anno_tax = NULL,
   anno_samples = NULL,
-  colors = heat_palette(),
+  colors = heat_palette(palette = "Greens", rev = TRUE),
+  numbers = NULL,
   tax_transform_colors = "clr",
   tax_scale_colors = "neither",
-  tax_select = NA,
-  sample_select = NA,
   taxa_which = "row",
   seriation_method = "OLO_ward",
   seriation_dist = "euclidean",
   seriation_method_col = seriation_method,
   seriation_dist_col = seriation_dist,
-  numbers = NULL,
   tax_transform_numbers = tax_transform_colors,
   tax_scale_numbers = tax_scale_colors,
+  tax_show = taxa,
+  samples_show = samples,
+  gridlines = heat_grid(lwd = 0.1, col = "black"),
+  name = "mat",
   ...
 )
 }
 \arguments{
-\item{tax_scale_numbers}{}
+\item{data}{phyloseq or phyloseq extra}
+
+\item{taxa}{list of taxa to include (selection occurs BEFORE any tax_transform)}
+
+\item{samples}{list of taxa to include (selection occurs BEFORE any tax_transform)}
+
+\item{anno_tax}{NULL or tax_anno() list output}
+
+\item{anno_samples}{NULL only support so far TODO}
+
+\item{colors}{output of heat_palette() to set heatmap fill color scheme}
+
+\item{numbers}{NULL or output of heat_numbers() to draw numbers on heatmap cells}
+
+\item{tax_transform_colors}{transformation applied to otu_table used for colours and sorting}
+
+\item{tax_scale_colors}{scaling applied to otu_table after transformation}
+
+\item{taxa_which}{row or column (which represents a taxon)}
+
+\item{seriation_method}{method to order the rows (in seriation::seriate)}
+
+\item{seriation_dist}{distance to use in seriation_method (if needed)}
+
+\item{seriation_method_col}{method to order the columns (in seriation::seriate)}
+
+\item{seriation_dist_col}{distance to use in seriation_method_col (if needed)}
+
+\item{tax_transform_numbers}{transformation applied to otu_table used only for any numbers printed}
+
+\item{tax_scale_numbers}{scaling applied to numbers otu_table after transformation}
+
+\item{tax_show}{selection of taxa to show on heatmap, AFTER transformation (and scaling) of taxa}
+
+\item{samples_show}{selection of samples to show on heatmap, AFTER transformation (and scaling) of taxa}
+
+\item{...}{extra args, passed to viz_heatmap internal function}
 }
 \description{
-Heatmap of taxonomic composition across samples
+If seriated, always sorts by the values of the colours shown.
+Any cell numbers printed can be set to different values, and do not affect ordering.
+}
+\examples{
+library(dplyr)
+data("dietswap", package = "microbiome")
+psq <- tax_filter(dietswap, min_prevalence = 1 / 10, min_sample_abundance = 1 / 10)
+psq <- tax_agg(psq, "Genus")
+
+set.seed(123)
+taxa <- sample(microbiome::top_taxa(ps_get(psq))[1:50], size = 30)
+
+p <- comp_heatmap(data = psq, taxa = taxa, anno_tax = tax_anno(undetected = 50))
+p
+
+# you can place the legend at the bottom, but it is a little complicated
+p <- comp_heatmap(
+  data = psq, taxa = taxa, anno_tax = tax_anno(undetected = 50),
+  heatmap_legend_param = list(direction = "horizontal", title_position = "lefttop")
+)
+ComplexHeatmap::draw(p, heatmap_legend_side = "bottom", adjust_annotation_extension = FALSE)
+
+p2 <- comp_heatmap(
+  psq,
+  taxa = taxa,
+  taxa_which = "column",
+  anno_tax = tax_anno(undetected = 50, which = "column")
+)
+p2
 }

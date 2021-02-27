@@ -7,7 +7,7 @@
 heat_numbers(
   decimals = 1,
   fmt = "\%.1f",
-  fontsize = 6,
+  fontsize = 7,
   col = "black",
   fontface = "plain",
   ...

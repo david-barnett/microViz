@@ -8,22 +8,22 @@ heat_palette(
   palette = "Greens",
   breaks = 5,
   range = NA,
-  rev_palette = FALSE,
+  rev = FALSE,
   sym = FALSE
 )
 }
 \arguments{
-\item{palette}{named palette from colorspace::hcl_palettes(type = "diverging") or a vector of colour names (same length as indicated by breaks)}
+\item{palette}{named palette from colorspace::hcl_palettes() diverging/sequential or a vector of colour names/hexcodes}
 
 \item{breaks}{integer number of breaks, or numeric vector of values for colour scale breaks (including ends)}
 
 \item{range}{NA to return palette generating function that takes a range, or numeric vector indicating the range, to return a palette}
 
-\item{rev_palette}{reverse the colorspace palette}
+\item{rev}{reverse the palette?}
 }
 \value{
 circlize::colorRamp2 palette if !is.na(range), or function returning a palette when given a range
 }
 \description{
-Pass a named diverging colorspace hcl palette to circlize::colorRamp2
+Pass a named colorspace hcl palette to circlize::colorRamp2
 }

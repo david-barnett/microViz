@@ -6,8 +6,8 @@
 \usage{
 cor_heatmap(
   data,
-  taxa = NA,
-  anno_tax = NULL,
+  taxa = phyloseq::taxa_names(ps_get(data)),
+  anno_tax = tax_anno(),
   vars = NA,
   cor = c("pearson", "kendall", "spearman")[1],
   cor_use = "everything",
@@ -19,6 +19,7 @@ cor_heatmap(
   seriation_method_col = seriation_method,
   seriation_dist_col = seriation_dist,
   tax_transform = "identity",
+  gridlines = heat_grid(lwd = 0.5),
   ...
 )
 }
@@ -67,17 +68,32 @@ psq <- dietswap \%>\%
     african = if_else(nationality == "AFR", true = 1, false = 0)
   )
 psq <- tax_filter(ps = psq, min_prevalence = 1 / 10, min_sample_abundance = 1 / 10)
-psq <- tax_agg(psq, "Genus") \%>\% ps_get()
+psq <- tax_agg(psq, "Genus")
 
+# randomly select 30 taxa from the 50 most abundant taxa
 set.seed(123)
-taxa <- sample(microbiome::top_taxa(psq)[1:50], size = 30)
+taxa <- sample(microbiome::top_taxa(ps_get(psq))[1:50], size = 30)
 
-p <- cor_heatmap(psq, taxa, anno_tax = taxAnnotation(psq, taxa, undetected = 50))
+# make simple correlation heatmap with all numeric-like variables
+p <- cor_heatmap(psq, taxa, anno_tax = tax_anno(undetected = 50))
+# NOTE: detection threshold set to 50 as example data is HITchip (seems to have background noise)
 p
 
-p2 <- cor_heatmap(psq, taxa, anno_tax = taxAnnotation(psq, taxa, undetected = 50, which = "column"), taxa_which = "column")
+# optionally you can set the absolute width and height of the heatmap body manually
+p1 <- cor_heatmap(psq, taxa,
+  anno_tax = tax_anno(undetected = 50),
+  width = grid::unit(5, "cm"), height = grid::unit(15, "cm")
+)
+p1
+
+# you can also change the annotation sizes
+p2 <- cor_heatmap(psq, taxa,
+  anno_tax = tax_anno(undetected = 50, size = 45, rel_sizes = c(1, 2)),
+  width = grid::unit(5, "cm"), height = grid::unit(15, "cm")
+)
 p2
 
-p3 <- comp_heatmap(data = psq, taxa = taxa)
+# make the same correlation heatmap, but rotated
+p3 <- cor_heatmap(psq, taxa, anno_tax = tax_anno(undetected = 50, which = "column"), taxa_which = "column")
 p3
 }
