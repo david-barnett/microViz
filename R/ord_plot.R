@@ -26,8 +26,10 @@
 #' @param tax_lab_style list of fixed aesthetics (colour, size etc) for the taxon labels
 #' @param taxon_renamer function that takes any plotted taxon names and returns modified names for labels
 #' @param plot_samples if TRUE, plot sample points with geom_point
-#' @param auto_caption if TRUE, add a small font caption with info about the ordination
+#' @param auto_caption size of caption with info about the ordination, NA for none
 #' @param center expand plot limits to center around origin point (0,0)
+#' @param clip clipping of labels that extend outside plot limits?
+#' @param expand expand plot limits a little bit further than data range?
 #' @param ... pass aesthetics arguments for sample points, drawn with geom_point using aes_string
 #'
 #' @return ggplot
@@ -65,7 +67,7 @@
 #'   ord_plot(colour = "bmi_group") +
 #'   stat_ellipse(aes(linetype = bmi_group, colour = bmi_group))
 #'
-#' # or instead constrain on weight and female
+#' # alternatively, constrain variation on weight and female
 #' constrained_aitchison_rda <- dietswap %>%
 #'   tax_agg("Genus") %>%
 #'   tax_transform("clr") %>%
@@ -94,17 +96,20 @@
 #'   lims(x = c(-5, 6), y = c(-5, 5)) +
 #'   scale_colour_brewer(palette = "Set1")
 #'
-#' # it is possible to facet only unconstrained ordination plots (with plot_taxa = FALSE)
+#' # it is possible to facet these plots, but only unconstrained ordination plots and with plot_taxa = FALSE
 #' unconstrained_aitchison_pca %>%
-#'   ord_plot(color = "sex") +
+#'   ord_plot(color = "sex", auto_caption = NA) +
 #'   facet_wrap("sex") +
+#'   theme(line = element_blank()) +
 #'   stat_density2d(aes(colour = sex)) +
 #'   guides(colour = FALSE)
 #'
 #' unconstrained_aitchison_pca %>%
-#'   ord_plot(color = "bmi_group", plot_samples = FALSE) +
+#'   ord_plot(color = "bmi_group", plot_samples = FALSE, auto_caption = NA) +
 #'   facet_wrap("sex") +
-#'   stat_density2d_filled(show.legend = FALSE)
+#'   theme(line = element_blank(), axis.text = element_blank()) +
+#'   stat_density2d_filled(show.legend = FALSE) +
+#'   geom_point(size = 1, shape = 21, colour = "black", fill = "white")
 ord_plot <-
   function(data,
            axes = 1:2,
@@ -122,8 +127,10 @@ ord_plot <-
            tax_lab_style = list(),
            taxon_renamer = function(x) identity(x),
            plot_samples = TRUE,
-           auto_caption = TRUE,
+           auto_caption = 8,
            center = FALSE,
+           clip = "off",
+           expand = !center,
            ...) {
     ps <- ps_get(data)
     ordination <- ord_get(data)
@@ -220,7 +227,7 @@ ord_plot <-
     ) +
       ggplot2::theme_minimal() +
       ggplot2::labs(x = axeslabels[1], y = axeslabels[2]) +
-      ggplot2::coord_cartesian(clip = "off", default = TRUE)
+      ggplot2::coord_cartesian(clip = clip, default = TRUE, expand = expand)
 
     # set geom_point variable aesthetics
     aesthetics <- do.call(what = ggplot2::aes_string, args = aestheticArgs)
@@ -332,7 +339,7 @@ ord_plot <-
     }
 
     # add automated title if requested (default TRUE)
-    if (auto_caption) {
+    if (!identical(NA, auto_caption)) {
       infoElements <- list(
         m = paste("method =", info[["ordMethod"]], paste0("(", scaling, " scaling)")),
         t = paste("tax_agg =", info[["tax_agg"]])
@@ -351,22 +358,24 @@ ord_plot <-
       caption <- paste(caption, paste(infoElements, collapse = ". "))
 
       p <- p + ggplot2::labs(caption = caption) +
-        ggplot2::theme(plot.caption = ggplot2::element_text(size = 6))
+        ggplot2::theme(plot.caption = ggplot2::element_text(size = auto_caption))
     }
 
     # center the plot if requested using helper function
-    if (isTRUE(center)) p <- center_plot(p)
+    if (isTRUE(center)) p <- center_plot(p, clip = clip, expand = expand)
 
     return(p)
   }
 
 # helper functions
-center_plot <- function(plot) {
+center_plot <- function(plot, clip = "off", expand = TRUE) {
   lims <- get_plot_limits(plot)
   plot + ggplot2::coord_cartesian(
     xlim = c(-max(abs(lims$x)), max(abs(lims$x))),
     ylim = c(-max(abs(lims$y)), max(abs(lims$y))),
-    default = TRUE
+    default = TRUE,
+    clip = clip,
+    expand = expand
   )
 }
 

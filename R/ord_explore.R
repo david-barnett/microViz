@@ -23,7 +23,7 @@
 #'   dist_calc("bray") %>%
 #'   ord_calc("PCoA")
 #'
-#' # ord_explore(ord = ord1)
+#' # ord_explore(ord = ord1, auto_caption = NA)
 #'
 #' # constrained biplot example #
 #' data("dietswap", package = "microbiome")
@@ -80,16 +80,18 @@ ord_explore <- function(ord, ps = NULL, seriate_method = "OLO_ward", tax_transfo
       shiny::sidebarLayout(
         position = "left",
         sidebarPanel = shiny::sidebarPanel(
+          shiny::h3("ord_explore"),
           width = 3,
           shiny::fluidRow(
+            shiny::h4("Ordination options"),
             shiny::selectInput(
-              inputId = "ord_colour", label = "Point colour (fixed or variable)",
+              inputId = "ord_colour", label = "Point colour",
               choices = list(Variable = phyloseq::sample_variables(ps), Fixed = grDevices::colors(distinct = TRUE)),
               selected = "gray"
             ),
             # shape
             shiny::radioButtons(
-              inputId = "shape_var_type", label = "Point shape is: ", inline = TRUE,
+              inputId = "shape_var_type", label = "Point shape:", inline = TRUE,
               choices = c(
                 "Fixed" = "fixed",
                 "Variable" = "variable"
@@ -97,18 +99,17 @@ ord_explore <- function(ord, ps = NULL, seriate_method = "OLO_ward", tax_transfo
               selected = "fixed"
             ),
             shiny::sliderInput(
-              inputId = "ord_shape_num",
-              label = "Fixed point shape",
+              inputId = "ord_shape_num", label = NULL,
               value = 19, min = 1, step = 1, max = 21
             ),
             shiny::selectInput(
-              inputId = "ord_shape_var", label = "Variable point shape",
+              inputId = "ord_shape_var", label = NULL,
               choices = phyloseq::sample_variables(ps),
               selected = NULL
             ),
             # size
             shiny::radioButtons(
-              inputId = "size_var_type", label = "Points size is: ", inline = TRUE,
+              inputId = "size_var_type", label = "Point size:", inline = TRUE,
               choices = c(
                 "Fixed" = "fixed",
                 "Variable" = "variable"
@@ -116,18 +117,17 @@ ord_explore <- function(ord, ps = NULL, seriate_method = "OLO_ward", tax_transfo
               selected = "fixed"
             ),
             shiny::sliderInput(
-              inputId = "ord_size_num",
-              label = "Fixed point size",
+              inputId = "ord_size_num", label = NULL,
               value = 1.5, min = 0.5, step = 0.1, max = 10
             ),
             shiny::selectInput(
-              inputId = "ord_size_var", label = "Variable point size",
+              inputId = "ord_size_var", label = NULL,
               choices = names(samdat[, sapply(X = samdat, function(x) !is.character(x) & !is.factor(x))]),
               selected = NULL
             )
           ),
           shiny::fluidRow(
-            shiny::h3("Composition options"),
+            shiny::h4("Composition options"),
             shiny::selectInput(
               inputId = "tax_level_comp", label = "Taxonomic rank",
               choices = phyloseq::rank_names(ps),
@@ -171,22 +171,22 @@ ord_explore <- function(ord, ps = NULL, seriate_method = "OLO_ward", tax_transfo
     # ord_plot aesthetic vars
     shape <- shiny::reactive({
       switch(input$shape_var_type,
-        "fixed" = {
-          input$ord_shape_num
-        },
-        "variable" = {
-          input$ord_shape_var
-        }
+             "fixed" = {
+               input$ord_shape_num
+             },
+             "variable" = {
+               input$ord_shape_var
+             }
       )
     })
     size <- shiny::reactive({
       switch(input$size_var_type,
-        "fixed" = {
-          input$ord_size_num
-        },
-        "variable" = {
-          input$ord_size_var
-        }
+             "fixed" = {
+               input$ord_size_num
+             },
+             "variable" = {
+               input$ord_size_var
+             }
       )
     })
 
@@ -233,7 +233,7 @@ ord_explore <- function(ord, ps = NULL, seriate_method = "OLO_ward", tax_transfo
       # select points that fall within selection region
       rowindex <-
         score_df()[, 1] > input$ord_plot_brush$xmin & score_df()[, 1] < input$ord_plot_brush$xmax &
-          score_df()[, 2] > input$ord_plot_brush$ymin & score_df()[, 2] < input$ord_plot_brush$ymax
+        score_df()[, 2] > input$ord_plot_brush$ymin & score_df()[, 2] < input$ord_plot_brush$ymax
 
       # future todo note: add any other selection criteria here above too (in combination), like antibiotics status
 

@@ -12,7 +12,7 @@ ord_plot_iris(
   tax_level,
   n_taxa = 10,
   taxon_renamer = function(x) identity(x),
-  palette = c("lightgrey", rev(distinct_palette(n_taxa))),
+  palette = c("grey90", rev(distinct_palette(n_taxa))),
   keep_all_vars = FALSE,
   anno_colour = NULL,
   anno_colour_style = list(),
@@ -43,9 +43,9 @@ ord_plot_iris(
 
 \item{anno_colour_style}{list of further arguments passed to geom_segment e.g. size}
 
-\item{anno_binary}{name of binary sample_data variable (levels T/F or 1/0) to use for filtered geom_point annotation ring (annotates at TRUE values)}
+\item{anno_binary}{name(s) of binary sample_data variable(s) (levels T/F or 1/0) to use for filtered geom_point annotation ring(s) (annotates at TRUE values)}
 
-\item{anno_binary_style}{list of further arguments passed to geom_point e.g. colour, size, etc.}
+\item{anno_binary_style}{list of further arguments passed to geom_point e.g. colour, size, y, etc.}
 }
 \value{
 ggplot
@@ -63,15 +63,20 @@ library(dplyr)
 library(ggplot2)
 data("dietswap", package = "microbiome")
 
+# although these iris plots are great for 100s of samples
+# we'll take a subset of the data (for speed in this example)
 ps <- dietswap \%>\%
   ps_filter(timepoint \%in\% c(1, 2)) \%>\%
+  # copy an otu to the sample data
   ps_otu2samdat("Prevotella melaninogenica et rel.") \%>\%
+  # create a couple of useful variables
   ps_mutate(
     female = sex == "female",
+    african = nationality == "AFR",
     log_P.melaninogenica = log10(Prevotella.melaninogenica.et.rel. + 1)
   )
 
-# define a function for taking end off the long genus names in this dataset
+# define a function for taking the end off the long genus names in this dataset
 tax_renamer <- function(tax) {
   stringr::str_remove(tax, " [ae]t rel.")
 }
@@ -93,7 +98,7 @@ ord_plot_iris(
   anno_colour = "nationality",
   anno_colour_style = list(size = 3),
   anno_binary = "female",
-  anno_binary_style = list(shape = "F", size = 3),
+  anno_binary_style = list(shape = "F", size = 2.5),
   taxon_renamer = tax_renamer
 ) +
   scale_colour_brewer(palette = "Dark2")
@@ -108,21 +113,37 @@ clr_pca <- ps \%>\%
   ord_calc("PCA")
 
 plot1 <- clr_pca \%>\% ord_plot(
-  plot_taxa = 1:6, tax_vec_length = 0.7,
-  color = "grey", auto_caption = FALSE,
-  taxon_renamer = tax_renamer
+  plot_taxa = 6:1, tax_vec_length = 0.6,
+  colour = "gray50", shape = "nationality",
+  taxon_renamer = tax_renamer,
+  auto_caption = NA, center = TRUE,
 ) +
-  # avoid clipping long labels
-  coord_cartesian(clip = "off")
+  scale_shape_manual(values = c(AFR = "circle", AAM = "circle open"))
 
 iris <- ord_plot_iris(
   data = clr_pca,
-  ps = ps, n_taxa = 10,
+  ps = ps, n_taxa = 15,
   tax_level = "Genus",
-  taxon_renamer = tax_renamer
+  taxon_renamer = tax_renamer,
+  anno_binary = "african",
+  anno_binary_style = list(y = 1.05, colour = "gray50", shape = "circle", size = 0.5)
 ) +
   # shrink legend text size
   theme(legend.text = element_text(size = 7))
 
-patchwork::wrap_plots(plot1, iris, nrow = 1)
+cowplot::plot_grid(plot1, iris, nrow = 1, align = "h", axis = "b", rel_widths = 3:4)
+
+# you can add multiple rings of binary annotations
+ord_plot_iris(
+  data = clr_pca,
+  ps = ps, n_taxa = 15,
+  tax_level = "Genus",
+  taxon_renamer = tax_renamer,
+  anno_binary = c("african", "female"),
+  anno_binary_style = list(
+    colour = c("gray50", "coral"),
+    shape = c("circle", "F"), size = c(0.5, 2)
+  )
+) +
+  theme(legend.text = element_text(size = 7))
 }

@@ -21,8 +21,10 @@ ord_plot(
   tax_lab_style = list(),
   taxon_renamer = function(x) identity(x),
   plot_samples = TRUE,
-  auto_caption = TRUE,
+  auto_caption = 8,
   center = FALSE,
+  clip = "off",
+  expand = !center,
   ...
 )
 }
@@ -59,9 +61,13 @@ ord_plot(
 
 \item{plot_samples}{if TRUE, plot sample points with geom_point}
 
-\item{auto_caption}{if TRUE, add a small font caption with info about the ordination}
+\item{auto_caption}{size of caption with info about the ordination, NA for none}
 
 \item{center}{expand plot limits to center around origin point (0,0)}
+
+\item{clip}{clipping of labels that extend outside plot limits?}
+
+\item{expand}{expand plot limits a little bit further than data range?}
 
 \item{...}{pass aesthetics arguments for sample points, drawn with geom_point using aes_string}
 }
@@ -116,7 +122,7 @@ dietswap \%>\%
   ord_plot(colour = "bmi_group") +
   stat_ellipse(aes(linetype = bmi_group, colour = bmi_group))
 
-# or instead constrain on weight and female
+# alternatively, constrain variation on weight and female
 constrained_aitchison_rda <- dietswap \%>\%
   tax_agg("Genus") \%>\%
   tax_transform("clr") \%>\%
@@ -145,15 +151,18 @@ constrained_aitchison_rda \%>\%
   lims(x = c(-5, 6), y = c(-5, 5)) +
   scale_colour_brewer(palette = "Set1")
 
-# it is possible to facet only unconstrained ordination plots (with plot_taxa = FALSE)
+# it is possible to facet these plots, but only unconstrained ordination plots and with plot_taxa = FALSE
 unconstrained_aitchison_pca \%>\%
-  ord_plot(color = "sex") +
+  ord_plot(color = "sex", auto_caption = NA) +
   facet_wrap("sex") +
+  theme(line = element_blank()) +
   stat_density2d(aes(colour = sex)) +
   guides(colour = FALSE)
 
 unconstrained_aitchison_pca \%>\%
-  ord_plot(color = "bmi_group", plot_samples = FALSE) +
+  ord_plot(color = "bmi_group", plot_samples = FALSE, auto_caption = NA) +
   facet_wrap("sex") +
-  stat_density2d_filled(show.legend = FALSE)
+  theme(line = element_blank(), axis.text = element_blank()) +
+  stat_density2d_filled(show.legend = FALSE) +
+  geom_point(size = 1, shape = 21, colour = "black", fill = "white")
 }
