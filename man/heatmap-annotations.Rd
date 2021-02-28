@@ -30,13 +30,17 @@ anno_abund(data, taxa, undetected = 0, which = "row", size = 15, ...)
 
 \item{abund}{order in which abundance annotation shown (number, or NA)}
 
-\item{size}{total size of all annotations in mm, excluding gaps (used as width or height, depending on value of which)}
+\item{size}{size in mm (width or height, based on which)}
 
 \item{gap}{size of gap between annotations (in mm)}
 
 \item{rel_sizes}{relative sizes of non-NA annotations (in given order)}
 
 \item{...}{further args passed HeatmapAnnotation}
+
+\item{data}{phyloseq or ps-extra}
+
+\item{taxa}{names of taxa to plot}
 }
 \description{
 main usefulness of tax_anno function is to give sane defaults and prompt user which annotation options are available

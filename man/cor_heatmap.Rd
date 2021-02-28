@@ -52,6 +52,8 @@ cor_heatmap(
 
 \item{tax_transform}{transformation applied to otu_table before correlating (and BEFORE selection of taxa)}
 
+\item{gridlines}{list output of heat_grid() for setting gridline style}
+
 \item{...}{extra args, for cor_heatmap passed to viz_heatmap (for heat_numbers() dots are passed to grid::gpar for grid::grid.text)}
 }
 \description{

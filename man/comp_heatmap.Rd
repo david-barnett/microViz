@@ -67,6 +67,8 @@ comp_heatmap(
 
 \item{gridlines}{list output of heat_grid() for setting gridline style}
 
+\item{name}{used as legend title (colourbar)}
+
 \item{...}{extra args, passed to viz_heatmap internal function}
 }
 \description{

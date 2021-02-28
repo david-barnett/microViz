@@ -16,6 +16,7 @@
 #' @param seriation_method_col method to order the columns (in seriation::seriate)
 #' @param seriation_dist_col distance to use in seriation_method_col (if needed)
 #' @param tax_transform transformation applied to otu_table before correlating (and BEFORE selection of taxa)
+#' @param gridlines list output of heat_grid() for setting gridline style
 #' @param ... extra args, for cor_heatmap passed to viz_heatmap (for heat_numbers() dots are passed to grid::gpar for grid::grid.text)
 #'
 #' @export
@@ -180,7 +181,7 @@ cor_heatmap <- function(data,
 #' @param tax_show selection of taxa to show on heatmap, AFTER transformation (and scaling) of taxa
 #' @param samples_show selection of samples to show on heatmap, AFTER transformation (and scaling) of taxa
 #' @param gridlines list output of heat_grid() for setting gridline style
-#'
+#' @param name used as legend title (colourbar)
 #' @param ... extra args, passed to viz_heatmap internal function
 #'
 #' @export
@@ -357,6 +358,7 @@ heat_numbers <- function(decimals = 1, fmt = "%.1f", fontsize = 7, col = "black"
 #' @param lex Multiplier applied to line width
 #' @param lineend Line end style (round, butt, square)
 #' @param linejoin Line join style (round, mitre, bevel)
+#'
 #' @export
 #' @rdname heat_grid
 heat_grid <- function(col = "white",
@@ -414,9 +416,10 @@ tax_anno <- function(undetected = 0, which = "row", prev = 1, abund = 2, size = 
 #' @param taxa names of taxa
 #' @param undetected value above which taxa are considered present/detected in a sample
 #' @param which 'row' or 'column' annotation
-#' @param ... additional args passed to ComplexHeatmap::HeatmapAnnotation
 #' @param what ordered names of annotations (part of function names)
 #' @param sizes ordered sizes of annotations, in mm
+#' @param gap size of gap between annotations in mm
+#' @param ... additional args passed to ComplexHeatmap::HeatmapAnnotation
 #'
 #' @noRd
 taxAnnotation <- function(data, taxa, undetected = 0, which = "row", what = c("prev", "abund"), sizes = c(15, 15), gap = 2, ...) {
@@ -441,6 +444,10 @@ taxAnnotation <- function(data, taxa, undetected = 0, which = "row", what = c("p
 
 # @param ... args passed to anno_barplot
 # @return a ComplexHeatmap anno_barplot
+#' @param data phyloseq or ps-extra
+#' @param taxa names of taxa to plot
+#' @param size size in mm (width or height, based on which)
+#'
 #' @export
 #' @rdname heatmap-annotations
 anno_prev <- function(data, taxa, undetected = 0, which = "row", size = 15, ...) {
