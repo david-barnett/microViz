@@ -40,7 +40,8 @@
 
 
 <meta property="og:title" content="Heatmap of taxonomic composition across samples — comp_heatmap" />
-<meta property="og:description" content="Heatmap of taxonomic composition across samples" />
+<meta property="og:description" content="If seriated, always sorts by the values of the colours shown.
+Any cell numbers printed can be set to different values, and do not affect ordering." />
 
 
 
@@ -72,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9006</span>
       </span>
     </div>
 
@@ -132,28 +133,31 @@
     </div>
 
     <div class="ref-description">
-    <p>Heatmap of taxonomic composition across samples</p>
+    <p>If seriated, always sorts by the values of the colours shown.
+Any cell numbers printed can be set to different values, and do not affect ordering.</p>
     </div>
 
     <pre class="usage"><span class='fu'>comp_heatmap</span><span class='op'>(</span>
   <span class='va'>data</span>,
-  taxa <span class='op'>=</span> <span class='cn'>NA</span>,
-  samples <span class='op'>=</span> <span class='cn'>NA</span>,
+  taxa <span class='op'>=</span> <span class='fu'>phyloseq</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html'>taxa_names</a></span><span class='op'>(</span><span class='fu'><a href='ps_extra-accessors.html'>ps_get</a></span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span><span class='op'>)</span>,
+  samples <span class='op'>=</span> <span class='fu'>phyloseq</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_names-methods.html'>sample_names</a></span><span class='op'>(</span><span class='fu'><a href='ps_extra-accessors.html'>ps_get</a></span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span><span class='op'>)</span>,
   anno_tax <span class='op'>=</span> <span class='cn'>NULL</span>,
   anno_samples <span class='op'>=</span> <span class='cn'>NULL</span>,
-  colors <span class='op'>=</span> <span class='fu'><a href='heat_palette.html'>heat_palette</a></span><span class='op'>(</span><span class='op'>)</span>,
+  colors <span class='op'>=</span> <span class='fu'><a href='heat_palette.html'>heat_palette</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Greens"</span>, rev <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,
+  numbers <span class='op'>=</span> <span class='cn'>NULL</span>,
   tax_transform_colors <span class='op'>=</span> <span class='st'>"clr"</span>,
   tax_scale_colors <span class='op'>=</span> <span class='st'>"neither"</span>,
-  tax_select <span class='op'>=</span> <span class='cn'>NA</span>,
-  sample_select <span class='op'>=</span> <span class='cn'>NA</span>,
   taxa_which <span class='op'>=</span> <span class='st'>"row"</span>,
   seriation_method <span class='op'>=</span> <span class='st'>"OLO_ward"</span>,
   seriation_dist <span class='op'>=</span> <span class='st'>"euclidean"</span>,
   seriation_method_col <span class='op'>=</span> <span class='va'>seriation_method</span>,
   seriation_dist_col <span class='op'>=</span> <span class='va'>seriation_dist</span>,
-  numbers <span class='op'>=</span> <span class='cn'>NULL</span>,
   tax_transform_numbers <span class='op'>=</span> <span class='va'>tax_transform_colors</span>,
   tax_scale_numbers <span class='op'>=</span> <span class='va'>tax_scale_colors</span>,
+  tax_show <span class='op'>=</span> <span class='va'>taxa</span>,
+  samples_show <span class='op'>=</span> <span class='va'>samples</span>,
+  gridlines <span class='op'>=</span> <span class='fu'><a href='heat_grid.html'>heat_grid</a></span><span class='op'>(</span>lwd <span class='op'>=</span> <span class='fl'>0.1</span>, col <span class='op'>=</span> <span class='st'>"black"</span><span class='op'>)</span>,
+  name <span class='op'>=</span> <span class='st'>"mat"</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
@@ -161,12 +165,115 @@
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>data</th>
+      <td><p>phyloseq or phyloseq extra</p></td>
+    </tr>
+    <tr>
+      <th>taxa</th>
+      <td><p>list of taxa to include (selection occurs BEFORE any tax_transform)</p></td>
+    </tr>
+    <tr>
+      <th>samples</th>
+      <td><p>list of taxa to include (selection occurs BEFORE any tax_transform)</p></td>
+    </tr>
+    <tr>
+      <th>anno_tax</th>
+      <td><p>NULL or tax_anno() list output</p></td>
+    </tr>
+    <tr>
+      <th>anno_samples</th>
+      <td><p>NULL only support so far TODO</p></td>
+    </tr>
+    <tr>
+      <th>colors</th>
+      <td><p>output of heat_palette() to set heatmap fill color scheme</p></td>
+    </tr>
+    <tr>
+      <th>numbers</th>
+      <td><p>NULL or output of heat_numbers() to draw numbers on heatmap cells</p></td>
+    </tr>
+    <tr>
+      <th>tax_transform_colors</th>
+      <td><p>transformation applied to otu_table used for colours and sorting</p></td>
+    </tr>
+    <tr>
+      <th>tax_scale_colors</th>
+      <td><p>scaling applied to otu_table after transformation</p></td>
+    </tr>
+    <tr>
+      <th>taxa_which</th>
+      <td><p>row or column (which represents a taxon)</p></td>
+    </tr>
+    <tr>
+      <th>seriation_method</th>
+      <td><p>method to order the rows (in seriation::seriate)</p></td>
+    </tr>
+    <tr>
+      <th>seriation_dist</th>
+      <td><p>distance to use in seriation_method (if needed)</p></td>
+    </tr>
+    <tr>
+      <th>seriation_method_col</th>
+      <td><p>method to order the columns (in seriation::seriate)</p></td>
+    </tr>
+    <tr>
+      <th>seriation_dist_col</th>
+      <td><p>distance to use in seriation_method_col (if needed)</p></td>
+    </tr>
+    <tr>
+      <th>tax_transform_numbers</th>
+      <td><p>transformation applied to otu_table used only for any numbers printed</p></td>
+    </tr>
+    <tr>
       <th>tax_scale_numbers</th>
-      <td></td>
+      <td><p>scaling applied to numbers otu_table after transformation</p></td>
+    </tr>
+    <tr>
+      <th>tax_show</th>
+      <td><p>selection of taxa to show on heatmap, AFTER transformation (and scaling) of taxa</p></td>
+    </tr>
+    <tr>
+      <th>samples_show</th>
+      <td><p>selection of samples to show on heatmap, AFTER transformation (and scaling) of taxa</p></td>
+    </tr>
+    <tr>
+      <th>gridlines</th>
+      <td><p>list output of heat_grid() for setting gridline style</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>extra args, passed to viz_heatmap internal function</p></td>
     </tr>
     </table>
 
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span>
+<span class='va'>psq</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tax_filter.html'>tax_filter</a></span><span class='op'>(</span><span class='va'>dietswap</span>, min_prevalence <span class='op'>=</span> <span class='fl'>1</span> <span class='op'>/</span> <span class='fl'>10</span>, min_sample_abundance <span class='op'>=</span> <span class='fl'>1</span> <span class='op'>/</span> <span class='fl'>10</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Proportional min_prevalence given: 0.1 --&gt; min 23/222 samples.</span></div><div class='input'><span class='va'>psq</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='va'>psq</span>, <span class='st'>"Genus"</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>123</span><span class='op'>)</span>
+<span class='va'>taxa</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'>microbiome</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/microbiome/man/top_taxa.html'>top_taxa</a></span><span class='op'>(</span><span class='fu'><a href='ps_extra-accessors.html'>ps_get</a></span><span class='op'>(</span><span class='va'>psq</span><span class='op'>)</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>50</span><span class='op'>]</span>, size <span class='op'>=</span> <span class='fl'>30</span><span class='op'>)</span>
+
+<span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'>comp_heatmap</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>psq</span>, taxa <span class='op'>=</span> <span class='va'>taxa</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='tax_anno.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>p</span>
+</div><div class='img'><img src='comp_heatmap-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># you can place the legend at the bottom, but it is a little complicated</span>
+<span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'>comp_heatmap</span><span class='op'>(</span>
+  data <span class='op'>=</span> <span class='va'>psq</span>, taxa <span class='op'>=</span> <span class='va'>taxa</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='tax_anno.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span>,
+  heatmap_legend_param <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>direction <span class='op'>=</span> <span class='st'>"horizontal"</span>, title_position <span class='op'>=</span> <span class='st'>"lefttop"</span><span class='op'>)</span>
+<span class='op'>)</span>
+<span class='fu'>ComplexHeatmap</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html'>draw</a></span><span class='op'>(</span><span class='va'>p</span>, heatmap_legend_side <span class='op'>=</span> <span class='st'>"bottom"</span>, adjust_annotation_extension <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='img'><img src='comp_heatmap-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='va'>p2</span> <span class='op'>&lt;-</span> <span class='fu'>comp_heatmap</span><span class='op'>(</span>
+  <span class='va'>psq</span>,
+  taxa <span class='op'>=</span> <span class='va'>taxa</span>,
+  taxa_which <span class='op'>=</span> <span class='st'>"column"</span>,
+  anno_tax <span class='op'>=</span> <span class='fu'><a href='tax_anno.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span>, which <span class='op'>=</span> <span class='st'>"column"</span><span class='op'>)</span>
+<span class='op'>)</span>
+<span class='va'>p2</span>
+</div><div class='img'><img src='comp_heatmap-3.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

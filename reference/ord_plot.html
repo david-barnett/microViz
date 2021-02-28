@@ -76,7 +76,7 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9006</span>
       </span>
     </div>
 
@@ -160,8 +160,10 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
   tax_lab_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
   taxon_renamer <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
   plot_samples <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  auto_caption <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  auto_caption <span class='op'>=</span> <span class='fl'>8</span>,
   center <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  clip <span class='op'>=</span> <span class='st'>"off"</span>,
+  expand <span class='op'>=</span> <span class='op'>!</span><span class='va'>center</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
@@ -234,11 +236,19 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
     </tr>
     <tr>
       <th>auto_caption</th>
-      <td><p>if TRUE, add a small font caption with info about the ordination</p></td>
+      <td><p>size of caption with info about the ordination, NA for none</p></td>
     </tr>
     <tr>
       <th>center</th>
       <td><p>expand plot limits to center around origin point (0,0)</p></td>
+    </tr>
+    <tr>
+      <th>clip</th>
+      <td><p>clipping of labels that extend outside plot limits?</p></td>
+    </tr>
+    <tr>
+      <th>expand</th>
+      <td><p>expand plot limits a little bit further than data range?</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -292,7 +302,7 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/stat_ellipse.html'>stat_ellipse</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>linetype <span class='op'>=</span> <span class='va'>bmi_group</span>, colour <span class='op'>=</span> <span class='va'>bmi_group</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 0</span></div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Centering (mean) and scaling (sd) the constraint and conditioning vars: </span></div><div class='output co'>#&gt; <span class='message'>	weight</span></div><div class='img'><img src='ord_plot-2.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># or instead constrain on weight and female</span>
+<span class='co'># alternatively, constrain variation on weight and female</span>
 <span class='va'>constrained_aitchison_rda</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
@@ -322,17 +332,21 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/lims.html'>lims</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>5</span>, <span class='fl'>6</span><span class='op'>)</span>, y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>5</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_brewer.html'>scale_colour_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Set1"</span><span class='op'>)</span>
 </div><div class='img'><img src='ord_plot-6.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># it is possible to facet only unconstrained ordination plots (with plot_taxa = FALSE)</span>
+<span class='co'># it is possible to facet these plots,</span>
+<span class='co'># but only unconstrained ordination plots and with plot_taxa = FALSE</span>
 <span class='va'>unconstrained_aitchison_pca</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>ord_plot</span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"sex"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>ord_plot</span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"sex"</span>, auto_caption <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_wrap.html'>facet_wrap</a></span><span class='op'>(</span><span class='st'>"sex"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>line <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_blank</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_density_2d.html'>stat_density2d</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>colour <span class='op'>=</span> <span class='va'>sex</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/guides.html'>guides</a></span><span class='op'>(</span>colour <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 </div><div class='img'><img src='ord_plot-7.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='va'>unconstrained_aitchison_pca</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>ord_plot</span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"bmi_group"</span>, plot_samples <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>ord_plot</span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"bmi_group"</span>, plot_samples <span class='op'>=</span> <span class='cn'>FALSE</span>, auto_caption <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_wrap.html'>facet_wrap</a></span><span class='op'>(</span><span class='st'>"sex"</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_density_2d.html'>stat_density2d_filled</a></span><span class='op'>(</span>show.legend <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>line <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_blank</a></span><span class='op'>(</span><span class='op'>)</span>, axis.text <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_blank</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_density_2d.html'>stat_density2d_filled</a></span><span class='op'>(</span>show.legend <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>1</span>, shape <span class='op'>=</span> <span class='fl'>21</span>, colour <span class='op'>=</span> <span class='st'>"black"</span>, fill <span class='op'>=</span> <span class='st'>"white"</span><span class='op'>)</span>
 </div><div class='img'><img src='ord_plot-8.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

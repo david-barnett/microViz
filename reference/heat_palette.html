@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Easy palettes for ComplexHeatmap — heat_palette" />
-<meta property="og:description" content="Pass a named diverging colorspace hcl palette to circlize::colorRamp2" />
+<meta property="og:description" content="Pass a named colorspace hcl palette to circlize::colorRamp2" />
 
 
 
@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9006</span>
       </span>
     </div>
 
@@ -132,14 +132,14 @@
     </div>
 
     <div class="ref-description">
-    <p>Pass a named diverging colorspace hcl palette to circlize::colorRamp2</p>
+    <p>Pass a named colorspace hcl palette to circlize::colorRamp2</p>
     </div>
 
     <pre class="usage"><span class='fu'>heat_palette</span><span class='op'>(</span>
   palette <span class='op'>=</span> <span class='st'>"Greens"</span>,
   breaks <span class='op'>=</span> <span class='fl'>5</span>,
   range <span class='op'>=</span> <span class='cn'>NA</span>,
-  rev_palette <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  rev <span class='op'>=</span> <span class='cn'>FALSE</span>,
   sym <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span></pre>
 
@@ -148,7 +148,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>palette</th>
-      <td><p>named palette from colorspace::hcl_palettes(type = "diverging") or a vector of colour names (same length as indicated by breaks)</p></td>
+      <td><p>named palette from colorspace::hcl_palettes() diverging/sequential or a vector of colour names/hexcodes</p></td>
     </tr>
     <tr>
       <th>breaks</th>
@@ -159,8 +159,8 @@
       <td><p>NA to return palette generating function that takes a range, or numeric vector indicating the range, to return a palette</p></td>
     </tr>
     <tr>
-      <th>rev_palette</th>
-      <td><p>reverse the colorspace palette</p></td>
+      <th>rev</th>
+      <td><p>reverse the palette?</p></td>
     </tr>
     </table>
 

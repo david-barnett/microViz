@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9006</span>
       </span>
     </div>
 
@@ -135,11 +135,20 @@
     <p>main usefulness of tax_anno function is to give sane defaults and prompt user which annotation options are available</p>
     </div>
 
-    <pre class="usage"><span class='fu'>tax_anno</span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>0</span>, which <span class='op'>=</span> <span class='st'>"row"</span>, prev <span class='op'>=</span> <span class='fl'>1</span>, abund <span class='op'>=</span> <span class='fl'>2</span>, <span class='va'>...</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>tax_anno</span><span class='op'>(</span>
+  undetected <span class='op'>=</span> <span class='fl'>0</span>,
+  which <span class='op'>=</span> <span class='st'>"row"</span>,
+  prev <span class='op'>=</span> <span class='fl'>1</span>,
+  abund <span class='op'>=</span> <span class='fl'>2</span>,
+  size <span class='op'>=</span> <span class='fl'>30</span>,
+  gap <span class='op'>=</span> <span class='fl'>2</span>,
+  rel_sizes <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
-<span class='fu'>anno_prev</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>taxa</span>, undetected <span class='op'>=</span> <span class='fl'>0</span>, which <span class='op'>=</span> <span class='st'>"row"</span>, <span class='va'>...</span><span class='op'>)</span>
+<span class='fu'>anno_prev</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>taxa</span>, undetected <span class='op'>=</span> <span class='fl'>0</span>, which <span class='op'>=</span> <span class='st'>"row"</span>, size <span class='op'>=</span> <span class='fl'>15</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>anno_abund</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>taxa</span>, undetected <span class='op'>=</span> <span class='fl'>0</span>, which <span class='op'>=</span> <span class='st'>"row"</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'>anno_abund</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>taxa</span>, undetected <span class='op'>=</span> <span class='fl'>0</span>, which <span class='op'>=</span> <span class='st'>"row"</span>, size <span class='op'>=</span> <span class='fl'>15</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -159,6 +168,18 @@
     <tr>
       <th>abund</th>
       <td><p>order in which abundance annotation shown (number, or NA)</p></td>
+    </tr>
+    <tr>
+      <th>size</th>
+      <td><p>total size of all annotations in mm, excluding gaps (used as width or height, depending on value of which)</p></td>
+    </tr>
+    <tr>
+      <th>gap</th>
+      <td><p>size of gap between annotations (in mm)</p></td>
+    </tr>
+    <tr>
+      <th>rel_sizes</th>
+      <td><p>relative sizes of non-NA annotations (in given order)</p></td>
     </tr>
     <tr>
       <th>...</th>

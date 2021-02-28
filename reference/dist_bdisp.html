@@ -74,7 +74,7 @@ See help('betadisper', package = 'vegan')." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9006</span>
       </span>
     </div>
 
@@ -249,7 +249,7 @@ See help('betadisper', package = 'vegan').</p>
     variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"sex"</span>, <span class='st'>"bmi_group"</span><span class='op'>)</span>,
     n_processes <span class='op'>=</span> <span class='fl'>1</span>, n_perms <span class='op'>=</span> <span class='fl'>99</span>
   <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 4</span></div><div class='output co'>#&gt; <span class='message'>2021-02-26 12:26:06 - Starting PERMANOVA with 99 perms with 1 processes</span></div><div class='output co'>#&gt; <span class='message'>2021-02-26 12:26:06 - Finished PERMANOVA</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>PERM</span>, max.level <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 4</span></div><div class='output co'>#&gt; <span class='message'>2021-02-28 09:06:43 - Starting PERMANOVA with 99 perms with 1 processes</span></div><div class='output co'>#&gt; <span class='message'>2021-02-28 09:06:44 - Finished PERMANOVA</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>PERM</span>, max.level <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; List of 5
 #&gt;  $ ps       :Formal class 'phyloseq' [package "phyloseq"] with 5 slots
 #&gt;  $ dist     : 'dist' num [1:23653] 0.764 0.731 0.728 0.664 0.744 ...
@@ -263,8 +263,8 @@ See help('betadisper', package = 'vegan').</p>
 #&gt;   ..- attr(*, "names")= chr [1:7] "tax_agg" "tax_transform" "tax_scale" "distMethod" ...
 #&gt;  $ permanova:Classes ‘anova.cca’, ‘anova’ and 'data.frame':	4 obs. of  5 variables:
 #&gt;   ..- attr(*, "heading")= chr [1:2] "Permutation test for adonis under reduced model\nMarginal effects of terms\nPermutation: free\nNumber of permutations: 99\n" "vegan::adonis2(formula = formula, data = metadata, permutations = n_perms, by = by, parallel = parall)"
-#&gt;   ..- attr(*, "F.perm")= num [1:99, 1:2] 1.399 1.06 0.865 0.567 1.214 ...
-#&gt;   ..- attr(*, "Random.seed")= int [1:626] 10403 401 650453757 -1526176859 -1232308832 1738499285 -1839302464 -2133332111 -1023420191 1765741431 ...
+#&gt;   ..- attr(*, "F.perm")= num [1:99, 1:2] 2.623 0.813 0.606 1.907 1.669 ...
+#&gt;   ..- attr(*, "Random.seed")= int [1:626] 10403 305 1798361513 282535066 1776496539 -1455510028 226368616 427490750 -259274017 -1724695704 ...
 #&gt;   ..- attr(*, "control")=List of 12
 #&gt;   .. ..- attr(*, "class")= chr "how"
 #&gt;  - attr(*, "class")= chr [1:2] "ps_extra" "list"</div><div class='input'>
@@ -291,7 +291,7 @@ See help('betadisper', package = 'vegan').</p>
 #&gt; 
 #&gt; vegan::adonis2(formula = formula, data = metadata, permutations = n_perms, by = by, parallel = parall)
 #&gt;            Df SumOfSqs      R2      F Pr(&gt;F)   
-#&gt; sex         1    0.361 0.00933 2.1539   0.06 . 
+#&gt; sex         1    0.361 0.00933 2.1539   0.08 . 
 #&gt; bmi_group   2    2.377 0.06143 7.0888   0.01 **
 #&gt; Residual  214   35.874 0.92720                 
 #&gt; Total     217   38.691 1.00000                 
