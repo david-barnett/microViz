@@ -60,7 +60,7 @@ bdisp_get <- function(ps_extra) {
 }
 
 
-# @param data phyloseq or ps_Extra
+#' @param data phyloseq or ps_extra
 # @return phyloseq otu_table matrix with taxa as columns
 #' @rdname ps_extra-accessors
 #' @export

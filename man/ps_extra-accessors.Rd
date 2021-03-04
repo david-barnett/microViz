@@ -27,6 +27,8 @@ otu_get(data)
 }
 \arguments{
 \item{ps_extra}{ps_extra class object}
+
+\item{data}{phyloseq or ps_extra}
 }
 \value{
 element of ps_extra class object (or NULL)
