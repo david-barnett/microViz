@@ -16,21 +16,21 @@ knitr::opts_chunk$set(echo = TRUE)
 # Summary 
 
 microViz is an R package for the statistical analysis and visualisation of microbiota data. This package extends the functionality of popular microbial ecosystem data analysis R packages phyloseq, vegan and microbiome.
-microViz provides a selection of powerful additions to the toolbox of researchers already familiar with phyloseq and other ubiquitous microbiome R packages, as well as assisting researchers with less R programming experience to independently explore and analyse their data and generate publication-ready figures.
+microViz provides a selection of powerful additions to the toolbox of researchers already familiar with phyloseq and other ubiquitous microbiome R packages, as well as assisting researchers with less R programming experience to independently explore and analyse their data and to generate publication-ready figures.
 
-microViz offers tools including:
+The tools offered by microViz include:
 
-- Taxonomic association trees: a visualisation approach for compact and intuitive visualization of numerous microbe-metadata associations derived from (multivariable) statistical models;
-
-- Interactive exploration of microbiota data: using paired ordination and abundance barchart visualizations in R Shiny;
-
-- Iris plots: a novel approach pairing ordination and polar barcharts for comprehensive, intuitive and compact visualization of the similarity and composition of hundreds of microbial ecosystems;
-
-- Functions for generating publication-ready ordination plots with ggplot2, accommodating constrained ordination, biplots and triplots, and automatic captioning designed to promote methodological transparency and reproducibility.
+- A Shiny app for interactive exploration of microbiota data within R, pairing ordination plots with abundance barcharts;
+- Novel figures pairing ordination plots with circular barcharts (iris plots) for comprehensive, intuitive and compact visualization of the similarity and composition of hundreds of microbial ecosystems;
+- A compact cladogram visualisation approach for intuitive comparison of numerous microbe-metadata associations derived from (multivariable) statistical models (taxonomic association trees);
+- Correlation and composition heatmaps for microbiome data annotated with plots showing each taxon's prevalence and/or abundance;
+- Easy to use functions for generating publication-ready ordination plots with ggplot2, accommodating constrained and partial ordination, biplots and triplots, and automatic captioning designed to promote methodological transparency and reproducibility.
 
 # Statement of need
 
 Modern microbiome research typically involves the use of next-generation-sequencing methods to profile the relative abundance of hundreds of microbial taxa across tens or hundreds of samples. Alongside increasing sample sizes, the amount of relevant metadata collected is growing, particularly in human cohort studies. These trends all increase the size and complexity of the resulting dataset, which makes its exploration, statistical analysis, and presentation  increasingly challenging.
+
+Work in progress
 
 ps_extra class for ordination
 
@@ -44,11 +44,13 @@ Beyond the main visualization functionality, microViz provides a suite of powerf
 
 taxatree plots:
 
-- spurious findings at lower taxonomic ranks? sensitivity of methods?
-- intuitive presentation of the balance inherent in compositional data
-- metacoder similar but inflexible?
-- ability to attach multivariable model results important.
-- graphlan ? microbiomeViz ? connection to R and phyloseq useful here and detached from phylogenetic tree which is not always available (does graphlan really need phylogenetic tree?)?
+- avoid overinterpretation of spurious findings at lower taxonomic ranks that often occurs with low abundance taxa with some methods, especially as there are more taxa to model at lower ranks? 
+- intuitive presentation of the balance inherent in compositional data, (if one branch goes up, others must go down).
+
+Other packages in R and python can make similar graphics to the microViz taxonomic association tree visualisations, but the microViz visualisation style has a few advantages for the purpose of reporting model results:
+
+- GraPhlAn and ggtree trees are similar but not so compact by default, and so less suited for comparing association profiles of multiple covariates. However for presenting simple associations, the user could use the microViz statistical model results with ggtree or graphphlan, and a future version of microViz could include ggtree style visualisations directly.
+- The metacoder also allows the visualisation of arbitrary statistics on the 
 
 
 
