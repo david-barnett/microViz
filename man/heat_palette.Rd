@@ -20,6 +20,8 @@ heat_palette(
 \item{range}{NA to return palette generating function that takes a range, or numeric vector indicating the range, to return a palette}
 
 \item{rev}{reverse the palette?}
+
+\item{sym}{makes palette range symmetrical around 0 if TRUE}
 }
 \value{
 circlize::colorRamp2 palette if !is.na(range), or function returning a palette when given a range

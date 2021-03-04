@@ -2,24 +2,33 @@
 % Please edit documentation in R/heatmaps.R
 \name{heat_numbers}
 \alias{heat_numbers}
-\title{helps for drawing numbers on heatmap tiles}
+\title{aesthetic settings for drawing numbers on heatmap tiles}
 \usage{
 heat_numbers(
   decimals = 1,
-  fmt = "\%.1f",
   fontsize = 7,
   col = "black",
   fontface = "plain",
+  fmt = NULL,
   ...
 )
 }
 \arguments{
-\item{fmt}{number print format}
+\item{decimals}{number of decimal places to print}
 
 \item{fontsize}{fontsize specification,}
 
-\item{what}{what numbers to print (currently only "values" is supported)}
+\item{col}{colour of font}
+
+\item{fontface}{plain, bold, italic}
+
+\item{fmt}{NULL or number print format, see ?sprintf, overrides decimals arg if set}
+
+\item{...}{passed to grid::gpar() for grid.text}
+}
+\value{
+list
 }
 \description{
-helps for drawing numbers on heatmap tiles
+Works with comp_heatmap() and cor_heatmap(). See the help for those functions.
 }

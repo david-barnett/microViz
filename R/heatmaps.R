@@ -301,6 +301,7 @@ comp_heatmap <- function(data,
 #' @param breaks integer number of breaks, or numeric vector of values for colour scale breaks (including ends)
 #' @param range NA to return palette generating function that takes a range, or numeric vector indicating the range, to return a palette
 #' @param rev reverse the palette?
+#' @param sym makes palette range symmetrical around 0 if TRUE
 #'
 #' @return circlize::colorRamp2 palette if !is.na(range), or function returning a palette when given a range
 #' @export
@@ -333,17 +334,21 @@ heat_palette <- function(palette = "Greens", breaks = 5, range = NA, rev = FALSE
   }
 }
 
-#' @title helps for drawing numbers on heatmap tiles
+#' @title aesthetic settings for drawing numbers on heatmap tiles
 #'
-#' @param what what numbers to print (currently only "values" is supported)
-#' @param fmt number print format
+#' @description Works with comp_heatmap() and cor_heatmap(). See the help for those functions.
+#'
+#' @param decimals number of decimal places to print
 #' @param fontsize fontsize specification,
-# @param ... passed to grid::gpar() for grid.text
-#'
+#' @param col colour of font
+#' @param fontface plain, bold, italic
+#' @param fmt NULL or number print format, see ?sprintf, overrides decimals arg if set
+#' @param ... passed to grid::gpar() for grid.text
+#' @return list
 #' @export
 #' @rdname heat_numbers
-heat_numbers <- function(decimals = 1, fmt = "%.1f", fontsize = 7, col = "black", fontface = "plain", ...) {
-  fmt <- paste0("%.", decimals, "f")
+heat_numbers <- function(decimals = 1, fontsize = 7, col = "black", fontface = "plain", fmt = NULL, ...) {
+  if (identical(fmt, NULL)) fmt <- paste0("%.", decimals, "f")
   gp <- grid::gpar(fontsize = fontsize, col = col, fontface = fontface, ...)
   list(fmt = fmt, gp = gp)
 }
