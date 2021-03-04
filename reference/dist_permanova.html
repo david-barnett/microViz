@@ -79,7 +79,7 @@ you should rename the offending variable (e.g. avoid any of &quot;+&quot; &quot;
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9006</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
       </span>
     </div>
 
@@ -231,7 +231,7 @@ you should rename the offending variable (e.g. avoid any of "+" "</em>" "|" or "
     n_processes <span class='op'>=</span> <span class='fl'>1</span>,
     n_perms <span class='op'>=</span> <span class='fl'>99</span> <span class='co'># only 99 perms used in examples for speed (use 999, 9999 or more!)</span>
   <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 4</span></div><div class='output co'>#&gt; <span class='message'>2021-02-28 20:58:16 - Starting PERMANOVA with 99 perms with 1 processes</span></div><div class='output co'>#&gt; <span class='message'>2021-02-28 20:58:17 - Finished PERMANOVA</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>PERM</span>, max.level <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 4</span></div><div class='output co'>#&gt; <span class='message'>2021-03-04 13:08:32 - Starting PERMANOVA with 99 perms with 1 processes</span></div><div class='output co'>#&gt; <span class='message'>2021-03-04 13:08:33 - Finished PERMANOVA</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>PERM</span>, max.level <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; List of 5
 #&gt;  $ ps       :Formal class 'phyloseq' [package "phyloseq"] with 5 slots
 #&gt;  $ dist     : 'dist' num [1:23653] 0.764 0.731 0.728 0.664 0.744 ...
@@ -257,7 +257,7 @@ you should rename the offending variable (e.g. avoid any of "+" "</em>" "|" or "
     variables <span class='op'>=</span> <span class='st'>"nationality + sex * bmi_group"</span>,
     n_processes <span class='op'>=</span> <span class='fl'>1</span>, n_perms <span class='op'>=</span> <span class='fl'>99</span>
   <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 4</span></div><div class='output co'>#&gt; <span class='message'>2021-02-28 20:58:17 - Starting PERMANOVA with 99 perms with 1 processes</span></div><div class='output co'>#&gt; <span class='message'>2021-02-28 20:58:17 - Finished PERMANOVA</span></div><div class='input'><span class='va'>PERM2</span><span class='op'>$</span><span class='va'>permanova</span>
+</div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 4</span></div><div class='output co'>#&gt; <span class='message'>2021-03-04 13:08:33 - Starting PERMANOVA with 99 perms with 1 processes</span></div><div class='output co'>#&gt; <span class='message'>2021-03-04 13:08:33 - Finished PERMANOVA</span></div><div class='input'><span class='va'>PERM2</span><span class='op'>$</span><span class='va'>permanova</span>
 </div><div class='output co'>#&gt; Permutation test for adonis under reduced model
 #&gt; Marginal effects of terms
 #&gt; Permutation: free
@@ -279,7 +279,7 @@ you should rename the offending variable (e.g. avoid any of "+" "</em>" "|" or "
     interactions <span class='op'>=</span> <span class='st'>"sex * bmi_group"</span>,
     n_processes <span class='op'>=</span> <span class='fl'>1</span>, n_perms <span class='op'>=</span> <span class='fl'>99</span>
   <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 4</span></div><div class='output co'>#&gt; <span class='message'>2021-02-28 20:58:17 - Starting PERMANOVA with 99 perms with 1 processes</span></div><div class='output co'>#&gt; <span class='message'>2021-02-28 20:58:18 - Finished PERMANOVA</span></div><div class='input'><span class='va'>PERM3</span><span class='op'>$</span><span class='va'>permanova</span>
+</div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 4</span></div><div class='output co'>#&gt; <span class='message'>2021-03-04 13:08:33 - Starting PERMANOVA with 99 perms with 1 processes</span></div><div class='output co'>#&gt; <span class='message'>2021-03-04 13:08:34 - Finished PERMANOVA</span></div><div class='input'><span class='va'>PERM3</span><span class='op'>$</span><span class='va'>permanova</span>
 </div><div class='output co'>#&gt; Permutation test for adonis under reduced model
 #&gt; Marginal effects of terms
 #&gt; Permutation: free
@@ -297,7 +297,7 @@ you should rename the offending variable (e.g. avoid any of "+" "</em>" "|" or "
 </div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># take the same distance matrix used for the permanova and plot an ordination</span>
 <span class='va'>PERM2</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span><span class='st'>"PCoA"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"PCoA"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"bmi_group"</span><span class='op'>)</span>
 </div><div class='img'><img src='dist_permanova-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># this trick ensures any samples dropped from the permanova for having missing values</span>
 <span class='co'># in the covariates are NOT included in the corresponding ordination plot</span>

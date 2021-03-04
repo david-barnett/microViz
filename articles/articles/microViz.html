@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9006</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
       </span>
     </div>
 
@@ -193,7 +193,7 @@
   <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">5</span> <span class="op">/</span> <span class="fl">100</span>, tax_level <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Genus"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># aggregate taxa at Genus level</span>
   <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"clr"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># centered log ratio transformation</span>
-  <span class="fu"><a href="../../reference/ord_calc.html">ord_calc</a></span><span class="op">(</span><span class="st">"PCA"</span><span class="op">)</span> <span class="co"># Note: PCA is RDA without constraints (&amp; ord_calc uses an RDA method to perform PCA)</span>
+  <span class="fu"><a href="../../reference/ord_calc.html">ord_calc</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"PCA"</span><span class="op">)</span> <span class="co"># Note: PCA is RDA without constraints (&amp; ord_calc uses an RDA method to perform PCA)</span>
 <span class="co">#&gt; Proportional min_prevalence given: 0.05 --&gt; min 41/801 samples.</span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">clr_pca</span>
@@ -276,8 +276,8 @@
 <span class="co">#&gt; Dropping samples with missings: 17</span>
 <span class="co">#&gt; weight has NAs: 15</span>
 <span class="co">#&gt; female has NAs: 2</span>
-<span class="co">#&gt; 2021-02-28 21:01:18 - Starting PERMANOVA with 99 perms with 1 processes</span>
-<span class="co">#&gt; 2021-02-28 21:01:31 - Finished PERMANOVA</span>
+<span class="co">#&gt; 2021-03-04 13:12:44 - Starting PERMANOVA with 99 perms with 1 processes</span>
+<span class="co">#&gt; 2021-03-04 13:13:02 - Finished PERMANOVA</span>
 <span class="co">#&gt; ps_extra object - a list with phyloseq and extras:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; phyloseq-class experiment-level object</span>
@@ -391,7 +391,7 @@
     variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"female"</span>, <span class="st">"wt_scaled"</span>, <span class="st">"P"</span>, <span class="st">"R"</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"bbdml"</span>, verbose <span class="op">=</span> <span class="st">"max"</span>
   <span class="op">)</span>
 <span class="co">#&gt; Proportional min_prevalence given: 0.05 --&gt; min 41/801 samples.</span>
-<span class="co">#&gt; 2021-02-28 21:01:33 - modelling at level: Phylum</span>
+<span class="co">#&gt; 2021-03-04 13:13:05 - modelling at level: Phylum</span>
 <span class="co">#&gt; Modelling: P: Actinobacteria</span>
 <span class="co">#&gt; Modelling: P: Bacteroidetes</span>
 <span class="co">#&gt; Modelling: P: Cyanobacteria</span>
@@ -400,7 +400,7 @@
 <span class="co">#&gt; Modelling: P: Proteobacteria</span>
 <span class="co">#&gt; Modelling: P: Spirochaetes</span>
 <span class="co">#&gt; Modelling: P: Verrucomicrobia</span>
-<span class="co">#&gt; 2021-02-28 21:01:41 - modelling at level: Family</span>
+<span class="co">#&gt; 2021-03-04 13:13:14 - modelling at level: Family</span>
 <span class="co">#&gt; Modelling: F: Actinobacteria</span>
 <span class="co">#&gt; Modelling: F: Bacteroidetes</span>
 <span class="co">#&gt; Modelling: F: Cyanobacteria</span>
@@ -472,7 +472,7 @@
 <span class="co">#&gt;  collate  en_US.UTF-8                 </span>
 <span class="co">#&gt;  ctype    en_US.UTF-8                 </span>
 <span class="co">#&gt;  tz       UTC                         </span>
-<span class="co">#&gt;  date     2021-02-28                  </span>
+<span class="co">#&gt;  date     2021-03-04                  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ─ Packages ───────────────────────────────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt;  package            * version      date       lib source                               </span>
@@ -538,7 +538,7 @@
 <span class="co">#&gt;  memoise              2.0.0        2021-01-26 [1] CRAN (R 4.0.2)                       </span>
 <span class="co">#&gt;  mgcv                 1.8-33       2020-08-27 [2] CRAN (R 4.0.4)                       </span>
 <span class="co">#&gt;  microbiome         * 1.12.0       2020-10-27 [1] Bioconductor                         </span>
-<span class="co">#&gt;  microViz           * 0.4.2.9006   2021-02-28 [1] local                                </span>
+<span class="co">#&gt;  microViz           * 0.4.3        2021-03-04 [1] local                                </span>
 <span class="co">#&gt;  multtest             2.46.0       2020-10-27 [1] Bioconductor                         </span>
 <span class="co">#&gt;  munsell              0.5.0        2018-06-12 [1] CRAN (R 4.0.2)                       </span>
 <span class="co">#&gt;  nlme                 3.1-152      2021-02-04 [2] CRAN (R 4.0.4)                       </span>

@@ -79,7 +79,7 @@ Otherwise, ps must be a phyloseq object containing untransformed counts.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9006</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
       </span>
     </div>
 
@@ -252,12 +252,10 @@ Otherwise, ps must be a phyloseq object containing untransformed counts.
 <span class='va'>ord</span> <span class='op'>&lt;-</span> <span class='va'>ps</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='dist_calc.html'>dist_calc</a></span><span class='op'>(</span><span class='st'>"aitchison"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span><span class='st'>"PCoA"</span><span class='op'>)</span>
+  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"PCoA"</span><span class='op'>)</span>
 
 <span class='co'># ordination plot for comparison</span>
-<span class='va'>ord</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span>
-  color <span class='op'>=</span> <span class='st'>"log_P.melaninogenica"</span>, size <span class='op'>=</span> <span class='fl'>3</span>
-<span class='op'>)</span>
+<span class='va'>ord</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"log_P.melaninogenica"</span>, size <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
 </div><div class='img'><img src='ord_plot_iris-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'>ord_plot_iris</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>ord</span>,
@@ -278,7 +276,7 @@ Otherwise, ps must be a phyloseq object containing untransformed counts.
 <span class='va'>clr_pca</span> <span class='op'>&lt;-</span> <span class='va'>ps</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span><span class='st'>"PCA"</span><span class='op'>)</span>
+  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"PCA"</span><span class='op'>)</span>
 
 <span class='va'>plot1</span> <span class='op'>&lt;-</span> <span class='va'>clr_pca</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span>
   plot_taxa <span class='op'>=</span> <span class='fl'>6</span><span class='op'>:</span><span class='fl'>1</span>, tax_vec_length <span class='op'>=</span> <span class='fl'>0.6</span>,
