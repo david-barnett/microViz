@@ -20,7 +20,7 @@ possibly modified phyloseq object
 \itemize{
 \item Ensures the storage mode of a phyloseq object's otu table is "double" instead of e.g. "integer".
 \item Checks for, and warns about, common uninformative entries in the tax_table which often cause unwanted results in.
-Used inside
+\item Replaces missing sample_data with a dataframe including only sample_names (as "SAMPLE" variable)
 }
 }
 \examples{
