@@ -8,6 +8,7 @@
 * `ord_plot_iris` now handles multiple rings of anno_binary annotations, and anno_binary position is now closer when no anno_colour is set
 * `ord_explore` shiny app menu styling is a little cleaner (but still needs some love)
 * `tax_scale` for applying `base::scale()` to phyloseq otu_table
+* `tax_name` for easily setting informative unique phyloseq taxa_names
 
 ## Bug fixes
 * `dist_permanova`'s obsolete return arg removed
