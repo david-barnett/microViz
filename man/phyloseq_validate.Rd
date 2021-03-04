@@ -4,10 +4,12 @@
 \alias{phyloseq_validate}
 \title{Check for (and fix) common problems with phyloseq objects}
 \usage{
-phyloseq_validate(ps, verbose = TRUE)
+phyloseq_validate(ps, min_tax_length = 4, verbose = TRUE)
 }
 \arguments{
 \item{ps}{phyloseq object}
+
+\item{min_tax_length}{minimum number of characters to not consider a tax_table entry suspiciously short}
 
 \item{verbose}{print informative messages if true}
 }
@@ -17,7 +19,8 @@ possibly modified phyloseq object
 \description{
 \itemize{
 \item Ensures the storage mode of a phyloseq object's otu table is "double" instead of e.g. "integer".
-\item Checks for, and warns about, common uninformative entries in the tax_table which often cause unwanted results in
+\item Checks for, and warns about, common uninformative entries in the tax_table which often cause unwanted results in.
+Used inside
 }
 }
 \examples{
