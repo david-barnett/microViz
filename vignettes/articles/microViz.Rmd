@@ -92,7 +92,7 @@ clr_pca <- ps %>%
   tax_filter(min_prevalence = 5 / 100, tax_level = "Genus") %>%
   tax_agg("Genus") %>% # aggregate taxa at Genus level
   tax_transform("clr") %>% # centered log ratio transformation
-  ord_calc("PCA") # Note: PCA is RDA without constraints (& ord_calc uses an RDA method to perform PCA)
+  ord_calc(method = "PCA") # Note: PCA is RDA without constraints (& ord_calc uses an RDA method to perform PCA)
 ```
 
 ```{r print clr pca}
