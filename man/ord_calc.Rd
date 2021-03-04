@@ -6,31 +6,35 @@
 \usage{
 ord_calc(
   data,
-  method = c("PCoA", "PCA", "CCA", "RDA", "CAP")[1],
+  method = c("auto", "PCoA", "PCA", "CCA", "RDA", "CAP", "NMDS")[1],
   constraints = NULL,
   conditions = NULL,
+  scale_cc = TRUE,
   verbose = TRUE,
   ...
 )
 }
 \arguments{
-\item{data}{ps_extra list object output from dist_calc(), or tax_transform() (if no distance calculation required e.g. for RDA)}
+\item{data}{ps_extra list object: output from dist_calc(), or tax_transform() if no distance calculation required for method e.g. for RDA}
 
-\item{method}{which ordination method to use? currently one of 'PCoA', 'PCA' or 'CCA'}
+\item{method}{which ordination method to use? "auto" means automatically determined from ps_extra and other args. If you really know what you want: manually set one of 'PCoA', 'PCA', 'CCA', 'CAP' or 'RDA'}
 
 \item{constraints}{(a vector of) valid variable name(s) to constrain PCoA or RDA analyses, or leave as 1 for unconstrained ordination}
 
 \item{conditions}{(a vector of) valid variable name(s) to partial these out of PCoA or RDA analyses with Condition(), or leave as NULL}
 
-\item{verbose}{if TRUE or "max", message about scaling and missings etc.}
+\item{scale_cc}{if TRUE (default) ensures any constraints and conditions vars are scaled before use, to ensure their effects are comparable. If set to FALSE you must ensure you have already set the variables on a similar scale yourself!}
+
+\item{verbose}{if TRUE or "max", show any warnings and messages about constraint and conditions scaling and missings etc. FALSE suppresses warnings!}
 
 \item{...}{optional arguments passed on to phyloseq::ordinate()}
 }
 \value{
-list object (or named parts)
+ps_extra list object
 }
 \description{
 Extends functionality of phyloseq::ordinate(). Results can be used directly in ord_plot.
+Alternatively you could extract the ordination object for other analyses with ord_get()
 }
 \examples{
 library(phyloseq)
@@ -52,15 +56,24 @@ test <- dietswap \%>\%
   tax_agg("Genus") \%>\%
   dist_calc("bray") \%>\%
   ord_calc(constraints = c("weight", "female"))
-# familiarise yourself with the structure of the returned list object
+# familiarise yourself with the structure of the returned ps_extra list object
 test
 str(test, max.level = 1)
 
-# compute RDA ("aitchison distance") directly from phyloseq (and demo return argument)
+# compute RDA with centre-log-ratio transformed taxa
 test2 <- dietswap \%>\%
   tax_agg("Genus") \%>\%
   tax_transform("clr") \%>\%
-  ord_calc(method = "RDA", constraints = c("weight", "female"))
+  ord_calc(constraints = c("weight", "female"))
 # plot with oldschool vegan graphics to show it returns a standard interoperable ordination object
 ord_get(test2) \%>\% vegan::ordiplot()
+ord_plot(test2, plot_taxa = 8:1)
+# This is equivalent to CAP with "aitchison" distance
+# but the latter (below) doesn't allow plotting taxa loadings with ord_plot
+dietswap \%>\%
+  tax_agg("Genus") \%>\%
+  dist_calc("aitchison") \%>\%
+  ord_calc(constraints = c("weight", "female")) \%>\%
+  ord_plot()
+
 }

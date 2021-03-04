@@ -51,12 +51,10 @@
 #' ord <- ps %>%
 #'   tax_agg("Genus") %>%
 #'   dist_calc("aitchison") %>%
-#'   ord_calc("PCoA")
+#'   ord_calc(method = "PCoA")
 #'
 #' # ordination plot for comparison
-#' ord %>% ord_plot(
-#'   color = "log_P.melaninogenica", size = 3
-#' )
+#' ord %>% ord_plot(color = "log_P.melaninogenica", size = 3)
 #'
 #' ord_plot_iris(
 #'   data = ord,
@@ -77,7 +75,7 @@
 #' clr_pca <- ps %>%
 #'   tax_agg("Genus") %>%
 #'   tax_transform("clr") %>%
-#'   ord_calc("PCA")
+#'   ord_calc(method = "PCA")
 #'
 #' plot1 <- clr_pca %>% ord_plot(
 #'   plot_taxa = 6:1, tax_vec_length = 0.6,

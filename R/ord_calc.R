@@ -1,15 +1,17 @@
 #' Ordinate phyloseq object or distance matrix computed by dist_calc
 #'
 #' Extends functionality of phyloseq::ordinate(). Results can be used directly in ord_plot.
+#' Alternatively you could extract the ordination object for other analyses with ord_get()
 #'
-#' @param data ps_extra list object output from dist_calc(), or tax_transform() (if no distance calculation required e.g. for RDA)
-#' @param method which ordination method to use? currently one of 'PCoA', 'PCA' or 'CCA'
+#' @param data ps_extra list object: output from dist_calc(), or tax_transform() if no distance calculation required for method e.g. for RDA
+#' @param method which ordination method to use? "auto" means automatically determined from ps_extra and other args. If you really know what you want: manually set one of 'PCoA', 'PCA', 'CCA', 'CAP' or 'RDA'
 #' @param constraints (a vector of) valid variable name(s) to constrain PCoA or RDA analyses, or leave as 1 for unconstrained ordination
 #' @param conditions (a vector of) valid variable name(s) to partial these out of PCoA or RDA analyses with Condition(), or leave as NULL
-#' @param verbose if TRUE or "max", message about scaling and missings etc.
+#' @param scale_cc if TRUE (default) ensures any constraints and conditions vars are scaled before use, to ensure their effects are comparable. If set to FALSE you must ensure you have already set the variables on a similar scale yourself!
+#' @param verbose if TRUE or "max", show any warnings and messages about constraint and conditions scaling and missings etc. FALSE suppresses warnings!
 #' @param ... optional arguments passed on to phyloseq::ordinate()
 #'
-#' @return list object (or named parts)
+#' @return ps_extra list object
 #' @export
 #'
 #' @examples
@@ -32,94 +34,145 @@
 #'   tax_agg("Genus") %>%
 #'   dist_calc("bray") %>%
 #'   ord_calc(constraints = c("weight", "female"))
-#' # familiarise yourself with the structure of the returned list object
+#' # familiarise yourself with the structure of the returned ps_extra list object
 #' test
 #' str(test, max.level = 1)
 #'
-#' # compute RDA ("aitchison distance") directly from phyloseq (and demo return argument)
+#' # compute RDA with centre-log-ratio transformed taxa
 #' test2 <- dietswap %>%
 #'   tax_agg("Genus") %>%
 #'   tax_transform("clr") %>%
-#'   ord_calc(method = "RDA", constraints = c("weight", "female"))
+#'   ord_calc(constraints = c("weight", "female"))
 #' # plot with oldschool vegan graphics to show it returns a standard interoperable ordination object
 #' ord_get(test2) %>% vegan::ordiplot()
+#' ord_plot(test2, plot_taxa = 8:1)
+#' # This is equivalent to CAP with "aitchison" distance
+#' # but the latter (below) doesn't allow plotting taxa loadings with ord_plot
+#' dietswap %>%
+#'   tax_agg("Genus") %>%
+#'   dist_calc("aitchison") %>%
+#'   ord_calc(constraints = c("weight", "female")) %>%
+#'   ord_plot()
+#'
 ord_calc <- function(data,
-                     method = c("PCoA", "PCA", "CCA", "RDA", "CAP")[1],
+                     method = c("auto", "PCoA", "PCA", "CCA", "RDA", "CAP", "NMDS")[1],
                      constraints = NULL,
                      conditions = NULL,
+                     scale_cc = TRUE,
                      verbose = TRUE,
                      ...) {
-  ps <- ps_get(data)
-  if (identical(constraints, NULL)) constraints <- 1
+  stopifnot(method %in% c("auto", "PCoA", "PCA", "CCA", "RDA", "CAP", "NMDS", "MDS", "DCA", "DPCoA"))
+  stopifnot(inherits(scale_cc, "logical"))
+  if (!isFALSE(verbose) && method %in% c("DCA", "DPCoA")) {
+    warning("Neither DCA nor DPCoA methods have been tested in microViz, may or may not work as expected...")
+  }
 
-  # check input data object class
-  if (inherits(data, "ps_extra")) {
-    distMat <- dist_get(data)
-    info <- info_get(data)
-  } else if (inherits(data, "phyloseq")) {
-    distMat <- NULL
-    info <- new_ps_extra_info()
+  # identify if constrained or conditioned
+  if (identical(constraints, NULL) || identical(constraints, 1)) {
+    constraints <- 1
+    constrained <- FALSE
   } else {
+    if (!inherits(constraints, "character")) stop("constraints must be NULL or a character vector")
+    constrained <- TRUE
+  }
+  conditioned <- !identical(conditions, NULL)
+  if (conditioned && !inherits(conditions, "character")) stop("conditions must be NULL or a character vector")
+
+  # if input is a phyloseq, convert to ps_extra
+  if (inherits(data, "phyloseq")) data <- new_ps_extra(ps = data)
+  # check class of data is (or at least now is) ps_extra
+  if (!inherits(data, "ps_extra")) {
     stop("data should be ps_extra list output of dist_calc or tax_transform, or a phyloseq\n", "data is class: ", class(data))
   }
 
+  # get data elements
+  ps <- ps_get(data)
+  distMat <- dist_get(data)
+  info <- info_get(data)
+
+  # set method automatically if auto given
+  if (identical(method, "auto")) {
+    if (identical(distMat, NULL)) {
+      method <- if (identical(constraints, 1)) "PCA" else "RDA"
+    } else {
+      method <- if (identical(constraints, 1)) "PCoA" else "CAP"
+    }
+  }
+  # check compatibility of input
+  if (!identical(ord_get(data), NULL) && !isFALSE(verbose)) {
+    warning("You already calculated an ordination (with ", info[["ordMethod"]], ") --> overwriting")
+  }
+  if (!identical(distMat, NULL) && method %in% c("PCA", "RDA", "CCA") && !isFALSE(verbose)) {
+    warning("Distance matrix is not used for ", method, "! Removing distance matrix. Did you mean to use PCoA or CAP? (or use method = auto)")
+    distMat <- NULL # so output ps_extra will get NULL distance matrix
+  }
+  if (identical(distMat, NULL) && method %in% c("CAP", "PCoA", "MDS", "NMDS")) {
+    stop("Distance matrix missing! Use dist_calc() before using ord_calc() with this method: ", method)
+  }
+  if (constrained && method %in% c("PCA", "PCoA", "NMDS", "MDS")) {
+    stop(method, " cannot use constraints, did you mean RDA, CAP or CCA. Alternatively use method = auto (the default)")
+  }
+
   # constraint and condition handling in phyloseq object and distance matrix
-  # handle missings and scale explanatory variables (constraints) if given (for RDA or dbRDA/constrained PCoA)
-  if (!identical(constraints, 1) || !identical(NULL, conditions)) {
+  # handle missings and scale conditions and constraints if given (for RDA or dbRDA/constrained PCoA)
+  if (constrained || conditioned) {
     # remove '1' in case conditions is set but constraints is still 1 (default)
     VARS <- setdiff(c(constraints, conditions), 1)
     # drop samples with missings
     ps <- ps_drop_incomplete(ps, vars = VARS, verbose = verbose)
-    # drop samples from any pre-existing distMat if no longer in ps
-    if (exists("distMat") && !identical(distMat, NULL)) {
+    # drop samples from distMat if no longer in ps
+    if (!identical(distMat, NULL)) {
       keepers <- phyloseq::sample_names(ps)
       distMat <- stats::as.dist(as.matrix(distMat)[keepers, keepers])
     }
-    if (!isFALSE(verbose)) message("\nCentering (mean) and scaling (sd) the constraint and conditioning vars: ")
+    if (!isFALSE(verbose) && isTRUE(scale_cc)) message("\nCentering (mean) and scaling (sd) the constraint and conditioning vars: ")
     for (v in VARS) {
       if (!isFALSE(verbose)) message("\t", v)
       vec <- phyloseq::sample_data(ps)[[v]]
       if (!class(vec) %in% c("logical", "numeric", "integer")) {
         stop(paste0("Constraints and conditions must be numeric, logical, or integer: ", v, " is ", class(vec)))
       }
-      phyloseq::sample_data(ps)[, v] <- scale(vec[!is.na(vec)], center = TRUE, scale = TRUE)
+      if (isTRUE(scale_cc)) phyloseq::sample_data(ps)[, v] <- scale(vec[!is.na(vec)], center = TRUE, scale = TRUE)
     }
   }
 
-  # deal with synonyms / equivalent methods (set to name that calls preferred underlying function)
-  # synonymous for this purpose (PCA is unconstrained RDA)
-  if (identical(method, "PCA")) method <- "RDA"
-  # CAP causes phyloseq::ordinate to call vegan::capscale which, with formula DIST ~ 1, is PCoA (and gives scores!)
-  if (method %in% c("PCoA", "MDS")) method <- "CAP"
+  # set ordMethod
+  # method is used to annotate plot, ordMethod is used to specify how to actually do the ordination
+  # deal with synonyms / equivalent unconstrained methods
+  if (identical(method, "PCA")) {
+    # synonymous for this purpose (PCA is unconstrained RDA)
+    ordMethod <- "RDA"
+  } else if (method %in% c("PCoA", "MDS")) {
+    # CAP causes phyloseq::ordinate to call vegan::capscale which, with formula DIST ~ 1, is PCoA (and gives scores!)
+    ordMethod <- "CAP"
+  } else {
+    ordMethod <- method
+  }
 
-  # PCoA/CAPscale or RDA/PCA or CCA
-  if (method %in% c("RDA", "CAP", "CCA")) {
-    if (identical(method, "CAP") && identical(NULL, distMat)) {
-      stop("Use dist_calc before using ord_calc with this method: ", method)
-    }
+  if (ordMethod %in% c("RDA", "CAP", "CCA")) {
 
     # set formula to include any given constraints on RHS (by default the RHS = 1)
     f <- paste0("distMat ~ ", paste(constraints, collapse = " + "))
 
     # add any conditions specified in conditions arg
-    if (!identical(conditions, NULL)) {
+    if (conditioned) {
       condVars <- paste(conditions, collapse = " + ")
       f <- paste0(f, " + Condition(", condVars, ")")
     }
 
     Formula <- stats::as.formula(f)
 
-    # note RDA does not use distance arg (and distMat is not computed)
-    ORD <- phyloseq::ordinate(physeq = ps, method = method, distance = distMat, formula = Formula, ...)
-  } else if (method %in% c("DCA", "DPCoA", "NMDS") && identical(constraints, 1)) {
+    # note RDA does not use distance arg
+    ORD <- phyloseq::ordinate(physeq = ps, method = ordMethod, distance = distMat, formula = Formula, ...)
+  } else if (method %in% c("DCA", "DPCoA", "NMDS") && !constrained) {
     # other valid unconstrained phyloseq methods
-    ORD <- phyloseq::ordinate(physeq = ps, method = method, distance = distMat, ...)
+    ORD <- phyloseq::ordinate(physeq = ps, method = ordMethod, distance = distMat, ...)
   }
 
   # build return object
   info[["ordMethod"]] <- method
-  if (!identical(constraints, 1)) info[["constraints"]] <- paste(constraints, collapse = "+")
-  if (!identical(conditions, NULL)) info[["conditions"]] <- paste(conditions, collapse = "+")
+  if (constrained) info[["constraints"]] <- paste(constraints, collapse = "+")
+  if (conditioned) info[["conditions"]] <- paste(conditions, collapse = "+")
 
   data[["ps"]] <- ps
   data[["info"]] <- info

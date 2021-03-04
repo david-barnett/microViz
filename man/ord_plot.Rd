@@ -126,7 +126,7 @@ dietswap \%>\%
 constrained_aitchison_rda <- dietswap \%>\%
   tax_agg("Genus") \%>\%
   tax_transform("clr") \%>\%
-  ord_calc(method = "RDA", constraints = c("weight", "female"))
+  ord_calc(constraints = c("weight", "female"))
 
 constrained_aitchison_rda \%>\%
   ord_plot(colour = "bmi_group", constraint_vec_length = 2) +

@@ -71,7 +71,7 @@
 #' constrained_aitchison_rda <- dietswap %>%
 #'   tax_agg("Genus") %>%
 #'   tax_transform("clr") %>%
-#'   ord_calc(method = "RDA", constraints = c("weight", "female"))
+#'   ord_calc(constraints = c("weight", "female"))
 #'
 #' constrained_aitchison_rda %>%
 #'   ord_plot(colour = "bmi_group", constraint_vec_length = 2) +
@@ -202,7 +202,7 @@ ord_plot <-
       siteScoresDf <- as.data.frame(ordsum[["sites"]][, axes, drop = FALSE])
 
       # if RDA/PCA method: get species scores (aka feature loadings)
-      if (info[["ordMethod"]] %in% c("RDA", "CCA")) {
+      if (info[["ordMethod"]] %in% c("RDA", "PCA", "CCA")) {
         speciesScoresDf <- as.data.frame(ordsum[["species"]][, axes, drop = FALSE])
       }
 
@@ -242,7 +242,7 @@ ord_plot <-
     }
 
     # add loadings/ species-scores arrows for RDA/PCA methods
-    if (info[["ordMethod"]] %in% c("RDA", "PCA")) {
+    if (info[["ordMethod"]] %in% c("RDA", "CCA", "PCA")) {
 
       # calculate line length for taxa vectors
       speciesLineLength <- sqrt(speciesScoresDf[, 1]^2 + speciesScoresDf[, 2]^2)

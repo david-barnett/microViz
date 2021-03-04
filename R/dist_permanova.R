@@ -68,7 +68,7 @@
 #'
 #' # take the same distance matrix used for the permanova and plot an ordination
 #' PERM2 %>%
-#'   ord_calc("PCoA") %>%
+#'   ord_calc(method = "PCoA") %>%
 #'   ord_plot(color = "bmi_group")
 #' # this trick ensures any samples dropped from the permanova for having missing values
 #' # in the covariates are NOT included in the corresponding ordination plot

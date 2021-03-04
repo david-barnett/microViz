@@ -23,7 +23,7 @@
 #' ps %>%
 #'   ps_mutate(log_akkermansia = log(Akkermansia)) %>%
 #'   dist_calc("bray") %>%
-#'   ord_calc("PCoA") %>%
+#'   ord_calc(method = "PCoA") %>%
 #'   ord_plot(
 #'     colour = "log_akkermansia",
 #'     size = 3, shape = "nationality"

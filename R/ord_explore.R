@@ -21,7 +21,7 @@
 #' ps <- enterotype
 #' ord1 <- ps %>%
 #'   dist_calc("bray") %>%
-#'   ord_calc("PCoA")
+#'   ord_calc(method = "PCoA")
 #'
 #' # ord_explore(ord = ord1, auto_caption = NA)
 #'

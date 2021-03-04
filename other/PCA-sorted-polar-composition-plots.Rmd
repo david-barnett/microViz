@@ -69,7 +69,7 @@ PCA plot:
 pca <- dietswap %>%
   tax_agg("Genus") %>%
   tax_transform("clr") %>%
-  ord_calc("PCA") %>%
+  ord_calc(method = "PCA") %>%
   ord_plot(
     shape = "nationality", fill = "lightgrey", colour = "nationality",
     plot_taxa = 1:5, tax_vec_length = 0.5, auto_caption = FALSE
