@@ -1,4 +1,4 @@
-# microViz (development version)
+# microViz 0.4.3
 
 ## Features
 * `cor_heatmap` for microbe-metadata correlation heatmaps
@@ -13,6 +13,8 @@
 ## Bug fixes
 * `dist_permanova`'s obsolete return arg removed
 * `tax_filter` gets explicit handling of compositional input
+* `tax_fill_unknowns` gets better handling of fully unclassified taxa
+* `taxatree_nodes` now checks for cross-rank name duplications, which would mess up the taxatree graph structure
 
 # microViz 0.4.2
 
