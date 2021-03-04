@@ -1,12 +1,14 @@
 ---
-title: "microViz: an R package for microbiome data visualization and statistics"
-tags: 
-  - R
-  - microbiome
-  - visualization
+title: 'microViz: an R package for microbiome data visualization and statistics'
 author: "David Barnett"
 date: "`r Sys.Date()`"
-output: html_document
+output:
+  html_document: default
+  word_document: default
+tags:
+- R
+- microbiome
+- visualization
 ---
 
 ```{r setup, include=FALSE}
@@ -15,42 +17,33 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Summary 
 
-microViz is an R package for the statistical analysis and visualisation of microbiota data. This package extends the functionality of popular microbial ecosystem data analysis R packages phyloseq, vegan and microbiome.
+microViz is an R package for the statistical analysis and visualization of microbiota data. This package extends the functionality of popular microbial ecosystem data analysis R packages phyloseq, vegan and microbiome.
 microViz provides a selection of powerful additions to the toolbox of researchers already familiar with phyloseq and other ubiquitous microbiome R packages, as well as assisting researchers with less R programming experience to independently explore and analyse their data and to generate publication-ready figures.
 
 The tools offered by microViz include:
 
-- A Shiny app for interactive exploration of microbiota data within R, pairing ordination plots with abundance barcharts;
-- Novel figures pairing ordination plots with circular barcharts (iris plots) for comprehensive, intuitive and compact visualization of the similarity and composition of hundreds of microbial ecosystems;
-- A compact cladogram visualisation approach for intuitive comparison of numerous microbe-metadata associations derived from (multivariable) statistical models (taxonomic association trees);
-- Correlation and composition heatmaps for microbiome data annotated with plots showing each taxon's prevalence and/or abundance;
-- Easy to use functions for generating publication-ready ordination plots with ggplot2, accommodating constrained and partial ordination, biplots and triplots, and automatic captioning designed to promote methodological transparency and reproducibility.
+- Easy to use functions for generating publication-ready ordination plots with ggplot2, accommodating constrained and partial ordination, bi-plots and tri-plots, and automatic captioning designed to promote methodological transparency and reproducibility
+- A Shiny app for interactive exploration of microbiota data within R, pairing ordination plots with abundance bar charts
+- A novel visualization approach pairing ordination plots with circular bar charts (iris plots) for comprehensive, intuitive and compact visualization of the similarity and composition of hundreds of microbial ecosystems
+- Correlation and composition heatmaps for microbiome data annotated with plots showing each taxon's prevalence and/or abundance
+- A compact cladogram visualization approach for intuitive comparison of numerous microbe-metadata associations derived from (multivariable) statistical models (taxonomic association trees)
 
 # Statement of need
 
 Modern microbiome research typically involves the use of next-generation-sequencing methods to profile the relative abundance of hundreds of microbial taxa across tens or hundreds of samples. Alongside increasing sample sizes, the amount of relevant metadata collected is growing, particularly in human cohort studies. These trends all increase the size and complexity of the resulting dataset, which makes its exploration, statistical analysis, and presentation  increasingly challenging.
 
-Work in progress
+Ordination methods like principle coordinates/components analyses are a staple method in microbiome research. The vegan package implements the majority of distance and ordination calculation methods, and the phyloseq and microbiome packages provide easier interfaces for using these methods to produce ordination plots. microViz makes further distance and ordination calculation and visualization methods accessible, such as the generalized UniFrac and Aitchison distances, (distance-based) redundancy analysis and canonical correspondence analysis, along with ggplot2-based bi-plots and tri-plots. Furthermore, microViz implements a simple S3 list class, ps_extra, for provenance tracking and automated figure captioning, by storing distance matrices and ordination objects alongside the phyloseq object they were created from, as well as relevant taxonomic aggregation and transformation information. The automated captioning aims to promote better reporting of ordination methods in published research, where too often insufficient information is given to reproduce the ordination plot. 
+Additionally, microViz provides an interactive exploration function that allows the user to interact with any ordination plot, without leaving R, via a Shiny app. The user can click to select samples on the ordination plot and see their taxonomic compositions directly on a customizable stacked bar chart with a clear colour scheme.
+Alternatively, for a comprehensive and intuitive static presentation of both sample variation patterns and underlying microbial composition, microViz provides an easy approach to pair ordination plots with attractive circular bar charts (iris plots) by ordering the bar chart in accordance with the rotational position of samples around the origin point on the ordination plot. Bar charts do have limitations when visualizing highly diverse samples, such as the adult gut microbiome, at a detailed taxonomic level. This is why microViz also offers an enhanced heatmap visualization approach, pairing an ordered heatmap of (transformed and/or scaled) microbial abundances with compact plots showing each taxon's overall prevalence and/or abundance distribution. The same annotation can easily be added to metadata-to-microbe correlation heatmaps.
 
-ps_extra class for ordination
+To visualize metadata-to-microbiome associations derived from more complicated statistical models, microViz offers an innovative method, taxonomic association trees. This visualization combines multiple coloured cladograms comprehensively and compactly displaying patterns of microbial associations with multiple covariates from the same multivariable statistical model. This approach makes easy the comparison of the direction, strength and significance of microbial associations between covariates, and across multiple taxonomic ranks. It also provides an intuitive reminder of the balancing act inherent in compositional data analysis, if one clade/branch goes up, others must go down.
+Other packages in R and Python can be used to make graphics similar to the microViz taxonomic association tree visualizations, but the microViz style has a few advantages for the purpose of reporting multivariable model results:
+-  ggtree or the Python package GraPhlAn can produce similar plots, but they are not so compact by default and so less suited for comparing association profiles of multiple covariates. However for presenting simple associations, the user could use the microViz statistical model results with ggtree, and a future version of microViz could include ggtree style visualizations directly.
+- The R package metacoder also allows the visualization of arbitrary statistics on a cladogram, but harmonization of colour ranges across multiple plots is challenging, making it less suitable for this purpose.
 
-- simple list object to contain phyloseq and associated info relating to the ordination produced.
-- auto captioning (for development/internal communication and promoting good reporting)
-- reliability, harder to make mistakes if objects kept together. (also permanova and ordination on same data)
+Beyond the main visualization functionality, microViz provides a suite of powerful tools for working easily with phyloseq objects including wrappers that bring functions from the popular dplyr package to phyloseq, to easily filter, select, join, mutate and arrange sample data. 
+All microViz functions are designed to work with R’s pipe operator (%>%), to chain successive functions together and improve code readability. Lastly, for user convenience, microViz documentation and tutorials are hosted online via a pkgdown website on Github Pages, with extensive examples of code and output generated with example datasets.
 
-dplyr toolset for phyloseq:
-
-Beyond the main visualization functionality, microViz provides a suite of powerful tools for working with phyloseq objects including wrappers that bring functions from the popular dplyr package to phyloseq, to easily filter, select join, mutate and arrange sample data. All microViz functions are designed to work with R’s pipe operator (%>%) , to chain successive functions together and improve code readability. For user convenience, microViz documentation is hosted online via a pkgdown website on Github Pages, with extensive examples of code and output using example datasets. 
-
-taxatree plots:
-
-- avoid overinterpretation of spurious findings at lower taxonomic ranks that often occurs with low abundance taxa with some methods, especially as there are more taxa to model at lower ranks? 
-- intuitive presentation of the balance inherent in compositional data, (if one branch goes up, others must go down).
-
-Other packages in R and python can make similar graphics to the microViz taxonomic association tree visualisations, but the microViz visualisation style has a few advantages for the purpose of reporting model results:
-
-- GraPhlAn and ggtree trees are similar but not so compact by default, and so less suited for comparing association profiles of multiple covariates. However for presenting simple associations, the user could use the microViz statistical model results with ggtree or graphphlan, and a future version of microViz could include ggtree style visualisations directly.
-- The metacoder also allows the visualisation of arbitrary statistics on the 
 
 
 
