@@ -166,7 +166,11 @@ taxatree_models <- function(ps, tax_levels = NULL, type = "bbdml", variables = N
   tt <- phyloseq::tax_table(ps)[, tax_levels]
   uniques <- apply(tt, MARGIN = 2, unique)
   if (anyDuplicated(unlist(uniques))) {
-    stop("Some elements in tax_table(ps) appear in more than one of the selected ranks.\nConsider using tax_prepend_ranks(ps) first, to fix this problem.")
+    stop(
+      "Some elements in tax_table(ps) appear in more than one of the selected ranks.",
+      "\nConsider using tax_prepend_ranks(ps) first, to fix this problem.",
+      "\nOr run `taxatree_nodes(ps)` for a more informative error."
+    )
   }
 
   tax_models_list <- lapply(
@@ -196,7 +200,7 @@ models2stats <- function(taxon_models) {
     taxon_stats <- lapply(taxon_models, corncob::waldt)
     taxon_stats <- lapply(names(taxon_stats), function(name) {
       df <- as.data.frame(taxon_stats[[name]])
-      df[["taxon_name"]] <- name
+      df[["taxon_to"]] <- name
       df <- tibble::rownames_to_column(df, var = "stat")
       df <- dplyr::rename(df, p = "Pr(>|t|)", t = "t value", se = "Std. Error", b = "Estimate")
       df <- dplyr::filter(df, !grepl("(Intercept)", .data$stat))
@@ -218,9 +222,9 @@ models2stats <- function(taxon_models) {
       X = names(taxon_models),
       FUN = function(name) {
         df <- broom::tidy(taxon_models[[name]])
-        df[["taxon_name"]] <- name
+        df[["taxon_to"]] <- name
         df <- dplyr::rename(df, model_var = "term")
-        df <- dplyr::relocate(df, dplyr::all_of(c("model_var", "taxon_name")))
+        df <- dplyr::relocate(df, dplyr::all_of(c("model_var", "taxon_to")))
         df <- dplyr::filter(df, !grepl("(Intercept)", .data[["model_var"]]))
       }
     )

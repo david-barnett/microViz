@@ -8,7 +8,9 @@ tax_fill_unknowns(
   x,
   min_length = 4,
   unknowns = c("unknown", paste0(c("p", "c", "o", "f", "g", "s"), "__")),
-  levels = phyloseq::rank_names(x)
+  levels = phyloseq::rank_names(x),
+  sep = " ",
+  verbose = TRUE
 )
 }
 \arguments{
@@ -19,6 +21,10 @@ tax_fill_unknowns(
 \item{unknowns}{also replace strings matching any in this vector}
 
 \item{levels}{names of taxonomic levels to modify, defaults to all}
+
+\item{sep}{character(s) separating new name and taxonomic rank level from which new name was taken}
+
+\item{verbose}{emit warnings when cannot replace with informative name?}
 }
 \value{
 object same class as x
@@ -40,29 +46,28 @@ library(microbiome)
 data(dietswap)
 ps <- dietswap
 
-tt <- data.frame(tax_table(ps))
-
 # create unknowns to test filling
+tt <- tax_table(ps)
 ntax <- ntaxa(ps)
 set.seed(123)
 tt[sample(1:ntax, 30), 3] <- "g__"
 tt[sample(1:ntax, 20), 2] <- "f__"
 tt[sample(1:ntax, 10), 1] <- "p__"
 tt[sample(1:ntax, 10), 3] <- "unknown"
+# create a row with only NAs
+tt[1, ] <- NA
 
+tax_table(ps) <- tax_table(tt)
 
-tt <- tax_table(as.matrix.data.frame(tt))
-tax_table(ps) <- tt
-
-# works on phyloseq objects, and the defaults should solve most problems
+# tax_fill_unknowns defaults should solve most problems
 ps
-tax_fill_unknowns(ps)
+tax_table(ps) \%>\% head(50)
+tax_fill_unknowns(ps) \%>\% tax_table() \%>\% head(50)
 
-tt \%>\% head(50)
 # this will replace "unknown"s as well as short values including "g__" and "f__"
-tax_fill_unknowns(tt) \%>\% head(50)
-# this will only replace values in Genus column, and will not replace "unknown"s
-tax_fill_unknowns(tt, unknowns = NULL, levels = "Genus") \%>\% head(50)
+ps \%>\% tax_fill_unknowns() \%>\% tax_table() \%>\% head(50)
+# this will only replace values in Genus column, only replace short entries, and not "unknown"
+ps \%>\% tax_fill_unknowns(unknowns = NULL, levels = "Genus") \%>\% tax_table() \%>\% head(50)
 
 # larger example tax_table shows 1000s rows still fast, from microbiomeutilities package
 # library(microbiomeutilities)

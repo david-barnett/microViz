@@ -157,9 +157,9 @@ taxatree_plots <- function(
     FUN = function(var) {
       df <- var_stats[[var]]
       # create a tibble graph for each variable
-      nodes_df <- dplyr::left_join(x = nodes_df, y = df, by = "taxon_name")
+      nodes_df <- dplyr::left_join(x = nodes_df, y = df, by = "taxon_to")
       edge_df <- taxatree_edges(nodes_df = nodes_df)
-      graph <- tidygraph::tbl_graph(nodes = nodes_df, edges = edge_df, node_key = "taxon_name", directed = TRUE)
+      graph <- tidygraph::tbl_graph(nodes = nodes_df, edges = edge_df, node_key = "taxon_to", directed = TRUE)
 
       if (inherits(layout, "character")) {
         layout <- ggraph::create_layout(graph = graph, layout = layout, circular = TRUE)
@@ -296,7 +296,7 @@ taxatree_plotkey <- function(
   # create directed graph from phyloseq
   nodes_df <- taxatree_nodes(ps)
   edge_df <- taxatree_edges(nodes_df = nodes_df)
-  graph <- tidygraph::tbl_graph(nodes = nodes_df, edges = edge_df, node_key = "taxon_name", directed = TRUE)
+  graph <- tidygraph::tbl_graph(nodes = nodes_df, edges = edge_df, node_key = "taxon_to", directed = TRUE)
 
   if (inherits(layout, "character")) {
     layout <- ggraph::create_layout(graph = graph, layout = layout, circular = TRUE)
@@ -341,10 +341,10 @@ taxatree_plotkey <- function(
 
   # setting labels
   label_args <- list(
-    data = ~ dplyr::filter(., .data[["taxon_name"]] %in% taxa_to_label),
+    data = ~ dplyr::filter(., .data[["taxon_to"]] %in% taxa_to_label),
     mapping = ggplot2::aes(
       x = .data[["x"]], y = .data[["y"]],
-      label = taxon_renamer(.data[["taxon_name"]]),
+      label = taxon_renamer(.data[["taxon_to"]]),
     ),
     xlim = c(-Inf, Inf),
     min.segment.length = 0,

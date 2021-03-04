@@ -9,6 +9,8 @@
 #' @param min_length replace strings shorter than this
 #' @param unknowns also replace strings matching any in this vector
 #' @param levels names of taxonomic levels to modify, defaults to all
+#' @param sep character(s) separating new name and taxonomic rank level from which new name was taken
+#' @param verbose emit warnings when cannot replace with informative name?
 #'
 #' @return object same class as x
 #' @export
@@ -22,29 +24,28 @@
 #' data(dietswap)
 #' ps <- dietswap
 #'
-#' tt <- data.frame(tax_table(ps))
-#'
 #' # create unknowns to test filling
+#' tt <- tax_table(ps)
 #' ntax <- ntaxa(ps)
 #' set.seed(123)
 #' tt[sample(1:ntax, 30), 3] <- "g__"
 #' tt[sample(1:ntax, 20), 2] <- "f__"
 #' tt[sample(1:ntax, 10), 1] <- "p__"
 #' tt[sample(1:ntax, 10), 3] <- "unknown"
+#' # create a row with only NAs
+#' tt[1, ] <- NA
 #'
+#' tax_table(ps) <- tax_table(tt)
 #'
-#' tt <- tax_table(as.matrix.data.frame(tt))
-#' tax_table(ps) <- tt
-#'
-#' # works on phyloseq objects, and the defaults should solve most problems
+#' # tax_fill_unknowns defaults should solve most problems
 #' ps
-#' tax_fill_unknowns(ps)
+#' tax_table(ps) %>% head(50)
+#' tax_fill_unknowns(ps) %>% tax_table() %>% head(50)
 #'
-#' tt %>% head(50)
 #' # this will replace "unknown"s as well as short values including "g__" and "f__"
-#' tax_fill_unknowns(tt) %>% head(50)
-#' # this will only replace values in Genus column, and will not replace "unknown"s
-#' tax_fill_unknowns(tt, unknowns = NULL, levels = "Genus") %>% head(50)
+#' ps %>% tax_fill_unknowns() %>% tax_table() %>% head(50)
+#' # this will only replace values in Genus column, only replace short entries, and not "unknown"
+#' ps %>% tax_fill_unknowns(unknowns = NULL, levels = "Genus") %>% tax_table() %>% head(50)
 #'
 #' # larger example tax_table shows 1000s rows still fast, from microbiomeutilities package
 #' # library(microbiomeutilities)
@@ -54,8 +55,11 @@ tax_fill_unknowns <- function(
                               x,
                               min_length = 4,
                               unknowns = c("unknown", paste0(c("p", "c", "o", "f", "g", "s"), "__")),
-                              levels = phyloseq::rank_names(x)) {
-  if (inherits(x, "phyloseq")) {
+                              levels = phyloseq::rank_names(x),
+                              sep = " ",
+                              verbose = TRUE
+                              ) {
+  if (methods::is(x, "phyloseq")) {
     tt <- unclass(phyloseq::tax_table(x))
   } else if (inherits(x, "taxonomyTable")) {
     tt <- unclass(x)
@@ -77,14 +81,15 @@ tax_fill_unknowns <- function(
   # replace unknowns
   tt_out <- vapply(
     X = tt_list,
-    FUN.VALUE = unlist(tt_list[[1]]),
+    FUN.VALUE = as.character(unlist(tt_list[[1]])),
     FUN = function(vec) {
       vec <- unlist(vec)
       is_unknown <- (nchar(vec) < min_length) | (vec %in% c("NA", unknowns))
       # replace unknowns with nearest known if required and possible
       if (any(is_unknown)) {
         if (all(is_unknown)) {
-          warning("This row contains no non-unknown values, returning unchanged: ", paste(vec, collapse = "; "))
+          vec <- rep(paste("unclassified", ranknames[[1]]), times = length(vec))
+          if(isTRUE(verbose)) warning("This row contains no non-unknown values, returning: '", vec[[1]], "' for all replaced levels.\nConsider editing this tax_table entry manually.")
         } else {
           # edit each unknown value in this row
           vec <- vapply(
@@ -94,15 +99,15 @@ tax_fill_unknowns <- function(
               if (is_unknown[i]) {
                 known_above <- !is_unknown[1:(i - 1)]
                 if (!any(known_above)) {
-                  if (ranknames[[i]] %in% levels) {
-                    warning("No non-unknown values to the left of 1+ entries in this row, returning those unchanged: ", paste(vec, collapse = "; "))
+                  if (ranknames[[i]] %in% levels && isTRUE(verbose)) {
+                    warning("No non-unknown values to the left of 1 or more entries in this row, returning those entries unchanged: ", paste(vec, collapse = "; "))
                   }
                   return(vec[i])
                 }
                 nearest_known <- max(which(known_above))
                 tax <- vec[nearest_known]
-                level <- ranknames[[i]]
-                tax <- paste(tax, level, sep = ".")
+                level <- ranknames[[nearest_known]]
+                tax <- paste(tax, level, sep = sep)
                 return(tax)
               } else {
                 return(vec[i])
