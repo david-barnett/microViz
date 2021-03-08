@@ -2,7 +2,7 @@
 % Please edit documentation in R/heatmaps.R
 \name{heat_numbers}
 \alias{heat_numbers}
-\title{aesthetic settings for drawing numbers on heatmap tiles}
+\title{Aesthetic settings for drawing numbers on heatmap tiles}
 \usage{
 heat_numbers(
   decimals = 1,

@@ -19,16 +19,27 @@
 #' enterotype
 #' sample_data(enterotype)[1:10, 1:5]
 #'
+#' # keep only samples with seqtech not equal to sanger
 #' ps1 <- ps_filter(enterotype, SeqTech != "Sanger")
 #' ps1
 #' sample_data(ps1)[1:10, 1:5]
 #'
+#' # keep only samples with no NAs in any samples
 #' ps2 <- enterotype %>% ps_filter(across(everything(), ~ !is.na(.)))
 #' ps2
 #' sample_data(ps2)[1:8, 1:8]
 #'
+#' # ps2 is equivalent to dropping samples with incomplete sample_variables and tax_filtering 0s
+#' ps3 <- enterotype %>%
+#'   ps_drop_incomplete() %>%
+#'   tax_filter(prev_detection_threshold = 1e-20, is_counts = FALSE)
+#' # we needed to set a low detection threshold because this example data is proportions
+#' identical(ps2, ps3) # TRUE
+#'
 #' # function will give warning if some of the otu_values are negative
-#' # unless you set .keep_all_taxa = TRUE
+#' # (which may happen when filtering data that has e.g. clr-transformed taxa abundances)
+#' # as it attempts to discard any taxa that become always absent/0 after filtering (by default)
+#' # set .keep_all_taxa = TRUE to avoid this filtering behaviour, which is unwanted in this case
 #' enterotype %>%
 #'   microbiome::transform("clr") %>%
 #'   ps_filter(SeqTech == "Sanger", .keep_all_taxa = TRUE)

@@ -35,7 +35,8 @@ phyloseq with modified sample_data (and possibly filtered)
 \description{
 You can use most types of join from the dplyr::*_join function family, including e.g. "inner", "left", "semi", "anti" (see details below).
 Defaults to type = "left" which calls left_join(), this supports x as a phyloseq and y as a dataframe.
-This wrapper simply:
+Most of the time you'll want "left" (adds variables with no sample filtering), or "inner" (adds variables and filters samples).
+This function simply:
 \enumerate{
 \item extracts the sample_data from the phyloseq as a dataframe
 \item performs the chosen type of join (with the given arguments)
@@ -70,25 +71,43 @@ data("enterotype")
 x <- enterotype
 y <- data.frame(
   ID_var = sample_names(enterotype)[c(1:50, 101:150)],
-  arbitrary_info = rep(c("A", "B"), 50),
-  SeqTech = sample_data(enterotype)[c(1:50, 101:150), "SeqTech"]
+  SeqTech = sample_data(enterotype)[c(1:50, 101:150), "SeqTech"],
+  arbitrary_info = rep(c("A", "B"), 50)
 )
 
-(out1A <- ps_join(x = x, y = y, match_sample_names = "ID_var"))
+# simply match the new data to samples that exist in x, as default is a left_join
+# where some sample names of x are expected to match variable ID_var in dataframe y
+out1A <- ps_join(x = x, y = y, match_sample_names = "ID_var")
+out1A
 sample_data(out1A)[1:6, ]
 
-(out1B <- ps_join(
+
+# use sample_name and all shared variables to join
+# (a natural join is not a type of join per se,
+# but it indicates that all shared variables should be used for matching)
+out1B <- ps_join(
   x = x, y = y, match_sample_names = "ID_var",
   sample_name_natural_join = TRUE, keep_sample_name_col = FALSE
-))
+)
+out1B
 sample_data(out1B)[1:6, ]
 
+# if you only want to keep phyloseq samples that exist in the new data, try an inner join
+# this will add the new variables AND filter the phyloseq
+# this example matches sample names to ID_var and by matching the shared SeqTech variable
+out1C <- ps_join(x = x, y = y, type = "inner", by = "SeqTech", match_sample_names = "ID_var")
+out1C
+sample_data(out1C)[1:6, ]
+
 # the id variable is named Sample_ID in x and ID_var in y
-# a semi_join is a filtering join (that doesn't add new variables)
-(out2A <- ps_join(x = x, y = y, by = c("Sample_ID" = "ID_var"), type = "semi"))
+# semi_join is only a filtering join (doesn't add new variables but just filters samples in x)
+out2A <- ps_join(x = x, y = y, by = c("Sample_ID" = "ID_var"), type = "semi")
+out2A
 sample_data(out2A)[1:6, ]
 
-(out2B <- ps_join(x = x, y = y, by = c("Sample_ID" = "ID_var"), type = "anti"))
+# anti_join is another type of filtering join
+out2B <- ps_join(x = x, y = y, by = c("Sample_ID" = "ID_var"), type = "anti")
+out2B
 sample_data(out2B)[1:6, ]
 
 # semi and anti joins keep opposite sets of samples
@@ -96,6 +115,7 @@ intersect(sample_names(out2A), sample_names(out2B))
 
 # you can mix and match named and unnamed values in the `by` vector
 # inner is like a combination of left join and semi join
-(out3 <- ps_join(x = x, y = y, by = c("Sample_ID" = "ID_var", "SeqTech"), type = "inner"))
+out3 <- ps_join(x = x, y = y, by = c("Sample_ID" = "ID_var", "SeqTech"), type = "inner")
+out3
 sample_data(out3)[1:6, ]
 }
