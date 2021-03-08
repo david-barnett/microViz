@@ -334,7 +334,7 @@ heat_palette <- function(palette = "Greens", breaks = 5, range = NA, rev = FALSE
   }
 }
 
-#' @title aesthetic settings for drawing numbers on heatmap tiles
+#' @title Aesthetic settings for drawing numbers on heatmap tiles
 #'
 #' @description Works with comp_heatmap() and cor_heatmap(). See the help for those functions.
 #'
