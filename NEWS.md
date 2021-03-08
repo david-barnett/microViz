@@ -1,3 +1,8 @@
+# microViz (development version)
+
+## Bug fixes
+* heatmaps should handle NAs better (viz_heatmap internal fix)
+
 # microViz 0.4.3
 
 ## Features

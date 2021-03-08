@@ -23,6 +23,9 @@ viz_heatmap <- function(mat, # used for seriation and colours
                         seriation_dist_col = seriation_dist,
                         right_annotation = NULL,
                         ...) {
+  stopifnot(inherits(mat, "matrix") && storage.mode(mat) %in% c("double", "integer"))
+  stopifnot(inherits(numbers_mat, "matrix") && storage.mode(numbers_mat) %in% c("double", "integer"))
+
   dots <- list(...)
   # order matrix
   ser <- mat_seriate(mat = mat, method = seriation_method, dist = seriation_dist)
@@ -38,12 +41,13 @@ viz_heatmap <- function(mat, # used for seriation and colours
     parent.env(environment(cell_fun)) <- environment()
   } else if (inherits(numbers, "list")) {
     cell_fun <- function(j, i, x, y, width, height, fill) {
-      grid::grid.text(label = sprintf(numbers[["fmt"]], numbers_mat[i, j]), x = x, y = y, gp = numbers[["gp"]])
+      val <- numbers_mat[i, j]
+      if (!is.na(val)) grid::grid.text(label = sprintf(numbers[["fmt"]], val), x = x, y = y, gp = numbers[["gp"]])
     }
   }
 
   # getting colour range from data if necessary
-  if (inherits(colors, "function")) colors <- colors(range = range(mat))
+  if (inherits(colors, "function")) colors <- colors(range = range(mat, na.rm = TRUE, finite = TRUE))
 
   args <- list(
     matrix = mat,
