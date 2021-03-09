@@ -9,7 +9,8 @@
 #' @param min_length replace strings shorter than this
 #' @param unknowns also replace strings matching any in this vector
 #' @param levels names of taxonomic levels to modify, defaults to all
-#' @param sep character(s) separating new name and taxonomic rank level from which new name was taken
+#' @param suffix_rank "classified" (default) or "current", when replacing an entry, should the suffix be taken from the lowest classified rank for that taxon "classified", or the "current" unclassified rank?
+#' @param sep character(s) separating new name and taxonomic rank level suffix (see suffix_rank)
 #' @param verbose emit warnings when cannot replace with informative name?
 #'
 #' @return object same class as x
@@ -40,12 +41,23 @@
 #' # tax_fill_unknowns defaults should solve most problems
 #' ps
 #' tax_table(ps) %>% head(50)
-#' tax_fill_unknowns(ps) %>% tax_table() %>% head(50)
 #'
 #' # this will replace "unknown"s as well as short values including "g__" and "f__"
-#' ps %>% tax_fill_unknowns() %>% tax_table() %>% head(50)
+#' tax_fill_unknowns(ps) %>%
+#'   tax_table() %>%
+#'   head(50)
+#'
 #' # this will only replace values in Genus column, only replace short entries, and not "unknown"
-#' ps %>% tax_fill_unknowns(unknowns = NULL, levels = "Genus") %>% tax_table() %>% head(50)
+#' ps %>%
+#'   tax_fill_unknowns(unknowns = NULL, levels = "Genus") %>%
+#'   tax_table() %>%
+#'   head(50)
+#'
+#' # Change rank suffix and separator settings
+#' tax_fill_unknowns(ps, suffix_rank = "current", sep = " - ") %>%
+#'   tax_table() %>%
+#'   head(50)
+#'
 #'
 #' # larger example tax_table shows 1000s rows still fast, from microbiomeutilities package
 #' # library(microbiomeutilities)
@@ -56,9 +68,9 @@ tax_fill_unknowns <- function(
                               min_length = 4,
                               unknowns = c("unknown", paste0(c("p", "c", "o", "f", "g", "s"), "__")),
                               levels = phyloseq::rank_names(x),
+                              suffix_rank = "classified", # or current
                               sep = " ",
-                              verbose = TRUE
-                              ) {
+                              verbose = TRUE) {
   if (methods::is(x, "phyloseq")) {
     tt <- unclass(phyloseq::tax_table(x))
   } else if (inherits(x, "taxonomyTable")) {
@@ -66,7 +78,7 @@ tax_fill_unknowns <- function(
   } else {
     stop("x must be phyloseq or taxonomyTable class, it is class: ", paste(class(x), collapse = " "))
   }
-  if (identical(ncol(tt), 1L)) stop ("tax_table(x) has only one rank/column!")
+  if (identical(ncol(tt), 1L)) stop("tax_table(x) has only one rank/column!")
   # get rownames to ensure order doesn't change
   original_rownames <- rownames(tt)
   ranknames <- colnames(tt)
@@ -89,7 +101,7 @@ tax_fill_unknowns <- function(
       if (any(is_unknown)) {
         if (all(is_unknown)) {
           vec <- rep(paste("unclassified", ranknames[[1]]), times = length(vec))
-          if(isTRUE(verbose)) warning("This row contains no non-unknown values, returning: '", vec[[1]], "' for all replaced levels.\nConsider editing this tax_table entry manually.")
+          if (isTRUE(verbose)) warning("This row contains no non-unknown values, returning: '", vec[[1]], "' for all replaced levels.\nConsider editing this tax_table entry manually.")
         } else {
           # edit each unknown value in this row
           vec <- vapply(
@@ -106,7 +118,7 @@ tax_fill_unknowns <- function(
                 }
                 nearest_known <- max(which(known_above))
                 tax <- vec[nearest_known]
-                level <- ranknames[[nearest_known]]
+                if (identical(suffix_rank, "classified")) level <- ranknames[[nearest_known]] else level <- ranknames[[i]]
                 tax <- paste(tax, level, sep = sep)
                 return(tax)
               } else {

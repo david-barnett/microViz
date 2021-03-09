@@ -9,6 +9,7 @@ tax_fill_unknowns(
   min_length = 4,
   unknowns = c("unknown", paste0(c("p", "c", "o", "f", "g", "s"), "__")),
   levels = phyloseq::rank_names(x),
+  suffix_rank = "classified",
   sep = " ",
   verbose = TRUE
 )
@@ -22,7 +23,9 @@ tax_fill_unknowns(
 
 \item{levels}{names of taxonomic levels to modify, defaults to all}
 
-\item{sep}{character(s) separating new name and taxonomic rank level from which new name was taken}
+\item{suffix_rank}{"classified" (default) or "current", when replacing an entry, should the suffix be taken from the lowest classified rank for that taxon "classified", or the "current" unclassified rank?}
+
+\item{sep}{character(s) separating new name and taxonomic rank level suffix (see suffix_rank)}
 
 \item{verbose}{emit warnings when cannot replace with informative name?}
 }
@@ -62,12 +65,23 @@ tax_table(ps) <- tax_table(tt)
 # tax_fill_unknowns defaults should solve most problems
 ps
 tax_table(ps) \%>\% head(50)
-tax_fill_unknowns(ps) \%>\% tax_table() \%>\% head(50)
 
 # this will replace "unknown"s as well as short values including "g__" and "f__"
-ps \%>\% tax_fill_unknowns() \%>\% tax_table() \%>\% head(50)
+tax_fill_unknowns(ps) \%>\%
+  tax_table() \%>\%
+  head(50)
+
 # this will only replace values in Genus column, only replace short entries, and not "unknown"
-ps \%>\% tax_fill_unknowns(unknowns = NULL, levels = "Genus") \%>\% tax_table() \%>\% head(50)
+ps \%>\%
+  tax_fill_unknowns(unknowns = NULL, levels = "Genus") \%>\%
+  tax_table() \%>\%
+  head(50)
+
+# Change rank suffix and separator settings
+tax_fill_unknowns(ps, suffix_rank = "current", sep = " - ") \%>\%
+  tax_table() \%>\%
+  head(50)
+
 
 # larger example tax_table shows 1000s rows still fast, from microbiomeutilities package
 # library(microbiomeutilities)
