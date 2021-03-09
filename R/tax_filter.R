@@ -1,18 +1,19 @@
-#' Filter rare taxa from a phyloseq object
-#'
-#' Takes a phyloseq object and filtering criteria arguments
+#' Filter rare and/or low abundance taxa from a phyloseq object
 #'
 #' Removes taxa (from all samples) that do not meet a given criterion or combination of criteria.
-#' If a value is 1 or greater, it is treatd as an absolute minimum number of samples/reads. If <1, it is treated as proportion of all samples/reads.
+#' If a value for min_prevalence, min_total_abundance or min_sample_abundance is 1 or greater, then
+#' it is treated as an absolute minimum number of samples/reads. If <1, it is treated as proportion of all samples/reads.
+#' This function is designed to work with counts. otu_table must contain counts particularly if you want to set a non-zero value for min_total_abundance.
 #'
-#' @param ps phyloseq object with unfiltered COUNTS
-#' @param min_prevalence number or proportion of samples that a taxon must be present in
-#' @param prev_detection_threshold min counts for a taxon to be considered present in that sample
+#' @param ps phyloseq object (ideally with COUNTS in otu_table)
+#' @param min_prevalence number or proportion of samples that a taxon must be present in (alternatively see undetected)
+#' @param prev_detection_threshold min required counts (or value) for a taxon to be considered present in that sample (or set undetected arg)
 #' @param min_total_abundance minimum total readcount of a taxon, summed across all samples (can be proportion of all counts)
 #' @param min_sample_abundance taxa must have at least this many reads in one or more samples (or proportion of that sample's reads)
 #' @param tax_level if given, aggregates data at named taxonomic rank before filtering, but returns phyloseq at the ORIGINAL level of aggregation!
 #' @param names_only if names_only is true return only names of taxa, not the phyloseq
 #' @param is_counts expect count data in phyloseq otu_table? default is TRUE
+#' @param undetected e.g. 0, value at (or below) which a taxon is considered not present in that sample. If set, this overrides prev_detection_threshold.
 #'
 #' @return filtered phyloseq object AT ORIGINAL LEVEL OF AGGREGATION (not at the level in tax_level)
 #' @export
@@ -42,13 +43,16 @@ tax_filter <- function(
                        min_sample_abundance = 0,
                        tax_level = NA,
                        names_only = FALSE,
-                       is_counts = TRUE
+                       is_counts = TRUE,
+                       undetected = NULL
                        ) {
+  # alternative way of specifying prev_detection_threshold.
+  if (!identical(undetected, NULL)) prev_detection_threshold <- undetected + 1e-300
 
   # preserve original phyloseq
   ps1 <- ps
   # preserve original tax table
-  original_taxtab <- as.data.frame(phyloseq::tax_table(ps))
+  original_taxtab <- data.frame(phyloseq::tax_table(ps), check.names = FALSE)
 
   # check for proportional arguments
   # convert min prevalence to an absolute number (if given as a proportion i.e. <1)
@@ -86,14 +90,14 @@ tax_filter <- function(
     )
   }
   # tax ranks table
-  taxtab <- as.data.frame(phyloseq::tax_table(ps))
+  taxtab <- data.frame(phyloseq::tax_table(ps), check.names = FALSE)
 
   # calculate taxonwise stats
   tax_info <- data.frame(
-    taxon = microbiome::taxa(ps),
-    prevalence = microbiome::prevalence(ps, count = T, include.lowest = TRUE, detection = prev_detection_threshold),
+    taxon = phyloseq::taxa_names(ps),
+    prevalence = microbiome::prevalence(ps, count = TRUE, include.lowest = TRUE, detection = prev_detection_threshold),
     total_counts = phyloseq::taxa_sums(ps),
-    max_abundance = apply(otu, 1, max)
+    max_abundance = apply(otu, MARGIN = 1, FUN = max)
   )
   tax_info <- cbind(tax_info, taxtab)
 
@@ -111,7 +115,7 @@ tax_filter <- function(
   }
 
   # filter original input taxonomic table (hence not discarding lower rank classifications)
-  if (tax_level == "taxon") {
+  if (identical(tax_level, "taxon")) {
     tax_selection_vec <- rownames(original_taxtab) %in% taxaMeetingThreshold
   } else {
     tax_selection_vec <- original_taxtab[, tax_level] %in% taxaMeetingThreshold

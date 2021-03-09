@@ -2,7 +2,7 @@
 % Please edit documentation in R/tax_filter.R
 \name{tax_filter}
 \alias{tax_filter}
-\title{Filter rare taxa from a phyloseq object}
+\title{Filter rare and/or low abundance taxa from a phyloseq object}
 \usage{
 tax_filter(
   ps,
@@ -12,15 +12,16 @@ tax_filter(
   min_sample_abundance = 0,
   tax_level = NA,
   names_only = FALSE,
-  is_counts = TRUE
+  is_counts = TRUE,
+  undetected = NULL
 )
 }
 \arguments{
-\item{ps}{phyloseq object with unfiltered COUNTS}
+\item{ps}{phyloseq object (ideally with COUNTS in otu_table)}
 
-\item{min_prevalence}{number or proportion of samples that a taxon must be present in}
+\item{min_prevalence}{number or proportion of samples that a taxon must be present in (alternatively see undetected)}
 
-\item{prev_detection_threshold}{min counts for a taxon to be considered present in that sample}
+\item{prev_detection_threshold}{min required counts (or value) for a taxon to be considered present in that sample (or set undetected arg)}
 
 \item{min_total_abundance}{minimum total readcount of a taxon, summed across all samples (can be proportion of all counts)}
 
@@ -31,16 +32,17 @@ tax_filter(
 \item{names_only}{if names_only is true return only names of taxa, not the phyloseq}
 
 \item{is_counts}{expect count data in phyloseq otu_table? default is TRUE}
+
+\item{undetected}{e.g. 0, value at (or below) which a taxon is considered not present in that sample. If set, this overrides prev_detection_threshold.}
 }
 \value{
 filtered phyloseq object AT ORIGINAL LEVEL OF AGGREGATION (not at the level in tax_level)
 }
 \description{
-Takes a phyloseq object and filtering criteria arguments
-}
-\details{
 Removes taxa (from all samples) that do not meet a given criterion or combination of criteria.
-If a value is 1 or greater, it is treatd as an absolute minimum number of samples/reads. If <1, it is treated as proportion of all samples/reads.
+If a value for min_prevalence, min_total_abundance or min_sample_abundance is 1 or greater, then
+it is treated as an absolute minimum number of samples/reads. If <1, it is treated as proportion of all samples/reads.
+This function is designed to work with counts. otu_table must contain counts particularly if you want to set a non-zero value for min_total_abundance.
 }
 \examples{
 data("dietswap", package = "microbiome")
