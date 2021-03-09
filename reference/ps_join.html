@@ -42,7 +42,8 @@
 <meta property="og:title" content="Join a dataframe to phyloseq sample data — ps_join" />
 <meta property="og:description" content="You can use most types of join from the dplyr::*_join function family, including e.g. &quot;inner&quot;, &quot;left&quot;, &quot;semi&quot;, &quot;anti&quot; (see details below).
 Defaults to type = &quot;left&quot; which calls left_join(), this supports x as a phyloseq and y as a dataframe.
-This wrapper simply:
+Most of the time you'll want &quot;left&quot; (adds variables with no sample filtering), or &quot;inner&quot; (adds variables and filters samples).
+This function simply:
 extracts the sample_data from the phyloseq as a dataframe
 performs the chosen type of join (with the given arguments)
 filters the phyloseq if type = inner, semi or anti
@@ -80,7 +81,7 @@ reattaches the modified sample_data to the phyloseq and returns the phyloseq
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3.9003</span>
       </span>
     </div>
 
@@ -142,7 +143,8 @@ reattaches the modified sample_data to the phyloseq and returns the phyloseq
     <div class="ref-description">
     <p>You can use most types of join from the dplyr::*_join function family, including e.g. "inner", "left", "semi", "anti" (see details below).
 Defaults to type = "left" which calls left_join(), this supports x as a phyloseq and y as a dataframe.
-This wrapper simply:</p><ol>
+Most of the time you'll want "left" (adds variables with no sample filtering), or "inner" (adds variables and filters samples).
+This function simply:</p><ol>
 <li><p>extracts the sample_data from the phyloseq as a dataframe</p></li>
 <li><p>performs the chosen type of join (with the given arguments)</p></li>
 <li><p>filters the phyloseq if type = inner, semi or anti</p></li>
@@ -158,7 +160,8 @@ This wrapper simply:</p><ol>
   match_sample_names <span class='op'>=</span> <span class='cn'>NULL</span>,
   keep_sample_name_col <span class='op'>=</span> <span class='cn'>TRUE</span>,
   sample_name_natural_join <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  type <span class='op'>=</span> <span class='st'>"left"</span>
+  type <span class='op'>=</span> <span class='st'>"left"</span>,
+  .keep_all_taxa <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -192,6 +195,10 @@ This wrapper simply:</p><ol>
       <th>type</th>
       <td><p>name of type of join e.g. "left", "right", "inner", "semi" (see dplyr help pages)</p></td>
     </tr>
+    <tr>
+      <th>.keep_all_taxa</th>
+      <td><p>if FALSE (the default), remove taxa which are no longer present in the dataset after filtering</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -223,11 +230,14 @@ This will cause this function to fail, as additional rows cannot be added to the
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='va'>enterotype</span>
 <span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
   ID_var <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_names-methods.html'>sample_names</a></span><span class='op'>(</span><span class='va'>enterotype</span><span class='op'>)</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>50</span>, <span class='fl'>101</span><span class='op'>:</span><span class='fl'>150</span><span class='op'>)</span><span class='op'>]</span>,
-  arbitrary_info <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span><span class='op'>)</span>, <span class='fl'>50</span><span class='op'>)</span>,
-  SeqTech <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='va'>enterotype</span><span class='op'>)</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>50</span>, <span class='fl'>101</span><span class='op'>:</span><span class='fl'>150</span><span class='op'>)</span>, <span class='st'>"SeqTech"</span><span class='op'>]</span>
+  SeqTech <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='va'>enterotype</span><span class='op'>)</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>50</span>, <span class='fl'>101</span><span class='op'>:</span><span class='fl'>150</span><span class='op'>)</span>, <span class='st'>"SeqTech"</span><span class='op'>]</span>,
+  arbitrary_info <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span><span class='op'>)</span>, <span class='fl'>50</span><span class='op'>)</span>
 <span class='op'>)</span>
 
-<span class='op'>(</span><span class='va'>out1A</span> <span class='op'>&lt;-</span> <span class='fu'>ps_join</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>x</span>, y <span class='op'>=</span> <span class='va'>y</span>, match_sample_names <span class='op'>=</span> <span class='st'>"ID_var"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='co'># simply match the new data to samples that exist in x, as default is a left_join</span>
+<span class='co'># where some sample names of x are expected to match variable ID_var in dataframe y</span>
+<span class='va'>out1A</span> <span class='op'>&lt;-</span> <span class='fu'>ps_join</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>x</span>, y <span class='op'>=</span> <span class='va'>y</span>, match_sample_names <span class='op'>=</span> <span class='st'>"ID_var"</span><span class='op'>)</span>
+<span class='va'>out1A</span>
 </div><div class='output co'>#&gt; phyloseq-class experiment-level object
 #&gt; otu_table()   OTU Table:         [ 553 taxa and 280 samples ]
 #&gt; sample_data() Sample Data:       [ 280 samples by 12 sample variables ]
@@ -240,17 +250,22 @@ This will cause this function to fail, as additional rows cannot be added to the
 #&gt; AM.F10.T2 AM.F10.T2          3 AM.F10.T2    Sanger AM.F10.T2 turnbaugh09
 #&gt; DA.AD.1     DA.AD.1          2   DA.AD.1    Sanger   DA.AD.1     MetaHIT
 #&gt; DA.AD.1T   DA.AD.1T       &lt;NA&gt;  DA.AD.1T    Sanger      &lt;NA&gt;        &lt;NA&gt;
-#&gt;           Nationality Gender Age ClinicalStatus arbitrary_info SeqTech.y
-#&gt; AM.AD.1      american      F  28        healthy              A    Sanger
-#&gt; AM.AD.2      american      M  37        healthy              B    Sanger
-#&gt; AM.F10.T1    american      F  NA          obese              A    Sanger
-#&gt; AM.F10.T2    american      F  NA          obese              B    Sanger
-#&gt; DA.AD.1        danish      F  59        healthy              A    Sanger
-#&gt; DA.AD.1T         &lt;NA&gt;   &lt;NA&gt;  NA           &lt;NA&gt;              B    Sanger</div><div class='input'>
-<span class='op'>(</span><span class='va'>out1B</span> <span class='op'>&lt;-</span> <span class='fu'>ps_join</span><span class='op'>(</span>
+#&gt;           Nationality Gender Age ClinicalStatus SeqTech.y arbitrary_info
+#&gt; AM.AD.1      american      F  28        healthy    Sanger              A
+#&gt; AM.AD.2      american      M  37        healthy    Sanger              B
+#&gt; AM.F10.T1    american      F  NA          obese    Sanger              A
+#&gt; AM.F10.T2    american      F  NA          obese    Sanger              B
+#&gt; DA.AD.1        danish      F  59        healthy    Sanger              A
+#&gt; DA.AD.1T         &lt;NA&gt;   &lt;NA&gt;  NA           &lt;NA&gt;    Sanger              B</div><div class='input'>
+
+<span class='co'># use sample_name and all shared variables to join</span>
+<span class='co'># (a natural join is not a type of join per se,</span>
+<span class='co'># but it indicates that all shared variables should be used for matching)</span>
+<span class='va'>out1B</span> <span class='op'>&lt;-</span> <span class='fu'>ps_join</span><span class='op'>(</span>
   x <span class='op'>=</span> <span class='va'>x</span>, y <span class='op'>=</span> <span class='va'>y</span>, match_sample_names <span class='op'>=</span> <span class='st'>"ID_var"</span>,
   sample_name_natural_join <span class='op'>=</span> <span class='cn'>TRUE</span>, keep_sample_name_col <span class='op'>=</span> <span class='cn'>FALSE</span>
-<span class='op'>)</span><span class='op'>)</span>
+<span class='op'>)</span>
+<span class='va'>out1B</span>
 </div><div class='output co'>#&gt; phyloseq-class experiment-level object
 #&gt; otu_table()   OTU Table:         [ 553 taxa and 280 samples ]
 #&gt; sample_data() Sample Data:       [ 280 samples by 10 sample variables ]
@@ -270,13 +285,38 @@ This will cause this function to fail, as additional rows cannot be added to the
 #&gt; AM.F10.T2  NA          obese              B
 #&gt; DA.AD.1    59        healthy              A
 #&gt; DA.AD.1T   NA           &lt;NA&gt;              B</div><div class='input'>
-<span class='co'># the id variable is named Sample_ID in x and ID_var in y</span>
-<span class='co'># a semi_join is a filtering join (that doesn't add new variables)</span>
-<span class='op'>(</span><span class='va'>out2A</span> <span class='op'>&lt;-</span> <span class='fu'>ps_join</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>x</span>, y <span class='op'>=</span> <span class='va'>y</span>, by <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Sample_ID"</span> <span class='op'>=</span> <span class='st'>"ID_var"</span><span class='op'>)</span>, type <span class='op'>=</span> <span class='st'>"semi"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='co'># if you only want to keep phyloseq samples that exist in the new data, try an inner join</span>
+<span class='co'># this will add the new variables AND filter the phyloseq</span>
+<span class='co'># this example matches sample names to ID_var and by matching the shared SeqTech variable</span>
+<span class='va'>out1C</span> <span class='op'>&lt;-</span> <span class='fu'>ps_join</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>x</span>, y <span class='op'>=</span> <span class='va'>y</span>, type <span class='op'>=</span> <span class='st'>"inner"</span>, by <span class='op'>=</span> <span class='st'>"SeqTech"</span>, match_sample_names <span class='op'>=</span> <span class='st'>"ID_var"</span><span class='op'>)</span>
+<span class='va'>out1C</span>
 </div><div class='output co'>#&gt; phyloseq-class experiment-level object
-#&gt; otu_table()   OTU Table:         [ 553 taxa and 100 samples ]
+#&gt; otu_table()   OTU Table:         [ 533 taxa and 100 samples ]
+#&gt; sample_data() Sample Data:       [ 100 samples by 11 sample variables ]
+#&gt; tax_table()   Taxonomy Table:    [ 533 taxa by 1 taxonomic ranks ]</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='va'>out1C</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='op'>]</span>
+</div><div class='output co'>#&gt; Sample Data:        [6 samples by 11 sample variables]:
+#&gt;              ID_var Enterotype Sample_ID SeqTech  SampleID     Project
+#&gt; AM.AD.1     AM.AD.1       &lt;NA&gt;   AM.AD.1  Sanger   AM.AD.1      gill06
+#&gt; AM.AD.2     AM.AD.2       &lt;NA&gt;   AM.AD.2  Sanger   AM.AD.2      gill06
+#&gt; AM.F10.T1 AM.F10.T1       &lt;NA&gt; AM.F10.T1  Sanger AM.F10.T1 turnbaugh09
+#&gt; AM.F10.T2 AM.F10.T2          3 AM.F10.T2  Sanger AM.F10.T2 turnbaugh09
+#&gt; DA.AD.1     DA.AD.1          2   DA.AD.1  Sanger   DA.AD.1     MetaHIT
+#&gt; DA.AD.1T   DA.AD.1T       &lt;NA&gt;  DA.AD.1T  Sanger      &lt;NA&gt;        &lt;NA&gt;
+#&gt;           Nationality Gender Age ClinicalStatus arbitrary_info
+#&gt; AM.AD.1      american      F  28        healthy              A
+#&gt; AM.AD.2      american      M  37        healthy              B
+#&gt; AM.F10.T1    american      F  NA          obese              A
+#&gt; AM.F10.T2    american      F  NA          obese              B
+#&gt; DA.AD.1        danish      F  59        healthy              A
+#&gt; DA.AD.1T         &lt;NA&gt;   &lt;NA&gt;  NA           &lt;NA&gt;              B</div><div class='input'>
+<span class='co'># the id variable is named Sample_ID in x and ID_var in y</span>
+<span class='co'># semi_join is only a filtering join (doesn't add new variables but just filters samples in x)</span>
+<span class='va'>out2A</span> <span class='op'>&lt;-</span> <span class='fu'>ps_join</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>x</span>, y <span class='op'>=</span> <span class='va'>y</span>, by <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Sample_ID"</span> <span class='op'>=</span> <span class='st'>"ID_var"</span><span class='op'>)</span>, type <span class='op'>=</span> <span class='st'>"semi"</span><span class='op'>)</span>
+<span class='va'>out2A</span>
+</div><div class='output co'>#&gt; phyloseq-class experiment-level object
+#&gt; otu_table()   OTU Table:         [ 533 taxa and 100 samples ]
 #&gt; sample_data() Sample Data:       [ 100 samples by 9 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 553 taxa by 1 taxonomic ranks ]</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='va'>out2A</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='op'>]</span>
+#&gt; tax_table()   Taxonomy Table:    [ 533 taxa by 1 taxonomic ranks ]</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='va'>out2A</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='op'>]</span>
 </div><div class='output co'>#&gt; Sample Data:        [6 samples by 9 sample variables]:
 #&gt;           Enterotype Sample_ID SeqTech  SampleID     Project Nationality Gender
 #&gt; AM.AD.1         &lt;NA&gt;   AM.AD.1  Sanger   AM.AD.1      gill06    american      F
@@ -292,11 +332,13 @@ This will cause this function to fail, as additional rows cannot be added to the
 #&gt; AM.F10.T2  NA          obese
 #&gt; DA.AD.1    59        healthy
 #&gt; DA.AD.1T   NA           &lt;NA&gt;</div><div class='input'>
-<span class='op'>(</span><span class='va'>out2B</span> <span class='op'>&lt;-</span> <span class='fu'>ps_join</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>x</span>, y <span class='op'>=</span> <span class='va'>y</span>, by <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Sample_ID"</span> <span class='op'>=</span> <span class='st'>"ID_var"</span><span class='op'>)</span>, type <span class='op'>=</span> <span class='st'>"anti"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='co'># anti_join is another type of filtering join</span>
+<span class='va'>out2B</span> <span class='op'>&lt;-</span> <span class='fu'>ps_join</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>x</span>, y <span class='op'>=</span> <span class='va'>y</span>, by <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Sample_ID"</span> <span class='op'>=</span> <span class='st'>"ID_var"</span><span class='op'>)</span>, type <span class='op'>=</span> <span class='st'>"anti"</span><span class='op'>)</span>
+<span class='va'>out2B</span>
 </div><div class='output co'>#&gt; phyloseq-class experiment-level object
-#&gt; otu_table()   OTU Table:         [ 553 taxa and 180 samples ]
+#&gt; otu_table()   OTU Table:         [ 549 taxa and 180 samples ]
 #&gt; sample_data() Sample Data:       [ 180 samples by 9 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 553 taxa by 1 taxonomic ranks ]</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='va'>out2B</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='op'>]</span>
+#&gt; tax_table()   Taxonomy Table:    [ 549 taxa by 1 taxonomic ranks ]</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='va'>out2B</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='op'>]</span>
 </div><div class='output co'>#&gt; Sample Data:        [6 samples by 9 sample variables]:
 #&gt;        Enterotype Sample_ID  SeqTech SampleID Project Nationality Gender Age
 #&gt; MH0010          1    MH0010 Illumina     &lt;NA&gt;    &lt;NA&gt;        &lt;NA&gt;   &lt;NA&gt;  NA
@@ -317,11 +359,12 @@ This will cause this function to fail, as additional rows cannot be added to the
 </div><div class='output co'>#&gt; character(0)</div><div class='input'>
 <span class='co'># you can mix and match named and unnamed values in the `by` vector</span>
 <span class='co'># inner is like a combination of left join and semi join</span>
-<span class='op'>(</span><span class='va'>out3</span> <span class='op'>&lt;-</span> <span class='fu'>ps_join</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>x</span>, y <span class='op'>=</span> <span class='va'>y</span>, by <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Sample_ID"</span> <span class='op'>=</span> <span class='st'>"ID_var"</span>, <span class='st'>"SeqTech"</span><span class='op'>)</span>, type <span class='op'>=</span> <span class='st'>"inner"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>out3</span> <span class='op'>&lt;-</span> <span class='fu'>ps_join</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>x</span>, y <span class='op'>=</span> <span class='va'>y</span>, by <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Sample_ID"</span> <span class='op'>=</span> <span class='st'>"ID_var"</span>, <span class='st'>"SeqTech"</span><span class='op'>)</span>, type <span class='op'>=</span> <span class='st'>"inner"</span><span class='op'>)</span>
+<span class='va'>out3</span>
 </div><div class='output co'>#&gt; phyloseq-class experiment-level object
-#&gt; otu_table()   OTU Table:         [ 553 taxa and 100 samples ]
+#&gt; otu_table()   OTU Table:         [ 533 taxa and 100 samples ]
 #&gt; sample_data() Sample Data:       [ 100 samples by 10 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 553 taxa by 1 taxonomic ranks ]</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='va'>out3</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='op'>]</span>
+#&gt; tax_table()   Taxonomy Table:    [ 533 taxa by 1 taxonomic ranks ]</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='va'>out3</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='op'>]</span>
 </div><div class='output co'>#&gt; Sample Data:        [6 samples by 10 sample variables]:
 #&gt;           Enterotype Sample_ID SeqTech  SampleID     Project Nationality Gender
 #&gt; AM.AD.1         &lt;NA&gt;   AM.AD.1  Sanger   AM.AD.1      gill06    american      F

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create list describing taxa annotation — tax_anno • microViz</title>
+<title>Heatmap annotations helpers — heatmap-annotations • microViz</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,12 @@
 
 
 
-<meta property="og:title" content="Create list describing taxa annotation — tax_anno" />
-<meta property="og:description" content="main usefulness of tax_anno function is to give sane defaults and prompt user which annotation options are available" />
+<meta property="og:title" content="Heatmap annotations helpers — heatmap-annotations" />
+<meta property="og:description" content="Functions to easily define ComplexHeatmap annotations for taxa and/or variables
+tax_anno creates list describing taxa annotation (for cor_heatmap or comp_heatmap)
+var_anno creates list describing variable annotation (for cor_heatmap)
+
+" />
 
 
 
@@ -72,7 +76,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3.9003</span>
       </span>
     </div>
 
@@ -126,13 +130,17 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create list describing taxa annotation</h1>
-    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/heatmaps.R'><code>R/heatmaps.R</code></a></small>
+    <h1>Heatmap annotations helpers</h1>
+    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/heatmap_annotations.R'><code>R/heatmap_annotations.R</code></a></small>
     <div class="hidden name"><code>heatmap-annotations.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>main usefulness of tax_anno function is to give sane defaults and prompt user which annotation options are available</p>
+    <p>Functions to easily define ComplexHeatmap annotations for taxa and/or variables</p><ul>
+<li><p>tax_anno creates list describing taxa annotation (for cor_heatmap or comp_heatmap)</p></li>
+<li><p>var_anno creates list describing variable annotation (for cor_heatmap)</p></li>
+</ul>
+
     </div>
 
     <pre class="usage"><span class='fu'>tax_anno</span><span class='op'>(</span>
@@ -142,13 +150,48 @@
   abund <span class='op'>=</span> <span class='fl'>2</span>,
   size <span class='op'>=</span> <span class='fl'>30</span>,
   gap <span class='op'>=</span> <span class='fl'>2</span>,
-  rel_sizes <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span>,
+  rel_sizes <span class='op'>=</span> <span class='cn'>NA</span>,
+  args <span class='op'>=</span> <span class='cn'>NULL</span>,
   <span class='va'>...</span>
 <span class='op'>)</span>
 
-<span class='fu'>anno_prev</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>taxa</span>, undetected <span class='op'>=</span> <span class='fl'>0</span>, which <span class='op'>=</span> <span class='st'>"row"</span>, size <span class='op'>=</span> <span class='fl'>15</span>, <span class='va'>...</span><span class='op'>)</span>
+<span class='fu'>anno_prev</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  <span class='va'>taxa</span>,
+  undetected <span class='op'>=</span> <span class='fl'>0</span>,
+  which <span class='op'>=</span> <span class='st'>"row"</span>,
+  size <span class='op'>=</span> <span class='fl'>15</span>,
+  bar_width <span class='op'>=</span> <span class='fl'>0.4</span>,
+  gp <span class='op'>=</span> <span class='fu'>grid</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/grid/gpar.html'>gpar</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"grey"</span><span class='op'>)</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
-<span class='fu'>anno_abund</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>taxa</span>, undetected <span class='op'>=</span> <span class='fl'>0</span>, which <span class='op'>=</span> <span class='st'>"row"</span>, size <span class='op'>=</span> <span class='fl'>15</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'>anno_abund</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  <span class='va'>taxa</span>,
+  undetected <span class='op'>=</span> <span class='fl'>0</span>,
+  which <span class='op'>=</span> <span class='st'>"row"</span>,
+  size <span class='op'>=</span> <span class='fl'>15</span>,
+  point_size <span class='op'>=</span> <span class='fl'>1</span>,
+  box_width <span class='op'>=</span> <span class='fl'>0.4</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
+
+<span class='fu'>var_anno</span><span class='op'>(</span>
+  annos <span class='op'>=</span> <span class='st'>"var_box"</span>,
+  funs <span class='op'>=</span> <span class='st'>"identity"</span>,
+  names <span class='op'>=</span> <span class='cn'>NA</span>,
+  which <span class='op'>=</span> <span class='st'>"column"</span>,
+  size <span class='op'>=</span> <span class='fl'>15</span> <span class='op'>*</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>annos</span><span class='op'>)</span>,
+  gap <span class='op'>=</span> <span class='fl'>2</span>,
+  rel_sizes <span class='op'>=</span> <span class='cn'>NA</span>,
+  args <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
+
+<span class='fu'>anno_var_hist</span><span class='op'>(</span><span class='va'>data</span>, vars <span class='op'>=</span> <span class='cn'>NA</span>, which <span class='op'>=</span> <span class='st'>"column"</span>, size <span class='op'>=</span> <span class='fl'>15</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='fu'>anno_var_box</span><span class='op'>(</span><span class='va'>data</span>, vars <span class='op'>=</span> <span class='cn'>NA</span>, which <span class='op'>=</span> <span class='st'>"column"</span>, size <span class='op'>=</span> <span class='fl'>15</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -159,7 +202,7 @@
     </tr>
     <tr>
       <th>which</th>
-      <td><p>"row" or "column" annotation?</p></td>
+      <td><p>"row" or "column" annnotation</p></td>
     </tr>
     <tr>
       <th>prev</th>
@@ -171,31 +214,70 @@
     </tr>
     <tr>
       <th>size</th>
-      <td><p>size in mm (width or height, based on which)</p></td>
+      <td><p>total size in mm of annotations (width or height depending on which)</p></td>
     </tr>
     <tr>
       <th>gap</th>
-      <td><p>size of gap between annotations (in mm)</p></td>
+      <td><p>gap in mm between annotations</p></td>
     </tr>
     <tr>
       <th>rel_sizes</th>
-      <td><p>relative sizes of non-NA annotations (in given order)</p></td>
+      <td><p>relative sizes of annotations (NA for equal sizes, or same length as annos)</p></td>
+    </tr>
+    <tr>
+      <th>args</th>
+      <td><p>extra args passed to each annotation, give as list of lists (one inner list per arg, named, e.g. list(prev = list(whatever = whatever))</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>further args passed HeatmapAnnotation</p></td>
+      <td><p>further named args to be passed on (to list)</p></td>
     </tr>
     <tr>
       <th>data</th>
-      <td><p>phyloseq or ps-extra</p></td>
+      <td><p>phyloseq or ps-extra (or even a data.frame or matrix for anno_var_* functions)</p></td>
     </tr>
     <tr>
       <th>taxa</th>
       <td><p>names of taxa to plot</p></td>
     </tr>
+    <tr>
+      <th>bar_width</th>
+      <td><p>relative width of barchart bars</p></td>
+    </tr>
+    <tr>
+      <th>gp</th>
+      <td><p>a grid::gpar() object for graphics parameter settings like fill or lwd</p></td>
+    </tr>
+    <tr>
+      <th>point_size</th>
+      <td><p>size of outlier points in mm</p></td>
+    </tr>
+    <tr>
+      <th>box_width</th>
+      <td><p>relative width of boxplot boxes</p></td>
+    </tr>
+    <tr>
+      <th>annos</th>
+      <td><p>name(s) of annotation(s) to show, in order (e.g. 'var_box', 'var_hist')</p></td>
+    </tr>
+    <tr>
+      <th>funs</th>
+      <td><p>function(s) to transform matrix of variable values before plotting (length must be 1 or same length as annos)</p></td>
+    </tr>
+    <tr>
+      <th>names</th>
+      <td><p>names to use for each annotation in annos</p></td>
+    </tr>
+    <tr>
+      <th>vars</th>
+      <td><p>names of variables to plot</p></td>
+    </tr>
     </table>
 
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://dx.plos.org/10.1371/journal.pone.0061217'>phyloseq</a></span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

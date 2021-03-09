@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Filter rare taxa from a phyloseq object — tax_filter • microViz</title>
+<title>Filter rare and/or low abundance taxa from a phyloseq object — tax_filter • microViz</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,11 @@
 
 
 
-<meta property="og:title" content="Filter rare taxa from a phyloseq object — tax_filter" />
-<meta property="og:description" content="Takes a phyloseq object and filtering criteria arguments" />
+<meta property="og:title" content="Filter rare and/or low abundance taxa from a phyloseq object — tax_filter" />
+<meta property="og:description" content="Removes taxa (from all samples) that do not meet a given criterion or combination of criteria.
+If a value for min_prevalence, min_total_abundance or min_sample_abundance is 1 or greater, then
+it is treated as an absolute minimum number of samples/reads. If &amp;lt;1, it is treated as proportion of all samples/reads.
+This function is designed to work with counts. otu_table must contain counts particularly if you want to set a non-zero value for min_total_abundance." />
 
 
 
@@ -72,7 +75,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3.9003</span>
       </span>
     </div>
 
@@ -126,13 +129,16 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Filter rare taxa from a phyloseq object</h1>
+    <h1>Filter rare and/or low abundance taxa from a phyloseq object</h1>
     <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/tax_filter.R'><code>R/tax_filter.R</code></a></small>
     <div class="hidden name"><code>tax_filter.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Takes a phyloseq object and filtering criteria arguments</p>
+    <p>Removes taxa (from all samples) that do not meet a given criterion or combination of criteria.
+If a value for min_prevalence, min_total_abundance or min_sample_abundance is 1 or greater, then
+it is treated as an absolute minimum number of samples/reads. If &lt;1, it is treated as proportion of all samples/reads.
+This function is designed to work with counts. otu_table must contain counts particularly if you want to set a non-zero value for min_total_abundance.</p>
     </div>
 
     <pre class="usage"><span class='fu'>tax_filter</span><span class='op'>(</span>
@@ -143,7 +149,8 @@
   min_sample_abundance <span class='op'>=</span> <span class='fl'>0</span>,
   tax_level <span class='op'>=</span> <span class='cn'>NA</span>,
   names_only <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  is_counts <span class='op'>=</span> <span class='cn'>TRUE</span>
+  is_counts <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  undetected <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -151,15 +158,15 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>ps</th>
-      <td><p>phyloseq object with unfiltered COUNTS</p></td>
+      <td><p>phyloseq object (ideally with COUNTS in otu_table)</p></td>
     </tr>
     <tr>
       <th>min_prevalence</th>
-      <td><p>number or proportion of samples that a taxon must be present in</p></td>
+      <td><p>number or proportion of samples that a taxon must be present in (alternatively see undetected)</p></td>
     </tr>
     <tr>
       <th>prev_detection_threshold</th>
-      <td><p>min counts for a taxon to be considered present in that sample</p></td>
+      <td><p>min required counts (or value) for a taxon to be considered present in that sample (or set undetected arg)</p></td>
     </tr>
     <tr>
       <th>min_total_abundance</th>
@@ -181,15 +188,15 @@
       <th>is_counts</th>
       <td><p>expect count data in phyloseq otu_table? default is TRUE</p></td>
     </tr>
+    <tr>
+      <th>undetected</th>
+      <td><p>e.g. 0, value at (or below) which a taxon is considered not present in that sample. If set, this overrides prev_detection_threshold.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>filtered phyloseq object AT ORIGINAL LEVEL OF AGGREGATION (not at the level in tax_level)</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>Removes taxa (from all samples) that do not meet a given criterion or combination of criteria.
-If a value is 1 or greater, it is treatd as an absolute minimum number of samples/reads. If &lt;1, it is treated as proportion of all samples/reads.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span>
