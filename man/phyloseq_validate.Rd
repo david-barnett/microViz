@@ -19,13 +19,20 @@ possibly modified phyloseq object
 \description{
 \itemize{
 \item Ensures the storage mode of a phyloseq object's otu table is "double" instead of e.g. "integer".
-\item Checks for, and warns about, common uninformative entries in the tax_table which often cause unwanted results in.
+\item Checks for, and messages about, common uninformative entries in the tax_table, which often cause unwanted results
 \item Replaces missing sample_data with a dataframe including only sample_names (as "SAMPLE" variable)
+\item Removes taxa where phyloseq::taxa_sums() is equal to zero, with a warning
 }
 }
 \examples{
 data(dietswap, package = "microbiome")
 
-phyloseq_validate(dietswap, verbose = TRUE)
-# no messages means no problems detected
+tax_filter(dietswap, )
+phyloseq_validate(dietswap, verbose = TRUE) # expect warning about taxa summing to zero
+
+# verbose = FALSE will suppress messages and warnings but still:
+# fix storage.mode, replace NULL sample_data, and remove taxa that sum to 0 across all samples
+phyloseq_validate(dietswap, verbose = FALSE)
+
+# no messages or warnings means no problems detected
 }
