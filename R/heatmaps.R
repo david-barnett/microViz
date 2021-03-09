@@ -1,11 +1,15 @@
 #' @title Microbe-to-sample-data correlation heatmap
 #'
-#' @description Correlate microbial abundances to numeric sample_data variables
+#' @description Plot correlations between (transformed) microbial abundances and (selected) numeric-like sample_data variables from a phyloseq object.
+#'
+#' @details Using a data.frame for the data argument is also possible, in which case the (selected) numeric-like variables will be correlated which each other,
+#' and all arguments relating to taxa will be ignored.
 #'
 #' @param data phyloseq or phyloseq extra
 #' @param taxa list of taxa to include, or NA for all
-#' @param anno_tax taxAnnotation output describing taxa distribution or NULL
+#' @param anno_tax optional annotation of taxa distributions: tax_anno() list output, or a pre-made ComplexHeatmap HeatmapAnnotation
 #' @param vars selection of variable names from sample_data
+#' @param anno_vars optional annotation of variable distributions: var_anno() list output, or a pre-made ComplexHeatmap HeatmapAnnotation
 #' @param taxa_which row or column (which represents a taxon)
 #' @param cor name of correlation method
 #' @param cor_use passed to cor(use = cor_use)
@@ -17,7 +21,7 @@
 #' @param seriation_dist_col distance to use in seriation_method_col (if needed)
 #' @param tax_transform transformation applied to otu_table before correlating (and BEFORE selection of taxa)
 #' @param gridlines list output of heat_grid() for setting gridline style
-#' @param ... extra args, for cor_heatmap passed to viz_heatmap (for heat_numbers() dots are passed to grid::gpar for grid::grid.text)
+#' @param ... extra args, for cor_heatmap passed to internal function viz_heatmap (for heat_numbers() dots are passed to grid::gpar for grid::grid.text)
 #'
 #' @export
 #'
@@ -43,6 +47,29 @@
 #' # NOTE: detection threshold set to 50 as HITchip example data seems to have background noise
 #' p
 #'
+#' # or with a selection of numeric-like variables
+#' cor_heatmap(
+#'   psq, taxa,
+#'   vars = c("african", "female", "weight"), anno_tax = tax_anno(undetected = 50)
+#' )
+#'
+#' # also with alternative correlation measures
+#' cor_heatmap(psq, taxa, cor = "spearman", anno_tax = tax_anno(undetected = 50))
+#'
+#' # annotating variables is possible, and easy with var_anno() which defaults to a boxplot
+#' cor_heatmap(psq, taxa, anno_vars = var_anno(), anno_tax = tax_anno(undetected = 50))
+#'
+#' # other and multiple annotations
+#' cor_heatmap(
+#'   psq, taxa,
+#'   anno_tax = tax_anno(undetected = 50),
+#'   anno_vars = var_anno(
+#'     annos = c("var_hist", "var_box"),
+#'     funs = list("identity", function(x) log10(x + 1)),
+#'     names = c("x", "log10(x+1)"), rel_sizes = c(1, 2)
+#'   )
+#' )
+#'
 #' # optionally you can set the absolute width and height of the heatmap body manually
 #' p1 <- cor_heatmap(psq, taxa,
 #'   anno_tax = tax_anno(undetected = 50),
@@ -64,10 +91,27 @@
 #'   anno_tax = tax_anno(undetected = 50, which = "column")
 #' )
 #' p3
+#'
+#' # customising annotation styles is possible using the args argument in tax_anno or var_anno
+#' # but it is tricky: pass a list of lists, the inner lists are named to match the annotation type
+#' # this approach might be simplified/changed in future versions
+#' extra_args <- list(prev = list(gp = grid::gpar(fill = "white", lwd = 1), bar_width = 0.3))
+#' cor_heatmap(
+#'   psq, taxa,
+#'   anno_tax = tax_anno(undetected = 50, prev = 1, abund = NA, args = extra_args)
+#' )
+#'
+#' extra_args2 <- list(
+#'   var_hist = list(gp = grid::gpar(fill = "black", lwd = 1)),
+#'   var_box = list(point_size = 3, box_width = 0.9)
+#' )
+#' var_annotations <- var_anno(annos = c("var_hist", "var_box"), args = extra_args2)
+#' cor_heatmap(psq, taxa, anno_vars = var_annotations, anno_tax = tax_anno(undetected = 50))
 cor_heatmap <- function(data,
                         taxa = phyloseq::taxa_names(ps_get(data)),
                         anno_tax = tax_anno(),
                         vars = NA,
+                        anno_vars = NULL,
                         cor = c("pearson", "kendall", "spearman")[1],
                         cor_use = "everything",
                         colors = heat_palette(palette = "Green-Orange", sym = TRUE),
@@ -80,47 +124,58 @@ cor_heatmap <- function(data,
                         tax_transform = "identity",
                         gridlines = heat_grid(lwd = 0.5),
                         ...) {
-  ps <- ps_get(data)
-
-  # create taxa annotation object if "instructions" given
-  if (inherits(anno_tax, "list")) {
-    anno_args <- c(anno_tax, list(data = ps, taxa = taxa))
-    anno_tax <- do.call(what = taxAnnotation, args = anno_args)
-  }
-  # check anno_tax matches taxa_which
-  if (
-    !identical(anno_tax, NULL) &&
-      grepl("Annotation", x = class(anno_tax)[[1]]) &&
-      !identical(taxa_which, anno_tax@which)
-  ) {
-    stop("anno_tax annotation which arg should match taxa_which arg: both 'row' or both 'column'")
-  }
-
-
-  # handle otu_table data
-  otu <- otu_get(data)
-  otu <- microbiome::transform(otu, transform = tax_transform)
-  otu <- otu[, taxa, drop = FALSE]
-  otu_mat <- unclass(otu)
-
-  # handle sample metadata
-  samdat <- phyloseq::sample_data(ps)
-  meta_mat <- as.matrix.data.frame(samdat[, sapply(samdat, function(x) is.numeric(x) | is.logical(x) | is.integer(x))])
-
-  if (!identical(vars, NA)) {
-    stopifnot(is.character(vars))
-    if (all(vars %in% colnames(meta_mat))) {
-      meta_mat <- meta_mat[, vars, drop = FALSE]
+  if (inherits(data, "data.frame")) {
+    otu_mat <- NULL # causes cor to only use x (meta_mat)
+    meta_mat <- df_to_numeric_matrix(data, vars = vars)
+  } else if (methods::is(data, "phyloseq") || inherits(data, "ps_extra")) {
+    ps <- ps_get(data)
+    # handle otu_mat and taxa annotations if relevant
+    if (identical(taxa, NULL)) {
+      otu_mat <- NULL
     } else {
-      stop(
-        paste(vars[!vars %in% colnames(meta_mat)], collapse = " "), " is/are not valid variable names in the sample_data\n",
-        "Possible numeric/integer/logical variables include:\n", paste(colnames(meta_mat), collapse = " ")
-      )
+      # handle otu_table data
+      otu <- otu_get(data)
+      otu <- microbiome::transform(otu, transform = tax_transform)
+      otu <- otu[, taxa, drop = FALSE]
+      otu_mat <- unclass(otu)
+
+      # create taxa annotation object if "instructions" given
+      if (inherits(anno_tax, "list")) {
+        anno_args <- c(anno_tax, list(data = ps, taxa = taxa))
+        anno_tax <- do.call(what = taxAnnotation, args = anno_args)
+      }
+      # check anno_tax matches taxa_which
+      if (!identical(anno_tax, NULL) &&
+        methods::is(anno_tax, "HeatmapAnnotation") &&
+        !identical(taxa_which, anno_tax@which)
+      ) {
+        stop("anno_tax annotation which arg should match taxa_which arg: both 'row' or both 'column'")
+      }
     }
+    # handle sample metadata
+    samdat <- phyloseq::sample_data(ps)
+    meta_mat <- df_to_numeric_matrix(samdat, vars = vars)
+  } else {
+    stop("data must be phyloseq, ps_extra, or data.frame, not: ", paste(class(data), collapse = " "))
   }
 
-  # correlate datasets
-  cor_mat <- stats::cor(x = otu_mat, y = meta_mat, use = cor_use, method = cor)
+  # create variable annotation object if "instructions" given
+  if (inherits(anno_vars, "list")) {
+    anno_args <- c(anno_vars, list(data = data, vars = vars))
+    anno_vars <- do.call(what = varAnnotation, args = anno_args)
+  }
+  # check anno_vars doesn't match taxa_which (if taxa are used/relevant)
+  if (!inherits(data, "data.frame") &&
+    !identical(taxa, NULL) &&
+    !identical(anno_vars, NULL) &&
+    methods::is(anno_vars, "HeatmapAnnotation") &&
+    identical(taxa_which, anno_vars@which)
+  ) {
+    stop("anno_vars annotation which arg should NOT match taxa_which arg: one should be 'row' and the other 'column'")
+  }
+
+  # correlate datasets (x to y or just within x if y is NULL)
+  cor_mat <- stats::cor(x = meta_mat, y = otu_mat, use = cor_use, method = cor)
 
   args <- list(
     colors = colors,
@@ -138,15 +193,22 @@ cor_heatmap <- function(data,
   args[["mat"]] <- cor_mat
   args[["numbers_mat"]] <- cor_mat # this differs in comp_heatmap (is there value in it being separable in this function?)
 
-  # TODO allow bottom, top, left and right in addition to rows and columns
-  if (identical(taxa_which, "row")) {
-    args[["right_annotation"]] <- anno_tax
-  } else if (identical(taxa_which, "column")) {
-    args[["bottom_annotation"]] <- anno_tax
-    args[["mat"]] <- t(args[["mat"]])
-    args[["numbers_mat"]] <- t(args[["numbers_mat"]])
-  } else {
-    stop("taxa_which must be row or column, it is: ", taxa_which)
+  if (methods::is(data, "phyloseq") || inherits(data, "ps_extra")) {
+    # TODO allow bottom, top, left and right in addition to rows and columns
+    if (identical(taxa_which, "row")) {
+      args[["right_annotation"]] <- anno_tax
+      args[["top_annotation"]] <- anno_vars
+      args[["mat"]] <- t(args[["mat"]])
+      args[["numbers_mat"]] <- t(args[["numbers_mat"]])
+    } else if (identical(taxa_which, "column")) {
+      args[["bottom_annotation"]] <- anno_tax
+      args[["right_annotation"]] <- anno_vars
+    } else {
+      stop("taxa_which must be row or column, it is: ", taxa_which)
+    }
+  } else if (inherits(data, "data.frame") && !identical(anno_vars, NULL)) {
+    if (anno_vars@which == "row") args[["right_annotation"]] <- anno_vars
+    if (anno_vars@which == "column") args[["top_annotation"]] <- anno_vars
   }
   # use extra args (overwriting any set including with anno_tax [relevant if anno_tax = NULL])
   dots <- list(...)
@@ -159,12 +221,13 @@ cor_heatmap <- function(data,
 
 #' Heatmap of taxonomic composition across samples
 #'
+#' Heatmap made with ComplexHeatmap, with optional (but default) annotation of taxa prevalence and abundance.
 #' If seriated, always sorts by the values of the colours shown.
 #' Any cell numbers printed can be set to different values, and do not affect ordering.
 #'
 #' @param data phyloseq or phyloseq extra
-#' @param taxa list of taxa to include (selection occurs BEFORE any tax_transform)
-#' @param samples list of taxa to include (selection occurs BEFORE any tax_transform)
+#' @param taxa list of taxa to include (selection occurs AFTER any tax_transform and scaling)
+#' @param samples list of taxa to include (selection occurs AFTER any tax_transform and scaling)
 #' @param anno_tax NULL or tax_anno() list output
 #' @param anno_samples NULL only support so far TODO
 #' @param taxa_which row or column (which represents a taxon)
@@ -178,8 +241,6 @@ cor_heatmap <- function(data,
 #' @param tax_scale_colors scaling applied to otu_table after transformation
 #' @param tax_transform_numbers transformation applied to otu_table used only for any numbers printed
 #' @param tax_scale_numbers scaling applied to numbers otu_table after transformation
-#' @param tax_show selection of taxa to show on heatmap, AFTER transformation (and scaling) of taxa
-#' @param samples_show selection of samples to show on heatmap, AFTER transformation (and scaling) of taxa
 #' @param gridlines list output of heat_grid() for setting gridline style
 #' @param name used as legend title (colourbar)
 #' @param ... extra args, passed to viz_heatmap internal function
@@ -229,8 +290,6 @@ comp_heatmap <- function(data,
                          # numbers
                          tax_transform_numbers = tax_transform_colors,
                          tax_scale_numbers = tax_scale_colors,
-                         tax_show = taxa,
-                         samples_show = samples,
                          gridlines = heat_grid(lwd = 0.1, col = "black"),
                          name = "mat",
                          ... # passed to viz_heatmap
@@ -382,109 +441,4 @@ heat_grid <- function(col = "white",
     lineend = lineend,
     linejoin = linejoin
   )
-}
-
-#' @title Create list describing taxa annotation
-#' @description  main usefulness of tax_anno function is to give sane defaults and prompt user which annotation options are available
-#'
-#' @param undetected value above which taxa are considered present/detected in a sample
-#' @param which "row" or "column" annotation?
-#' @param prev order in which prevalence annotation shown (number, or NA)
-#' @param abund order in which abundance annotation shown (number, or NA)
-#' @param size total size of all annotations in mm, excluding gaps (used as width or height, depending on value of which)
-#' @param gap size of gap between annotations (in mm)
-#' @param rel_sizes relative sizes of non-NA annotations (in given order)
-#' @param ... further args passed HeatmapAnnotation
-#'
-#' @export
-#' @rdname heatmap-annotations
-tax_anno <- function(undetected = 0, which = "row", prev = 1, abund = 2, size = 30, gap = 2, rel_sizes = c(1, 1), ...) {
-  annos <- c(prev = prev, abund = abund) # written to support further annos in future
-  annos <- sort(annos[!is.na(annos)])
-
-  if (length(unique(annos)) < length(annos) || max(c(annos, 1) > length(annos))) {
-    stop("prev and abund must not be the same number, and neither should have a value greater than the number of non-NA entries")
-    # TODO ensure that the order of values is used instead of the values (and remove the last part of this error)
-  }
-  if (length(rel_sizes) != length(annos)) {
-    stop("length of rel_sizes must be equal to the number of non-NA annotations")
-  }
-  sizes <- size * rel_sizes / sum(rel_sizes, na.rm = TRUE)
-  list(what = names(annos), undetected = undetected, which = which, sizes = sizes, gap = gap, ...)
-}
-
-
-#' @title taxAnnotation for ComplexHeatmap
-#' @description taxAnnotation is used for cor_heatmap, comp_heatmap & tax_model_heatmap (will be)
-#'
-#' @param data phyloseq or ps-extra
-#' @param taxa names of taxa
-#' @param undetected value above which taxa are considered present/detected in a sample
-#' @param which 'row' or 'column' annotation
-#' @param what ordered names of annotations (part of function names)
-#' @param sizes ordered sizes of annotations, in mm
-#' @param gap size of gap between annotations in mm
-#' @param ... additional args passed to ComplexHeatmap::HeatmapAnnotation
-#'
-#' @noRd
-taxAnnotation <- function(data, taxa, undetected = 0, which = "row", what = c("prev", "abund"), sizes = c(15, 15), gap = 2, ...) {
-  ps <- ps_get(data)
-  dots <- list(...)
-  # start building args list
-  args <- list(
-    annotation_name_gp = grid::gpar(fontsize = 8, fontface = "bold"),
-    gap = grid::unit(gap, "mm"), which = which
-  )
-  for (i in seq_along(what)) {
-    name <- what[[i]]
-    args[[name]] <- do.call(
-      what = paste0("anno_", name),
-      args = list(data = ps, taxa = taxa, undetected = undetected, which = which, size = sizes[[i]])
-    )
-  }
-  # overwrite and add further args
-  args[names(dots)] <- dots
-  do.call(ComplexHeatmap::HeatmapAnnotation, args = args)
-}
-
-# @param ... args passed to anno_barplot
-# @return a ComplexHeatmap anno_barplot
-#' @param data phyloseq or ps-extra
-#' @param taxa names of taxa to plot
-#' @param size size in mm (width or height, based on which)
-#'
-#' @export
-#' @rdname heatmap-annotations
-anno_prev <- function(data, taxa, undetected = 0, which = "row", size = 15, ...) {
-  dots <- list(...)
-  prevs <- prev_calc(data = data, taxa = taxa, undetected = undetected)
-  args <- list(x = prevs, bar_width = 0.4, ylim = 0:1, which = which)
-  if (identical(which, "row")) args[["width"]] <- grid::unit(size, "mm")
-  if (identical(which, "column")) args[["height"]] <- grid::unit(size, "mm")
-  # overwrite any args given in dots
-  args[names(dots)] <- dots
-  anno <- do.call(ComplexHeatmap::anno_barplot, args = args)
-  return(anno)
-}
-
-# @param ... args passed to anno_boxplot
-# @return anno_boxplot
-#' @export
-#' @rdname heatmap-annotations
-anno_abund <- function(data, taxa, undetected = 0, which = "row", size = 15, ...) {
-  dots <- list(...)
-  abunds <- abund_calc(data = data, taxa = taxa, undetected = undetected)
-  args <- list(x = abunds, size = grid::unit(1, "mm"), box_width = 0.4, which = which)
-  if (identical(which, "row")) {
-    args[["x"]] <- t(abunds)
-    args[["width"]] <- grid::unit(size, "mm")
-  } else if (identical(which, "column")) {
-    args[["height"]] <- grid::unit(size, "mm")
-  } else {
-    stop("which must be either 'row' or 'column', not: ", which)
-  }
-  # overwrite any args given in dots
-  args[names(dots)] <- dots
-  anno <- do.call(ComplexHeatmap::anno_boxplot, args = args)
-  return(anno)
 }

@@ -9,6 +9,7 @@ cor_heatmap(
   taxa = phyloseq::taxa_names(ps_get(data)),
   anno_tax = tax_anno(),
   vars = NA,
+  anno_vars = NULL,
   cor = c("pearson", "kendall", "spearman")[1],
   cor_use = "everything",
   colors = heat_palette(palette = "Green-Orange", sym = TRUE),
@@ -28,9 +29,11 @@ cor_heatmap(
 
 \item{taxa}{list of taxa to include, or NA for all}
 
-\item{anno_tax}{taxAnnotation output describing taxa distribution or NULL}
+\item{anno_tax}{optional annotation of taxa distributions: tax_anno() list output, or a pre-made ComplexHeatmap HeatmapAnnotation}
 
 \item{vars}{selection of variable names from sample_data}
+
+\item{anno_vars}{optional annotation of variable distributions: var_anno() list output, or a pre-made ComplexHeatmap HeatmapAnnotation}
 
 \item{cor}{name of correlation method}
 
@@ -54,10 +57,14 @@ cor_heatmap(
 
 \item{gridlines}{list output of heat_grid() for setting gridline style}
 
-\item{...}{extra args, for cor_heatmap passed to viz_heatmap (for heat_numbers() dots are passed to grid::gpar for grid::grid.text)}
+\item{...}{extra args, for cor_heatmap passed to internal function viz_heatmap (for heat_numbers() dots are passed to grid::gpar for grid::grid.text)}
 }
 \description{
-Correlate microbial abundances to numeric sample_data variables
+Plot correlations between (transformed) microbial abundances and (selected) numeric-like sample_data variables from a phyloseq object.
+}
+\details{
+Using a data.frame for the data argument is also possible, in which case the (selected) numeric-like variables will be correlated which each other,
+and all arguments relating to taxa will be ignored.
 }
 \examples{
 library(dplyr)
@@ -81,6 +88,29 @@ p <- cor_heatmap(psq, taxa, anno_tax = tax_anno(undetected = 50))
 # NOTE: detection threshold set to 50 as HITchip example data seems to have background noise
 p
 
+# or with a selection of numeric-like variables
+cor_heatmap(
+  psq, taxa,
+  vars = c("african", "female", "weight"), anno_tax = tax_anno(undetected = 50)
+)
+
+# also with alternative correlation measures
+cor_heatmap(psq, taxa, cor = "spearman", anno_tax = tax_anno(undetected = 50))
+
+# annotating variables is possible, and easy with var_anno() which defaults to a boxplot
+cor_heatmap(psq, taxa, anno_vars = var_anno(), anno_tax = tax_anno(undetected = 50))
+
+# other and multiple annotations
+cor_heatmap(
+  psq, taxa,
+  anno_tax = tax_anno(undetected = 50),
+  anno_vars = var_anno(
+    annos = c("var_hist", "var_box"),
+    funs = list("identity", function(x) log10(x + 1)),
+    names = c("x", "log10(x+1)"), rel_sizes = c(1, 2)
+  )
+)
+
 # optionally you can set the absolute width and height of the heatmap body manually
 p1 <- cor_heatmap(psq, taxa,
   anno_tax = tax_anno(undetected = 50),
@@ -102,4 +132,20 @@ p3 <- cor_heatmap(
   anno_tax = tax_anno(undetected = 50, which = "column")
 )
 p3
+
+# customising annotation styles is possible using the args argument in tax_anno or var_anno
+# but it is tricky: pass a list of lists, the inner lists are named to match the annotation type
+# this approach might be simplified/changed in future versions
+extra_args <- list(prev = list(gp = grid::gpar(fill = "white", lwd = 1), bar_width = 0.3))
+cor_heatmap(
+  psq, taxa,
+  anno_tax = tax_anno(undetected = 50, prev = 1, abund = NA, args = extra_args)
+)
+
+extra_args2 <- list(
+  var_hist = list(gp = grid::gpar(fill = "black", lwd = 1)),
+  var_box = list(point_size = 3, box_width = 0.9)
+)
+var_annotations <- var_anno(annos = c("var_hist", "var_box"), args = extra_args2)
+cor_heatmap(psq, taxa, anno_vars = var_annotations, anno_tax = tax_anno(undetected = 50))
 }

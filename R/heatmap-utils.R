@@ -1,6 +1,6 @@
 #' make heatmap from a matrix and annotations
 #'
-#' Used inside cor_heatmap, comp_heatmap & tax_model_heatmap (will be)
+#' Used inside cor_heatmap and comp_heatmap & will be inside tax_model_heatmap
 #'
 #' @param mat matrix for ComplexHeatmap
 #' @param colors output of heat_palette() to set heatmap fill color scheme
@@ -97,4 +97,29 @@ abund_calc <- function(data, taxa, undetected = 0) {
   props <- apply(otu, MARGIN = 2, function(x) x / totals)
   props <- apply(props, MARGIN = 2, function(x) ifelse(test = x > prop_threshold, yes = x, no = NaN))
   return(props)
+}
+
+df_to_numeric_matrix <- function(df, vars = NA) {
+  if (inherits(df, "matrix")){
+    stopifnot(storage.mode(df) %in% c("double", "integer", "logical"))
+    mat <- df
+  } else {
+    df <- df[, sapply(df, function(x) is.numeric(x) | is.logical(x) | is.integer(x)), drop = FALSE]
+    mat <- as.matrix.data.frame(df)
+  }
+  possible_vars <- colnames(mat)
+  if (length(possible_vars) == 0) stop("no variables in data are numeric/integer/logical")
+  if (!identical(vars, NA)) {
+    stopifnot(is.character(vars))
+    if (all(vars %in% possible_vars)) {
+      mat <- mat[, vars, drop = FALSE]
+    } else {
+      max <- min(length(possible_vars), 10)
+      stop(
+        paste(vars[!vars %in% possible_vars], collapse = " "), " is/are not valid variable names in the (sample_) data\n",
+        "Possible numeric/integer/logical variables include:\n", paste(possible_vars[1:min], collapse = " ")
+      )
+    }
+  }
+  return(mat)
 }
