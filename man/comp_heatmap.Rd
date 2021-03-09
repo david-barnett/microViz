@@ -66,9 +66,15 @@ comp_heatmap(
 \item{...}{extra args, passed to viz_heatmap internal function}
 }
 \description{
+By default this performs centered-log-ratio transformation on taxa for colouring and ordering heatmap.
+tax_transform_colors = "clr". You can change this, by setting tax_transform_colors to "identity", "compositional", "log1p" etc.
 Heatmap made with ComplexHeatmap, with optional (but default) annotation of taxa prevalence and abundance.
 If seriated, always sorts by the values of the colours shown.
 Any cell numbers printed can be set to different values, and do not affect ordering.
+}
+\details{
+Transformations are performed with microbiome::transform(),
+so tax_transform_colors/numbers must be valid transform arguments for this function.
 }
 \examples{
 library(dplyr)
@@ -81,6 +87,16 @@ taxa <- sample(microbiome::top_taxa(ps_get(psq))[1:50], size = 30)
 
 p <- comp_heatmap(data = psq, taxa = taxa, anno_tax = tax_anno(undetected = 50))
 p
+
+# set the colour range yourself
+comp_heatmap(
+  data = psq, taxa = taxa, anno_tax = tax_anno(undetected = 50),
+  colors = heat_palette(palette = "Greens", rev = TRUE, range = 0:10)
+)
+comp_heatmap(
+  data = psq, taxa = taxa, anno_tax = tax_anno(undetected = 50),
+  colors = heat_palette(palette = "Green-Orange", range = 0:5, sym = TRUE)
+)
 
 # you can place the legend at the bottom, but it is a little complicated
 p <- comp_heatmap(

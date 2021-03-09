@@ -47,7 +47,7 @@ viz_heatmap <- function(mat, # used for seriation and colours
   }
 
   # getting colour range from data if necessary
-  if (inherits(colors, "function")) colors <- colors(range = range(mat, na.rm = TRUE, finite = TRUE))
+  if ("range" %in% methods::formalArgs(def = colors)) colors <- colors(range = range(mat, na.rm = TRUE, finite = TRUE))
 
   args <- list(
     matrix = mat,

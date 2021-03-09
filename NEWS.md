@@ -6,7 +6,8 @@
 * `tax_filter` gets undetected arg (greater than), as optional alternative to prev_detection_threshold (greater than or equal to)
 
 ## Bug fixes
-* heatmaps should handle NAs better (viz_heatmap internal fix)
+* heatmaps should handle NAs better (`viz_heatmap` internal function fix)
+* `heat_palette` can set range arg manually now without errors
 
 # microViz 0.4.3
 

@@ -17,14 +17,14 @@ heat_palette(
 
 \item{breaks}{integer number of breaks, or numeric vector of values for colour scale breaks (including ends)}
 
-\item{range}{NA to return palette generating function that takes a range, or numeric vector indicating the range, to return a palette}
+\item{range}{NA to return palette generating function that takes range, or numeric vector indicating the range, to return a palette}
 
 \item{rev}{reverse the palette?}
 
 \item{sym}{makes palette range symmetrical around 0 if TRUE}
 }
 \value{
-circlize::colorRamp2 palette if !is.na(range), or function returning a palette when given a range
+circlize::colorRamp2 palette if !is.na(limits), or function returning a palette when given limits
 }
 \description{
 Pass a named colorspace hcl palette to circlize::colorRamp2

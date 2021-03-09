@@ -221,9 +221,14 @@ cor_heatmap <- function(data,
 
 #' Heatmap of taxonomic composition across samples
 #'
+#' By default this performs centered-log-ratio transformation on taxa for colouring and ordering heatmap.
+#' tax_transform_colors = "clr". You can change this, by setting tax_transform_colors to "identity", "compositional", "log1p" etc.
 #' Heatmap made with ComplexHeatmap, with optional (but default) annotation of taxa prevalence and abundance.
 #' If seriated, always sorts by the values of the colours shown.
 #' Any cell numbers printed can be set to different values, and do not affect ordering.
+#'
+#' Transformations are performed with microbiome::transform(),
+#' so tax_transform_colors/numbers must be valid transform arguments for this function.
 #'
 #' @param data phyloseq or phyloseq extra
 #' @param taxa list of taxa to include (selection occurs AFTER any tax_transform and scaling)
@@ -257,6 +262,16 @@ cor_heatmap <- function(data,
 #'
 #' p <- comp_heatmap(data = psq, taxa = taxa, anno_tax = tax_anno(undetected = 50))
 #' p
+#'
+#' # set the colour range yourself
+#' comp_heatmap(
+#'   data = psq, taxa = taxa, anno_tax = tax_anno(undetected = 50),
+#'   colors = heat_palette(palette = "Greens", rev = TRUE, range = 0:10)
+#' )
+#' comp_heatmap(
+#'   data = psq, taxa = taxa, anno_tax = tax_anno(undetected = 50),
+#'   colors = heat_palette(palette = "Green-Orange", range = 0:5, sym = TRUE)
+#' )
 #'
 #' # you can place the legend at the bottom, but it is a little complicated
 #' p <- comp_heatmap(
@@ -358,11 +373,11 @@ comp_heatmap <- function(data,
 #'
 #' @param palette named palette from colorspace::hcl_palettes() diverging/sequential or a vector of colour names/hexcodes
 #' @param breaks integer number of breaks, or numeric vector of values for colour scale breaks (including ends)
-#' @param range NA to return palette generating function that takes a range, or numeric vector indicating the range, to return a palette
+#' @param range NA to return palette generating function that takes range, or numeric vector indicating the range, to return a palette
 #' @param rev reverse the palette?
 #' @param sym makes palette range symmetrical around 0 if TRUE
 #'
-#' @return circlize::colorRamp2 palette if !is.na(range), or function returning a palette when given a range
+#' @return circlize::colorRamp2 palette if !is.na(limits), or function returning a palette when given limits
 #' @export
 #' @rdname heat_palette
 heat_palette <- function(palette = "Greens", breaks = 5, range = NA, rev = FALSE, sym = FALSE) {
@@ -383,13 +398,17 @@ heat_palette <- function(palette = "Greens", breaks = 5, range = NA, rev = FALSE
   col_fun <- function(range) {
     if (isTRUE(sym)) range <- c(-max(abs(range)), max(abs(range)))
     breaks <- seq(from = range[[1]], to = range[[2]], length.out = n_breaks)
-    circlize::colorRamp2(breaks = breaks, colors = palette)
+    pal <- circlize::colorRamp2(breaks = breaks, colors = palette)
+    return(pal)
   }
   if (identical(range, NA)) {
     return(col_fun)
-  } else if (is.numeric(range)) {
+  } else if (inherits(range, "numeric") || inherits(range, "integer")) {
     range <- base::range(range) # in case range set with e.g. -2:2 for convenience
-    return(col_fun(range))
+    colorscale <- col_fun(range = range)
+    return(colorscale)
+  } else {
+    stop("range must be NA, numeric or integer, not: ", paste(class(range), collapse = " "))
   }
 }
 
