@@ -1,5 +1,10 @@
 # microViz (development version)
 
+## Features
+* Optionally annotate `cor_heatmap` with variable distributions using `var_anno` and its helpers: `anno_var_box` and `anno_var_hist`
+* `phyloseq_validate` checks for zero taxa, which can happen after filtering samples
+* `tax_filter` gets undetected arg (greater than), as optional alternative to prev_detection_threshold (greater than or equal to)
+
 ## Bug fixes
 * heatmaps should handle NAs better (viz_heatmap internal fix)
 
