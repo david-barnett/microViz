@@ -9,6 +9,7 @@
 \alias{perm_get}
 \alias{bdisp_get}
 \alias{otu_get}
+\alias{samdat_tbl}
 \title{Extract elements from ps_extra class}
 \usage{
 ps_get(ps_extra)
@@ -24,11 +25,15 @@ perm_get(ps_extra)
 bdisp_get(ps_extra)
 
 otu_get(data)
+
+samdat_tbl(data, sample_names_col = ".sample_name")
 }
 \arguments{
 \item{ps_extra}{ps_extra class object}
 
 \item{data}{phyloseq or ps_extra}
+
+\item{sample_names_col}{name of column where sample_names are put. if NA, return data.frame with rownames (sample_names)}
 }
 \value{
 element of ps_extra class object (or NULL)
