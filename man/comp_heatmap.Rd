@@ -21,8 +21,6 @@ comp_heatmap(
   seriation_dist_col = seriation_dist,
   tax_transform_numbers = tax_transform_colors,
   tax_scale_numbers = tax_scale_colors,
-  tax_show = taxa,
-  samples_show = samples,
   gridlines = heat_grid(lwd = 0.1, col = "black"),
   name = "mat",
   ...
@@ -31,9 +29,9 @@ comp_heatmap(
 \arguments{
 \item{data}{phyloseq or phyloseq extra}
 
-\item{taxa}{list of taxa to include (selection occurs BEFORE any tax_transform)}
+\item{taxa}{list of taxa to include (selection occurs AFTER any tax_transform and scaling)}
 
-\item{samples}{list of taxa to include (selection occurs BEFORE any tax_transform)}
+\item{samples}{list of taxa to include (selection occurs AFTER any tax_transform and scaling)}
 
 \item{anno_tax}{NULL or tax_anno() list output}
 
@@ -61,10 +59,6 @@ comp_heatmap(
 
 \item{tax_scale_numbers}{scaling applied to numbers otu_table after transformation}
 
-\item{tax_show}{selection of taxa to show on heatmap, AFTER transformation (and scaling) of taxa}
-
-\item{samples_show}{selection of samples to show on heatmap, AFTER transformation (and scaling) of taxa}
-
 \item{gridlines}{list output of heat_grid() for setting gridline style}
 
 \item{name}{used as legend title (colourbar)}
@@ -72,6 +66,7 @@ comp_heatmap(
 \item{...}{extra args, passed to viz_heatmap internal function}
 }
 \description{
+Heatmap made with ComplexHeatmap, with optional (but default) annotation of taxa prevalence and abundance.
 If seriated, always sorts by the values of the colours shown.
 Any cell numbers printed can be set to different values, and do not affect ordering.
 }
