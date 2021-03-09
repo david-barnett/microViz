@@ -13,7 +13,7 @@ ps_filter(ps, ..., .target = "sample_data", .keep_all_taxa = FALSE)
 
 \item{.target}{which slot of phyloseq to mutate, currently only "sample_data" supported}
 
-\item{.keep_all_taxa}{if FALSE (the default) taxa which are no longer present in the dataset after filtering are removed}
+\item{.keep_all_taxa}{if FALSE (the default), remove taxa which are no longer present in the dataset after filtering}
 }
 \value{
 phyloseq object (with filtered sample_data)

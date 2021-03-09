@@ -32,6 +32,7 @@
 #' @param keep_sample_name_col should the column named in match_sample_names be kept in the returned phyloseq's sample_data? (only relevant if match_sample_names is not NULL)
 #' @param sample_name_natural_join if TRUE, use sample_name AND all shared colnames to match rows (only relevant if match_sample_names is not NULL, this arg takes precedence over anything also entered in `by` arg)
 #' @param type name of type of join e.g. "left", "right", "inner", "semi" (see dplyr help pages)
+#' @param .keep_all_taxa if FALSE (the default), remove taxa which are no longer present in the dataset after filtering
 #'
 #' @return phyloseq with modified sample_data (and possibly filtered)
 #' @export
@@ -97,7 +98,9 @@ ps_join <- function(x,
                     match_sample_names = NULL,
                     keep_sample_name_col = TRUE,
                     sample_name_natural_join = FALSE,
-                    type = "left") {
+                    type = "left",
+                    .keep_all_taxa = FALSE
+                    ) {
   data_list <- list(x, y)
   classes <- sapply(data_list, class)
 
@@ -133,12 +136,12 @@ ps_join <- function(x,
   # handle phyloseq - whether in x or y
   if (inherits(x, "phyloseq")) {
     ps <- x
-    x <- data.frame(phyloseq::sample_data(x))
-    x <- tibble::rownames_to_column(x, rownames_col)
+    x <- data.frame(phyloseq::sample_data(x), check.names = FALSE)
+    x <- tibble::rownames_to_column(x, var = rownames_col)
   } else if (inherits(y, "phyloseq")) {
     ps <- y
-    y <- data.frame(phyloseq::sample_data(y))
-    y <- tibble::rownames_to_column(y, rownames_col)
+    y <- data.frame(phyloseq::sample_data(y), check.names = FALSE)
+    y <- tibble::rownames_to_column(y, var = rownames_col)
   }
 
   if (isTRUE(sample_name_natural_join) && identical(rownames_col, match_sample_names)) {
@@ -174,6 +177,8 @@ ps_join <- function(x,
   if (type %in% c("inner", "semi", "anti")) {
     ps <- phyloseq::prune_samples(samples = rownames(new_df), x = ps)
   }
+  # remove taxa that now have zero counts (or relative abundance) across all remaining samples
+  if (isFALSE(.keep_all_taxa)) ps <- tax_filter_zeros(ps) # internal helper function in ps_filter.R
 
   phyloseq::sample_data(ps) <- new_df
 

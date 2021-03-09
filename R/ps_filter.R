@@ -5,7 +5,7 @@
 #' @param ps phyloseq object
 #' @param ... passed directly to dplyr::filter (see examples and ?dplyr::filter)
 #' @param .target which slot of phyloseq to mutate, currently only "sample_data" supported
-#' @param .keep_all_taxa if FALSE (the default) taxa which are no longer present in the dataset after filtering are removed
+#' @param .keep_all_taxa if FALSE (the default), remove taxa which are no longer present in the dataset after filtering
 #'
 #' @return phyloseq object (with filtered sample_data)
 #' @export
@@ -57,17 +57,22 @@ ps_filter <- function(ps, ..., .target = "sample_data", .keep_all_taxa = FALSE) 
   df <- dplyr::filter(df, ...)
   phyloseq::sample_data(ps) <- df
 
-  if (isFALSE(.keep_all_taxa)) {
-    # remove taxa that now have zero counts (or relative abundance) across all remaining samples
-    if (any(phyloseq::otu_table(ps) < 0)) {
-      warning(
-        "Removing taxa whose abundance across filtered samples is equal to zero.",
-        "\nThis may not result in the desired outcome, as some values in the otu_table are negative.",
-        "\nAvoid performing transformations e.g. clr before using this function, or set .keep_all_taxa = TRUE "
-      )
-    }
-    ps <- phyloseq::prune_taxa(taxa = phyloseq::taxa_sums(ps) != 0, x = ps)
-  }
-
+  # remove taxa that now have zero counts (or relative abundance) across all remaining samples
+  if (isFALSE(.keep_all_taxa)) ps <- tax_filter_zeros(ps)
   return(ps)
+}
+
+# helper function used here and in ps_join
+# removes all taxa which sum to zero across all samples (phyloseq::taxa_sums(ps) == 0)
+# provides helpful warning if otu_table contains negative values
+tax_filter_zeros <- function(ps){
+  # remove taxa that now have zero counts (or relative abundance) across all remaining samples
+  if (any(phyloseq::otu_table(ps) < 0)) {
+    warning(
+      "Removing taxa whose abundance across filtered samples is equal to zero.",
+      "\nThis may not result in the desired outcome, as some values in the otu_table are negative.",
+      "\nAvoid performing transformations, e.g. clr, before using `ps_filter()`, or set .keep_all_taxa = TRUE "
+    )
+  }
+ return( phyloseq::prune_taxa(taxa = phyloseq::taxa_sums(ps) != 0, x = ps))
 }

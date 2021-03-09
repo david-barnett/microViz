@@ -11,7 +11,8 @@ ps_join(
   match_sample_names = NULL,
   keep_sample_name_col = TRUE,
   sample_name_natural_join = FALSE,
-  type = "left"
+  type = "left",
+  .keep_all_taxa = FALSE
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ ps_join(
 \item{sample_name_natural_join}{if TRUE, use sample_name AND all shared colnames to match rows (only relevant if match_sample_names is not NULL, this arg takes precedence over anything also entered in \code{by} arg)}
 
 \item{type}{name of type of join e.g. "left", "right", "inner", "semi" (see dplyr help pages)}
+
+\item{.keep_all_taxa}{if FALSE (the default), remove taxa which are no longer present in the dataset after filtering}
 }
 \value{
 phyloseq with modified sample_data (and possibly filtered)

@@ -14,13 +14,13 @@ test_that("negative taxa gives warning", {
 
 test_that(desc = "ps_filter can do equivalent to ps_drop_incomplete", {
   expect_identical(
-    object = enterotype %>% ps_filter(across(everything(), ~ !is.na(.)), .keep_all_taxa = TRUE),
+    object = enterotype %>% ps_filter(dplyr::across(dplyr::everything(), ~ !is.na(.)), .keep_all_taxa = TRUE),
     expected = enterotype %>% ps_drop_incomplete()
   )
 })
 
 test_that(desc = "ps_filter can do equivalent to dropping samples with incomplete sample_variables and tax_filtering 0s", {
-  ps2 <- enterotype %>% ps_filter(across(everything(), ~ !is.na(.)))
+  ps2 <- enterotype %>% ps_filter(dplyr::across(dplyr::everything(), ~ !is.na(.)))
   ps3 <- enterotype %>%
     ps_drop_incomplete() %>%
     tax_filter(prev_detection_threshold = 1e-20, is_counts = FALSE)
