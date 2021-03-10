@@ -1,13 +1,20 @@
-# microViz (development version)
+# microViz 0.5.0 - "hot maps"
+
+## Breaking changes
+* `cor_heatmap` and `comp_heatmap` argument changed: 'taxa_which' replaced with 'taxa_side' for easier control over where taxa annotations are placed (default behaviour stays the same)
 
 ## Features
 * Optionally annotate `cor_heatmap` with variable distributions using `var_anno` and its helpers: `anno_var_box` and `anno_var_hist`
+* `cor_heatmap` gets 'var_fun' argument for transforming variables before correlating
 * `phyloseq_validate` checks for zero taxa, which can happen after filtering samples
 * `tax_filter` gets undetected arg (greater than), as optional alternative to prev_detection_threshold (greater than or equal to)
 
 ## Bug fixes
 * heatmaps should handle NAs better (`viz_heatmap` internal function fix)
 * `heat_palette` can set range arg manually now without errors
+
+## Other
+* minor versions from 0.5 will now get a memorable name, probably referring to features added since the last minor version
 
 # microViz 0.4.3
 
