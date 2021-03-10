@@ -14,7 +14,7 @@ comp_heatmap(
   numbers = NULL,
   tax_transform_colors = "clr",
   tax_scale_colors = "neither",
-  taxa_which = "row",
+  taxa_side = "right",
   seriation_method = "OLO_ward",
   seriation_dist = "euclidean",
   seriation_method_col = seriation_method,
@@ -45,7 +45,7 @@ comp_heatmap(
 
 \item{tax_scale_colors}{scaling applied to otu_table after transformation}
 
-\item{taxa_which}{row or column (which represents a taxon)}
+\item{taxa_side}{controls heatmap orientation and where any anno_tax annotations are placed (top/bottom/left/right)}
 
 \item{seriation_method}{method to order the rows (in seriation::seriate)}
 
@@ -108,7 +108,7 @@ ComplexHeatmap::draw(p, heatmap_legend_side = "bottom", adjust_annotation_extens
 p2 <- comp_heatmap(
   psq,
   taxa = taxa,
-  taxa_which = "column",
+  taxa_side = "bottom",
   anno_tax = tax_anno(undetected = 50, which = "column")
 )
 p2

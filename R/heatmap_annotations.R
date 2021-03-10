@@ -39,7 +39,8 @@ tax_anno <- function(undetected = 0, which = "row", prev = 1, abund = 2, size = 
     stop("length of rel_sizes must be equal to the number of non-NA annotations")
   }
   sizes <- size * rel_sizes / sum(rel_sizes, na.rm = TRUE)
-  list(what = names(annos), undetected = undetected, which = which, sizes = sizes, gap = gap, args = args, ...)
+  out_list <- list(what = names(annos), undetected = undetected, which = which, sizes = sizes, gap = gap, args = args, ...)
+  return(out_list)
 }
 
 

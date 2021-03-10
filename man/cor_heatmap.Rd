@@ -14,12 +14,13 @@ cor_heatmap(
   cor_use = "everything",
   colors = heat_palette(palette = "Green-Orange", sym = TRUE),
   numbers = heat_numbers(),
-  taxa_which = "row",
+  taxa_side = "right",
   seriation_method = "OLO_ward",
   seriation_dist = "euclidean",
   seriation_method_col = seriation_method,
   seriation_dist_col = seriation_dist,
   tax_transform = "identity",
+  var_fun = "identity",
   gridlines = heat_grid(lwd = 0.5),
   ...
 )
@@ -35,7 +36,7 @@ cor_heatmap(
 
 \item{anno_vars}{optional annotation of variable distributions: var_anno() list output, or a pre-made ComplexHeatmap HeatmapAnnotation}
 
-\item{cor}{name of correlation method}
+\item{cor}{correlation coefficient. pearson/kendall/spearman, can be abbreviated (used as legend title)}
 
 \item{cor_use}{passed to cor(use = cor_use)}
 
@@ -43,7 +44,7 @@ cor_heatmap(
 
 \item{numbers}{output of heat_numbers() to draw numbers on heatmap cells}
 
-\item{taxa_which}{row or column (which represents a taxon)}
+\item{taxa_side}{controls heatmap orientation and where any anno_tax annotations are placed (top/bottom/left/right)}
 
 \item{seriation_method}{method to order the rows (in seriation::seriate)}
 
@@ -54,6 +55,8 @@ cor_heatmap(
 \item{seriation_dist_col}{distance to use in seriation_method_col (if needed)}
 
 \item{tax_transform}{transformation applied to otu_table before correlating (and BEFORE selection of taxa)}
+
+\item{var_fun}{character: name of a function to be applied (columns) to a matrix of vars before correlating (but not used in any variable annotations)}
 
 \item{gridlines}{list output of heat_grid() for setting gridline style}
 
@@ -100,6 +103,14 @@ cor_heatmap(psq, taxa, cor = "spearman", anno_tax = tax_anno(undetected = 50))
 # annotating variables is possible, and easy with var_anno() which defaults to a boxplot
 cor_heatmap(psq, taxa, anno_vars = var_anno(), anno_tax = tax_anno(undetected = 50))
 
+# you can transform the variables before correlating by giving var_fun a function name
+# this does not affect the data used for annotations
+cor_heatmap(
+  psq, taxa,
+  anno_vars = var_anno(), anno_tax = tax_anno(undetected = 50),
+  var_fun = "exp"
+)
+
 # other and multiple annotations
 cor_heatmap(
   psq, taxa,
@@ -110,6 +121,7 @@ cor_heatmap(
     names = c("x", "log10(x+1)"), rel_sizes = c(1, 2)
   )
 )
+
 
 # optionally you can set the absolute width and height of the heatmap body manually
 p1 <- cor_heatmap(psq, taxa,
@@ -126,12 +138,17 @@ p2 <- cor_heatmap(psq, taxa,
 p2
 
 # make the same correlation heatmap, but rotated
-p3 <- cor_heatmap(
-  psq, taxa,
-  taxa_which = "column",
-  anno_tax = tax_anno(undetected = 50, which = "column")
-)
+column_tax_anno <- tax_anno(undetected = 50, which = "column")
+p3 <- cor_heatmap(psq, taxa, taxa_side = "top", anno_tax = column_tax_anno)
 p3
+
+# or rotated with taxa annotations at bottom
+cor_heatmap(psq, taxa, taxa_side = "bottom", anno_tax = column_tax_anno)
+
+# note you must ensure tax_anno which and taxa_side are compatible.
+# You must set taxa_side argument to top or bottom if you want taxa to be columns
+# The line below is an ERROR because by default taxa_side = "right"
+# cor_heatmap(psq, taxa, anno_tax = column_tax_anno) # ERROR
 
 # customising annotation styles is possible using the args argument in tax_anno or var_anno
 # but it is tricky: pass a list of lists, the inner lists are named to match the annotation type

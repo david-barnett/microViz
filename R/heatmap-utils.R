@@ -99,7 +99,9 @@ abund_calc <- function(data, taxa, undetected = 0) {
   return(props)
 }
 
-df_to_numeric_matrix <- function(df, vars = NA) {
+# trans_fun is a function to be applied (columns) to matrix before returning (if not NA)
+# used inside cor_heatmap, where var_fun arg only allows character naming a function
+df_to_numeric_matrix <- function(df, vars = NA, trans_fun = NA) {
   if (inherits(df, "matrix")){
     stopifnot(storage.mode(df) %in% c("double", "integer", "logical"))
     mat <- df
@@ -120,6 +122,11 @@ df_to_numeric_matrix <- function(df, vars = NA) {
         "Possible numeric/integer/logical variables include:\n", paste(possible_vars[1:min], collapse = " ")
       )
     }
+  }
+  # apply transformation function to matrix columns?
+  if (!identical(trans_fun, NA)) {
+    if (inherits(trans_fun, "function")) mat <- apply(mat, MARGIN = 2, FUN = trans_fun)
+    if (inherits(trans_fun, "character")) mat <- apply(mat, MARGIN = 2, FUN = function(x) do.call(what = trans_fun, args = list(x)))
   }
   return(mat)
 }

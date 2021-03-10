@@ -10,8 +10,8 @@
 #' @param anno_tax optional annotation of taxa distributions: tax_anno() list output, or a pre-made ComplexHeatmap HeatmapAnnotation
 #' @param vars selection of variable names from sample_data
 #' @param anno_vars optional annotation of variable distributions: var_anno() list output, or a pre-made ComplexHeatmap HeatmapAnnotation
-#' @param taxa_which row or column (which represents a taxon)
-#' @param cor name of correlation method
+#' @param taxa_side controls heatmap orientation and where any anno_tax annotations are placed (top/bottom/left/right)
+#' @param cor correlation coefficient. pearson/kendall/spearman, can be abbreviated (used as legend title)
 #' @param cor_use passed to cor(use = cor_use)
 #' @param colors output of heat_palette() to set heatmap fill color scheme
 #' @param numbers output of heat_numbers() to draw numbers on heatmap cells
@@ -21,6 +21,7 @@
 #' @param seriation_dist_col distance to use in seriation_method_col (if needed)
 #' @param tax_transform transformation applied to otu_table before correlating (and BEFORE selection of taxa)
 #' @param gridlines list output of heat_grid() for setting gridline style
+#' @param var_fun character: name of a function to be applied (columns) to a matrix of vars before correlating (but not used in any variable annotations)
 #' @param ... extra args, for cor_heatmap passed to internal function viz_heatmap (for heat_numbers() dots are passed to grid::gpar for grid::grid.text)
 #'
 #' @export
@@ -59,6 +60,14 @@
 #' # annotating variables is possible, and easy with var_anno() which defaults to a boxplot
 #' cor_heatmap(psq, taxa, anno_vars = var_anno(), anno_tax = tax_anno(undetected = 50))
 #'
+#' # you can transform the variables before correlating by giving var_fun a function name
+#' # this does not affect the data used for annotations
+#' cor_heatmap(
+#'   psq, taxa,
+#'   anno_vars = var_anno(), anno_tax = tax_anno(undetected = 50),
+#'   var_fun = "exp"
+#' )
+#'
 #' # other and multiple annotations
 #' cor_heatmap(
 #'   psq, taxa,
@@ -69,6 +78,7 @@
 #'     names = c("x", "log10(x+1)"), rel_sizes = c(1, 2)
 #'   )
 #' )
+#'
 #'
 #' # optionally you can set the absolute width and height of the heatmap body manually
 #' p1 <- cor_heatmap(psq, taxa,
@@ -85,12 +95,17 @@
 #' p2
 #'
 #' # make the same correlation heatmap, but rotated
-#' p3 <- cor_heatmap(
-#'   psq, taxa,
-#'   taxa_which = "column",
-#'   anno_tax = tax_anno(undetected = 50, which = "column")
-#' )
+#' column_tax_anno <- tax_anno(undetected = 50, which = "column")
+#' p3 <- cor_heatmap(psq, taxa, taxa_side = "top", anno_tax = column_tax_anno)
 #' p3
+#'
+#' # or rotated with taxa annotations at bottom
+#' cor_heatmap(psq, taxa, taxa_side = "bottom", anno_tax = column_tax_anno)
+#'
+#' # note you must ensure tax_anno which and taxa_side are compatible.
+#' # You must set taxa_side argument to top or bottom if you want taxa to be columns
+#' # The line below is an ERROR because by default taxa_side = "right"
+#' # cor_heatmap(psq, taxa, anno_tax = column_tax_anno) # ERROR
 #'
 #' # customising annotation styles is possible using the args argument in tax_anno or var_anno
 #' # but it is tricky: pass a list of lists, the inner lists are named to match the annotation type
@@ -116,17 +131,18 @@ cor_heatmap <- function(data,
                         cor_use = "everything",
                         colors = heat_palette(palette = "Green-Orange", sym = TRUE),
                         numbers = heat_numbers(),
-                        taxa_which = "row",
+                        taxa_side = "right",
                         seriation_method = "OLO_ward",
                         seriation_dist = "euclidean",
                         seriation_method_col = seriation_method,
                         seriation_dist_col = seriation_dist,
                         tax_transform = "identity",
+                        var_fun = "identity",
                         gridlines = heat_grid(lwd = 0.5),
                         ...) {
   if (inherits(data, "data.frame")) {
     otu_mat <- NULL # causes cor to only use x (meta_mat)
-    meta_mat <- df_to_numeric_matrix(data, vars = vars)
+    meta_mat <- df_to_numeric_matrix(data, vars = vars, trans_fun = var_fun)
   } else if (methods::is(data, "phyloseq") || inherits(data, "ps_extra")) {
     ps <- ps_get(data)
     # handle otu_mat and taxa annotations if relevant
@@ -139,22 +155,13 @@ cor_heatmap <- function(data,
       otu <- otu[, taxa, drop = FALSE]
       otu_mat <- unclass(otu)
 
+      taxa_which <- taxa_which_from_taxa_side(taxa_side)
       # create taxa annotation object if "instructions" given
-      if (inherits(anno_tax, "list")) {
-        anno_args <- c(anno_tax, list(data = ps, taxa = taxa))
-        anno_tax <- do.call(what = taxAnnotation, args = anno_args)
-      }
-      # check anno_tax matches taxa_which
-      if (!identical(anno_tax, NULL) &&
-        methods::is(anno_tax, "HeatmapAnnotation") &&
-        !identical(taxa_which, anno_tax@which)
-      ) {
-        stop("anno_tax annotation which arg should match taxa_which arg: both 'row' or both 'column'")
-      }
+      anno_tax <- anno_tax_helper(anno_tax, ps = ps, taxa = taxa, taxa_which = taxa_which, taxa_side = taxa_side)
     }
     # handle sample metadata
     samdat <- phyloseq::sample_data(ps)
-    meta_mat <- df_to_numeric_matrix(samdat, vars = vars)
+    meta_mat <- df_to_numeric_matrix(samdat, vars = vars, trans_fun = var_fun)
   } else {
     stop("data must be phyloseq, ps_extra, or data.frame, not: ", paste(class(data), collapse = " "))
   }
@@ -178,6 +185,7 @@ cor_heatmap <- function(data,
   cor_mat <- stats::cor(x = meta_mat, y = otu_mat, use = cor_use, method = cor)
 
   args <- list(
+    name = cor,
     colors = colors,
     numbers = numbers,
     seriation_method = seriation_method,
@@ -192,21 +200,19 @@ cor_heatmap <- function(data,
 
   args[["mat"]] <- cor_mat
   args[["numbers_mat"]] <- cor_mat # this differs in comp_heatmap (is there value in it being separable in this function?)
+  args[[paste0(taxa_side, "_annotation")]] <- anno_tax
 
   if (methods::is(data, "phyloseq") || inherits(data, "ps_extra")) {
     # TODO allow bottom, top, left and right in addition to rows and columns
     if (identical(taxa_which, "row")) {
-      args[["right_annotation"]] <- anno_tax
       args[["top_annotation"]] <- anno_vars
       args[["mat"]] <- t(args[["mat"]])
       args[["numbers_mat"]] <- t(args[["numbers_mat"]])
     } else if (identical(taxa_which, "column")) {
-      args[["bottom_annotation"]] <- anno_tax
       args[["right_annotation"]] <- anno_vars
-    } else {
-      stop("taxa_which must be row or column, it is: ", taxa_which)
     }
   } else if (inherits(data, "data.frame") && !identical(anno_vars, NULL)) {
+    # TODO add vars_side arg allow anno_vars side instead of which
     if (anno_vars@which == "row") args[["right_annotation"]] <- anno_vars
     if (anno_vars@which == "column") args[["top_annotation"]] <- anno_vars
   }
@@ -235,7 +241,7 @@ cor_heatmap <- function(data,
 #' @param samples list of taxa to include (selection occurs AFTER any tax_transform and scaling)
 #' @param anno_tax NULL or tax_anno() list output
 #' @param anno_samples NULL only support so far TODO
-#' @param taxa_which row or column (which represents a taxon)
+#' @param taxa_side controls heatmap orientation and where any anno_tax annotations are placed (top/bottom/left/right)
 #' @param colors output of heat_palette() to set heatmap fill color scheme
 #' @param numbers NULL or output of heat_numbers() to draw numbers on heatmap cells
 #' @param seriation_method method to order the rows (in seriation::seriate)
@@ -283,7 +289,7 @@ cor_heatmap <- function(data,
 #' p2 <- comp_heatmap(
 #'   psq,
 #'   taxa = taxa,
-#'   taxa_which = "column",
+#'   taxa_side = "bottom",
 #'   anno_tax = tax_anno(undetected = 50, which = "column")
 #' )
 #' p2
@@ -296,7 +302,7 @@ comp_heatmap <- function(data,
                          numbers = NULL, # or list made by heat_numbers() or a function in format of a ComplexHeatmap cell_fun
                          tax_transform_colors = "clr",
                          tax_scale_colors = "neither",
-                         taxa_which = "row",
+                         taxa_side = "right",
                          # stuff just passed to viz_heatmap
                          seriation_method = "OLO_ward",
                          seriation_dist = "euclidean",
@@ -310,24 +316,21 @@ comp_heatmap <- function(data,
                          ... # passed to viz_heatmap
 ) {
   ps <- ps_get(data)
-
+  taxa_which <- taxa_which_from_taxa_side(taxa_side)
   # create taxa annotation object if "instructions" given
-  if (inherits(anno_tax, "list")) {
-    anno_args <- c(anno_tax, list(data = ps, taxa = taxa))
-    anno_tax <- do.call(what = taxAnnotation, args = anno_args)
-  }
-  # anno_tax suitable for taxa_which?
-  if (!identical(anno_tax, NULL) && grepl("Annotation", x = class(anno_tax)[[1]])) {
-    if (!identical(taxa_which, anno_tax@which)) stop("anno_tax annotation which arg should match taxa_which arg: both 'row' or both 'column'")
-  }
+  anno_tax <- anno_tax_helper(anno_tax, ps = ps, taxa = taxa, taxa_which = taxa_which, taxa_side = taxa_side)
 
   # handle otu_table data
   otu_mat <- otu_get(microbiome::transform(ps, transform = tax_transform_colors)) # used for colours and seriation
   otu_mat <- tax_scale(data = otu_mat, do = tax_scale_colors)
   otu_mat <- unclass(otu_mat[samples, taxa, drop = FALSE])
-  otu_numbers <- otu_get(microbiome::transform(ps, transform = tax_transform_numbers)) # used for numbers only
-  otu_numbers <- tax_scale(data = otu_numbers, do = tax_scale_numbers)
-  otu_numbers <- unclass(otu_numbers[samples, taxa, drop = FALSE])
+  if (identical(numbers, NULL)){
+    otu_numbers <- otu_mat # avoids computation if otu_numbers won't be shown anyway
+  } else {
+    otu_numbers <- otu_get(microbiome::transform(ps, transform = tax_transform_numbers)) # used for numbers only
+    otu_numbers <- tax_scale(data = otu_numbers, do = tax_scale_numbers)
+    otu_numbers <- unclass(otu_numbers[samples, taxa, drop = FALSE])
+  }
 
   args <- list(
     name = name,
@@ -346,18 +349,14 @@ comp_heatmap <- function(data,
 
   args[["mat"]] <- otu_mat
   args[["numbers_mat"]] <- otu_numbers
+  args[[paste0(taxa_side, "_annotation")]] <- anno_tax
+  sam_which <- ifelse(taxa_which == "column", yes = "row", no = "column")
+  args[[paste0("show_", sam_which, "_names")]] <- FALSE
 
-  # TODO allow bottom, top, left and right in addition to rows and columns
+  # rotate matrices if taxa are rows
   if (identical(taxa_which, "row")) {
-    args[["right_annotation"]] <- anno_tax
     args[["mat"]] <- t(args[["mat"]])
     args[["numbers_mat"]] <- t(args[["numbers_mat"]])
-    args[["show_column_names"]] <- FALSE
-  } else if (identical(taxa_which, "column")) {
-    args[["bottom_annotation"]] <- anno_tax
-    args[["show_row_names"]] <- FALSE
-  } else {
-    stop("taxa_which must be row or column, it is: ", taxa_which)
   }
   # use extra args (overwriting any set including with anno_tax [relevant if anno_tax = NULL])
   dots <- list(...)
@@ -460,4 +459,54 @@ heat_grid <- function(col = "white",
     lineend = lineend,
     linejoin = linejoin
   )
+}
+
+# helper function to convert top or bottom to column, and left or right to row
+# with helpful error for invalid argument, used inside cor_heatmap (and comp_heatmap)
+# taxa_which is used for rotating heatmap matrix and checking clashes with other annotations
+# taxa_side actually specifies the side taxa annotations are drawn on
+taxa_which_from_taxa_side <- function(taxa_side) {
+  taxa_side_options <- c("top", "bottom", "left", "right")
+  if (!inherits(taxa_side, "character") || length(taxa_side) != 1 || !taxa_side %in% taxa_side_options) {
+    stop("taxa_side must be one of: '", paste(taxa_side_options, collapse = "' / '"), "'\nnot: ", paste(taxa_side, collapse = " "))
+  }
+  if (taxa_side %in% c("top", "bottom")) taxa_which <- "column"
+  if (taxa_side %in% c("left", "right")) taxa_which <- "row"
+  return(taxa_which)
+}
+
+# anno_tax input --> output possibilities:
+# NULL--> NULL,
+# list output of tax_anno() --> HeatmapAnnotation object,
+# HeatmapAnnotation object --> HeatmapAnnotation object (checked)
+#
+# ps is phyloseq extracted from heatmap data arg, if phyloseq or ps_extra
+# taxa_which inferred from taxa_side already in heatmap function
+#
+# used inside cor_heatmap (when given phyloseq as data) and comp_heatmap (always)
+anno_tax_helper <- function(anno_tax, ps, taxa, taxa_which, taxa_side) {
+  if (identical(anno_tax, NULL)) {
+    return(anno_tax)
+  }
+  # create taxa annotation object if "instructions" list given
+  if (inherits(anno_tax, "list")) {
+    anno_args <- c(anno_tax, list(data = ps, taxa = taxa))
+    anno_tax <- do.call(what = taxAnnotation, args = anno_args)
+  }
+  # anno_tax suitable for taxa_which?
+  if (methods::is(anno_tax, "HeatmapAnnotation")) {
+    if (!identical(taxa_which, anno_tax@which)){
+      stop(
+        "The `which` argument you have specified when creating the taxa annotation (anno_tax) is:\n\t'",
+        anno_tax@which, "'\nThis is not compatible with the taxa_side argument you specified:\n\t'",
+        taxa_side, "'\nwhich = 'row' matches side = 'left'/'right', and 'column' matches 'top'/'bottom'."
+      )
+    }
+  } else {
+    stop(
+      "anno_tax must be NULL, list output of tax_anno, or class HeatmapAnnotation, but it is class:\n",
+      paste(class(tax_anno), collapse = " ")
+    )
+  }
+  return(anno_tax)
 }
