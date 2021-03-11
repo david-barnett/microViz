@@ -69,7 +69,10 @@ taxAnnotation <- function(data, taxa, undetected = 0, which = "row", what = c("p
     name <- what[[i]]
     ha_args[[name]] <- do.call(
       what = paste0("anno_", name),
-      args = c(list(data = ps, taxa = taxa, undetected = undetected, which = which, size = sizes[[i]]), args[[name]])
+      args = c(
+        list(data = ps, taxa = taxa, undetected = undetected, which = which, size = sizes[[i]]),
+        args[[name]]
+      )
     )
   }
   # use dots args (overwrite defaults or add more)
@@ -218,7 +221,10 @@ varAnnotation <- function(data, # from heatmap fun # converted to df
     # compute annotation
     ha_args[[name]] <- do.call(
       what = paste0("anno_", annos[[i]]),
-      args = c(list(data = dat[[i]], vars = vars, which = which, size = sizes[[i]]), args[[name]])
+      args = c(
+        list(data = dat[[i]], vars = vars, which = which, size = sizes[[i]]),
+        args[[name]]
+      )
     )
   }
   # use dots args (overwrite defaults or add more)
@@ -237,7 +243,7 @@ anno_var_hist <- function(data, vars = NA, which = "column", size = 15, ...) {
   # extract (sample)data to matrix
   if (methods::is(data, "phyloseq") || inherits(data, "ps_extra")) {
     data <- data.frame(phyloseq::sample_data(ps_get(data)), check.names = FALSE)
-  } else if (inherits(data, "data.frame") || inherits(data, "matrix")){
+  } else if (inherits(data, "data.frame") || inherits(data, "matrix")) {
     mat <- df_to_numeric_matrix(data, vars = vars)
   }
 
@@ -268,7 +274,7 @@ anno_var_box <- function(data, vars = NA, which = "column", size = 15, ...) {
   # extract (sample)data to matrix
   if (methods::is(data, "phyloseq") || inherits(data, "ps_extra")) {
     data <- data.frame(phyloseq::sample_data(ps_get(data)), check.names = FALSE)
-  } else if (inherits(data, "data.frame") || inherits(data, "matrix")){
+  } else if (inherits(data, "data.frame") || inherits(data, "matrix")) {
     mat <- df_to_numeric_matrix(data, vars = vars)
   }
 
