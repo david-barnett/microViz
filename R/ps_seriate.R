@@ -10,6 +10,7 @@
 #'
 #' @return phyloseq
 #' @export
+#' @seealso \code{\link{ps_arrange}} \code{\link{ps_reorder}}
 #'
 #' @examples
 #' library(phyloseq)

@@ -45,3 +45,6 @@ dietswap \%>\%
   sample_data() \%>\%
   head(8)
 }
+\seealso{
+\code{\link{ps_arrange}} \code{\link{ps_reorder}}
+}
