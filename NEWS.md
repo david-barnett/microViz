@@ -1,8 +1,12 @@
 # microViz (development version)
 
+## Breaking changes
+* `tax_agg` argument agg_level renamed to rank. `tax_agg` returns taxa in different order than before (and now different order from, but same aggregation as, `microbiome::aggregate_taxa()`). tax_agg now checks if taxa cannot be uniquely identified at the specified rank level. (now also about twice as fast)
+
 ## Features
 * `tax_sort` for sorting taxa in tax_table and otu_table by several name or abundance options
-* 
+
+
 
 # microViz 0.5.0 - "hot maps"
 

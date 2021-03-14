@@ -13,13 +13,18 @@ test_that("microbiome's dietswap data hasn't changed", {
 })
 
 
-agg_level_test <- c("Phylum", "Family", "Genus")
+agg_level_test <- c("Phylum", "Family")
+# tax_agg not expected to be the same at Genus for dietswap
+# as microbiome::aggregate_taxa doesn't add "unique" rank if aggregated by
+# last rank
 for (level in agg_level_test) {
   test_that(
     desc = paste("tax_agg produces same phyloseq as microbiome::aggregate_taxa at", level),
     code = {
-      biome <- microbiome::aggregate_taxa(x = dietswap, level = level)
-      viz <- ps_get(tax_agg(ps = dietswap, agg_level = level))
+      # biome output must be sorted by name (using tax_sort)
+      # it is not clear how to recreate the order produced by aggregate taxa itself
+      biome <- tax_sort(microbiome::aggregate_taxa(x = dietswap, level = level), by = "name")
+      viz <- tax_sort(ps_get(tax_agg(ps = dietswap, level)), by = "name")
       expect_equal(object = viz, expected = biome)
     }
   )
@@ -34,7 +39,7 @@ for (level in agg_level_test) {
   test_that(
     desc = paste("microViz::tax_agg output hasn't changed:", level),
     code = {
-      expect_snapshot(ps_get(tax_agg(ps = dietswap, agg_level = level)))
+      expect_snapshot(ps_get(tax_agg(ps = dietswap, level, sort_by = "name")))
     }
   )
 }

@@ -2,26 +2,63 @@
 % Please edit documentation in R/tax_agg.R
 \name{tax_agg}
 \alias{tax_agg}
-\title{Aggregate taxa if requested}
+\title{Aggregate taxa and create ps_extra}
 \usage{
-tax_agg(ps, agg_level)
+tax_agg(ps, rank = "unique", fill_unknowns = FALSE, sort_by = NA)
 }
 \arguments{
 \item{ps}{phyloseq object}
 
-\item{agg_level}{"none", "asv", "given" or name of valid taxonomic rank (try phyloseq::rank_names(ps))}
+\item{rank}{NA or "unique" or name of valid taxonomic rank (try phyloseq::rank_names(ps))}
+
+\item{sort_by}{if not NA, how should the taxa be sorted, uses tax_sort(), takes same options as \code{by} arg}
 }
 \value{
-ps_extra list object including phyloseq and tax_agg level info
+ps_extra list object including phyloseq and tax_agg rank info
 }
 \description{
-This function is a simple wrapper around microbiome::aggregate_taxa.
-tax_agg allows you to pass 'none', 'asv', or 'given', to the level argument which will NOT aggregate the taxa.
-If you pass any valid rank name it will aggregate taxa with microbiome::aggregate_taxa.
+\code{tax_agg} sums the abundances of the phyloseq taxa at the given rank.
+It records the tax_agg rank argument in the info of the ps_extra object output.
+This ps_extra object tracks aggregation, and any further transformations and scaling,
+to help you keep track of what you have done with your phyloseq object.
+tax_agg allows you to pass NA or "unique" to the rank argument which will NOT aggregate the taxa.
+It always adds a "unique" rank, which matches the tax_table row names (after any aggregation performed).
+}
+\details{
+This function is inspired by microbiome::aggregate_taxa.
+However if microbiome::aggregate_taxa is used, microViz cannot track this aggregation.
+Except for the ordering of taxa, the resulting phyloseq objects are identical for aggregating a phyloseq with n ranks up to the n-1 rank.
+Aggregating at rank n with tax_agg still generates a "unique" column, but aggregate_taxa does not do this.
 }
 \examples{
 library(microbiome)
 data("dietswap", package = "microbiome")
-tax_agg(ps = dietswap, agg_level = "none")
-tax_agg(ps = dietswap, agg_level = "Phylum")
+
+tax_agg(ps = dietswap, "Phylum") \%>\%
+  ps_get() \%>\%
+  tax_table()
+tax_agg(ps = dietswap, "Family") \%>\%
+  ps_get() \%>\%
+  tax_table()
+
+# this won't aggregate taxa,
+# but just add a new rank called unique, equal to taxa_names
+tax_agg(ps = dietswap, NA)
+identical(tax_agg(dietswap, NA), tax_agg(dietswap, "unique")) # TRUE
+
+# create some missing values
+tax_table(dietswap)[3:7, "Genus"] <- "g__"
+# this will produce an error, instructing the user to use fill_unknowns
+# tax_agg(ps = dietswap, "Genus")
+# this will then work:
+dietswap \%>\%
+  tax_fill_unknowns() \%>\%
+  tax_agg("Genus")
+
+# you can replace long unknown values
+tax_table(dietswap)[13:17, "Family"] <- "some_unknown_family"
+# default tax_fill_unknowns settings won't catch it (too long)
+dietswap \%>\%
+  tax_fill_unknowns(unknowns = "some_unknown_family") \%>\%
+  tax_agg("Family")
 }

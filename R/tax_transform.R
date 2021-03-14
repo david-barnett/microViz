@@ -1,6 +1,6 @@
 #' Transform taxa in phyloseq object and record transformation
 #'
-#' Pipe the results of tax_agg into this function to transform the (aggregated) taxa features. (Or pass it a phyloseq object).
+#' Pipe the results of tax_agg into this function to transform the (aggregated) taxa features.
 #' This function is a simple wrapper around microbiome::transform() that can perform all the same transformations but returns a ps_extra list
 #' containing ps (the transformed phyloseq object) and extra info: tax_transform (a string recording the transformation), and tax_agg
 #' (a string recording the taxonomic aggregation level if specified in a preceding tax_agg function call).
@@ -17,10 +17,10 @@
 #' data("dietswap", package = "microbiome")
 #'
 #' # aggregate taxa at Phylum level and perform the center log ratio transform on the phyla counts
-#' tax_agg(ps = dietswap, agg_level = "Phylum") %>% tax_transform("clr")
+#' tax_agg(ps = dietswap, rank = "Phylum") %>% tax_transform("clr")
 #'
-#' # do nothing except record tax_agg as "none" and tax_transform as "identity" in ps_extra info
-#' tax_agg(ps = dietswap, agg_level = "none") %>% tax_transform("identity")
+#' # do nothing except record tax_agg as "unique" and tax_transform as "identity" in ps_extra info
+#' tax_agg(ps = dietswap, rank = NA) %>% tax_transform("identity")
 tax_transform <- function(data, transformation, ...) {
 
   ps <- ps_get(data)
