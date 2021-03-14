@@ -55,7 +55,7 @@ BiocManager::install(c("phyloseq", "microbiome"))
 
 # # Installing the latest version of this package # #
 install.packages("devtools")
-devtools::install_github("MUMC-MEDMIC/microViz@0.4.1") # check 0.4.1 is the latest version?
+devtools::install_github("MUMC-MEDMIC/microViz@0.5.0") # check 0.5.0 is the latest version?
 # advanced tip: add @<commit-hash> after microViz to install a version from a particular commit
 # If you get an error including something like: 
 # "check that you have the required permissions" 
@@ -98,6 +98,7 @@ Perhaps these example data differ across BMI groups?
 
 ```{r fig.height=8, fig.width=10, dpi=300}
 dietswap %>%
+  tax_filter(min_prevalence = 1) %>%
   comp_barplot(tax_level = "Genus",  n_taxa = 10) +
   facet_wrap("bmi_group", nrow = 3, scales = "free") +
   labs(x = NULL, y = NULL) +
@@ -135,6 +136,7 @@ unconstrained_aitchison_pca <-
 pca_plot <- unconstrained_aitchison_pca %>%
   ord_plot(
     plot_taxa = 1:6, colour = "bmi_group", size = 2,
+    tax_vec_length = 0.5,
     auto_caption = TRUE
   )
 
