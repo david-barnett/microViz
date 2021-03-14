@@ -1,3 +1,9 @@
+# microViz (development version)
+
+## Features
+* `tax_sort` for sorting taxa in tax_table and otu_table by several name or abundance options
+* 
+
 # microViz 0.5.0 - "hot maps"
 
 ## Breaking changes
