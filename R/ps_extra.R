@@ -42,6 +42,7 @@ print.ps_extra <- function(x, ...) {
     cat("\n\nbetadisper:\n")
     cat(names(b))
   }
+  cat("\n")
 }
 
 #' @export
