@@ -9,9 +9,9 @@ tax_sort(data, by = "name", ...)
 \arguments{
 \item{data}{ps_extra or phyloseq}
 
-\item{by}{how to sort, see details}
+\item{by}{how to sort, see description}
 
-\item{...}{used if summary function given}
+\item{...}{used if summary function given, or pass \code{undetected} arg for tax_transform("binary") if by = "prev" or "prevalence"}
 }
 \value{
 sorted phyloseq or ps_extra

@@ -11,8 +11,8 @@
 #' Don't forget to pass `na.rm` to `...` if using a summary stat function in by
 #'
 #' @param data ps_extra or phyloseq
-#' @param by how to sort, see details
-#' @param ... used if summary function given
+#' @param by how to sort, see description
+#' @param ... used if summary function given, or pass `undetected` arg for tax_transform("binary") if by = "prev" or "prevalence"
 #'
 #' @return sorted phyloseq or ps_extra
 #' @export
@@ -63,21 +63,22 @@
 #'   taxa_names() %>%
 #'   head(20)
 tax_sort <- function(data, by = "name", ...) {
+  by_is_invalid_error <- paste0(
+    "`by` argument must be one of:\n",
+    "- 'rev' to reverse the current order\n",
+    "- 'name' or 'names' (alphabetical by taxa_names)\n",
+    "- a taxonomic rank name\n",
+    "- summary stat. function e.g. `sum` or `mean` (don't forget na.rm)\n",
+    "- 'prev' or 'prevalence' using value of optional `undetected` arg\n",
+    "- a sample name (abundance sorting within that sample)\n"
+  )
   if (
     !inherits(by, "character") &&
       !inherits(by, "function") ||
       length(by) != 1
   ) {
-    stop(
-      paste0(
-        "`by` argument must be one of:\n",
-        "- 'rev' to reverse the current order\n",
-        "- 'name' or 'names' (alphabetical by taxa_names)\n",
-        "- a taxonomic rank name\n",
-        "- summary stat. function e.g. `sum` or `mean` (don't forget na.rm)\n",
-        "- a sample name (abundance sorting within that sample)\n"
-      ) # TODO allow numeric or character vector sorting by subsetting?
-    )
+    stop(by_is_invalid_error)
+       # TODO allow numeric or character vector sorting by subsetting?
   }
   # get components that are always required
   ps <- ps_get(data)
@@ -96,10 +97,18 @@ tax_sort <- function(data, by = "name", ...) {
       new_order <- order(tt[, by])
     } else if (by %in% phyloseq::sample_names(ps)) {
       new_order <- order(otu[by, ], decreasing = TRUE)
+    } else if (by %in% c("prev", "prevalence")){
+      otu_binary <- otu_get(tax_transform(ps, transformation = "binary", ...))
+      result <- apply(X = unclass(otu_binary), MARGIN = 2, FUN = sum)
+      new_order <- order(result, decreasing = TRUE)
+    } else {
+      stop(by_is_invalid_error)
     }
   } else if (inherits(by, "function")) {
     result <- apply(X = otu, MARGIN = 2, FUN = by, ...)
     new_order <- order(result, decreasing = TRUE)
+  } else {
+    stop(by_is_invalid_error)
   }
   # actually sort
   otu <- otu[, new_order]
