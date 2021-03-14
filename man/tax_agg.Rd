@@ -4,7 +4,7 @@
 \alias{tax_agg}
 \title{Aggregate taxa and create ps_extra}
 \usage{
-tax_agg(ps, rank = "unique", fill_unknowns = FALSE, sort_by = NA)
+tax_agg(ps, rank = "unique", sort_by = NA)
 }
 \arguments{
 \item{ps}{phyloseq object}

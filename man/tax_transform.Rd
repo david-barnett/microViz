@@ -4,12 +4,14 @@
 \alias{tax_transform}
 \title{Transform taxa in phyloseq object and record transformation}
 \usage{
-tax_transform(data, transformation, ...)
+tax_transform(data, transformation, rank = NA, ...)
 }
 \arguments{
 \item{data}{ps_extra list output from tax_agg, or a phyloseq object}
 
 \item{transformation}{any valid taxa transformation from microbiome::transform}
+
+\item{rank}{If data is phyloseq data are aggregated at this rank before transforming. If NA, runs tax_agg(data, rank = NA). However if rank is NA and data is already ps_extra, this does nothing.}
 
 \item{...}{any extra arguments passed to microbiome::transform()}
 }
@@ -17,10 +19,11 @@ tax_transform(data, transformation, ...)
 ps_extra list including phyloseq object and info
 }
 \description{
-Pipe the results of tax_agg into this function to transform the (aggregated) taxa features.
-This function is a simple wrapper around microbiome::transform() that can perform all the same transformations but returns a ps_extra list
+Transform taxa features, and optionally aggregate at specified taxonomic rank beforehand.
+You can pipe the results of tax_agg into tax_transform, or equivalently set the rank argument in tax_transform.
+This function is a wrapper around microbiome::transform() that can perform all the same transformations but returns a ps_extra list
 containing ps (the transformed phyloseq object) and extra info: tax_transform (a string recording the transformation), and tax_agg
-(a string recording the taxonomic aggregation level if specified in a preceding tax_agg function call).
+(a string recording the taxonomic aggregation rank if specified here or earlier in tax_agg).
 }
 \examples{
 library(microbiome)
@@ -28,7 +31,9 @@ data("dietswap", package = "microbiome")
 
 # aggregate taxa at Phylum level and perform the center log ratio transform on the phyla counts
 tax_agg(ps = dietswap, rank = "Phylum") \%>\% tax_transform("clr")
+# equivalent shortcut
+tax_transform(dietswap, transformation = "clr", rank = "Phylum")
 
 # do nothing except record tax_agg as "unique" and tax_transform as "identity" in ps_extra info
-tax_agg(ps = dietswap, rank = NA) \%>\% tax_transform("identity")
+dietswap \%>\% tax_transform("identity", rank = NA)
 }
