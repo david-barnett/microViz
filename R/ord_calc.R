@@ -135,9 +135,9 @@ ord_calc <- function(data,
   # set method automatically if auto given
   if (identical(method, "auto")) {
     if (identical(distMat, NULL)) {
-      method <- if (identical(constraints, 1)) "PCA" else "RDA"
+      method <- if (!constrained) "PCA" else "RDA"
     } else {
-      method <- if (identical(constraints, 1)) "PCoA" else "CAP"
+      method <- if (!constrained) "PCoA" else "CAP"
     }
   }
   # check compatibility of input
