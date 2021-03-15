@@ -36,16 +36,6 @@ following instructions.
 # If you are on windows you will need to install RTools so that your computer can build this package
 # Follow instructions here: http://jtleek.com/modules/01_DataScientistToolbox/02_10_rtools/
 
-# # How to authenticate your R to install from this private github repo # #
-install.packages("usethis")
-install.packages("credentials")
-usethis::create_github_token()
-# a github webpage will open (you might need to log in)
-# Enter a PAT name that reminds you which computer you are currently on
-# Click "generate token" at the bottom of the webpage, then run the following code in R, then copy/paste the PAT when requested:
-credentials::set_github_pat()
-# More help/instructions may be found on: https://happygitwithr.com/credential-caching.html#how-to-get-a-pat
-
 # If you don't already have the latest versions of phyloseq and microbiome, you should install these from bioconductor:
 
 if (!requireNamespace("BiocManager", quietly = TRUE))
@@ -56,12 +46,6 @@ BiocManager::install(c("phyloseq", "microbiome"))
 install.packages("devtools")
 devtools::install_github("MUMC-MEDMIC/microViz@0.5.0") # check 0.5.0 is the latest version?
 # advanced tip: add @<commit-hash> after microViz to install a version from a particular commit
-# If you get an error including something like: 
-# "check that you have the required permissions" 
-# then setting your credentials/PAT may have failed
-
-# optionally install the corncob package from github (for beta binomial models)
-devtools::install_github("bryandmartin/corncob@338323e9")
 ```
 
 ## Examples below
@@ -192,8 +176,8 @@ aitchison_perm <- dist_permanova(
   variables = "bmi_group + female"
 )
 #> Dropping samples with missings: 2
-#> 2021-03-14 22:48:44 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2021-03-14 22:48:44 - Finished PERMANOVA
+#> 2021-03-15 15:47:52 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2021-03-15 15:47:52 - Finished PERMANOVA
 # view the permanova results
 perm_get(aitchison_perm)
 #> Permutation test for adonis under reduced model
@@ -223,8 +207,8 @@ your permanova directly using the ord\_plot function with constraints.
 ``` r
 perm2 <- dist_permanova(data = aitchison_dists, variables = c("weight", "female"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2021-03-14 22:48:44 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2021-03-14 22:48:44 - Finished PERMANOVA
+#> 2021-03-15 15:47:52 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2021-03-15 15:47:53 - Finished PERMANOVA
 perm_get(perm2)
 #> Permutation test for adonis under reduced model
 #> Marginal effects of terms
@@ -270,7 +254,7 @@ devtools::session_info()
 #>  collate  en_GB.UTF-8                 
 #>  ctype    en_GB.UTF-8                 
 #>  tz       Europe/Amsterdam            
-#>  date     2021-03-14                  
+#>  date     2021-03-15                  
 #> 
 #> ─ Packages ───────────────────────────────────────────────────────────────────────────────────────
 #>  package      * version    date       lib source        
