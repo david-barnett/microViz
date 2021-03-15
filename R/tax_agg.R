@@ -205,13 +205,3 @@ tax_names2tt <- function(data, colname = "unique") {
   }
 }
 
-# get tax_table, put this in accessors? # currently just an internal helper
-tt_get <- function(data) {
-  if (!methods::is(data, "taxonomyTable")) {
-    ps <- ps_get(data)
-    tt <- phyloseq::tax_table(ps)
-  } else {
-    tt <- data
-  }
-  return(tt)
-}

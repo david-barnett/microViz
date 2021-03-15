@@ -75,6 +75,17 @@ otu_get <- function(data) {
   return(otu)
 }
 
+# get tax_table, currently just an internal helper
+tt_get <- function(data) {
+  if (!methods::is(data, "taxonomyTable")) {
+    ps <- ps_get(data)
+    tt <- phyloseq::tax_table(ps)
+  } else {
+    tt <- data
+  }
+  return(tt)
+}
+
 #' @param data phyloseq or ps_extra
 # @return phyloseq sample_data as a tibble, with sample_names as new first column called .sample_name
 #' @param sample_names_col name of column where sample_names are put. if NA, return data.frame with rownames (sample_names)
