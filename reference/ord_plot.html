@@ -76,7 +76,7 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0.9004</span>
       </span>
     </div>
 
@@ -180,11 +180,13 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
     </tr>
     <tr>
       <th>scaling</th>
-      <td><p>either "species" (2) or "site" (1) scores are scaled by eigenvalues, and the other set of scores is left unscaled (from ?vegan::scores.cca)</p></td>
+      <td><p>either "species" (2) or "site" (1) scores are scaled by eigenvalues,
+and the other set of scores is left unscaled (from ?vegan::scores.cca)</p></td>
     </tr>
     <tr>
       <th>constraint_vec_length</th>
-      <td><p>NA = auto-scaling for line segment drawn for any constraints. Alternatively provide a numeric length multiplier yourself.</p></td>
+      <td><p>NA = auto-scaling for line segment drawn for any constraints.
+Alternatively provide a numeric length multiplier yourself.</p></td>
     </tr>
     <tr>
       <th>constraint_vec_style</th>
@@ -192,7 +194,8 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
     </tr>
     <tr>
       <th>constraint_lab_length</th>
-      <td><p>relative length of label drawn for any constraints (relative to default position which is defined by correlation with each drawn axis)</p></td>
+      <td><p>relative length of label drawn for any constraints
+(relative to default position which is defined by correlation with each drawn axis)</p></td>
     </tr>
     <tr>
       <th>constraint_lab_style</th>
@@ -208,7 +211,8 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
     </tr>
     <tr>
       <th>tax_vec_length</th>
-      <td><p>NA = auto-scaling for line segment drawn for any taxa. Alternatively provide a numeric length multiplier yourself.</p></td>
+      <td><p>NA = auto-scaling for line segment drawn for any taxa.
+Alternatively provide a numeric length multiplier yourself.</p></td>
     </tr>
     <tr>
       <th>tax_vec_style_all</th>
@@ -252,7 +256,8 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
     </tr>
     <tr>
       <th>...</th>
-      <td><p>pass aesthetics arguments for sample points, drawn with geom_point using aes_string</p></td>
+      <td><p>pass aesthetics arguments for sample points,
+drawn with geom_point using aes_string</p></td>
     </tr>
     </table>
 
@@ -270,45 +275,39 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://dx.plos.org/10.1371/journal.pone.0061217'>phyloseq</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://cran.r-project.org'>vegan</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://microbiome.github.io/microbiome'>microbiome</a></span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span>
 
 <span class='co'># create a couple of numerical variables to use as constraints or conditions</span>
 <span class='va'>dietswap</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='ps_mutate.html'>ps_mutate</a></span><span class='op'>(</span>
-    weight <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/recode.html'>recode</a></span><span class='op'>(</span><span class='va'>bmi_group</span>, obese <span class='op'>=</span> <span class='fl'>3</span>, overweight <span class='op'>=</span> <span class='fl'>2</span>, lean <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>,
-    female <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>sex</span> <span class='op'>==</span> <span class='st'>"female"</span>, true <span class='op'>=</span> <span class='fl'>1</span>, false <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
+    weight <span class='op'>=</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/recode.html'>recode</a></span><span class='op'>(</span><span class='va'>bmi_group</span>, obese <span class='op'>=</span> <span class='fl'>3</span>, overweight <span class='op'>=</span> <span class='fl'>2</span>, lean <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>,
+    female <span class='op'>=</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>sex</span> <span class='op'>==</span> <span class='st'>"female"</span>, true <span class='op'>=</span> <span class='fl'>1</span>, false <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
   <span class='op'>)</span>
 
 <span class='co'># compute and plot ordinations for demonstration of conditioning</span>
 <span class='va'>unconstrained_aitchison_pca</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"RDA"</span><span class='op'>)</span>
+  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span>, rank <span class='op'>=</span> <span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span><span class='op'>)</span> <span class='co'># method = "auto" --&gt; picks PCA as no constraints or distances</span>
 
 <span class='va'>unconstrained_aitchison_pca</span> <span class='op'>%&gt;%</span>
   <span class='fu'>ord_plot</span><span class='op'>(</span>colour <span class='op'>=</span> <span class='st'>"bmi_group"</span>, plot_taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/stat_ellipse.html'>stat_ellipse</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>linetype <span class='op'>=</span> <span class='va'>bmi_group</span>, colour <span class='op'>=</span> <span class='va'>bmi_group</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='img'><img src='ord_plot-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># remove effect of weight with conditions arg</span>
+<span class='co'># scaling weight with scale_cc is not necessary as only 1 condition is used</span>
 <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"RDA"</span>, conditions <span class='op'>=</span> <span class='st'>"weight"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span>, rank <span class='op'>=</span> <span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>conditions <span class='op'>=</span> <span class='st'>"weight"</span>, scale_cc <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>ord_plot</span><span class='op'>(</span>colour <span class='op'>=</span> <span class='st'>"bmi_group"</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/stat_ellipse.html'>stat_ellipse</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>linetype <span class='op'>=</span> <span class='va'>bmi_group</span>, colour <span class='op'>=</span> <span class='va'>bmi_group</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 0</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Centering (mean) and scaling (sd) the constraint and conditioning vars: </span></div><div class='output co'>#&gt; <span class='message'>	weight</span></div><div class='img'><img src='ord_plot-2.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 0</span></div><div class='output co'>#&gt; <span class='message'>	weight</span></div><div class='img'><img src='ord_plot-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># alternatively, constrain variation on weight and female</span>
 <span class='va'>constrained_aitchison_rda</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>constraints <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"weight"</span>, <span class='st'>"female"</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span>, rank <span class='op'>=</span> <span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>constraints <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"weight"</span>, <span class='st'>"female"</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># constraints --&gt; RDA</span>
 </div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 0</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Centering (mean) and scaling (sd) the constraint and conditioning vars: </span></div><div class='output co'>#&gt; <span class='message'>	weight</span></div><div class='output co'>#&gt; <span class='message'>	female</span></div><div class='input'>
+#&gt; <span class='message'>Centering (mean) and scaling (sd) the constraints and conditions: </span></div><div class='output co'>#&gt; <span class='message'>	weight</span></div><div class='output co'>#&gt; <span class='message'>	female</span></div><div class='input'>
 <span class='va'>constrained_aitchison_rda</span> <span class='op'>%&gt;%</span>
   <span class='fu'>ord_plot</span><span class='op'>(</span>colour <span class='op'>=</span> <span class='st'>"bmi_group"</span>, constraint_vec_length <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/stat_ellipse.html'>stat_ellipse</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>linetype <span class='op'>=</span> <span class='va'>bmi_group</span>, colour <span class='op'>=</span> <span class='va'>bmi_group</span><span class='op'>)</span><span class='op'>)</span>
@@ -322,7 +321,8 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
 <span class='va'>p</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/stat_ellipse.html'>stat_ellipse</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>linetype <span class='op'>=</span> <span class='va'>bmi_group</span>, colour <span class='op'>=</span> <span class='va'>bmi_group</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='img'><img src='ord_plot-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>p</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_density_2d.html'>stat_density2d</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>colour <span class='op'>=</span> <span class='va'>bmi_group</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='img'><img src='ord_plot-5.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># you can rename the taxa on the labels with any function that takes and modifies a character vector</span>
+<span class='co'># you can rename the taxa on the labels with any function that</span>
+<span class='co'># takes and modifies a character vector</span>
 <span class='va'>constrained_aitchison_rda</span> <span class='op'>%&gt;%</span>
   <span class='fu'>ord_plot</span><span class='op'>(</span>
     colour <span class='op'>=</span> <span class='st'>"bmi_group"</span>,
@@ -332,7 +332,8 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/lims.html'>lims</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>5</span>, <span class='fl'>6</span><span class='op'>)</span>, y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>5</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_brewer.html'>scale_colour_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Set1"</span><span class='op'>)</span>
 </div><div class='img'><img src='ord_plot-6.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># it is possible to facet these plots,</span>
+<span class='co'># it is possible to facet these plots</span>
+<span class='co'># (although I'm not sure it makes sense to)</span>
 <span class='co'># but only unconstrained ordination plots and with plot_taxa = FALSE</span>
 <span class='va'>unconstrained_aitchison_pca</span> <span class='op'>%&gt;%</span>
   <span class='fu'>ord_plot</span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"sex"</span>, auto_caption <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span> <span class='op'>+</span>

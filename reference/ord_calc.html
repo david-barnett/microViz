@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Ordinate phyloseq object or distance matrix computed by dist_calc — ord_calc • microViz</title>
+<title>Ordinate samples (arrange by similarity in multiple dimensions) — ord_calc • microViz</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,22 @@
 
 
 
-<meta property="og:title" content="Ordinate phyloseq object or distance matrix computed by dist_calc — ord_calc" />
-<meta property="og:description" content="Extends functionality of phyloseq::ordinate(). Results can be used directly in ord_plot.
-Alternatively you could extract the ordination object for other analyses with ord_get()" />
+<meta property="og:title" content="Ordinate samples (arrange by similarity in multiple dimensions) — ord_calc" />
+<meta property="og:description" content="Used before plotting with ord_plot() or explorating interactively with ord_explore().
+Use method = &quot;auto&quot; to automatically pick an appropriate method from:
+&quot;PCA&quot; (Principle Components Analysis) combines taxa abundances into new dimensions. The first axes display the greatest variation in your microbial data.
+&quot;RDA&quot; (Redundancy Analysis) is constrained PCA, roughly speaking. It finds variation in your data that can be explained both by the constraints variables, and the microbial data.
+&quot;PCoA&quot; (Principle Coordinates Analysis) finds a coordinate system that best preserves the original distances between samples.
+&quot;CAP&quot; (Constrained Analysis of Principle Coordinates) is also known as distance-based Redundancy Analysis.
+
+
+Alternatively to leaving method = &quot;auto&quot;, you can explicitly specify any of the above methods, or choose one of the following:
+&quot;CCA&quot; (Canonical Correspondence Analysis) - NOT canonical correlation analysis!
+&quot;NMDS&quot; (Non-metric Multidimensional Scaling)
+
+
+You are strongly recommended to check out this useful website for introductory explanations of these methods
+the &quot;GUide to STatistical Analysis in Microbial Ecology&quot;: https://sites.google.com/site/mb3gustame/" />
 
 
 
@@ -73,7 +86,7 @@ Alternatively you could extract the ordination object for other analyses with or
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0.9004</span>
       </span>
     </div>
 
@@ -127,14 +140,27 @@ Alternatively you could extract the ordination object for other analyses with or
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Ordinate phyloseq object or distance matrix computed by dist_calc</h1>
+    <h1>Ordinate samples (arrange by similarity in multiple dimensions)</h1>
     <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/ord_calc.R'><code>R/ord_calc.R</code></a></small>
     <div class="hidden name"><code>ord_calc.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Extends functionality of phyloseq::ordinate(). Results can be used directly in ord_plot.
-Alternatively you could extract the ordination object for other analyses with ord_get()</p>
+    <p>Used before plotting with ord_plot() or explorating interactively with ord_explore().
+Use method = "auto" to automatically pick an appropriate method from:</p><ul>
+<li><p>"PCA" (Principle Components Analysis) combines taxa abundances into new dimensions. The first axes display the greatest variation in your microbial data.</p></li>
+<li><p>"RDA" (Redundancy Analysis) is constrained PCA, roughly speaking. It finds variation in your data that can be explained both by the constraints variables, and the microbial data.</p></li>
+<li><p>"PCoA" (Principle Coordinates Analysis) finds a coordinate system that best preserves the original distances between samples.</p></li>
+<li><p>"CAP" (Constrained Analysis of Principle Coordinates) is also known as distance-based Redundancy Analysis.</p></li>
+</ul>
+
+<p>Alternatively to leaving method = "auto", you can explicitly specify any of the above methods, or choose one of the following:</p><ul>
+<li><p>"CCA" (Canonical Correspondence Analysis) - NOT canonical correlation analysis!</p></li>
+<li><p>"NMDS" (Non-metric Multidimensional Scaling)</p></li>
+</ul>
+
+<p>You are strongly recommended to check out this useful website for introductory explanations of these methods
+the "GUide to STatistical Analysis in Microbial Ecology": <a href='https://sites.google.com/site/mb3gustame/'>https://sites.google.com/site/mb3gustame/</a></p>
     </div>
 
     <pre class="usage"><span class='fu'>ord_calc</span><span class='op'>(</span>
@@ -156,23 +182,28 @@ Alternatively you could extract the ordination object for other analyses with or
     </tr>
     <tr>
       <th>method</th>
-      <td><p>which ordination method to use? "auto" means automatically determined from ps_extra and other args. If you really know what you want: manually set one of 'PCoA', 'PCA', 'CCA', 'CAP' or 'RDA'</p></td>
+      <td><p>which ordination method to use? "auto" means automatically determined from ps_extra and other args.
+If you really know what you want: manually set one of 'PCoA', 'PCA', 'CCA', 'CAP' or 'RDA'</p></td>
     </tr>
     <tr>
       <th>constraints</th>
-      <td><p>(a vector of) valid variable name(s) to constrain PCoA or RDA analyses, or leave as 1 for unconstrained ordination</p></td>
+      <td><p>(a vector of) valid sample_data name(s) to constrain analyses, or leave as NULL for unconstrained ordination.
+Non-NULL values are compatible with method = "auto"/"RDA"/"CAP"</p></td>
     </tr>
     <tr>
       <th>conditions</th>
-      <td><p>(a vector of) valid variable name(s) to partial these out of PCoA or RDA analyses with Condition(), or leave as NULL</p></td>
+      <td><p>(a vector of) valid sample_data name(s) to partial these out of analyses with Condition(), or leave as NULL</p></td>
     </tr>
     <tr>
       <th>scale_cc</th>
-      <td><p>if TRUE (default) ensures any constraints and conditions vars are scaled before use, to ensure their effects are comparable. If set to FALSE you must ensure you have already set the variables on a similar scale yourself!</p></td>
+      <td><p>If TRUE (default) ensures any constraints and conditions variables are scaled before use, to ensure their effects are comparable.
+If set to FALSE you must ensure you have already set the variables on a similar scale yourself!
+If there are no constraints or conditions, scale_cc does nothing.</p></td>
     </tr>
     <tr>
       <th>verbose</th>
-      <td><p>if TRUE or "max", show any warnings and messages about constraint and conditions scaling and missings etc. FALSE suppresses warnings!</p></td>
+      <td><p>If TRUE or "max", show any warnings and messages about constraint and conditions scaling and missings etc.
+FALSE suppresses warnings!</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -183,6 +214,16 @@ Alternatively you could extract the ordination object for other analyses with or
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>ps_extra list object</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Extends functionality of phyloseq::ordinate().
+Results can be used directly in ord_plot().
+You can extract the ordination object for other analyses with ord_get()</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='dist_calc.html'>dist_calc</a></code> for distance matrix calculation</p>
+<p><code><a href='ord_plot.html'>ord_plot</a></code> and <code><a href='ord_explore.html'>ord_explore</a></code></p>
+<p><code>phyloseq <a href='https://rdrr.io/pkg/phyloseq/man/ordinate.html'>ordinate</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://dx.plos.org/10.1371/journal.pone.0061217'>phyloseq</a></span><span class='op'>)</span>
@@ -205,7 +246,7 @@ Alternatively you could extract the ordination object for other analyses with or
   <span class='fu'><a href='dist_calc.html'>dist_calc</a></span><span class='op'>(</span><span class='st'>"bray"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>ord_calc</span><span class='op'>(</span>constraints <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"weight"</span>, <span class='st'>"female"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 2</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Centering (mean) and scaling (sd) the constraint and conditioning vars: </span></div><div class='output co'>#&gt; <span class='message'>	weight</span></div><div class='output co'>#&gt; <span class='message'>	female</span></div><div class='input'><span class='co'># familiarise yourself with the structure of the returned ps_extra list object</span>
+#&gt; <span class='message'>Centering (mean) and scaling (sd) the constraints and conditions: </span></div><div class='output co'>#&gt; <span class='message'>	weight</span></div><div class='output co'>#&gt; <span class='message'>	female</span></div><div class='input'><span class='co'># familiarise yourself with the structure of the returned ps_extra list object</span>
 <span class='va'>test</span>
 </div><div class='output co'>#&gt; ps_extra object - a list with phyloseq and extras:
 #&gt; 
@@ -242,7 +283,7 @@ Alternatively you could extract the ordination object for other analyses with or
   <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>ord_calc</span><span class='op'>(</span>constraints <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"weight"</span>, <span class='st'>"female"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 2</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Centering (mean) and scaling (sd) the constraint and conditioning vars: </span></div><div class='output co'>#&gt; <span class='message'>	weight</span></div><div class='output co'>#&gt; <span class='message'>	female</span></div><div class='input'><span class='co'># plot with oldschool vegan graphics to show it returns a standard interoperable ordination object</span>
+#&gt; <span class='message'>Centering (mean) and scaling (sd) the constraints and conditions: </span></div><div class='output co'>#&gt; <span class='message'>	weight</span></div><div class='output co'>#&gt; <span class='message'>	female</span></div><div class='input'><span class='co'># plot with vegan package graphics to show it returns a standard ordination object</span>
 <span class='fu'><a href='ps_extra-accessors.html'>ord_get</a></span><span class='op'>(</span><span class='va'>test2</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'>vegan</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/vegan/man/ordiplot.html'>ordiplot</a></span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='img'><img src='ord_calc-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span><span class='va'>test2</span>, plot_taxa <span class='op'>=</span> <span class='fl'>8</span><span class='op'>:</span><span class='fl'>1</span><span class='op'>)</span>
 </div><div class='img'><img src='ord_calc-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># This is equivalent to CAP with "aitchison" distance</span>
@@ -253,8 +294,7 @@ Alternatively you could extract the ordination object for other analyses with or
   <span class='fu'>ord_calc</span><span class='op'>(</span>constraints <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"weight"</span>, <span class='st'>"female"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 2</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Centering (mean) and scaling (sd) the constraint and conditioning vars: </span></div><div class='output co'>#&gt; <span class='message'>	weight</span></div><div class='output co'>#&gt; <span class='message'>	female</span></div><div class='img'><img src='ord_calc-3.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></pre>
+#&gt; <span class='message'>Centering (mean) and scaling (sd) the constraints and conditions: </span></div><div class='output co'>#&gt; <span class='message'>	weight</span></div><div class='output co'>#&gt; <span class='message'>	female</span></div><div class='img'><img src='ord_calc-3.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

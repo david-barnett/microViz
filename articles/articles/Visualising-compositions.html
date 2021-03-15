@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0.9004</span>
       </span>
     </div>
 
@@ -137,7 +137,7 @@
   <span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
 <span class="co">#&gt; Warning in asMethod(object): NAs introduced by coercion</span>
-<span class="co">#&gt; Warning in phyloseq_validate(ps, verbose = TRUE): Some taxa_sums were zero, removing the following taxa:</span>
+<span class="co">#&gt; Warning in phyloseq_validate(ps, remove_undetected = TRUE, verbose = TRUE): Some taxa_sums were zero, removing the following taxa:</span>
 <span class="co">#&gt;  Aerococcus </span>
 <span class="co">#&gt;  Aneurinibacillus </span>
 <span class="co">#&gt;  Asteroleplasma et rel. </span>
@@ -145,11 +145,11 @@
 <span class="co">#&gt;  Clostridium thermocellum et rel. </span>
 <span class="co">#&gt;  Methylobacterium </span>
 <span class="co">#&gt;  Micrococcaceae</span>
-<span class="co">#&gt; This may have happened after subsetting your phyloseq object with `subset_samples()`.</span>
-<span class="co">#&gt; Consider using `ps_filter()` instead, with .keep_all_taxa = FALSE.</span>
+<span class="co">#&gt; This may be caused by using `subset_samples()`.</span>
+<span class="co">#&gt; Try using `ps_filter()` instead, with .keep_all_taxa = FALSE.</span>
 <span class="co">#&gt; Otherwise, to avoid this warning, try filtering out taxa summing to zero with `tax_filter()`.</span>
 <span class="co">#&gt; If you have already transformed and/or scaled your taxa, e.g. with a log transformation or scale,</span>
-<span class="co">#&gt; then seeing this warning is very unlikely, and probably a bug, please report this.</span>
+<span class="co">#&gt; seeing this warning is possible, but very unlikely and possibly a bug. Please report this.</span>
 <span class="va">p1</span></code></pre></div>
 <p><img src="Visualising-compositions_files/figure-html/unnamed-chunk-4-1.png" width="864"></p>
 <p>However that “group-averaging” approach hides a lot of within-group variation.</p>
@@ -166,7 +166,7 @@
     axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>,
     axis.ticks.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>
   <span class="op">)</span>
-<span class="co">#&gt; Warning in phyloseq_validate(ps, verbose = TRUE): Some taxa_sums were zero, removing the following taxa:</span>
+<span class="co">#&gt; Warning in phyloseq_validate(ps, remove_undetected = TRUE, verbose = TRUE): Some taxa_sums were zero, removing the following taxa:</span>
 <span class="co">#&gt;  Aerococcus </span>
 <span class="co">#&gt;  Aneurinibacillus </span>
 <span class="co">#&gt;  Asteroleplasma et rel. </span>
@@ -174,11 +174,11 @@
 <span class="co">#&gt;  Clostridium thermocellum et rel. </span>
 <span class="co">#&gt;  Methylobacterium </span>
 <span class="co">#&gt;  Micrococcaceae</span>
-<span class="co">#&gt; This may have happened after subsetting your phyloseq object with `subset_samples()`.</span>
-<span class="co">#&gt; Consider using `ps_filter()` instead, with .keep_all_taxa = FALSE.</span>
+<span class="co">#&gt; This may be caused by using `subset_samples()`.</span>
+<span class="co">#&gt; Try using `ps_filter()` instead, with .keep_all_taxa = FALSE.</span>
 <span class="co">#&gt; Otherwise, to avoid this warning, try filtering out taxa summing to zero with `tax_filter()`.</span>
 <span class="co">#&gt; If you have already transformed and/or scaled your taxa, e.g. with a log transformation or scale,</span>
-<span class="co">#&gt; then seeing this warning is very unlikely, and probably a bug, please report this.</span>
+<span class="co">#&gt; seeing this warning is possible, but very unlikely and possibly a bug. Please report this.</span>
 <span class="va">p2</span> </code></pre></div>
 <p><img src="Visualising-compositions_files/figure-html/unnamed-chunk-5-1.png" width="864"></p>
 <p>Only from p2 you can see that the apparently higher average relative abundance of Oscillospira in group DI is probably driven largely by a subgroup of DI samples with relatively high Oscillospira.</p>
@@ -193,7 +193,7 @@
   bar_outline_colour <span class="op">=</span> <span class="st">"black"</span>,
   sample_order <span class="op">=</span> <span class="st">"aitchison"</span>, facet_by <span class="op">=</span> <span class="st">"sex"</span>
 <span class="op">)</span>
-<span class="co">#&gt; Warning in phyloseq_validate(ps, verbose = TRUE): Some taxa_sums were zero, removing the following taxa:</span>
+<span class="co">#&gt; Warning in phyloseq_validate(ps, remove_undetected = TRUE, verbose = TRUE): Some taxa_sums were zero, removing the following taxa:</span>
 <span class="co">#&gt;  Aerococcus </span>
 <span class="co">#&gt;  Aneurinibacillus </span>
 <span class="co">#&gt;  Asteroleplasma et rel. </span>
@@ -201,11 +201,11 @@
 <span class="co">#&gt;  Clostridium thermocellum et rel. </span>
 <span class="co">#&gt;  Methylobacterium </span>
 <span class="co">#&gt;  Micrococcaceae</span>
-<span class="co">#&gt; This may have happened after subsetting your phyloseq object with `subset_samples()`.</span>
-<span class="co">#&gt; Consider using `ps_filter()` instead, with .keep_all_taxa = FALSE.</span>
+<span class="co">#&gt; This may be caused by using `subset_samples()`.</span>
+<span class="co">#&gt; Try using `ps_filter()` instead, with .keep_all_taxa = FALSE.</span>
 <span class="co">#&gt; Otherwise, to avoid this warning, try filtering out taxa summing to zero with `tax_filter()`.</span>
 <span class="co">#&gt; If you have already transformed and/or scaled your taxa, e.g. with a log transformation or scale,</span>
-<span class="co">#&gt; then seeing this warning is very unlikely, and probably a bug, please report this.</span>
+<span class="co">#&gt; seeing this warning is possible, but very unlikely and possibly a bug. Please report this.</span>
 <span class="va">facets_plot</span> <span class="op">+</span> 
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>
@@ -231,7 +231,7 @@
   bar_outline_colour <span class="op">=</span> <span class="st">"black"</span>,
   sample_order <span class="op">=</span> <span class="st">"aitchison"</span>, group_by <span class="op">=</span> <span class="st">"sex"</span>
 <span class="op">)</span>
-<span class="co">#&gt; Warning in phyloseq_validate(ps, verbose = TRUE): Some taxa_sums were zero, removing the following taxa:</span>
+<span class="co">#&gt; Warning in phyloseq_validate(ps, remove_undetected = TRUE, verbose = TRUE): Some taxa_sums were zero, removing the following taxa:</span>
 <span class="co">#&gt;  Aerococcus </span>
 <span class="co">#&gt;  Aneurinibacillus </span>
 <span class="co">#&gt;  Asteroleplasma et rel. </span>
@@ -239,11 +239,11 @@
 <span class="co">#&gt;  Clostridium thermocellum et rel. </span>
 <span class="co">#&gt;  Methylobacterium </span>
 <span class="co">#&gt;  Micrococcaceae</span>
-<span class="co">#&gt; This may have happened after subsetting your phyloseq object with `subset_samples()`.</span>
-<span class="co">#&gt; Consider using `ps_filter()` instead, with .keep_all_taxa = FALSE.</span>
+<span class="co">#&gt; This may be caused by using `subset_samples()`.</span>
+<span class="co">#&gt; Try using `ps_filter()` instead, with .keep_all_taxa = FALSE.</span>
 <span class="co">#&gt; Otherwise, to avoid this warning, try filtering out taxa summing to zero with `tax_filter()`.</span>
 <span class="co">#&gt; If you have already transformed and/or scaled your taxa, e.g. with a log transformation or scale,</span>
-<span class="co">#&gt; then seeing this warning is very unlikely, and probably a bug, please report this.</span></code></pre></div>
+<span class="co">#&gt; seeing this warning is possible, but very unlikely and possibly a bug. Please report this.</span></code></pre></div>
 <p>Plot them side by side with the patchwork package.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">patch</span> <span class="op">&lt;-</span> <span class="fu">patchwork</span><span class="fu">::</span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html">wrap_plots</a></span><span class="op">(</span><span class="va">plot_list</span>, ncol <span class="op">=</span> <span class="fl">2</span>, guides <span class="op">=</span> <span class="st">"collect"</span><span class="op">)</span>
@@ -298,13 +298,13 @@
     tax_level <span class="op">=</span> <span class="st">"Genus"</span>, n_taxa <span class="op">=</span> <span class="fl">10</span>, sample_order <span class="op">=</span> <span class="st">"default"</span>,
     group_by <span class="op">=</span> <span class="st">"plot_groups"</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span>, label <span class="op">=</span> <span class="st">"subject"</span>
   <span class="op">)</span>
-<span class="co">#&gt; Warning in phyloseq_validate(ps, verbose = TRUE): Some taxa_sums were zero, removing the following taxa:</span>
+<span class="co">#&gt; Warning in phyloseq_validate(ps, remove_undetected = TRUE, verbose = TRUE): Some taxa_sums were zero, removing the following taxa:</span>
 <span class="co">#&gt;  Peptostreptococcus anaerobius et rel.</span>
-<span class="co">#&gt; This may have happened after subsetting your phyloseq object with `subset_samples()`.</span>
-<span class="co">#&gt; Consider using `ps_filter()` instead, with .keep_all_taxa = FALSE.</span>
+<span class="co">#&gt; This may be caused by using `subset_samples()`.</span>
+<span class="co">#&gt; Try using `ps_filter()` instead, with .keep_all_taxa = FALSE.</span>
 <span class="co">#&gt; Otherwise, to avoid this warning, try filtering out taxa summing to zero with `tax_filter()`.</span>
 <span class="co">#&gt; If you have already transformed and/or scaled your taxa, e.g. with a log transformation or scale,</span>
-<span class="co">#&gt; then seeing this warning is very unlikely, and probably a bug, please report this.</span>
+<span class="co">#&gt; seeing this warning is possible, but very unlikely and possibly a bug. Please report this.</span>
 
 <span class="va">times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html">wrap_plots</a></span><span class="op">(</span>
   <span class="va">times_list</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"AAM.1"</span>, <span class="st">"AAM.2"</span>, <span class="st">"AFR.1"</span>, <span class="st">"AFR.2"</span><span class="op">)</span><span class="op">]</span>,
@@ -330,7 +330,7 @@
 <span class="co">#&gt;  collate  en_US.UTF-8                 </span>
 <span class="co">#&gt;  ctype    en_US.UTF-8                 </span>
 <span class="co">#&gt;  tz       UTC                         </span>
-<span class="co">#&gt;  date     2021-03-14                  </span>
+<span class="co">#&gt;  date     2021-03-15                  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ─ Packages ───────────────────────────────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt;  package      * version    date       lib source        </span>
@@ -384,7 +384,7 @@
 <span class="co">#&gt;  memoise        2.0.0      2021-01-26 [1] CRAN (R 4.0.2)</span>
 <span class="co">#&gt;  mgcv           1.8-33     2020-08-27 [2] CRAN (R 4.0.4)</span>
 <span class="co">#&gt;  microbiome   * 1.12.0     2020-10-27 [1] Bioconductor  </span>
-<span class="co">#&gt;  microViz     * 0.5.0.9003 2021-03-14 [1] local         </span>
+<span class="co">#&gt;  microViz     * 0.5.0.9004 2021-03-15 [1] local         </span>
 <span class="co">#&gt;  multtest       2.46.0     2020-10-27 [1] Bioconductor  </span>
 <span class="co">#&gt;  munsell        0.5.0      2018-06-12 [1] CRAN (R 4.0.2)</span>
 <span class="co">#&gt;  nlme           3.1-152    2021-02-04 [2] CRAN (R 4.0.4)</span>

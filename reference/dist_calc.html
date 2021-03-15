@@ -40,10 +40,11 @@
 
 
 <meta property="og:title" content="Calculate distances between pairs of samples in phyloseq object — dist_calc" />
-<meta property="og:description" content="For use directly with phyloseq object or with output of tax_agg or tax_transform.
-Computes various unifrac distances, aitchison distance or any distance from vegan::vegdist().
-Returns ps_extra object containing phyloseq and name of distance in addition to the distance matrix itself!
-Result intended to be piped into ord_calc or permanova functions." />
+<meta property="og:description" content="Computes various unifrac distances, aitchison distance or any distance from vegan::vegdist().
+For use with ps_extra output of tax_transform (or tax_agg).
+Returns ps_extra object containing phyloseq and name of distance in addition to the distance matrix itself.
+Resulting object intended to be piped into ord_calc or permanova functions.
+Alternatively you can directly access the distance matrix with dist_get()." />
 
 
 
@@ -75,7 +76,7 @@ Result intended to be piped into ord_calc or permanova functions." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0.9004</span>
       </span>
     </div>
 
@@ -135,10 +136,11 @@ Result intended to be piped into ord_calc or permanova functions." />
     </div>
 
     <div class="ref-description">
-    <p>For use directly with phyloseq object or with output of tax_agg or tax_transform.
-Computes various unifrac distances, aitchison distance or any distance from vegan::vegdist().
-Returns ps_extra object containing phyloseq and name of distance in addition to the distance matrix itself!
-Result intended to be piped into ord_calc or permanova functions.</p>
+    <p>Computes various unifrac distances, aitchison distance or any distance from vegan::vegdist().
+For use with ps_extra output of tax_transform (or tax_agg).
+Returns ps_extra object containing phyloseq and name of distance in addition to the distance matrix itself.
+Resulting object intended to be piped into ord_calc or permanova functions.
+Alternatively you can directly access the distance matrix with dist_get().</p>
     </div>
 
     <pre class="usage"><span class='fu'>dist_calc</span><span class='op'>(</span>
@@ -176,7 +178,7 @@ Result intended to be piped into ord_calc or permanova functions.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Aitchison distance note: You should EITHER:</p><ol>
-<li><p>skip the dist_calc function and call ord_calc(method = "RDA") directly on an object with taxa transformed with tax_transform(transformation = "clr")</p></li>
+<li><p>skip the dist_calc function and call ord_calc(method = "PCA") directly on an object with taxa transformed with tax_transform(transformation = "clr")</p></li>
 <li><p>pass an object with untransformed (or 'identity' transformed) taxa to the data argument of dist_calc() and specify dist = "aitchison".</p></li>
 </ol>
 
