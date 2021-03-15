@@ -48,7 +48,6 @@ phyloseq_validate(dietswap, verbose = FALSE)
 dietswap@sam_data <- NULL
 phyloseq_validate(dietswap)
 
-
 # If no messages or warnings are emitted,
 # this means no problems were detected, and nothing was changed
 # (but only if verbose = TRUE)

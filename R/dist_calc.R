@@ -1,12 +1,13 @@
 #' Calculate distances between pairs of samples in phyloseq object
 #'
-#' For use directly with phyloseq object or with output of tax_agg or tax_transform.
 #' Computes various unifrac distances, aitchison distance or any distance from vegan::vegdist().
-#' Returns ps_extra object containing phyloseq and name of distance in addition to the distance matrix itself!
-#' Result intended to be piped into ord_calc or permanova functions.
+#' For use with ps_extra output of tax_transform (or tax_agg).
+#' Returns ps_extra object containing phyloseq and name of distance in addition to the distance matrix itself.
+#' Resulting object intended to be piped into ord_calc or permanova functions.
+#' Alternatively you can directly access the distance matrix with dist_get().
 #'
 #' Aitchison distance note: You should EITHER:
-#' 1. skip the dist_calc function and call ord_calc(method = "RDA") directly on an object with taxa transformed with tax_transform(transformation = "clr")
+#' 1. skip the dist_calc function and call ord_calc(method = "PCA") directly on an object with taxa transformed with tax_transform(transformation = "clr")
 #' 2. pass an object with untransformed (or 'identity' transformed) taxa to the data argument of dist_calc() and specify dist = "aitchison".
 #'
 #' If ordination plots with taxon loading distances are desired, users require option 1.

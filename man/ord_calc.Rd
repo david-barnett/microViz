@@ -2,7 +2,7 @@
 % Please edit documentation in R/ord_calc.R
 \name{ord_calc}
 \alias{ord_calc}
-\title{Ordinate phyloseq object or distance matrix computed by dist_calc}
+\title{Ordinate samples (arrange by similarity in multiple dimensions)}
 \usage{
 ord_calc(
   data,
@@ -17,15 +17,20 @@ ord_calc(
 \arguments{
 \item{data}{ps_extra list object: output from dist_calc(), or tax_transform() if no distance calculation required for method e.g. for RDA}
 
-\item{method}{which ordination method to use? "auto" means automatically determined from ps_extra and other args. If you really know what you want: manually set one of 'PCoA', 'PCA', 'CCA', 'CAP' or 'RDA'}
+\item{method}{which ordination method to use? "auto" means automatically determined from ps_extra and other args.
+If you really know what you want: manually set one of 'PCoA', 'PCA', 'CCA', 'CAP' or 'RDA'}
 
-\item{constraints}{(a vector of) valid variable name(s) to constrain PCoA or RDA analyses, or leave as 1 for unconstrained ordination}
+\item{constraints}{(a vector of) valid sample_data name(s) to constrain analyses, or leave as NULL for unconstrained ordination.
+Non-NULL values are compatible with method = "auto"/"RDA"/"CAP"}
 
-\item{conditions}{(a vector of) valid variable name(s) to partial these out of PCoA or RDA analyses with Condition(), or leave as NULL}
+\item{conditions}{(a vector of) valid sample_data name(s) to partial these out of analyses with Condition(), or leave as NULL}
 
-\item{scale_cc}{if TRUE (default) ensures any constraints and conditions vars are scaled before use, to ensure their effects are comparable. If set to FALSE you must ensure you have already set the variables on a similar scale yourself!}
+\item{scale_cc}{If TRUE (default) ensures any constraints and conditions variables are scaled before use, to ensure their effects are comparable.
+If set to FALSE you must ensure you have already set the variables on a similar scale yourself!
+If there are no constraints or conditions, scale_cc does nothing.}
 
-\item{verbose}{if TRUE or "max", show any warnings and messages about constraint and conditions scaling and missings etc. FALSE suppresses warnings!}
+\item{verbose}{If TRUE or "max", show any warnings and messages about constraint and conditions scaling and missings etc.
+FALSE suppresses warnings!}
 
 \item{...}{optional arguments passed on to phyloseq::ordinate()}
 }
@@ -33,8 +38,28 @@ ord_calc(
 ps_extra list object
 }
 \description{
-Extends functionality of phyloseq::ordinate(). Results can be used directly in ord_plot.
-Alternatively you could extract the ordination object for other analyses with ord_get()
+Used before plotting with ord_plot() or explorating interactively with ord_explore().
+Use method = "auto" to automatically pick an appropriate method from:
+\itemize{
+\item "PCA" (Principle Components Analysis) combines taxa abundances into new dimensions. The first axes display the greatest variation in your microbial data.
+\item "RDA" (Redundancy Analysis) is constrained PCA, roughly speaking. It finds variation in your data that can be explained both by the constraints variables, and the microbial data.
+\item "PCoA" (Principle Coordinates Analysis) finds a coordinate system that best preserves the original distances between samples.
+\item "CAP" (Constrained Analysis of Principle Coordinates) is also known as distance-based Redundancy Analysis.
+}
+
+Alternatively to leaving method = "auto", you can explicitly specify any of the above methods, or choose one of the following:
+\itemize{
+\item "CCA" (Canonical Correspondence Analysis) - NOT canonical correlation analysis!
+\item "NMDS" (Non-metric Multidimensional Scaling)
+}
+
+You are strongly recommended to check out this useful website for introductory explanations of these methods
+the "GUide to STatistical Analysis in Microbial Ecology": \url{https://sites.google.com/site/mb3gustame/}
+}
+\details{
+Extends functionality of phyloseq::ordinate().
+Results can be used directly in ord_plot().
+You can extract the ordination object for other analyses with ord_get()
 }
 \examples{
 library(phyloseq)
@@ -65,7 +90,7 @@ test2 <- dietswap \%>\%
   tax_agg("Genus") \%>\%
   tax_transform("clr") \%>\%
   ord_calc(constraints = c("weight", "female"))
-# plot with oldschool vegan graphics to show it returns a standard interoperable ordination object
+# plot with vegan package graphics to show it returns a standard ordination object
 ord_get(test2) \%>\% vegan::ordiplot()
 ord_plot(test2, plot_taxa = 8:1)
 # This is equivalent to CAP with "aitchison" distance
@@ -75,5 +100,11 @@ dietswap \%>\%
   dist_calc("aitchison") \%>\%
   ord_calc(constraints = c("weight", "female")) \%>\%
   ord_plot()
+}
+\seealso{
+\code{\link{dist_calc}} for distance matrix calculation
 
+\code{\link{ord_plot}} and \code{\link{ord_explore}}
+
+\code{phyloseq \link[phyloseq]{ordinate}}
 }
