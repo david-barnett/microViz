@@ -12,6 +12,9 @@ save_csv <- function(object){
 }
 
 # custom testthat expectation
+#' @param name name of object
+#' @param object dataframe or similar object to save as csv
+#' @noRd
 expect_snapshot_csv <- function(name, object) {
   path <- save_csv(object)
   testthat::expect_snapshot_file(path = path, name = paste0(name, ".csv"))

@@ -33,13 +33,16 @@ ord_plot(
 
 \item{axes}{which axes to plot: numerical vector of length 2}
 
-\item{scaling}{either "species" (2) or "site" (1) scores are scaled by eigenvalues, and the other set of scores is left unscaled (from ?vegan::scores.cca)}
+\item{scaling}{either "species" (2) or "site" (1) scores are scaled by eigenvalues,
+and the other set of scores is left unscaled (from ?vegan::scores.cca)}
 
-\item{constraint_vec_length}{NA = auto-scaling for line segment drawn for any constraints. Alternatively provide a numeric length multiplier yourself.}
+\item{constraint_vec_length}{NA = auto-scaling for line segment drawn for any constraints.
+Alternatively provide a numeric length multiplier yourself.}
 
 \item{constraint_vec_style}{list of aesthetics/arguments (colour, alpha etc) for the constraint vectors}
 
-\item{constraint_lab_length}{relative length of label drawn for any constraints (relative to default position which is defined by correlation with each drawn axis)}
+\item{constraint_lab_length}{relative length of label drawn for any constraints
+(relative to default position which is defined by correlation with each drawn axis)}
 
 \item{constraint_lab_style}{list of aesthetics/arguments (colour, size etc) for the constraint labels}
 
@@ -47,7 +50,8 @@ ord_plot(
 
 \item{plot_taxa}{if ord_calc method was "PCA/RDA" draw the taxa loading vectors (see details)}
 
-\item{tax_vec_length}{NA = auto-scaling for line segment drawn for any taxa. Alternatively provide a numeric length multiplier yourself.}
+\item{tax_vec_length}{NA = auto-scaling for line segment drawn for any taxa.
+Alternatively provide a numeric length multiplier yourself.}
 
 \item{tax_vec_style_all}{list of named aesthetic attributes for all (background) taxon vectors}
 
@@ -69,7 +73,8 @@ ord_plot(
 
 \item{expand}{expand plot limits a little bit further than data range?}
 
-\item{...}{pass aesthetics arguments for sample points, drawn with geom_point using aes_string}
+\item{...}{pass aesthetics arguments for sample points,
+drawn with geom_point using aes_string}
 }
 \value{
 ggplot
@@ -91,42 +96,37 @@ How to specify the plot_taxa argument:
 }
 }
 \examples{
-library(phyloseq)
-library(dplyr)
-library(vegan)
-library(microbiome)
+library(ggplot2)
 data("dietswap", package = "microbiome")
 
 # create a couple of numerical variables to use as constraints or conditions
 dietswap <- dietswap \%>\%
   ps_mutate(
-    weight = recode(bmi_group, obese = 3, overweight = 2, lean = 1),
-    female = if_else(sex == "female", true = 1, false = 0)
+    weight = dplyr::recode(bmi_group, obese = 3, overweight = 2, lean = 1),
+    female = dplyr::if_else(sex == "female", true = 1, false = 0)
   )
 
 # compute and plot ordinations for demonstration of conditioning
 unconstrained_aitchison_pca <- dietswap \%>\%
-  tax_agg("Genus") \%>\%
-  tax_transform("clr") \%>\%
-  ord_calc(method = "RDA")
+  tax_transform("clr", rank = "Genus") \%>\%
+  ord_calc() # method = "auto" --> picks PCA as no constraints or distances
 
 unconstrained_aitchison_pca \%>\%
   ord_plot(colour = "bmi_group", plot_taxa = 1:5) +
   stat_ellipse(aes(linetype = bmi_group, colour = bmi_group))
 
 # remove effect of weight with conditions arg
+# scaling weight with scale_cc is not necessary as only 1 condition is used
 dietswap \%>\%
-  tax_agg("Genus") \%>\%
-  tax_transform("clr") \%>\%
-  ord_calc(method = "RDA", conditions = "weight") \%>\%
+  tax_transform("clr", rank = "Genus") \%>\%
+  ord_calc(conditions = "weight", scale_cc = FALSE) \%>\%
   ord_plot(colour = "bmi_group") +
   stat_ellipse(aes(linetype = bmi_group, colour = bmi_group))
 
 # alternatively, constrain variation on weight and female
 constrained_aitchison_rda <- dietswap \%>\%
-  tax_agg("Genus") \%>\%
-  tax_transform("clr") \%>\%
-  ord_calc(constraints = c("weight", "female"))
+  tax_transform("clr", rank = "Genus") \%>\%
+  ord_calc(constraints = c("weight", "female")) # constraints --> RDA
 
 constrained_aitchison_rda \%>\%
   ord_plot(colour = "bmi_group", constraint_vec_length = 2) +
@@ -141,7 +141,8 @@ p <- constrained_aitchison_rda \%>\%
 p + stat_ellipse(aes(linetype = bmi_group, colour = bmi_group))
 p + stat_density2d(aes(colour = bmi_group))
 
-# you can rename the taxa on the labels with any function that takes and modifies a character vector
+# you can rename the taxa on the labels with any function that
+# takes and modifies a character vector
 constrained_aitchison_rda \%>\%
   ord_plot(
     colour = "bmi_group",
@@ -151,7 +152,8 @@ constrained_aitchison_rda \%>\%
   lims(x = c(-5, 6), y = c(-5, 5)) +
   scale_colour_brewer(palette = "Set1")
 
-# it is possible to facet these plots,
+# it is possible to facet these plots
+# (although I'm not sure it makes sense to)
 # but only unconstrained ordination plots and with plot_taxa = FALSE
 unconstrained_aitchison_pca \%>\%
   ord_plot(color = "sex", auto_caption = NA) +

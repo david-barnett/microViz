@@ -12,14 +12,18 @@
 #'
 #' @param data list object output from ord_calc
 #' @param axes which axes to plot: numerical vector of length 2
-#' @param scaling either "species" (2) or "site" (1) scores are scaled by eigenvalues, and the other set of scores is left unscaled (from ?vegan::scores.cca)
-#' @param constraint_vec_length NA = auto-scaling for line segment drawn for any constraints. Alternatively provide a numeric length multiplier yourself.
+#' @param scaling either "species" (2) or "site" (1) scores are scaled by eigenvalues,
+#' and the other set of scores is left unscaled (from ?vegan::scores.cca)
+#' @param constraint_vec_length NA = auto-scaling for line segment drawn for any constraints.
+#' Alternatively provide a numeric length multiplier yourself.
 #' @param constraint_vec_style list of aesthetics/arguments (colour, alpha etc) for the constraint vectors
-#' @param constraint_lab_length relative length of label drawn for any constraints (relative to default position which is defined by correlation with each drawn axis)
+#' @param constraint_lab_length relative length of label drawn for any constraints
+#' (relative to default position which is defined by correlation with each drawn axis)
 #' @param constraint_lab_style list of aesthetics/arguments (colour, size etc) for the constraint labels
 #' @param var_renamer function to rename constraining variables for plotting their labels
 #' @param plot_taxa if ord_calc method was "PCA/RDA" draw the taxa loading vectors (see details)
-#' @param tax_vec_length NA = auto-scaling for line segment drawn for any taxa. Alternatively provide a numeric length multiplier yourself.
+#' @param tax_vec_length NA = auto-scaling for line segment drawn for any taxa.
+#' Alternatively provide a numeric length multiplier yourself.
 #' @param tax_vec_style_all list of named aesthetic attributes for all (background) taxon vectors
 #' @param tax_vec_style_sel list of named aesthetic attributes for taxon vectors for the taxa selected by plot_taxa
 #' @param tax_lab_length multiplier for label distance/position for any selected taxa
@@ -30,48 +34,45 @@
 #' @param center expand plot limits to center around origin point (0,0)
 #' @param clip clipping of labels that extend outside plot limits?
 #' @param expand expand plot limits a little bit further than data range?
-#' @param ... pass aesthetics arguments for sample points, drawn with geom_point using aes_string
+#' @param ...
+#' pass aesthetics arguments for sample points,
+#' drawn with geom_point using aes_string
 #'
 #' @return ggplot
 #' @export
 #'
 #' @examples
-#' library(phyloseq)
-#' library(dplyr)
-#' library(vegan)
-#' library(microbiome)
+#' library(ggplot2)
 #' data("dietswap", package = "microbiome")
 #'
 #' # create a couple of numerical variables to use as constraints or conditions
 #' dietswap <- dietswap %>%
 #'   ps_mutate(
-#'     weight = recode(bmi_group, obese = 3, overweight = 2, lean = 1),
-#'     female = if_else(sex == "female", true = 1, false = 0)
+#'     weight = dplyr::recode(bmi_group, obese = 3, overweight = 2, lean = 1),
+#'     female = dplyr::if_else(sex == "female", true = 1, false = 0)
 #'   )
 #'
 #' # compute and plot ordinations for demonstration of conditioning
 #' unconstrained_aitchison_pca <- dietswap %>%
-#'   tax_agg("Genus") %>%
-#'   tax_transform("clr") %>%
-#'   ord_calc(method = "RDA")
+#'   tax_transform("clr", rank = "Genus") %>%
+#'   ord_calc() # method = "auto" --> picks PCA as no constraints or distances
 #'
 #' unconstrained_aitchison_pca %>%
 #'   ord_plot(colour = "bmi_group", plot_taxa = 1:5) +
 #'   stat_ellipse(aes(linetype = bmi_group, colour = bmi_group))
 #'
 #' # remove effect of weight with conditions arg
+#' # scaling weight with scale_cc is not necessary as only 1 condition is used
 #' dietswap %>%
-#'   tax_agg("Genus") %>%
-#'   tax_transform("clr") %>%
-#'   ord_calc(method = "RDA", conditions = "weight") %>%
+#'   tax_transform("clr", rank = "Genus") %>%
+#'   ord_calc(conditions = "weight", scale_cc = FALSE) %>%
 #'   ord_plot(colour = "bmi_group") +
 #'   stat_ellipse(aes(linetype = bmi_group, colour = bmi_group))
 #'
 #' # alternatively, constrain variation on weight and female
 #' constrained_aitchison_rda <- dietswap %>%
-#'   tax_agg("Genus") %>%
-#'   tax_transform("clr") %>%
-#'   ord_calc(constraints = c("weight", "female"))
+#'   tax_transform("clr", rank = "Genus") %>%
+#'   ord_calc(constraints = c("weight", "female")) # constraints --> RDA
 #'
 #' constrained_aitchison_rda %>%
 #'   ord_plot(colour = "bmi_group", constraint_vec_length = 2) +
@@ -86,7 +87,8 @@
 #' p + stat_ellipse(aes(linetype = bmi_group, colour = bmi_group))
 #' p + stat_density2d(aes(colour = bmi_group))
 #'
-#' # you can rename the taxa on the labels with any function that takes and modifies a character vector
+#' # you can rename the taxa on the labels with any function that
+#' # takes and modifies a character vector
 #' constrained_aitchison_rda %>%
 #'   ord_plot(
 #'     colour = "bmi_group",
@@ -96,7 +98,8 @@
 #'   lims(x = c(-5, 6), y = c(-5, 5)) +
 #'   scale_colour_brewer(palette = "Set1")
 #'
-#' # it is possible to facet these plots,
+#' # it is possible to facet these plots
+#' # (although I'm not sure it makes sense to)
 #' # but only unconstrained ordination plots and with plot_taxa = FALSE
 #' unconstrained_aitchison_pca %>%
 #'   ord_plot(color = "sex", auto_caption = NA) +
@@ -266,7 +269,8 @@ ord_plot <-
           "numeric" = {
             speciesScoresDf[speciesLineLength > plot_taxa[[1]], , drop = FALSE]
           },
-          # character e.g. c('g__Bacteroides', 'g__Veillonella') --> plot labels for exactly named taxa
+          # character e.g. c('g__Bacteroides', 'g__Veillonella')
+          # --> plot labels for exactly named taxa
           "character" = {
             speciesScoresDf[rownames(speciesScoresDf) %in% plot_taxa, , drop = FALSE]
           }
@@ -283,7 +287,9 @@ ord_plot <-
         # (semi-transparent) lines for all taxa
         tax_vec_all_args <- list(
           data = speciesScoresDf * tax_vec_length,
-          mapping = ggplot2::aes_string(xend = axesNames[1], yend = axesNames[2], x = 0, y = 0),
+          mapping = ggplot2::aes_string(
+            xend = axesNames[1], yend = axesNames[2], x = 0, y = 0
+          ),
           size = 0.5, alpha = 0.25
         )
         tax_vec_all_args[names(tax_vec_style_all)] <- tax_vec_style_all
@@ -292,9 +298,13 @@ ord_plot <-
         # (opaque) lines for selected taxa
         tax_vec_sel_args <- list(
           data = selectSpeciesScoresDf * tax_vec_length,
-          mapping = ggplot2::aes_string(xend = axesNames[1], yend = axesNames[2], x = 0, y = 0),
+          mapping = ggplot2::aes_string(
+            xend = axesNames[1], yend = axesNames[2], x = 0, y = 0
+          ),
           lineend = "round", linejoin = "mitre",
-          arrow = grid::arrow(length = grid::unit(0.005, "npc"), type = "closed"),
+          arrow = grid::arrow(
+            length = grid::unit(0.005, "npc"), type = "closed"
+          ),
           size = 0.5
         )
         tax_vec_sel_args[names(tax_vec_style_sel)] <- tax_vec_style_sel
@@ -318,16 +328,22 @@ ord_plot <-
         x <- max(abs(siteScoresDf[[1]])) / max(abs(constraintDf[[1]]))
         constraint_vec_length <- x * 0.45
       }
-      # draw vector segments at length set by constraint_vec_length argument (proportion of automatic length)
+      # draw vector segments at length set by constraint_vec_length argument
+      # (proportion of original length)
       constraint_vec_args <- list(
-        mapping = ggplot2::aes_string(xend = axesNames[1], yend = axesNames[2], x = 0, y = 0),
+        mapping = ggplot2::aes_string(
+          xend = axesNames[1], yend = axesNames[2], x = 0, y = 0
+        ),
         alpha = 0.8, colour = "brown",
         lineend = "round", linejoin = "mitre",
-        arrow = grid::arrow(length = grid::unit(0.005, "npc"), type = "closed"),
+        arrow = grid::arrow(
+          length = grid::unit(0.005, "npc"), type = "closed"
+        ),
         data = constraintDf * constraint_vec_length
       )
       constraint_vec_args[names(constraint_vec_style)] <- constraint_vec_style
-      p <- p + do.call(what = ggplot2::geom_segment, args = constraint_vec_args)
+      p <- p +
+        do.call(what = ggplot2::geom_segment, args = constraint_vec_args)
 
       # draw vector tip labels at length set by constraint_lab_length argument
       constraint_lab_args <- list(
