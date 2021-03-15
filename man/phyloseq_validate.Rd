@@ -4,10 +4,17 @@
 \alias{phyloseq_validate}
 \title{Check for (and fix) common problems with phyloseq objects}
 \usage{
-phyloseq_validate(ps, min_tax_length = 4, verbose = TRUE)
+phyloseq_validate(
+  ps,
+  remove_undetected = FALSE,
+  min_tax_length = 4,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{ps}{phyloseq object}
+
+\item{remove_undetected}{if TRUE, removes taxa that sum to zero across all samples}
 
 \item{min_tax_length}{minimum number of characters to not consider a tax_table entry suspiciously short}
 
@@ -21,18 +28,29 @@ possibly modified phyloseq object
 \item Ensures the storage mode of a phyloseq object's otu table is "double" instead of e.g. "integer".
 \item Checks for, and messages about, common uninformative entries in the tax_table, which often cause unwanted results
 \item Replaces missing sample_data with a dataframe including only sample_names (as "SAMPLE" variable)
-\item Removes taxa where phyloseq::taxa_sums() is equal to zero, with a warning
+\item Removes taxa where phyloseq::taxa_sums() is equal to zero, with a warning, if remove_undetected = TRUE
 }
 }
 \examples{
 data(dietswap, package = "microbiome")
 
-tax_filter(dietswap, )
-phyloseq_validate(dietswap, verbose = TRUE) # expect warning about taxa summing to zero
+# expect warning about taxa summing to zero
+phyloseq_validate(dietswap, remove_undetected = TRUE, verbose = TRUE)
 
 # verbose = FALSE will suppress messages and warnings but still:
-# fix storage.mode, replace NULL sample_data, and remove taxa that sum to 0 across all samples
+# fix storage.mode, replace NULL sample_data, and
+# remove taxa that sum to 0 across all samples (if remove_undetected = TRUE)
 phyloseq_validate(dietswap, verbose = FALSE)
 
-# no messages or warnings means no problems detected
+# Sometimes you might have a phyloseq with no sample_data
+# This isn't compatible with some microViz functions, like comp_barplot
+# So some functions internally use phyloseq_validate to fix this
+dietswap@sam_data <- NULL
+phyloseq_validate(dietswap)
+
+
+# If no messages or warnings are emitted,
+# this means no problems were detected, and nothing was changed
+# (but only if verbose = TRUE)
+
 }

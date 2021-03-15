@@ -126,7 +126,7 @@ comp_barplot <- function(
                          seriate_method = "OLO_ward") {
 
   # check phyloseq for common problems (and fix or message about this)
-  ps <- phyloseq_validate(ps, verbose = TRUE)
+  ps <- phyloseq_validate(ps, remove_undetected = TRUE, verbose = TRUE)
 
   # save full unfiltered phyloseq for ordering
   ps_original <- ps
