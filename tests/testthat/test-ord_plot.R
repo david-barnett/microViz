@@ -24,9 +24,11 @@ p <- suppressMessages(
 
 
 test_that("constrained rda plot gives correct positions", {
-  expect_snapshot_csv(name = "samples_RDA", object = p$data[, 1:4])
-  expect_snapshot_csv(name = "taxa_vecs_RDA", object = p$layers[[2]]$data)
-  expect_snapshot_csv(name = "constraints_RDA", object = p$layers[[3]]$data)
+  expect_snapshot(cat(p$data[1:50, 1, drop = TRUE]))
+  expect_snapshot(cat(p$data[1:50, 2, drop = TRUE]))
+  expect_snapshot(cat(p$layers[[2]]$data[,1, drop = TRUE]))
+  expect_snapshot(cat(p$layers[[3]]$data[,1, drop = TRUE]))
+  expect_snapshot(cat(p$layers[[3]]$data[,2, drop = TRUE]))
 })
 
 # PCoA ------------------------
@@ -41,7 +43,8 @@ p2 <- suppressMessages(
 )
 
 test_that("partialed bray CAP plot gives correct positions", {
-  expect_snapshot_csv(name = "samples_CAP", object = p2$data[, 1:4])
-  expect_snapshot_csv(name = "constraint_CAP", object = p2$layers[[2]]$data)
+  expect_snapshot(cat(p2$data[1:50, 1, drop = TRUE]))
+  expect_snapshot(cat(p2$data[1:50, 2, drop = TRUE]))
+  expect_snapshot(cat(p2$layers[[2]]$data[,1, drop = TRUE]))
 })
 
