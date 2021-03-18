@@ -1,6 +1,9 @@
+# Previous version used to also do this:
+# - Ensures the storage mode of a phyloseq object's otu table is "double" instead of e.g. "integer", which fixes some compatibility issues (mostly with microbiome).
+# This is not completely deleted yet, in case this bug isn't actually gone
+
 #' Check for (and fix) common problems with phyloseq objects
 #'
-#' - Ensures the storage mode of a phyloseq object's otu table is "double" instead of e.g. "integer".
 #' - Checks for, and messages about, common uninformative entries in the tax_table, which often cause unwanted results
 #' - Replaces missing sample_data with a dataframe including only sample_names (as "SAMPLE" variable)
 #' - Removes taxa where phyloseq::taxa_sums() is equal to zero, with a warning, if remove_undetected = TRUE
@@ -20,8 +23,8 @@
 #' phyloseq_validate(dietswap, remove_undetected = TRUE, verbose = TRUE)
 #'
 #' # verbose = FALSE will suppress messages and warnings but still:
-#' # fix storage.mode, replace NULL sample_data, and
-#' # remove taxa that sum to 0 across all samples (if remove_undetected = TRUE)
+#' # replace NULL sample_data and remove taxa that sum to 0 across all samples
+#' # (if remove_undetected = TRUE)
 #' phyloseq_validate(dietswap, verbose = FALSE)
 #'
 #' # Sometimes you might have a phyloseq with no sample_data
@@ -30,37 +33,53 @@
 #' dietswap@sam_data <- NULL
 #' phyloseq_validate(dietswap)
 #'
+#' # Sometimes you might have a phyloseq with no tax_table
+#' # This isn't compatible with some microViz functions, like tax_top,
+#' # so this is another reason to start your analyses with phyloseq_validate!
+#' data("soilrep", package = "phyloseq")
+#' soilrep # has NULL tax_table
+#' phyloseq_validate(soilrep)
+#'
 #' # If no messages or warnings are emitted,
 #' # this means no problems were detected, and nothing was changed
 #' # (but only if verbose = TRUE)
-#'
 phyloseq_validate <- function(ps,
                               remove_undetected = FALSE,
                               min_tax_length = 4,
                               verbose = TRUE) {
   silencing_advice <-
-    "try `ps <- phyloseq_validate(ps, verbose = FALSE)` to avoid this message"
+    "Try `ps <- phyloseq_validate(ps, verbose = FALSE)` to avoid this message"
 
-  # check and fix storage mode
-  if (storage.mode(phyloseq::otu_table(ps)) != "double") {
-    if (verbose) {
-      message(
-        "Note: changing OTU table's storage.mode to 'double',\n",
-        silencing_advice
-      )
-    }
-    storage.mode(phyloseq::otu_table(ps)) <- "double"
-  }
+  # # check and fix storage mode
+  # old_store_mode <- storage.mode(phyloseq::otu_table(ps))
+  # if (old_store_mode != "double") {
+  #   if (verbose) {
+  #     message(
+  #       "Note: changing OTU table's storage.mode from '",
+  #       old_store_mode, "' to 'double'.\n", silencing_advice
+  #     )
+  #   }
+  #   storage.mode(phyloseq::otu_table(ps)) <- "double"
+  # }
 
   # check for NULL sample data
   if (identical(phyloseq::access(ps, "sam_data"), NULL)) {
     message(
       "Note: Replacing missing sample_data with a dataframe ",
-      "of only sample_names,\n", silencing_advice
+      "of only sample_names.\n", silencing_advice
     )
-    samples <- phyloseq::sample_names(ps)
-    phyloseq::sample_data(ps) <-
-      data.frame(SAMPLE = samples, row.names = samples)
+    phyloseq::sample_data(ps) <- samdat_init(ps)
+  }
+
+  # check for NULL tax_table
+  if (identical(phyloseq::access(ps, "tax_table"), NULL)) {
+    message(
+      "Note: Replacing missing tax_table with a 1-column table ",
+      "of only taxa_names.\n", silencing_advice
+    )
+    taxons <- phyloseq::taxa_names(ps)
+    phyloseq::tax_table(ps) <-
+      matrix(data = taxons, ncol = 1, dimnames = list(taxons, "unique"))
   }
 
   if (isTRUE(remove_undetected)) {
@@ -89,16 +108,8 @@ phyloseq_validate <- function(ps,
 
   if (verbose) {
     # check tax_table for uninformative entries
-    suspicious_names <- c("unknown", "Unknown")
-    # include shorter names if min_tax_length means nchar won't catch them
-    if (min_tax_length <= 1) suspicious_names <- c(suspicious_names, " ", "")
-    if (min_tax_length <= 2) suspicious_names <- c(suspicious_names, "NA")
-    if (min_tax_length <= 3) {
-      rank_letters <- c("k", "p", "c", "o", "f", "g", "s")
-      rank_letters <- c(rank_letters, toupper(rank_letters))
-      suspicious_names <-
-        c(suspicious_names, paste0(rank_letters, "__"), "NaN")
-    }
+    suspicious_names <- tax_common_unknowns(min_length = min_tax_length)
+
     taxfillmessage <-
       "Consider using tax_fill_unknowns() to make taxa uniquely identifiable"
     if (anyNA(phyloseq::tax_table(ps))) {
@@ -117,4 +128,13 @@ phyloseq_validate <- function(ps,
     }
   }
   return(ps)
+}
+
+# helper function used in phyloseq_validate and in tax_sort
+samdat_init <- function(ps) {
+  samples <- phyloseq::sample_names(ps)
+  samdat <- phyloseq::sample_data(
+    data.frame(SAMPLE = samples, row.names = samples, check.names = FALSE)
+  )
+  return(samdat)
 }

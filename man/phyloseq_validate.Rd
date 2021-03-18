@@ -25,7 +25,6 @@ possibly modified phyloseq object
 }
 \description{
 \itemize{
-\item Ensures the storage mode of a phyloseq object's otu table is "double" instead of e.g. "integer".
 \item Checks for, and messages about, common uninformative entries in the tax_table, which often cause unwanted results
 \item Replaces missing sample_data with a dataframe including only sample_names (as "SAMPLE" variable)
 \item Removes taxa where phyloseq::taxa_sums() is equal to zero, with a warning, if remove_undetected = TRUE
@@ -38,8 +37,8 @@ data(dietswap, package = "microbiome")
 phyloseq_validate(dietswap, remove_undetected = TRUE, verbose = TRUE)
 
 # verbose = FALSE will suppress messages and warnings but still:
-# fix storage.mode, replace NULL sample_data, and
-# remove taxa that sum to 0 across all samples (if remove_undetected = TRUE)
+# replace NULL sample_data and remove taxa that sum to 0 across all samples
+# (if remove_undetected = TRUE)
 phyloseq_validate(dietswap, verbose = FALSE)
 
 # Sometimes you might have a phyloseq with no sample_data
@@ -48,8 +47,14 @@ phyloseq_validate(dietswap, verbose = FALSE)
 dietswap@sam_data <- NULL
 phyloseq_validate(dietswap)
 
+# Sometimes you might have a phyloseq with no tax_table
+# This isn't compatible with some microViz functions, like tax_top,
+# so this is another reason to start your analyses with phyloseq_validate!
+data("soilrep", package = "phyloseq")
+soilrep # has NULL tax_table
+phyloseq_validate(soilrep)
+
 # If no messages or warnings are emitted,
 # this means no problems were detected, and nothing was changed
 # (but only if verbose = TRUE)
-
 }
