@@ -44,8 +44,7 @@ tax_filter <- function(
                        tax_level = NA,
                        names_only = FALSE,
                        is_counts = TRUE,
-                       undetected = NULL
-                       ) {
+                       undetected = NULL) {
   # alternative way of specifying prev_detection_threshold.
   if (!identical(undetected, NULL)) prev_detection_threshold <- undetected + 1e-300
 
@@ -83,7 +82,7 @@ tax_filter <- function(
 
   # otu table
   otu <- microbiome::abundances(ps)
-  if (isTRUE(is_counts) && any(otu[1:5,] < 1 & otu[1:5,] > 0)) {
+  if (isTRUE(is_counts) && any(otu[1:5, ] < 1 & otu[1:5, ] > 0)) {
     stop(
       "otu_table(ps) contains proportions or transformed values which might lead to unexpected behaviour",
       "\n(use counts or avoid this error with is_counts = FALSE and setting an appropriate prev_detection_threshold, e.g. 1e-5)."

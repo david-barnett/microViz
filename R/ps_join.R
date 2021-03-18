@@ -99,8 +99,7 @@ ps_join <- function(x,
                     keep_sample_name_col = TRUE,
                     sample_name_natural_join = FALSE,
                     type = "left",
-                    .keep_all_taxa = FALSE
-                    ) {
+                    .keep_all_taxa = FALSE) {
   data_list <- list(x, y)
   classes <- sapply(data_list, class)
 

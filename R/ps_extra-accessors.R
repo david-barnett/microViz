@@ -65,7 +65,7 @@ bdisp_get <- function(ps_extra) {
 #' @rdname ps_extra-accessors
 #' @export
 otu_get <- function(data) {
-  if (methods::is(data, "otu_table")){
+  if (methods::is(data, "otu_table")) {
     otu <- data
   } else {
     ps <- ps_get(data)
@@ -91,15 +91,15 @@ tt_get <- function(data) {
 #' @param sample_names_col name of column where sample_names are put. if NA, return data.frame with rownames (sample_names)
 #' @rdname ps_extra-accessors
 #' @export
-samdat_tbl <- function(data, sample_names_col = ".sample_name"){
+samdat_tbl <- function(data, sample_names_col = ".sample_name") {
   if (inherits(data, "ps_extra")) data <- ps_get(data)
   if (methods::is(data, "phyloseq")) data <- phyloseq::sample_data(data)
-  if (methods::is(data, "sample_data")){
+  if (methods::is(data, "sample_data")) {
     df <- base::data.frame(data, check.names = FALSE, stringsAsFactors = FALSE)
   } else {
     stop("data must be of class 'phyloseq', 'ps_extra', or 'sample_data', not: ", paste(class(data), collapse = " "))
   }
-  if (identical(sample_names_col, NA)){
+  if (identical(sample_names_col, NA)) {
     return(df)
   } else {
     df <- tibble::rownames_to_column(df, var = sample_names_col)

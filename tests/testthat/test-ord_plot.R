@@ -9,26 +9,26 @@ ps <- dietswap %>%
     weight = dplyr::recode(bmi_group, obese = 3, overweight = 2, lean = 1),
     female = dplyr::if_else(sex == "female", true = 1, false = 0)
   ) %>%
-   tax_filter(min_prevalence = 1)
+  tax_filter(min_prevalence = 1)
 
 # RDA ------------------------
 
 p <- suppressMessages(
   # messages about scaling
-    ps %>%
-      tax_transform("clr", rank = "Genus") %>%
-      ord_calc(constraints = c("weight", "female")) %>%
-      ord_plot(colour = "bmi_group", plot_taxa = 1:3) +
-      lims(x = c(-5, 6), y = c(-5, 5))
+  ps %>%
+    tax_transform("clr", rank = "Genus") %>%
+    ord_calc(constraints = c("weight", "female")) %>%
+    ord_plot(colour = "bmi_group", plot_taxa = 1:3) +
+    lims(x = c(-5, 6), y = c(-5, 5))
 )
 
 
 test_that("constrained rda plot gives correct positions", {
   expect_snapshot(cat(p$data[1:50, 1, drop = TRUE]))
   expect_snapshot(cat(p$data[1:50, 2, drop = TRUE]))
-  expect_snapshot(cat(p$layers[[2]]$data[,1, drop = TRUE]))
-  expect_snapshot(cat(p$layers[[3]]$data[,1, drop = TRUE]))
-  expect_snapshot(cat(p$layers[[3]]$data[,2, drop = TRUE]))
+  expect_snapshot(cat(p$layers[[2]]$data[, 1, drop = TRUE]))
+  expect_snapshot(cat(p$layers[[3]]$data[, 1, drop = TRUE]))
+  expect_snapshot(cat(p$layers[[3]]$data[, 2, drop = TRUE]))
 })
 
 # PCoA ------------------------
@@ -45,6 +45,5 @@ p2 <- suppressMessages(
 test_that("partialed bray CAP plot gives correct positions", {
   expect_snapshot(cat(p2$data[1:50, 1, drop = TRUE]))
   expect_snapshot(cat(p2$data[1:50, 2, drop = TRUE]))
-  expect_snapshot(cat(p2$layers[[2]]$data[,1, drop = TRUE]))
+  expect_snapshot(cat(p2$layers[[2]]$data[, 1, drop = TRUE]))
 })
-

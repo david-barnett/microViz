@@ -5,7 +5,7 @@
 #
 
 # save csv
-save_csv <- function(object){
+save_csv <- function(object) {
   path <- base::tempfile(fileext = ".csv")
   utils::write.csv(x = object, file = path)
   return(path)

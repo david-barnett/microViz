@@ -65,7 +65,7 @@ ps_filter <- function(ps, ..., .target = "sample_data", .keep_all_taxa = FALSE) 
 # helper function used here and in ps_join
 # removes all taxa which sum to zero across all samples (phyloseq::taxa_sums(ps) == 0)
 # provides helpful warning if otu_table contains negative values
-tax_filter_zeros <- function(ps){
+tax_filter_zeros <- function(ps) {
   # remove taxa that now have zero counts (or relative abundance) across all remaining samples
   if (any(phyloseq::otu_table(ps) < 0)) {
     warning(
@@ -74,5 +74,5 @@ tax_filter_zeros <- function(ps){
       "\nAvoid performing transformations, e.g. clr, before using `ps_filter()`, or set .keep_all_taxa = TRUE "
     )
   }
- return( phyloseq::prune_taxa(taxa = phyloseq::taxa_sums(ps) != 0, x = ps))
+  return(phyloseq::prune_taxa(taxa = phyloseq::taxa_sums(ps) != 0, x = ps))
 }

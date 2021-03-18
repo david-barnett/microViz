@@ -57,8 +57,13 @@ taxa_names(ps) \%>\% head()
 names_df <- tibble::tibble(old = old_taxa_names, new = taxa_names(ps))
 
 # alternative settings
-tax_name(ps, pad_number = FALSE) \%>\% taxa_names() \%>\% head()
-tax_name(ps, prefix = "whateveryoulike") \%>\% taxa_names() \%>\% head()
-tax_name(ps, rank = "Genus", sep = "-") \%>\% taxa_names() \%>\% head()
-
+tax_name(ps, pad_number = FALSE) \%>\%
+  taxa_names() \%>\%
+  head()
+tax_name(ps, prefix = "whateveryoulike") \%>\%
+  taxa_names() \%>\%
+  head()
+tax_name(ps, rank = "Genus", sep = "-") \%>\%
+  taxa_names() \%>\%
+  head()
 }

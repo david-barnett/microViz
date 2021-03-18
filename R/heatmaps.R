@@ -324,7 +324,7 @@ comp_heatmap <- function(data,
   otu_mat <- otu_get(microbiome::transform(ps, transform = tax_transform_colors)) # used for colours and seriation
   otu_mat <- tax_scale(data = otu_mat, do = tax_scale_colors)
   otu_mat <- unclass(otu_mat[samples, taxa, drop = FALSE])
-  if (identical(numbers, NULL)){
+  if (identical(numbers, NULL)) {
     otu_numbers <- otu_mat # avoids computation if otu_numbers won't be shown anyway
   } else {
     otu_numbers <- otu_get(microbiome::transform(ps, transform = tax_transform_numbers)) # used for numbers only
@@ -495,7 +495,7 @@ anno_tax_helper <- function(anno_tax, ps, taxa, taxa_which, taxa_side) {
   }
   # anno_tax suitable for taxa_which?
   if (methods::is(anno_tax, "HeatmapAnnotation")) {
-    if (!identical(taxa_which, anno_tax@which)){
+    if (!identical(taxa_which, anno_tax@which)) {
       stop(
         "The `which` argument you have specified when creating the taxa annotation (anno_tax) is:\n\t'",
         anno_tax@which, "'\nThis is not compatible with the taxa_side argument you specified:\n\t'",

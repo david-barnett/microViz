@@ -3,11 +3,11 @@ data("dietswap", package = "microbiome")
 
 # create a couple of numerical variables to use
 psq <- dietswap %>%
- ps_mutate(
-   weight = recode(bmi_group, obese = 3, overweight = 2, lean = 1),
-   female = if_else(sex == "female", true = 1, false = 0),
-   african = if_else(nationality == "AFR", true = 1, false = 0)
- )
+  ps_mutate(
+    weight = recode(bmi_group, obese = 3, overweight = 2, lean = 1),
+    female = if_else(sex == "female", true = 1, false = 0),
+    african = if_else(nationality == "AFR", true = 1, false = 0)
+  )
 psq <- tax_agg(psq, "Genus")
 
 # randomly select 30 taxa from the 50 most abundant taxa

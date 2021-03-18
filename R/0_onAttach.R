@@ -1,7 +1,7 @@
-.onAttach = function(libname, pkgname) {
-  version = utils::packageDescription(pkgname, fields = "Version")
+.onAttach <- function(libname, pkgname) {
+  version <- utils::packageDescription(pkgname, fields = "Version")
 
-  msg = paste0("==============================================================
+  msg <- paste0("==============================================================
 ", pkgname, " version ", version, " - Copyright (C) 2021 David Barnett
 
 GitHub: https://github.com/david-barnett/microViz

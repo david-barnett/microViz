@@ -102,7 +102,7 @@ abund_calc <- function(data, taxa, undetected = 0) {
 # trans_fun is a function to be applied (columns) to matrix before returning (if not NA)
 # used inside cor_heatmap, where var_fun arg only allows character naming a function
 df_to_numeric_matrix <- function(df, vars = NA, trans_fun = NA) {
-  if (inherits(df, "matrix")){
+  if (inherits(df, "matrix")) {
     stopifnot(storage.mode(df) %in% c("double", "integer", "logical"))
     mat <- df
   } else {

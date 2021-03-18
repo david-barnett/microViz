@@ -49,11 +49,11 @@ print.ps_extra <- function(x, ...) {
 #' @noRd
 print.ps_extra_info <- function(x, ..., all = FALSE) {
   cat("phyloseq info:\n")
-  if (isFALSE(all)){
+  if (isFALSE(all)) {
     out <- paste("tax_agg =", x[["tax_agg"]], "tax_transform =", x[["tax_transform"]])
     if (!identical(x[["tax_scale"]], NA_character_)) out <- paste(out, paste("tax_scale =", x[["tax_scale"]]))
     cat(out)
-  } else if (isTRUE(all)){
+  } else if (isTRUE(all)) {
     for (i in names(x)) cat(i, "=", x[[i]], "\n")
   } else {
     stop("all must be TRUE or FALSE, it is: ", all)

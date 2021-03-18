@@ -14,13 +14,21 @@
 #' library(microbiome)
 #' data("dietswap")
 #' ps <- dietswap
-#' ps %>% otu_get() %>% .[1:6, 1:6]
+#' ps %>%
+#'   otu_get() %>%
+#'   .[1:6, 1:6]
 #' # standard use (mean center and SD scale)
-#' tax_scale(ps) %>% otu_get() %>% .[1:6, 1:6]
+#' tax_scale(ps) %>%
+#'   otu_get() %>%
+#'   .[1:6, 1:6]
 #' # RMS scale only (directly on otu_table)
-#' otu_table(ps) %>% tax_scale(center = FALSE) %>% .[1:6, 1:6] #Aerococcus is NaN as prevalence=0
+#' otu_table(ps) %>%
+#'   tax_scale(center = FALSE) %>%
+#'   .[1:6, 1:6] # Aerococcus is NaN as prevalence=0
 #' # example using alternative `do` argument (to center only, no scaling)
-#' tax_scale(ps, do = "center") %>% otu_get() %>% .[1:6, 1:6]
+#' tax_scale(ps, do = "center") %>%
+#'   otu_get() %>%
+#'   .[1:6, 1:6]
 tax_scale <- function(data, center = TRUE, scale = TRUE, do = NA) {
 
   # overwrite center and scale according to non-NA value of do arg, if given

@@ -37,10 +37,15 @@
 #' names_df <- tibble::tibble(old = old_taxa_names, new = taxa_names(ps))
 #'
 #' # alternative settings
-#' tax_name(ps, pad_number = FALSE) %>% taxa_names() %>% head()
-#' tax_name(ps, prefix = "whateveryoulike") %>% taxa_names() %>% head()
-#' tax_name(ps, rank = "Genus", sep = "-") %>% taxa_names() %>% head()
-#'
+#' tax_name(ps, pad_number = FALSE) %>%
+#'   taxa_names() %>%
+#'   head()
+#' tax_name(ps, prefix = "whateveryoulike") %>%
+#'   taxa_names() %>%
+#'   head()
+#' tax_name(ps, rank = "Genus", sep = "-") %>%
+#'   taxa_names() %>%
+#'   head()
 tax_name <- function(ps, prefix = c("tax", "asv", "otu")[1], rank = NA, pad_number = TRUE, sep = "_") {
   if (!inherits(prefix, "character")) stop("prefix must be a character string, not: ", class(prefix))
   if (inherits(ps, "ps_extra")) warning("ps is class ps_extra, returning only phyloseq! Naming should be done on phyloseq before starting analyses")
