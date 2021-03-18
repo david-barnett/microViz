@@ -114,7 +114,7 @@ tax_agg <- function(ps,
 
     # check NAs in chosen rank
     if (anyNA(tt_df[, rank_index])) {
-      stop("NAs in `tax_table(ps)[, rank]`", unknowns_message)
+      stop("NAs in tax_table at rank: ", rank, unknowns_message)
     }
 
     tt_distinct <- dplyr::distinct(tt_df)
@@ -181,13 +181,14 @@ tax_agg <- function(ps,
   }
 
   # sort phyloseq taxa
-  if (!identical(sort_by, NA)) ps_agg <- tax_sort(ps_agg, by = sort_by)
-
+  if (!identical(sort_by, NA)) {
+    ps_agg <- tax_sort(ps_agg, by = sort_by, at = "names")
+  }
   # create top column if requested by top_N
   if (!identical(top_N, NA)) {
     top_taxons <- c(
       phyloseq::taxa_names(ps_agg)[seq_len(top_N)],
-      rep_len("other", length.out = phyloseq::ntaxa(ps_agg)-top_N)
+      rep_len("other", length.out = phyloseq::ntaxa(ps_agg) - top_N)
     )
     phyloseq::tax_table(ps_agg) <- cbind(
       # new tt except unique col
