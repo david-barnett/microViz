@@ -19,6 +19,7 @@ comp_barplot(
   facet_by = NA,
   bar_width = 1,
   bar_outline_colour = "black",
+  group_other = FALSE,
   keep_all_vars = TRUE,
   seriate_method = "OLO_ward"
 )
@@ -95,9 +96,9 @@ dietswap \%>\%
   ps_arrange(desc(subject), desc(timepoint)) \%>\%
   comp_barplot(
     tax_level = "Genus", n_taxa = 12,
-    bar_outline_colour = NA,
     sample_order = "default",
     bar_width = 0.7,
+    bar_outline_colour = "black",
     label = "subject_timepoint"
   ) + coord_flip()
 

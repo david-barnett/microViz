@@ -53,9 +53,9 @@
 #'   ps_arrange(desc(subject), desc(timepoint)) %>%
 #'   comp_barplot(
 #'     tax_level = "Genus", n_taxa = 12,
-#'     bar_outline_colour = NA,
 #'     sample_order = "default",
 #'     bar_width = 0.7,
+#'     bar_outline_colour = "black",
 #'     label = "subject_timepoint"
 #'   ) + coord_flip()
 #'
@@ -122,29 +122,32 @@ comp_barplot <- function(
                          facet_by = NA,
                          bar_width = 1,
                          bar_outline_colour = "black",
+                         group_other = FALSE,
                          keep_all_vars = TRUE,
                          seriate_method = "OLO_ward") {
 
   # check phyloseq for common problems (and fix or message about this)
-  ps <- phyloseq_validate(ps, remove_undetected = TRUE, verbose = TRUE)
+  ps <- phyloseq_validate(ps, remove_undetected = FALSE, verbose = TRUE)
 
   # save full unfiltered phyloseq for ordering
   ps_original <- ps
 
   # how many taxa to plot (otherwise group into other)
-  ps <- aggregate_top_taxa(ps, top = n_taxa, level = tax_level)
+  # ps <- aggregate_top_taxa(ps, top = n_taxa, level = tax_level)
+  ps <- tax_agg(ps, rank = tax_level, sort_by = sum, top_N = n_taxa)[["ps"]]
 
   # set taxa order
-  if (tax_order == "abundance") {
-    ordered_taxa <- rev(c(setdiff(microbiome::top_taxa(ps), "Other"), "Other"))
+  if (identical(tax_order, "abundance")) {
+    # you want "other" to go first, then least abundant to most?
+    ordered_taxa <- rev(unique(unclass(phyloseq::tax_table(ps))[, "unique"]))
   } else {
     # e.g. should allow external taxa ordering from calling top_taxa on a larger superset phyloseq
     ordered_taxa <- tax_order
   }
   # fix taxa colour scheme
-  if (isTRUE(is.null(names(palette)))) {
-    names(palette) <- ordered_taxa
-  }
+  ordered_top_taxa <- rev(unique(unclass(phyloseq::tax_table(ps))[, "top"]))
+  if (identical(names(palette), NULL)) names(palette) <- ordered_top_taxa
+
   # determine sample ordering option
   samples_ordered_by_similarity <- FALSE # default (may be overwritten with true)
   if (identical(sample_order, "default")) {
@@ -180,7 +183,7 @@ comp_barplot <- function(
     if (!samples_ordered_by_similarity && length(sample_order) == 1 && sample_order != "default") {
       kept_vars <- c(union(kept_vars, sample_order))
     }
-    phyloseq::sample_data(ps) <- data.frame(phyloseq::sample_data(ps))[, kept_vars, drop = FALSE]
+    phyloseq::sample_data(ps) <- data.frame(phyloseq::sample_data(ps), check.names = FALSE)[, kept_vars, drop = FALSE]
   }
 
   # define function to actually create the plot/plots
@@ -200,20 +203,24 @@ comp_barplot <- function(
       ordered_samples <- phyloseq::sample_names(ps_ordered)
     }
     # create long dataframe from compositional phyloseq
-    # TODO consider replacing psmelt for speed: e.g. https://chuckpr.github.io/posts/melt/
     df <- ps %>%
       microbiome::transform(transform = "compositional") %>%
-      phyloseq::psmelt()
+      ps_melt()
 
     # set abundance order of taxa at chosen rank level
-    df[[tax_level]] <- factor(df[[tax_level]], levels = ordered_taxa, ordered = TRUE)
+    df[["unique"]] <- factor(df[["unique"]], levels = ordered_taxa, ordered = TRUE)
+    df[["top"]] <- factor(df[["top"]], levels = ordered_top_taxa, ordered = TRUE)
+    # df[[tax_level]] <- factor(df[[tax_level]], levels = ordered_taxa, ordered = TRUE)
 
     # set sample order
     df[["SAMPLE"]] <- factor(df[["Sample"]], levels = ordered_samples, ordered = TRUE)
 
     # build plot
-    p <- ggplot2::ggplot(df, ggplot2::aes_string(x = "SAMPLE", y = "Abundance", fill = tax_level))
-
+    if (isTRUE(group_other)){
+      p <- ggplot2::ggplot(df, ggplot2::aes_string(x = "SAMPLE", y = "Abundance", fill = "top"))
+    } else {
+      p <- ggplot2::ggplot(df, ggplot2::aes_string(x = "SAMPLE", y = "Abundance", fill = "top", group = "Abundance"))
+    }
     if (is.na(bar_outline_colour)) {
       p <- p + ggplot2::geom_bar(position = "stack", stat = "identity", width = bar_width)
     } else {
