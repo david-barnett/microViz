@@ -4,18 +4,30 @@
 \alias{tax_sort}
 \title{Sort taxa in phyloseq otu_table and tax_table}
 \usage{
-tax_sort(data, by = "name", ..., tree_warn = TRUE)
+tax_sort(
+  data,
+  by = "name",
+  at = "names",
+  ...,
+  tree_warn = TRUE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{data}{ps_extra or phyloseq}
 
 \item{by}{how to sort, see description}
 
+\item{at}{"names" or a taxonomic rank to apply sorting method to, as specified in \code{by}.}
+
 \item{...}{used if summary function given, or pass \code{undetected} arg for tax_transform("binary") if by = "prev" or "prevalence"}
 
 \item{tree_warn}{If phylogenetic tree is present in phyloseq phy_tree slot, taxa cannot be reordered.
 Default behaviour of tax_sort is to remove the phylogenetic tree and warn about this.
 tree_warn = FALSE will suppress the warning message, but still remove the tree!}
+
+\item{verbose}{passed to phyloseq_validate verbose
+(if TRUE: message about suspicious values in tax_table, and how to fix)}
 }
 \value{
 sorted phyloseq or ps_extra
@@ -25,11 +37,14 @@ Multiple ways of sorting taxa are possible and determined by the \code{by} argum
 The \code{by} argument must be one of:
 \itemize{
 \item 'rev' to reverse the current order
-\item 'name' or 'names' (sort alphabetically by taxa_names)
-\item a taxonomic rank name (sort alphabetically by this rank)
+\item 'name' (sort alphabetically by \code{at})
 \item a sample name (descending abundance sorting within that sample)
 \item summary stat. function e.g. \code{sum} or \code{mean}
 }
+
+The \code{at} argument must be "names" for sorting unique taxa,
+or a rank name, for sorting at that rank.
+\code{at} is ignored when \code{by} is "rev".
 }
 \details{
 Don't forget to pass \code{na.rm = TRUE} to \code{...}
@@ -48,25 +63,25 @@ dietswap \%>\%
 
 # sort alphabetically by a taxonomic rank (or "names" for taxa_names)
 dietswap \%>\%
-  tax_sort("Phylum") \%>\%
+  tax_sort(by = "name", at = "Phylum") \%>\%
   tax_table() \%>\%
   head(30)
 
 # sequentially sorting by higher ranks
 # sets tax_table in nested alphabetical order
 dietswap \%>\%
-  tax_sort("names") \%>\%
-  tax_sort("Genus") \%>\%
-  tax_sort("Family") \%>\%
-  tax_sort("Phylum") \%>\%
+  tax_sort(at = "names") \%>\%
+  tax_sort(at = "Genus") \%>\%
+  tax_sort(at = "Family") \%>\%
+  tax_sort(at = "Phylum") \%>\%
   tax_table() \%>\%
   head(30)
 
 # order by descending abundance in a single named sample
 dietswap \%>\%
-  tax_sort("Sample-1") \%>\%
+  tax_sort(by = "Sample-1") \%>\%
   otu_table() \%>\%
-  .[1:5, 1:4]
+  .[1:8, 1:4]
 
 # sort by function e.g. median abundance
 dietswap \%>\%
@@ -83,4 +98,19 @@ dietswap \%>\%
 
 # if your phyloseq object has a phylogenetic tree,
 # tax_sort will remove the tree, and warn you about this.
+
+# You can sort by abundance at higher taxonomic ranks,
+# without losing lower rank info
+# e.g. sort (descending) by phyla abundances
+dietswap \%>\%
+  tax_sort(by = sum, at = "Phylum") \%>\%
+  tax_table() \%>\%
+  head()
+
+# You can sort by ascending abundance by reversing afterwards
+dietswap \%>\%
+  tax_sort(by = "prev", at = "Phylum") \%>\%
+  tax_sort(by = "rev") \%>\%
+  tax_table() \%>\%
+  head()
 }

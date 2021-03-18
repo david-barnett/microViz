@@ -20,7 +20,9 @@ df <- dplyr::arrange(df, dplyr::desc(prevs), dplyr::desc(sums))
 
 test_that("tax_sort prevalence ordering works", {
   expect_equal(
-    object = tax_sort(dietswap, by = sum) %>% tax_sort("prev") %>% taxa_names(),
+    object = tax_sort(dietswap, by = sum) %>%
+      tax_sort("prev") %>%
+      taxa_names(),
     expected = df[["names"]]
   )
 })
@@ -28,4 +30,28 @@ test_that("tax_sort prevalence ordering works", {
 test_that("expected names order for comparison hasn't changed", {
   local_edition(3L)
   expect_snapshot(cat(df[["names"]]), cran = FALSE)
+})
+
+test_that("reversing taxa order works", {
+  expect_equal(
+    object = phyloseq::taxa_names(tax_sort(dietswap, by = "rev")),
+    expected = rev(phyloseq::taxa_names(dietswap))
+  )
+})
+test_that("reversing taxa order ignores `at` arg", {
+  expect_equal(
+    object = phyloseq::taxa_names(tax_sort(dietswap, by = "rev", at = "bla")),
+    expected = rev(phyloseq::taxa_names(dietswap))
+  )
+})
+
+test_that("sorting by Phylum total abundance works", {
+  res <- tax_sort(dietswap, by = sum, at = "Phylum")
+  expect_equal(
+    object = unique(unclass(phyloseq::tax_table(res))[, "Phylum"]),
+    expected = c(
+      "Bacteroidetes", "Firmicutes", "Proteobacteria", "Verrucomicrobia",
+      "Actinobacteria", "Fusobacteria", "Spirochaetes", "Cyanobacteria"
+    )
+  )
 })
