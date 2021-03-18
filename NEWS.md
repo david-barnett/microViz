@@ -4,10 +4,9 @@
 * `tax_agg` argument agg_level renamed to rank. `tax_agg` returns taxa in different order than before (and now different order from, but same aggregation as, `microbiome::aggregate_taxa()`). tax_agg now checks if taxa cannot be uniquely identified at the specified rank level. (now also about twice as fast)
 
 ## Features
-* `tax_sort` for sorting taxa in tax_table and otu_table by several name or abundance options
+* `tax_sort` for sorting taxa in tax_table and otu_table by several name or abundance options (deletes phy_tree if present!)
 * `tax_transform` can take a rank argument, to perform aggregation (internally using tax_agg) and transformation with one function, and record the results. **This is now the recommended usage!**
 * `tax_transform` new transformation = "binary" can convert to presence/absence data (used by `tax_sort` for by = "prev")
-
 
 # microViz 0.5.0 - "hot maps"
 

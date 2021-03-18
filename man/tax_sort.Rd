@@ -4,7 +4,7 @@
 \alias{tax_sort}
 \title{Sort taxa in phyloseq otu_table and tax_table}
 \usage{
-tax_sort(data, by = "name", ...)
+tax_sort(data, by = "name", ..., tree_warn = TRUE)
 }
 \arguments{
 \item{data}{ps_extra or phyloseq}
@@ -12,21 +12,28 @@ tax_sort(data, by = "name", ...)
 \item{by}{how to sort, see description}
 
 \item{...}{used if summary function given, or pass \code{undetected} arg for tax_transform("binary") if by = "prev" or "prevalence"}
+
+\item{tree_warn}{If phylogenetic tree is present in phyloseq phy_tree slot, taxa cannot be reordered.
+Default behaviour of tax_sort is to remove the phylogenetic tree and warn about this.
+tree_warn = FALSE will suppress the warning message, but still remove the tree!}
 }
 \value{
 sorted phyloseq or ps_extra
 }
 \description{
-Multiple ways of sorting taxa are possible and determined by the by argument.
-\code{by} argument must be one of:
-- 'rev' to reverse the current order
-- 'name' or 'names' (sort alphabetically by taxa_names)
-- a taxonomic rank name (sort alphabetically by this rank)
-- a sample name (descending abundance sorting within that sample)
-- summary stat. function e.g. \code{sum} or \code{mean}
+Multiple ways of sorting taxa are possible and determined by the \code{by} argument.
+The \code{by} argument must be one of:
+\itemize{
+\item 'rev' to reverse the current order
+\item 'name' or 'names' (sort alphabetically by taxa_names)
+\item a taxonomic rank name (sort alphabetically by this rank)
+\item a sample name (descending abundance sorting within that sample)
+\item summary stat. function e.g. \code{sum} or \code{mean}
+}
 }
 \details{
-Don't forget to pass \code{na.rm} to \code{...} if using a summary stat function in by
+Don't forget to pass \code{na.rm = TRUE} to \code{...}
+if using a summary stat function in \code{by}
 }
 \examples{
 library(microbiome)
@@ -73,4 +80,7 @@ dietswap \%>\%
   tax_sort(by = sum, na.rm = TRUE) \%>\%
   taxa_names() \%>\%
   head(20)
+
+# if your phyloseq object has a phylogenetic tree,
+# tax_sort will remove the tree, and warn you about this.
 }

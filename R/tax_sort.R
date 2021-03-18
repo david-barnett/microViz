@@ -1,18 +1,25 @@
 #' Sort taxa in phyloseq otu_table and tax_table
 #'
-#' Multiple ways of sorting taxa are possible and determined by the by argument.
-#' `by` argument must be one of:
-#'     - 'rev' to reverse the current order
-#'     - 'name' or 'names' (sort alphabetically by taxa_names)
-#'     - a taxonomic rank name (sort alphabetically by this rank)
-#'     - a sample name (descending abundance sorting within that sample)
-#'     - summary stat. function e.g. `sum` or `mean`
+#' @description
+#' Multiple ways of sorting taxa are possible and determined by the `by` argument.
+#' The `by` argument must be one of:
+#'  - 'rev' to reverse the current order
+#'  - 'name' or 'names' (sort alphabetically by taxa_names)
+#'  - a taxonomic rank name (sort alphabetically by this rank)
+#'  - a sample name (descending abundance sorting within that sample)
+#'  - summary stat. function e.g. `sum` or `mean`
 #'
-#' Don't forget to pass `na.rm` to `...` if using a summary stat function in by
+#' @details
+#' Don't forget to pass `na.rm = TRUE` to `...`
+#' if using a summary stat function in `by`
 #'
 #' @param data ps_extra or phyloseq
 #' @param by how to sort, see description
 #' @param ... used if summary function given, or pass `undetected` arg for tax_transform("binary") if by = "prev" or "prevalence"
+#' @param tree_warn
+#' If phylogenetic tree is present in phyloseq phy_tree slot, taxa cannot be reordered.
+#' Default behaviour of tax_sort is to remove the phylogenetic tree and warn about this.
+#' tree_warn = FALSE will suppress the warning message, but still remove the tree!
 #'
 #' @return sorted phyloseq or ps_extra
 #' @export
@@ -62,7 +69,10 @@
 #'   tax_sort(by = sum, na.rm = TRUE) %>%
 #'   taxa_names() %>%
 #'   head(20)
-tax_sort <- function(data, by = "name", ...) {
+#'
+#' # if your phyloseq object has a phylogenetic tree,
+#' # tax_sort will remove the tree, and warn you about this.
+tax_sort <- function(data, by = "name", ..., tree_warn = TRUE) {
   by_is_invalid_error <- paste0(
     "`by` argument must be one of:\n",
     "- 'rev' to reverse the current order\n",
@@ -82,9 +92,21 @@ tax_sort <- function(data, by = "name", ...) {
   }
   # get components that are always required
   ps <- ps_get(data)
+  # can't sort taxa if phylogenetic tree present, as tree fixes order
+  if (!identical(phyloseq::phy_tree(ps, errorIfNULL = FALSE), NULL)){
+    if (isTRUE(tree_warn)){
+      warning(
+        "tax_sort is removing phylogenetic tree!\n",
+        "Avoid this warning by either by\n",
+        "\t- running tax_sort with tree_warn = FALSE\n",
+        "\t- or removing tree yourself, e.g. `ps@phy_tree <-- NULL`"
+      )
+    }
+    ps@phy_tree <- NULL
+  }
   tax_as_rows <- phyloseq::taxa_are_rows(ps)
-  # taxa as columns from otu_get
-  otu <- unclass(otu_get(ps))
+  otu <- unclass(phyloseq::otu_table(ps))
+  if (tax_as_rows) otu <- t(otu) # FROM taxa as rows TO taxa as columns!
 
   if (inherits(by, "character")) {
     # reverse order
@@ -114,10 +136,19 @@ tax_sort <- function(data, by = "name", ...) {
   otu <- otu[, new_order]
 
   # return otu_table oriented as found
-  if (tax_as_rows) otu <- t(otu)
+  if (tax_as_rows) otu <- t(otu) # FROM taxa as columns TO taxa as rows!
   phyloseq::otu_table(ps) <- phyloseq::otu_table(
     object = otu, taxa_are_rows = tax_as_rows
   )
+
+  # fix edge case: when ps is a phyloseq only containing otu_table,
+  # the following line converts ps from phyloseq to otu_table class!
+  # phyloseq::otu_table(ps) <- phyloseq::otu_table(ps)
+  # TODO consider if this is sensible? better to error & -> phyloseq_validate?
+  if(methods::is(ps, "otu_table")){
+    ps <- phyloseq::phyloseq(ps, samdat_init(ps)) # unexported helper function
+    ps@sam_data <- NULL # ps remains a phyloseq object!
+  }
 
   # return ps_extra if given one
   if (inherits(data, "ps_extra")){
