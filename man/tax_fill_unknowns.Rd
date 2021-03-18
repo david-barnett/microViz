@@ -5,21 +5,22 @@
 \title{Replace unknown, NA, or short tax_table values}
 \usage{
 tax_fill_unknowns(
-  x,
+  ps,
   min_length = 4,
-  unknowns = c("unknown", paste0(c("p", "c", "o", "f", "g", "s"), "__")),
-  levels = phyloseq::rank_names(x),
+  unknowns = NA,
+  levels = phyloseq::rank_names(ps),
   suffix_rank = "classified",
   sep = " ",
+  anon_unique = TRUE,
   verbose = TRUE
 )
 }
 \arguments{
-\item{x}{phyloseq or tax_table (taxonomyTable) with at least two ranks}
+\item{ps}{phyloseq or tax_table (taxonomyTable) with at least two ranks}
 
 \item{min_length}{replace strings shorter than this}
 
-\item{unknowns}{also replace strings matching any in this vector}
+\item{unknowns}{also replace strings matching any in this vector, NA default vector shown in details!}
 
 \item{levels}{names of taxonomic levels to modify, defaults to all}
 
@@ -27,10 +28,15 @@ tax_fill_unknowns(
 
 \item{sep}{character(s) separating new name and taxonomic rank level suffix (see suffix_rank)}
 
+\item{anon_unique}{make anonymous taxa unique by replacing unknowns with taxa_name?
+otherwise they are replaced with paste("unknown", rank_names(ps)\link{1}),
+which is therefore the same for every anonymous taxon, meaning they will be merged if tax_agg is used.
+(anonymous taxa are taxa with all unknown values in their tax_table row, i.e. cannot be classified even at highest rank available)}
+
 \item{verbose}{emit warnings when cannot replace with informative name?}
 }
 \value{
-object same class as x
+object same class as ps
 }
 \description{
 Identifies phyloseq tax_table values as unknown or uninformative and replaces them with the first informative value from a higher taxonomic rank.
@@ -39,6 +45,15 @@ Identifies phyloseq tax_table values as unknown or uninformative and replaces th
 \item Values in \code{unknowns} are also removed, even if longer than \code{min_length}. It is up to the user to specify sensible values in \code{unknowns} if their dataset has other unwanted values.
 \item NA values are also replaced.
 }
+}
+\details{
+By default (unknowns = NA), unknowns is set to a vector containing:
+'s__' 'g__' 'f__' 'o__' 'c__' 'p__' 'k__' 'S__' 'G__' 'F__' 'O__' 'C__' 'P__' 'K__' 'NA' 'NaN' ' ' ''
+'unknown' 'Unknown' 's__unknown' 's__Unknown' 's__NA' 'g__unknown' 'g__Unknown' 'g__NA'
+'f__unknown' 'f__Unknown' 'f__NA' 'o__unknown' 'o__Unknown' 'o__NA' 'c__unknown' 'c__Unknown' 'c__NA'
+'p__unknown' 'p__Unknown' 'p__NA' 'k__unknown' 'k__Unknown' 'k__NA' 'S__unknown' 'S__Unknown' 'S__NA'
+'G__unknown' 'G__Unknown' 'G__NA' 'F__unknown' 'F__Unknown' 'F__NA' 'O__unknown' 'O__Unknown' 'O__NA'
+'C__unknown' 'C__Unknown' 'C__NA' 'P__unknown' 'P__Unknown' 'P__NA' 'K__unknown' 'K__Unknown' 'K__NA'
 }
 \examples{
 library(dplyr)
@@ -53,25 +68,31 @@ ps <- dietswap
 tt <- tax_table(ps)
 ntax <- ntaxa(ps)
 set.seed(123)
-tt[sample(1:ntax, 30), 3] <- "g__"
-tt[sample(1:ntax, 20), 2] <- "f__"
-tt[sample(1:ntax, 10), 1] <- "p__"
+g <- sample(1:ntax, 30)
+f <- sample(g, 10)
+p <- sample(f, 3)
+tt[g, 3] <- "g__"
+tt[f, 2] <- "f__"
+tt[p, 1] <- "p__"
 tt[sample(1:ntax, 10), 3] <- "unknown"
 # create a row with only NAs
 tt[1, ] <- NA
 
 tax_table(ps) <- tax_table(tt)
 
-# tax_fill_unknowns defaults should solve most problems
 ps
 tax_table(ps) \%>\% head(50)
+# tax_fill_unknowns with defaults should solve most problems
 
-# this will replace "unknown"s as well as short values including "g__" and "f__"
+# this will replace `unknown`s as well as short values including "g__" and "f__"
 tax_fill_unknowns(ps) \%>\%
   tax_table() \%>\%
   head(50)
 
-# this will only replace values in Genus column, only replace short entries, and not "unknown"
+# This will only replace values in Genus column,
+# and only replace short entries, and so won't replace literal "unknown"
+# WARNING:
+# only set `levels` arg if you know you won't create an invalid tax_table!
 ps \%>\%
   tax_fill_unknowns(unknowns = NULL, levels = "Genus") \%>\%
   tax_table() \%>\%
@@ -82,9 +103,8 @@ tax_fill_unknowns(ps, suffix_rank = "current", sep = " - ") \%>\%
   tax_table() \%>\%
   head(50)
 
-
 # larger example tax_table shows 1000s rows still fast, from microbiomeutilities package
 # library(microbiomeutilities)
 # data("hmp2")
-# tax_fill_unknowns(hmp2)
+# tax_fill_unknowns(hmp2, min_length = 1)
 }

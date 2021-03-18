@@ -1,19 +1,33 @@
 #' Replace unknown, NA, or short tax_table values
 #'
+#' @description
 #' Identifies phyloseq tax_table values as unknown or uninformative and replaces them with the first informative value from a higher taxonomic rank.
 #' - Short values in phyloseq tax_table are typically empty strings or " ", or "g__" etc. so it is helpful to replace them. Set `min_length` = 0 to avoid filtering on length.
 #' - Values in `unknowns` are also removed, even if longer than `min_length`. It is up to the user to specify sensible values in `unknowns` if their dataset has other unwanted values.
 #' - NA values are also replaced.
 #'
-#' @param x phyloseq or tax_table (taxonomyTable) with at least two ranks
+#' @details
+#' By default (unknowns = NA), unknowns is set to a vector containing:
+#' 's__' 'g__' 'f__' 'o__' 'c__' 'p__' 'k__' 'S__' 'G__' 'F__' 'O__' 'C__' 'P__' 'K__' 'NA' 'NaN' ' ' ''
+#' 'unknown' 'Unknown' 's__unknown' 's__Unknown' 's__NA' 'g__unknown' 'g__Unknown' 'g__NA'
+#' 'f__unknown' 'f__Unknown' 'f__NA' 'o__unknown' 'o__Unknown' 'o__NA' 'c__unknown' 'c__Unknown' 'c__NA'
+#' 'p__unknown' 'p__Unknown' 'p__NA' 'k__unknown' 'k__Unknown' 'k__NA' 'S__unknown' 'S__Unknown' 'S__NA'
+#' 'G__unknown' 'G__Unknown' 'G__NA' 'F__unknown' 'F__Unknown' 'F__NA' 'O__unknown' 'O__Unknown' 'O__NA'
+#' 'C__unknown' 'C__Unknown' 'C__NA' 'P__unknown' 'P__Unknown' 'P__NA' 'K__unknown' 'K__Unknown' 'K__NA'
+#'
+#' @param ps phyloseq or tax_table (taxonomyTable) with at least two ranks
 #' @param min_length replace strings shorter than this
-#' @param unknowns also replace strings matching any in this vector
+#' @param unknowns also replace strings matching any in this vector, NA default vector shown in details!
 #' @param levels names of taxonomic levels to modify, defaults to all
 #' @param suffix_rank "classified" (default) or "current", when replacing an entry, should the suffix be taken from the lowest classified rank for that taxon "classified", or the "current" unclassified rank?
 #' @param sep character(s) separating new name and taxonomic rank level suffix (see suffix_rank)
+#' @param anon_unique make anonymous taxa unique by replacing unknowns with taxa_name?
+#' otherwise they are replaced with paste("unknown", rank_names(ps)[1]),
+#' which is therefore the same for every anonymous taxon, meaning they will be merged if tax_agg is used.
+#' (anonymous taxa are taxa with all unknown values in their tax_table row, i.e. cannot be classified even at highest rank available)
 #' @param verbose emit warnings when cannot replace with informative name?
 #'
-#' @return object same class as x
+#' @return object same class as ps
 #' @export
 #'
 #' @examples
@@ -29,25 +43,31 @@
 #' tt <- tax_table(ps)
 #' ntax <- ntaxa(ps)
 #' set.seed(123)
-#' tt[sample(1:ntax, 30), 3] <- "g__"
-#' tt[sample(1:ntax, 20), 2] <- "f__"
-#' tt[sample(1:ntax, 10), 1] <- "p__"
+#' g <- sample(1:ntax, 30)
+#' f <- sample(g, 10)
+#' p <- sample(f, 3)
+#' tt[g, 3] <- "g__"
+#' tt[f, 2] <- "f__"
+#' tt[p, 1] <- "p__"
 #' tt[sample(1:ntax, 10), 3] <- "unknown"
 #' # create a row with only NAs
 #' tt[1, ] <- NA
 #'
 #' tax_table(ps) <- tax_table(tt)
 #'
-#' # tax_fill_unknowns defaults should solve most problems
 #' ps
 #' tax_table(ps) %>% head(50)
+#' # tax_fill_unknowns with defaults should solve most problems
 #'
-#' # this will replace "unknown"s as well as short values including "g__" and "f__"
+#' # this will replace `unknown`s as well as short values including "g__" and "f__"
 #' tax_fill_unknowns(ps) %>%
 #'   tax_table() %>%
 #'   head(50)
 #'
-#' # this will only replace values in Genus column, only replace short entries, and not "unknown"
+#' # This will only replace values in Genus column,
+#' # and only replace short entries, and so won't replace literal "unknown"
+#' # WARNING:
+#' # only set `levels` arg if you know you won't create an invalid tax_table!
 #' ps %>%
 #'   tax_fill_unknowns(unknowns = NULL, levels = "Genus") %>%
 #'   tax_table() %>%
@@ -58,34 +78,41 @@
 #'   tax_table() %>%
 #'   head(50)
 #'
-#'
 #' # larger example tax_table shows 1000s rows still fast, from microbiomeutilities package
 #' # library(microbiomeutilities)
 #' # data("hmp2")
-#' # tax_fill_unknowns(hmp2)
+#' # tax_fill_unknowns(hmp2, min_length = 1)
 tax_fill_unknowns <- function(
-                              x,
+                              ps,
                               min_length = 4,
-                              unknowns = c("unknown", paste0(c("p", "c", "o", "f", "g", "s"), "__")),
-                              levels = phyloseq::rank_names(x),
+                              unknowns = NA,
+                              levels = phyloseq::rank_names(ps),
                               suffix_rank = "classified", # or current
                               sep = " ",
+                              anon_unique = TRUE,
                               verbose = TRUE) {
-  if (methods::is(x, "phyloseq")) {
-    tt <- unclass(phyloseq::tax_table(x))
-  } else if (inherits(x, "taxonomyTable")) {
-    tt <- unclass(x)
+  if (methods::is(ps, "phyloseq")) {
+    tt <- unclass(phyloseq::tax_table(ps))
+  } else if (inherits(ps, "taxonomyTable")) {
+    tt <- unclass(ps)
   } else {
-    stop("x must be phyloseq or taxonomyTable class, it is class: ", paste(class(x), collapse = " "))
+    stop("ps must be phyloseq or taxonomyTable class, it is class: ", paste(class(ps), collapse = " "))
   }
-  if (identical(ncol(tt), 1L)) stop("tax_table(x) has only one rank/column!")
+
+  if (identical(unknowns, NA)) {
+    unknowns <- tax_common_unknowns(min_length = min_length)
+  }
+
+  if (identical(ncol(tt), 1L)) stop("tax_table(ps) has only one rank/column!")
   # get rownames to ensure order doesn't change
   original_rownames <- rownames(tt)
   ranknames <- colnames(tt)
-  tt[is.na(tt)] <- "NA"
+  tt[is.na(tt) | nchar(tt) < min_length | tt %in% unknowns] <- ""
+  rowLengthOut <- ncol(tt) # save number of cols before adding .rownames.
+  tt_extra <- cbind(tt, .rownames. = original_rownames)
 
   # split the matrix tt (splits as a vector: see https://stackoverflow.com/questions/6819804/how-to-convert-a-matrix-to-a-list-of-column-vectors-in-r/6823557)
-  tt_list <- split(tt, row(tt))
+  tt_list <- split(tt_extra, row(tt_extra))
   # repair lost names
   names(tt_list) <- original_rownames
 
@@ -93,15 +120,27 @@ tax_fill_unknowns <- function(
   # replace unknowns
   tt_out <- vapply(
     X = tt_list,
-    FUN.VALUE = as.character(unlist(tt_list[[1]])),
+    FUN.VALUE = character(length = rowLengthOut),
     FUN = function(vec) {
       vec <- unlist(vec)
-      is_unknown <- (nchar(vec) < min_length) | (vec %in% c("NA", unknowns))
+      is_unknown <- vec == "" # all unknowns now replaced first!
       # replace unknowns with nearest known if required and possible
-      if (any(is_unknown)) {
-        if (all(is_unknown)) {
-          vec <- rep(paste("unclassified", ranknames[[1]]), times = length(vec))
-          if (isTRUE(verbose)) warning("This row contains no non-unknown values, returning: '", vec[[1]], "' for all replaced levels.\nConsider editing this tax_table entry manually.")
+      if (any(is_unknown[1:rowLengthOut])) {
+        if (all(is_unknown[1:rowLengthOut])) {
+          if (isTRUE(anon_unique)) {
+            out <- vec[rowLengthOut + 1]
+          } else {
+            out <- paste("unclassified", ranknames[[1]])
+          }
+          vec <- rep(out, times = rowLengthOut)
+          if (isTRUE(verbose)) {
+            warning(
+              "Row named: ", vec[[rowLengthOut + 1]],
+              "\ncontains no non-unknown values, returning:\n'",
+              out, "' for all replaced levels.\n",
+              "Consider editing this tax_table entry manually."
+            )
+          }
         } else {
           # edit each unknown value in this row
           vec <- vapply(
@@ -111,8 +150,13 @@ tax_fill_unknowns <- function(
               if (is_unknown[i]) {
                 known_above <- !is_unknown[1:(i - 1)]
                 if (!any(known_above)) {
-                  if (ranknames[[i]] %in% levels && isTRUE(verbose)) {
-                    warning("No non-unknown values to the left of 1 or more entries in this row, returning those entries unchanged: ", paste(vec, collapse = "; "))
+                  if (ranknames[[i]] %in% levels) {
+                    stop(
+                      "Unknown values detected to the left of known values\n",
+                      "in row named: ", vec[[rowLengthOut + 1]],
+                      "\nThis should not happen. Check/fix this row:\n",
+                      paste(vec[1:rowLengthOut], collapse = "; ")
+                    )
                   }
                   return(vec[i])
                 }
@@ -128,7 +172,7 @@ tax_fill_unknowns <- function(
           )
         }
       }
-      return(vec)
+      return(vec[1:rowLengthOut])
     }
   )
   # transpose result to match original tt and ensure original row order
@@ -143,10 +187,40 @@ tax_fill_unknowns <- function(
   }
 
   # return phyloseq or tax table (same as input)
-  if (inherits(x, "phyloseq")) {
-    phyloseq::tax_table(x) <- tt_out
+  if (inherits(ps, "phyloseq")) {
+    phyloseq::tax_table(ps) <- tt_out
   } else {
-    x <- phyloseq::tax_table(tt_out)
+    ps <- phyloseq::tax_table(tt_out)
   }
-  return(x)
+  return(ps)
+}
+
+#' Helper function returns vector of common unknown/uninformative tax table entries
+#'
+#' @description
+#'  Returns values often found in tax_tables (as assigned by e.g. DECIPHER or NGTAX2)
+#'  This function is used inside tax_fill_unknowns (these values are replaced)
+#'  This function is used inside phyloseq_validate (values are reported only)
+#'
+#' @param min_length
+#' minimum length taxa allowed to be to not be flagged or replaced on grounds of nchar!
+#' (set for purposes of enclosing function, not this function)
+#' @return character vector
+#'
+#' @noRd
+tax_common_unknowns <- function(min_length) {
+  # check tax_table for uninformative entries
+  unknowns <- c("unknown", "Unknown")
+  rank_letters <- c("s", "g", "f", "o", "c", "p", "k")
+  rank_letters <- c(rank_letters, toupper(rank_letters))
+  rank_stubs <- paste0(rank_letters, "__")
+  rank_junk <- sapply(X = rank_stubs, paste0, c(unknowns, "NA"))
+  unknowns <- c(unknowns, as.vector(rank_junk))
+
+  # include shorter names if min_tax_length means nchar won't catch them
+  if (min_length <= 1) unknowns <- c(" ", "", unknowns)
+  if (min_length <= 2) unknowns <- c("NA", unknowns)
+  if (min_length <= 3) unknowns <- c(rank_stubs, unknowns, "NaN")
+
+  return(unknowns)
 }
