@@ -1,5 +1,6 @@
 #' Aggregate taxa and create ps_extra
 #'
+#' @description
 #' `tax_agg` sums the abundances of the phyloseq taxa at the given rank.
 #' It records the tax_agg rank argument in the info of the ps_extra object output.
 #' This ps_extra object tracks aggregation, and any further transformations and scaling,
@@ -7,6 +8,13 @@
 #' tax_agg allows you to pass NA or "unique" to the rank argument which will NOT aggregate the taxa.
 #' It always adds a "unique" rank, which matches the tax_table row names (after any aggregation performed).
 #'
+#' You should NOT use the `top_N` argument yourself unless you know what you are doing.
+#' top_N provides a feature similar to the deprecated microbiome function aggregate_top_taxa
+#' which is primarily useful for decluttering compositional barplots.
+#' microViz comp_barplot (and ord_plot_iris) already run tax_agg with a top_N argument for you, so you should not.
+#' The tax_table produced when using top_N is otherwise INVALID FOR MOST OTHER ANALYSES.
+#'
+#' @details
 #' This function is inspired by microbiome::aggregate_taxa.
 #' However if microbiome::aggregate_taxa is used, microViz cannot track this aggregation.
 #' Except for the ordering of taxa, the resulting phyloseq objects are identical for aggregating a phyloseq with n ranks up to the n-1 rank.
@@ -15,6 +23,9 @@
 #' @param ps phyloseq object
 #' @param rank NA or "unique" or name of valid taxonomic rank (try phyloseq::rank_names(ps))
 #' @param sort_by if not NA, how should the taxa be sorted, uses tax_sort(), takes same options as `by` arg
+#' @param top_N
+#' NA does nothing, but if top_N is a number, it creates an extra tax_table column called top,
+#' which is the same as the unique column for the first top_N number of taxa, and "other" otherwise.
 #'
 #' @return ps_extra list object including phyloseq and tax_agg rank info
 #' @export
@@ -52,7 +63,8 @@
 #'   tax_agg("Family")
 tax_agg <- function(ps,
                     rank = "unique",
-                    sort_by = NA) {
+                    sort_by = NA,
+                    top_N = NA) {
   if (inherits(ps, "ps_extra")) {
     # currently just reset info
     warning(
@@ -65,7 +77,7 @@ tax_agg <- function(ps,
 
   # set up messages sent by multiple stop calls
   unknowns_message <-
-    "\nTo fix, try fill_unknowns = TRUE or `tax_fill_unknowns(ps)`"
+    "\nTo fix, try using `tax_fill_unknowns()` before this function."
 
   ranks <- phyloseq::rank_names(ps)
   bad_rank_message <-
@@ -77,95 +89,113 @@ tax_agg <- function(ps,
   # only do most things if rank is not NA/unique
   if (identical(rank, NA)) rank <- "unique"
   if (identical(rank, "unique")) {
-    ps <- tax_names2tt(ps, colname = rank)
-    return(
-      new_ps_extra(ps = ps, info = new_ps_extra_info(tax_agg = rank))
+    # any sorting and/or creation of "top" rank is done
+    ps_agg <- ps
+  } else {
+
+    # these elements don't make sense any more with aggregated taxa (ever?)
+    ps@phy_tree <- NULL
+    ps@refseq <- NULL
+
+    # check valid rank and get rank index
+    if (!identical(length(rank), 1L) && !inherits(rank, "character")) {
+      stop(bad_rank_message)
+    }
+    rank_index <- base::match(x = rank, table = ranks, nomatch = 0L)
+    if (identical(rank_index, 0L)) {
+      stop("rank is: ", rank, bad_rank_message)
+    }
+
+    # remove lower tax_table ranks
+    tt <- unclass(phyloseq::tax_table(ps))
+    tt <- tt[, seq_len(rank_index), drop = FALSE]
+    tt_df <- as.data.frame.matrix(tt, optional = TRUE, make.names = FALSE)
+    tt_df[[".taxID."]] <- tt_df[, rank_index]
+
+    # check NAs in chosen rank
+    if (anyNA(tt_df[, rank_index])) {
+      stop("NAs in `tax_table(ps)[, rank]`", unknowns_message)
+    }
+
+    tt_distinct <- dplyr::distinct(tt_df)
+    # unique names needed as factor levels for .taxID. column
+    # otherwise grouped summarise later reorders otu table to alphabetical...
+    new_tax_names <- base::unique(tt_df[, rank_index])
+
+    # tt must be unique at given rank by this point
+    uniq_at_rank <- identical(length(new_tax_names), y = nrow(tt_distinct))
+    if (!uniq_at_rank) {
+      stop("Taxa not unique at rank: ", rank, unknowns_message)
+    }
+
+    # get otu table with taxa as rows (like tt)
+    otu <- t(unclass(otu_get(ps)))
+    otu_df <- as.data.frame.matrix(
+      x = otu, optional = TRUE, make.names = FALSE, stringsAsFactors = FALSE
     )
-  }
-
-  # these elements don't make sense any more, with aggregated taxa (ever?)
-  ps@phy_tree <- NULL
-  ps@refseq <- NULL
-
-  # check valid rank and get rank index
-  if (!identical(length(rank), 1L) && !inherits(rank, "character")) {
-    stop(bad_rank_message)
-  }
-  rank_index <- base::match(x = rank, table = ranks, nomatch = 0L)
-  if (identical(rank_index, 0L)) {
-    stop("rank is: ", rank, bad_rank_message)
-  }
-
-  # remove lower tax_table ranks
-  tt <- unclass(phyloseq::tax_table(ps))
-  tt <- tt[, seq_len(rank_index), drop = FALSE]
-  tt_df <- as.data.frame.matrix(tt, optional = TRUE, make.names = FALSE)
-  tt_df[[".taxID."]] <- tt_df[, rank_index]
-
-  # check NAs in chosen rank
-  if (anyNA(tt_df[, rank_index])) {
-    stop("NAs in `tax_table(ps)[, rank]`", unknowns_message)
-  }
-
-  tt_distinct <- dplyr::distinct(tt_df)
-  # unique names needed as factor levels for .taxID. column
-  # otherwise grouped summarise later reorders otu table to alphabetical...
-  new_tax_names <- base::unique(tt_df[, rank_index])
-
-  # tt must be unique at given rank by this point
-  unique_at_rank <- identical(length(new_tax_names), y = nrow(tt_distinct))
-  if (!unique_at_rank) stop("Taxa not unique at given rank.", unknowns_message)
-
-  # get otu table with taxa as rows (like tt)
-  otu <- t(unclass(otu_get(ps)))
-  otu_df <- as.data.frame.matrix(
-    x = otu, optional = TRUE, make.names = FALSE, stringsAsFactors = FALSE
-  )
-  otu_df[[".taxID."]] <- factor(
-    x = tt_df[, rank_index],
-    levels = new_tax_names,
-    ordered = TRUE
-  )
-
-  # aggregate tax abundance values in samples by summing within taxID groups
-  otu_grouped <- otu_df %>%
-    dplyr::group_by(dplyr::across(dplyr::all_of(".taxID.")))
-  otu_agg <- otu_grouped %>%
-    dplyr::summarise(
-      dplyr::across(
-        where(is.numeric),
-        .fns = sum, na.rm = TRUE,
-        .names = "{.col}"
-      ),
-      .groups = "drop"
+    otu_df[[".taxID."]] <- factor(
+      x = tt_df[, rank_index],
+      levels = new_tax_names,
+      ordered = TRUE
     )
 
-  # build new phyloseq
-  otu_new <- otu_agg %>%
-    tibble::remove_rownames() %>%
-    tibble::column_to_rownames(var = ".taxID.") %>%
-    phyloseq::otu_table(taxa_are_rows = TRUE)
+    # aggregate tax abundance values in samples by summing within taxID groups
+    otu_grouped <- otu_df %>%
+      dplyr::group_by(dplyr::across(dplyr::all_of(".taxID.")))
+    otu_agg <- otu_grouped %>%
+      dplyr::summarise(
+        dplyr::across(
+          where(is.numeric),
+          .fns = sum, na.rm = TRUE,
+          .names = "{.col}"
+        ),
+        .groups = "drop"
+      )
 
+    # build new phyloseq
+    otu_new <- otu_agg %>%
+      tibble::remove_rownames() %>%
+      tibble::column_to_rownames(var = ".taxID.") %>%
+      phyloseq::otu_table(taxa_are_rows = TRUE)
 
-  tt_new <- tt_distinct %>%
-    tibble::remove_rownames() %>%
-    tibble::column_to_rownames(var = ".taxID.") %>%
-    as.matrix.data.frame() %>%
-    phyloseq::tax_table()
+    tt_new <- tt_distinct %>%
+      tibble::remove_rownames() %>%
+      tibble::column_to_rownames(var = ".taxID.") %>%
+      as.matrix.data.frame() %>%
+      phyloseq::tax_table()
 
+    # return the otu_table as it was originally
+    if (!taxa_were_rows) otu_new <- phyloseq::t(otu_new)
+
+    # phyloseq
+    ps_agg <- phyloseq::phyloseq(phyloseq::sample_data(ps), tt_new, otu_new)
+  }
   # add unique rank that matches taxa/rownames
   # (like how microbiome aggregate_taxa works, in case any fun uses that col)
-  tt_new <- tax_names2tt(tt_new, colname = "unique")
+  ps_agg <- tax_names2tt(ps_agg, colname = "unique")
 
-  # return the otu_table as it was originally
-  if (!taxa_were_rows) otu_new <- phyloseq::t(otu_new)
-
-  # phyloseq
-  ps_agg <- phyloseq::phyloseq(phyloseq::sample_data(ps), tt_new, otu_new)
+  # if top_N set, set a default sort_by of sum, if necessary
+  if (!identical(top_N, NA) && identical(sort_by, NA)) {
+    stopifnot(length(top_N) == 1 && is.numeric(top_N))
+    sort_by <- function(x) sum(x, na.rm = TRUE)
+  }
 
   # sort phyloseq taxa
-  if (!identical(sort_by, NA)) ps <- tax_sort(ps, by = sort_by)
+  if (!identical(sort_by, NA)) ps_agg <- tax_sort(ps_agg, by = sort_by)
 
+  # create top column if requested by top_N
+  if (!identical(top_N, NA)) {
+    top_taxons <- c(
+      phyloseq::taxa_names(ps_agg)[seq_len(top_N)],
+      rep_len("other", length.out = phyloseq::ntaxa(ps_agg)-top_N)
+    )
+    phyloseq::tax_table(ps_agg) <- cbind(
+      # new tt except unique col
+      tt_get(ps_agg)[, phyloseq::rank_names(ps_agg) != "unique"],
+      top = top_taxons, # new top col
+      tt_get(ps_agg)[, "unique"] # add unique col back on at end
+    )
+  }
   # ps_extra
   ps_extra <- new_ps_extra(
     ps = ps_agg, info = new_ps_extra_info(tax_agg = rank)
@@ -204,4 +234,3 @@ tax_names2tt <- function(data, colname = "unique") {
     return(data)
   }
 }
-

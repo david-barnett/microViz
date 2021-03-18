@@ -71,7 +71,7 @@ tax_model <- function(ps, tax_level, type = "bbdml", variables = NULL, formula =
   ps <- phyloseq_validate(ps, remove_undetected = TRUE, verbose = TRUE)
 
   # aggregate phyloseq at chosen rank level
-  ps <- microbiome::aggregate_taxa(ps, level = tax_level)
+  ps <- tax_agg(ps, rank = tax_level)[["ps"]]
 
   # default to modelling all taxa
   if (identical(taxa, NULL)) taxa <- TRUE

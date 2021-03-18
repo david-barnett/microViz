@@ -43,3 +43,25 @@ for (level in agg_level_test) {
     }
   )
 }
+
+test_that(
+  desc = paste("tax_agg with top_N and no agg eqivalent to microbiome::top_taxa"),
+  code = {
+    biome_top <- microbiome::top_taxa(x = dietswap, n = 40)
+    viz_tt <- tt_get(tax_agg(dietswap, rank = "unique", top_N = 40))
+    viz_top <- unname(unclass(viz_tt)[, "top"])[1:40]
+    expect_equal(object = viz_top, expected = biome_top)
+  }
+)
+
+test_that(
+  desc = paste("tax_agg with top_N and Family agg eqivalent to aggregate_taxa and top_taxa"),
+  code = {
+    biome_top <- dietswap %>%
+      microbiome::aggregate_taxa("Family") %>%
+      microbiome::top_taxa(n = 10)
+    viz_tt <- tt_get(tax_agg(dietswap, rank = "Family", top_N = 10))
+    viz_top <- unname(unclass(viz_tt)[, "top"])[1:10]
+    expect_equal(object = viz_top, expected = biome_top)
+  }
+)

@@ -4,7 +4,7 @@
 \alias{tax_agg}
 \title{Aggregate taxa and create ps_extra}
 \usage{
-tax_agg(ps, rank = "unique", sort_by = NA)
+tax_agg(ps, rank = "unique", sort_by = NA, top_N = NA)
 }
 \arguments{
 \item{ps}{phyloseq object}
@@ -12,6 +12,9 @@ tax_agg(ps, rank = "unique", sort_by = NA)
 \item{rank}{NA or "unique" or name of valid taxonomic rank (try phyloseq::rank_names(ps))}
 
 \item{sort_by}{if not NA, how should the taxa be sorted, uses tax_sort(), takes same options as \code{by} arg}
+
+\item{top_N}{NA does nothing, but if top_N is a number, it creates an extra tax_table column called top,
+which is the same as the unique column for the first top_N number of taxa, and "other" otherwise.}
 }
 \value{
 ps_extra list object including phyloseq and tax_agg rank info
@@ -23,6 +26,12 @@ This ps_extra object tracks aggregation, and any further transformations and sca
 to help you keep track of what you have done with your phyloseq object.
 tax_agg allows you to pass NA or "unique" to the rank argument which will NOT aggregate the taxa.
 It always adds a "unique" rank, which matches the tax_table row names (after any aggregation performed).
+
+You should NOT use the \code{top_N} argument yourself unless you know what you are doing.
+top_N provides a feature similar to the deprecated microbiome function aggregate_top_taxa
+which is primarily useful for decluttering compositional barplots.
+microViz comp_barplot (and ord_plot_iris) already run tax_agg with a top_N argument for you, so you should not.
+The tax_table produced when using top_N is otherwise INVALID FOR MOST OTHER ANALYSES.
 }
 \details{
 This function is inspired by microbiome::aggregate_taxa.
