@@ -8,6 +8,7 @@
 * `tax_sort` for sorting taxa in tax_table and otu_table by several name or abundance options (deletes phy_tree if present!)
 * `tax_transform` can take a rank argument, to perform aggregation (internally using tax_agg) and transformation with one function, and record the results. **This is now the recommended usage!**
 * `tax_transform` new transformation = "binary" can convert to presence/absence data (used by `tax_sort` for by = "prev")
+* `tax_top` for flexibly returning top n taxa, at chosen rank, with ordering by `tax_sort`
 
 # microViz 0.5.0 - "hot maps"
 
