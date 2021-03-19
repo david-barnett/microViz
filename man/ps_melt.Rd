@@ -2,7 +2,7 @@
 % Please edit documentation in R/ps_melt.R
 \name{ps_melt}
 \alias{ps_melt}
-\title{Melt phyloseq data object into large dataframe (tibble)}
+\title{Melt phyloseq data object into large data.frame (tibble)}
 \usage{
 ps_melt(ps)
 }

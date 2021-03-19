@@ -1,10 +1,11 @@
 # Everything in this file is copied (and very slightly modified) from an old version of speedyseq by Michael McLaren @mikemc
 # source available here: https://github.com/mikemc/speedyseq/blob/1bacc47d58549a53f662d4f1c275caab9b3d3b80/R/psmelt.R
 
-# Attribution: The documentation for `ps_melt()` is from phyloseq,
+# Speedyseq's Attribution note [slighlty modified]:
+# The documentation for `ps_melt()` is [mostly] from phyloseq's `psmelt()`
 # https://github.com/joey711/phyloseq/blob/master/R/plot-methods.R
 
-#' Melt phyloseq data object into large dataframe (tibble)
+#' Melt phyloseq data object into large data.frame (tibble)
 #'
 #' @description
 #' The ps_melt function is a specialized melt function for melting phyloseq objects
@@ -131,7 +132,7 @@ ps_melt <- function(ps) {
     # Rename the sample variables
     colnames(phyloseq::sample_data(ps))[wh2] <- new2
   }
-  # Enforce OTU table orientation.
+  # Enforce OTU table orientation. (to be taxa as rows)
   otutab <- unclass(phyloseq::otu_table(ps))
   if (!phyloseq::taxa_are_rows(ps)) {
     otutab <- t(otutab)
@@ -141,7 +142,7 @@ ps_melt <- function(ps) {
   # (one sample-taxon observation per row)
   tb <- otutab %>%
     tibble::as_tibble(rownames = "OTU") %>%
-    tidyr::gather("Sample", "Abundance", -OTU)
+    tidyr::gather(key = "Sample", value = "Abundance", -OTU)
   # Add the sample data if it exists
   if (!is.null(sampleVars)) {
     sam <- phyloseq::sample_data(ps) %>%
@@ -162,9 +163,5 @@ ps_melt <- function(ps) {
     }
     tb <- tb %>% dplyr::left_join(tax, by = "OTU")
   }
-  # Arrange by Abundance and OTU names within (to approx. phyloseq behaviour)
-  tb <- tb %>%
-    dplyr::arrange(dplyr::across(dplyr::all_of("OTU"))) %>%
-    dplyr::arrange(dplyr::across(dplyr::all_of("Abundance"), dplyr::desc))
   return(tb)
 }
