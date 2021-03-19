@@ -37,7 +37,7 @@ tax_top(dietswap)
 tax_top(dietswap, n = 4, by = "prev", rank = "Phylum", undetected = 30)
 }
 \seealso{
-\link{\code{tax_agg}} for more info on taxonomic aggregation
+\code{\link{tax_agg}} for more info on taxonomic aggregation
 
-\link{\code{tax_sort}} for more info on sorting taxa
+\code{\link{tax_sort}} for more info on sorting taxa
 }

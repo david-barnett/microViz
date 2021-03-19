@@ -5,8 +5,8 @@
 #' 2. sorts the aggregated taxa according to `by`
 #' 3. returns the top `n` number of taxa names
 #'
-#' @seealso \link{\code{tax_agg}} for more info on taxonomic aggregation
-#' @seealso \link{\code{tax_sort}} for more info on sorting taxa
+#' @seealso \code{\link{tax_agg}} for more info on taxonomic aggregation
+#' @seealso \code{\link{tax_sort}} for more info on sorting taxa
 #'
 #' @param data phyloseq object or ps_extra
 #' @param n how many taxa names to return

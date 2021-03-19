@@ -29,7 +29,7 @@ tax_fill_unknowns(
 \item{sep}{character(s) separating new name and taxonomic rank level suffix (see suffix_rank)}
 
 \item{anon_unique}{make anonymous taxa unique by replacing unknowns with taxa_name?
-otherwise they are replaced with paste("unknown", rank_names(ps)\link{1}),
+otherwise they are replaced with paste("unknown", first_rank_name),
 which is therefore the same for every anonymous taxon, meaning they will be merged if tax_agg is used.
 (anonymous taxa are taxa with all unknown values in their tax_table row, i.e. cannot be classified even at highest rank available)}
 
