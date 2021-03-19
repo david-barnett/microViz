@@ -1,4 +1,9 @@
-# microViz (development version)
+# microViz 0.6.0 - "open sesame"
+
+This is the first public release version of microViz. It is still under active development, so pay attention to the following:
+
+- Minor version changes (e.g. 0.5.* to 0.6.0) will signal that breaking changes have been made, i.e. installing the new version may break some previously working code. Breaking changes will be listed in this document.
+- Patch versions (e.g. 0.5.1 to 0.5.2) will be used to release new features and bug fixes, which should not break existing code. Please let me know if it does anyway!
 
 ## Breaking changes
 * `tax_agg` argument agg_level renamed to rank. `tax_agg` returns taxa in different order than before (and now different order from, but same aggregation as, `microbiome::aggregate_taxa()`). tax_agg now checks if taxa cannot be uniquely identified at the specified rank level. (now also about twice as fast)

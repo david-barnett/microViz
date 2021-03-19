@@ -21,13 +21,14 @@ options(width = 100)
 <!-- badges: end -->
 
 microViz package provides functions for wrangling, stats and visualisation of microbiome (16S) sequencing readcount data. These functions are intended to be easy to use (with clear documentation) and modular (for extensibility and flexibility). 
-microViz wraps and extends popular microbial ecology packages like phyloseq, vegan, and microbiome.
+microViz wraps, extends and complements, popular microbial ecology packages like phyloseq, vegan, and microbiome.
 
 **See the documentation website for full details and examples:** https://david-barnett.github.io/microViz/
 
+- The ["Get started"](https://david-barnett.github.io/microViz/articles/articles/microViz.html) page, and also this ReadMe, show a few example analyses.
 - The [reference](https://david-barnett.github.io/microViz/reference/index.html) page lists all functions and links to their documentation and examples
-- The articles pages discuss and give more complicated examples (in development)
 - The [changelog](https://david-barnett.github.io/microViz/news/index.html) describe important changes in new microViz package versions
+- The articles pages discuss and give more complicated examples (articles in development!)
 
 ## Installation
 
@@ -37,6 +38,9 @@ You can install the latest available microViz package version using the followin
 # If you are on windows you will need to install RTools so that your computer can build this package
 # Follow instructions here: http://jtleek.com/modules/01_DataScientistToolbox/02_10_rtools/
 
+# If you are on macOS, you might need to install xquartz to make the heatmaps work (ComplexHeatmaps package)
+# You can do this with homebrew, running the following command in your mac's Terminal: brew install --cask xquartz 
+
 # If you don't already have the latest versions of phyloseq and microbiome, you should install these from bioconductor:
 
 if (!requireNamespace("BiocManager", quietly = TRUE))
@@ -45,7 +49,7 @@ BiocManager::install(c("phyloseq", "microbiome"))
 
 # # Installing the latest version of this package # #
 install.packages("devtools")
-devtools::install_github("MUMC-MEDMIC/microViz@0.5.0") # check 0.5.0 is the latest version?
+devtools::install_github("david-barnett/microViz@0.6.0") # check 0.6.0 is the latest version?
 # advanced tip: add @<commit-hash> after microViz to install a version from a particular commit
 
 ```
@@ -55,8 +59,6 @@ devtools::install_github("MUMC-MEDMIC/microViz@0.5.0") # check 0.5.0 is the late
 ```{r load, message=FALSE}
 library(microViz)
 library(phyloseq)
-library(vegan)
-library(microbiome)
 library(dplyr)
 library(ggplot2)
 ```
@@ -83,7 +85,11 @@ Perhaps these example data differ across BMI groups?
 ```{r fig.height=8, fig.width=10, dpi=300}
 dietswap %>%
   tax_filter(min_prevalence = 1) %>%
-  comp_barplot(tax_level = "Genus",  n_taxa = 10) +
+  comp_barplot(
+    tax_level = "Genus",  n_taxa = 12, 
+    merge_other = FALSE 
+    # set merge_other = TRUE (the default) to remove outlines from inside "other" category
+  ) +
   facet_wrap("bmi_group", nrow = 3, scales = "free") +
   labs(x = NULL, y = NULL) +
   theme(
@@ -114,7 +120,9 @@ unconstrained_aitchison_pca <-
   tax_filter(min_prevalence = 0.1, tax_level = "Genus") %>%
   tax_agg("Family") %>%
   tax_transform("clr") %>%
-  ord_calc(method = "RDA")
+  ord_calc() 
+# will automatically infer you want a "PCA" here
+# specify explicitly with method = "PCA", or you can pick another method
 
 # create plot
 pca_plot <- unconstrained_aitchison_pca %>%
@@ -146,6 +154,7 @@ aitchison_dists <-
   dietswap %>%
   tax_filter(min_prevalence = 0.1, tax_level = "Genus") %>%
   tax_agg("Family") %>%
+  tax_transform("identity") %>% 
   dist_calc("aitchison")
 
 # the more permutations you request, the longer it takes

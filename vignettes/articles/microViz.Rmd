@@ -220,13 +220,15 @@ ps %>%
 ### Taxon models
 
 What are the effects of these factors on individual taxa? Let's use beta binomial regression models to find out.
+We will skip fitting models for genera here, only for speed of generating this example. 
+You should include all tax_levels (which is the default) for the best use of taxatree_plots.
 
 ```{r taxon modelling}
 library(corncob)
 tt_models <- ps %>%
   tax_filter(min_prevalence = 5 / 100, tax_level = "Genus") %>%
   taxatree_models(
-    tax_levels = c("Phylum", "Family"), # skipping genera for speed of generating this example
+    tax_levels = c("Phylum", "Family"), 
     variables = c("female", "wt_scaled", "P", "R"), type = "bbdml", verbose = "max"
   )
 ```
