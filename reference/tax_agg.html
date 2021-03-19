@@ -82,7 +82,7 @@ The tax_table produced when using top_N is otherwise INVALID FOR MOST OTHER ANAL
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0.9009</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
       </span>
     </div>
 
@@ -155,7 +155,7 @@ microViz comp_barplot (and ord_plot_iris) already run tax_agg with a top_N argum
 The tax_table produced when using top_N is otherwise INVALID FOR MOST OTHER ANALYSES.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>tax_agg</span><span class='op'>(</span><span class='va'>ps</span>, rank <span class='op'>=</span> <span class='st'>"unique"</span>, sort_by <span class='op'>=</span> <span class='cn'>NA</span>, top_N <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>tax_agg</span><span class='op'>(</span><span class='va'>ps</span>, rank <span class='op'>=</span> <span class='st'>"unique"</span>, sort_by <span class='op'>=</span> <span class='cn'>NA</span>, top_N <span class='op'>=</span> <span class='cn'>NA</span>, force <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -176,6 +176,15 @@ The tax_table produced when using top_N is otherwise INVALID FOR MOST OTHER ANAL
       <th>top_N</th>
       <td><p>NA does nothing, but if top_N is a number, it creates an extra tax_table column called top,
 which is the same as the unique column for the first top_N number of taxa, and "other" otherwise.</p></td>
+    </tr>
+    <tr>
+      <th>force</th>
+      <td><p>If TRUE, this forces aggregation at chosen rank to occur regardless of if the output will be sensible!
+This avoids the "Taxa not unique at rank: ..." error, but may allow very inappropriate aggregation to occur.
+Do not use force = TRUE unless you know why you are doing this, and what the result will be.
+If you are getting an error with force = FALSE, it is almost certainly better to examine the tax_table and fix the problem.
+(force = TRUE is similar to microbiome::aggregate_taxa,
+which also does not check that the taxa are uniquely defined by only the aggregation level.</p></td>
     </tr>
     </table>
 
@@ -285,9 +294,10 @@ Aggregating at rank n with tax_agg still generates a "unique" column, but aggreg
 #&gt; 
 #&gt; phyloseq info:
 #&gt; tax_agg = Genus tax_transform = NA</div><div class='input'>
-<span class='co'># you can replace long unknown values</span>
+<span class='co'># you can replace unknown values with `tax_fill_unknowns()`</span>
+
+<span class='co'># default tax_fill_unknowns settings won't catch this long unknown</span>
 <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html'>tax_table</a></span><span class='op'>(</span><span class='va'>dietswap</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>13</span><span class='op'>:</span><span class='fl'>17</span>, <span class='st'>"Family"</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='st'>"some_unknown_family"</span>
-<span class='co'># default tax_fill_unknowns settings won't catch it (too long)</span>
 <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='tax_fill_unknowns.html'>tax_fill_unknowns</a></span><span class='op'>(</span>unknowns <span class='op'>=</span> <span class='st'>"some_unknown_family"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>tax_agg</span><span class='op'>(</span><span class='st'>"Family"</span><span class='op'>)</span>

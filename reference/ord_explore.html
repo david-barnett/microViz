@@ -73,7 +73,7 @@ You can style the ordination plot points using the options on the left panel." /
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0.9009</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
       </span>
     </div>
 
@@ -180,8 +180,14 @@ You can style the ordination plot points using the options on the left panel.</p
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"enterotype"</span><span class='op'>)</span>
 
 <span class='co'># simple example #</span>
-<span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>enterotype</span>
-<span class='va'>ord1</span> <span class='op'>&lt;-</span> <span class='va'>ps</span> <span class='op'>%&gt;%</span>
+<span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tax_fill_unknowns.html'>tax_fill_unknowns</a></span><span class='op'>(</span><span class='va'>enterotype</span><span class='op'>)</span> <span class='co'># remove NA taxa</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Row named: -1</span>
+#&gt; <span class='warning'>contains no non-unknown values, returning:</span>
+#&gt; <span class='warning'>'-1' for all replaced levels.</span>
+#&gt; <span class='warning'>Consider editing this tax_table entry manually.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Row named: Bacteria</span>
+#&gt; <span class='warning'>contains no non-unknown values, returning:</span>
+#&gt; <span class='warning'>'Bacteria' for all replaced levels.</span>
+#&gt; <span class='warning'>Consider editing this tax_table entry manually.</span></div><div class='input'><span class='va'>ord1</span> <span class='op'>&lt;-</span> <span class='va'>ps</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='dist_calc.html'>dist_calc</a></span><span class='op'>(</span><span class='st'>"bray"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"PCoA"</span><span class='op'>)</span>
 

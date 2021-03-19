@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0.9009</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
       </span>
     </div>
 
@@ -276,8 +276,8 @@
 <span class="co">#&gt; Dropping samples with missings: 17</span>
 <span class="co">#&gt; weight has NAs: 15</span>
 <span class="co">#&gt; female has NAs: 2</span>
-<span class="co">#&gt; 2021-03-19 00:00:41 - Starting PERMANOVA with 99 perms with 1 processes</span>
-<span class="co">#&gt; 2021-03-19 00:00:56 - Finished PERMANOVA</span>
+<span class="co">#&gt; 2021-03-19 13:56:17 - Starting PERMANOVA with 99 perms with 1 processes</span>
+<span class="co">#&gt; 2021-03-19 13:56:36 - Finished PERMANOVA</span>
 <span class="co">#&gt; ps_extra object - a list with phyloseq and extras:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; phyloseq-class experiment-level object</span>
@@ -381,17 +381,17 @@
 <div id="taxon-models" class="section level3">
 <h3 class="hasAnchor">
 <a href="#taxon-models" class="anchor"></a>Taxon models</h3>
-<p>What are the effects of these factors on individual taxa? Let’s use beta binomial regression models to find out.</p>
+<p>What are the effects of these factors on individual taxa? Let’s use beta binomial regression models to find out. We will skip fitting models for genera here, only for speed of generating this example. You should include all tax_levels (which is the default) for the best use of taxatree_plots.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">corncob</span><span class="op">)</span>
 <span class="va">tt_models</span> <span class="op">&lt;-</span> <span class="va">ps</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">5</span> <span class="op">/</span> <span class="fl">100</span>, tax_level <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../../reference/Taxon-modelling.html">taxatree_models</a></span><span class="op">(</span>
-    tax_levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Phylum"</span>, <span class="st">"Family"</span><span class="op">)</span>, <span class="co"># skipping genera for speed of generating this example</span>
+    tax_levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Phylum"</span>, <span class="st">"Family"</span><span class="op">)</span>, 
     variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"female"</span>, <span class="st">"wt_scaled"</span>, <span class="st">"P"</span>, <span class="st">"R"</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"bbdml"</span>, verbose <span class="op">=</span> <span class="st">"max"</span>
   <span class="op">)</span>
 <span class="co">#&gt; Proportional min_prevalence given: 0.05 --&gt; min 41/801 samples.</span>
-<span class="co">#&gt; 2021-03-19 00:00:59 - modelling at level: Phylum</span>
+<span class="co">#&gt; 2021-03-19 13:56:41 - modelling at level: Phylum</span>
 <span class="co">#&gt; Modelling: P: Actinobacteria</span>
 <span class="co">#&gt; Modelling: P: Verrucomicrobia</span>
 <span class="co">#&gt; Modelling: P: Proteobacteria</span>
@@ -400,7 +400,7 @@
 <span class="co">#&gt; Modelling: P: Spirochaetes</span>
 <span class="co">#&gt; Modelling: P: Fusobacteria</span>
 <span class="co">#&gt; Modelling: P: Cyanobacteria</span>
-<span class="co">#&gt; 2021-03-19 00:01:08 - modelling at level: Family</span>
+<span class="co">#&gt; 2021-03-19 13:56:50 - modelling at level: Family</span>
 <span class="co">#&gt; Modelling: F: Actinobacteria</span>
 <span class="co">#&gt; Modelling: F: Verrucomicrobia</span>
 <span class="co">#&gt; Modelling: F: Proteobacteria</span>
@@ -538,7 +538,7 @@
 <span class="co">#&gt;  memoise              2.0.0        2021-01-26 [1] CRAN (R 4.0.2)                       </span>
 <span class="co">#&gt;  mgcv                 1.8-33       2020-08-27 [2] CRAN (R 4.0.4)                       </span>
 <span class="co">#&gt;  microbiome         * 1.12.0       2020-10-27 [1] Bioconductor                         </span>
-<span class="co">#&gt;  microViz           * 0.5.0.9009   2021-03-18 [1] local                                </span>
+<span class="co">#&gt;  microViz           * 0.6.0        2021-03-19 [1] local                                </span>
 <span class="co">#&gt;  multtest             2.46.0       2020-10-27 [1] Bioconductor                         </span>
 <span class="co">#&gt;  munsell              0.5.0        2018-06-12 [1] CRAN (R 4.0.2)                       </span>
 <span class="co">#&gt;  nlme                 3.1-152      2021-02-04 [2] CRAN (R 4.0.4)                       </span>

@@ -40,13 +40,15 @@
 
 
 <meta property="og:title" content="Plot (grouped and ordered) compositional barplots — comp_barplot" />
-<meta property="og:description" content="Stacked barplots showing composition of phyloseq samples for a specified number of coloured taxa. comp_barplot performs the compositional transformation for you, so your phyloseq object should contain counts!
+<meta property="og:description" content="Stacked barplots showing composition of phyloseq samples for a specified number of coloured taxa.
+Normally your phyloseq object should contain count data, as by default comp_barplot() performs the &quot;compositional&quot; taxa transformation for you, and requires count input for some sample_order methods!
 sample_order: Either specify a list of sample names to order manually, or the bars/samples can/will be sorted by similarity, according to a specified distance measure (default aitchison),
 seriate_method specifies a seriation/ordering algorithm (default Ward hierarchical clustering with optimal leaf ordering, see seriation::list_seriation_methods())
 group_by: You can group the samples on distinct plots by levels of a variable in the phyloseq object. The list of ggplots produced can be arranged flexibly with the patchwork package functions. If you want to group by several variables you can create an interaction variable with interaction(var1, var2) in the phyloseq sample_data BEFORE using comp_barplot.
 facet_by can allow faceting of your plot(s) by a grouping variable. Using this approach is less flexible than using group_by but means you don't have to arrange a list of plots yourself like with the group_by argument. Using facet_by is equivalent to adding a call to facet_wrap(facets = facet_by, scales = &quot;free&quot;) to your plot(s). Calling facet_wrap() yourself is itself a more flexible option as you can add other arguments like the number of rows etc. However you must use keep_all_vars = TRUE if you will add faceting manually.
 bar_width: No gaps between bars, unless you want them (decrease width argument to add gaps between bars).
-bar_outline_colour: Bar outlines default to &quot;black&quot;. Set to NA if you don't want outlines.
+bar_outline_colour: Bar outlines default to &quot;grey5&quot; for almost black outlines. Use NA if you don't want outlines.
+merge_other: controls whether bar outlines can be drawn around individual (lower abundance) taxa that are grouped in &quot;other&quot; category. If you want to see the diversity of taxa in &quot;other&quot; use merge_taxa = FALSE, or use TRUE if you prefer the cleaner merged look
 palette: Default colouring is consistent across multiple plots if created with the group_by argument, and the defaults scheme retains the colouring of the most abundant taxa irrespective of n_taxa
 
 " />
@@ -81,7 +83,7 @@ palette: Default colouring is consistent across multiple plots if created with t
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0.9009</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
       </span>
     </div>
 
@@ -141,13 +143,15 @@ palette: Default colouring is consistent across multiple plots if created with t
     </div>
 
     <div class="ref-description">
-    <p>Stacked barplots showing composition of phyloseq samples for a specified number of coloured taxa. <code>comp_barplot</code> performs the compositional transformation for you, so your phyloseq object should contain counts!</p><ul>
+    <p>Stacked barplots showing composition of phyloseq samples for a specified number of coloured taxa.
+Normally your phyloseq object should contain count data, as by default <code>comp_barplot()</code> performs the "compositional" taxa transformation for you, and requires count input for some sample_order methods!</p><ul>
 <li><p>sample_order: Either specify a list of sample names to order manually, or the bars/samples can/will be sorted by similarity, according to a specified distance measure (default aitchison),</p></li>
 <li><p>seriate_method specifies a seriation/ordering algorithm (default Ward hierarchical clustering with optimal leaf ordering, see seriation::list_seriation_methods())</p></li>
 <li><p>group_by: You can group the samples on distinct plots by levels of a variable in the phyloseq object. The list of ggplots produced can be arranged flexibly with the patchwork package functions. If you want to group by several variables you can create an interaction variable with interaction(var1, var2) in the phyloseq sample_data BEFORE using comp_barplot.</p></li>
 <li><p>facet_by can allow faceting of your plot(s) by a grouping variable. Using this approach is less flexible than using group_by but means you don't have to arrange a list of plots yourself like with the group_by argument. Using facet_by is equivalent to adding a call to facet_wrap(facets = facet_by, scales = "free") to your plot(s). Calling facet_wrap() yourself is itself a more flexible option as you can add other arguments like the number of rows etc. However you must use keep_all_vars = TRUE if you will add faceting manually.</p></li>
 <li><p>bar_width: No gaps between bars, unless you want them (decrease width argument to add gaps between bars).</p></li>
-<li><p>bar_outline_colour: Bar outlines default to "black". Set to NA if you don't want outlines.</p></li>
+<li><p>bar_outline_colour: Bar outlines default to "grey5" for almost black outlines. Use NA if you don't want outlines.</p></li>
+<li><p>merge_other: controls whether bar outlines can be drawn around individual (lower abundance) taxa that are grouped in "other" category. If you want to see the diversity of taxa in "other" use merge_taxa = FALSE, or use TRUE if you prefer the cleaner merged look</p></li>
 <li><p>palette: Default colouring is consistent across multiple plots if created with the group_by argument, and the defaults scheme retains the colouring of the most abundant taxa irrespective of n_taxa</p></li>
 </ul>
 
@@ -158,18 +162,21 @@ palette: Default colouring is consistent across multiple plots if created with t
   <span class='va'>tax_level</span>,
   n_taxa <span class='op'>=</span> <span class='fl'>8</span>,
   tax_order <span class='op'>=</span> <span class='st'>"abundance"</span>,
+  merge_other <span class='op'>=</span> <span class='cn'>TRUE</span>,
   taxon_renamer <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
-  palette <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"lightgrey"</span>, <span class='fu'><a href='https://rdrr.io/r/base/rev.html'>rev</a></span><span class='op'>(</span><span class='fu'><a href='distinct_palette.html'>distinct_palette</a></span><span class='op'>(</span><span class='va'>n_taxa</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>,
   sample_order <span class='op'>=</span> <span class='st'>"aitchison"</span>,
   order_with_all_taxa <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  tax_transform_for_ordering <span class='op'>=</span> <span class='st'>"identity"</span>,
   label <span class='op'>=</span> <span class='st'>"SAMPLE"</span>,
   group_by <span class='op'>=</span> <span class='cn'>NA</span>,
   facet_by <span class='op'>=</span> <span class='cn'>NA</span>,
   bar_width <span class='op'>=</span> <span class='fl'>1</span>,
-  bar_outline_colour <span class='op'>=</span> <span class='st'>"black"</span>,
-  keep_all_vars <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  seriate_method <span class='op'>=</span> <span class='st'>"OLO_ward"</span>
+  bar_outline_colour <span class='op'>=</span> <span class='st'>"grey5"</span>,
+  bar_outline_width <span class='op'>=</span> <span class='fl'>0.05</span>,
+  palette <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"lightgrey"</span>, <span class='fu'><a href='https://rdrr.io/r/base/rev.html'>rev</a></span><span class='op'>(</span><span class='fu'><a href='distinct_palette.html'>distinct_palette</a></span><span class='op'>(</span><span class='va'>n_taxa</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>,
+  tax_transform_for_ordering <span class='op'>=</span> <span class='st'>"identity"</span>,
+  tax_transform_for_plot <span class='op'>=</span> <span class='st'>"compositional"</span>,
+  seriate_method <span class='op'>=</span> <span class='st'>"OLO_ward"</span>,
+  keep_all_vars <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -192,58 +199,84 @@ palette: Default colouring is consistent across multiple plots if created with t
       <td><p>order of taxa within the bars, currently only "abundance" works, which puts the most abundant taxa at the bottom (or left).</p></td>
     </tr>
     <tr>
+      <th>merge_other</th>
+      <td><p>if FALSE, taxa coloured/filled as "other" remain distinct, and so can have bar outlines drawn around them</p></td>
+    </tr>
+    <tr>
       <th>taxon_renamer</th>
       <td><p>function that takes taxon names and returns modified names for legend</p></td>
     </tr>
     <tr>
-      <th>palette</th>
-      <td><p>palette for taxa fill colours</p></td>
-    </tr>
-    <tr>
       <th>sample_order</th>
-      <td><p>vector of sample names, any distance measure in dist_calc that does not require a phylogenetic tree, or "default" for the order returned by phyloseq::sample_names(ps)</p></td>
+      <td><p>vector of sample names;
+or any distance measure in dist_calc that does not require a phylogenetic tree;
+or "default" for the order returned by phyloseq::sample_names(ps)</p></td>
     </tr>
     <tr>
       <th>order_with_all_taxa</th>
       <td><p>if TRUE, this will use all taxa (not just the top n_taxa) to calculate distances for sample ordering</p></td>
     </tr>
     <tr>
-      <th>tax_transform_for_ordering</th>
-      <td><p>transformation of taxa values used before ordering samples by similarity</p></td>
-    </tr>
-    <tr>
       <th>label</th>
-      <td><p>could also consider arbitrary annotation with extra info, like in complex heatmap</p></td>
+      <td><p>sample label variable name</p></td>
     </tr>
     <tr>
       <th>group_by</th>
-      <td><p>splits dataset by this variable (must be categorical) - resulting in a list of plots, one for each level of the group_by variable.</p></td>
+      <td><p>splits dataset by this variable (must be categorical)</p><ul>
+<li><p>resulting in a list of plots, one for each level of the group_by variable.</p></li>
+</ul></td>
     </tr>
     <tr>
       <th>facet_by</th>
-      <td><p>facets plots by this variable (must be categorical) - if group_by is also set, the faceting with occur separately in the plot for each group.</p></td>
+      <td><p>facets plots by this variable (must be categorical)</p><ul>
+<li><p>if group_by is also set, the faceting with occur separately in the plot for each group.</p></li>
+</ul></td>
     </tr>
     <tr>
       <th>bar_width</th>
-      <td><p>default 1 avoids random gapping otherwise seen with many samples (set to something less than 1 to introduce gaps between fewer samples)</p></td>
+      <td><p>default 1 avoids random gapping otherwise seen with many samples
+(set to something less than 1 to introduce gaps between fewer samples)</p></td>
     </tr>
     <tr>
       <th>bar_outline_colour</th>
       <td><p>line colour separating taxa and samples (use NA for none)</p></td>
     </tr>
     <tr>
-      <th>keep_all_vars</th>
-      <td><p>slows down processing but is required for future plot customisation options like faceting</p></td>
+      <th>bar_outline_width</th>
+      <td><p>width of line separating taxa and samples (for no outlines set bar_outline_colour = NA)</p></td>
+    </tr>
+    <tr>
+      <th>palette</th>
+      <td><p>palette for taxa fill colours</p></td>
+    </tr>
+    <tr>
+      <th>tax_transform_for_ordering</th>
+      <td><p>transformation of taxa values used before ordering samples by similarity</p></td>
+    </tr>
+    <tr>
+      <th>tax_transform_for_plot</th>
+      <td><p>default "compositional" draws proportions of total counts per sample,
+but you could reasonably use another transformation, e.g. "identity", if you have truly quantitative microbiome profiling data</p></td>
     </tr>
     <tr>
       <th>seriate_method</th>
       <td><p>name of any ordering method suitable for distance matrices (see ?seriation::seriate)</p></td>
+    </tr>
+    <tr>
+      <th>keep_all_vars</th>
+      <td><p>TRUE may slow down internal melting with ps_melt for large phyloseq objects
+but is required for some post-hoc plot customisation</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>ggplot or list of harmonised ggplots</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    
+
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://microbiome.github.io/microbiome'>microbiome</a></span><span class='op'>)</span>
@@ -282,12 +315,29 @@ palette: Default colouring is consistent across multiple plots if created with t
   <span class='fu'><a href='ps_arrange.html'>ps_arrange</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/desc.html'>desc</a></span><span class='op'>(</span><span class='va'>subject</span><span class='op'>)</span>, <span class='fu'><a href='https://dplyr.tidyverse.org/reference/desc.html'>desc</a></span><span class='op'>(</span><span class='va'>timepoint</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>comp_barplot</span><span class='op'>(</span>
     tax_level <span class='op'>=</span> <span class='st'>"Genus"</span>, n_taxa <span class='op'>=</span> <span class='fl'>12</span>,
-    bar_outline_colour <span class='op'>=</span> <span class='cn'>NA</span>,
     sample_order <span class='op'>=</span> <span class='st'>"default"</span>,
     bar_width <span class='op'>=</span> <span class='fl'>0.7</span>,
+    bar_outline_colour <span class='op'>=</span> <span class='st'>"black"</span>,
+    order_with_all_taxa <span class='op'>=</span> <span class='cn'>TRUE</span>,
     label <span class='op'>=</span> <span class='st'>"subject_timepoint"</span>
   <span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_flip.html'>coord_flip</a></span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='img'><img src='comp_barplot-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># how many taxa are in those light grey "other" bars?</span>
+<span class='co'># set merge_other, to find out (&amp; remember to set a bar_outline_colour)</span>
+<span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='ps_mutate.html'>ps_mutate</a></span><span class='op'>(</span>subject_timepoint <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/interaction.html'>interaction</a></span><span class='op'>(</span><span class='va'>subject</span>, <span class='va'>timepoint</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='ps_filter.html'>ps_filter</a></span><span class='op'>(</span><span class='va'>nationality</span> <span class='op'>==</span> <span class='st'>"AAM"</span>, <span class='va'>group</span> <span class='op'>==</span> <span class='st'>"DI"</span>, <span class='va'>sex</span> <span class='op'>==</span> <span class='st'>"female"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='ps_arrange.html'>ps_arrange</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/desc.html'>desc</a></span><span class='op'>(</span><span class='va'>subject</span><span class='op'>)</span>, <span class='fu'><a href='https://dplyr.tidyverse.org/reference/desc.html'>desc</a></span><span class='op'>(</span><span class='va'>timepoint</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>comp_barplot</span><span class='op'>(</span>
+    tax_level <span class='op'>=</span> <span class='st'>"Genus"</span>, n_taxa <span class='op'>=</span> <span class='fl'>12</span>,
+    sample_order <span class='op'>=</span> <span class='st'>"default"</span>,
+    merge_other <span class='op'>=</span> <span class='cn'>FALSE</span>,
+    bar_width <span class='op'>=</span> <span class='fl'>0.7</span>,
+    bar_outline_colour <span class='op'>=</span> <span class='st'>"black"</span>,
+    order_with_all_taxa <span class='op'>=</span> <span class='cn'>TRUE</span>,
+    label <span class='op'>=</span> <span class='st'>"subject_timepoint"</span>
+  <span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_flip.html'>coord_flip</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='img'><img src='comp_barplot-3.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='co'># Often to compare groups, average compositions are presented</span>
 <span class='va'>p1</span> <span class='op'>&lt;-</span> <span class='fu'>phyloseq</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/merge_samples-methods.html'>merge_samples</a></span><span class='op'>(</span><span class='va'>dietswap</span>, group <span class='op'>=</span> <span class='st'>"group"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
@@ -297,20 +347,8 @@ palette: Default colouring is consistent across multiple plots if created with t
     bar_width <span class='op'>=</span> <span class='fl'>0.8</span>
   <span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_flip.html'>coord_flip</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='cn'>NULL</span>, y <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Some taxa_sums were zero, removing the following taxa:</span>
-#&gt; <span class='warning'>	Aerococcus </span>
-#&gt; <span class='warning'>	Aneurinibacillus </span>
-#&gt; <span class='warning'>	Asteroleplasma et rel. </span>
-#&gt; <span class='warning'>	Clostridium felsineum et rel. </span>
-#&gt; <span class='warning'>	Clostridium thermocellum et rel. </span>
-#&gt; <span class='warning'>	Methylobacterium </span>
-#&gt; <span class='warning'>	Micrococcaceae</span>
-#&gt; <span class='warning'>This may be caused by using `subset_samples()`.</span>
-#&gt; <span class='warning'>Try using `ps_filter()` instead, with .keep_all_taxa = FALSE.</span>
-#&gt; <span class='warning'>Otherwise, to avoid this warning, try filtering out taxa summing to zero with `tax_filter()`.</span>
-#&gt; <span class='warning'>If you have already transformed and/or scaled your taxa, e.g. with a log transformation or scale,</span>
-#&gt; <span class='warning'>seeing this warning is possible, but very unlikely and possibly a bug. Please report this.</span></div><div class='input'><span class='va'>p1</span>
-</div><div class='img'><img src='comp_barplot-3.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='input'><span class='va'>p1</span>
+</div><div class='img'><img src='comp_barplot-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># However that "group-averaging" approach hides a lot of within-group variation</span>
 <span class='va'>p2</span> <span class='op'>&lt;-</span> <span class='fu'>comp_barplot</span><span class='op'>(</span><span class='va'>dietswap</span>,
   tax_level <span class='op'>=</span> <span class='st'>"Genus"</span>, n_taxa <span class='op'>=</span> <span class='fl'>12</span>, group_by <span class='op'>=</span> <span class='st'>"group"</span>,
@@ -319,20 +357,8 @@ palette: Default colouring is consistent across multiple plots if created with t
   <span class='fu'>patchwork</span><span class='fu'>::</span><span class='fu'><a href='https://patchwork.data-imaginist.com/reference/wrap_plots.html'>wrap_plots</a></span><span class='op'>(</span>nrow <span class='op'>=</span> <span class='fl'>3</span>, guides <span class='op'>=</span> <span class='st'>"collect"</span><span class='op'>)</span> <span class='op'>&amp;</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_flip.html'>coord_flip</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>&amp;</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='cn'>NULL</span>, y <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span> <span class='op'>&amp;</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>axis.text.y <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_blank</a></span><span class='op'>(</span><span class='op'>)</span>, axis.ticks.y <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_blank</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Some taxa_sums were zero, removing the following taxa:</span>
-#&gt; <span class='warning'>	Aerococcus </span>
-#&gt; <span class='warning'>	Aneurinibacillus </span>
-#&gt; <span class='warning'>	Asteroleplasma et rel. </span>
-#&gt; <span class='warning'>	Clostridium felsineum et rel. </span>
-#&gt; <span class='warning'>	Clostridium thermocellum et rel. </span>
-#&gt; <span class='warning'>	Methylobacterium </span>
-#&gt; <span class='warning'>	Micrococcaceae</span>
-#&gt; <span class='warning'>This may be caused by using `subset_samples()`.</span>
-#&gt; <span class='warning'>Try using `ps_filter()` instead, with .keep_all_taxa = FALSE.</span>
-#&gt; <span class='warning'>Otherwise, to avoid this warning, try filtering out taxa summing to zero with `tax_filter()`.</span>
-#&gt; <span class='warning'>If you have already transformed and/or scaled your taxa, e.g. with a log transformation or scale,</span>
-#&gt; <span class='warning'>seeing this warning is possible, but very unlikely and possibly a bug. Please report this.</span></div><div class='input'><span class='va'>p2</span>
-</div><div class='img'><img src='comp_barplot-4.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='va'>p2</span>
+</div><div class='img'><img src='comp_barplot-5.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Only from p2 you can see that the apparently higher average relative abundance</span>
 <span class='co'># of Oscillospira in group DI is probably driven largely by a subgroup</span>
 <span class='co'># of DI samples with relatively high Oscillospira.</span>
@@ -340,26 +366,14 @@ palette: Default colouring is consistent across multiple plots if created with t
 <span class='co'># make a list of 2 harmonised composition plots (grouped by sex)</span>
 <span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'>comp_barplot</span><span class='op'>(</span><span class='va'>dietswap</span>,
   n_taxa <span class='op'>=</span> <span class='fl'>15</span>, tax_level <span class='op'>=</span> <span class='st'>"Genus"</span>,
-  bar_outline_colour <span class='op'>=</span> <span class='st'>"black"</span>,
+  bar_outline_colour <span class='op'>=</span> <span class='st'>"black"</span>, merge_other <span class='op'>=</span> <span class='cn'>TRUE</span>,
   sample_order <span class='op'>=</span> <span class='st'>"aitchison"</span>, group_by <span class='op'>=</span> <span class='st'>"sex"</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Some taxa_sums were zero, removing the following taxa:</span>
-#&gt; <span class='warning'>	Aerococcus </span>
-#&gt; <span class='warning'>	Aneurinibacillus </span>
-#&gt; <span class='warning'>	Asteroleplasma et rel. </span>
-#&gt; <span class='warning'>	Clostridium felsineum et rel. </span>
-#&gt; <span class='warning'>	Clostridium thermocellum et rel. </span>
-#&gt; <span class='warning'>	Methylobacterium </span>
-#&gt; <span class='warning'>	Micrococcaceae</span>
-#&gt; <span class='warning'>This may be caused by using `subset_samples()`.</span>
-#&gt; <span class='warning'>Try using `ps_filter()` instead, with .keep_all_taxa = FALSE.</span>
-#&gt; <span class='warning'>Otherwise, to avoid this warning, try filtering out taxa summing to zero with `tax_filter()`.</span>
-#&gt; <span class='warning'>If you have already transformed and/or scaled your taxa, e.g. with a log transformation or scale,</span>
-#&gt; <span class='warning'>seeing this warning is possible, but very unlikely and possibly a bug. Please report this.</span></div><div class='input'>
+
 <span class='co'># plot them side by side with patchwork package</span>
 <span class='va'>patch</span> <span class='op'>&lt;-</span> <span class='fu'>patchwork</span><span class='fu'>::</span><span class='fu'><a href='https://patchwork.data-imaginist.com/reference/wrap_plots.html'>wrap_plots</a></span><span class='op'>(</span><span class='va'>p</span>, ncol <span class='op'>=</span> <span class='fl'>2</span>, guides <span class='op'>=</span> <span class='st'>"collect"</span><span class='op'>)</span>
 <span class='va'>patch</span> <span class='op'>&amp;</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_flip.html'>coord_flip</a></span><span class='op'>(</span><span class='op'>)</span> <span class='co'># make bars in all plots horizontal (note: use &amp; instead of +)</span>
-</div><div class='img'><img src='comp_barplot-5.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='img'><img src='comp_barplot-6.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># beautifying tweak #</span>
 <span class='co'># modify one plot in place (flip the order of the samples in the 2nd plot)</span>
 <span class='co'># notice that the scaling is for the x-axis</span>
@@ -372,7 +386,7 @@ palette: Default colouring is consistent across multiple plots if created with t
 <span class='co'># you can theme all plots with the &amp; operator</span>
 <span class='va'>patch</span> <span class='op'>&amp;</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_flip.html'>coord_flip</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>&amp;</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>axis.text.y <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>, legend.text <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>6</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='img'><img src='comp_barplot-6.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># See https://patchwork.data-imaginist.com/index.html</span>
+</div><div class='img'><img src='comp_barplot-7.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># See https://patchwork.data-imaginist.com/index.html</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
