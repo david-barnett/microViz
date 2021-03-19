@@ -5,6 +5,7 @@
 * `tax_fill_unknowns` x arg renamed to ps. Also now stops when unknown values are detected to the left of known values in the tax_table, as this should always be wrong/need fixing. Also, by default it now searches a larger list of probably unknown/uninformative tax_table values e.g. "k__NA", "p__Unknown" will now be replaced
 
 ## Features
+* `comp_barplot` gets merge_other argument, which, when FALSE, shows full diversity of samples by outlining individual taxa within the (grey) "other" category!
 * `tax_sort` for sorting taxa in tax_table and otu_table by several name or abundance options (deletes phy_tree if present!)
 * `tax_transform` can take a rank argument, to perform aggregation (internally using tax_agg) and transformation with one function, and record the results. **This is now the recommended usage!**
 * `tax_transform` new transformation = "binary" can convert to presence/absence data (used by `tax_sort` for by = "prev")

@@ -29,13 +29,23 @@ knitr::opts_chunk$set(
 
 The `comp_barplot` function allows you to visualise the taxonomic compositions of your microbiome samples in a flexible, scalable, group-able, and visually appealing way.
 
-## Illustrative simple customised example
-```{r}
+## Illustrative simple example
+```{r simple}
 dietswap %>%
   ps_filter(timepoint == 1) %>%
   comp_barplot(
     tax_level = "Family", n_taxa = 8,
     bar_outline_colour = NA,
+    sample_order = "bray", bar_width = 0.7
+  ) + coord_flip()
+```
+```{r simple merge_other=F}
+dietswap %>%
+  ps_filter(timepoint == 1) %>%
+  comp_barplot(
+    tax_level = "Family", n_taxa = 8,
+    bar_outline_colour = "grey5",
+    merge_other = FALSE,
     sample_order = "bray", bar_width = 0.7
   ) + coord_flip()
 ```
@@ -174,6 +184,30 @@ times_list <- ps %>%
   ps_arrange(timepoint.within.group, nationality, desc(subject)) %>%
   comp_barplot(
     tax_level = "Genus", n_taxa = 10, sample_order = "default",
+    group_by = "plot_groups", bar_width = 0.7, label = "subject"
+  )
+
+times <- wrap_plots(
+  times_list[c("AAM.1", "AAM.2", "AFR.1", "AFR.2")],
+  byrow = TRUE, ncol = 2, guides = "collect", heights = c(5, 4)
+) &
+  coord_flip() &
+  theme(
+    text = element_text(size = 10),
+    axis.title = element_blank()
+  )
+
+times
+```
+
+Same grouping, now showing diversity of taxa within other, with `merge_other = FALSE`
+
+```{r, fig.height=7.5, fig.width=10}
+times_list <- ps %>%
+  ps_arrange(timepoint.within.group, nationality, desc(subject)) %>%
+  comp_barplot(
+    tax_level = "Genus", n_taxa = 10, sample_order = "default",
+    merge_other = FALSE, bar_outline_colour = "grey10",
     group_by = "plot_groups", bar_width = 0.7, label = "subject"
   )
 
