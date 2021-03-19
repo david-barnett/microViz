@@ -72,7 +72,7 @@ dist_calc <- function(
     }
     # much faster than phyloseq version of unifrac measures and results are the same (to floating point precision)
     distMats <- GUniFrac::GUniFrac(
-      otu.tab = t(microbiome::abundances(ps)),
+      otu.tab = otu_get(ps),
       tree = phyloseq::phy_tree(ps),
       alpha = c(0, gunifrac_alpha, 1)
     )[["unifracs"]]
