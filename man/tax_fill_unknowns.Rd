@@ -16,7 +16,7 @@ tax_fill_unknowns(
 )
 }
 \arguments{
-\item{ps}{phyloseq or tax_table (taxonomyTable) with at least two ranks}
+\item{ps}{phyloseq or tax_table (taxonomyTable)}
 
 \item{min_length}{replace strings shorter than this}
 

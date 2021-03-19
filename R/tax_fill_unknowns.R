@@ -15,7 +15,7 @@
 #' 'G__unknown' 'G__Unknown' 'G__NA' 'F__unknown' 'F__Unknown' 'F__NA' 'O__unknown' 'O__Unknown' 'O__NA'
 #' 'C__unknown' 'C__Unknown' 'C__NA' 'P__unknown' 'P__Unknown' 'P__NA' 'K__unknown' 'K__Unknown' 'K__NA'
 #'
-#' @param ps phyloseq or tax_table (taxonomyTable) with at least two ranks
+#' @param ps phyloseq or tax_table (taxonomyTable)
 #' @param min_length replace strings shorter than this
 #' @param unknowns also replace strings matching any in this vector, NA default vector shown in details!
 #' @param levels names of taxonomic levels to modify, defaults to all
@@ -114,7 +114,7 @@ tax_fill_unknowns <- function(
     unknowns <- tax_common_unknowns(min_length = min_length)
   }
 
-  if (identical(ncol(tt), 1L)) stop("tax_table(ps) has only one rank/column!")
+  # if (identical(ncol(tt), 1L)) stop("tax_table(ps) has only one rank/column!")
   # get rownames to ensure order doesn't change
   original_rownames <- rownames(tt)
   ranknames <- colnames(tt)
@@ -186,8 +186,15 @@ tax_fill_unknowns <- function(
       return(vec[1:rowLengthOut])
     }
   )
-  # transpose result to match original tt and ensure original row order
-  tt_out <- t(tt_out)[original_rownames, ]
+  if (inherits(tt_out, "matrix")) {
+    # transpose to match original tt (taxa as rows, ranks as cols)
+    tt_out <- t(tt_out)
+  } else {
+    # vapply returns vector if tt had only 1 rank
+    tt_out <- as.matrix(tt_out) # returns 1-column matrix
+  }
+  # ensure original row order
+  tt_out <- tt_out[original_rownames, , drop = FALSE]
   # repair colnames
   colnames(tt_out) <- ranknames
 

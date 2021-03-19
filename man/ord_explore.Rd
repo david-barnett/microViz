@@ -36,7 +36,7 @@ library(dplyr)
 data("enterotype")
 
 # simple example #
-ps <- enterotype
+ps <- tax_fill_unknowns(enterotype) # remove NA taxa
 ord1 <- ps \%>\%
   dist_calc("bray") \%>\%
   ord_calc(method = "PCoA")

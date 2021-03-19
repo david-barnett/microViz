@@ -18,7 +18,7 @@
 #' data("enterotype")
 #'
 #' # simple example #
-#' ps <- enterotype
+#' ps <- tax_fill_unknowns(enterotype) # remove NA taxa
 #' ord1 <- ps %>%
 #'   dist_calc("bray") %>%
 #'   ord_calc(method = "PCoA")
@@ -171,22 +171,22 @@ ord_explore <- function(ord, ps = NULL, seriate_method = "OLO_ward", tax_transfo
     # ord_plot aesthetic vars
     shape <- shiny::reactive({
       switch(input$shape_var_type,
-             "fixed" = {
-               input$ord_shape_num
-             },
-             "variable" = {
-               input$ord_shape_var
-             }
+        "fixed" = {
+          input$ord_shape_num
+        },
+        "variable" = {
+          input$ord_shape_var
+        }
       )
     })
     size <- shiny::reactive({
       switch(input$size_var_type,
-             "fixed" = {
-               input$ord_size_num
-             },
-             "variable" = {
-               input$ord_size_var
-             }
+        "fixed" = {
+          input$ord_size_num
+        },
+        "variable" = {
+          input$ord_size_var
+        }
       )
     })
 
@@ -233,7 +233,7 @@ ord_explore <- function(ord, ps = NULL, seriate_method = "OLO_ward", tax_transfo
       # select points that fall within selection region
       rowindex <-
         score_df()[, 1] > input$ord_plot_brush$xmin & score_df()[, 1] < input$ord_plot_brush$xmax &
-        score_df()[, 2] > input$ord_plot_brush$ymin & score_df()[, 2] < input$ord_plot_brush$ymax
+          score_df()[, 2] > input$ord_plot_brush$ymin & score_df()[, 2] < input$ord_plot_brush$ymax
 
       # future todo note: add any other selection criteria here above too (in combination), like antibiotics status
 
