@@ -42,7 +42,6 @@
 <meta property="og:title" content="Check for (and fix) common problems with phyloseq objects — phyloseq_validate" />
 <meta property="og:description" content="
 
-Ensures the storage mode of a phyloseq object's otu table is &quot;double&quot; instead of e.g. &quot;integer&quot;.
 Checks for, and messages about, common uninformative entries in the tax_table, which often cause unwanted results
 Replaces missing sample_data with a dataframe including only sample_names (as &quot;SAMPLE&quot; variable)
 Removes taxa where phyloseq::taxa_sums() is equal to zero, with a warning, if remove_undetected = TRUE
@@ -79,7 +78,7 @@ Removes taxa where phyloseq::taxa_sums() is equal to zero, with a warning, if re
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0.9009</span>
       </span>
     </div>
 
@@ -141,7 +140,6 @@ Removes taxa where phyloseq::taxa_sums() is equal to zero, with a warning, if re
     <div class="ref-description">
     
 <ul>
-<li><p>Ensures the storage mode of a phyloseq object's otu table is "double" instead of e.g. "integer".</p></li>
 <li><p>Checks for, and messages about, common uninformative entries in the tax_table, which often cause unwanted results</p></li>
 <li><p>Replaces missing sample_data with a dataframe including only sample_names (as "SAMPLE" variable)</p></li>
 <li><p>Removes taxa where phyloseq::taxa_sums() is equal to zero, with a warning, if remove_undetected = TRUE</p></li>
@@ -203,8 +201,8 @@ Removes taxa where phyloseq::taxa_sums() is equal to zero, with a warning, if re
 #&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
 #&gt; tax_table()   Taxonomy Table:    [ 123 taxa by 3 taxonomic ranks ]</div><div class='input'>
 <span class='co'># verbose = FALSE will suppress messages and warnings but still:</span>
-<span class='co'># fix storage.mode, replace NULL sample_data, and</span>
-<span class='co'># remove taxa that sum to 0 across all samples (if remove_undetected = TRUE)</span>
+<span class='co'># replace NULL sample_data and remove taxa that sum to 0 across all samples</span>
+<span class='co'># (if remove_undetected = TRUE)</span>
 <span class='fu'>phyloseq_validate</span><span class='op'>(</span><span class='va'>dietswap</span>, verbose <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; phyloseq-class experiment-level object
 #&gt; otu_table()   OTU Table:         [ 130 taxa and 222 samples ]
@@ -215,15 +213,27 @@ Removes taxa where phyloseq::taxa_sums() is equal to zero, with a warning, if re
 <span class='co'># So some functions internally use phyloseq_validate to fix this</span>
 <span class='va'>dietswap</span><span class='op'>@</span><span class='va'>sam_data</span> <span class='op'>&lt;-</span> <span class='cn'>NULL</span>
 <span class='fu'>phyloseq_validate</span><span class='op'>(</span><span class='va'>dietswap</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Note: Replacing missing sample_data with a dataframe of only sample_names,</span>
-#&gt; <span class='message'>try `ps &lt;- phyloseq_validate(ps, verbose = FALSE)` to avoid this message</span></div><div class='output co'>#&gt; phyloseq-class experiment-level object
+</div><div class='output co'>#&gt; <span class='message'>Note: Replacing missing sample_data with a dataframe of only sample_names.</span>
+#&gt; <span class='message'>Try `ps &lt;- phyloseq_validate(ps, verbose = FALSE)` to avoid this message</span></div><div class='output co'>#&gt; phyloseq-class experiment-level object
 #&gt; otu_table()   OTU Table:         [ 130 taxa and 222 samples ]
 #&gt; sample_data() Sample Data:       [ 222 samples by 1 sample variables ]
 #&gt; tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]</div><div class='input'>
+<span class='co'># Sometimes you might have a phyloseq with no tax_table</span>
+<span class='co'># This isn't compatible with some microViz functions, like tax_top,</span>
+<span class='co'># so this is another reason to start your analyses with phyloseq_validate!</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"soilrep"</span>, package <span class='op'>=</span> <span class='st'>"phyloseq"</span><span class='op'>)</span>
+<span class='va'>soilrep</span> <span class='co'># has NULL tax_table</span>
+</div><div class='output co'>#&gt; phyloseq-class experiment-level object
+#&gt; otu_table()   OTU Table:         [ 16825 taxa and 56 samples ]
+#&gt; sample_data() Sample Data:       [ 56 samples by 4 sample variables ]</div><div class='input'><span class='fu'>phyloseq_validate</span><span class='op'>(</span><span class='va'>soilrep</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Note: Replacing missing tax_table with a 1-column table of only taxa_names.</span>
+#&gt; <span class='message'>Try `ps &lt;- phyloseq_validate(ps, verbose = FALSE)` to avoid this message</span></div><div class='output co'>#&gt; phyloseq-class experiment-level object
+#&gt; otu_table()   OTU Table:         [ 16825 taxa and 56 samples ]
+#&gt; sample_data() Sample Data:       [ 56 samples by 4 sample variables ]
+#&gt; tax_table()   Taxonomy Table:    [ 16825 taxa by 1 taxonomic ranks ]</div><div class='input'>
 <span class='co'># If no messages or warnings are emitted,</span>
 <span class='co'># this means no problems were detected, and nothing was changed</span>
 <span class='co'># (but only if verbose = TRUE)</span>
-
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

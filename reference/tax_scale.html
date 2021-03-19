@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0.9009</span>
       </span>
     </div>
 
@@ -164,7 +164,9 @@
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://microbiome.github.io/microbiome'>microbiome</a></span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span><span class='op'>)</span>
 <span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span>
-<span class='va'>ps</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='ps_extra-accessors.html'>otu_get</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='va'>.</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span>
+<span class='va'>ps</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='ps_extra-accessors.html'>otu_get</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='va'>.</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span>
 </div><div class='output co'>#&gt; OTU Table:          [6 taxa and 6 samples]
 #&gt;                      taxa are columns
 #&gt;          Actinomycetaceae Aerococcus Aeromonas Akkermansia
@@ -181,7 +183,9 @@
 #&gt; Sample-4                            2                 96
 #&gt; Sample-5                            2                 49
 #&gt; Sample-6                            2                 17</div><div class='input'><span class='co'># standard use (mean center and SD scale)</span>
-<span class='fu'>tax_scale</span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='ps_extra-accessors.html'>otu_get</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='va'>.</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span>
+<span class='fu'>tax_scale</span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='ps_extra-accessors.html'>otu_get</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='va'>.</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span>
 </div><div class='output co'>#&gt; OTU Table:          [6 taxa and 6 samples]
 #&gt;                      taxa are columns
 #&gt;          Actinomycetaceae Aerococcus   Aeromonas Akkermansia
@@ -198,7 +202,9 @@
 #&gt; Sample-4                   -0.2720137         -0.4887560
 #&gt; Sample-5                   -0.2720137         -0.6371534
 #&gt; Sample-6                   -0.2720137         -0.7381900</div><div class='input'><span class='co'># RMS scale only (directly on otu_table)</span>
-<span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/otu_table-methods.html'>otu_table</a></span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'>tax_scale</span><span class='op'>(</span>center <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='va'>.</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span> <span class='co'>#Aerococcus is NaN as prevalence=0</span>
+<span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/otu_table-methods.html'>otu_table</a></span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>tax_scale</span><span class='op'>(</span>center <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='va'>.</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span> <span class='co'># Aerococcus is NaN as prevalence=0</span>
 </div><div class='output co'>#&gt; OTU Table:          [6 taxa and 6 samples]
 #&gt;                      taxa are columns
 #&gt;          Actinomycetaceae Aerococcus Aeromonas Akkermansia
@@ -215,7 +221,9 @@
 #&gt; Sample-4                   0.10130097         0.23742200
 #&gt; Sample-5                   0.10130097         0.12118414
 #&gt; Sample-6                   0.10130097         0.04204348</div><div class='input'><span class='co'># example using alternative `do` argument (to center only, no scaling)</span>
-<span class='fu'>tax_scale</span><span class='op'>(</span><span class='va'>ps</span>, do <span class='op'>=</span> <span class='st'>"center"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='ps_extra-accessors.html'>otu_get</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='va'>.</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span>
+<span class='fu'>tax_scale</span><span class='op'>(</span><span class='va'>ps</span>, do <span class='op'>=</span> <span class='st'>"center"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='ps_extra-accessors.html'>otu_get</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='va'>.</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span>
 </div><div class='output co'>#&gt; OTU Table:          [6 taxa and 6 samples]
 #&gt;                      taxa are columns
 #&gt;          Actinomycetaceae Aerococcus    Aeromonas Akkermansia

@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0.9009</span>
       </span>
     </div>
 
@@ -138,6 +138,8 @@
 <ul>
 <li>
 <code>tax_agg</code> argument agg_level renamed to rank. <code>tax_agg</code> returns taxa in different order than before (and now different order from, but same aggregation as, <code><a href="https://rdrr.io/pkg/microbiome/man/aggregate_taxa.html">microbiome::aggregate_taxa()</a></code>). tax_agg now checks if taxa cannot be uniquely identified at the specified rank level. (now also about twice as fast)</li>
+<li>
+<code>tax_fill_unknowns</code> x arg renamed to ps. Also now stops when unknown values are detected to the left of known values in the tax_table, as this should always be wrong/need fixing. Also, by default it now searches a larger list of probably unknown/uninformative tax_table values e.g. "k__NA“,”p__Unknown" will now be replaced</li>
 </ul>
 </div>
 <div id="features" class="section level2">
@@ -145,12 +147,15 @@
 <a href="#features" class="anchor"></a>Features</h2>
 <ul>
 <li>
-<code>tax_sort</code> for sorting taxa in tax_table and otu_table by several name or abundance options</li>
+<code>tax_sort</code> for sorting taxa in tax_table and otu_table by several name or abundance options (deletes phy_tree if present!)</li>
 <li>
 <code>tax_transform</code> can take a rank argument, to perform aggregation (internally using tax_agg) and transformation with one function, and record the results. <strong>This is now the recommended usage!</strong>
 </li>
 <li>
 <code>tax_transform</code> new transformation = “binary” can convert to presence/absence data (used by <code>tax_sort</code> for by = “prev”)</li>
+<li>
+<code>tax_top</code> for flexibly returning top n taxa, at chosen rank, with ordering by <code>tax_sort</code>
+</li>
 </ul>
 </div>
 </div>

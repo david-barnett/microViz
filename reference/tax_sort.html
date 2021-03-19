@@ -41,12 +41,16 @@
 
 <meta property="og:title" content="Sort taxa in phyloseq otu_table and tax_table — tax_sort" />
 <meta property="og:description" content="Multiple ways of sorting taxa are possible and determined by the by argument.
-by argument must be one of:
-- 'rev' to reverse the current order
-- 'name' or 'names' (sort alphabetically by taxa_names)
-- a taxonomic rank name (sort alphabetically by this rank)
-- a sample name (descending abundance sorting within that sample)
-- summary stat. function e.g. sum or mean" />
+The by argument must be one of:
+'rev' to reverse the current order
+'name' (sort alphabetically by at)
+a sample name (descending abundance sorting within that sample)
+summary stat. function e.g. sum or mean
+
+
+The at argument must be &quot;names&quot; for sorting unique taxa,
+or a rank name, for sorting at that rank.
+at is ignored when by is &quot;rev&quot;." />
 
 
 
@@ -78,7 +82,7 @@ by argument must be one of:
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0.9009</span>
       </span>
     </div>
 
@@ -138,16 +142,27 @@ by argument must be one of:
     </div>
 
     <div class="ref-description">
-    <p>Multiple ways of sorting taxa are possible and determined by the by argument.
-<code>by</code> argument must be one of:
-- 'rev' to reverse the current order
-- 'name' or 'names' (sort alphabetically by taxa_names)
-- a taxonomic rank name (sort alphabetically by this rank)
-- a sample name (descending abundance sorting within that sample)
-- summary stat. function e.g. <code>sum</code> or <code>mean</code></p>
+    <p>Multiple ways of sorting taxa are possible and determined by the <code>by</code> argument.
+The <code>by</code> argument must be one of:</p><ul>
+<li><p>'rev' to reverse the current order</p></li>
+<li><p>'name' (sort alphabetically by <code>at</code>)</p></li>
+<li><p>a sample name (descending abundance sorting within that sample)</p></li>
+<li><p>summary stat. function e.g. <code>sum</code> or <code>mean</code></p></li>
+</ul>
+
+<p>The <code>at</code> argument must be "names" for sorting unique taxa,
+or a rank name, for sorting at that rank.
+<code>at</code> is ignored when <code>by</code> is "rev".</p>
     </div>
 
-    <pre class="usage"><span class='fu'>tax_sort</span><span class='op'>(</span><span class='va'>data</span>, by <span class='op'>=</span> <span class='st'>"name"</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>tax_sort</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  by <span class='op'>=</span> <span class='st'>"name"</span>,
+  at <span class='op'>=</span> <span class='st'>"names"</span>,
+  <span class='va'>...</span>,
+  tree_warn <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  verbose <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -161,8 +176,23 @@ by argument must be one of:
       <td><p>how to sort, see description</p></td>
     </tr>
     <tr>
+      <th>at</th>
+      <td><p>"names" or a taxonomic rank to apply sorting method to, as specified in <code>by</code>.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p>used if summary function given, or pass <code>undetected</code> arg for tax_transform("binary") if by = "prev" or "prevalence"</p></td>
+    </tr>
+    <tr>
+      <th>tree_warn</th>
+      <td><p>If phylogenetic tree is present in phyloseq phy_tree slot, taxa cannot be reordered.
+Default behaviour of tax_sort is to remove the phylogenetic tree and warn about this.
+tree_warn = FALSE will suppress the warning message, but still remove the tree!</p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>passed to phyloseq_validate verbose
+(if TRUE: message about suspicious values in tax_table, and how to fix)</p></td>
     </tr>
     </table>
 
@@ -171,7 +201,8 @@ by argument must be one of:
     <p>sorted phyloseq or ps_extra</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Don't forget to pass <code>na.rm</code> to <code>...</code> if using a summary stat function in by</p>
+    <p>Don't forget to pass <code>na.rm = TRUE</code> to <code>...</code>
+if using a summary stat function in <code>by</code></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://microbiome.github.io/microbiome'>microbiome</a></span><span class='op'>)</span>
@@ -251,7 +282,7 @@ by argument must be one of:
 #&gt; Propionibacterium                 "Propionibacterium"                </div><div class='input'>
 <span class='co'># sort alphabetically by a taxonomic rank (or "names" for taxa_names)</span>
 <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>tax_sort</span><span class='op'>(</span><span class='st'>"Phylum"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>tax_sort</span><span class='op'>(</span>by <span class='op'>=</span> <span class='st'>"name"</span>, at <span class='op'>=</span> <span class='st'>"Phylum"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html'>tax_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fl'>30</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Taxonomy Table:     [30 taxa by 3 taxonomic ranks]:
@@ -320,10 +351,10 @@ by argument must be one of:
 <span class='co'># sequentially sorting by higher ranks</span>
 <span class='co'># sets tax_table in nested alphabetical order</span>
 <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>tax_sort</span><span class='op'>(</span><span class='st'>"names"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>tax_sort</span><span class='op'>(</span><span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>tax_sort</span><span class='op'>(</span><span class='st'>"Family"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>tax_sort</span><span class='op'>(</span><span class='st'>"Phylum"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>tax_sort</span><span class='op'>(</span>at <span class='op'>=</span> <span class='st'>"names"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>tax_sort</span><span class='op'>(</span>at <span class='op'>=</span> <span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>tax_sort</span><span class='op'>(</span>at <span class='op'>=</span> <span class='st'>"Family"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>tax_sort</span><span class='op'>(</span>at <span class='op'>=</span> <span class='st'>"Phylum"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html'>tax_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fl'>30</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Taxonomy Table:     [30 taxa by 3 taxonomic ranks]:
@@ -391,17 +422,20 @@ by argument must be one of:
 #&gt; Enterococcus                       "Enterococcus"                      </div><div class='input'>
 <span class='co'># order by descending abundance in a single named sample</span>
 <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>tax_sort</span><span class='op'>(</span><span class='st'>"Sample-1"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>tax_sort</span><span class='op'>(</span>by <span class='op'>=</span> <span class='st'>"Sample-1"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/otu_table-methods.html'>otu_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='va'>.</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; OTU Table:          [5 taxa and 4 samples]
+  <span class='va'>.</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span>
+</div><div class='output co'>#&gt; OTU Table:          [8 taxa and 4 samples]
 #&gt;                      taxa are rows
-#&gt;                                    Sample-1 Sample-2 Sample-3 Sample-4
-#&gt; Bacteroides vulgatus et rel.           2774       48      455      469
-#&gt; Oscillospira guillermondii et rel.      861     4697     2915     4279
-#&gt; Bacteroides fragilis et rel.            443       21       73       29
-#&gt; Bacteroides ovatus et rel.              427       15       31       46
-#&gt; Allistipes et rel.                      336       63       36       96</div><div class='input'>
+#&gt;                                      Sample-1 Sample-2 Sample-3 Sample-4
+#&gt; Bacteroides vulgatus et rel.             2774       48      455      469
+#&gt; Oscillospira guillermondii et rel.        861     4697     2915     4279
+#&gt; Bacteroides fragilis et rel.              443       21       73       29
+#&gt; Bacteroides ovatus et rel.                427       15       31       46
+#&gt; Allistipes et rel.                        336       63       36       96
+#&gt; Faecalibacterium prausnitzii et rel.      321      766     1466      365
+#&gt; Bacteroides uniformis et rel.             310        3       37        6
+#&gt; Anaerostipes caccae et rel.               244      137       27       36</div><div class='input'>
 <span class='co'># sort by function e.g. median abundance</span>
 <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
   <span class='fu'>tax_sort</span><span class='op'>(</span>by <span class='op'>=</span> <span class='va'>median</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
@@ -452,7 +486,53 @@ by argument must be one of:
 #&gt; [17] "Parabacteroides distasonis et rel."  
 #&gt; [18] "Dorea formicigenerans et rel."       
 #&gt; [19] "Bacteroides uniformis et rel."       
-#&gt; [20] "Dialister"                           </div></pre>
+#&gt; [20] "Dialister"                           </div><div class='input'>
+<span class='co'># if your phyloseq object has a phylogenetic tree,</span>
+<span class='co'># tax_sort will remove the tree, and warn you about this.</span>
+
+<span class='co'># You can sort by abundance at higher taxonomic ranks,</span>
+<span class='co'># without losing lower rank info</span>
+<span class='co'># e.g. sort (descending) by phyla abundances</span>
+<span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>tax_sort</span><span class='op'>(</span>by <span class='op'>=</span> <span class='va'>sum</span>, at <span class='op'>=</span> <span class='st'>"Phylum"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html'>tax_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Taxonomy Table:     [6 taxa by 3 taxonomic ranks]:
+#&gt;                                  Phylum          Family         
+#&gt; Allistipes et rel.               "Bacteroidetes" "Bacteroidetes"
+#&gt; Bacteroides fragilis et rel.     "Bacteroidetes" "Bacteroidetes"
+#&gt; Bacteroides intestinalis et rel. "Bacteroidetes" "Bacteroidetes"
+#&gt; Bacteroides ovatus et rel.       "Bacteroidetes" "Bacteroidetes"
+#&gt; Bacteroides plebeius et rel.     "Bacteroidetes" "Bacteroidetes"
+#&gt; Bacteroides splachnicus et rel.  "Bacteroidetes" "Bacteroidetes"
+#&gt;                                  Genus                             
+#&gt; Allistipes et rel.               "Allistipes et rel."              
+#&gt; Bacteroides fragilis et rel.     "Bacteroides fragilis et rel."    
+#&gt; Bacteroides intestinalis et rel. "Bacteroides intestinalis et rel."
+#&gt; Bacteroides ovatus et rel.       "Bacteroides ovatus et rel."      
+#&gt; Bacteroides plebeius et rel.     "Bacteroides plebeius et rel."    
+#&gt; Bacteroides splachnicus et rel.  "Bacteroides splachnicus et rel." </div><div class='input'>
+<span class='co'># You can sort by ascending abundance by reversing afterwards</span>
+<span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>tax_sort</span><span class='op'>(</span>by <span class='op'>=</span> <span class='st'>"prev"</span>, at <span class='op'>=</span> <span class='st'>"Phylum"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>tax_sort</span><span class='op'>(</span>by <span class='op'>=</span> <span class='st'>"rev"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html'>tax_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Taxonomy Table:     [6 taxa by 3 taxonomic ranks]:
+#&gt;                             Phylum          Family         
+#&gt; Uncultured Chroococcales    "Cyanobacteria" "Cyanobacteria"
+#&gt; Brachyspira                 "Spirochaetes"  "Spirochaetes" 
+#&gt; Fusobacteria                "Fusobacteria"  "Fusobacteria" 
+#&gt; Uncultured Bacteroidetes    "Bacteroidetes" "Bacteroidetes"
+#&gt; Tannerella et rel.          "Bacteroidetes" "Bacteroidetes"
+#&gt; Prevotella tannerae et rel. "Bacteroidetes" "Bacteroidetes"
+#&gt;                             Genus                        
+#&gt; Uncultured Chroococcales    "Uncultured Chroococcales"   
+#&gt; Brachyspira                 "Brachyspira"                
+#&gt; Fusobacteria                "Fusobacteria"               
+#&gt; Uncultured Bacteroidetes    "Uncultured Bacteroidetes"   
+#&gt; Tannerella et rel.          "Tannerella et rel."         
+#&gt; Prevotella tannerae et rel. "Prevotella tannerae et rel."</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

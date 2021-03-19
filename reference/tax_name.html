@@ -79,7 +79,7 @@ classification information from a chosen taxonomic rank (optional)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0.9009</span>
       </span>
     </div>
 
@@ -210,14 +210,19 @@ It combines:</p><ul>
 <span class='va'>names_df</span> <span class='op'>&lt;-</span> <span class='fu'>tibble</span><span class='fu'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span>old <span class='op'>=</span> <span class='va'>old_taxa_names</span>, new <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html'>taxa_names</a></span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># alternative settings</span>
-<span class='fu'>tax_name</span><span class='op'>(</span><span class='va'>ps</span>, pad_number <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html'>taxa_names</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "tax1" "tax2" "tax3" "tax4" "tax5" "tax6"</div><div class='input'><span class='fu'>tax_name</span><span class='op'>(</span><span class='va'>ps</span>, prefix <span class='op'>=</span> <span class='st'>"whateveryoulike"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html'>taxa_names</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'>tax_name</span><span class='op'>(</span><span class='va'>ps</span>, pad_number <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html'>taxa_names</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "tax1" "tax2" "tax3" "tax4" "tax5" "tax6"</div><div class='input'><span class='fu'>tax_name</span><span class='op'>(</span><span class='va'>ps</span>, prefix <span class='op'>=</span> <span class='st'>"whateveryoulike"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html'>taxa_names</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "whateveryoulike001" "whateveryoulike002" "whateveryoulike003"
-#&gt; [4] "whateveryoulike004" "whateveryoulike005" "whateveryoulike006"</div><div class='input'><span class='fu'>tax_name</span><span class='op'>(</span><span class='va'>ps</span>, rank <span class='op'>=</span> <span class='st'>"Genus"</span>, sep <span class='op'>=</span> <span class='st'>"-"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html'>taxa_names</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='op'>)</span>
+#&gt; [4] "whateveryoulike004" "whateveryoulike005" "whateveryoulike006"</div><div class='input'><span class='fu'>tax_name</span><span class='op'>(</span><span class='va'>ps</span>, rank <span class='op'>=</span> <span class='st'>"Genus"</span>, sep <span class='op'>=</span> <span class='st'>"-"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html'>taxa_names</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "tax001-NA"               "tax002-NA"              
 #&gt; [3] "tax003-Prosthecochloris" "tax004-Chloroflexus"    
-#&gt; [5] "tax005-Dehalococcoides"  "tax006-Thermus"         </div><div class='input'>
-</div></pre>
+#&gt; [5] "tax005-Dehalococcoides"  "tax006-Thermus"         </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
