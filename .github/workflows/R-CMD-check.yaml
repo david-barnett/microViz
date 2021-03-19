@@ -25,7 +25,6 @@ jobs:
       - name: Install dependencies
         run: |
           install.packages(c("remotes", "rcmdcheck"))
-          remotes::install_github("bryandmartin/corncob@338323e9", upgrade = "never")
           remotes::install_deps(dependencies = TRUE, type = "binary", upgrade = "never")
         shell: Rscript {0}
       - name: Check
