@@ -71,9 +71,10 @@ dietswap \%>\%
   tax_fill_unknowns() \%>\%
   tax_agg("Genus")
 
-# you can replace long unknown values
+# you can replace unknown values with `tax_fill_unknowns()`
+
+# default tax_fill_unknowns settings won't catch this long unknown
 tax_table(dietswap)[13:17, "Family"] <- "some_unknown_family"
-# default tax_fill_unknowns settings won't catch it (too long)
 dietswap \%>\%
   tax_fill_unknowns(unknowns = "some_unknown_family") \%>\%
   tax_agg("Family")

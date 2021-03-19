@@ -62,9 +62,10 @@
 #'   tax_fill_unknowns() %>%
 #'   tax_agg("Genus")
 #'
-#' # you can replace long unknown values
+#' # you can replace unknown values with `tax_fill_unknowns()`
+#'
+#' # default tax_fill_unknowns settings won't catch this long unknown
 #' tax_table(dietswap)[13:17, "Family"] <- "some_unknown_family"
-#' # default tax_fill_unknowns settings won't catch it (too long)
 #' dietswap %>%
 #'   tax_fill_unknowns(unknowns = "some_unknown_family") %>%
 #'   tax_agg("Family")
@@ -131,12 +132,19 @@ tax_agg <- function(ps,
     new_tax_names <- base::unique(tt_df[, rank_index])
 
     # tt must be unique at given rank by this point
-    if (!isTRUE(force)){
+    if (!isTRUE(force)) {
       uniq_at_rank <- identical(length(new_tax_names), y = nrow(tt_distinct))
       if (!uniq_at_rank) {
         stop("Taxa not unique at rank: ", rank, unknowns_message)
       }
+    } else {
+      tt_distinct <- dplyr::distinct(
+        .data = tt_distinct, .keep_all = TRUE, # keeps first rows encountered
+        dplyr::across(dplyr::all_of(rank))
+      ) %>%
+        dplyr::select(dplyr::all_of(c(rank, ".taxID.")))
     }
+
     # get otu table with taxa as rows (like tt)
     otu <- t(unclass(otu_get(ps)))
     otu_df <- as.data.frame.matrix(
