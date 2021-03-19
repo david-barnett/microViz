@@ -78,10 +78,21 @@
 #'   tax_table() %>%
 #'   head(50)
 #'
-#' # larger example tax_table shows 1000s rows still fast, from microbiomeutilities package
+#' # by default, completely unclassified (anonymous) taxa are named by their
+#' # taxa_names / rownames at all ranks.
+#' # This makes anonymous taxa distinct from each other,
+#' # and so they won't be merged on aggregation with tax_agg.
+#' # If you think your anonymous taxa should merge on tax_agg,
+#' # or you just want them to be named the all same for another reason,
+#' # set anon_unique = FALSE (compare the warning messages)
+#' tax_fill_unknowns(ps, anon_unique = FALSE)
+#' tax_fill_unknowns(ps, anon_unique = TRUE)
+#'
+#' # here's a larger example tax_table shows its still fast with 1000s rows,
+#' # from microbiomeutilities package
 #' # library(microbiomeutilities)
 #' # data("hmp2")
-#' # tax_fill_unknowns(hmp2, min_length = 1)
+#' # system.time(tax_fill_unknowns(hmp2, min_length = 1))
 tax_fill_unknowns <- function(
                               ps,
                               min_length = 4,
@@ -132,7 +143,6 @@ tax_fill_unknowns <- function(
           } else {
             out <- paste("unclassified", ranknames[[1]])
           }
-          vec <- rep(out, times = rowLengthOut)
           if (isTRUE(verbose)) {
             warning(
               "Row named: ", vec[[rowLengthOut + 1]],
@@ -141,6 +151,7 @@ tax_fill_unknowns <- function(
               "Consider editing this tax_table entry manually."
             )
           }
+          vec <- rep(out, times = rowLengthOut)
         } else {
           # edit each unknown value in this row
           vec <- vapply(
