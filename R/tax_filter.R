@@ -35,8 +35,7 @@
 #' dietswap %>%
 #'   tax_filter(tax_level = "Family", min_prevalence = 0.90, prev_detection_threshold = 1000) %>%
 #'   tax_agg("Genus")
-tax_filter <- function(
-                       ps,
+tax_filter <- function(ps,
                        min_prevalence = 1,
                        prev_detection_threshold = 1,
                        min_total_abundance = 0,
@@ -63,7 +62,7 @@ tax_filter <- function(
   }
   # convert min total abundance to an absolute number (if given as a proportion of total reads i.e. <1)
   if (min_total_abundance < 1 && min_total_abundance > 0) {
-    counts <- sum(microbiome::readcount(ps))
+    counts <- sum(phyloseq::sample_sums(ps))
     mtotAb_prop <- min_total_abundance
     min_total_abundance <- ceiling(min_total_abundance * counts)
     message("Proportional min_total_abundance given: ", mtotAb_prop, " --> min ", min_total_abundance, "/", counts, " reads.")
@@ -75,14 +74,17 @@ tax_filter <- function(
     tax_level <- "taxon" # unique
   } else if (tax_level %in% phyloseq::rank_names(ps)) {
     # perform requested taxonomic aggregation
-    ps <- microbiome::aggregate_taxa(ps, level = tax_level)
+    ps <- tax_agg(ps = ps, rank = tax_level)[["ps"]]
   } else {
     stop("invalid tax_level: ", tax_level)
   }
 
-  # otu table
-  otu <- microbiome::abundances(ps)
-  if (isTRUE(is_counts) && any(otu[1:5, ] < 1 & otu[1:5, ] > 0)) {
+  # get otu table with taxa as rows
+  otu <- unclass(phyloseq::otu_table(ps))
+  if (!phyloseq::taxa_are_rows(ps)) otu <- t(otu)
+
+  # check for proportional data
+  if (isTRUE(is_counts) && any(otu < 1 & otu > 0)) {
     stop(
       "otu_table(ps) contains proportions or transformed values which might lead to unexpected behaviour",
       "\n(use counts or avoid this error with is_counts = FALSE and setting an appropriate prev_detection_threshold, e.g. 1e-5)."
