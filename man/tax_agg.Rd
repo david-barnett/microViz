@@ -4,7 +4,7 @@
 \alias{tax_agg}
 \title{Aggregate taxa and create ps_extra}
 \usage{
-tax_agg(ps, rank = "unique", sort_by = NA, top_N = NA)
+tax_agg(ps, rank = "unique", sort_by = NA, top_N = NA, force = FALSE)
 }
 \arguments{
 \item{ps}{phyloseq object}
@@ -15,6 +15,13 @@ tax_agg(ps, rank = "unique", sort_by = NA, top_N = NA)
 
 \item{top_N}{NA does nothing, but if top_N is a number, it creates an extra tax_table column called top,
 which is the same as the unique column for the first top_N number of taxa, and "other" otherwise.}
+
+\item{force}{If TRUE, this forces aggregation at chosen rank to occur regardless of if the output will be sensible!
+This avoids the "Taxa not unique at rank: ..." error, but may allow very inappropriate aggregation to occur.
+Do not use force = TRUE unless you know why you are doing this, and what the result will be.
+If you are getting an error with force = FALSE, it is almost certainly better to examine the tax_table and fix the problem.
+(force = TRUE is similar to microbiome::aggregate_taxa,
+which also does not check that the taxa are uniquely defined by only the aggregation level.}
 }
 \value{
 ps_extra list object including phyloseq and tax_agg rank info

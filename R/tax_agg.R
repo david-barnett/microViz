@@ -26,6 +26,13 @@
 #' @param top_N
 #' NA does nothing, but if top_N is a number, it creates an extra tax_table column called top,
 #' which is the same as the unique column for the first top_N number of taxa, and "other" otherwise.
+#' @param force
+#' If TRUE, this forces aggregation at chosen rank to occur regardless of if the output will be sensible!
+#' This avoids the "Taxa not unique at rank: ..." error, but may allow very inappropriate aggregation to occur.
+#' Do not use force = TRUE unless you know why you are doing this, and what the result will be.
+#' If you are getting an error with force = FALSE, it is almost certainly better to examine the tax_table and fix the problem.
+#' (force = TRUE is similar to microbiome::aggregate_taxa,
+#' which also does not check that the taxa are uniquely defined by only the aggregation level.
 #'
 #' @return ps_extra list object including phyloseq and tax_agg rank info
 #' @export
@@ -64,7 +71,8 @@
 tax_agg <- function(ps,
                     rank = "unique",
                     sort_by = NA,
-                    top_N = NA) {
+                    top_N = NA,
+                    force = FALSE) {
   if (inherits(ps, "ps_extra")) {
     # currently just reset info
     warning(
@@ -123,11 +131,12 @@ tax_agg <- function(ps,
     new_tax_names <- base::unique(tt_df[, rank_index])
 
     # tt must be unique at given rank by this point
-    uniq_at_rank <- identical(length(new_tax_names), y = nrow(tt_distinct))
-    if (!uniq_at_rank) {
-      stop("Taxa not unique at rank: ", rank, unknowns_message)
+    if (!isTRUE(force)){
+      uniq_at_rank <- identical(length(new_tax_names), y = nrow(tt_distinct))
+      if (!uniq_at_rank) {
+        stop("Taxa not unique at rank: ", rank, unknowns_message)
+      }
     }
-
     # get otu table with taxa as rows (like tt)
     otu <- t(unclass(otu_get(ps)))
     otu_df <- as.data.frame.matrix(
