@@ -189,7 +189,7 @@ ord_calc <- function(data,
       )
     }
     for (v in VARS) {
-      if (!isFALSE(verbose)) message("\t", v)
+      if (!isFALSE(verbose) && isTRUE(scale_cc)) message("\t", v)
       vec <- phyloseq::sample_data(ps)[[v]]
       if (!class(vec) %in% c("logical", "numeric", "integer")) {
         stop(
