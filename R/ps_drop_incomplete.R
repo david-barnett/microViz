@@ -1,10 +1,17 @@
 #' Deselect phyloseq samples with sample_data missings
 #'
-#' Wrapper for stats::complete.cases function.
+#' @description
+#' Check phyloseq object sample data for missing values (NAs)
+#' - specify which variables to check with vars argument, or check all)
+#' - drop samples with any missings
+#'
+#' @details
+#' This is a wrapper for \code{\link{stats::complete.cases()}} function.
 #'
 #' @param ps phyloseq with sample_data
 #' @param vars vector of variable names to check for missings (or NA, which uses all variables in sample data)
-#' @param verbose message about number of samples dropped if not FALSE, and number per variable in vars if "max"
+#' @param verbose message about number of samples dropped if verbose not FALSE, (and only if > 0 samples dropped)
+#' and message about number of missing per variable in vars if verbose = "max" (and message even if 0 samples dropped)
 #'
 #' @return phyloseq
 #' @export
@@ -25,7 +32,10 @@ ps_drop_incomplete <- function(ps, vars = NA, verbose = FALSE) {
   df_sub <- df[, vars, drop = FALSE]
   df_sub <- df_sub[stats::complete.cases(df_sub), , drop = FALSE]
   if (!isFALSE(verbose)) {
-    message("Dropping samples with missings: ", nrow(df) - nrow(df_sub))
+    incomplete <- nrow(df) - nrow(df_sub)
+    if (incomplete > 0 || identical(verbose, "max")) {
+      message("Dropping samples with missings: ", incomplete)
+    }
   }
   if (identical(verbose, "max")) {
     for (v in vars) {

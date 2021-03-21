@@ -11,13 +11,21 @@ ps_drop_incomplete(ps, vars = NA, verbose = FALSE)
 
 \item{vars}{vector of variable names to check for missings (or NA, which uses all variables in sample data)}
 
-\item{verbose}{message about number of samples dropped if not FALSE, and number per variable in vars if "max"}
+\item{verbose}{message about number of samples dropped if verbose not FALSE, (and only if > 0 samples dropped)
+and message about number of missing per variable in vars if verbose = "max" (and message even if 0 samples dropped)}
 }
 \value{
 phyloseq
 }
 \description{
-Wrapper for stats::complete.cases function.
+Check phyloseq object sample data for missing values (NAs)
+\itemize{
+\item specify which variables to check with vars argument, or check all)
+\item drop samples with any missings
+}
+}
+\details{
+This is a wrapper for \code{\link{stats::complete.cases()}} function.
 }
 \examples{
 library(phyloseq)
