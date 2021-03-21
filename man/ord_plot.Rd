@@ -7,12 +7,6 @@
 ord_plot(
   data,
   axes = 1:2,
-  scaling = "species",
-  constraint_vec_length = NA,
-  constraint_vec_style = list(),
-  constraint_lab_length = constraint_vec_length * 1.1,
-  constraint_lab_style = list(),
-  var_renamer = function(x) identity(x),
   plot_taxa = FALSE,
   tax_vec_length = NA,
   tax_vec_style_all = list(),
@@ -20,7 +14,13 @@ ord_plot(
   tax_lab_length = tax_vec_length * 1.1,
   tax_lab_style = list(),
   taxon_renamer = function(x) identity(x),
+  constraint_vec_length = NA,
+  constraint_vec_style = list(),
+  constraint_lab_length = constraint_vec_length * 1.1,
+  constraint_lab_style = list(),
+  var_renamer = function(x) identity(x),
   plot_samples = TRUE,
+  scaling = 2,
   auto_caption = 8,
   center = FALSE,
   clip = "off",
@@ -33,21 +33,6 @@ ord_plot(
 \item{data}{list object output from ord_calc}
 
 \item{axes}{which axes to plot: numerical vector of length 2}
-
-\item{scaling}{either "species" (2) or "site" (1) scores are scaled by eigenvalues,
-and the other set of scores is left unscaled (from ?vegan::scores.cca)}
-
-\item{constraint_vec_length}{NA = auto-scaling for line segment drawn for any constraints.
-Alternatively provide a numeric length multiplier yourself.}
-
-\item{constraint_vec_style}{list of aesthetics/arguments (colour, alpha etc) for the constraint vectors}
-
-\item{constraint_lab_length}{relative length of label drawn for any constraints
-(relative to default position which is defined by correlation with each drawn axis)}
-
-\item{constraint_lab_style}{list of aesthetics/arguments (colour, size etc) for the constraint labels}
-
-\item{var_renamer}{function to rename constraining variables for plotting their labels}
 
 \item{plot_taxa}{if ord_calc method was "PCA/RDA" draw the taxa loading vectors (see details)}
 
@@ -64,7 +49,22 @@ Alternatively provide a numeric length multiplier yourself.}
 
 \item{taxon_renamer}{function that takes any plotted taxon names and returns modified names for labels}
 
+\item{constraint_vec_length}{NA = auto-scaling for line segment drawn for any constraints.
+Alternatively provide a numeric length multiplier yourself.}
+
+\item{constraint_vec_style}{list of aesthetics/arguments (colour, alpha etc) for the constraint vectors}
+
+\item{constraint_lab_length}{relative length of label drawn for any constraints
+(relative to default position which is defined by correlation with each drawn axis)}
+
+\item{constraint_lab_style}{list of aesthetics/arguments (colour, size etc) for the constraint labels}
+
+\item{var_renamer}{function to rename constraining variables for plotting their labels}
+
 \item{plot_samples}{if TRUE, plot sample points with geom_point}
+
+\item{scaling}{Relevant for constrained ordinations: Type 2, or type 1 scaling. See \url{https://sites.google.com/site/mb3gustame/constrained-analyses/rda}
+Either "species" or "site" scores are scaled by eigenvalues, and the other set of scores is left unscaled (from ?vegan::scores.cca)}
 
 \item{auto_caption}{size of caption with info about the ordination, NA for none}
 
@@ -83,14 +83,14 @@ drawn with geom_point using aes_string}
 ggplot
 }
 \description{
-Ordination visualisation. Utilises results of \code{ord_calc}.
+Draw ordination plot. Utilises results of \code{\link{ord_calc}}.
 \itemize{
 \item For interpretation see the the relevant pages on PCA, PCoA, RDA, or CCA on the "gusta me" website: \url{https://sites.google.com/site/mb3gustame/}
 \item Some other inspiration was from here: \url{https://ourcodingclub.github.io/2018/05/04/ordination.html}
 }
 }
 \details{
-How to specify the plot_taxa argument:
+How to specify the plot_taxa argument (when using PCA, CCA or RDA):
 \itemize{
 \item FALSE --> plot no taxa vectors or labels
 \item integer vector e.g. 1:3 --> plot labels for top 3 taxa (by longest line length)
@@ -180,6 +180,17 @@ constrained_aitchison_rda \%>\%
   ) +
   lims(x = c(-5, 6), y = c(-5, 5)) +
   scale_colour_brewer(palette = "Set1")
+
+# You can plot PCoA and constrained PCoA plots too.
+# You don't typically need/want to use transformed taxa variables for PCoA
+# But it is good practice to call tax_transform("identity") so that
+# the automatic caption can record that no transformation was applied
+dietswap \%>\%
+  tax_agg("Genus") \%>\%
+  tax_transform("identity") \%>\% # so caption can record (lack of) transform
+  dist_calc("bray") \%>\% # bray curtis
+  ord_calc() \%>\% # guesses you want an unconstrained PCoA
+  ord_plot(colour = "bmi_group")
 
 # it is possible to facet these plots
 # (although I'm not sure it makes sense to)

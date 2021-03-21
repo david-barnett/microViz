@@ -1,10 +1,10 @@
 #' Customisable ggplot ordination (using ord_calc result)
 #'
-#' Ordination visualisation. Utilises results of \code{ord_calc}.
+#' Draw ordination plot. Utilises results of \code{\link{ord_calc}}.
 #' - For interpretation see the the relevant pages on PCA, PCoA, RDA, or CCA on the "gusta me" website: \url{https://sites.google.com/site/mb3gustame/}
 #' - Some other inspiration was from here: \url{https://ourcodingclub.github.io/2018/05/04/ordination.html}
 #'
-#' How to specify the plot_taxa argument:
+#' How to specify the plot_taxa argument (when using PCA, CCA or RDA):
 #' - FALSE --> plot no taxa vectors or labels
 #' - integer vector e.g. 1:3 --> plot labels for top 3 taxa (by longest line length)
 #' - single numeric value e.g. 0.75 --> plot labels for taxa with line length > 0.75
@@ -12,15 +12,6 @@
 #'
 #' @param data list object output from ord_calc
 #' @param axes which axes to plot: numerical vector of length 2
-#' @param scaling either "species" (2) or "site" (1) scores are scaled by eigenvalues,
-#' and the other set of scores is left unscaled (from ?vegan::scores.cca)
-#' @param constraint_vec_length NA = auto-scaling for line segment drawn for any constraints.
-#' Alternatively provide a numeric length multiplier yourself.
-#' @param constraint_vec_style list of aesthetics/arguments (colour, alpha etc) for the constraint vectors
-#' @param constraint_lab_length relative length of label drawn for any constraints
-#' (relative to default position which is defined by correlation with each drawn axis)
-#' @param constraint_lab_style list of aesthetics/arguments (colour, size etc) for the constraint labels
-#' @param var_renamer function to rename constraining variables for plotting their labels
 #' @param plot_taxa if ord_calc method was "PCA/RDA" draw the taxa loading vectors (see details)
 #' @param tax_vec_length NA = auto-scaling for line segment drawn for any taxa.
 #' Alternatively provide a numeric length multiplier yourself.
@@ -30,6 +21,16 @@
 #' @param tax_lab_style list of fixed aesthetics (colour, size etc) for the taxon labels
 #' @param taxon_renamer function that takes any plotted taxon names and returns modified names for labels
 #' @param plot_samples if TRUE, plot sample points with geom_point
+#' @param constraint_vec_length NA = auto-scaling for line segment drawn for any constraints.
+#' Alternatively provide a numeric length multiplier yourself.
+#' @param constraint_vec_style list of aesthetics/arguments (colour, alpha etc) for the constraint vectors
+#' @param constraint_lab_length relative length of label drawn for any constraints
+#' (relative to default position which is defined by correlation with each drawn axis)
+#' @param constraint_lab_style list of aesthetics/arguments (colour, size etc) for the constraint labels
+#' @param var_renamer function to rename constraining variables for plotting their labels
+#' @param scaling
+#' Relevant for constrained ordinations: Type 2, or type 1 scaling. See \url{https://sites.google.com/site/mb3gustame/constrained-analyses/rda}
+#' Either "species" or "site" scores are scaled by eigenvalues, and the other set of scores is left unscaled (from ?vegan::scores.cca)
 #' @param auto_caption size of caption with info about the ordination, NA for none
 #' @param center expand plot limits to center around origin point (0,0)
 #' @param clip clipping of labels that extend outside plot limits?
@@ -125,6 +126,17 @@
 #'   lims(x = c(-5, 6), y = c(-5, 5)) +
 #'   scale_colour_brewer(palette = "Set1")
 #'
+#' # You can plot PCoA and constrained PCoA plots too.
+#' # You don't typically need/want to use transformed taxa variables for PCoA
+#' # But it is good practice to call tax_transform("identity") so that
+#' # the automatic caption can record that no transformation was applied
+#' dietswap %>%
+#'   tax_agg("Genus") %>%
+#'   tax_transform("identity") %>% # so caption can record (lack of) transform
+#'   dist_calc("bray") %>% # bray curtis
+#'   ord_calc() %>% # guesses you want an unconstrained PCoA
+#'   ord_plot(colour = "bmi_group")
+#'
 #' # it is possible to facet these plots
 #' # (although I'm not sure it makes sense to)
 #' # but only unconstrained ordination plots and with plot_taxa = FALSE
@@ -144,12 +156,6 @@
 ord_plot <-
   function(data,
            axes = 1:2,
-           scaling = "species",
-           constraint_vec_length = NA,
-           constraint_vec_style = list(),
-           constraint_lab_length = constraint_vec_length * 1.1,
-           constraint_lab_style = list(),
-           var_renamer = function(x) identity(x),
            plot_taxa = FALSE,
            tax_vec_length = NA,
            tax_vec_style_all = list(),
@@ -157,7 +163,13 @@ ord_plot <-
            tax_lab_length = tax_vec_length * 1.1,
            tax_lab_style = list(),
            taxon_renamer = function(x) identity(x),
+           constraint_vec_length = NA,
+           constraint_vec_style = list(),
+           constraint_lab_length = constraint_vec_length * 1.1,
+           constraint_lab_style = list(),
+           var_renamer = function(x) identity(x),
            plot_samples = TRUE,
+           scaling = 2, # or "species" scaling in vegan lingo
            auto_caption = 8,
            center = FALSE,
            clip = "off",
@@ -222,11 +234,14 @@ ord_plot <-
 
     # NMDS and DCA ordinations needs alternative handling
     if (inherits(ordination, c("decorana", "metaMDS"))) {
-      siteScoresDf <- as.data.frame(vegan::scores(ordination, display = "sites", choices = axes))
+      siteScoresDf <- as.data.frame(
+        vegan::scores(ordination, display = "sites", choices = axes)
+      )
       axeslabels <- axesNames <- colnames(siteScoresDf)
     } else {
 
-      # compute summary of ordination object to ensure consistent scaling of components
+      # compute summary of ordination object to ensure
+      # consistent scaling of components
       ordsum <- summary(ordination, scaling = scaling)
 
       # retrieve scores from model object
@@ -234,18 +249,22 @@ ord_plot <-
 
       # if RDA/PCA method: get species scores (aka feature loadings)
       if (info[["ordMethod"]] %in% c("RDA", "PCA", "CCA")) {
-        speciesScoresDf <- as.data.frame(ordsum[["species"]][, axes, drop = FALSE])
+        speciesScoresDf <-
+          as.data.frame(ordsum[["species"]][, axes, drop = FALSE])
       }
 
       # if constrained model: get constraints coordinates for plotting
       if (!identical(info[["constraints"]], NA_character_)) {
-        constraintDf <- as.data.frame(ordsum[["biplot"]][, axes, drop = FALSE])
+        constraintDf <-
+          as.data.frame(ordsum[["biplot"]][, axes, drop = FALSE])
       }
 
       # extract "explained variation" for labelling axes
-      explainedVar <- vegan::eigenvals(ordination)[axes] / sum(vegan::eigenvals(ordination))
+      explainedVar <-
+        vegan::eigenvals(ordination)[axes] / sum(vegan::eigenvals(ordination))
       axesNames <- colnames(siteScoresDf)
-      axeslabels <- paste0(axesNames, " [", sprintf("%.1f", 100 * explainedVar), "%]")
+      axeslabels <-
+        paste0(axesNames, " [", sprintf("%.1f", 100 * explainedVar), "%]")
     }
     # bind ordination axes vectors to metadata subset for plotting
     df <- dplyr::bind_cols(siteScoresDf, meta)
@@ -280,7 +299,8 @@ ord_plot <-
     if (info[["ordMethod"]] %in% c("RDA", "CCA", "PCA")) {
 
       # calculate line length for taxa vectors
-      speciesLineLength <- sqrt(speciesScoresDf[, 1]^2 + speciesScoresDf[, 2]^2)
+      speciesLineLength <-
+        sqrt(speciesScoresDf[, 1]^2 + speciesScoresDf[, 2]^2)
 
       # return subselection of taxa for which to draw labels on plot
       selectSpeciesScoresDf <-
@@ -295,7 +315,9 @@ ord_plot <-
           },
           # integer e.g. 1:3 --> plot labels for top 3 taxa (by line length)
           "integer" = {
-            speciesScoresDf[rev(order(speciesLineLength)), ][plot_taxa, , drop = FALSE]
+            speciesScoresDf[
+              rev(order(speciesLineLength)),
+            ][plot_taxa, , drop = FALSE]
           },
           # numeric e.g. 0.75 --> plot labels for taxa with line length > 0.75
           "numeric" = {
@@ -304,11 +326,15 @@ ord_plot <-
           # character e.g. c('g__Bacteroides', 'g__Veillonella')
           # --> plot labels for exactly named taxa
           "character" = {
-            speciesScoresDf[rownames(speciesScoresDf) %in% plot_taxa, , drop = FALSE]
+            speciesScoresDf[
+              rownames(speciesScoresDf) %in% plot_taxa, ,
+              drop = FALSE
+            ]
           }
         )
 
-      # if a selection of species scores was calculated, add lines and labels to plot
+      # if a selection of species scores was calculated,
+      # add lines and labels to plot
       if (!identical(selectSpeciesScoresDf, NULL)) {
         # automatic taxa vector length setting
         if (identical(tax_vec_length, NA)) {
@@ -386,25 +412,32 @@ ord_plot <-
       constraint_lab_args[names(constraint_lab_style)] <- constraint_lab_style
       p <- p + do.call(what = ggplot2::geom_label, args = constraint_lab_args)
     }
-
-    # add automated title if requested (default TRUE)
+    # auto caption ------------------------------------------------------------
+    # add automated caption if requested (default size = 8)
     if (!identical(NA, auto_caption)) {
-      infoElements <- list(
-        m = paste("method =", info[["ordMethod"]], paste0("(", scaling, " scaling)")),
-        t = paste("tax_agg =", info[["tax_agg"]])
-      )
-      # add further non-NA elements
-      for (i in setdiff(names(info), c("ordMethod", "tax_agg", "constraints"))) {
-        if (!is.na(info[[i]])) {
-          infoElements[[i]] <- paste(i, "=", info[[i]])
-        }
+      o <- info[["ordMethod"]]
+      if (o %in% c("RDA", "CCA", "CAP")) {
+        o <- paste0(o, " (scaling=", scaling, ")")
       }
-      if (!identical(info[["constraints"]], NA_character_)) {
-        infoElements[["cs"]] <- paste("constraints =", paste(info[["constraints"]], collapse = "+"))
+      if (!is.na(info[["constraints"]])) {
+        o <- paste0(o, " constraints=", info[["constraints"]])
+      }
+      if (!is.na(info[["conditions"]])) {
+        o <- paste0(o, " conditions=", info[["conditions"]])
       }
 
-      caption <- paste(stats::nobs(df), "samples &", phyloseq::ntaxa(ps), "taxa.")
-      caption <- paste(caption, paste(infoElements, collapse = ". "))
+      caption <- paste0(
+        nrow(df), " samples & ", phyloseq::ntaxa(ps),
+        " taxa (", info[["tax_agg"]], "). ", o
+      )
+
+      if (!is.na(info[["tax_transform"]])) {
+        caption <- paste0(caption, " tax_transform=", info[["tax_transform"]])
+      }
+
+      if (!is.na(info[["distMethod"]])){
+        caption <- paste0(caption, " dist=", info[["distMethod"]])
+      }
 
       p <- p + ggplot2::labs(caption = caption) +
         ggplot2::theme(plot.caption = ggplot2::element_text(size = auto_caption))
