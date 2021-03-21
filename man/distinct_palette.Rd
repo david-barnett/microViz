@@ -13,5 +13,10 @@ distinct_palette(n = NA)
 vector of colours
 }
 \description{
-Good for generating palettes for large sets of categories, e.g. in the comp_barplot function
+Good for generating palettes for large sets of categories,
+e.g. in the comp_barplot function
+}
+\examples{
+pal <- distinct_palette()
+scales::show_col(c(pal, "lightgrey"))
 }

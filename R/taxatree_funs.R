@@ -85,7 +85,7 @@ taxatree_edges <- function(nodes_df) {
   )
   edge_df <- purrr::reduce(edge_list, rbind.data.frame)
   # remove any duplicate edges
-  edge_df <- dplyr::distinct(edge_df, dplyr::across(tidyselect::everything()))
+  edge_df <- dplyr::distinct(edge_df, dplyr::across(dplyr::everything()))
   # remove nodes that point to themselves (root level always will)
   edge_df <- edge_df[edge_df[["from"]] != edge_df[["to"]], ]
   # edge_df gets all attributes from the "to" node

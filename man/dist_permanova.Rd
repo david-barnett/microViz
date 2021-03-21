@@ -52,16 +52,15 @@ Watch out, if any of your variable names contain characters that would normally 
 you should rename the offending variable (e.g. avoid any of "+" "}" "|" or ":" ) otherwise permanova will split that variable into pieces.
 }
 \examples{
-library(phyloseq)
-library(vegan)
 data("dietswap", package = "microbiome")
 
 # add some missings to demonstrate automated removal
-sample_data(dietswap)$sex[3:6] <- NA
+phyloseq::sample_data(dietswap)$sex[3:6] <- NA
 
 # compute distance
 testDist <- dietswap \%>\%
   tax_agg("Genus") \%>\%
+  tax_transform("identity") \%>\%
   dist_calc("bray")
 
 PERM <- testDist \%>\%
@@ -69,7 +68,7 @@ PERM <- testDist \%>\%
     seed = 1,
     variables = c("sex", "bmi_group"),
     n_processes = 1,
-    n_perms = 99 # only 99 perms used in examples for speed (use 999, 9999 or more!)
+    n_perms = 99 # only 99 perms used in examples for speed (use 9999+!)
   )
 str(PERM, max.level = 1)
 
@@ -94,10 +93,11 @@ PERM3$permanova
 
 identical(PERM3, PERM2) # TRUE
 
-# take the same distance matrix used for the permanova and plot an ordination
+# take same distance matrix used for the permanova and plot an ordination
 PERM2 \%>\%
   ord_calc(method = "PCoA") \%>\%
   ord_plot(color = "bmi_group")
-# this trick ensures any samples dropped from the permanova for having missing values
-# in the covariates are NOT included in the corresponding ordination plot
+# this trick ensures any samples dropped from the permanova
+# for having missing values in the covariates are NOT included
+# in the corresponding ordination plot
 }
