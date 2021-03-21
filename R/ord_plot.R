@@ -34,6 +34,7 @@
 #' @param center expand plot limits to center around origin point (0,0)
 #' @param clip clipping of labels that extend outside plot limits?
 #' @param expand expand plot limits a little bit further than data range?
+#' @param interactive creates plot suitable for use with ggiraph
 #' @param ...
 #' pass aesthetics arguments for sample points,
 #' drawn with geom_point using aes_string
@@ -52,7 +53,7 @@
 #'     female = dplyr::if_else(sex == "female", true = 1, false = 0)
 #'   )
 #'
-#' # compute and plot ordinations for demonstration of conditioning
+#' # unconstrained PCA ordination
 #' unconstrained_aitchison_pca <- dietswap %>%
 #'   tax_transform("clr", rank = "Genus") %>%
 #'   ord_calc() # method = "auto" --> picks PCA as no constraints or distances
@@ -60,6 +61,32 @@
 #' unconstrained_aitchison_pca %>%
 #'   ord_plot(colour = "bmi_group", plot_taxa = 1:5) +
 #'   stat_ellipse(aes(linetype = bmi_group, colour = bmi_group))
+#'
+#' # you can generate an interactive version of the plot by specifying
+#' # interactive = TRUE, and passing a variable name to another argument
+#' # called `data_id` which is required for interactive point selection
+#' interactive_plot <- unconstrained_aitchison_pca %>%
+#'   ord_plot(
+#'     colour = "bmi_group", plot_taxa = 1:5,
+#'     interactive = TRUE, data_id = "sample"
+#'   )
+#'
+#' # to start the html viewer, and allow selecting points, we must use a
+#' # ggiraph function called girafe and set some options
+#' ggiraph::girafe(
+#'   ggobj = interactive_plot,
+#'   options = list(
+#'     ggiraph::opts_selection(
+#'       css = ggiraph::girafe_css(
+#'         css = "fill:orange;stroke:black;",
+#'         point = "stroke-width:1.5px"
+#'       ),
+#'       type = "multiple", # this activates lasso selection (click top-right)
+#'       only_shiny = FALSE # allows interactive plot outside of shiny app
+#'     )
+#'   )
+#' )
+#'
 #'
 #' # remove effect of weight with conditions arg
 #' # scaling weight with scale_cc is not necessary as only 1 condition is used
@@ -135,6 +162,7 @@ ord_plot <-
            center = FALSE,
            clip = "off",
            expand = !center,
+           interactive = FALSE,
            ...) {
     ps <- ps_get(data)
     ordination <- ord_get(data)
@@ -241,7 +269,11 @@ ord_plot <-
 
     # add sample/site points, sized dynamically or fixed size
     if (plot_samples) {
-      p <- p + do.call(ggplot2::geom_point, args = geompointArgs)
+      if (isTRUE(interactive)) {
+        p <- p + do.call(ggiraph::geom_point_interactive, args = geompointArgs)
+      } else {
+        p <- p + do.call(ggplot2::geom_point, args = geompointArgs)
+      }
     }
 
     # add loadings/ species-scores arrows for RDA/PCA methods

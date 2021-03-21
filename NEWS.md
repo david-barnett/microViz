@@ -1,3 +1,9 @@
+# microViz (development version)
+
+## Features
+- `ord_plot` interactivity option with `ggiraph` package
+- `ord_explore` WIP
+
 # microViz 0.6.0 - "open sesame"
 
 This is the first public release version of microViz. It is still under active development, so pay attention to the following:
