@@ -73,7 +73,7 @@
 #'   )
 #'
 #' # to start the html viewer, and allow selecting points, we must use a
-#' # ggiraph function called girafe and set some options
+#' # ggiraph function called girafe and set some options and css
 #' ggiraph::girafe(
 #'   ggobj = interactive_plot,
 #'   options = list(
@@ -427,7 +427,7 @@ ord_plot <-
       }
 
       caption <- paste0(
-        nrow(df), " samples & ", phyloseq::ntaxa(ps),
+        nrow(p[["data"]]), " samples & ", phyloseq::ntaxa(ps),
         " taxa (", info[["tax_agg"]], "). ", o
       )
 
@@ -435,7 +435,7 @@ ord_plot <-
         caption <- paste0(caption, " tax_transform=", info[["tax_transform"]])
       }
 
-      if (!is.na(info[["distMethod"]])){
+      if (!is.na(info[["distMethod"]])) {
         caption <- paste0(caption, " dist=", info[["distMethod"]])
       }
 

@@ -128,7 +128,7 @@ interactive_plot <- unconstrained_aitchison_pca \%>\%
   )
 
 # to start the html viewer, and allow selecting points, we must use a
-# ggiraph function called girafe and set some options
+# ggiraph function called girafe and set some options and css
 ggiraph::girafe(
   ggobj = interactive_plot,
   options = list(
