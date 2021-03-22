@@ -21,7 +21,6 @@ distinct_palette <- function(n = NA) {
       "#00FF00", # lime
       "#1ff8ff", # a bright blue
       "#FDFF00", # lemon
-      "white",
       # next 8 colours generated with:
       # RColorBrewer::brewer.pal(n = 8, "Dark2")
       "#1B9E77", "#D95F02", "#7570B3", "#E7298A",
