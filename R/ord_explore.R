@@ -18,6 +18,7 @@
 #' data("enterotype")
 #'
 #' # simple example #
+#' taxa_names(enterotype)[1] <- "unclassified"
 #' ps <- tax_fill_unknowns(enterotype) # remove NA taxa
 #' ord1 <- ps %>%
 #'   dist_calc("bray") %>%
@@ -38,7 +39,7 @@
 #'
 #' constrained_aitchison_rda <- dietswap %>%
 #'   tax_transform("clr") %>%
-#'   ord_calc(method = "RDA", constraints = c("weight", "female"))
+#'   ord_calc(constraints = c("weight", "female"))
 #'
 #' # note if you want to visualise an ordination that required transformation
 #' # you must take care to provide an untransformed phyloseq to ps,
@@ -46,25 +47,29 @@
 #' # constrained_aitchison_rda %>%
 #' #   ord_explore(
 #' #     ps = dietswap, plot_taxa = 1:5, tax_lab_style = list(size = 3),
-#' #     constraint_lab_style = list(size = 4)
+#' #     constraint_lab_style = list(size = 4), auto_caption = 7
 #' #   )
 #' # try changing the point colour to bmi_group or similar
 #' # (style interactively! e.g. colour doesn't work as argument to ord_explore)
-ord_explore <- function(ord, ps = NULL, seriate_method = "OLO_ward", tax_transform_for_ordering = "identity", ...) {
+ord_explore <- function(ord,
+                        ps = NULL,
+                        seriate_method = "OLO_ward",
+                        tax_transform_for_ordering = "identity",
+                        ...) {
   # SETUP -------------------------------------------------------------------
 
   if (identical(ps, NULL)) ps <- ps_get(ord)
   if (inherits(ps, "ps_extra")) ps <- ps_get(ps)
   ordination <- ord_get(ord)
   dist <- info_get(ord)[["distMethod"]]
-  # handle missing distances e.g. if RDA is used (needed if a distance-based seriate_method is requested, as is default)
+  # (needed if a distance-based seriate_method is requested, as is default)
   if (is.na(dist)) {
     dist <- "euclidean"
     tax_transform_for_ordering <- info_get(ord)[["tax_transform"]]
   }
   samdat <- phyloseq::sample_data(ps)
 
-  # calculate sample order based on hierarchical clustering of first PCs
+  # calculate sample order based on hierarchical clustering
   message("- ordering samples")
   ps_ordered <- ps_seriate(
     ps,
@@ -85,13 +90,22 @@ ord_explore <- function(ord, ps = NULL, seriate_method = "OLO_ward", tax_transfo
           shiny::fluidRow(
             shiny::h4("Ordination options"),
             shiny::selectInput(
+              inputId = "id_var", label = "Selection group variable:",
+              choices = names(samdat),
+              selected = "Sample_ID"
+            ),
+            shiny::selectInput(
               inputId = "ord_colour", label = "Point colour",
-              choices = list(Variable = phyloseq::sample_variables(ps), Fixed = grDevices::colors(distinct = TRUE)),
+              choices = list(
+                Variable = phyloseq::sample_variables(ps),
+                Fixed = grDevices::colors(distinct = TRUE)
+              ),
               selected = "gray"
             ),
             # shape
             shiny::radioButtons(
-              inputId = "shape_var_type", label = "Point shape:", inline = TRUE,
+              inputId = "shape_var_type",
+              label = "Point shape:", inline = TRUE,
               choices = c(
                 "Fixed" = "fixed",
                 "Variable" = "variable"
@@ -109,7 +123,8 @@ ord_explore <- function(ord, ps = NULL, seriate_method = "OLO_ward", tax_transfo
             ),
             # size
             shiny::radioButtons(
-              inputId = "size_var_type", label = "Point size:", inline = TRUE,
+              inputId = "size_var_type",
+              label = "Point size:", inline = TRUE,
               choices = c(
                 "Fixed" = "fixed",
                 "Variable" = "variable"
@@ -124,7 +139,7 @@ ord_explore <- function(ord, ps = NULL, seriate_method = "OLO_ward", tax_transfo
               inputId = "ord_size_var", label = NULL,
               choices = names(samdat[, sapply(X = samdat, function(x) !is.character(x) & !is.factor(x))]),
               selected = NULL
-            )
+            ),
           ),
           shiny::fluidRow(
             shiny::h4("Composition options"),
@@ -135,7 +150,7 @@ ord_explore <- function(ord, ps = NULL, seriate_method = "OLO_ward", tax_transfo
             ),
             shiny::sliderInput(
               inputId = "ntaxa", label = "Taxa to display",
-              min = 1, max = 20, value = 9, ticks = FALSE,
+              min = 1, max = 19, value = 9, ticks = FALSE,
               step = 1, round = TRUE
             ),
             shiny::selectInput(
@@ -150,14 +165,18 @@ ord_explore <- function(ord, ps = NULL, seriate_method = "OLO_ward", tax_transfo
           shiny::fluidRow(
             shiny::column(
               width = 11,
-              # ordination plot
-              shiny::plotOutput(height = "450px", outputId = "ord_plot", brush = shiny::brushOpts(id = "ord_plot_brush")),
+              # interactive ordination plot
+              ggiraph::girafeOutput(outputId = "ord_plot", height = "5in")
             )
           ),
           shiny::fluidRow(
             shiny::column(
               width = 11,
-              shiny::plotOutput(height = "450px", "compositions")
+              shiny::plotOutput(height = "450px", outputId = "compositions")
+            ),
+            shiny::column(
+              width = 4,
+              shiny::textOutput(outputId = "debugging")
             )
           )
         )
@@ -171,55 +190,52 @@ ord_explore <- function(ord, ps = NULL, seriate_method = "OLO_ward", tax_transfo
     # ord_plot aesthetic vars
     shape <- shiny::reactive({
       switch(input$shape_var_type,
-        "fixed" = {
-          input$ord_shape_num
-        },
-        "variable" = {
-          input$ord_shape_var
-        }
+             "fixed" = {
+               input$ord_shape_num
+             },
+             "variable" = {
+               input$ord_shape_var
+             }
       )
     })
     size <- shiny::reactive({
       switch(input$size_var_type,
-        "fixed" = {
-          input$ord_size_num
-        },
-        "variable" = {
-          input$ord_size_var
-        }
+             "fixed" = {
+               input$ord_size_num
+             },
+             "variable" = {
+               input$ord_size_var
+             }
       )
     })
 
-
-    # get PC sample values (scores)
-    score_df <- shiny::reactive({
-      vegan::scores(ordination, display = "sites", choices = 1:2)
+    # ordination plot ---------------------------------------------------------
+    output$ord_plot <- ggiraph::renderGirafe({
+      p1 <- ord_plot(
+        ord,
+        shape = shape(),
+        size = size(),
+        colour = input$ord_colour,
+        interactive = TRUE,
+        data_id = input$id_var,
+        ...
+      ) +
+        ggplot2::scale_shape_discrete(na.translate = TRUE, na.value = 1)
+      p1 <- ggiraph::girafe(code = print(p1),
+                            width_svg = 5, height_svg = 5,
+                            options = list(
+                              ggiraph::opts_hover(
+                                css = "fill:#FF3333;stroke:black;cursor:pointer;",
+                                reactive = TRUE
+                              ),
+                              ggiraph::opts_selection(
+                                type = "multiple", css = "stroke:orange")
+                            ))
+      p1
     })
 
-
-    # ord_plot plot #
-    output$ord_plot <- shiny::renderCachedPlot(
-      {
-        message("- making ord_plot plot")
-
-        microViz::ord_plot(
-          ord,
-          shape = shape(),
-          size = size(),
-          colour = input$ord_colour,
-          ...
-        ) +
-          ggplot2::scale_shape_discrete(na.translate = TRUE, na.value = 1)
-      },
-      cacheKeyExpr = {
-        list(
-          shape(), size(), input$ord_colour
-        )
-      }
-    )
-
-
     # composition plot --------------------------------------------------------
+
 
     # set colour palette (depends on tax level of ord_plot)
     palet <- shiny::reactive({
@@ -227,63 +243,70 @@ ord_explore <- function(ord, ps = NULL, seriate_method = "OLO_ward", tax_transfo
       ord_explore_palet_fun(ps, input$tax_level_comp)
     })
 
+
     # make plot
     output$compositions <- shiny::renderPlot({
 
-      # select points that fall within selection region
-      rowindex <-
-        score_df()[, 1] > input$ord_plot_brush$xmin & score_df()[, 1] < input$ord_plot_brush$xmax &
-          score_df()[, 2] > input$ord_plot_brush$ymin & score_df()[, 2] < input$ord_plot_brush$ymax
+      # get ggiraph interactivity
+      selected_samples <- input$ord_plot_selected
 
-      # future todo note: add any other selection criteria here above too (in combination), like antibiotics status
+      # logical selection of kept samples
+      sample_kept <-
+        phyloseq::sample_data(ps)[[input$id_var]] %in% selected_samples
 
-      # if any points have been selected
-      if (sum(rowindex) > 1) {
-        selected_scores_df <- score_df()[rowindex, , drop = FALSE]
+      if (sum(sample_kept) >= 2){
+        # TODO fix issue that comp_barplot only works with 2+ samples
 
-        ps_sel <- phyloseq::prune_samples(x = ps_ordered, samples = rownames(selected_scores_df))
+      # select samples
+      ps_sel <- phyloseq::prune_samples(x = ps_ordered, samples = sample_kept)
 
-        # plot composition of selected samples
-        p_comp <- ps_sel %>%
-          comp_barplot(
-            n_taxa = input$ntaxa,
-            tax_level = input$tax_level_comp,
-            palette = palet(),
-            bar_outline_colour = "black",
-            sample_order = "default",
-            label = input$comp_label
-          )
+      # plot composition of selected samples
+      p_comp <- ps_sel %>%
+        comp_barplot(
+          n_taxa = input$ntaxa,
+          tax_level = input$tax_level_comp,
+          palette = palet(),
+          bar_outline_colour = "black",
+          sample_order = "default",
+          label = input$comp_label
+        )
 
-        p_comp + ggplot2::coord_flip() + ggplot2::labs(x = NULL, y = NULL)
+      p_comp = p_comp +
+        ggplot2::coord_flip() +
+        ggplot2::labs(x = NULL, y = NULL)
       } else {
-        message("Select 2 or more points")
-
-        # return blank plot
-        p_comp <- ggplot2::ggplot()
+        p_comp = ggplot2::ggplot() +
+          ggplot2::annotate(
+            geom = "text", x = 0.1, y = 0.5,
+            label = paste0(
+              "Select 2 or more samples on the ordination plot above\n",
+              "either by clicking or using the lasso selection tool 1 or more times"
+            )
+          ) +
+          ggplot2::theme_void()
       }
+      return(p_comp)
     })
   }
-
   # Run the application
   shiny::shinyApp(ui = ui, server = server)
+
 }
 
 
-
-#' Create fixed palette for ord_explore: tax_name = colour
+#' Create fixed named palette for ord_explore: tax_name = colour
 #'
 #' @param ps phyloseq object
 #' @param tax_level tax_level at which to create fixed palette
 #'
 #' @return named vector of colours
+#' @noRd
 ord_explore_palet_fun <- function(ps, tax_level) {
   # set up colour palette and link to common taxa names and "Other"
 
   palet <- distinct_palette(n = NA)
 
-  top_tax <- ps %>%
-    microbiome::aggregate_taxa(level = tax_level) %>%
-    microbiome::top_taxa()
+  top_tax <- tax_top(ps, n = NA, rank = tax_level)
 
   numb <- min(length(top_tax), length(palet))
 

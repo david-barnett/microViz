@@ -36,6 +36,7 @@ library(dplyr)
 data("enterotype")
 
 # simple example #
+taxa_names(enterotype)[1] <- "unclassified"
 ps <- tax_fill_unknowns(enterotype) # remove NA taxa
 ord1 <- ps \%>\%
   dist_calc("bray") \%>\%
@@ -56,7 +57,7 @@ dietswap <- dietswap \%>\%
 
 constrained_aitchison_rda <- dietswap \%>\%
   tax_transform("clr") \%>\%
-  ord_calc(method = "RDA", constraints = c("weight", "female"))
+  ord_calc(constraints = c("weight", "female"))
 
 # note if you want to visualise an ordination that required transformation
 # you must take care to provide an untransformed phyloseq to ps,
@@ -64,7 +65,7 @@ constrained_aitchison_rda <- dietswap \%>\%
 # constrained_aitchison_rda \%>\%
 #   ord_explore(
 #     ps = dietswap, plot_taxa = 1:5, tax_lab_style = list(size = 3),
-#     constraint_lab_style = list(size = 4)
+#     constraint_lab_style = list(size = 4), auto_caption = 7
 #   )
 # try changing the point colour to bmi_group or similar
 # (style interactively! e.g. colour doesn't work as argument to ord_explore)
