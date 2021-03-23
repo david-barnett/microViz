@@ -85,16 +85,40 @@ ord_explore <- function(ord,
 
   # APP ---------------------------------------------------------------------
 
-  # Define UI for application that draws 2 linked plots
+  # Define UI for application that draws ord_plot and comp_barplot
   ui <-
     shiny::fluidPage(
+      title = "ord_explore",
+      shiny::tags$head(
+        shiny::tags$style(
+          shiny::HTML(
+            "body {
+              background-color: 'grey90';
+            }
+            * {
+              font-size: 12px;
+            }
+            .shiny-input-container {
+              color: grey10;
+              background-color: 'grey85';
+            }
+            .selectize-input {
+              height: 10px;
+            }
+            .irs-slider {
+              height: 10px;
+            }
+            "
+          )
+        )
+      ),
+
       shiny::sidebarLayout(
         position = "left",
         sidebarPanel = shiny::sidebarPanel(
-          shiny::h3("ord_explore"),
           width = 3,
           shiny::fluidRow(
-            shiny::h4("Ordination options"),
+            shiny::h5("Ordination options"),
             shiny::selectInput(
               inputId = "id_var", label = "Selection group variable:",
               choices = names(samdat),
@@ -120,7 +144,7 @@ ord_explore <- function(ord,
             ),
             shiny::sliderInput(
               inputId = "ord_shape_num", label = NULL,
-              value = 19, min = 1, step = 1, max = 21
+              value = 1, min = 1, step = 1, max = 21, ticks = FALSE
             ),
             shiny::selectInput(
               inputId = "ord_shape_var", label = NULL,
@@ -139,7 +163,7 @@ ord_explore <- function(ord,
             ),
             shiny::sliderInput(
               inputId = "ord_size_num", label = NULL,
-              value = 1.5, min = 0.5, step = 0.1, max = 10
+              value = 1.5, min = 0.5, step = 0.1, max = 10, ticks = FALSE
             ),
             shiny::selectInput(
               inputId = "ord_size_var", label = NULL,
@@ -148,7 +172,7 @@ ord_explore <- function(ord,
             ),
           ),
           shiny::fluidRow(
-            shiny::h4("Composition options"),
+            shiny::h5("Composition options"),
             shiny::selectInput(
               inputId = "tax_level_comp", label = "Taxonomic rank",
               choices = phyloseq::rank_names(ps),
@@ -176,17 +200,13 @@ ord_explore <- function(ord,
             shiny::column(
               width = 11,
               # interactive ordination plot
-              ggiraph::girafeOutput(outputId = "ord_plot", height = "5in")
+              ggiraph::girafeOutput(outputId = "ord_plot", height = "4.5in")
             )
           ),
           shiny::fluidRow(
             shiny::column(
               width = 11,
-              shiny::plotOutput(height = "450px", outputId = "compositions")
-            ),
-            shiny::column(
-              width = 4,
-              shiny::textOutput(outputId = "debugging")
+              shiny::plotOutput(height = "4.5in", outputId = "compositions")
             )
           )
         )
@@ -227,7 +247,7 @@ ord_explore <- function(ord,
         ggplot2::scale_shape_discrete(na.translate = TRUE, na.value = 1)
       p1 <- ggiraph::girafe(
         code = print(p1),
-        width_svg = 5, height_svg = 5,
+        width_svg = 5, height_svg = 4.5,
         options = list(
           ggiraph::opts_hover(
             css = "fill:#FF3333;stroke:black;cursor:pointer;",
