@@ -29,7 +29,7 @@ tax_top <- function(data, n = 10, by = sum, rank = "unique", ...) {
   ps <- tax_agg(ps, rank = rank)[["ps"]]
   ps <- tax_sort(ps, by = by, ...)
   taxnames <- phyloseq::taxa_names(physeq = ps)
-  if (identical(n, NA)){
+  if (identical(n, NA)) {
     return(taxnames)
   } else {
     return(utils::head(x = taxnames, n = n))
