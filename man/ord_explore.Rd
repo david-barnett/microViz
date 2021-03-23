@@ -6,20 +6,26 @@
 \usage{
 ord_explore(
   ord,
+  sample_id,
   ps = NULL,
   seriate_method = "OLO_ward",
   tax_transform_for_ordering = "identity",
+  tax_order = sum,
   ...
 )
 }
 \arguments{
 \item{ord}{list output of ord_calc}
 
+\item{sample_id}{id variable for ordering}
+
 \item{ps}{phyloseq object containing untransformed counts if needed (must otherwise be identical to ps used to make ord!)}
 
 \item{seriate_method}{seriation method to order phyloseq samples by similarity}
 
 \item{tax_transform_for_ordering}{transform tax before ordering with ps_seriate}
+
+\item{tax_order}{}
 
 \item{...}{additional arguments passed to ord_plot}
 }
@@ -42,7 +48,7 @@ ord1 <- ps \%>\%
   dist_calc("bray") \%>\%
   ord_calc(method = "PCoA")
 
-# ord_explore(ord = ord1, auto_caption = NA)
+# ord_explore(ord = ord1, auto_caption = NA, sample_id = "Sample_ID")
 
 # constrained biplot example #
 data("dietswap", package = "microbiome")

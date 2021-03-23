@@ -8,6 +8,8 @@
 #' @param seriate_method seriation method to order phyloseq samples by similarity
 #' @param tax_transform_for_ordering transform tax before ordering with ps_seriate
 #' @param ... additional arguments passed to ord_plot
+#' @param sample_id id variable for ordering
+#' @param tax_order
 #'
 #' @return nothing, opens html viewer
 #' @export
@@ -24,7 +26,7 @@
 #'   dist_calc("bray") %>%
 #'   ord_calc(method = "PCoA")
 #'
-#' # ord_explore(ord = ord1, auto_caption = NA)
+#' # ord_explore(ord = ord1, auto_caption = NA, sample_id = "Sample_ID")
 #'
 #' # constrained biplot example #
 #' data("dietswap", package = "microbiome")
@@ -52,9 +54,11 @@
 #' # try changing the point colour to bmi_group or similar
 #' # (style interactively! e.g. colour doesn't work as argument to ord_explore)
 ord_explore <- function(ord,
+                        sample_id, # id var name for data_id ggiraph
                         ps = NULL,
-                        seriate_method = "OLO_ward",
-                        tax_transform_for_ordering = "identity",
+                        seriate_method = "OLO_ward", # ordering samples
+                        tax_transform_for_ordering = "identity", # samples
+                        tax_order = sum, # ordering taxa
                         ...) {
   # SETUP -------------------------------------------------------------------
 
@@ -76,6 +80,8 @@ ord_explore <- function(ord,
     dist = dist, method = seriate_method,
     tax_transform = tax_transform_for_ordering
   )
+
+
 
   # APP ---------------------------------------------------------------------
 
@@ -157,6 +163,10 @@ ord_explore <- function(ord,
               inputId = "comp_label", label = "Sample labels",
               choices = union("SAMPLE", phyloseq::sample_variables(ps)),
               selected = "SAMPLE"
+            ),
+            shiny::checkboxInput(
+              inputId = "merge_other",
+              label = "Merge other taxa?", value = TRUE
             )
           )
         ),
@@ -191,23 +201,15 @@ ord_explore <- function(ord,
     shape <- shiny::reactive({
       switch(
         input$shape_var_type,
-        "fixed" = {
-          input$ord_shape_num
-        },
-        "variable" = {
-          input$ord_shape_var
-        }
+        "fixed" = input$ord_shape_num,
+        "variable" = input$ord_shape_var
       )
     })
     size <- shiny::reactive({
       switch(
         input$size_var_type,
-        "fixed" = {
-          input$ord_size_num
-        },
-        "variable" = {
-          input$ord_size_var
-        }
+        "fixed" = input$ord_size_num,
+        "variable" = input$ord_size_var
       )
     })
 
@@ -241,13 +243,17 @@ ord_explore <- function(ord,
 
     # composition plot --------------------------------------------------------
 
-
     # set colour palette (depends on tax level of ord_plot)
     palet <- shiny::reactive({
       message(" - Setting taxa colour palette")
-      ord_explore_palet_fun(ps, input$tax_level_comp)
+      ord_explore_palet_fun(
+        ps = ps, tax_level = input$tax_level_comp, top_by = tax_order
+      )
     })
-
+    ordered_taxa <- shiny::reactive({
+      message(" - Sorting taxa")
+      tax_top(ps, n = NA, by = tax_order, input$tax_level_comp)
+    })
 
     # make plot
     output$compositions <- shiny::renderPlot({
@@ -263,17 +269,20 @@ ord_explore <- function(ord,
         # TODO fix issue that comp_barplot only works with 2+ samples
 
         # select samples
-        ps_sel <- phyloseq::prune_samples(x = ps_ordered, samples = sample_kept)
+        ps_sel <-
+          phyloseq::prune_samples(x = ps_ordered, samples = sample_kept)
 
         # plot composition of selected samples
         p_comp <- ps_sel %>%
           comp_barplot(
             n_taxa = input$ntaxa,
             tax_level = input$tax_level_comp,
+            tax_order = ordered_taxa(),
             palette = palet(),
             bar_outline_colour = "black",
             sample_order = "default",
-            label = input$comp_label
+            label = input$comp_label,
+            merge_other = input$merge_other
           )
 
         p_comp <- p_comp +
@@ -305,19 +314,22 @@ ord_explore <- function(ord,
 #'
 #' @return named vector of colours
 #' @noRd
-ord_explore_palet_fun <- function(ps, tax_level) {
+ord_explore_palet_fun <- function(ps,
+                                  tax_level,
+                                  top_by = sum,
+                                  other = "grey90") {
   # set up colour palette and link to common taxa names and "Other"
 
   palet <- distinct_palette(n = NA)
 
-  top_tax <- tax_top(ps, n = NA, rank = tax_level)
+  top_tax <- tax_top(ps, n = NA, by = top_by, rank = tax_level)
 
   numb <- min(length(top_tax), length(palet))
 
   palet <- palet[1:numb]
   names(palet) <- top_tax[1:numb]
 
-  palet <- c(palet, c(Other = "#ebebeb"))
+  palet <- c(palet, c(other = other))
 
   return(palet)
 }
