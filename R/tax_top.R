@@ -9,7 +9,7 @@
 #' @seealso \code{\link{tax_sort}} for more info on sorting taxa
 #'
 #' @param data phyloseq object or ps_extra
-#' @param n how many taxa names to return
+#' @param n how many taxa names to return, or NA for all
 #' (can return fewer than n values, if there are fewer to return)
 #' @param by how to sort taxa (see `?tax_sort()`),
 #' defaults to `sum` which sorts by total abundance across all samples
@@ -29,6 +29,9 @@ tax_top <- function(data, n = 10, by = sum, rank = "unique", ...) {
   ps <- tax_agg(ps, rank = rank)[["ps"]]
   ps <- tax_sort(ps, by = by, ...)
   taxnames <- phyloseq::taxa_names(physeq = ps)
-  out <- utils::head(x = taxnames, n = n)
-  return(out)
+  if (identical(n, NA)){
+    return(taxnames)
+  } else {
+    return(utils::head(x = taxnames, n = n))
+  }
 }

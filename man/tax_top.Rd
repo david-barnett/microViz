@@ -9,7 +9,7 @@ tax_top(data, n = 10, by = sum, rank = "unique", ...)
 \arguments{
 \item{data}{phyloseq object or ps_extra}
 
-\item{n}{how many taxa names to return
+\item{n}{how many taxa names to return, or NA for all
 (can return fewer than n values, if there are fewer to return)}
 
 \item{by}{how to sort taxa (see \code{?tax_sort()}),
