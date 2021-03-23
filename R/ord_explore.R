@@ -69,7 +69,7 @@ ord_explore <- function(ord,
   }
   samdat <- phyloseq::sample_data(ps)
 
-  # calculate sample order based on hierarchical clustering
+  # reorder samples based on hierarchical clustering
   message("- ordering samples")
   ps_ordered <- ps_seriate(
     ps,
@@ -189,23 +189,25 @@ ord_explore <- function(ord,
 
     # ord_plot aesthetic vars
     shape <- shiny::reactive({
-      switch(input$shape_var_type,
-             "fixed" = {
-               input$ord_shape_num
-             },
-             "variable" = {
-               input$ord_shape_var
-             }
+      switch(
+        input$shape_var_type,
+        "fixed" = {
+          input$ord_shape_num
+        },
+        "variable" = {
+          input$ord_shape_var
+        }
       )
     })
     size <- shiny::reactive({
-      switch(input$size_var_type,
-             "fixed" = {
-               input$ord_size_num
-             },
-             "variable" = {
-               input$ord_size_var
-             }
+      switch(
+        input$size_var_type,
+        "fixed" = {
+          input$ord_size_num
+        },
+        "variable" = {
+          input$ord_size_var
+        }
       )
     })
 
@@ -221,16 +223,19 @@ ord_explore <- function(ord,
         ...
       ) +
         ggplot2::scale_shape_discrete(na.translate = TRUE, na.value = 1)
-      p1 <- ggiraph::girafe(code = print(p1),
-                            width_svg = 5, height_svg = 5,
-                            options = list(
-                              ggiraph::opts_hover(
-                                css = "fill:#FF3333;stroke:black;cursor:pointer;",
-                                reactive = TRUE
-                              ),
-                              ggiraph::opts_selection(
-                                type = "multiple", css = "stroke:orange")
-                            ))
+      p1 <- ggiraph::girafe(
+        code = print(p1),
+        width_svg = 5, height_svg = 5,
+        options = list(
+          ggiraph::opts_hover(
+            css = "fill:#FF3333;stroke:black;cursor:pointer;",
+            reactive = TRUE
+          ),
+          ggiraph::opts_selection(
+            type = "multiple", css = "stroke:orange"
+          )
+        )
+      )
       p1
     })
 
@@ -254,28 +259,28 @@ ord_explore <- function(ord,
       sample_kept <-
         phyloseq::sample_data(ps)[[input$id_var]] %in% selected_samples
 
-      if (sum(sample_kept) >= 2){
+      if (sum(sample_kept) >= 2) {
         # TODO fix issue that comp_barplot only works with 2+ samples
 
-      # select samples
-      ps_sel <- phyloseq::prune_samples(x = ps_ordered, samples = sample_kept)
+        # select samples
+        ps_sel <- phyloseq::prune_samples(x = ps_ordered, samples = sample_kept)
 
-      # plot composition of selected samples
-      p_comp <- ps_sel %>%
-        comp_barplot(
-          n_taxa = input$ntaxa,
-          tax_level = input$tax_level_comp,
-          palette = palet(),
-          bar_outline_colour = "black",
-          sample_order = "default",
-          label = input$comp_label
-        )
+        # plot composition of selected samples
+        p_comp <- ps_sel %>%
+          comp_barplot(
+            n_taxa = input$ntaxa,
+            tax_level = input$tax_level_comp,
+            palette = palet(),
+            bar_outline_colour = "black",
+            sample_order = "default",
+            label = input$comp_label
+          )
 
-      p_comp = p_comp +
-        ggplot2::coord_flip() +
-        ggplot2::labs(x = NULL, y = NULL)
+        p_comp <- p_comp +
+          ggplot2::coord_flip() +
+          ggplot2::labs(x = NULL, y = NULL)
       } else {
-        p_comp = ggplot2::ggplot() +
+        p_comp <- ggplot2::ggplot() +
           ggplot2::annotate(
             geom = "text", x = 0.1, y = 0.5,
             label = paste0(
@@ -290,7 +295,6 @@ ord_explore <- function(ord,
   }
   # Run the application
   shiny::shinyApp(ui = ui, server = server)
-
 }
 
 
