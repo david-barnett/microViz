@@ -10,8 +10,8 @@ test_that("tax_reorder works", {
   expect_equal(
     object =
       tax_agg(dietswap, rank = "Phylum")[["ps"]] %>%
-      microViz:::tax_reorder(tax_order = new_order) %>%
-      phyloseq::taxa_names(),
+        microViz:::tax_reorder(tax_order = new_order) %>%
+        phyloseq::taxa_names(),
     expected = new_order
   )
 })
@@ -69,5 +69,3 @@ test_that("sorting by Phylum total abundance works", {
     )
   )
 })
-
-

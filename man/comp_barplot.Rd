@@ -8,7 +8,7 @@ comp_barplot(
   ps,
   tax_level,
   n_taxa = 8,
-  tax_order = "abundance",
+  tax_order = sum,
   merge_other = TRUE,
   taxon_renamer = function(x) identity(x),
   sample_order = "aitchison",
@@ -18,7 +18,7 @@ comp_barplot(
   facet_by = NA,
   bar_width = 1,
   bar_outline_colour = "grey5",
-  bar_outline_width = 0.05,
+  bar_outline_width = 0.1,
   palette = c("lightgrey", rev(distinct_palette(n_taxa))),
   tax_transform_for_ordering = "identity",
   tax_transform_for_plot = "compositional",
@@ -31,19 +31,22 @@ comp_barplot(
 
 \item{tax_level}{taxonomic aggregation level (from rank_names(ps))}
 
-\item{n_taxa}{how many taxa to colour show distinct colours for (all other taxa grouped into "Other").}
+\item{n_taxa}{how many taxa to show distinct colours for (all others grouped into "Other")}
 
-\item{tax_order}{order of taxa within the bars, currently only "abundance" works, which puts the most abundant taxa at the bottom (or left).}
+\item{tax_order}{order of taxa within the bars, either a function for tax_sort (e.g. sum),
+or a vector of (all) taxa names at tax_level to set order manually}
 
-\item{merge_other}{if FALSE, taxa coloured/filled as "other" remain distinct, and so can have bar outlines drawn around them}
+\item{merge_other}{if FALSE, taxa coloured/filled as "other" remain distinct,
+and so can have bar outlines drawn around them}
 
 \item{taxon_renamer}{function that takes taxon names and returns modified names for legend}
 
 \item{sample_order}{vector of sample names;
-or any distance measure in dist_calc that does not require a phylogenetic tree;
+or any distance measure in dist_calc that doesn't require phylogenetic tree;
 or "default" for the order returned by phyloseq::sample_names(ps)}
 
-\item{order_with_all_taxa}{if TRUE, this will use all taxa (not just the top n_taxa) to calculate distances for sample ordering}
+\item{order_with_all_taxa}{if TRUE, this will always use all taxa (not just the top n_taxa)
+to calculate distances for sample ordering}
 
 \item{label}{sample label variable name}
 
@@ -52,29 +55,31 @@ or "default" for the order returned by phyloseq::sample_names(ps)}
 \item resulting in a list of plots, one for each level of the group_by variable.
 }}
 
-\item{facet_by}{facets plots by this variable (must be categorical)
-\itemize{
-\item if group_by is also set, the faceting with occur separately in the plot for each group.
-}}
+\item{facet_by}{facets plots by this variable (must be categorical). If group_by is also set
+the faceting will occur separately in the plot for each group.}
 
 \item{bar_width}{default 1 avoids random gapping otherwise seen with many samples
 (set to something less than 1 to introduce gaps between fewer samples)}
 
-\item{bar_outline_colour}{line colour separating taxa and samples (use NA for none)}
+\item{bar_outline_colour}{line colour separating taxa and samples
+(use NA for none)}
 
-\item{bar_outline_width}{width of line separating taxa and samples (for no outlines set bar_outline_colour = NA)}
+\item{bar_outline_width}{width of line separating taxa and samples
+(for no outlines set bar_outline_colour = NA)}
 
 \item{palette}{palette for taxa fill colours}
 
 \item{tax_transform_for_ordering}{transformation of taxa values used before ordering samples by similarity}
 
 \item{tax_transform_for_plot}{default "compositional" draws proportions of total counts per sample,
-but you could reasonably use another transformation, e.g. "identity", if you have truly quantitative microbiome profiling data}
+but you could reasonably use another transformation,
+e.g. "identity", if you have truly quantitative microbiome profiling data}
 
-\item{seriate_method}{name of any ordering method suitable for distance matrices (see ?seriation::seriate)}
+\item{seriate_method}{name of any ordering method suitable for distance matrices
+(see ?seriation::seriate)}
 
-\item{keep_all_vars}{TRUE may slow down internal melting with ps_melt for large phyloseq objects
-but is required for some post-hoc plot customisation}
+\item{keep_all_vars}{FALSE may speed up internal melting with ps_melt for large phyloseq objects
+but TRUE is required for some post-hoc plot customisation}
 }
 \value{
 ggplot or list of harmonised ggplots

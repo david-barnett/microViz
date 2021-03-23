@@ -17,32 +17,49 @@
 #'
 #' @param ps phyloseq object
 #' @param tax_level taxonomic aggregation level (from rank_names(ps))
-#' @param n_taxa how many taxa to colour show distinct colours for (all other taxa grouped into "Other").
-#' @param tax_order order of taxa within the bars, currently only "abundance" works, which puts the most abundant taxa at the bottom (or left).
-#' @param merge_other if FALSE, taxa coloured/filled as "other" remain distinct, and so can have bar outlines drawn around them
-#' @param taxon_renamer function that takes taxon names and returns modified names for legend
+#' @param n_taxa
+#' how many taxa to show distinct colours for (all others grouped into "Other")
+#' @param tax_order
+#' order of taxa within the bars, either a function for tax_sort (e.g. sum),
+#' or a vector of (all) taxa names at tax_level to set order manually
+#' @param merge_other
+#' if FALSE, taxa coloured/filled as "other" remain distinct,
+#'  and so can have bar outlines drawn around them
+#' @param taxon_renamer
+#' function that takes taxon names and returns modified names for legend
 #' @param sample_order
 #' vector of sample names;
-#' or any distance measure in dist_calc that does not require a phylogenetic tree;
+#' or any distance measure in dist_calc that doesn't require phylogenetic tree;
 #' or "default" for the order returned by phyloseq::sample_names(ps)
 #' @param order_with_all_taxa
-#' if TRUE, this will use all taxa (not just the top n_taxa) to calculate distances for sample ordering
+#' if TRUE, this will always use all taxa (not just the top n_taxa)
+#' to calculate distances for sample ordering
 #' @param label sample label variable name
 #' @param group_by splits dataset by this variable (must be categorical)
 #' - resulting in a list of plots, one for each level of the group_by variable.
-#' @param facet_by facets plots by this variable (must be categorical)
-#' - if group_by is also set, the faceting with occur separately in the plot for each group.
-#' @param bar_width default 1 avoids random gapping otherwise seen with many samples
+#' @param facet_by
+#' facets plots by this variable (must be categorical). If group_by is also set
+#' the faceting will occur separately in the plot for each group.
+#' @param bar_width
+#' default 1 avoids random gapping otherwise seen with many samples
 #' (set to something less than 1 to introduce gaps between fewer samples)
-#' @param bar_outline_colour line colour separating taxa and samples (use NA for none)
-#' @param bar_outline_width width of line separating taxa and samples (for no outlines set bar_outline_colour = NA)
+#' @param bar_outline_colour line colour separating taxa and samples
+#' (use NA for none)
+#' @param bar_outline_width width of line separating taxa and samples
+#' (for no outlines set bar_outline_colour = NA)
 #' @param palette palette for taxa fill colours
-#' @param tax_transform_for_ordering transformation of taxa values used before ordering samples by similarity
-#' @param tax_transform_for_plot default "compositional" draws proportions of total counts per sample,
-#' but you could reasonably use another transformation, e.g. "identity", if you have truly quantitative microbiome profiling data
-#' @param seriate_method name of any ordering method suitable for distance matrices (see ?seriation::seriate)
-#' @param keep_all_vars TRUE may slow down internal melting with ps_melt for large phyloseq objects
-#' but is required for some post-hoc plot customisation
+#' @param tax_transform_for_ordering
+#' transformation of taxa values used before ordering samples by similarity
+#' @param tax_transform_for_plot
+#' default "compositional" draws proportions of total counts per sample,
+#' but you could reasonably use another transformation,
+#' e.g. "identity", if you have truly quantitative microbiome profiling data
+#' @param seriate_method
+#' name of any ordering method suitable for distance matrices
+#' (see ?seriation::seriate)
+#' @param keep_all_vars
+#' FALSE may speed up internal melting with ps_melt for large phyloseq objects
+#' but TRUE is required for some post-hoc plot customisation
 #'
 #' @return ggplot or list of harmonised ggplots
 #' @export
@@ -146,7 +163,7 @@ comp_barplot <- function(
                          ps,
                          tax_level,
                          n_taxa = 8,
-                         tax_order = "abundance",
+                         tax_order = sum,
                          merge_other = TRUE,
                          taxon_renamer = function(x) identity(x),
                          sample_order = "aitchison",
@@ -156,7 +173,7 @@ comp_barplot <- function(
                          facet_by = NA,
                          bar_width = 1,
                          bar_outline_colour = "grey5",
-                         bar_outline_width = 0.05,
+                         bar_outline_width = 0.1,
                          palette =
                            c("lightgrey", rev(distinct_palette(n_taxa))),
                          tax_transform_for_ordering = "identity",
@@ -167,29 +184,34 @@ comp_barplot <- function(
   # check phyloseq for common problems (and fix or message about this)
   ps <- phyloseq_validate(ps, remove_undetected = FALSE, verbose = TRUE)
 
-  # save full unfiltered phyloseq for ordering
-  ps_original <- ps
-
   # how many taxa to plot (otherwise group into other)
-  # ps <- aggregate_top_taxa(ps, top = n_taxa, level = tax_level)
-  ps <- tax_agg(ps, rank = tax_level, sort_by = sum, top_N = n_taxa)[["ps"]]
+  ps <- tax_agg(ps, rank = tax_level)[["ps"]]
 
-  # merge "other" category into one taxon,
-  # to allow drawing lines, but not within "other"
+  # calculate tax_order if rule given or external ordering vec given
+  if (inherits(tax_order, "function") || identical(tax_order, "name")) {
+    ps <- tax_sort(ps, by = tax_order)
+  } else if (length(tax_order) == phyloseq::ntaxa(ps)) {
+    ps <- tax_reorder(ps, tax_order = tax_order, tree_warn = TRUE)
+  }
+
+  # save full (but rank-aggregated) phyloseq for ordering samples
+  if (isTRUE(order_with_all_taxa)) ps_for_order <- ps
+
+  # create "top" rank
+  phyloseq::tax_table(ps) <-
+    tt_add_topN_var(phyloseq::tax_table(ps), N = n_taxa, other = "other")
+
+  # merge "top" rank's "other" category into one taxon,
+  # to allow drawing bar outlines, but not within "other"
   if (isTRUE(merge_other)) {
     ps <- tax_agg(ps, rank = "top", force = TRUE)[["ps"]]
   }
+  if (isFALSE(order_with_all_taxa)) ps_for_order <- ps
 
   # set taxa order
-  if (identical(tax_order, "abundance")) {
-    # you want "other" to go first, then least abundant to most?
-    ordered_taxa <- rev(unique(unclass(phyloseq::tax_table(ps))[, "unique"]))
-  } else {
-    # e.g. should allow external taxa ordering
-    # from calling top_taxa on a larger superset phyloseq
-    ordered_taxa <- tax_order
-  }
-  # fix taxa colour scheme
+  ordered_taxa <- rev(unique(unclass(phyloseq::tax_table(ps))[, "unique"]))
+
+  # fix taxa colour scheme (colours only applied to top taxa)
   ordered_top_taxa <- rev(unique(unclass(phyloseq::tax_table(ps))[, "top"]))
   if (identical(names(palette), NULL)) names(palette) <- ordered_top_taxa
 
@@ -240,17 +262,12 @@ comp_barplot <- function(
   }
 
   # define function to actually create the plot/plots
-  plot_function <- function(ps) {
+  barplot_function <- function(ps) {
 
     # sample ordering
     if (samples_ordered_by_similarity) {
-      if (isTRUE(order_with_all_taxa)) {
-        ps_ordered <- ps_original
-      } else {
-        ps_ordered <- ps
-      }
       ps_ordered <- ps_seriate(
-        ps_ordered,
+        ps_for_order, # ps_ordered,
         method = seriate_method, dist = sample_order,
         tax_transform = tax_transform_for_ordering
       )
@@ -260,9 +277,10 @@ comp_barplot <- function(
     # create long dataframe from compositional phyloseq
     df <- ps_melt(ps)
 
-    # set abundance order of taxa at chosen rank level
+    # set fixed order of stacked taxa bars by creating ordered factor
     df[["unique"]] <-
       factor(df[["unique"]], levels = ordered_taxa, ordered = TRUE)
+    # set fixed order of fill colours (for LEGEND ordering!)
     df[["top"]] <-
       factor(df[["top"]], levels = ordered_top_taxa, ordered = TRUE)
 
@@ -274,9 +292,10 @@ comp_barplot <- function(
     p <- ggplot2::ggplot(
       data = df,
       mapping = ggplot2::aes_string(
-        x = "SAMPLE", y = "Abundance", fill = "top"
+        x = "SAMPLE", y = "Abundance", fill = "top", group = "unique"
       )
-    )
+    ) +
+      ggplot2::xlab(NULL)
     p <- p + ggplot2::geom_col(
       position = "stack", width = bar_width,
       colour = bar_outline_colour, size = bar_outline_width
@@ -315,12 +334,13 @@ comp_barplot <- function(
   LEVELS <- unique(phyloseq::sample_data(ps)[[group_by]])
 
   if (isTRUE(is.null(LEVELS))) {
-    plot_function(ps)
+    # NULL when group_by = NA
+    barplot_function(ps)
   } else {
     plots_list <- lapply(LEVELS, function(level) {
       this_group <- phyloseq::sample_data(ps)[[group_by]] == level
       ps <- phyloseq::prune_samples(samples = this_group, x = ps)
-      plot_function(ps)
+      barplot_function(ps)
     })
     # set y axis title to group level
     plots_list <- lapply(seq_along(LEVELS), function(level) {
@@ -329,4 +349,36 @@ comp_barplot <- function(
     names(plots_list) <- LEVELS
     return(plots_list)
   }
+}
+
+#' Create a new tax_table rank called top
+#'
+#' Same as taxa_names for first N taxa, "other" otherwise.
+#' Used in tax_agg and comp_barplot
+#' (for when external sorted tax vec given, e.g. for ord_explore)
+#'
+#' @param tt tax_table ALREADY SORTED
+#'
+#' @return tax_table with new rank column: "top"
+#' @examples
+#' data("dietswap", package = "microbiome")
+#' taxtab <- phyloseq::tax_table(dietswap)
+#' tt_add_topN_var(taxtab, N = 5, other = "whatever")
+#' @noRd
+tt_add_topN_var <- function(tt, N, other = "other") {
+  top_taxons <- c(
+    phyloseq::taxa_names(tt)[seq_len(N)],
+    rep_len(other, length.out = phyloseq::ntaxa(tt) - N)
+  )
+  tt_out <- cbind(
+    # new tt except unique col
+    tt[, phyloseq::rank_names(tt) != "unique"],
+    top = top_taxons # new top col
+  )
+  if ("unique" %in% colnames(tt)) {
+    # add unique col back on at end
+    tt_out <- cbind(tt_out, tt[, "unique"])
+  }
+  tt_out <- phyloseq::tax_table(tt_out)
+  return(tt_out)
 }
