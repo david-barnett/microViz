@@ -2,6 +2,20 @@ library(phyloseq)
 library(microbiome)
 data("dietswap")
 
+test_that("tax_reorder works", {
+  new_order <- c(
+    "Fusobacteria", "Cyanobacteria", "Verrucomicrobia", "Spirochaetes",
+    "Actinobacteria", "Firmicutes", "Proteobacteria", "Bacteroidetes"
+  )
+  expect_equal(
+    object =
+      tax_agg(dietswap, rank = "Phylum")[["ps"]] %>%
+      microViz:::tax_reorder(tax_order = new_order) %>%
+      phyloseq::taxa_names(),
+    expected = new_order
+  )
+})
+
 sums <- phyloseq::taxa_sums(dietswap)
 
 test_that("tax_sort sum ordering works", {
@@ -55,3 +69,5 @@ test_that("sorting by Phylum total abundance works", {
     )
   )
 })
+
+

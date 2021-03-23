@@ -77,17 +77,18 @@ dietswap \%>\%
   tax_table() \%>\%
   head(30)
 
+# sort by function e.g. median abundance
+dietswap \%>\%
+  tax_sort(by = median) \%>\%
+  taxa_names() \%>\%
+  head(20)
+
 # order by descending abundance in a single named sample
 dietswap \%>\%
   tax_sort(by = "Sample-1") \%>\%
   otu_table() \%>\%
   .[1:8, 1:4]
 
-# sort by function e.g. median abundance
-dietswap \%>\%
-  tax_sort(by = median) \%>\%
-  taxa_names() \%>\%
-  head(20)
 
 # sum order should always equal mean order if non-negative abundances
 # don't forget to add na.rm = TRUE if you expect NAs in otu_table somehow

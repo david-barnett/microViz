@@ -58,17 +58,18 @@
 #'   tax_table() %>%
 #'   head(30)
 #'
+#' # sort by function e.g. median abundance
+#' dietswap %>%
+#'   tax_sort(by = median) %>%
+#'   taxa_names() %>%
+#'   head(20)
+#'
 #' # order by descending abundance in a single named sample
 #' dietswap %>%
 #'   tax_sort(by = "Sample-1") %>%
 #'   otu_table() %>%
 #'   .[1:8, 1:4]
 #'
-#' # sort by function e.g. median abundance
-#' dietswap %>%
-#'   tax_sort(by = median) %>%
-#'   taxa_names() %>%
-#'   head(20)
 #'
 #' # sum order should always equal mean order if non-negative abundances
 #' # don't forget to add na.rm = TRUE if you expect NAs in otu_table somehow
@@ -116,20 +117,6 @@ tax_sort <- function(data, by = "name", at = "names", ..., tree_warn = TRUE, ver
   ps <- phyloseq_validate(
     ps = ps, remove_undetected = FALSE, verbose = verbose
   )
-  tax_as_rows <- phyloseq::taxa_are_rows(ps)
-
-  # can't sort taxa if phylogenetic tree present, as tree fixes order
-  if (!identical(phyloseq::phy_tree(ps, errorIfNULL = FALSE), NULL)) {
-    if (isTRUE(tree_warn)) {
-      warning(
-        "tax_sort is removing phylogenetic tree!\n",
-        "Avoid this warning by either by\n",
-        "\t- running tax_sort with tree_warn = FALSE\n",
-        "\t- or removing tree yourself, e.g. `ps@phy_tree <-- NULL`"
-      )
-    }
-    ps@phy_tree <- NULL
-  }
 
   # apply sorting rules that don't require otu table, for calculation
   # generate taxSorted (vector of taxa names)
@@ -165,14 +152,8 @@ tax_sort <- function(data, by = "name", at = "names", ..., tree_warn = TRUE, ver
     }
   }
 
-  otu <- unclass(otu_get(ps))
-  otu <- otu[, taxSorted]
-
-  # return otu_table oriented as found
-  if (tax_as_rows) otu <- t(otu) # FROM taxa as columns TO taxa as rows!
-  phyloseq::otu_table(ps) <- phyloseq::otu_table(
-    object = otu, taxa_are_rows = tax_as_rows
-  )
+  # reorder taxa in phyloseq with taxSorted vector
+  ps <- tax_reorder(ps = ps, tax_order = taxSorted, tree_warn = tree_warn)
 
   # return ps_extra if given one
   if (inherits(data, "ps_extra")) {
@@ -210,4 +191,53 @@ tax_sort_by_otu <- function(ps, by, err, ...) {
   }
   tax_names_out <- tax_names_in[new_order]
   return(tax_names_out)
+}
+
+#' Reorder taxa in phyloseq object using vector of names
+#'
+#' @param ps phyloseq object
+#' @param tax_order
+#' names or current numerical indices of taxa
+#' in desired order and same length as taxa_names(ps)
+#'
+#' @return phyloseq object (always without phy_tree)
+#' @examples
+#' data("dietswap", package = "microbiome")
+#' new_order <- c(
+#'   "Fusobacteria", "Cyanobacteria", "Verrucomicrobia", "Spirochaetes",
+#'   "Actinobacteria", "Firmicutes", "Proteobacteria", "Bacteroidetes"
+#' )
+#' tax_agg(dietswap, rank = "Phylum")[["ps"]] %>%
+#'   phyloseq::taxa_names()
+#' tax_agg(dietswap, rank = "Phylum")[["ps"]] %>%
+#'   microViz:::tax_reorder(tax_order = new_order) %>%
+#'   phyloseq::taxa_names()
+tax_reorder <- function(ps, tax_order, tree_warn = TRUE) {
+  stopifnot(identical(length(phyloseq::taxa_names(ps)), length(tax_order)))
+
+  tax_as_rows <- phyloseq::taxa_are_rows(ps)
+
+  # can't sort taxa if phylogenetic tree present, as tree fixes order
+  if (!identical(phyloseq::phy_tree(ps, errorIfNULL = FALSE), NULL)) {
+    if (isTRUE(tree_warn)) {
+      warning(
+        "tax_sort is removing phylogenetic tree!\n",
+        "Avoid this warning by either by\n",
+        "\t- running tax_sort with tree_warn = FALSE\n",
+        "\t- or removing tree yourself, e.g. `ps@phy_tree <-- NULL`"
+      )
+    }
+    ps@phy_tree <- NULL
+  }
+
+  otu <- unclass(otu_get(ps))
+  otu <- otu[, tax_order]
+
+  # return otu_table oriented as found
+  if (tax_as_rows) otu <- t(otu) # FROM taxa as columns TO taxa as rows!
+  phyloseq::otu_table(ps) <- phyloseq::otu_table(
+    object = otu, taxa_are_rows = tax_as_rows
+  )
+
+  return(ps)
 }

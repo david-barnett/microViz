@@ -7,7 +7,6 @@
 #'
 #' @return phyloseq
 #' @export
-#'
 #' @examples
 #' library(phyloseq)
 #' library(microbiome)
