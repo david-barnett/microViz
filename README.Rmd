@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 options(width = 100)
 ```
 
-# microViz
+# microViz <a href='https://david-barnett.github.io/microViz/index.html'><img src='man/figures/microViz.png' align="right" height="139" /></a>
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/david-barnett/microViz/workflows/R-CMD-check/badge.svg)](https://github.com/david-barnett/microViz/actions)
@@ -25,10 +25,11 @@ microViz wraps, extends and complements, popular microbial ecology packages like
 
 **See the documentation website for full details and examples:** https://david-barnett.github.io/microViz/
 
-- The ["Get started"](https://david-barnett.github.io/microViz/articles/articles/microViz.html) page, and also this ReadMe, show a few example analyses.
+- The ["Get started"](https://david-barnett.github.io/microViz/articles/articles/microViz.html) page, and also [this ReadMe](https://david-barnett.github.io/microViz/index.html), show a few example analyses.
 - The [reference](https://david-barnett.github.io/microViz/reference/index.html) page lists all functions and links to their documentation and examples
+- Example video of [Interactive Shiny app](https://david-barnett.github.io/microViz/articles/articles/Interactive-Ordination.html) for exploring your ordination plots!
+- Other articles pages discuss and give tutorials and more complicated examples (coming soon!)
 - The [changelog](https://david-barnett.github.io/microViz/news/index.html) describe important changes in new microViz package versions
-- The articles pages discuss and give more complicated examples (articles in development!)
 
 ## Installation
 
@@ -167,7 +168,7 @@ aitchison_perm <- dist_permanova(
   variables = "bmi_group + female"
 )
 # view the permanova results
-perm_get(aitchison_perm)
+perm_get(aitchison_perm) %>% as.data.frame()
 # view the info stored about the distance calculation
 info_get(aitchison_perm)
 ```
@@ -188,7 +189,33 @@ ord_calc(perm2, constraints = c("weight", "female")) %>%
   stat_ellipse(aes(colour = sex)) + scale_color_brewer(palette = "Dark2")
 ```
 
-# Session info
+## Heatmaps
+
+microViz heatmaps are powered by `ComplexHeatmap` and annotated with taxa prevalence and/or abundance.
+
+```{r heatmap, dpi=300}
+# set up the data with numerical variables and filter to top taxa
+psq <- dietswap %>%
+ ps_mutate(
+   weight = recode(bmi_group, obese = 3, overweight = 2, lean = 1),
+   female = if_else(sex == "female", true = 1, false = 0),
+   african = if_else(nationality == "AFR", true = 1, false = 0)
+ ) %>% 
+  tax_filter(
+    tax_level = "Genus", min_prevalence = 1 / 10, min_sample_abundance = 1 / 10
+  ) %>% 
+  tax_transform("identity", rank = "Genus")
+
+# randomly select 30 taxa from the 50 most abundant taxa (just for an example)
+set.seed(123)
+taxa <- sample(microbiome::top_taxa(ps_get(psq))[1:50], size = 30)
+# actually draw the heatmap
+cor_heatmap(psq, taxa, anno_tax = tax_anno(undetected = 50))
+```
+
+
+
+## Session info
 ```{r}
 devtools::session_info()
 ```
