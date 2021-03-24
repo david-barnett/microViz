@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Customisable ggplot ordination (using ord_calc result) — ord_plot" />
-<meta property="og:description" content="Ordination visualisation. Utilises results of ord_calc.
+<meta property="og:description" content="Draw ordination plot. Utilises results of ord_calc.
 For interpretation see the the relevant pages on PCA, PCoA, RDA, or CCA on the &quot;gusta me&quot; website: https://sites.google.com/site/mb3gustame/
 Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04/ordination.html
 
@@ -76,7 +76,7 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9002</span>
       </span>
     </div>
 
@@ -101,6 +101,9 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/articles/Interactive-Ordination.html">Interactive Ordination Plot</a>
+    </li>
     <li>
       <a href="../articles/articles/Visualising-compositions.html">Visualising-compositions</a>
     </li>
@@ -136,7 +139,7 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
     </div>
 
     <div class="ref-description">
-    <p>Ordination visualisation. Utilises results of <code>ord_calc</code>.</p><ul>
+    <p>Draw ordination plot. Utilises results of <code><a href='ord_calc.html'>ord_calc</a></code>.</p><ul>
 <li><p>For interpretation see the the relevant pages on PCA, PCoA, RDA, or CCA on the "gusta me" website: <a href='https://sites.google.com/site/mb3gustame/'>https://sites.google.com/site/mb3gustame/</a></p></li>
 <li><p>Some other inspiration was from here: <a href='https://ourcodingclub.github.io/2018/05/04/ordination.html'>https://ourcodingclub.github.io/2018/05/04/ordination.html</a></p></li>
 </ul>
@@ -146,12 +149,6 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
     <pre class="usage"><span class='fu'>ord_plot</span><span class='op'>(</span>
   <span class='va'>data</span>,
   axes <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>,
-  scaling <span class='op'>=</span> <span class='st'>"species"</span>,
-  constraint_vec_length <span class='op'>=</span> <span class='cn'>NA</span>,
-  constraint_vec_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
-  constraint_lab_length <span class='op'>=</span> <span class='va'>constraint_vec_length</span> <span class='op'>*</span> <span class='fl'>1.1</span>,
-  constraint_lab_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
-  var_renamer <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
   plot_taxa <span class='op'>=</span> <span class='cn'>FALSE</span>,
   tax_vec_length <span class='op'>=</span> <span class='cn'>NA</span>,
   tax_vec_style_all <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
@@ -159,11 +156,18 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
   tax_lab_length <span class='op'>=</span> <span class='va'>tax_vec_length</span> <span class='op'>*</span> <span class='fl'>1.1</span>,
   tax_lab_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
   taxon_renamer <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
+  constraint_vec_length <span class='op'>=</span> <span class='cn'>NA</span>,
+  constraint_vec_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  constraint_lab_length <span class='op'>=</span> <span class='va'>constraint_vec_length</span> <span class='op'>*</span> <span class='fl'>1.1</span>,
+  constraint_lab_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  var_renamer <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
   plot_samples <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  scaling <span class='op'>=</span> <span class='fl'>2</span>,
   auto_caption <span class='op'>=</span> <span class='fl'>8</span>,
   center <span class='op'>=</span> <span class='cn'>FALSE</span>,
   clip <span class='op'>=</span> <span class='st'>"off"</span>,
   expand <span class='op'>=</span> <span class='op'>!</span><span class='va'>center</span>,
+  interactive <span class='op'>=</span> <span class='cn'>FALSE</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
@@ -177,33 +181,6 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
     <tr>
       <th>axes</th>
       <td><p>which axes to plot: numerical vector of length 2</p></td>
-    </tr>
-    <tr>
-      <th>scaling</th>
-      <td><p>either "species" (2) or "site" (1) scores are scaled by eigenvalues,
-and the other set of scores is left unscaled (from ?vegan::scores.cca)</p></td>
-    </tr>
-    <tr>
-      <th>constraint_vec_length</th>
-      <td><p>NA = auto-scaling for line segment drawn for any constraints.
-Alternatively provide a numeric length multiplier yourself.</p></td>
-    </tr>
-    <tr>
-      <th>constraint_vec_style</th>
-      <td><p>list of aesthetics/arguments (colour, alpha etc) for the constraint vectors</p></td>
-    </tr>
-    <tr>
-      <th>constraint_lab_length</th>
-      <td><p>relative length of label drawn for any constraints
-(relative to default position which is defined by correlation with each drawn axis)</p></td>
-    </tr>
-    <tr>
-      <th>constraint_lab_style</th>
-      <td><p>list of aesthetics/arguments (colour, size etc) for the constraint labels</p></td>
-    </tr>
-    <tr>
-      <th>var_renamer</th>
-      <td><p>function to rename constraining variables for plotting their labels</p></td>
     </tr>
     <tr>
       <th>plot_taxa</th>
@@ -235,8 +212,35 @@ Alternatively provide a numeric length multiplier yourself.</p></td>
       <td><p>function that takes any plotted taxon names and returns modified names for labels</p></td>
     </tr>
     <tr>
+      <th>constraint_vec_length</th>
+      <td><p>NA = auto-scaling for line segment drawn for any constraints.
+Alternatively provide a numeric length multiplier yourself.</p></td>
+    </tr>
+    <tr>
+      <th>constraint_vec_style</th>
+      <td><p>list of aesthetics/arguments (colour, alpha etc) for the constraint vectors</p></td>
+    </tr>
+    <tr>
+      <th>constraint_lab_length</th>
+      <td><p>relative length of label drawn for any constraints
+(relative to default position which is defined by correlation with each drawn axis)</p></td>
+    </tr>
+    <tr>
+      <th>constraint_lab_style</th>
+      <td><p>list of aesthetics/arguments (colour, size etc) for the constraint labels</p></td>
+    </tr>
+    <tr>
+      <th>var_renamer</th>
+      <td><p>function to rename constraining variables for plotting their labels</p></td>
+    </tr>
+    <tr>
       <th>plot_samples</th>
       <td><p>if TRUE, plot sample points with geom_point</p></td>
+    </tr>
+    <tr>
+      <th>scaling</th>
+      <td><p>Relevant for constrained ordinations: Type 2, or type 1 scaling. See <a href='https://sites.google.com/site/mb3gustame/constrained-analyses/rda'>https://sites.google.com/site/mb3gustame/constrained-analyses/rda</a>
+Either "species" or "site" scores are scaled by eigenvalues, and the other set of scores is left unscaled (from ?vegan::scores.cca)</p></td>
     </tr>
     <tr>
       <th>auto_caption</th>
@@ -255,6 +259,10 @@ Alternatively provide a numeric length multiplier yourself.</p></td>
       <td><p>expand plot limits a little bit further than data range?</p></td>
     </tr>
     <tr>
+      <th>interactive</th>
+      <td><p>creates plot suitable for use with ggiraph</p></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p>pass aesthetics arguments for sample points,
 drawn with geom_point using aes_string</p></td>
@@ -266,7 +274,7 @@ drawn with geom_point using aes_string</p></td>
     <p>ggplot</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>How to specify the plot_taxa argument:</p><ul>
+    <p>How to specify the plot_taxa argument (when using PCA, CCA or RDA):</p><ul>
 <li><p>FALSE --&gt; plot no taxa vectors or labels</p></li>
 <li><p>integer vector e.g. 1:3 --&gt; plot labels for top 3 taxa (by longest line length)</p></li>
 <li><p>single numeric value e.g. 0.75 --&gt; plot labels for taxa with line length &gt; 0.75</p></li>
@@ -285,7 +293,7 @@ drawn with geom_point using aes_string</p></td>
     female <span class='op'>=</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>sex</span> <span class='op'>==</span> <span class='st'>"female"</span>, true <span class='op'>=</span> <span class='fl'>1</span>, false <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
   <span class='op'>)</span>
 
-<span class='co'># compute and plot ordinations for demonstration of conditioning</span>
+<span class='co'># unconstrained PCA ordination</span>
 <span class='va'>unconstrained_aitchison_pca</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span>, rank <span class='op'>=</span> <span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span><span class='op'>)</span> <span class='co'># method = "auto" --&gt; picks PCA as no constraints or distances</span>
@@ -294,6 +302,32 @@ drawn with geom_point using aes_string</p></td>
   <span class='fu'>ord_plot</span><span class='op'>(</span>colour <span class='op'>=</span> <span class='st'>"bmi_group"</span>, plot_taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/stat_ellipse.html'>stat_ellipse</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>linetype <span class='op'>=</span> <span class='va'>bmi_group</span>, colour <span class='op'>=</span> <span class='va'>bmi_group</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='img'><img src='ord_plot-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># you can generate an interactive version of the plot by specifying</span>
+<span class='co'># interactive = TRUE, and passing a variable name to another argument</span>
+<span class='co'># called `data_id` which is required for interactive point selection</span>
+<span class='va'>interactive_plot</span> <span class='op'>&lt;-</span> <span class='va'>unconstrained_aitchison_pca</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>ord_plot</span><span class='op'>(</span>
+    colour <span class='op'>=</span> <span class='st'>"bmi_group"</span>, plot_taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>,
+    interactive <span class='op'>=</span> <span class='cn'>TRUE</span>, data_id <span class='op'>=</span> <span class='st'>"sample"</span>
+  <span class='op'>)</span>
+
+<span class='co'># to start the html viewer, and allow selecting points, we must use a</span>
+<span class='co'># ggiraph function called girafe and set some options and css</span>
+<span class='fu'>ggiraph</span><span class='fu'>::</span><span class='fu'><a href='https://davidgohel.github.io/ggiraph/reference/girafe.html'>girafe</a></span><span class='op'>(</span>
+  ggobj <span class='op'>=</span> <span class='va'>interactive_plot</span>,
+  options <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
+    <span class='fu'>ggiraph</span><span class='fu'>::</span><span class='fu'><a href='https://davidgohel.github.io/ggiraph/reference/opts_selection.html'>opts_selection</a></span><span class='op'>(</span>
+      css <span class='op'>=</span> <span class='fu'>ggiraph</span><span class='fu'>::</span><span class='fu'><a href='https://davidgohel.github.io/ggiraph/reference/girafe_css.html'>girafe_css</a></span><span class='op'>(</span>
+        css <span class='op'>=</span> <span class='st'>"fill:orange;stroke:black;"</span>,
+        point <span class='op'>=</span> <span class='st'>"stroke-width:1.5px"</span>
+      <span class='op'>)</span>,
+      type <span class='op'>=</span> <span class='st'>"multiple"</span>, <span class='co'># this activates lasso selection (click top-right)</span>
+      only_shiny <span class='op'>=</span> <span class='cn'>FALSE</span> <span class='co'># allows interactive plot outside of shiny app</span>
+    <span class='op'>)</span>
+  <span class='op'>)</span>
+<span class='op'>)</span>
+
+
 <span class='co'># remove effect of weight with conditions arg</span>
 <span class='co'># scaling weight with scale_cc is not necessary as only 1 condition is used</span>
 <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
@@ -301,12 +335,12 @@ drawn with geom_point using aes_string</p></td>
   <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>conditions <span class='op'>=</span> <span class='st'>"weight"</span>, scale_cc <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>ord_plot</span><span class='op'>(</span>colour <span class='op'>=</span> <span class='st'>"bmi_group"</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/stat_ellipse.html'>stat_ellipse</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>linetype <span class='op'>=</span> <span class='va'>bmi_group</span>, colour <span class='op'>=</span> <span class='va'>bmi_group</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 0</span></div><div class='output co'>#&gt; <span class='message'>	weight</span></div><div class='img'><img src='ord_plot-2.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='img'><img src='ord_plot-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># alternatively, constrain variation on weight and female</span>
 <span class='va'>constrained_aitchison_rda</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span>, rank <span class='op'>=</span> <span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>constraints <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"weight"</span>, <span class='st'>"female"</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># constraints --&gt; RDA</span>
-</div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 0</span></div><div class='output co'>#&gt; <span class='message'></span>
+</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Centering (mean) and scaling (sd) the constraints and conditions: </span></div><div class='output co'>#&gt; <span class='message'>	weight</span></div><div class='output co'>#&gt; <span class='message'>	female</span></div><div class='input'>
 <span class='va'>constrained_aitchison_rda</span> <span class='op'>%&gt;%</span>
   <span class='fu'>ord_plot</span><span class='op'>(</span>colour <span class='op'>=</span> <span class='st'>"bmi_group"</span>, constraint_vec_length <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span> <span class='op'>+</span>
@@ -332,6 +366,17 @@ drawn with geom_point using aes_string</p></td>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/lims.html'>lims</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>5</span>, <span class='fl'>6</span><span class='op'>)</span>, y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>5</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_brewer.html'>scale_colour_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Set1"</span><span class='op'>)</span>
 </div><div class='img'><img src='ord_plot-6.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># You can plot PCoA and constrained PCoA plots too.</span>
+<span class='co'># You don't typically need/want to use transformed taxa variables for PCoA</span>
+<span class='co'># But it is good practice to call tax_transform("identity") so that</span>
+<span class='co'># the automatic caption can record that no transformation was applied</span>
+<span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"identity"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='co'># so caption can record (lack of) transform</span>
+  <span class='fu'><a href='dist_calc.html'>dist_calc</a></span><span class='op'>(</span><span class='st'>"bray"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='co'># bray curtis</span>
+  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='co'># guesses you want an unconstrained PCoA</span>
+  <span class='fu'>ord_plot</span><span class='op'>(</span>colour <span class='op'>=</span> <span class='st'>"bmi_group"</span><span class='op'>)</span>
+</div><div class='img'><img src='ord_plot-7.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># it is possible to facet these plots</span>
 <span class='co'># (although I'm not sure it makes sense to)</span>
 <span class='co'># but only unconstrained ordination plots and with plot_taxa = FALSE</span>
@@ -341,14 +386,14 @@ drawn with geom_point using aes_string</p></td>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>line <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_blank</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_density_2d.html'>stat_density2d</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>colour <span class='op'>=</span> <span class='va'>sex</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/guides.html'>guides</a></span><span class='op'>(</span>colour <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='img'><img src='ord_plot-7.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='img'><img src='ord_plot-8.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='va'>unconstrained_aitchison_pca</span> <span class='op'>%&gt;%</span>
   <span class='fu'>ord_plot</span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"bmi_group"</span>, plot_samples <span class='op'>=</span> <span class='cn'>FALSE</span>, auto_caption <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_wrap.html'>facet_wrap</a></span><span class='op'>(</span><span class='st'>"sex"</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>line <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_blank</a></span><span class='op'>(</span><span class='op'>)</span>, axis.text <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_blank</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_density_2d.html'>stat_density2d_filled</a></span><span class='op'>(</span>show.legend <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>1</span>, shape <span class='op'>=</span> <span class='fl'>21</span>, colour <span class='op'>=</span> <span class='st'>"black"</span>, fill <span class='op'>=</span> <span class='st'>"white"</span><span class='op'>)</span>
-</div><div class='img'><img src='ord_plot-8.png' alt='' width='700' height='433' /></div></pre>
+</div><div class='img'><img src='ord_plot-9.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

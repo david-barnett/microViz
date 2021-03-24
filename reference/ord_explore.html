@@ -73,7 +73,7 @@ You can style the ordination plot points using the options on the left panel." /
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9002</span>
       </span>
     </div>
 
@@ -98,6 +98,9 @@ You can style the ordination plot points using the options on the left panel." /
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/articles/Interactive-Ordination.html">Interactive Ordination Plot</a>
+    </li>
     <li>
       <a href="../articles/articles/Visualising-compositions.html">Visualising-compositions</a>
     </li>
@@ -139,9 +142,11 @@ You can style the ordination plot points using the options on the left panel.</p
 
     <pre class="usage"><span class='fu'>ord_explore</span><span class='op'>(</span>
   <span class='va'>ord</span>,
+  <span class='va'>sample_id</span>,
   ps <span class='op'>=</span> <span class='cn'>NULL</span>,
   seriate_method <span class='op'>=</span> <span class='st'>"OLO_ward"</span>,
   tax_transform_for_ordering <span class='op'>=</span> <span class='st'>"identity"</span>,
+  tax_order <span class='op'>=</span> <span class='va'>sum</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
@@ -151,6 +156,10 @@ You can style the ordination plot points using the options on the left panel.</p
     <tr>
       <th>ord</th>
       <td><p>list output of ord_calc</p></td>
+    </tr>
+    <tr>
+      <th>sample_id</th>
+      <td><p>id variable for ordering</p></td>
     </tr>
     <tr>
       <th>ps</th>
@@ -163,6 +172,10 @@ You can style the ordination plot points using the options on the left panel.</p
     <tr>
       <th>tax_transform_for_ordering</th>
       <td><p>transform tax before ordering with ps_seriate</p></td>
+    </tr>
+    <tr>
+      <th>tax_order</th>
+      <td></td>
     </tr>
     <tr>
       <th>...</th>
@@ -180,10 +193,11 @@ You can style the ordination plot points using the options on the left panel.</p
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"enterotype"</span><span class='op'>)</span>
 
 <span class='co'># simple example #</span>
+<span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html'>taxa_names</a></span><span class='op'>(</span><span class='va'>enterotype</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='st'>"unclassified"</span>
 <span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tax_fill_unknowns.html'>tax_fill_unknowns</a></span><span class='op'>(</span><span class='va'>enterotype</span><span class='op'>)</span> <span class='co'># remove NA taxa</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Row named: -1</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Row named: unclassified</span>
 #&gt; <span class='warning'>contains no non-unknown values, returning:</span>
-#&gt; <span class='warning'>'-1' for all replaced levels.</span>
+#&gt; <span class='warning'>'unclassified' for all replaced levels.</span>
 #&gt; <span class='warning'>Consider editing this tax_table entry manually.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Row named: Bacteria</span>
 #&gt; <span class='warning'>contains no non-unknown values, returning:</span>
 #&gt; <span class='warning'>'Bacteria' for all replaced levels.</span>
@@ -191,7 +205,10 @@ You can style the ordination plot points using the options on the left panel.</p
   <span class='fu'><a href='dist_calc.html'>dist_calc</a></span><span class='op'>(</span><span class='st'>"bray"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"PCoA"</span><span class='op'>)</span>
 
-<span class='co'># ord_explore(ord = ord1, auto_caption = NA)</span>
+<span class='co'># ord_explore(</span>
+<span class='co'>#   ord = ord1, auto_caption = NA,</span>
+<span class='co'>#   sample_id = "Sample_ID", tooltip = "Sample_ID"</span>
+<span class='co'># )</span>
 
 <span class='co'># constrained biplot example #</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span>
@@ -206,8 +223,8 @@ You can style the ordination plot points using the options on the left panel.</p
 
 <span class='va'>constrained_aitchison_rda</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"RDA"</span>, constraints <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"weight"</span>, <span class='st'>"female"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 0</span></div><div class='output co'>#&gt; <span class='message'></span>
+  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>constraints <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"weight"</span>, <span class='st'>"female"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Centering (mean) and scaling (sd) the constraints and conditions: </span></div><div class='output co'>#&gt; <span class='message'>	weight</span></div><div class='output co'>#&gt; <span class='message'>	female</span></div><div class='input'>
 <span class='co'># note if you want to visualise an ordination that required transformation</span>
 <span class='co'># you must take care to provide an untransformed phyloseq to ps,</span>
@@ -215,7 +232,7 @@ You can style the ordination plot points using the options on the left panel.</p
 <span class='co'># constrained_aitchison_rda %&gt;%</span>
 <span class='co'>#   ord_explore(</span>
 <span class='co'>#     ps = dietswap, plot_taxa = 1:5, tax_lab_style = list(size = 3),</span>
-<span class='co'>#     constraint_lab_style = list(size = 4)</span>
+<span class='co'>#     constraint_lab_style = list(size = 4), auto_caption = 7</span>
 <span class='co'>#   )</span>
 <span class='co'># try changing the point colour to bmi_group or similar</span>
 <span class='co'># (style interactively! e.g. colour doesn't work as argument to ord_explore)</span>

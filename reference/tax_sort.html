@@ -82,7 +82,7 @@ at is ignored when by is &quot;rev&quot;." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9002</span>
       </span>
     </div>
 
@@ -107,6 +107,9 @@ at is ignored when by is &quot;rev&quot;." />
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/articles/Interactive-Ordination.html">Interactive Ordination Plot</a>
+    </li>
     <li>
       <a href="../articles/articles/Visualising-compositions.html">Visualising-compositions</a>
     </li>
@@ -420,22 +423,6 @@ if using a summary stat function in <code>by</code></p>
 #&gt; Aneurinibacillus                   "Aneurinibacillus"                  
 #&gt; Bacillus                           "Bacillus"                          
 #&gt; Enterococcus                       "Enterococcus"                      </div><div class='input'>
-<span class='co'># order by descending abundance in a single named sample</span>
-<span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>tax_sort</span><span class='op'>(</span>by <span class='op'>=</span> <span class='st'>"Sample-1"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/otu_table-methods.html'>otu_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='va'>.</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; OTU Table:          [8 taxa and 4 samples]
-#&gt;                      taxa are rows
-#&gt;                                      Sample-1 Sample-2 Sample-3 Sample-4
-#&gt; Bacteroides vulgatus et rel.             2774       48      455      469
-#&gt; Oscillospira guillermondii et rel.        861     4697     2915     4279
-#&gt; Bacteroides fragilis et rel.              443       21       73       29
-#&gt; Bacteroides ovatus et rel.                427       15       31       46
-#&gt; Allistipes et rel.                        336       63       36       96
-#&gt; Faecalibacterium prausnitzii et rel.      321      766     1466      365
-#&gt; Bacteroides uniformis et rel.             310        3       37        6
-#&gt; Anaerostipes caccae et rel.               244      137       27       36</div><div class='input'>
 <span class='co'># sort by function e.g. median abundance</span>
 <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
   <span class='fu'>tax_sort</span><span class='op'>(</span>by <span class='op'>=</span> <span class='va'>median</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
@@ -461,6 +448,23 @@ if using a summary stat function in <code>by</code></p>
 #&gt; [18] "Clostridium leptum et rel."          
 #&gt; [19] "Bacteroides ovatus et rel."          
 #&gt; [20] "Bryantella formatexigens et rel."    </div><div class='input'>
+<span class='co'># order by descending abundance in a single named sample</span>
+<span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>tax_sort</span><span class='op'>(</span>by <span class='op'>=</span> <span class='st'>"Sample-1"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/otu_table-methods.html'>otu_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='va'>.</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span>
+</div><div class='output co'>#&gt; OTU Table:          [8 taxa and 4 samples]
+#&gt;                      taxa are rows
+#&gt;                                      Sample-1 Sample-2 Sample-3 Sample-4
+#&gt; Bacteroides vulgatus et rel.             2774       48      455      469
+#&gt; Oscillospira guillermondii et rel.        861     4697     2915     4279
+#&gt; Bacteroides fragilis et rel.              443       21       73       29
+#&gt; Bacteroides ovatus et rel.                427       15       31       46
+#&gt; Allistipes et rel.                        336       63       36       96
+#&gt; Faecalibacterium prausnitzii et rel.      321      766     1466      365
+#&gt; Bacteroides uniformis et rel.             310        3       37        6
+#&gt; Anaerostipes caccae et rel.               244      137       27       36</div><div class='input'>
+
 <span class='co'># sum order should always equal mean order if non-negative abundances</span>
 <span class='co'># don't forget to add na.rm = TRUE if you expect NAs in otu_table somehow</span>
 <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
