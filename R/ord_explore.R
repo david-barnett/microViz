@@ -283,7 +283,7 @@ ord_explore <- function(ord,
 
       # logical selection of kept samples
       sample_kept <-
-        phyloseq::sample_data(ps)[[input$id_var]] %in% selected_samples
+        phyloseq::sample_data(ps_ordered)[[input$id_var]] %in% selected_samples
 
       if (sum(sample_kept) >= 2) {
         # TODO fix issue that comp_barplot only works with 2+ samples

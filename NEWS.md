@@ -2,7 +2,7 @@
 
 ## Features
 - `ord_plot` interactivity option with `ggiraph` package
-- `ord_explore` WIP
+- `ord_explore` now allows much better control over selection of points (using `ggiraph` functionality)
 
 # microViz 0.6.0 - "open sesame"
 
