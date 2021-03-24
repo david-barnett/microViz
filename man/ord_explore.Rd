@@ -48,7 +48,10 @@ ord1 <- ps \%>\%
   dist_calc("bray") \%>\%
   ord_calc(method = "PCoA")
 
-# ord_explore(ord = ord1, auto_caption = NA, sample_id = "Sample_ID")
+# ord_explore(
+#   ord = ord1, auto_caption = NA,
+#   sample_id = "Sample_ID", tooltip = "Sample_ID"
+# )
 
 # constrained biplot example #
 data("dietswap", package = "microbiome")

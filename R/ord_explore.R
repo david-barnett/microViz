@@ -26,7 +26,10 @@
 #'   dist_calc("bray") %>%
 #'   ord_calc(method = "PCoA")
 #'
-#' # ord_explore(ord = ord1, auto_caption = NA, sample_id = "Sample_ID")
+#' # ord_explore(
+#' #   ord = ord1, auto_caption = NA,
+#' #   sample_id = "Sample_ID", tooltip = "Sample_ID"
+#' # )
 #'
 #' # constrained biplot example #
 #' data("dietswap", package = "microbiome")
@@ -124,6 +127,10 @@ ord_explore <- function(ord,
               choices = names(samdat),
               selected = "Sample_ID"
             ),
+            shiny::sliderInput(
+              inputId = "ord_alpha", label = "Point alpha",
+              value = 1, min = 0, max = 1, ticks = FALSE
+            ),
             shiny::selectInput(
               inputId = "ord_colour", label = "Point colour",
               choices = list(
@@ -200,7 +207,7 @@ ord_explore <- function(ord,
             shiny::column(
               width = 11,
               # interactive ordination plot
-              ggiraph::girafeOutput(outputId = "ord_plot", height = "4.5in")
+              ggiraph::girafeOutput(outputId = "ord_plot", height = "4.5in", width = "6in")
             )
           ),
           shiny::fluidRow(
@@ -240,6 +247,7 @@ ord_explore <- function(ord,
         shape = shape(),
         size = size(),
         colour = input$ord_colour,
+        alpha = input$ord_alpha,
         interactive = TRUE,
         data_id = input$id_var,
         ...
@@ -247,14 +255,14 @@ ord_explore <- function(ord,
         ggplot2::scale_shape_discrete(na.translate = TRUE, na.value = 1)
       p1 <- ggiraph::girafe(
         code = print(p1),
-        width_svg = 5, height_svg = 4.5,
+        width_svg = 6, height_svg = 4.5,
         options = list(
           ggiraph::opts_hover(
-            css = "fill:#FF3333;stroke:black;cursor:pointer;",
+            css = "fill:orange;stroke:black;cursor:pointer;",
             reactive = TRUE
           ),
           ggiraph::opts_selection(
-            type = "multiple", css = "stroke:orange"
+            type = "multiple", css = "stroke:black;stroke-width:2"
           )
         )
       )
