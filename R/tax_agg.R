@@ -203,8 +203,8 @@ tax_agg <- function(ps,
   }
   # create "top" rank column if requested by top_N
   if (!identical(top_N, NA)) {
-  phyloseq::tax_table(ps_agg) <-
-    tt_add_topN_var(phyloseq::tax_table(ps_agg), N = top_N, other = "other")
+    phyloseq::tax_table(ps_agg) <-
+      tt_add_topN_var(phyloseq::tax_table(ps_agg), N = top_N, other = "other")
   }
 
   # ps_extra

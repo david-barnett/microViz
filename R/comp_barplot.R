@@ -370,14 +370,21 @@ tt_add_topN_var <- function(tt, N, other = "other") {
     phyloseq::taxa_names(tt)[seq_len(N)],
     rep_len(other, length.out = phyloseq::ntaxa(tt) - N)
   )
-  tt_out <- cbind(
-    # new tt except unique col
-    tt[, phyloseq::rank_names(tt) != "unique"],
-    top = top_taxons # new top col
-  )
-  if ("unique" %in% colnames(tt)) {
-    # add unique col back on at end
-    tt_out <- cbind(tt_out, tt[, "unique"])
+  ranks <- phyloseq::rank_names(tt)
+  # handle case of only rank being "unique"
+  # (e.g. if started without tax_table)
+  if (identical(ranks, "unique")){
+    tt_out <- cbind(top = top_taxons, tt)
+  } else {
+    tt_out <- cbind(
+      # new tt except unique col
+      tt[, phyloseq::rank_names(tt) != "unique"],
+      top = top_taxons # new top col
+    )
+    if ("unique" %in% colnames(tt)) {
+      # add unique col back on at end if present
+      tt_out <- cbind(tt_out, tt[, "unique"])
+    }
   }
   tt_out <- phyloseq::tax_table(tt_out)
   return(tt_out)
