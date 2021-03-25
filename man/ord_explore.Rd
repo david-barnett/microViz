@@ -5,27 +5,27 @@
 \title{Interactively explore compositions of ordinated samples}
 \usage{
 ord_explore(
-  ord,
-  sample_id,
+  data,
+  sample_id = NULL,
   ps = NULL,
   seriate_method = "OLO_ward",
   tax_transform_for_ordering = "identity",
-  tax_order = sum,
+  ord_tooltip = NULL,
   ...
 )
 }
 \arguments{
-\item{ord}{list output of ord_calc}
+\item{data}{ps_extra list output of ord_calc}
 
-\item{sample_id}{id variable for ordering}
+\item{sample_id}{name of id variable for ordering}
 
-\item{ps}{phyloseq object containing untransformed counts if needed (must otherwise be identical to ps used to make ord!)}
+\item{ps}{phyloseq object containing untransformed counts if needed (must otherwise be identical to ps used to make data!)}
 
 \item{seriate_method}{seriation method to order phyloseq samples by similarity}
 
 \item{tax_transform_for_ordering}{transform tax before ordering with ps_seriate}
 
-\item{tax_order}{}
+\item{ord_tooltip}{what to show on hovering over ordination point, NULL defaults to sample name}
 
 \item{...}{additional arguments passed to ord_plot}
 }
@@ -36,6 +36,14 @@ nothing, opens html viewer
 Once running: click and drag to draw box over 2 or more samples to view their compositions.
 You can style the ordination plot points using the options on the left panel.
 }
+\section{If you get an error like the one below:}{
+"ids don't have the same length than str (most often, it occurs because of clipping)"
+\enumerate{
+\item make your points smaller
+\item set point shape to fixed, or to a variable with fewer categories
+}
+}
+
 \examples{
 library(phyloseq)
 library(dplyr)
@@ -49,8 +57,8 @@ ord1 <- ps \%>\%
   ord_calc(method = "PCoA")
 
 # ord_explore(
-#   ord = ord1, auto_caption = NA,
-#   sample_id = "Sample_ID", tooltip = "Sample_ID"
+#   data = ord1, auto_caption = NA,
+#   sample_id = "Sample_ID", ord_tooltip = "Sample_ID"
 # )
 
 # constrained biplot example #
@@ -78,4 +86,22 @@ constrained_aitchison_rda <- dietswap \%>\%
 #   )
 # try changing the point colour to bmi_group or similar
 # (style interactively! e.g. colour doesn't work as argument to ord_explore)
+
+# another dataset
+# microbiomeutilities::hmp2 \%>\%
+#   tax_fill_unknowns() \%>\%
+#   dist_calc("aitchison") \%>\%
+#   ord_calc() \%>\%
+#   ord_explore()
+
+data("soilrep", package = "phyloseq")
+# test auto creation of SAMPLE var
+ps <- soilrep \%>\% ps_select(-Sample)
+# The barplot is actually quite useless with the 16000+ anonymous OTUs
+# in this dataset, but the 1000s of unmerged "other" categories do render
+# phyloseq_validate(ps) \%>\%
+#   tax_fill_unknowns() \%>\%
+#   dist_calc("aitchison") \%>\%
+#   ord_calc() \%>\%
+#   ord_explore()
 }

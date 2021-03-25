@@ -1,15 +1,24 @@
 #' Interactively explore compositions of ordinated samples
 #'
+#' @description
 #' Once running: click and drag to draw box over 2 or more samples to view their compositions.
 #' You can style the ordination plot points using the options on the left panel.
 #'
-#' @param ord list output of ord_calc
-#' @param ps phyloseq object containing untransformed counts if needed (must otherwise be identical to ps used to make ord!)
+#' @details
+#' # If you get an error like the one below:
+#' "ids don't have the same length than str (most often, it occurs because of clipping)"
+#'
+#' 1. make your points smaller
+#' 2. set point shape to fixed, or to a variable with fewer categories
+#'
+#'
+#' @param data ps_extra list output of ord_calc
+#' @param sample_id name of id variable for ordering
+#' @param ps phyloseq object containing untransformed counts if needed (must otherwise be identical to ps used to make data!)
 #' @param seriate_method seriation method to order phyloseq samples by similarity
 #' @param tax_transform_for_ordering transform tax before ordering with ps_seriate
+#' @param ord_tooltip what to show on hovering over ordination point, NULL defaults to sample name
 #' @param ... additional arguments passed to ord_plot
-#' @param sample_id id variable for ordering
-#' @param tax_order
 #'
 #' @return nothing, opens html viewer
 #' @export
@@ -27,8 +36,8 @@
 #'   ord_calc(method = "PCoA")
 #'
 #' # ord_explore(
-#' #   ord = ord1, auto_caption = NA,
-#' #   sample_id = "Sample_ID", tooltip = "Sample_ID"
+#' #   data = ord1, auto_caption = NA,
+#' #   sample_id = "Sample_ID", ord_tooltip = "Sample_ID"
 #' # )
 #'
 #' # constrained biplot example #
@@ -56,25 +65,56 @@
 #' #   )
 #' # try changing the point colour to bmi_group or similar
 #' # (style interactively! e.g. colour doesn't work as argument to ord_explore)
-ord_explore <- function(ord,
-                        sample_id, # id var name for data_id ggiraph
+#'
+#' # another dataset
+#' # microbiomeutilities::hmp2 %>%
+#' #   tax_fill_unknowns() %>%
+#' #   dist_calc("aitchison") %>%
+#' #   ord_calc() %>%
+#' #   ord_explore()
+#'
+#' data("soilrep", package = "phyloseq")
+#' # test auto creation of SAMPLE var
+#' ps <- soilrep %>% ps_select(-Sample)
+#' # The barplot is actually quite useless with the 16000+ anonymous OTUs
+#' # in this dataset, but the 1000s of unmerged "other" categories do render
+#' # phyloseq_validate(ps) %>%
+#' #   tax_fill_unknowns() %>%
+#' #   dist_calc("aitchison") %>%
+#' #   ord_calc() %>%
+#' #   ord_explore()
+ord_explore <- function(data,
+                        sample_id = NULL, # id var name for data_id ggiraph
                         ps = NULL,
                         seriate_method = "OLO_ward", # ordering samples
                         tax_transform_for_ordering = "identity", # samples
-                        tax_order = sum, # ordering taxa
+                        ord_tooltip = NULL, # defaults to SAMPLE
                         ...) {
   # SETUP -------------------------------------------------------------------
 
-  if (identical(ps, NULL)) ps <- ps_get(ord)
-  if (inherits(ps, "ps_extra")) ps <- ps_get(ps)
-  ordination <- ord_get(ord)
-  dist <- info_get(ord)[["distMethod"]]
+  # create a SAMPLE id variable
+  data$ps <- ps_mutate(data$ps, SAMPLE = phyloseq::sample_names(data$ps))
+  if (identical(ps, NULL)){
+    ps <- ps_get(data)
+  } else {
+    if (inherits(ps, "ps_extra"))  ps <- ps_get(ps)
+    ps <- ps_mutate(ps, SAMPLE = phyloseq::sample_names(ps))
+  }
+
+  dist <- info_get(data)[["distMethod"]]
   # (needed if a distance-based seriate_method is requested, as is default)
   if (is.na(dist)) {
     dist <- "euclidean"
-    tax_transform_for_ordering <- info_get(ord)[["tax_transform"]]
+    tax_transform_for_ordering <- info_get(data)[["tax_transform"]]
   }
-  samdat <- phyloseq::sample_data(ps)
+  samdat <- methods::as(phyloseq::sample_data(ps), "data.frame")
+
+  numerical_vars <- colnames(
+    samdat[, sapply(X = samdat, function(x) !is.character(x) & !is.factor(x))]
+  )
+
+  categorical_vars <-
+    colnames(samdat[, sapply(samdat, function(x) !is.numeric(x))])
 
   # reorder samples based on hierarchical clustering
   message("- ordering samples")
@@ -83,8 +123,6 @@ ord_explore <- function(ord,
     dist = dist, method = seriate_method,
     tax_transform = tax_transform_for_ordering
   )
-
-
 
   # APP ---------------------------------------------------------------------
 
@@ -97,19 +135,16 @@ ord_explore <- function(ord,
           shiny::HTML(
             "body {
               background-color: 'grey90';
+              line-height: 1.2;
             }
-            * {
-              font-size: 12px;
+            .shiny-split-layout > div {
+              overflow: visible;
             }
             .shiny-input-container {
-              color: grey10;
               background-color: 'grey85';
             }
-            .selectize-input {
-              height: 10px;
-            }
-            .irs-slider {
-              height: 10px;
+            .selectize-input, .irs, .form-control {
+              font-size: 12px;
             }
             "
           )
@@ -121,15 +156,15 @@ ord_explore <- function(ord,
         sidebarPanel = shiny::sidebarPanel(
           width = 3,
           shiny::fluidRow(
-            shiny::h5("Ordination options"),
+            shiny::h4("Ordination options"),
             shiny::selectInput(
-              inputId = "id_var", label = "Selection group variable:",
-              choices = names(samdat),
-              selected = "Sample_ID"
+              inputId = "id_var", label = "Selection grouping:",
+              choices = colnames(samdat),
+              selected = c(sample_id, "SAMPLE")[[1]]
             ),
             shiny::sliderInput(
               inputId = "ord_alpha", label = "Point alpha",
-              value = 1, min = 0, max = 1, ticks = FALSE
+              value = 0.6, min = 0, max = 1, ticks = FALSE
             ),
             shiny::selectInput(
               inputId = "ord_colour", label = "Point colour",
@@ -149,14 +184,17 @@ ord_explore <- function(ord,
               ),
               selected = "fixed"
             ),
-            shiny::sliderInput(
-              inputId = "ord_shape_num", label = NULL,
-              value = 1, min = 1, step = 1, max = 21, ticks = FALSE
-            ),
-            shiny::selectInput(
-              inputId = "ord_shape_var", label = NULL,
-              choices = phyloseq::sample_variables(ps),
-              selected = NULL
+            shiny::splitLayout(
+              cellWidths = c("35%", "65%"),
+              shiny::numericInput(
+                inputId = "ord_shape_num", label = NULL,
+                value = 21, min = 1, step = 1, max = 21
+              ),
+              shiny::selectInput(
+                inputId = "ord_shape_var", label = NULL,
+                choices = categorical_vars,
+                selected = NULL
+              )
             ),
             # size
             shiny::radioButtons(
@@ -168,36 +206,60 @@ ord_explore <- function(ord,
               ),
               selected = "fixed"
             ),
-            shiny::sliderInput(
-              inputId = "ord_size_num", label = NULL,
-              value = 1.5, min = 0.5, step = 0.1, max = 10, ticks = FALSE
-            ),
-            shiny::selectInput(
-              inputId = "ord_size_var", label = NULL,
-              choices = names(samdat[, sapply(X = samdat, function(x) !is.character(x) & !is.factor(x))]),
-              selected = NULL
+            shiny::splitLayout(
+              cellWidths = c("35%", "65%"),
+              shiny::numericInput(
+                inputId = "ord_size_num", label = NULL,
+                value = 2, min = 0, step = 0.5, max = 15
+              ),
+              shiny::selectInput(
+                inputId = "ord_size_var", label = NULL,
+                choices = numerical_vars,
+                selected = NULL
+              )
             ),
           ),
           shiny::fluidRow(
-            shiny::h5("Composition options"),
-            shiny::selectInput(
-              inputId = "tax_level_comp", label = "Taxonomic rank",
-              choices = phyloseq::rank_names(ps),
-              selected = utils::tail(phyloseq::rank_names(ps), n = 1)
+            shiny::h4("Composition options"),
+            # rank
+            shiny::splitLayout(
+              cellWidths = c('30%', '70%'),
+              shiny::helpText("Rank:"),
+              shiny::selectInput(
+                inputId = "tax_level_comp", label = NULL,
+                choices = phyloseq::rank_names(ps),
+                selected = utils::tail(
+                  setdiff(phyloseq::rank_names(ps), "unique"),
+                  n = 1
+                )
+              )
+            ),
+            shiny::splitLayout(
+              cellWidths = c('30%', '70%'),
+              shiny::helpText("Order:"),
+              shiny::selectInput(
+                inputId = "tax_order", label = NULL,
+                choices = c("sum", "median", "mean", "max", "min", "var"),
+                selected = "sum"
+              )
+            ),
+            shiny::splitLayout(
+              cellWidths = c('30%', '70%'),
+              shiny::helpText("Labels:"),
+              shiny::selectInput(
+                inputId = "comp_label", label = NULL,
+                choices = union("SAMPLE", phyloseq::sample_variables(ps)),
+                selected = "SAMPLE"
+              )
             ),
             shiny::sliderInput(
-              inputId = "ntaxa", label = "Taxa to display",
+              inputId = "ntaxa", label = "N taxa",
               min = 1, max = 19, value = 9, ticks = FALSE,
               step = 1, round = TRUE
             ),
-            shiny::selectInput(
-              inputId = "comp_label", label = "Sample labels",
-              choices = union("SAMPLE", phyloseq::sample_variables(ps)),
-              selected = "SAMPLE"
-            ),
             shiny::checkboxInput(
-              inputId = "merge_other",
-              label = "Merge other taxa?", value = TRUE
+              inputId = "merge_other", label = "Merge other?",
+              value = TRUE
             )
           )
         ),
@@ -243,13 +305,16 @@ ord_explore <- function(ord,
     # ordination plot ---------------------------------------------------------
     output$ord_plot <- ggiraph::renderGirafe({
       p1 <- ord_plot(
-        ord,
+        data,
         shape = shape(),
         size = size(),
         colour = input$ord_colour,
+        fill = input$ord_colour,
         alpha = input$ord_alpha,
         interactive = TRUE,
         data_id = input$id_var,
+        tooltip =
+          c(ord_tooltip, "SAMPLE")[[1]], # default ord_tooltip=NULL -> SAMPLE
         ...
       ) +
         ggplot2::scale_shape_discrete(na.translate = TRUE, na.value = 1)
@@ -263,7 +328,8 @@ ord_explore <- function(ord,
           ),
           ggiraph::opts_selection(
             type = "multiple", css = "stroke:black;stroke-width:2"
-          )
+          ),
+          ggiraph::opts_zoom(min = 0.5, max = 5)
         )
       )
       p1
@@ -273,33 +339,33 @@ ord_explore <- function(ord,
 
     # set colour palette (depends on tax level of ord_plot)
     palet <- shiny::reactive({
-      message(" - Setting taxa colour palette")
+      shiny::showNotification(" - Setting taxa colour palette", duration = 2)
       ord_explore_palet_fun(
-        ps = ps, tax_level = input$tax_level_comp, top_by = tax_order
+        ps = ps, tax_level = input$tax_level_comp,
+        top_by = get(input$tax_order)
       )
     })
     ordered_taxa <- shiny::reactive({
-      message(" - Sorting taxa")
-      tax_top(ps, n = NA, by = tax_order, input$tax_level_comp)
+      shiny::showNotification(" - Sorting taxa", duration = 2)
+      tax_top(
+        data = ps, n = NA,
+        by = get(input$tax_order),
+        rank = input$tax_level_comp
+      )
     })
 
     # make plot
     output$compositions <- shiny::renderPlot({
-
       # get ggiraph interactivity
       selected_samples <- input$ord_plot_selected
-
       # logical selection of kept samples
       sample_kept <-
         phyloseq::sample_data(ps_ordered)[[input$id_var]] %in% selected_samples
-
       if (sum(sample_kept) >= 2) {
         # TODO fix issue that comp_barplot only works with 2+ samples
-
         # select samples
         ps_sel <-
           phyloseq::prune_samples(x = ps_ordered, samples = sample_kept)
-
         # plot composition of selected samples
         p_comp <- ps_sel %>%
           comp_barplot(
@@ -354,8 +420,8 @@ ord_explore_palet_fun <- function(ps,
 
   numb <- min(length(top_tax), length(palet))
 
-  palet <- palet[1:numb]
-  names(palet) <- top_tax[1:numb]
+  palet <- palet[seq_len(numb)]
+  names(palet) <- top_tax[seq_len(numb)]
 
   palet <- c(palet, c(other = other))
 
