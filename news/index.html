@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9007</span>
       </span>
     </div>
 
@@ -135,6 +135,14 @@
     <div id="microviz-development-version" class="section level1">
 <h1 class="page-header" data-toc-text="development version">
 <a href="#microviz-development-version" class="anchor"></a>microViz (development version)</h1>
+<div id="breaking-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#breaking-changes" class="anchor"></a>Breaking changes</h2>
+<ul>
+<li>
+<code>ord_plot_iris</code> and <code>ord_explore</code> no longer need ps argument of untransformed counts as (by default) <code>tax_transform</code> keeps the untransformed counts otu_table in the ps_extra object</li>
+</ul>
+</div>
 <div id="features" class="section level2">
 <h2 class="hasAnchor">
 <a href="#features" class="anchor"></a>Features</h2>
@@ -154,9 +162,9 @@
 <li>Minor version changes (e.g. 0.5.* to 0.6.0) will signal that breaking changes have been made, i.e. installing the new version may break some previously working code. Breaking changes will be listed in this document.</li>
 <li>Patch versions (e.g. 0.5.1 to 0.5.2) will be used to release new features and bug fixes, which should not break existing code. Please let me know if it does anyway!</li>
 </ul>
-<div id="breaking-changes" class="section level2">
+<div id="breaking-changes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#breaking-changes" class="anchor"></a>Breaking changes</h2>
+<a href="#breaking-changes-1" class="anchor"></a>Breaking changes</h2>
 <ul>
 <li>
 <code>tax_agg</code> argument agg_level renamed to rank. <code>tax_agg</code> returns taxa in different order than before (and now different order from, but same aggregation as, <code><a href="https://rdrr.io/pkg/microbiome/man/aggregate_taxa.html">microbiome::aggregate_taxa()</a></code>). tax_agg now checks if taxa cannot be uniquely identified at the specified rank level. (now also about twice as fast)</li>
@@ -186,9 +194,9 @@
     <div id="microviz-050---hot-maps" class="section level1">
 <h1 class="page-header" data-toc-text="0.5.0">
 <a href="#microviz-050---hot-maps" class="anchor"></a>microViz 0.5.0 - “hot maps”</h1>
-<div id="breaking-changes-1" class="section level2">
+<div id="breaking-changes-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#breaking-changes-1" class="anchor"></a>Breaking changes</h2>
+<a href="#breaking-changes-2" class="anchor"></a>Breaking changes</h2>
 <ul>
 <li>
 <code>cor_heatmap</code> and <code>comp_heatmap</code> argument changed: ‘taxa_which’ replaced with ‘taxa_side’ for easier control over where taxa annotations are placed (default behaviour stays the same)</li>
@@ -298,9 +306,9 @@
     <div id="microviz-040" class="section level1">
 <h1 class="page-header" data-toc-text="0.4.0">
 <a href="#microviz-040" class="anchor"></a>microViz 0.4.0</h1>
-<div id="breaking-changes-2" class="section level2">
+<div id="breaking-changes-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#breaking-changes-2" class="anchor"></a>Breaking changes</h2>
+<a href="#breaking-changes-3" class="anchor"></a>Breaking changes</h2>
 <ul>
 <li>
 <code>dist_permanova</code> replaces <code>permanova</code> for naming consistency and guiding user</li>
@@ -335,9 +343,9 @@
     <div id="microviz-031" class="section level1">
 <h1 class="page-header" data-toc-text="0.3.1">
 <a href="#microviz-031" class="anchor"></a>microViz 0.3.1</h1>
-<div id="breaking-changes-3" class="section level2">
+<div id="breaking-changes-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#breaking-changes-3" class="anchor"></a>Breaking changes</h2>
+<a href="#breaking-changes-4" class="anchor"></a>Breaking changes</h2>
 <ul>
 <li>
 <code>ord_plot_iris</code> the <code>data</code> arg is replaced with <code>ord</code> and conditionally optional <code>ps</code> arg for when data in <code>ord</code> have been transformed</li>
@@ -380,9 +388,9 @@
 <code>taxatree_models</code> and <code>taxatree_plots</code> bring tree-based visualisations of statistical models</li>
 </ul>
 </div>
-<div id="breaking-changes-4" class="section level2">
+<div id="breaking-changes-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#breaking-changes-4" class="anchor"></a>Breaking changes</h2>
+<a href="#breaking-changes-5" class="anchor"></a>Breaking changes</h2>
 <ul>
 <li>
 <code>tax_model</code> replaces <code>tax_model_corncob</code> as a function that will eventually be generalised to use other model types</li>
@@ -478,9 +486,9 @@
 <code>ps_filter</code> allows filtering of <code>phyloseq</code> samples by values of variables in <code>sample_data</code> (wrapper around <code>dplyr</code>’s <code>filter</code> function)</li>
 </ul>
 </div>
-<div id="breaking-changes-5" class="section level2">
+<div id="breaking-changes-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#breaking-changes-5" class="anchor"></a>Breaking changes</h2>
+<a href="#breaking-changes-6" class="anchor"></a>Breaking changes</h2>
 <ul>
 <li>
 <code>ps_mutate</code> no longer needs <code>.across</code> argument to use <code><a href="https://dplyr.tidyverse.org/reference/across.html">dplyr::across()</a></code>
@@ -531,9 +539,9 @@
     <div id="microviz-002" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.2">
 <a href="#microviz-002" class="anchor"></a>microViz 0.0.2</h1>
-<div id="breaking-changes-6" class="section level2">
+<div id="breaking-changes-7" class="section level2">
 <h2 class="hasAnchor">
-<a href="#breaking-changes-6" class="anchor"></a>Breaking changes</h2>
+<a href="#breaking-changes-7" class="anchor"></a>Breaking changes</h2>
 <ul>
 <li>
 <code>plot_ordin8</code> arguments changed to allow easier sizing and styling of all vectors and labels</li>

@@ -73,7 +73,7 @@ You can style the ordination plot points using the options on the left panel." /
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9007</span>
       </span>
     </div>
 
@@ -143,7 +143,6 @@ You can style the ordination plot points using the options on the left panel.</p
     <pre class="usage"><span class='fu'>ord_explore</span><span class='op'>(</span>
   <span class='va'>data</span>,
   sample_id <span class='op'>=</span> <span class='cn'>NULL</span>,
-  ps <span class='op'>=</span> <span class='cn'>NULL</span>,
   seriate_method <span class='op'>=</span> <span class='st'>"OLO_ward"</span>,
   tax_transform_for_ordering <span class='op'>=</span> <span class='st'>"identity"</span>,
   app_options <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>launch.browser <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,
@@ -160,11 +159,6 @@ You can style the ordination plot points using the options on the left panel.</p
     <tr>
       <th>sample_id</th>
       <td><p>name of id variable for ordering</p></td>
-    </tr>
-    <tr>
-      <th>ps</th>
-      <td><p>phyloseq object containing untransformed counts if needed
-(must otherwise be identical to ps used to make data!)</p></td>
     </tr>
     <tr>
       <th>seriate_method</th>
@@ -242,7 +236,7 @@ that grouping variable cannot be used to select those samples</p>
 <span class='co'># otherwise the compositions plotted will be also transformed!</span>
 <span class='co'># constrained_aitchison_rda %&gt;%</span>
 <span class='co'>#   ord_explore(</span>
-<span class='co'>#     ps = dietswap, plot_taxa = 1:5, tax_lab_style = list(size = 3),</span>
+<span class='co'>#     plot_taxa = 1:5, tax_lab_style = list(size = 3),</span>
 <span class='co'>#     constraint_lab_style = list(size = 4), auto_caption = 7</span>
 <span class='co'>#   )</span>
 <span class='co'># try changing the point colour to bmi_group or similar</span>

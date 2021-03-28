@@ -40,14 +40,9 @@
 
 
 <meta property="og:title" content="Circular compositional barplot sorted by ordination angle — ord_plot_iris" />
-<meta property="og:description" content="
-
-Order of samples extracted from ordination axes in data. (ord_calc output)
-ord_plot_iris Uses the phyloseq from data for plotting compositions if no problematic transform mentioned in data$info
-Otherwise, ps must be a phyloseq object containing untransformed counts.
-(ps must be otherwise identical to the ps used to make data!)
-
-" />
+<meta property="og:description" content="Use with ord_calc output as data argument.
+Order of samples extracted from ordination axes in data.
+Best paired with ordination plot made from same ord_calc output." />
 
 
 
@@ -79,7 +74,7 @@ Otherwise, ps must be a phyloseq object containing untransformed counts.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9007</span>
       </span>
     </div>
 
@@ -142,14 +137,9 @@ Otherwise, ps must be a phyloseq object containing untransformed counts.
     </div>
 
     <div class="ref-description">
-    
-<ul>
-<li><p>Order of samples extracted from ordination axes in <code>data</code>. (<code>ord_calc</code> output)</p></li>
-<li><p><code>ord_plot_iris</code> Uses the phyloseq from <code>data</code> for plotting compositions if no problematic transform mentioned in <code>data$info</code></p></li>
-<li><p>Otherwise, ps must be a phyloseq object containing untransformed counts.</p></li>
-<li><p>(<code>ps</code> must be otherwise identical to the ps used to make <code>data</code>!)</p></li>
-</ul>
-
+    <p>Use with <code>ord_calc</code> output as data argument.
+Order of samples extracted from ordination axes in data.
+Best paired with ordination plot made from same <code>ord_calc</code> output.</p>
     </div>
 
     <pre class="usage"><span class='fu'>ord_plot_iris</span><span class='op'>(</span>
@@ -165,7 +155,9 @@ Otherwise, ps must be a phyloseq object containing untransformed counts.
   anno_binary <span class='op'>=</span> <span class='cn'>NULL</span>,
   anno_binary_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
   keep_all_vars <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  scaling <span class='op'>=</span> <span class='fl'>2</span>
+  scaling <span class='op'>=</span> <span class='fl'>2</span>,
+  count_warn <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -178,10 +170,6 @@ Otherwise, ps must be a phyloseq object containing untransformed counts.
     <tr>
       <th>tax_level</th>
       <td><p>taxonomic aggregation level (from rank_names(ps))</p></td>
-    </tr>
-    <tr>
-      <th>ps</th>
-      <td><p>phyloseq object containing untransformed counts if needed (must otherwise be identical to ps used to make data!)</p></td>
     </tr>
     <tr>
       <th>axes</th>
@@ -224,11 +212,23 @@ Otherwise, ps must be a phyloseq object containing untransformed counts.
       <td><p>Relevant for constrained ordinations: Type 2, or type 1 scaling. See <a href='https://sites.google.com/site/mb3gustame/constrained-analyses/rda'>https://sites.google.com/site/mb3gustame/constrained-analyses/rda</a>
 Either "species" or "site" scores are scaled by eigenvalues, and the other set of scores is left unscaled (from ?vegan::scores.cca)</p></td>
     </tr>
+    <tr>
+      <th>count_warn</th>
+      <td><p>warn if count data are not available? i.e. phyloseq otu_table is not positive integers and ps_extra counts slot is NULL</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>extra args passed to comp_barplot</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>ggplot</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>data must also contain counts table if taxa were transformed
+(i.e. you must have used <code>tax_transform</code> with keep_counts = TRUE, if transformation was not "identity")</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
@@ -291,8 +291,7 @@ Either "species" or "site" scores are scaled by eigenvalues, and the other set o
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_shape_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>AFR <span class='op'>=</span> <span class='st'>"circle"</span>, AAM <span class='op'>=</span> <span class='st'>"circle open"</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='va'>iris</span> <span class='op'>&lt;-</span> <span class='fu'>ord_plot_iris</span><span class='op'>(</span>
-  data <span class='op'>=</span> <span class='va'>clr_pca</span>,
-  ps <span class='op'>=</span> <span class='va'>ps</span>, n_taxa <span class='op'>=</span> <span class='fl'>15</span>,
+  data <span class='op'>=</span> <span class='va'>clr_pca</span>, n_taxa <span class='op'>=</span> <span class='fl'>15</span>,
   tax_level <span class='op'>=</span> <span class='st'>"Genus"</span>,
   taxon_renamer <span class='op'>=</span> <span class='va'>tax_renamer</span>,
   anno_binary <span class='op'>=</span> <span class='st'>"african"</span>,
@@ -305,8 +304,7 @@ Either "species" or "site" scores are scaled by eigenvalues, and the other set o
 </div><div class='img'><img src='ord_plot_iris-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># you can add multiple rings of binary annotations</span>
 <span class='fu'>ord_plot_iris</span><span class='op'>(</span>
-  data <span class='op'>=</span> <span class='va'>clr_pca</span>,
-  ps <span class='op'>=</span> <span class='va'>ps</span>, n_taxa <span class='op'>=</span> <span class='fl'>15</span>,
+  data <span class='op'>=</span> <span class='va'>clr_pca</span>, n_taxa <span class='op'>=</span> <span class='fl'>15</span>,
   tax_level <span class='op'>=</span> <span class='st'>"Genus"</span>,
   taxon_renamer <span class='op'>=</span> <span class='va'>tax_renamer</span>,
   anno_binary <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"african"</span>, <span class='st'>"female"</span><span class='op'>)</span>,

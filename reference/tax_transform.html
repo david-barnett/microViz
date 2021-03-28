@@ -78,7 +78,7 @@ See details for notes about some of the available transformations." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9007</span>
       </span>
     </div>
 
@@ -150,7 +150,7 @@ tax_transform (a string recording the transformation), and tax_agg
 See details for notes about some of the available transformations.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>tax_transform</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>transformation</span>, rank <span class='op'>=</span> <span class='cn'>NA</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>tax_transform</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>transformation</span>, rank <span class='op'>=</span> <span class='cn'>NA</span>, keep_counts <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -166,6 +166,10 @@ See details for notes about some of the available transformations.</p>
     <tr>
       <th>rank</th>
       <td><p>If data is phyloseq: data are aggregated at this rank before transforming. If NA, runs tax_agg(data, rank = NA). However if rank is NA and data is already ps_extra, this does nothing.</p></td>
+    </tr>
+    <tr>
+      <th>keep_counts</th>
+      <td><p>if TRUE, store the pre-transformation count data in ps_extra counts slot</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -207,7 +211,9 @@ All abundances above 10 would be converted to 1s. Use any numeric value.</p>
 #&gt; tax_table()   Taxonomy Table:    [ 8 taxa by 2 taxonomic ranks ]
 #&gt; 
 #&gt; phyloseq info:
-#&gt; tax_agg = Phylum tax_transform = clr</div><div class='input'><span class='co'># equivalent to old, two-step method</span>
+#&gt; tax_agg = Phylum tax_transform = clr
+#&gt; 
+#&gt; $counts OTU Table: [ 8 taxa and 222 samples ]</div><div class='input'><span class='co'># equivalent to old, two-step method</span>
 <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='va'>dietswap</span>, rank <span class='op'>=</span> <span class='st'>"Phylum"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'>tax_transform</span><span class='op'>(</span><span class='st'>"clr"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; ps_extra object - a list with phyloseq and extras:
 #&gt; 
@@ -217,7 +223,9 @@ All abundances above 10 would be converted to 1s. Use any numeric value.</p>
 #&gt; tax_table()   Taxonomy Table:    [ 8 taxa by 2 taxonomic ranks ]
 #&gt; 
 #&gt; phyloseq info:
-#&gt; tax_agg = Phylum tax_transform = clr</div><div class='input'>
+#&gt; tax_agg = Phylum tax_transform = clr
+#&gt; 
+#&gt; $counts OTU Table: [ 8 taxa and 222 samples ]</div><div class='input'>
 <span class='co'># do nothing except record tax_agg as "unique" and tax_transform as "identity" in ps_extra info</span>
 <span class='va'>dietswap</span> <span class='op'>%&gt;%</span> <span class='fu'>tax_transform</span><span class='op'>(</span><span class='st'>"identity"</span>, rank <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; ps_extra object - a list with phyloseq and extras:
@@ -239,7 +247,9 @@ All abundances above 10 would be converted to 1s. Use any numeric value.</p>
 #&gt; tax_table()   Taxonomy Table:    [ 130 taxa by 4 taxonomic ranks ]
 #&gt; 
 #&gt; phyloseq info:
-#&gt; tax_agg = unique tax_transform = binary</div><div class='input'><span class='co'># change detection threshold by setting undetected argument (default is 0)</span>
+#&gt; tax_agg = unique tax_transform = binary
+#&gt; 
+#&gt; $counts OTU Table: [ 130 taxa and 222 samples ]</div><div class='input'><span class='co'># change detection threshold by setting undetected argument (default is 0)</span>
 <span class='fu'>tax_transform</span><span class='op'>(</span><span class='va'>dietswap</span>, transformation <span class='op'>=</span> <span class='st'>"binary"</span>, undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='ps_extra-accessors.html'>otu_get</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='va'>.</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span>
