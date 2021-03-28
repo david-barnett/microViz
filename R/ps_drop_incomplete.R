@@ -6,7 +6,7 @@
 #' - drop samples with any missings
 #'
 #' @details
-#' This is a wrapper for \code{\link{stats::complete.cases()}} function.
+#' This is a wrapper for \code{\link[stats:complete.cases]{stats::complete.cases}} function.
 #'
 #' @param ps phyloseq with sample_data
 #' @param vars vector of variable names to check for missings (or NA, which uses all variables in sample data)

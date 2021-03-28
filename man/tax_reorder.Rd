@@ -11,6 +11,10 @@ tax_reorder(ps, tax_order, tree_warn = TRUE)
 
 \item{tax_order}{names or current numerical indices of taxa
 in desired order and same length as taxa_names(ps)}
+
+\item{tree_warn}{If phylogenetic tree is present in phyloseq phy_tree slot, taxa cannot be reordered.
+Default behaviour of tax_sort is to remove the phylogenetic tree and warn about this.
+tree_warn = FALSE will suppress the warning message, but still remove the tree!}
 }
 \value{
 phyloseq object (always without phy_tree)

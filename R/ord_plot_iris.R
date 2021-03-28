@@ -7,18 +7,21 @@
 #'
 #'
 #' @param data ps_extra list output of ord_calc
+#' @param tax_level taxonomic aggregation level (from rank_names(ps))
 #' @param ps phyloseq object containing untransformed counts if needed (must otherwise be identical to ps used to make data!)
 #' @param axes which 2 axes of ordination to use for ordering
-#' @param scaling ordination scaling option: "species" or "sites" scaled?
-#' @param tax_level taxonomic aggregation level (from rank_names(ps))
 #' @param n_taxa how many taxa to colour show distinct colours for (all other taxa grouped into "Other").
 #' @param taxon_renamer function to rename taxa in the legend
 #' @param palette colour palette
-#' @param keep_all_vars slows down processing but is required for any post-hoc plot customisation options
 #' @param anno_colour name of sample_data variable to use for colouring geom_segment annotation ring
 #' @param anno_colour_style list of further arguments passed to geom_segment e.g. size
 #' @param anno_binary name(s) of binary sample_data variable(s) (levels T/F or 1/0) to use for filtered geom_point annotation ring(s) (annotates at TRUE values)
 #' @param anno_binary_style list of further arguments passed to geom_point e.g. colour, size, y, etc.
+#' @param keep_all_vars slows down processing but is required for any post-hoc plot customisation options
+#' @param scaling
+#' Relevant for constrained ordinations: Type 2, or type 1 scaling. See \url{https://sites.google.com/site/mb3gustame/constrained-analyses/rda}
+#' Either "species" or "site" scores are scaled by eigenvalues, and the other set of scores is left unscaled (from ?vegan::scores.cca)
+
 #'
 #' @return ggplot
 #' @export
@@ -111,20 +114,19 @@
 #'   )
 #' ) +
 #'   theme(legend.text = element_text(size = 7))
-ord_plot_iris <- function(
-                          data,
+ord_plot_iris <- function(data,
+                          tax_level,
                           ps = NULL,
                           axes = 1:2,
-                          scaling = "species",
-                          tax_level,
                           n_taxa = 10,
                           taxon_renamer = function(x) identity(x),
                           palette = c("grey90", rev(distinct_palette(n_taxa))),
-                          keep_all_vars = FALSE,
                           anno_colour = NULL,
                           anno_colour_style = list(),
                           anno_binary = NULL,
-                          anno_binary_style = list()) {
+                          anno_binary_style = list(),
+                          keep_all_vars = FALSE,
+                          scaling = 2) {
   if (identical(ps, NULL)) {
     transf <- info_get(data)[["tax_transform"]]
     # check for mention of transformed taxonomic data in data$info$tax_transform

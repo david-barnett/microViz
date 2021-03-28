@@ -30,6 +30,5 @@ test_that("tt_add_topN_var helper works as expected", {
   )
   expect_snapshot(
     print(head(x = tt, 6), width = 80)
-    )
+  )
 })
-

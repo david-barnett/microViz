@@ -165,28 +165,28 @@
 #'   theme(axis.text.y = element_text(size = 5), legend.text = element_text(size = 6))
 #' # See https://patchwork.data-imaginist.com/index.html
 comp_barplot <- function(
-  ps,
-  tax_level,
-  n_taxa = 8,
-  tax_order = sum,
-  merge_other = TRUE,
-  taxon_renamer = function(x) identity(x),
-  sample_order = "aitchison",
-  order_with_all_taxa = FALSE,
-  label = "SAMPLE",
-  group_by = NA,
-  facet_by = NA,
-  bar_width = 1,
-  bar_outline_colour = "grey5",
-  bar_outline_width = 0.1,
-  palette =
-    c("lightgrey", rev(distinct_palette(n_taxa))),
-  tax_transform_for_ordering = "identity",
-  tax_transform_for_plot = "compositional",
-  seriate_method = "OLO_ward",
-  keep_all_vars = TRUE,
-  interactive = FALSE,
-  max_taxa = 10000) {
+                         ps,
+                         tax_level,
+                         n_taxa = 8,
+                         tax_order = sum,
+                         merge_other = TRUE,
+                         taxon_renamer = function(x) identity(x),
+                         sample_order = "aitchison",
+                         order_with_all_taxa = FALSE,
+                         label = "SAMPLE",
+                         group_by = NA,
+                         facet_by = NA,
+                         bar_width = 1,
+                         bar_outline_colour = "grey5",
+                         bar_outline_width = 0.1,
+                         palette =
+                           c("lightgrey", rev(distinct_palette(n_taxa))),
+                         tax_transform_for_ordering = "identity",
+                         tax_transform_for_plot = "compositional",
+                         seriate_method = "OLO_ward",
+                         keep_all_vars = TRUE,
+                         interactive = FALSE,
+                         max_taxa = 10000) {
   stopifnot(max_taxa > n_taxa)
 
   # check phyloseq for common problems (and fix or message about this)
@@ -217,7 +217,8 @@ comp_barplot <- function(
   # aggregate the phyloseq at a high maximum number of displayable taxa
   phyloseq::tax_table(ps) <-
     tt_add_topN_var(
-      phyloseq::tax_table(ps), N = max_taxa,
+      phyloseq::tax_table(ps),
+      N = max_taxa,
       other = "other", varname = "separate"
     )
   ps <- tax_agg(ps, rank = "separate", force = TRUE)[["ps"]]
@@ -266,8 +267,8 @@ comp_barplot <- function(
     }
     if (
       !samples_ordered_by_similarity &&
-      length(sample_order) == 1 &&
-      !identical(sample_order, "default")
+        length(sample_order) == 1 &&
+        !identical(sample_order, "default")
     ) {
       kept_vars <- c(union(kept_vars, sample_order))
     }
@@ -313,7 +314,7 @@ comp_barplot <- function(
     ) +
       ggplot2::xlab(NULL)
 
-    if (isTRUE(interactive)){
+    if (isTRUE(interactive)) {
       p <- p + ggiraph::geom_col_interactive(
         position = "stack", width = bar_width,
         colour = bar_outline_colour, size = bar_outline_width,
@@ -404,7 +405,7 @@ tt_add_topN_var <- function(tt, N, other = "other", varname = "top") {
   ranks <- phyloseq::rank_names(tt)
   # handle case of only rank being "unique"
   # (e.g. if started without tax_table)
-  if (identical(ranks, "unique")){
+  if (identical(ranks, "unique")) {
     tt_out <- cbind(top_taxons, tt)
   } else {
     tt_out <- cbind(

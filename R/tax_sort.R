@@ -199,6 +199,10 @@ tax_sort_by_otu <- function(ps, by, err, ...) {
 #' @param tax_order
 #' names or current numerical indices of taxa
 #' in desired order and same length as taxa_names(ps)
+#' @param tree_warn
+#' If phylogenetic tree is present in phyloseq phy_tree slot, taxa cannot be reordered.
+#' Default behaviour of tax_sort is to remove the phylogenetic tree and warn about this.
+#' tree_warn = FALSE will suppress the warning message, but still remove the tree!
 #'
 #' @return phyloseq object (always without phy_tree)
 #' @examples

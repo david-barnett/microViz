@@ -35,7 +35,7 @@ tax_agg allows you to pass NA or "unique" to the rank argument which will NOT ag
 It always adds a "unique" rank, which matches the tax_table row names (after any aggregation performed).
 
 You should NOT use the \code{top_N} argument yourself unless you know what you are doing.
-top_N provides a feature similar to the deprecated microbiome function aggregate_top_taxa
+top_N provides a feature inspired by the deprecated microbiome function aggregate_top_taxa
 which is primarily useful for decluttering compositional barplots.
 microViz comp_barplot (and ord_plot_iris) already run tax_agg with a top_N argument for you, so you should not.
 The tax_table produced when using top_N is otherwise INVALID FOR MOST OTHER ANALYSES.

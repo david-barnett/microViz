@@ -6,38 +6,34 @@
 \usage{
 ord_plot_iris(
   data,
+  tax_level,
   ps = NULL,
   axes = 1:2,
-  scaling = "species",
-  tax_level,
   n_taxa = 10,
   taxon_renamer = function(x) identity(x),
   palette = c("grey90", rev(distinct_palette(n_taxa))),
-  keep_all_vars = FALSE,
   anno_colour = NULL,
   anno_colour_style = list(),
   anno_binary = NULL,
-  anno_binary_style = list()
+  anno_binary_style = list(),
+  keep_all_vars = FALSE,
+  scaling = 2
 )
 }
 \arguments{
 \item{data}{ps_extra list output of ord_calc}
 
+\item{tax_level}{taxonomic aggregation level (from rank_names(ps))}
+
 \item{ps}{phyloseq object containing untransformed counts if needed (must otherwise be identical to ps used to make data!)}
 
 \item{axes}{which 2 axes of ordination to use for ordering}
-
-\item{scaling}{ordination scaling option: "species" or "sites" scaled?}
-
-\item{tax_level}{taxonomic aggregation level (from rank_names(ps))}
 
 \item{n_taxa}{how many taxa to colour show distinct colours for (all other taxa grouped into "Other").}
 
 \item{taxon_renamer}{function to rename taxa in the legend}
 
 \item{palette}{colour palette}
-
-\item{keep_all_vars}{slows down processing but is required for any post-hoc plot customisation options}
 
 \item{anno_colour}{name of sample_data variable to use for colouring geom_segment annotation ring}
 
@@ -46,6 +42,11 @@ ord_plot_iris(
 \item{anno_binary}{name(s) of binary sample_data variable(s) (levels T/F or 1/0) to use for filtered geom_point annotation ring(s) (annotates at TRUE values)}
 
 \item{anno_binary_style}{list of further arguments passed to geom_point e.g. colour, size, y, etc.}
+
+\item{keep_all_vars}{slows down processing but is required for any post-hoc plot customisation options}
+
+\item{scaling}{Relevant for constrained ordinations: Type 2, or type 1 scaling. See \url{https://sites.google.com/site/mb3gustame/constrained-analyses/rda}
+Either "species" or "site" scores are scaled by eigenvalues, and the other set of scores is left unscaled (from ?vegan::scores.cca)}
 }
 \value{
 ggplot

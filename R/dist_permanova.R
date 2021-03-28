@@ -42,6 +42,7 @@
 #'     n_processes = 1,
 #'     n_perms = 99 # only 99 perms used in examples for speed (use 9999+!)
 #'   )
+#' PERM
 #' str(PERM, max.level = 1)
 #'
 #' # try permanova with interaction terms
@@ -103,7 +104,7 @@ dist_permanova <- function(data,
     strsplit(split = "[+*|:]", perl = TRUE) %>%
     unlist() %>%
     # remove trailing and leading whitespaces
-    gsub(pattern = "^\\s+|\\s+$", replacement = "", .) %>%
+    gsub(pattern = "^\\s+|\\s+$", replacement = "", .data) %>%
     unique()
 
   if (any(!split_vars %in% phyloseq::sample_variables(ps))) {

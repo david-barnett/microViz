@@ -70,6 +70,7 @@ PERM <- testDist \%>\%
     n_processes = 1,
     n_perms = 99 # only 99 perms used in examples for speed (use 9999+!)
   )
+PERM
 str(PERM, max.level = 1)
 
 # try permanova with interaction terms

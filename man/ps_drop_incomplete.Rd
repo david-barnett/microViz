@@ -25,7 +25,7 @@ Check phyloseq object sample data for missing values (NAs)
 }
 }
 \details{
-This is a wrapper for \code{\link{stats::complete.cases()}} function.
+This is a wrapper for \code{\link[stats:complete.cases]{stats::complete.cases}} function.
 }
 \examples{
 library(phyloseq)

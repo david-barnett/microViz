@@ -9,7 +9,7 @@
 #' It always adds a "unique" rank, which matches the tax_table row names (after any aggregation performed).
 #'
 #' You should NOT use the `top_N` argument yourself unless you know what you are doing.
-#' top_N provides a feature similar to the deprecated microbiome function aggregate_top_taxa
+#' top_N provides a feature inspired by the deprecated microbiome function aggregate_top_taxa
 #' which is primarily useful for decluttering compositional barplots.
 #' microViz comp_barplot (and ord_plot_iris) already run tax_agg with a top_N argument for you, so you should not.
 #' The tax_table produced when using top_N is otherwise INVALID FOR MOST OTHER ANALYSES.
@@ -138,11 +138,11 @@ tax_agg <- function(ps,
         stop("Taxa not unique at rank: ", rank, unknowns_message)
       }
     } else {
+      # FORCED aggregation
       tt_distinct <- dplyr::distinct(
         .data = tt_distinct, .keep_all = TRUE, # keeps first rows encountered
         dplyr::across(dplyr::all_of(rank))
-      ) %>%
-        dplyr::select(dplyr::all_of(c(rank, ".taxID.")))
+      )
     }
 
     # get otu table with taxa as rows (like tt)
