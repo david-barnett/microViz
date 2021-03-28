@@ -5,7 +5,8 @@
 #' You can style the ordination plot points using the options on the left panel.
 #'
 #' @details
-#' # If you get an error like the one below:
+#' If you get an error like the one below:
+#'
 #' "ids don't have the same length than str (most often, it occurs because of clipping)"
 #'
 #' 1. make your points smaller
@@ -14,13 +15,18 @@
 #'
 #' @param data ps_extra list output of ord_calc
 #' @param sample_id name of id variable for ordering
-#' @param ps phyloseq object containing untransformed counts if needed (must otherwise be identical to ps used to make data!)
-#' @param seriate_method seriation method to order phyloseq samples by similarity
-#' @param tax_transform_for_ordering transform tax before ordering with ps_seriate
-#' @param ord_tooltip what to show on hovering over ordination point, NULL defaults to sample name
+#' @param ps phyloseq object containing untransformed counts if needed
+#' (must otherwise be identical to ps used to make data!)
+#' @param seriate_method
+#' seriation method to order phyloseq samples by similarity
+#' @param tax_transform_for_ordering
+#' transform tax before ordering with ps_seriate
+#' @param ord_tooltip
+#' what to show on hovering over ordination point, NULL defaults to sample name
+#' @param app_options passed to shinyApp() options argument
 #' @param ... additional arguments passed to ord_plot
 #'
-#' @return nothing, opens html viewer
+#' @return nothing, opens default browser
 #' @export
 #'
 #' @examples
@@ -89,15 +95,16 @@ ord_explore <- function(data,
                         seriate_method = "OLO_ward", # ordering samples
                         tax_transform_for_ordering = "identity", # samples
                         ord_tooltip = NULL, # defaults to SAMPLE
+                        app_options = list(launch.browser = TRUE), # shinyApp()
                         ...) {
   # SETUP -------------------------------------------------------------------
 
   # create a SAMPLE id variable
   data$ps <- ps_mutate(data$ps, SAMPLE = phyloseq::sample_names(data$ps))
-  if (identical(ps, NULL)){
+  if (identical(ps, NULL)) {
     ps <- ps_get(data)
   } else {
-    if (inherits(ps, "ps_extra"))  ps <- ps_get(ps)
+    if (inherits(ps, "ps_extra")) ps <- ps_get(ps)
     ps <- ps_mutate(ps, SAMPLE = phyloseq::sample_names(ps))
   }
 
@@ -117,12 +124,14 @@ ord_explore <- function(data,
     colnames(samdat[, sapply(samdat, function(x) !is.numeric(x))])
 
   # reorder samples based on hierarchical clustering
-  message("- ordering samples")
+  message("Ordering samples with ", seriate_method, "...")
   ps_ordered <- ps_seriate(
     ps,
     dist = dist, method = seriate_method,
     tax_transform = tax_transform_for_ordering
   )
+  message("Finished ordering.\n")
+  message("To stop the app: Click red stop button or hit Esc in the console")
 
   # APP ---------------------------------------------------------------------
 
@@ -134,14 +143,11 @@ ord_explore <- function(data,
         shiny::tags$style(
           shiny::HTML(
             "body {
-              background-color: 'grey90';
               line-height: 1.2;
             }
+            /* allow dropdown menus to show in split layout input blocks */
             .shiny-split-layout > div {
               overflow: visible;
-            }
-            .shiny-input-container {
-              background-color: 'grey85';
             }
             .selectize-input, .irs, .form-control {
               font-size: 12px;
@@ -221,9 +227,18 @@ ord_explore <- function(data,
           ),
           shiny::fluidRow(
             shiny::h4("Composition options"),
+            shiny::splitLayout(
+              cellWidths = c("30%", "70%"),
+              shiny::helpText("Labels:"),
+              shiny::selectInput(
+                inputId = "comp_label", label = NULL,
+                choices = union("SAMPLE", phyloseq::sample_variables(ps)),
+                selected = "SAMPLE"
+              )
+            ),
             # rank
             shiny::splitLayout(
-              cellWidths = c('30%', '70%'),
+              cellWidths = c("30%", "70%"),
               shiny::helpText("Rank:"),
               shiny::selectInput(
                 inputId = "tax_level_comp", label = NULL,
@@ -235,7 +250,7 @@ ord_explore <- function(data,
               )
             ),
             shiny::splitLayout(
-              cellWidths = c('30%', '70%'),
+              cellWidths = c("30%", "70%"),
               shiny::helpText("Order:"),
               shiny::selectInput(
                 inputId = "tax_order", label = NULL,
@@ -244,22 +259,30 @@ ord_explore <- function(data,
               )
             ),
             shiny::splitLayout(
-              cellWidths = c('30%', '70%'),
-              shiny::helpText("Labels:"),
-              shiny::selectInput(
-                inputId = "comp_label", label = NULL,
-                choices = union("SAMPLE", phyloseq::sample_variables(ps)),
-                selected = "SAMPLE"
+              cellWidths = c("45%", "55%"),
+              shiny::helpText("N Colors:"),
+              shiny::sliderInput(
+                inputId = "ntaxa", label = NULL,
+                min = 1, max = 39, value = 9, step = 1,
+                round = TRUE, ticks = FALSE
               )
             ),
-            shiny::sliderInput(
-              inputId = "ntaxa", label = "N taxa",
-              min = 1, max = 19, value = 9, ticks = FALSE,
-              step = 1, round = TRUE
+            shiny::splitLayout(
+              cellWidths = c("45%", "55%"),
+              shiny::helpText("N Distinct:"),
+              shiny::sliderInput(
+                inputId = "taxmax", label = NULL,
+                min = 1, max = 500, value = 200, step = 1,
+                round = TRUE, ticks = FALSE
+              )
             ),
             shiny::checkboxInput(
               inputId = "merge_other", label = "Merge other?",
               value = TRUE
+            ),
+            shiny::checkboxInput(
+              inputId = "interactive", label = "Interactive bars?",
+              value = FALSE
             )
           )
         ),
@@ -269,13 +292,29 @@ ord_explore <- function(data,
             shiny::column(
               width = 11,
               # interactive ordination plot
-              ggiraph::girafeOutput(outputId = "ord_plot", height = "4.5in", width = "6in")
+              ggiraph::girafeOutput(
+                outputId = "ord_plot", height = "4.5in", width = "6in"
+              )
             )
           ),
           shiny::fluidRow(
             shiny::column(
-              width = 11,
-              shiny::plotOutput(height = "4.5in", outputId = "compositions")
+              width = 11, align = "center",
+              shiny::tabsetPanel(
+                selected = "ggplot", type = "hidden", id = "tabs",
+                shiny::tabPanel(
+                  title = "ggplot",
+                  shiny::plotOutput(
+                    height = "5in", width = "6in", outputId = "comps_gg"
+                  )
+                ),
+                shiny::tabPanel(
+                  title = "girafe",
+                  ggiraph::girafeOutput(
+                    outputId = "comps_girafe", height = "5in", width = "6in"
+                  )
+                )
+              )
             )
           )
         )
@@ -314,7 +353,7 @@ ord_explore <- function(data,
         interactive = TRUE,
         data_id = input$id_var,
         tooltip =
-          c(ord_tooltip, "SAMPLE")[[1]], # default ord_tooltip=NULL -> SAMPLE
+          c(ord_tooltip, "SAMPLE")[[1]], # default ord_tooltip=NULL -> 'SAMPLE'
         ...
       ) +
         ggplot2::scale_shape_discrete(na.translate = TRUE, na.value = 1)
@@ -337,25 +376,52 @@ ord_explore <- function(data,
 
     # composition plot --------------------------------------------------------
 
-    # set colour palette (depends on tax level of ord_plot)
-    palet <- shiny::reactive({
-      shiny::showNotification(" - Setting taxa colour palette", duration = 2)
-      ord_explore_palet_fun(
-        ps = ps, tax_level = input$tax_level_comp,
-        top_by = get(input$tax_order)
-      )
-    })
+    # message about lag with too many distinct taxa (and set maxtax = 50)
+    shiny::observeEvent(
+      eventExpr = {
+        input$interactive
+        input$merge_other
+      },
+      handlerExpr = {
+        if (isTRUE(input$interactive)) {
+          shiny::updateTabsetPanel(inputId = "tabs", selected = "girafe")
+          if (isFALSE(input$merge_other)) {
+            shiny::updateSliderInput(inputId = "taxmax", value = 40)
+            shiny::showNotification(
+              "ALERT: Max Distinct taxa reduced to 40 to avoid freezing!",
+              duration = 10, closeButton = TRUE, type = "warning"
+            )
+            shiny::showNotification(
+              "Interactive bars lag if too many taxa and/or samples shown!",
+              duration = 20, closeButton = TRUE, type = "warning"
+            )
+          }
+        } else {
+          shiny::updateTabsetPanel(inputId = "tabs", selected = "ggplot")
+        }
+      }
+    )
+
+    # order taxa using whole population
     ordered_taxa <- shiny::reactive({
       shiny::showNotification(" - Sorting taxa", duration = 2)
       tax_top(
-        data = ps, n = NA,
+        data = ps_ordered, n = NA,
         by = get(input$tax_order),
         rank = input$tax_level_comp
       )
     })
+    # set colour palette (depends on tax level of composition plot)
+    palet <- shiny::reactive({
+      shiny::showNotification(" - Setting taxa colour palette", duration = 2)
+      ord_explore_palet_fun(
+        ps = ps_ordered, tax_level = input$tax_level_comp,
+        top_by = get(input$tax_order)
+      )
+    })
 
     # make plot
-    output$compositions <- shiny::renderPlot({
+    comp_plot <- shiny::reactive({
       # get ggiraph interactivity
       selected_samples <- input$ord_plot_selected
       # logical selection of kept samples
@@ -366,6 +432,7 @@ ord_explore <- function(data,
         # select samples
         ps_sel <-
           phyloseq::prune_samples(x = ps_ordered, samples = sample_kept)
+
         # plot composition of selected samples
         p_comp <- ps_sel %>%
           comp_barplot(
@@ -376,7 +443,9 @@ ord_explore <- function(data,
             bar_outline_colour = "black",
             sample_order = "default",
             label = input$comp_label,
-            merge_other = input$merge_other
+            merge_other = input$merge_other,
+            interactive = TRUE,
+            max_taxa = input$taxmax
           )
 
         p_comp <- p_comp +
@@ -385,19 +454,47 @@ ord_explore <- function(data,
       } else {
         p_comp <- ggplot2::ggplot() +
           ggplot2::annotate(
-            geom = "text", x = 0.1, y = 0.5,
+            geom = "text", x = 0.1, y = 0.5, size = 3,
             label = paste0(
               "Select 2 or more samples on the ordination plot above\n",
-              "either by clicking or using the lasso selection tool 1 or more times"
+              "either by clicking or by using the lasso selection tool"
             )
           ) +
           ggplot2::theme_void()
       }
-      return(p_comp)
+      p_comp
+    })
+
+    # static version comps
+    output$comps_gg <- shiny::renderPlot({
+      comp_plot() + ggplot2::theme(
+        legend.text = ggplot2::element_text(size = 9)
+      )
+    })
+
+    # girafe version
+    output$comps_girafe <- ggiraph::renderggiraph({
+      ggiraph::girafe(
+        ggobj = comp_plot() +
+          # TODO work out how to match static/interactive sizes properly
+          ggplot2::theme(
+            text = ggplot2::element_text(size = 8)
+          ),
+        width_svg = 6, height_svg = 5, pointsize = 8,
+        options = list(
+          # ggiraph::opts_sizing(rescale = FALSE),
+          ggiraph::opts_zoom(min = 0.5, max = 3),
+          ggiraph::opts_hover(css = "fill:orange;stroke:gray;"),
+          ggiraph::opts_hover_inv("opacity:0.2"),
+          ggiraph::opts_selection(
+            type = "single", css = "fill:orange;stroke:gray;"
+          )
+        )
+      )
     })
   }
   # Run the application
-  shiny::shinyApp(ui = ui, server = server)
+  shiny::shinyApp(ui = ui, server = server, options = app_options)
 }
 
 

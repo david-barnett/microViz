@@ -23,7 +23,9 @@ comp_barplot(
   tax_transform_for_ordering = "identity",
   tax_transform_for_plot = "compositional",
   seriate_method = "OLO_ward",
-  keep_all_vars = TRUE
+  keep_all_vars = TRUE,
+  interactive = FALSE,
+  max_taxa = 10000
 )
 }
 \arguments{
@@ -80,6 +82,12 @@ e.g. "identity", if you have truly quantitative microbiome profiling data}
 
 \item{keep_all_vars}{FALSE may speed up internal melting with ps_melt for large phyloseq objects
 but TRUE is required for some post-hoc plot customisation}
+
+\item{interactive}{creates plot suitable for use with ggiraph}
+
+\item{max_taxa}{maximum distinct taxa groups to show
+(only really useful for limiting complexity of interactive plots
+e.g. within ord_explore)}
 }
 \value{
 ggplot or list of harmonised ggplots
@@ -87,6 +95,8 @@ ggplot or list of harmonised ggplots
 \description{
 Stacked barplots showing composition of phyloseq samples for a specified number of coloured taxa.
 Normally your phyloseq object should contain count data, as by default \code{comp_barplot()} performs the "compositional" taxa transformation for you, and requires count input for some sample_order methods!
+}
+\details{
 \itemize{
 \item sample_order: Either specify a list of sample names to order manually, or the bars/samples can/will be sorted by similarity, according to a specified distance measure (default aitchison),
 \item seriate_method specifies a seriation/ordering algorithm (default Ward hierarchical clustering with optimal leaf ordering, see seriation::list_seriation_methods())
@@ -97,8 +107,7 @@ Normally your phyloseq object should contain count data, as by default \code{com
 \item merge_other: controls whether bar outlines can be drawn around individual (lower abundance) taxa that are grouped in "other" category. If you want to see the diversity of taxa in "other" use merge_taxa = FALSE, or use TRUE if you prefer the cleaner merged look
 \item palette: Default colouring is consistent across multiple plots if created with the group_by argument, and the defaults scheme retains the colouring of the most abundant taxa irrespective of n_taxa
 }
-}
-\details{
+
 
 }
 \examples{

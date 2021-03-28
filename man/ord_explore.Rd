@@ -11,6 +11,7 @@ ord_explore(
   seriate_method = "OLO_ward",
   tax_transform_for_ordering = "identity",
   ord_tooltip = NULL,
+  app_options = list(launch.browser = TRUE),
   ...
 )
 }
@@ -19,7 +20,8 @@ ord_explore(
 
 \item{sample_id}{name of id variable for ordering}
 
-\item{ps}{phyloseq object containing untransformed counts if needed (must otherwise be identical to ps used to make data!)}
+\item{ps}{phyloseq object containing untransformed counts if needed
+(must otherwise be identical to ps used to make data!)}
 
 \item{seriate_method}{seriation method to order phyloseq samples by similarity}
 
@@ -27,23 +29,26 @@ ord_explore(
 
 \item{ord_tooltip}{what to show on hovering over ordination point, NULL defaults to sample name}
 
+\item{app_options}{passed to shinyApp() options argument}
+
 \item{...}{additional arguments passed to ord_plot}
 }
 \value{
-nothing, opens html viewer
+nothing, opens default browser
 }
 \description{
 Once running: click and drag to draw box over 2 or more samples to view their compositions.
 You can style the ordination plot points using the options on the left panel.
 }
-\section{If you get an error like the one below:}{
+\details{
+If you get an error like the one below:
+
 "ids don't have the same length than str (most often, it occurs because of clipping)"
 \enumerate{
 \item make your points smaller
 \item set point shape to fixed, or to a variable with fewer categories
 }
 }
-
 \examples{
 library(phyloseq)
 library(dplyr)

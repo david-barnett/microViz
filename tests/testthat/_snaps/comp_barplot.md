@@ -1,0 +1,24 @@
+# tt_add_topN_var helper works as expected
+
+    Code
+      print(head(x = tt, 6), width = 80)
+    Output
+                                   Phylum            Family           
+      Actinomycetaceae             "Actinobacteria"  "Actinobacteria" 
+      Aerococcus                   "Firmicutes"      "Bacilli"        
+      Aeromonas                    "Proteobacteria"  "Proteobacteria" 
+      Akkermansia                  "Verrucomicrobia" "Verrucomicrobia"
+      Alcaligenes faecalis et rel. "Proteobacteria"  "Proteobacteria" 
+      Allistipes et rel.           "Bacteroidetes"   "Bacteroidetes"  
+                                   Genus                          test              
+      Actinomycetaceae             "Actinomycetaceae"             "Actinomycetaceae"
+      Aerococcus                   "Aerococcus"                   "Aerococcus"      
+      Aeromonas                    "Aeromonas"                    "Aeromonas"       
+      Akkermansia                  "Akkermansia"                  "Akkermansia"     
+      Alcaligenes faecalis et rel. "Alcaligenes faecalis et rel." "things"          
+      Allistipes et rel.           "Allistipes et rel."           "things"          
+      attr(,"class")
+      [1] "taxonomyTable"
+      attr(,"class")attr(,"package")
+      [1] "phyloseq"
+

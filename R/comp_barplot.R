@@ -4,6 +4,7 @@
 #' Stacked barplots showing composition of phyloseq samples for a specified number of coloured taxa.
 #' Normally your phyloseq object should contain count data, as by default `comp_barplot()` performs the "compositional" taxa transformation for you, and requires count input for some sample_order methods!
 #'
+#' @details
 #' - sample_order: Either specify a list of sample names to order manually, or the bars/samples can/will be sorted by similarity, according to a specified distance measure (default aitchison),
 #' - seriate_method specifies a seriation/ordering algorithm (default Ward hierarchical clustering with optimal leaf ordering, see seriation::list_seriation_methods())
 #' - group_by: You can group the samples on distinct plots by levels of a variable in the phyloseq object. The list of ggplots produced can be arranged flexibly with the patchwork package functions. If you want to group by several variables you can create an interaction variable with interaction(var1, var2) in the phyloseq sample_data BEFORE using comp_barplot.
@@ -60,6 +61,10 @@
 #' @param keep_all_vars
 #' FALSE may speed up internal melting with ps_melt for large phyloseq objects
 #' but TRUE is required for some post-hoc plot customisation
+#' @param interactive creates plot suitable for use with ggiraph
+#' @param max_taxa maximum distinct taxa groups to show
+#' (only really useful for limiting complexity of interactive plots
+#' e.g. within ord_explore)
 #'
 #' @return ggplot or list of harmonised ggplots
 #' @export
@@ -160,26 +165,29 @@
 #'   theme(axis.text.y = element_text(size = 5), legend.text = element_text(size = 6))
 #' # See https://patchwork.data-imaginist.com/index.html
 comp_barplot <- function(
-                         ps,
-                         tax_level,
-                         n_taxa = 8,
-                         tax_order = sum,
-                         merge_other = TRUE,
-                         taxon_renamer = function(x) identity(x),
-                         sample_order = "aitchison",
-                         order_with_all_taxa = FALSE,
-                         label = "SAMPLE",
-                         group_by = NA,
-                         facet_by = NA,
-                         bar_width = 1,
-                         bar_outline_colour = "grey5",
-                         bar_outline_width = 0.1,
-                         palette =
-                           c("lightgrey", rev(distinct_palette(n_taxa))),
-                         tax_transform_for_ordering = "identity",
-                         tax_transform_for_plot = "compositional",
-                         seriate_method = "OLO_ward",
-                         keep_all_vars = TRUE) {
+  ps,
+  tax_level,
+  n_taxa = 8,
+  tax_order = sum,
+  merge_other = TRUE,
+  taxon_renamer = function(x) identity(x),
+  sample_order = "aitchison",
+  order_with_all_taxa = FALSE,
+  label = "SAMPLE",
+  group_by = NA,
+  facet_by = NA,
+  bar_width = 1,
+  bar_outline_colour = "grey5",
+  bar_outline_width = 0.1,
+  palette =
+    c("lightgrey", rev(distinct_palette(n_taxa))),
+  tax_transform_for_ordering = "identity",
+  tax_transform_for_plot = "compositional",
+  seriate_method = "OLO_ward",
+  keep_all_vars = TRUE,
+  interactive = FALSE,
+  max_taxa = 10000) {
+  stopifnot(max_taxa > n_taxa)
 
   # check phyloseq for common problems (and fix or message about this)
   ps <- phyloseq_validate(ps, remove_undetected = FALSE, verbose = TRUE)
@@ -206,6 +214,14 @@ comp_barplot <- function(
   if (isTRUE(merge_other)) {
     ps <- tax_agg(ps, rank = "top", force = TRUE)[["ps"]]
   }
+  # aggregate the phyloseq at a high maximum number of displayable taxa
+  phyloseq::tax_table(ps) <-
+    tt_add_topN_var(
+      phyloseq::tax_table(ps), N = max_taxa,
+      other = "other", varname = "separate"
+    )
+  ps <- tax_agg(ps, rank = "separate", force = TRUE)[["ps"]]
+
   if (isFALSE(order_with_all_taxa)) ps_for_order <- ps
 
   # set taxa order
@@ -250,8 +266,8 @@ comp_barplot <- function(
     }
     if (
       !samples_ordered_by_similarity &&
-        length(sample_order) == 1 &&
-        !identical(sample_order, "default")
+      length(sample_order) == 1 &&
+      !identical(sample_order, "default")
     ) {
       kept_vars <- c(union(kept_vars, sample_order))
     }
@@ -296,10 +312,22 @@ comp_barplot <- function(
       )
     ) +
       ggplot2::xlab(NULL)
-    p <- p + ggplot2::geom_col(
-      position = "stack", width = bar_width,
-      colour = bar_outline_colour, size = bar_outline_width
-    )
+
+    if (isTRUE(interactive)){
+      p <- p + ggiraph::geom_col_interactive(
+        position = "stack", width = bar_width,
+        colour = bar_outline_colour, size = bar_outline_width,
+        ggplot2::aes_string(
+          data_id = "unique",
+          tooltip = "unique"
+        )
+      )
+    } else {
+      p <- p + ggplot2::geom_col(
+        position = "stack", width = bar_width,
+        colour = bar_outline_colour, size = bar_outline_width
+      )
+    }
     # theme plot
     p <- p +
       ggplot2::theme(
@@ -365,21 +393,24 @@ comp_barplot <- function(
 #' taxtab <- phyloseq::tax_table(dietswap)
 #' tt_add_topN_var(taxtab, N = 5, other = "whatever")
 #' @noRd
-tt_add_topN_var <- function(tt, N, other = "other") {
+tt_add_topN_var <- function(tt, N, other = "other", varname = "top") {
+  max_tax <- min(N, phyloseq::ntaxa(tt)) # in case N > number of taxa at rank
   top_taxons <- c(
-    phyloseq::taxa_names(tt)[seq_len(N)],
-    rep_len(other, length.out = phyloseq::ntaxa(tt) - N)
+    phyloseq::taxa_names(tt)[seq_len(max_tax)],
+    rep_len(other, length.out = phyloseq::ntaxa(tt) - max_tax)
   )
+  top_taxons <- matrix(top_taxons, ncol = 1)
+  colnames(top_taxons) <- varname
   ranks <- phyloseq::rank_names(tt)
   # handle case of only rank being "unique"
   # (e.g. if started without tax_table)
   if (identical(ranks, "unique")){
-    tt_out <- cbind(top = top_taxons, tt)
+    tt_out <- cbind(top_taxons, tt)
   } else {
     tt_out <- cbind(
       # new tt except unique col
       tt[, phyloseq::rank_names(tt) != "unique"],
-      top = top_taxons # new top col
+      top_taxons # new top col
     )
     if ("unique" %in% colnames(tt)) {
       # add unique col back on at end if present
