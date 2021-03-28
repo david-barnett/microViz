@@ -1,12 +1,21 @@
 #' Set order of samples in phyloseq object
 #'
-#' Ordering of samples is a phyloseq is controlled from the otu_table slot!
+#' @description
+#' Manually set order of samples by specifying samples names in desired order.
+#'
+#' @details
+#' Ordering of samples in a phyloseq is controlled from the otu_table slot!
 #'
 #' @param ps phyloseq
 #' @param sample_order names or current numerical indices of samples in desired order
 #'
 #' @return phyloseq
 #' @export
+#'
+#' @seealso \code{\link{ps_arrange}} for arranging samples by sample_data variables (or otu_table)
+#' @seealso \code{\link{ps_seriate}} for arranging samples by microbiome similarity
+#' @seealso \code{\link{ps_filter}} for keeping only some samples, based on sample_data
+#'
 #' @examples
 #' library(phyloseq)
 #' library(microbiome)

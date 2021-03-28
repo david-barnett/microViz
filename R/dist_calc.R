@@ -1,11 +1,24 @@
 #' Calculate distances between pairs of samples in phyloseq object
 #'
-#' Computes various unifrac distances, aitchison distance or any distance from vegan::vegdist().
-#' For use with ps_extra output of tax_transform (or tax_agg).
-#' Returns ps_extra object containing phyloseq and name of distance in addition to the distance matrix itself.
-#' Resulting object intended to be piped into ord_calc or permanova functions.
+#' @description
+#' Can compute various sample-sample distances using the microbiota composition of your samples:
+#'
+#'  - bray curtis ('bray') or any other ecological distance from phyloseq::distance() / vegan::vegdist()
+#'  - unifrac distances (using the GUniFrac package)
+#'      - generalised: 'gunifrac' (optionally set weighting alpha in gunifrac alpha)
+#'      - unweighted: 'unifrac'
+#'      - weighted: 'wunifrac'
+#'      - variance adjusted weighted: 'va-wunifrac'
+#'  - aitchison distance (euclidean distance after centered log ratio transform clr, see details)
+#'  - euclidean distance
+#'
+#' Use dist_calc with ps_extra output of tax_transform (or tax_agg).
+#' It returns a ps_extra object containing the phyloseq and the name of the distance used
+#' in addition to the distance matrix itself.
+#' The resulting object is intended to be piped into ord_calc or dist_permanova functions.
 #' Alternatively you can directly access the distance matrix with dist_get().
 #'
+#' @details
 #' Aitchison distance note: You should EITHER:
 #' 1. skip the dist_calc function and call ord_calc(method = "PCA") directly on an object with taxa transformed with tax_transform(transformation = "clr")
 #' 2. pass an object with untransformed (or 'identity' transformed) taxa to the data argument of dist_calc() and specify dist = "aitchison".
@@ -14,13 +27,19 @@
 #' If the distance matrix is required for permanova, users require option 2.
 #'
 #'
-#' @param data ps_extra object output from tax_agg() or a phyloseq object
+#' @param data ps_extra object output from tax_transform()
 #' @param dist name of distance to calculate between pairs of samples
 #' @param gunifrac_alpha setting alpha value only relevant if gunifrac distance used
-#' @param ... optional distance-specific named args passed to phyloseq::distance()
+#' @param ... optional distance-specific named arguments passed to phyloseq::distance()
 #'
 #' @return list with distance matrix, phyloseq object, and name of distance used
 #' @export
+#'
+#' @seealso \code{\link{tax_transform}} for the function to use before dist_calc
+#' @seealso \code{\link{ord_calc}}
+#' @seealso \code{\link{ord_plot}}
+#' @seealso \code{\link{dist_permanova}}
+#' @seealso \code{phyloseq::\link[phyloseq:distance]{distance}}
 #'
 #' @examples
 #' # bray curtis distance on genera-level features

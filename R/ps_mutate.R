@@ -1,7 +1,7 @@
-#' Mutate sample data in phyloseq object
+#' Modify or compute new sample_data in phyloseq object
 #'
-#' Wrapper for dplyr::mutate. Use mutate syntax with all the non-standard evaluation.
 #' Add or compute new phyloseq sample_data variables.
+#' Use dplyr::mutate() syntax.
 #'
 #' @param ps phyloseq object with sample data
 #' @param ... passed straight to dplyr::mutate (see examples and dplyr::mutate help)
@@ -9,6 +9,8 @@
 #'
 #' @return phyloseq object with modified sample_data
 #' @export
+#'
+#' @seealso \code{\link[dplyr]{mutate}}
 #'
 #' @examples
 #' library(phyloseq)

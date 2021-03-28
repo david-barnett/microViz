@@ -27,14 +27,14 @@ tax_select(
 \item{deselect}{if TRUE, the matching taxa will be REMOVED instead!}
 }
 \value{
-tax-filtered phyloseq object
+phyloseq object with fewer taxa
 }
 \description{
-Convenient name-based taxa selection/filtering of phyloseq object, including approximate name matching
+Convenient name-based taxa selection/filtering of phyloseq object, including approximate name matching.
+Takes a phyloseq with tax table and a (partial) taxonomic name, or a list/vector of taxonomic names (full or partial matches).
 }
 \details{
-Takes a phyloseq with tax table and a list/vector of taxonomic names (full or partial matches).
-It will also search the otu names/rownames, BUT only for perfect matches.
+tax_select will also search the otu names/rownames, BUT only for perfect matches.
 }
 \examples{
 # Get example phyloseq object data
@@ -56,4 +56,9 @@ identical(one, two) # TRUE
 pSeq \%>\% tax_select(tax_list = "Bif", strict_matches = FALSE, deselect = TRUE)
 # Incorrect example
 # pSeq \%>\% tax_select(tax_list = "Bif", strict_matches = TRUE) # fails
+}
+\seealso{
+\code{\link{ps_select}} for selecting variables in phyloseq sample_data
+
+\code{\link{agrep}} for the function that powers the approximate matching in tax_select
 }

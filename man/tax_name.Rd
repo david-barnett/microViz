@@ -19,22 +19,28 @@ tax_name(
 
 \item{rank}{name of taxonomic rank from which to use classifications in new names}
 
-\item{pad_number}{should unique numbers have zeros added to the front (e.g. 001, 002) to be made the same number of characters?}
+\item{pad_number}{should unique numbers have zeros added to the front
+(e.g. 001, 002) to be made the same number of characters?}
 
-\item{sep}{character to separate the unique number and any taxonomic classification info (relevant if rank given)}
+\item{sep}{character to separate the unique number and any taxonomic classification
+info (relevant if rank given)}
 }
 \value{
 phyloseq object
 }
 \description{
-Don't confuse this with the phyloseq function taxa_names().
-If your current taxa_names aren't what you want (e.g. they are long DNA sequences), this function will help you set sensible names.
+If your current taxa_names aren't what you want (e.g. they are long DNA sequences),
+this function will help you set sensible unique names.
+
 It combines:
 \itemize{
 \item a prefix like tax, asv, or otu (pick an appropriate prefix or set your own)
 \item a unique (sequential) number
 \item classification information from a chosen taxonomic rank (optional)
 }
+}
+\details{
+Don't confuse this with the phyloseq function taxa_names().
 }
 \examples{
 library(phyloseq)
@@ -66,4 +72,7 @@ tax_name(ps, prefix = "whateveryoulike") \%>\%
 tax_name(ps, rank = "Genus", sep = "-") \%>\%
   taxa_names() \%>\%
   head()
+}
+\seealso{
+\code{phyloseq::\link[phyloseq]{taxa_names}} for accessing and manually setting names
 }

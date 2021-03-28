@@ -2,14 +2,14 @@
 % Please edit documentation in R/tax_prepend_ranks.R
 \name{tax_prepend_ranks}
 \alias{tax_prepend_ranks}
-\title{Add rank prefixes to tax table values}
+\title{Add rank prefixes to phyloseq tax_table values}
 \usage{
 tax_prepend_ranks(ps, sep = ": ", nchar = 1)
 }
 \arguments{
 \item{ps}{phyloseq object}
 
-\item{sep}{for tax_prepend_ranks (what to paste in between rank initial and taxon name)}
+\item{sep}{characters to paste in between rank initial and taxon name}
 
 \item{nchar}{number of characters to use from start of rank_names}
 }
@@ -17,7 +17,8 @@ tax_prepend_ranks(ps, sep = ": ", nchar = 1)
 phyloseq
 }
 \description{
-Prepend the start of rank names to each taxon at each rank (useful particularly in case of duplicated taxa names across ranks, e.g. dietswap dataset)
+Prepend the start of rank names to each taxon at each rank
+(useful particularly in case of duplicated taxa names across ranks, e.g. dietswap dataset)
 }
 \examples{
 library(dplyr)
@@ -28,4 +29,7 @@ dietswap \%>\%
   tax_prepend_ranks() \%>\%
   tax_table() \%>\%
   head()
+}
+\seealso{
+\code{\link{tax_fill_unknowns}} for fixing other tax_table problems
 }

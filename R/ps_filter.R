@@ -1,14 +1,21 @@
 #' Filter phyloseq samples by sample_data variables
 #'
-#' Wrapper for dplyr::filter function. All dplyr functionality
+#' Keep only samples with sample_data matching one or more conditions.
+#' Use this function as you would use use dplyr::filter(), but with a phyloseq object!
 #'
 #' @param ps phyloseq object
-#' @param ... passed directly to dplyr::filter (see examples and ?dplyr::filter)
-#' @param .target which slot of phyloseq to mutate, currently only "sample_data" supported
-#' @param .keep_all_taxa if FALSE (the default), remove taxa which are no longer present in the dataset after filtering
+#' @param ...
+#' passed directly to dplyr::filter (see examples and ?dplyr::filter)
+#' @param .target which slot of phyloseq to use for filtering by,
+#' currently only "sample_data" supported
+#' @param .keep_all_taxa if FALSE (the default),
+#' remove taxa which are no longer present in the dataset after filtering
 #'
 #' @return phyloseq object (with filtered sample_data)
 #' @export
+#'
+#' @seealso \code{\link[dplyr]{filter}} explains better how to give arguments to this function
+#' @seealso \code{\link{tax_filter}} for filtering taxa (not samples)
 #'
 #' @examples
 #' library(phyloseq)
@@ -43,7 +50,10 @@
 #' enterotype %>%
 #'   microbiome::transform("clr") %>%
 #'   ps_filter(SeqTech == "Sanger", .keep_all_taxa = TRUE)
-ps_filter <- function(ps, ..., .target = "sample_data", .keep_all_taxa = FALSE) {
+ps_filter <- function(ps,
+                      ...,
+                      .target = "sample_data",
+                      .keep_all_taxa = FALSE) {
   if (!inherits(ps, "phyloseq")) {
     stop("ps must be a phyloseq object. It is of class: ", class(ps))
   }
@@ -51,27 +61,33 @@ ps_filter <- function(ps, ..., .target = "sample_data", .keep_all_taxa = FALSE) 
   if (!identical(.target, "sample_data")) {
     stop("Only .target = 'sample_data', has been implemented so far.")
   }
-  # TODO: see if it is useful to facilitate filtering by variables in other phyloseq slots
+  # TODO: see if it is useful to facilitate
+  # filtering by variables in other phyloseq slots
 
   df <- data.frame(phyloseq::sample_data(ps))
   df <- dplyr::filter(df, ...)
   phyloseq::sample_data(ps) <- df
 
-  # remove taxa that now have zero counts (or relative abundance) across all remaining samples
+  # remove taxa that now have zero counts (or relative abundance)
+  # across all remaining samples
   if (isFALSE(.keep_all_taxa)) ps <- tax_filter_zeros(ps)
   return(ps)
 }
 
 # helper function used here and in ps_join
-# removes all taxa which sum to zero across all samples (phyloseq::taxa_sums(ps) == 0)
+# removes all taxa which sum to zero across all samples
+# (phyloseq::taxa_sums(ps) == 0)
 # provides helpful warning if otu_table contains negative values
 tax_filter_zeros <- function(ps) {
-  # remove taxa that now have zero counts (or relative abundance) across all remaining samples
+  # remove taxa that now have zero counts (or relative abundance)
+  # across all remaining samples
   if (any(phyloseq::otu_table(ps) < 0)) {
     warning(
       "Removing taxa whose abundance across filtered samples is equal to zero.",
-      "\nThis may not result in the desired outcome, as some values in the otu_table are negative.",
-      "\nAvoid performing transformations, e.g. clr, before using `ps_filter()`, or set .keep_all_taxa = TRUE "
+      "\nThis may not result in the desired outcome, ",
+      "as some values in the otu_table are negative.",
+      "\nAvoid performing transformations, ",
+      "e.g. clr, before using `ps_filter()`, or set .keep_all_taxa = TRUE "
     )
   }
   return(phyloseq::prune_taxa(taxa = phyloseq::taxa_sums(ps) != 0, x = ps))

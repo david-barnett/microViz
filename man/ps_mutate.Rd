@@ -2,7 +2,7 @@
 % Please edit documentation in R/ps_mutate.R
 \name{ps_mutate}
 \alias{ps_mutate}
-\title{Mutate sample data in phyloseq object}
+\title{Modify or compute new sample_data in phyloseq object}
 \usage{
 ps_mutate(ps, ..., .target = "sample_data")
 }
@@ -17,8 +17,8 @@ ps_mutate(ps, ..., .target = "sample_data")
 phyloseq object with modified sample_data
 }
 \description{
-Wrapper for dplyr::mutate. Use mutate syntax with all the non-standard evaluation.
 Add or compute new phyloseq sample_data variables.
+Use dplyr::mutate() syntax.
 }
 \examples{
 library(phyloseq)
@@ -45,4 +45,7 @@ ps <- ps \%>\%
   )
 
 sample_data(ps)[1:10, ]
+}
+\seealso{
+\code{\link[dplyr]{mutate}}
 }

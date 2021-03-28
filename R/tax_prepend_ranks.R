@@ -1,13 +1,16 @@
-#' Add rank prefixes to tax table values
+#' Add rank prefixes to phyloseq tax_table values
 #'
-#' Prepend the start of rank names to each taxon at each rank (useful particularly in case of duplicated taxa names across ranks, e.g. dietswap dataset)
+#' Prepend the start of rank names to each taxon at each rank
+#' (useful particularly in case of duplicated taxa names across ranks, e.g. dietswap dataset)
 #'
 #' @param ps phyloseq object
-#' @param sep for tax_prepend_ranks (what to paste in between rank initial and taxon name)
+#' @param sep characters to paste in between rank initial and taxon name
 #' @param nchar number of characters to use from start of rank_names
 #'
 #' @return phyloseq
 #' @export
+#'
+#' @seealso \code{\link{tax_fill_unknowns}} for fixing other tax_table problems
 #'
 #' @examples
 #' library(dplyr)

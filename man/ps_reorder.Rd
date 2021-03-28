@@ -15,7 +15,10 @@ ps_reorder(ps, sample_order)
 phyloseq
 }
 \description{
-Ordering of samples is a phyloseq is controlled from the otu_table slot!
+Manually set order of samples by specifying samples names in desired order.
+}
+\details{
+Ordering of samples in a phyloseq is controlled from the otu_table slot!
 }
 \examples{
 library(phyloseq)
@@ -39,4 +42,11 @@ dietswap \%>\%
   ps_reorder(random_order) \%>\%
   sample_data() \%>\%
   head(8)
+}
+\seealso{
+\code{\link{ps_arrange}} for arranging samples by sample_data variables (or otu_table)
+
+\code{\link{ps_seriate}} for arranging samples by microbiome similarity
+
+\code{\link{ps_filter}} for keeping only some samples, based on sample_data
 }

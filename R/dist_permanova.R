@@ -1,8 +1,20 @@
 #' Calculate PERMANOVA after dist_calc()
 #'
-#' This function is a wrapper around vegan's adonis2() function. See ?vegan::adonis2() for more insight.
-#' Test for the statistical significance of (independent) associations between variables in your phyloseq::sample_data(),
+#' @description
+#' `dist_permanova` runs a Permutational Multivariate ANOVA (aka Non-parametric MANOVA).
+#' This is way to test for the statistical significance of (independent)
+#' associations between variables in your phyloseq::sample_data(),
 #' and a microbiota distance matrix you have already calculated with dist_calc().
+#'
+#' This function is a wrapper around vegan's `adonis2()` function. See `?vegan::adonis2()` for more insight.
+#'
+#' You can also read this excellent book chapter on PERMANOVA by Marti Anderson:
+#' \url{https://doi.org/10.1002/9781118445112.stat07841}
+#'
+#' Or this NPMANOVA page on GUSTA ME:
+#' \url{https://sites.google.com/site/mb3gustame/hypothesis-tests/manova/npmanova}
+#'
+#' @details
 #' The variables argument will be collapsed into one string (if length > 1) by pasting together, separated by "+".
 #' Any interaction terms described in the interactions argument will be pasted onto the end of the pasted variables argument.
 #' Alternatively, you can supply the complete right hand side of the formula yourself e.g variables = "varA + varB + varC*varD"
@@ -22,6 +34,10 @@
 #'
 #' @return ps_extra list containing permanova results and (filtered) input objects
 #' @export
+#'
+#' @seealso \code{\link{dist_calc}} for calculating the required distance matrix input
+#' @seealso \code{\link{ord_plot}} with constraints as a way to visualise the microbial associations of significant predictors
+#' @seealso \code{vegan::\link[vegan]{adonis2}}
 #'
 #' @examples
 #' data("dietswap", package = "microbiome")

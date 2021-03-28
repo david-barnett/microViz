@@ -21,20 +21,22 @@ ps_extra list including phyloseq object and info
 \description{
 Transform taxa features, and optionally aggregate at specified taxonomic rank beforehand.
 You can pipe the results of tax_agg into tax_transform, or equivalently set the rank argument in tax_transform.
-This function is a wrapper around microbiome::transform() that can perform all the same transformations but returns a ps_extra list
-containing ps (the transformed phyloseq object) and extra info: tax_transform (a string recording the transformation), and tax_agg
+This function uses microbiome::transform() internally and can perform the same transformations but returns a ps_extra list
+containing ps (the transformed phyloseq object) and extra info used for annotating ord_plot() plots:
+tax_transform (a string recording the transformation), and tax_agg
 (a string recording the taxonomic aggregation rank if specified here or earlier in tax_agg).
 See details for notes about some of the available transformations.
 }
 \details{
-transformation = "binary" can be used to tranform tax abundances into presence/abundance data.
+\itemize{
+\item transformation = "clr" performs the centered log ratio transformation using microbiome::transform(), after adding a small pseudocount.
+\item transformation = "compositional" converts the data into proportions, from 0 to 1.
+\item transformation = "binary" can be used to transform tax abundances into presence/abundance data.
+}
+
 By default, otu_table values of 0 are kept as 0, and all positive values are converted to 1.
 You can set a different threshold, by passing e.g. undetected = 10, for example, in which case all abundances of 10 or below would be converted to 0s.
 All abundances above 10 would be converted to 1s. Use any numeric value.
-
-transformation = "clr" performs the centered log ratio transformation using microbiome::transform(), after adding a small pseudocount.
-
-transformation = "compositional" converts the data into proportions,, from 0 to 1.
 }
 \examples{
 library(microbiome)
@@ -56,7 +58,7 @@ tax_transform(dietswap, transformation = "binary", undetected = 50) \%>\%
   .[1:6, 1:4]
 }
 \seealso{
-\code{microbiome \link[microbiome]{transform}} for info on other transformations available
+\code{microbiome::\link[microbiome]{transform}} for info on other transformations available with tax_transform
 
 \code{\link{tax_agg}}
 }

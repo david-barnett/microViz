@@ -11,15 +11,18 @@ ps_filter(ps, ..., .target = "sample_data", .keep_all_taxa = FALSE)
 
 \item{...}{passed directly to dplyr::filter (see examples and ?dplyr::filter)}
 
-\item{.target}{which slot of phyloseq to mutate, currently only "sample_data" supported}
+\item{.target}{which slot of phyloseq to use for filtering by,
+currently only "sample_data" supported}
 
-\item{.keep_all_taxa}{if FALSE (the default), remove taxa which are no longer present in the dataset after filtering}
+\item{.keep_all_taxa}{if FALSE (the default),
+remove taxa which are no longer present in the dataset after filtering}
 }
 \value{
 phyloseq object (with filtered sample_data)
 }
 \description{
-Wrapper for dplyr::filter function. All dplyr functionality
+Keep only samples with sample_data matching one or more conditions.
+Use this function as you would use use dplyr::filter(), but with a phyloseq object!
 }
 \examples{
 library(phyloseq)
@@ -54,4 +57,9 @@ identical(ps2, ps3) # TRUE
 enterotype \%>\%
   microbiome::transform("clr") \%>\%
   ps_filter(SeqTech == "Sanger", .keep_all_taxa = TRUE)
+}
+\seealso{
+\code{\link[dplyr]{filter}} explains better how to give arguments to this function
+
+\code{\link{tax_filter}} for filtering taxa (not samples)
 }

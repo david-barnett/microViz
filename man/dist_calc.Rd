@@ -13,22 +13,36 @@ dist_calc(
 )
 }
 \arguments{
-\item{data}{ps_extra object output from tax_agg() or a phyloseq object}
+\item{data}{ps_extra object output from tax_transform()}
 
 \item{dist}{name of distance to calculate between pairs of samples}
 
 \item{gunifrac_alpha}{setting alpha value only relevant if gunifrac distance used}
 
-\item{...}{optional distance-specific named args passed to phyloseq::distance()}
+\item{...}{optional distance-specific named arguments passed to phyloseq::distance()}
 }
 \value{
 list with distance matrix, phyloseq object, and name of distance used
 }
 \description{
-Computes various unifrac distances, aitchison distance or any distance from vegan::vegdist().
-For use with ps_extra output of tax_transform (or tax_agg).
-Returns ps_extra object containing phyloseq and name of distance in addition to the distance matrix itself.
-Resulting object intended to be piped into ord_calc or permanova functions.
+Can compute various sample-sample distances using the microbiota composition of your samples:
+\itemize{
+\item bray curtis ('bray') or any other ecological distance from phyloseq::distance() / vegan::vegdist()
+\item unifrac distances (using the GUniFrac package)
+\itemize{
+\item generalised: 'gunifrac' (optionally set weighting alpha in gunifrac alpha)
+\item unweighted: 'unifrac'
+\item weighted: 'wunifrac'
+\item variance adjusted weighted: 'va-wunifrac'
+}
+\item aitchison distance (euclidean distance after centered log ratio transform clr, see details)
+\item euclidean distance
+}
+
+Use dist_calc with ps_extra output of tax_transform (or tax_agg).
+It returns a ps_extra object containing the phyloseq and the name of the distance used
+in addition to the distance matrix itself.
+The resulting object is intended to be piped into ord_calc or dist_permanova functions.
 Alternatively you can directly access the distance matrix with dist_get().
 }
 \details{
@@ -56,4 +70,15 @@ gunifrac <- esophagus \%>\%
   dist_calc("gunifrac") \%>\%
   dist_get()
 class(gunifrac)
+}
+\seealso{
+\code{\link{tax_transform}} for the function to use before dist_calc
+
+\code{\link{ord_calc}}
+
+\code{\link{ord_plot}}
+
+\code{\link{dist_permanova}}
+
+\code{phyloseq::\link[phyloseq:distance]{distance}}
 }

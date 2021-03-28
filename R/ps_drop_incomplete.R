@@ -1,8 +1,9 @@
 #' Deselect phyloseq samples with sample_data missings
 #'
 #' @description
-#' Check phyloseq object sample data for missing values (NAs)
-#' - specify which variables to check with vars argument, or check all)
+#' Check phyloseq object sample_data for missing values (NAs)
+#'
+#' - specify which variables to check with vars argument, or check all
 #' - drop samples with any missings
 #'
 #' @details
@@ -15,6 +16,8 @@
 #'
 #' @return phyloseq
 #' @export
+#'
+#' @seealso \code{\link{ps_filter}}
 #'
 #' @examples
 #' library(phyloseq)

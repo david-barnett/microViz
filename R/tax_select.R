@@ -1,9 +1,11 @@
 #' Subset phyloseq object by (partial) taxa names
 #'
-#' Convenient name-based taxa selection/filtering of phyloseq object, including approximate name matching
+#' @description
+#' Convenient name-based taxa selection/filtering of phyloseq object, including approximate name matching.
+#' Takes a phyloseq with tax table and a (partial) taxonomic name, or a list/vector of taxonomic names (full or partial matches).
 #'
-#' Takes a phyloseq with tax table and a list/vector of taxonomic names (full or partial matches).
-#' It will also search the otu names/rownames, BUT only for perfect matches.
+#' @details
+#' tax_select will also search the otu names/rownames, BUT only for perfect matches.
 #'
 #' @param ps phyloseq object
 #' @param tax_list e.g. c('g__Bifidobacterium', 'g__Akkermansia', 'g__Bacteroides', 'g__Streptococcus')
@@ -12,8 +14,11 @@
 #' @param n_typos how many typos to allow in each name? uses agrep approximate matching if > 0
 #' @param deselect if TRUE, the matching taxa will be REMOVED instead!
 #'
-#' @return tax-filtered phyloseq object
+#' @return phyloseq object with fewer taxa
 #' @export
+#'
+#' @seealso \code{\link{ps_select}} for selecting variables in phyloseq sample_data
+#' @seealso \code{\link{agrep}} for the function that powers the approximate matching in tax_select
 #'
 #' @examples
 #' # Get example phyloseq object data

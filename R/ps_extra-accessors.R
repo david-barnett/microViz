@@ -2,12 +2,14 @@
 #' @title Extract elements from ps_extra class
 #'
 #' @description
-#' - `ps_get`    returns phyloseq
-#' - `info_get`  returns ps_extra_info object
-#' - `dist_get`  returns distance matrix (or NULL)
-#' - `ord_get`   returns ordination object (or NULL)
-#' - `perm_get`  returns adonis2() permanova model (or NULL)
-#' - `bdisp_get` returns results of betadisper() (or NULL)
+#' - `ps_get`     returns phyloseq
+#' - `info_get`   returns ps_extra_info object
+#' - `dist_get`   returns distance matrix (or NULL)
+#' - `ord_get`    returns ordination object (or NULL)
+#' - `perm_get`   returns adonis2() permanova model (or NULL)
+#' - `bdisp_get`  returns results of betadisper() (or NULL)
+#' - `otu_get`    returns phyloseq otu_table matrix with taxa as columns
+#' - `samdat_tbl` returns phyloseq sample_data as a tibble, with sample_names as new first column called .sample_name
 #'
 #' @param ps_extra ps_extra class object
 #'

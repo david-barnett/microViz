@@ -1,20 +1,32 @@
 #' Set unique taxa_names for phyloseq object
 #'
-#' Don't confuse this with the phyloseq function taxa_names().
-#' If your current taxa_names aren't what you want (e.g. they are long DNA sequences), this function will help you set sensible names.
+#' @description
+#' If your current taxa_names aren't what you want (e.g. they are long DNA sequences),
+#' this function will help you set sensible unique names.
+#'
 #' It combines:
+#'
 #' - a prefix like tax, asv, or otu (pick an appropriate prefix or set your own)
 #' - a unique (sequential) number
 #' - classification information from a chosen taxonomic rank (optional)
 #'
+#' @details
+#' Don't confuse this with the phyloseq function taxa_names().
+#'
 #' @param ps phyloseq object
 #' @param prefix e.g. 'tax', 'asv', or 'otu' (or set your own)
-#' @param rank name of taxonomic rank from which to use classifications in new names
-#' @param pad_number should unique numbers have zeros added to the front (e.g. 001, 002) to be made the same number of characters?
-#' @param sep character to separate the unique number and any taxonomic classification info (relevant if rank given)
+#' @param rank
+#' name of taxonomic rank from which to use classifications in new names
+#' @param pad_number should unique numbers have zeros added to the front
+#' (e.g. 001, 002) to be made the same number of characters?
+#' @param sep
+#' character to separate the unique number and any taxonomic classification
+#' info (relevant if rank given)
 #'
 #' @return phyloseq object
 #' @export
+#'
+#' @seealso \code{phyloseq::\link[phyloseq]{taxa_names}} for accessing and manually setting names
 #'
 #' @examples
 #' library(phyloseq)
@@ -46,9 +58,20 @@
 #' tax_name(ps, rank = "Genus", sep = "-") %>%
 #'   taxa_names() %>%
 #'   head()
-tax_name <- function(ps, prefix = c("tax", "asv", "otu")[1], rank = NA, pad_number = TRUE, sep = "_") {
-  if (!inherits(prefix, "character")) stop("prefix must be a character string, not: ", class(prefix))
-  if (inherits(ps, "ps_extra")) warning("ps is class ps_extra, returning only phyloseq! Naming should be done on phyloseq before starting analyses")
+tax_name <- function(ps,
+                     prefix = c("tax", "asv", "otu")[1],
+                     rank = NA,
+                     pad_number = TRUE,
+                     sep = "_") {
+  if (!inherits(prefix, "character")) {
+    stop("prefix must be a character string, not: ", class(prefix))
+  }
+  if (inherits(ps, "ps_extra")) {
+    warning(
+      "ps is class ps_extra, returning only phyloseq!",
+      "\nNaming should be done on phyloseq before starting analyses."
+    )
+  }
   ps <- ps_get(ps)
 
   taxtab <- phyloseq::access(ps, "tax_table")
@@ -56,13 +79,23 @@ tax_name <- function(ps, prefix = c("tax", "asv", "otu")[1], rank = NA, pad_numb
   # create numbers
   ntax <- phyloseq::ntaxa(ps)
   numbers <- seq_len(length.out = ntax)
-  if (isTRUE(pad_number)) numbers <- formatC(x = numbers, width = nchar(ntax), format = "d", flag = "0")
+  if (isTRUE(pad_number)) {
+    numbers <-
+      formatC(x = numbers, width = nchar(ntax), format = "d", flag = "0")
+  }
 
   # create names (using rank info if requested)
   name_vec <- paste0(prefix, numbers)
   if (!identical(rank, NA)) {
-    if (identical(taxtab, NULL)) stop("Your phyloseq has no tax_table, so only rank = NA will work")
-    if (!rank %in% phyloseq::rank_names(ps)) stop(rank, " is not in rank_names(ps) :\n", paste(phyloseq::rank_names(ps), collapse = " / "))
+    if (identical(taxtab, NULL)) {
+      stop("Your phyloseq has no tax_table, so only rank = NA will work")
+    }
+    if (!rank %in% phyloseq::rank_names(ps)) {
+      stop(
+        rank, " is not in rank_names(ps) :\n",
+        paste(phyloseq::rank_names(ps), collapse = " / ")
+      )
+    }
     rank_vec <- taxtab[, rank]
     rank_vec[is.na(rank_vec)] <- "NA"
     name_vec <- paste(name_vec, rank_vec, sep = sep)

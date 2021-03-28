@@ -20,6 +20,7 @@ phyloseq object
 }
 \description{
 Use 1 or more variables in the sample_data to identify and remove duplicate samples (leaving 1 per category).
+
 \strong{methods:}
 \itemize{
 \item method = "readcount" keeps the one sample in each duplicate group with the highest total number of reads according to sample_sums
@@ -53,4 +54,7 @@ ps2 <- ps_dedupe(dietswap,
   vars = c("timepoint", "group", "bmi_group")
 )
 sample_data(ps2)
+}
+\seealso{
+\code{\link{ps_filter}} for filtering samples by sample_data variables
 }

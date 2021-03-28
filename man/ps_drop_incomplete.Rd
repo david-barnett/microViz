@@ -18,9 +18,9 @@ and message about number of missing per variable in vars if verbose = "max" (and
 phyloseq
 }
 \description{
-Check phyloseq object sample data for missing values (NAs)
+Check phyloseq object sample_data for missing values (NAs)
 \itemize{
-\item specify which variables to check with vars argument, or check all)
+\item specify which variables to check with vars argument, or check all
 \item drop samples with any missings
 }
 }
@@ -37,4 +37,7 @@ ps_drop_incomplete(enterotype, vars = "Enterotype", verbose = TRUE)
 ps_drop_incomplete(enterotype, vars = "Sample_ID", verbose = TRUE)
 ps_drop_incomplete(enterotype, vars = c("Enterotype", "Sample_ID"))
 ps_drop_incomplete(enterotype, verbose = "max")
+}
+\seealso{
+\code{\link{ps_filter}}
 }

@@ -1,13 +1,21 @@
-#' Rearrange samples in phyloseq by sample_data variables or taxon abundance
+#' Arrange samples in phyloseq by sample_data variables or taxon abundance
 #'
-#' Uses dplyr::arrange under the hood
+#' @description
+#' Uses information in the sample_data or tax_table of phyloseq object
+#' to set the order of the samples
+#' (sample_data or tax_table specified by .target arg)
+#'
+#' Give this function arguments in the same way you would use dplyr::arrange()
+#'
 #'
 #' @param ps phyloseq object
-#' @param ... dots passed directly to dplyr::arrange
+#' @param ... dots passed directly to dplyr::arrange()
 #' @param .target arrange samples by "sample_data" variables or "otu_table" taxa abundances
 #'
 #' @return phyloseq
 #' @export
+#'
+#' @seealso \code{\link[dplyr]{arrange}}
 #'
 #' @examples
 #' library(phyloseq)

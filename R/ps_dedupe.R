@@ -1,11 +1,14 @@
 #' De-duplicate phyloseq samples
 #'
+#' @description
 #' Use 1 or more variables in the sample_data to identify and remove duplicate samples (leaving 1 per category).
+#'
 #' __methods:__
 #' - method = "readcount" keeps the one sample in each duplicate group with the highest total number of reads according to sample_sums
 #' - method = "first" keeps the first sample in each duplicate group encountered in the row order of the sample_data
 #' - method = "last" keeps the last sample in each duplicate group encountered in the row order of the sample_data
 #'
+#' @details
 #' What happens when duplicated samples have exactly equal readcounts in method = "readcount"?
 #' The first encountered maximum is kept (in sample_data row order, like method = "first")
 #'
@@ -16,6 +19,8 @@
 #'
 #' @return phyloseq object
 #' @export
+#'
+#' @seealso \code{\link{ps_filter}} for filtering samples by sample_data variables
 #'
 #' @examples
 #' library(phyloseq)

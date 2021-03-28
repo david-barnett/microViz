@@ -16,4 +16,3 @@
 #' @docType package
 #' @name microViz
 NULL
-

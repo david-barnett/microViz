@@ -2,14 +2,14 @@
 % Please edit documentation in R/ps_arrange.R
 \name{ps_arrange}
 \alias{ps_arrange}
-\title{Rearrange samples in phyloseq by sample_data variables or taxon abundance}
+\title{Arrange samples in phyloseq by sample_data variables or taxon abundance}
 \usage{
 ps_arrange(ps, ..., .target = "sample_data")
 }
 \arguments{
 \item{ps}{phyloseq object}
 
-\item{...}{dots passed directly to dplyr::arrange}
+\item{...}{dots passed directly to dplyr::arrange()}
 
 \item{.target}{arrange samples by "sample_data" variables or "otu_table" taxa abundances}
 }
@@ -17,7 +17,11 @@ ps_arrange(ps, ..., .target = "sample_data")
 phyloseq
 }
 \description{
-Uses dplyr::arrange under the hood
+Uses information in the sample_data or tax_table of phyloseq object
+to set the order of the samples
+(sample_data or tax_table specified by .target arg)
+
+Give this function arguments in the same way you would use dplyr::arrange()
 }
 \examples{
 library(phyloseq)
@@ -37,4 +41,7 @@ otu_table(ps)[1:8, 1:8]
 pst <- dietswap \%>\% ps_arrange(desc(Akkermansia), .target = "otu_table")
 otu_table(pst)[1:8, 1:8]
 sample_data(pst) \%>\% head(8)
+}
+\seealso{
+\code{\link[dplyr]{arrange}}
 }

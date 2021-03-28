@@ -40,12 +40,14 @@ element of ps_extra class object (or NULL)
 }
 \description{
 \itemize{
-\item \code{ps_get}    returns phyloseq
-\item \code{info_get}  returns ps_extra_info object
-\item \code{dist_get}  returns distance matrix (or NULL)
-\item \code{ord_get}   returns ordination object (or NULL)
-\item \code{perm_get}  returns adonis2() permanova model (or NULL)
-\item \code{bdisp_get} returns results of betadisper() (or NULL)
+\item \code{ps_get}     returns phyloseq
+\item \code{info_get}   returns ps_extra_info object
+\item \code{dist_get}   returns distance matrix (or NULL)
+\item \code{ord_get}    returns ordination object (or NULL)
+\item \code{perm_get}   returns adonis2() permanova model (or NULL)
+\item \code{bdisp_get}  returns results of betadisper() (or NULL)
+\item \code{otu_get}    returns phyloseq otu_table matrix with taxa as columns
+\item \code{samdat_tbl} returns phyloseq sample_data as a tibble, with sample_names as new first column called .sample_name
 }
 }
 \examples{
