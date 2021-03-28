@@ -1,5 +1,8 @@
 # microViz (development version)
 
+## Breaking changes
+- `ord_plot_iris` and `ord_explore` no longer need ps argument of untransformed counts as (by default) `tax_transform` keeps the untransformed counts otu_table in the ps_extra object
+
 ## Features
 - `ord_plot` interactivity option with `ggiraph` package
 - `ord_explore` now allows much better control over selection of points (using `ggiraph` functionality)

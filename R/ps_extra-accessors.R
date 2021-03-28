@@ -131,14 +131,21 @@ ps_counts <- function(data, warn = TRUE){
     if (phyloseq::taxa_are_rows(ps)) counts <- phyloseq::t(counts)
     phyloseq::otu_table(ps) <- counts
   }
-  if (isTRUE(warn)) {
+  if (!isFALSE(warn)) {
+    mess <- paste0(
+      "otu_table of counts is NOT available!\n",
+      "Available otu_table contains non-zero values that are less than 1"
+    )
     # now check ps otu_table is counts
     test_matrix <- unclass(otu_get(ps))
     if (any(test_matrix < 1 & test_matrix != 0)) {
-      warning(
-        "Returned otu_table is probably NOT counts!\n",
-        "otu_table contains non-zero values that are less than 1"
-      )
+      if(isTRUE(warn)){
+        warning(mess)
+      } else if (identical(warn, "error")){
+        stop(mess)
+      } else {
+        stop("warn argument value is invalid: should be T, F or 'error'")
+      }
     }
   }
   return(ps)

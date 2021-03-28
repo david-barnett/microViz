@@ -17,15 +17,15 @@ ord_plot_iris(
   anno_binary = NULL,
   anno_binary_style = list(),
   keep_all_vars = FALSE,
-  scaling = 2
+  scaling = 2,
+  count_warn = TRUE,
+  ...
 )
 }
 \arguments{
 \item{data}{ps_extra list output of ord_calc}
 
 \item{tax_level}{taxonomic aggregation level (from rank_names(ps))}
-
-\item{ps}{phyloseq object containing untransformed counts if needed (must otherwise be identical to ps used to make data!)}
 
 \item{axes}{which 2 axes of ordination to use for ordering}
 
@@ -47,17 +47,22 @@ ord_plot_iris(
 
 \item{scaling}{Relevant for constrained ordinations: Type 2, or type 1 scaling. See \url{https://sites.google.com/site/mb3gustame/constrained-analyses/rda}
 Either "species" or "site" scores are scaled by eigenvalues, and the other set of scores is left unscaled (from ?vegan::scores.cca)}
+
+\item{count_warn}{warn if count data are not available? i.e. phyloseq otu_table is not positive integers and ps_extra counts slot is NULL}
+
+\item{...}{extra args passed to comp_barplot}
 }
 \value{
 ggplot
 }
 \description{
-\itemize{
-\item Order of samples extracted from ordination axes in \code{data}. (\code{ord_calc} output)
-\item \code{ord_plot_iris} Uses the phyloseq from \code{data} for plotting compositions if no problematic transform mentioned in \code{data$info}
-\item Otherwise, ps must be a phyloseq object containing untransformed counts.
-\item (\code{ps} must be otherwise identical to the ps used to make \code{data}!)
+Use with \code{ord_calc} output as data argument.
+Order of samples extracted from ordination axes in data.
+Best paired with ordination plot made from same \code{ord_calc} output.
 }
+\details{
+data must also contain counts table if taxa were transformed
+(i.e. you must have used \code{tax_transform} with keep_counts = TRUE, if transformation was not "identity")
 }
 \examples{
 library(dplyr)
@@ -120,8 +125,7 @@ plot1 <- clr_pca \%>\% ord_plot(
   scale_shape_manual(values = c(AFR = "circle", AAM = "circle open"))
 
 iris <- ord_plot_iris(
-  data = clr_pca,
-  ps = ps, n_taxa = 15,
+  data = clr_pca, n_taxa = 15,
   tax_level = "Genus",
   taxon_renamer = tax_renamer,
   anno_binary = "african",
@@ -134,8 +138,7 @@ cowplot::plot_grid(plot1, iris, nrow = 1, align = "h", axis = "b", rel_widths = 
 
 # you can add multiple rings of binary annotations
 ord_plot_iris(
-  data = clr_pca,
-  ps = ps, n_taxa = 15,
+  data = clr_pca, n_taxa = 15,
   tax_level = "Genus",
   taxon_renamer = tax_renamer,
   anno_binary = c("african", "female"),

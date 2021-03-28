@@ -1,14 +1,14 @@
 #' Circular compositional barplot sorted by ordination angle
 #'
-#' - Order of samples extracted from ordination axes in `data`. (`ord_calc` output)
-#' - `ord_plot_iris` Uses the phyloseq from `data` for plotting compositions if no problematic transform mentioned in `data$info`
-#' - Otherwise, ps must be a phyloseq object containing untransformed counts.
-#' - (`ps` must be otherwise identical to the ps used to make `data`!)
+#' Use with `ord_calc` output as data argument.
+#' Order of samples extracted from ordination axes in data.
+#' Best paired with ordination plot made from same `ord_calc` output.
 #'
+#' data must also contain counts table if taxa were transformed
+#' (i.e. you must have used `tax_transform` with keep_counts = TRUE, if transformation was not "identity")
 #'
 #' @param data ps_extra list output of ord_calc
 #' @param tax_level taxonomic aggregation level (from rank_names(ps))
-#' @param ps phyloseq object containing untransformed counts if needed (must otherwise be identical to ps used to make data!)
 #' @param axes which 2 axes of ordination to use for ordering
 #' @param n_taxa how many taxa to colour show distinct colours for (all other taxa grouped into "Other").
 #' @param taxon_renamer function to rename taxa in the legend
@@ -21,7 +21,8 @@
 #' @param scaling
 #' Relevant for constrained ordinations: Type 2, or type 1 scaling. See \url{https://sites.google.com/site/mb3gustame/constrained-analyses/rda}
 #' Either "species" or "site" scores are scaled by eigenvalues, and the other set of scores is left unscaled (from ?vegan::scores.cca)
-
+#' @param count_warn warn if count data are not available? i.e. phyloseq otu_table is not positive integers and ps_extra counts slot is NULL
+#' @param ... extra args passed to comp_barplot
 #'
 #' @return ggplot
 #' @export
@@ -89,8 +90,7 @@
 #'   scale_shape_manual(values = c(AFR = "circle", AAM = "circle open"))
 #'
 #' iris <- ord_plot_iris(
-#'   data = clr_pca,
-#'   ps = ps, n_taxa = 15,
+#'   data = clr_pca, n_taxa = 15,
 #'   tax_level = "Genus",
 #'   taxon_renamer = tax_renamer,
 #'   anno_binary = "african",
@@ -103,8 +103,7 @@
 #'
 #' # you can add multiple rings of binary annotations
 #' ord_plot_iris(
-#'   data = clr_pca,
-#'   ps = ps, n_taxa = 15,
+#'   data = clr_pca, n_taxa = 15,
 #'   tax_level = "Genus",
 #'   taxon_renamer = tax_renamer,
 #'   anno_binary = c("african", "female"),
@@ -126,20 +125,12 @@ ord_plot_iris <- function(data,
                           anno_binary = NULL,
                           anno_binary_style = list(),
                           keep_all_vars = FALSE,
-                          scaling = 2) {
-  if (identical(ps, NULL)) {
-    transf <- info_get(data)[["tax_transform"]]
-    # check for mention of transformed taxonomic data in data$info$tax_transform
-    if (!is.na(transf) && !identical(transf, "identity")) {
-      stop(
-        "The `data` argument object's info specifies a ", transf, " transformation has been applied, so compositions cannot be plotted.\n",
-        "To resolve this, please also supply the untransformed phyloseq data to the `ps` argument."
-      )
-    } else {
-      # use the phyloseq from data if no problematic transform mentioned
-      ps <- ps_get(data)
-    }
-  }
+                          scaling = 2,
+                          count_warn = TRUE,
+                          ...) {
+
+  # get count data, warns if not count
+  ps <- ps_counts(data, warn = count_warn)
 
   # get axes
   df <- as.data.frame.matrix(
@@ -176,7 +167,8 @@ ord_plot_iris <- function(data,
     n_taxa = n_taxa,
     sample_order = "default",
     bar_outline_colour = NA,
-    keep_all_vars = TRUE
+    keep_all_vars = TRUE,
+    ...
   ) +
     ggplot2::coord_polar(
       direction = -1,

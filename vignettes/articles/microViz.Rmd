@@ -135,7 +135,7 @@ What about the actual compositions of these 800 samples?
 ```{r iris plot}
 iris <- clr_pca %>%
   ord_plot_iris(
-    ps = ps, tax_level = "Genus", n_taxa = 15,
+    tax_level = "Genus", n_taxa = 15,
     anno_binary = "extract_P",
     anno_binary_style = list(y = 1.1, size = 0.5, alpha = 0.3, shape = 1),
     taxon_renamer = function(x) stringr::str_remove_all(x, "^G: | [ae]t rel.")
