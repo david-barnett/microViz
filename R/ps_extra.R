@@ -1,5 +1,6 @@
-# ps_extra S3 class
-# S3 class to store a list of "extras" alongside a phyloseq object
+#' ps_extra S3 class
+#'
+#' S3 class to store a list of "extras" alongside a phyloseq object
 #' @examples
 #' library(phyloseq)
 #' library(microbiome)
@@ -29,8 +30,21 @@ print.ps_extra <- function(x, ...) {
   if (!identical(o, NULL)) {
     cat("\n\nordination of class:", class(o), "\n")
     if (!identical(o[["call"]], NULL)) print(o[["call"]])
-    if (!identical(i[["constraints"]], NA_character_)) cat("constraints:", i[["constraints"]])
-    if (!identical(i[["conditions"]], NA_character_)) cat("\nconditions:", i[["conditions"]])
+    if (!identical(i[["constraints"]], NA_character_)) {
+      cat("constraints:", i[["constraints"]])
+    }
+    if (!identical(i[["conditions"]], NA_character_)) {
+      cat("\nconditions:", i[["conditions"]])
+    }
+  }
+  # check for and shortly print other possible elements' info
+  counts <- x[["counts"]]
+  if (!identical(counts, NULL)) {
+    cat("\n\n$counts OTU Table:")
+    cat(
+      " [", phyloseq::ntaxa(counts), "taxa and",
+      phyloseq::nsamples(counts), "samples ]"
+    )
   }
   p <- x[["permanova"]]
   if (!identical(p, NULL)) {
@@ -50,8 +64,12 @@ print.ps_extra <- function(x, ...) {
 print.ps_extra_info <- function(x, ..., all = FALSE) {
   cat("phyloseq info:\n")
   if (isFALSE(all)) {
-    out <- paste("tax_agg =", x[["tax_agg"]], "tax_transform =", x[["tax_transform"]])
-    if (!identical(x[["tax_scale"]], NA_character_)) out <- paste(out, paste("tax_scale =", x[["tax_scale"]]))
+    out <- paste(
+      "tax_agg =", x[["tax_agg"]], "tax_transform =", x[["tax_transform"]]
+    )
+    if (!identical(x[["tax_scale"]], NA_character_)){
+      out <- paste(out, paste("tax_scale =", x[["tax_scale"]]))
+    }
     cat(out)
   } else if (isTRUE(all)) {
     for (i in names(x)) cat(i, "=", x[[i]], "\n")
@@ -73,7 +91,11 @@ new_ps_extra <- function(
   stopifnot(methods::is(ps, "phyloseq"))
   stopifnot(identical(dist, NULL) && !inherits(dist, "dist"))
   stopifnot(inherits(info, "ps_extra_info"))
-  structure(list(ps = ps, dist = dist, ord = ord, info = info), class = c("ps_extra", "list"))
+  psx <- structure(
+    .Data = list(ps = ps, dist = dist, ord = ord, info = info),
+    class = c("ps_extra", "list")
+  )
+  return(psx)
 }
 
 #' @param tax_agg aggregation level from tax_agg() (if any)
@@ -100,5 +122,6 @@ new_ps_extra_info <- function(
   )
   stopifnot(all(is.character(info)))
 
-  structure(.Data = info, class = "ps_extra_info")
+  psxi <- structure(.Data = info, class = "ps_extra_info")
+  return(psxi)
 }

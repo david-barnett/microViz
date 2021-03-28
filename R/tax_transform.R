@@ -20,6 +20,7 @@
 #' @param data ps_extra list output from tax_agg, or a phyloseq object
 #' @param transformation any valid taxa transformation from microbiome::transform
 #' @param rank If data is phyloseq: data are aggregated at this rank before transforming. If NA, runs tax_agg(data, rank = NA). However if rank is NA and data is already ps_extra, this does nothing.
+#' @param keep_counts if TRUE, store the pre-transformation count data in ps_extra counts slot
 #' @param ... any extra arguments passed to microbiome::transform() or pass undetected = a number when using transformation = "binary"
 #'
 #' @return ps_extra list including phyloseq object and info
@@ -44,7 +45,11 @@
 #' tax_transform(dietswap, transformation = "binary", undetected = 50) %>%
 #'   otu_get() %>%
 #'   .[1:6, 1:4]
-tax_transform <- function(data, transformation, rank = NA, ...) {
+tax_transform <- function(data,
+                          transformation,
+                          rank = NA,
+                          keep_counts = TRUE,
+                          ...) {
 
   # check input data object class and aggregate and set ps_extra info
   if (inherits(data, "ps_extra")) {
@@ -57,6 +62,7 @@ tax_transform <- function(data, transformation, rank = NA, ...) {
       warning("data were already transformed by: ", info[["tax_transform"]])
     }
     info[["tax_transform"]] <- transformation
+
   } else if (methods::is(data, "phyloseq")) {
     if (identical(rank, NA)) rank <- "unique"
     ps <- ps_get(tax_agg(data, rank = rank))
@@ -64,6 +70,9 @@ tax_transform <- function(data, transformation, rank = NA, ...) {
   } else {
     stop("data is wrong class, should be ps_extra from tax_agg, or a phyloseq")
   }
+
+  # store otu table prior to transformation (for if keep_counts == TRUE)
+  counts_otu <- otu_get(ps)
 
   # perform special binary transformation if requested
   if (identical(transformation, "binary")) {
@@ -75,6 +84,7 @@ tax_transform <- function(data, transformation, rank = NA, ...) {
     }
     otu <- unclass(otu_get(ps))
     otu <- otu > undetected
+    # cast from logical to double
     storage.mode(otu) <- "double"
     # return otu table in original orientation
     tax_rows <- phyloseq::taxa_are_rows(ps)
@@ -83,11 +93,15 @@ tax_transform <- function(data, transformation, rank = NA, ...) {
       object = otu, taxa_are_rows = tax_rows
     )
   } else {
+    # transformations other than the "binary" transform
     # transform phyloseq with microbiome::transform
     ps <- microbiome::transform(
       x = ps, transform = transformation, target = "OTU", ...
     )
   }
   data <- new_ps_extra(ps = ps, info = info)
+  if (isTRUE(keep_counts) && !identical(transformation, "identity")) {
+    data[["counts"]] <- counts_otu
+  }
   return(data)
 }

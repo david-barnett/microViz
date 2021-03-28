@@ -2,7 +2,9 @@
 #'
 #' @description
 #' Stacked barplots showing composition of phyloseq samples for a specified number of coloured taxa.
-#' Normally your phyloseq object should contain count data, as by default `comp_barplot()` performs the "compositional" taxa transformation for you, and requires count input for some sample_order methods!
+#' Normally your phyloseq object should contain counts data,
+#' as by default `comp_barplot()` performs the "compositional" taxa transformation for you,
+#' and requires count input for some sample_order methods!
 #'
 #' @details
 #' - sample_order: Either specify a list of sample names to order manually, or the bars/samples can/will be sorted by similarity, according to a specified distance measure (default aitchison),

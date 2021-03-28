@@ -33,7 +33,8 @@ samdat_tbl(data, sample_names_col = ".sample_name")
 
 \item{data}{phyloseq or ps_extra}
 
-\item{sample_names_col}{name of column where sample_names are put. if NA, return data.frame with rownames (sample_names)}
+\item{sample_names_col}{name of column where sample_names are put.
+if NA, return data.frame with rownames (sample_names)}
 }
 \value{
 element of ps_extra class object (or NULL)

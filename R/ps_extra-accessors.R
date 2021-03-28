@@ -27,7 +27,10 @@ ps_get <- function(ps_extra) {
   } else if (methods::is(ps_extra, "phyloseq")) {
     return(ps_extra)
   } else {
-    stop('class of argument should be "ps_extra" or "phyloseq", not: ', class(ps_extra))
+    stop(
+      'class of argument should be "ps_extra" or "phyloseq", not: ',
+      class(ps_extra)
+    )
   }
 }
 #' @rdname ps_extra-accessors
@@ -89,8 +92,11 @@ tt_get <- function(data) {
 }
 
 #' @param data phyloseq or ps_extra
-# @return phyloseq sample_data as a tibble, with sample_names as new first column called .sample_name
-#' @param sample_names_col name of column where sample_names are put. if NA, return data.frame with rownames (sample_names)
+# @return phyloseq sample_data as a tibble,
+# with sample_names as new first column called .sample_name
+#' @param sample_names_col
+#' name of column where sample_names are put.
+#' if NA, return data.frame with rownames (sample_names)
 #' @rdname ps_extra-accessors
 #' @export
 samdat_tbl <- function(data, sample_names_col = ".sample_name") {
@@ -99,7 +105,10 @@ samdat_tbl <- function(data, sample_names_col = ".sample_name") {
   if (methods::is(data, "sample_data")) {
     df <- base::data.frame(data, check.names = FALSE, stringsAsFactors = FALSE)
   } else {
-    stop("data must be of class 'phyloseq', 'ps_extra', or 'sample_data', not: ", paste(class(data), collapse = " "))
+    stop(
+      "data must be of class 'phyloseq', 'ps_extra', or 'sample_data', not: ",
+      paste(class(data), collapse = " ")
+    )
   }
   if (identical(sample_names_col, NA)) {
     return(df)
@@ -108,3 +117,30 @@ samdat_tbl <- function(data, sample_names_col = ".sample_name") {
     return(tibble::as_tibble(df))
   }
 }
+
+# get phyloseq with counts if available
+ps_counts <- function(data, warn = TRUE){
+  # always get ps, regardless of ps_extra or phyloseq data or counts presence
+  ps <- ps_get(data)
+  # checking names of a ps will return NULL (and x %in% NULL returns FALSE)
+  if ("counts" %in% names(data)){
+    # get counts and use them if they exist,
+    # and check regardless if otutab returned will be counts
+    counts <- data[["counts"]]
+    # maintain existing taxa_are_rows status for consistency
+    if (phyloseq::taxa_are_rows(ps)) counts <- phyloseq::t(counts)
+    phyloseq::otu_table(ps) <- counts
+  }
+  if (isTRUE(warn)) {
+    # now check ps otu_table is counts
+    test_matrix <- unclass(otu_get(ps))
+    if (any(test_matrix < 1 & test_matrix != 0)) {
+      warning(
+        "Returned otu_table is probably NOT counts!\n",
+        "otu_table contains non-zero values that are less than 1"
+      )
+    }
+  }
+  return(ps)
+}
+

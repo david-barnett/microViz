@@ -18,8 +18,6 @@
 #'
 #' @param data ps_extra list output of ord_calc
 #' @param sample_id name of id variable for ordering
-#' @param ps phyloseq object containing untransformed counts if needed
-#' (must otherwise be identical to ps used to make data!)
 #' @param seriate_method
 #' seriation method to order phyloseq samples by similarity
 #' @param tax_transform_for_ordering
@@ -67,7 +65,7 @@
 #' # otherwise the compositions plotted will be also transformed!
 #' # constrained_aitchison_rda %>%
 #' #   ord_explore(
-#' #     ps = dietswap, plot_taxa = 1:5, tax_lab_style = list(size = 3),
+#' #     plot_taxa = 1:5, tax_lab_style = list(size = 3),
 #' #     constraint_lab_style = list(size = 4), auto_caption = 7
 #' #   )
 #' # try changing the point colour to bmi_group or similar
@@ -92,7 +90,6 @@
 #' #   ord_explore()
 ord_explore <- function(data,
                         sample_id = NULL, # id var name for data_id ggiraph
-                        ps = NULL,
                         seriate_method = "OLO_ward", # ordering samples
                         tax_transform_for_ordering = "identity", # samples
                         app_options = list(launch.browser = TRUE), # shinyApp()
@@ -101,25 +98,22 @@ ord_explore <- function(data,
 
   # create a SAMPLE id variable
   data$ps <- ps_mutate(data$ps, SAMPLE = phyloseq::sample_names(data$ps))
-  if (identical(ps, NULL)) {
-    ps <- ps_get(data)
-  } else {
-    if (inherits(ps, "ps_extra")) ps <- ps_get(ps)
-    ps <- ps_mutate(ps, SAMPLE = phyloseq::sample_names(ps))
-  }
 
+  # sample data of `data` used in ord_plot (but otu table not used by ord_plot)
+  ps <- ps_counts(data, warn = TRUE)
+
+  # dist needed if a distance-based seriate_method is requested as is default
   dist <- info_get(data)[["distMethod"]]
-  # (needed if a distance-based seriate_method is requested, as is default)
   if (is.na(dist)) {
     dist <- "euclidean"
     tax_transform_for_ordering <- info_get(data)[["tax_transform"]]
   }
   samdat <- methods::as(phyloseq::sample_data(ps), "data.frame")
 
+  # get list of certain types of variables for populating selectize lists
   numerical_vars <- colnames(
     samdat[, sapply(X = samdat, function(x) !is.character(x) & !is.factor(x))]
   )
-
   categorical_vars <-
     colnames(samdat[, sapply(samdat, function(x) !is.numeric(x))])
 

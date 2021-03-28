@@ -84,7 +84,7 @@ tax_filter <- function(ps,
   if (!phyloseq::taxa_are_rows(ps)) otu <- t(otu)
 
   # check for proportional data
-  if (isTRUE(is_counts) && any(otu < 1 & otu > 0)) {
+  if (isTRUE(is_counts) && any(otu < 1 & otu != 0)) {
     stop(
       "otu_table(ps) contains proportions or transformed values which might lead to unexpected behaviour",
       "\n(use counts or avoid this error with is_counts = FALSE and setting an appropriate prev_detection_threshold, e.g. 1e-5)."

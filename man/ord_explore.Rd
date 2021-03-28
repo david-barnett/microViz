@@ -7,7 +7,6 @@
 ord_explore(
   data,
   sample_id = NULL,
-  ps = NULL,
   seriate_method = "OLO_ward",
   tax_transform_for_ordering = "identity",
   app_options = list(launch.browser = TRUE),
@@ -18,9 +17,6 @@ ord_explore(
 \item{data}{ps_extra list output of ord_calc}
 
 \item{sample_id}{name of id variable for ordering}
-
-\item{ps}{phyloseq object containing untransformed counts if needed
-(must otherwise be identical to ps used to make data!)}
 
 \item{seriate_method}{seriation method to order phyloseq samples by similarity}
 
@@ -86,7 +82,7 @@ constrained_aitchison_rda <- dietswap \%>\%
 # otherwise the compositions plotted will be also transformed!
 # constrained_aitchison_rda \%>\%
 #   ord_explore(
-#     ps = dietswap, plot_taxa = 1:5, tax_lab_style = list(size = 3),
+#     plot_taxa = 1:5, tax_lab_style = list(size = 3),
 #     constraint_lab_style = list(size = 4), auto_caption = 7
 #   )
 # try changing the point colour to bmi_group or similar

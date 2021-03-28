@@ -4,7 +4,7 @@
 \alias{tax_transform}
 \title{Transform taxa in phyloseq object and record transformation}
 \usage{
-tax_transform(data, transformation, rank = NA, ...)
+tax_transform(data, transformation, rank = NA, keep_counts = TRUE, ...)
 }
 \arguments{
 \item{data}{ps_extra list output from tax_agg, or a phyloseq object}
@@ -12,6 +12,8 @@ tax_transform(data, transformation, rank = NA, ...)
 \item{transformation}{any valid taxa transformation from microbiome::transform}
 
 \item{rank}{If data is phyloseq: data are aggregated at this rank before transforming. If NA, runs tax_agg(data, rank = NA). However if rank is NA and data is already ps_extra, this does nothing.}
+
+\item{keep_counts}{if TRUE, store the pre-transformation count data in ps_extra counts slot}
 
 \item{...}{any extra arguments passed to microbiome::transform() or pass undetected = a number when using transformation = "binary"}
 }

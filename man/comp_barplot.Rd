@@ -97,7 +97,9 @@ ggplot or list of harmonised ggplots
 }
 \description{
 Stacked barplots showing composition of phyloseq samples for a specified number of coloured taxa.
-Normally your phyloseq object should contain count data, as by default \code{comp_barplot()} performs the "compositional" taxa transformation for you, and requires count input for some sample_order methods!
+Normally your phyloseq object should contain counts data,
+as by default \code{comp_barplot()} performs the "compositional" taxa transformation for you,
+and requires count input for some sample_order methods!
 }
 \details{
 \itemize{
