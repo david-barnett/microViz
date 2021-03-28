@@ -163,22 +163,30 @@ ord_explore <- function(data,
           width = 3,
           shiny::fluidRow(
             shiny::h4("Ordination options"),
-            shiny::selectInput(
-              inputId = "id_var", label = "Selection grouping:",
-              choices = union("SAMPLE", colnames(samdat)),
-              selected = c(sample_id, "SAMPLE")[[1]]
+            shiny::splitLayout(
+              cellWidths = c("30%", "70%"),
+              shiny::helpText("Click:"),
+              shiny::selectInput(
+                inputId = "id_var", label = NULL,
+                choices = union("SAMPLE", colnames(samdat)),
+                selected = c(sample_id, "SAMPLE")[[1]]
+              )
+            ),
+            shiny::splitLayout(
+              cellWidths = c("30%", "70%"),
+              shiny::helpText("Color:"),
+              shiny::selectInput(
+                inputId = "ord_colour", label = NULL,
+                choices = list(
+                  Variable = phyloseq::sample_variables(ps),
+                  Fixed = grDevices::colors(distinct = TRUE)
+                ),
+                selected = "gray"
+              )
             ),
             shiny::sliderInput(
               inputId = "ord_alpha", label = "Point alpha",
               value = 0.6, min = 0, max = 1, ticks = FALSE
-            ),
-            shiny::selectInput(
-              inputId = "ord_colour", label = "Point colour",
-              choices = list(
-                Variable = phyloseq::sample_variables(ps),
-                Fixed = grDevices::colors(distinct = TRUE)
-              ),
-              selected = "gray"
             ),
             # shape
             shiny::radioButtons(
@@ -234,6 +242,15 @@ ord_explore <- function(data,
                 inputId = "comp_label", label = NULL,
                 choices = union("SAMPLE", phyloseq::sample_variables(ps)),
                 selected = "SAMPLE"
+              )
+            ),
+            shiny::splitLayout(
+              cellWidths = c("30%", "70%"),
+              shiny::helpText("Facets:"),
+              shiny::selectInput(
+                inputId = "facet_by", label = NULL,
+                choices = c("NA", categorical_vars),
+                selected = "NA"
               )
             ),
             # rank
@@ -432,6 +449,9 @@ ord_explore <- function(data,
         ps_sel <-
           phyloseq::prune_samples(x = ps_ordered, samples = sample_kept)
 
+        facet_by <-
+          ifelse(input$facet_by == "NA", yes = NA, no = input$facet_by)
+
         # plot composition of selected samples
         p_comp <- ps_sel %>%
           comp_barplot(
@@ -444,7 +464,9 @@ ord_explore <- function(data,
             label = input$comp_label,
             merge_other = input$merge_other,
             interactive = TRUE,
-            max_taxa = input$taxmax
+            max_taxa = input$taxmax,
+            facet_by = facet_by,
+            ncol = 1
           )
 
         p_comp <- p_comp +

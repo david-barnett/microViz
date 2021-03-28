@@ -25,7 +25,8 @@ comp_barplot(
   seriate_method = "OLO_ward",
   keep_all_vars = TRUE,
   interactive = FALSE,
-  max_taxa = 10000
+  max_taxa = 10000,
+  ...
 )
 }
 \arguments{
@@ -88,6 +89,8 @@ but TRUE is required for some post-hoc plot customisation}
 \item{max_taxa}{maximum distinct taxa groups to show
 (only really useful for limiting complexity of interactive plots
 e.g. within ord_explore)}
+
+\item{...}{extra arguments passed to facet_wrap() (if facet_by is not NA)}
 }
 \value{
 ggplot or list of harmonised ggplots

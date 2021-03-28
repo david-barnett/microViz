@@ -65,6 +65,7 @@
 #' @param max_taxa maximum distinct taxa groups to show
 #' (only really useful for limiting complexity of interactive plots
 #' e.g. within ord_explore)
+#' @param ... extra arguments passed to facet_wrap() (if facet_by is not NA)
 #'
 #' @return ggplot or list of harmonised ggplots
 #' @export
@@ -186,7 +187,8 @@ comp_barplot <- function(
                          seriate_method = "OLO_ward",
                          keep_all_vars = TRUE,
                          interactive = FALSE,
-                         max_taxa = 10000) {
+                         max_taxa = 10000,
+                         ...) {
   stopifnot(max_taxa > n_taxa)
 
   # check phyloseq for common problems (and fix or message about this)
@@ -200,6 +202,10 @@ comp_barplot <- function(
     ps <- tax_sort(ps, by = tax_order)
   } else if (length(tax_order) == phyloseq::ntaxa(ps)) {
     ps <- tax_reorder(ps, tax_order = tax_order, tree_warn = TRUE)
+  } else {
+    stop(
+      "tax_order invalid, must be a function suitable for tax_sort, or 'name'"
+    )
   }
 
   # save full (but rank-aggregated) phyloseq for ordering samples
@@ -346,7 +352,7 @@ comp_barplot <- function(
       )
 
     if (!identical(facet_by, NA)) {
-      p <- p + ggplot2::facet_wrap(facets = facet_by, scales = "free")
+      p <- p + ggplot2::facet_wrap(facets = facet_by, scales = "free", ...)
     }
 
     p
@@ -380,7 +386,7 @@ comp_barplot <- function(
   }
 }
 
-#' Create a new tax_table rank called top
+#' Create a new tax_table rank
 #'
 #' Same as taxa_names for first N taxa, "other" otherwise.
 #' Used in tax_agg and comp_barplot
