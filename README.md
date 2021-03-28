@@ -8,12 +8,11 @@
 [![R-CMD-check](https://github.com/david-barnett/microViz/workflows/R-CMD-check/badge.svg)](https://github.com/david-barnett/microViz/actions)
 <!-- badges: end -->
 
-microViz package provides functions for wrangling, stats and
-visualisation of microbiome (16S) sequencing readcount data. These
-functions are intended to be easy to use (with clear documentation) and
-modular (for extensibility and flexibility). microViz wraps, extends and
-complements, popular microbial ecology packages like phyloseq, vegan,
-and microbiome.
+microViz provides functions for wrangling, stats and visualization of
+microbiome sequencing data. These functions are intended to be easy to
+use (with clear documentation) and modular (for extensibility and
+flexibility). microViz wraps, extends and complements popular microbial
+ecology packages like phyloseq, vegan, and microbiome.
 
 **See the documentation website for full details and examples:**
 <https://david-barnett.github.io/microViz/>
@@ -193,8 +192,8 @@ aitchison_perm <- dist_permanova(
   variables = "bmi_group + female"
 )
 #> Dropping samples with missings: 2
-#> 2021-03-24 18:19:23 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2021-03-24 18:19:23 - Finished PERMANOVA
+#> 2021-03-28 15:19:07 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2021-03-28 15:19:07 - Finished PERMANOVA
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
 #>            Df   SumOfSqs         R2        F Pr(>F)
@@ -216,8 +215,8 @@ your permanova directly using the ord\_plot function with constraints.
 ``` r
 perm2 <- dist_permanova(data = aitchison_dists, variables = c("weight", "female"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2021-03-24 18:19:23 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2021-03-24 18:19:24 - Finished PERMANOVA
+#> 2021-03-28 15:19:07 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2021-03-28 15:19:08 - Finished PERMANOVA
 perm_get(perm2)
 #> Permutation test for adonis under reduced model
 #> Marginal effects of terms
@@ -290,7 +289,7 @@ devtools::session_info()
 #>  collate  en_GB.UTF-8                 
 #>  ctype    en_GB.UTF-8                 
 #>  tz       Europe/Amsterdam            
-#>  date     2021-03-24                  
+#>  date     2021-03-28                  
 #> 
 #> ─ Packages ───────────────────────────────────────────────────────────────────────────────────────
 #>  package        * version    date       lib source        
