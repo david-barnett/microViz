@@ -12,6 +12,9 @@
 #' 1. make your points smaller
 #' 2. set point shape to fixed, or to a variable with fewer categories
 #'
+#' Limitation: When a selection grouping variable is NA for some samples,
+#' that grouping variable cannot be used to select those samples
+#'
 #'
 #' @param data ps_extra list output of ord_calc
 #' @param sample_id name of id variable for ordering
@@ -21,8 +24,6 @@
 #' seriation method to order phyloseq samples by similarity
 #' @param tax_transform_for_ordering
 #' transform tax before ordering with ps_seriate
-#' @param ord_tooltip
-#' what to show on hovering over ordination point, NULL defaults to sample name
 #' @param app_options passed to shinyApp() options argument
 #' @param ... additional arguments passed to ord_plot
 #'
@@ -94,7 +95,6 @@ ord_explore <- function(data,
                         ps = NULL,
                         seriate_method = "OLO_ward", # ordering samples
                         tax_transform_for_ordering = "identity", # samples
-                        ord_tooltip = NULL, # defaults to SAMPLE
                         app_options = list(launch.browser = TRUE), # shinyApp()
                         ...) {
   # SETUP -------------------------------------------------------------------
@@ -165,7 +165,7 @@ ord_explore <- function(data,
             shiny::h4("Ordination options"),
             shiny::selectInput(
               inputId = "id_var", label = "Selection grouping:",
-              choices = colnames(samdat),
+              choices = union("SAMPLE", colnames(samdat)),
               selected = c(sample_id, "SAMPLE")[[1]]
             ),
             shiny::sliderInput(
@@ -254,7 +254,7 @@ ord_explore <- function(data,
               shiny::helpText("Order:"),
               shiny::selectInput(
                 inputId = "tax_order", label = NULL,
-                choices = c("sum", "median", "mean", "max", "min", "var"),
+                choices = c("sum", "median", "mean", "max", "var"),
                 selected = "sum"
               )
             ),
@@ -352,8 +352,7 @@ ord_explore <- function(data,
         alpha = input$ord_alpha,
         interactive = TRUE,
         data_id = input$id_var,
-        tooltip =
-          c(ord_tooltip, "SAMPLE")[[1]], # default ord_tooltip=NULL -> 'SAMPLE'
+        tooltip = input$id_var,
         ...
       ) +
         ggplot2::scale_shape_discrete(na.translate = TRUE, na.value = 1)

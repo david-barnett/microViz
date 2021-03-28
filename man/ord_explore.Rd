@@ -10,7 +10,6 @@ ord_explore(
   ps = NULL,
   seriate_method = "OLO_ward",
   tax_transform_for_ordering = "identity",
-  ord_tooltip = NULL,
   app_options = list(launch.browser = TRUE),
   ...
 )
@@ -26,8 +25,6 @@ ord_explore(
 \item{seriate_method}{seriation method to order phyloseq samples by similarity}
 
 \item{tax_transform_for_ordering}{transform tax before ordering with ps_seriate}
-
-\item{ord_tooltip}{what to show on hovering over ordination point, NULL defaults to sample name}
 
 \item{app_options}{passed to shinyApp() options argument}
 
@@ -48,6 +45,9 @@ If you get an error like the one below:
 \item make your points smaller
 \item set point shape to fixed, or to a variable with fewer categories
 }
+
+Limitation: When a selection grouping variable is NA for some samples,
+that grouping variable cannot be used to select those samples
 }
 \examples{
 library(phyloseq)
