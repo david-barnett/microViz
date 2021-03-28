@@ -40,7 +40,8 @@
 
 
 <meta property="og:title" content="Filter phyloseq samples by sample_data variables — ps_filter" />
-<meta property="og:description" content="Wrapper for dplyr::filter function. All dplyr functionality" />
+<meta property="og:description" content="Keep only samples with sample_data matching one or more conditions.
+Use this function as you would use use dplyr::filter(), but with a phyloseq object!" />
 
 
 
@@ -72,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9005</span>
       </span>
     </div>
 
@@ -135,7 +136,8 @@
     </div>
 
     <div class="ref-description">
-    <p>Wrapper for dplyr::filter function. All dplyr functionality</p>
+    <p>Keep only samples with sample_data matching one or more conditions.
+Use this function as you would use use dplyr::filter(), but with a phyloseq object!</p>
     </div>
 
     <pre class="usage"><span class='fu'>ps_filter</span><span class='op'>(</span><span class='va'>ps</span>, <span class='va'>...</span>, .target <span class='op'>=</span> <span class='st'>"sample_data"</span>, .keep_all_taxa <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
@@ -153,17 +155,23 @@
     </tr>
     <tr>
       <th>.target</th>
-      <td><p>which slot of phyloseq to mutate, currently only "sample_data" supported</p></td>
+      <td><p>which slot of phyloseq to use for filtering by,
+currently only "sample_data" supported</p></td>
     </tr>
     <tr>
       <th>.keep_all_taxa</th>
-      <td><p>if FALSE (the default), remove taxa which are no longer present in the dataset after filtering</p></td>
+      <td><p>if FALSE (the default),
+remove taxa which are no longer present in the dataset after filtering</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>phyloseq object (with filtered sample_data)</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></code> explains better how to give arguments to this function</p>
+<p><code><a href='tax_filter.html'>tax_filter</a></code> for filtering taxa (not samples)</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://dx.plos.org/10.1371/journal.pone.0061217'>phyloseq</a></span><span class='op'>)</span>

@@ -42,12 +42,14 @@
 <meta property="og:title" content="Extract elements from ps_extra class — ps_extra-accessors" />
 <meta property="og:description" content="
 
-ps_get    returns phyloseq
-info_get  returns ps_extra_info object
-dist_get  returns distance matrix (or NULL)
-ord_get   returns ordination object (or NULL)
-perm_get  returns adonis2() permanova model (or NULL)
-bdisp_get returns results of betadisper() (or NULL)
+ps_get     returns phyloseq
+info_get   returns ps_extra_info object
+dist_get   returns distance matrix (or NULL)
+ord_get    returns ordination object (or NULL)
+perm_get   returns adonis2() permanova model (or NULL)
+bdisp_get  returns results of betadisper() (or NULL)
+otu_get    returns phyloseq otu_table matrix with taxa as columns
+samdat_tbl returns phyloseq sample_data as a tibble, with sample_names as new first column called .sample_name
 
 " />
 
@@ -81,7 +83,7 @@ bdisp_get returns results of betadisper() (or NULL)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9005</span>
       </span>
     </div>
 
@@ -146,12 +148,14 @@ bdisp_get returns results of betadisper() (or NULL)
     <div class="ref-description">
     
 <ul>
-<li><p><code>ps_get</code>    returns phyloseq</p></li>
-<li><p><code>info_get</code>  returns ps_extra_info object</p></li>
-<li><p><code>dist_get</code>  returns distance matrix (or NULL)</p></li>
-<li><p><code>ord_get</code>   returns ordination object (or NULL)</p></li>
-<li><p><code>perm_get</code>  returns adonis2() permanova model (or NULL)</p></li>
-<li><p><code>bdisp_get</code> returns results of betadisper() (or NULL)</p></li>
+<li><p><code>ps_get</code>     returns phyloseq</p></li>
+<li><p><code>info_get</code>   returns ps_extra_info object</p></li>
+<li><p><code>dist_get</code>   returns distance matrix (or NULL)</p></li>
+<li><p><code>ord_get</code>    returns ordination object (or NULL)</p></li>
+<li><p><code>perm_get</code>   returns adonis2() permanova model (or NULL)</p></li>
+<li><p><code>bdisp_get</code>  returns results of betadisper() (or NULL)</p></li>
+<li><p><code>otu_get</code>    returns phyloseq otu_table matrix with taxa as columns</p></li>
+<li><p><code>samdat_tbl</code> returns phyloseq sample_data as a tibble, with sample_names as new first column called .sample_name</p></li>
 </ul>
 
     </div>

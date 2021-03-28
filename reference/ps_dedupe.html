@@ -78,7 +78,7 @@ method = &quot;last&quot; keeps the last sample in each duplicate group encounte
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9005</span>
       </span>
     </div>
 
@@ -141,8 +141,8 @@ method = &quot;last&quot; keeps the last sample in each duplicate group encounte
     </div>
 
     <div class="ref-description">
-    <p>Use 1 or more variables in the sample_data to identify and remove duplicate samples (leaving 1 per category).
-<strong>methods:</strong></p><ul>
+    <p>Use 1 or more variables in the sample_data to identify and remove duplicate samples (leaving 1 per category).</p>
+<p><strong>methods:</strong></p><ul>
 <li><p>method = "readcount" keeps the one sample in each duplicate group with the highest total number of reads according to sample_sums</p></li>
 <li><p>method = "first" keeps the first sample in each duplicate group encountered in the row order of the sample_data</p></li>
 <li><p>method = "last" keeps the last sample in each duplicate group encountered in the row order of the sample_data</p></li>
@@ -180,6 +180,9 @@ method = &quot;last&quot; keeps the last sample in each duplicate group encounte
 
     <p>What happens when duplicated samples have exactly equal readcounts in method = "readcount"?
 The first encountered maximum is kept (in sample_data row order, like method = "first")</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='ps_filter.html'>ps_filter</a></code> for filtering samples by sample_data variables</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://dx.plos.org/10.1371/journal.pone.0061217'>phyloseq</a></span><span class='op'>)</span>

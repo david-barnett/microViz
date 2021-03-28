@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9005</span>
       </span>
     </div>
 
@@ -93,7 +93,7 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>microViz package provides functions for wrangling, stats and visualisation of microbiome (16S) sequencing readcount data. These functions are intended to be easy to use (with clear documentation) and modular (for extensibility and flexibility). microViz wraps, extends and complements, popular microbial ecology packages like phyloseq, vegan, and microbiome.</p>
+<p>microViz provides functions for wrangling, stats and visualization of microbiome sequencing data. These functions are intended to be easy to use (with clear documentation) and modular (for extensibility and flexibility). microViz wraps, extends and complements popular microbial ecology packages like phyloseq, vegan, and microbiome.</p>
 <p><strong>See the documentation website for full details and examples:</strong> <a href="https://david-barnett.github.io/microViz/" class="uri">https://david-barnett.github.io/microViz/</a></p>
 <ul>
 <li>The <a href="https://david-barnett.github.io/microViz/articles/articles/microViz.html">“Get started”</a> page, and also <a href="https://david-barnett.github.io/microViz/index.html">this ReadMe</a>, show a few example analyses.</li>
@@ -240,8 +240,8 @@
   variables <span class="op">=</span> <span class="st">"bmi_group + female"</span>
 <span class="op">)</span>
 <span class="co">#&gt; Dropping samples with missings: 2</span>
-<span class="co">#&gt; 2021-03-24 18:19:23 - Starting PERMANOVA with 99 perms with 1 processes</span>
-<span class="co">#&gt; 2021-03-24 18:19:23 - Finished PERMANOVA</span>
+<span class="co">#&gt; 2021-03-28 15:19:07 - Starting PERMANOVA with 99 perms with 1 processes</span>
+<span class="co">#&gt; 2021-03-28 15:19:07 - Finished PERMANOVA</span>
 <span class="co"># view the permanova results</span>
 <span class="fu"><a href="reference/ps_extra-accessors.html">perm_get</a></span><span class="op">(</span><span class="va">aitchison_perm</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt;            Df   SumOfSqs         R2        F Pr(&gt;F)</span>
@@ -261,8 +261,8 @@
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">perm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/dist_permanova.html">dist_permanova</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">aitchison_dists</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"female"</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">321</span><span class="op">)</span>
 <span class="co">#&gt; Dropping samples with missings: 2</span>
-<span class="co">#&gt; 2021-03-24 18:19:23 - Starting PERMANOVA with 999 perms with 1 processes</span>
-<span class="co">#&gt; 2021-03-24 18:19:24 - Finished PERMANOVA</span>
+<span class="co">#&gt; 2021-03-28 15:19:07 - Starting PERMANOVA with 999 perms with 1 processes</span>
+<span class="co">#&gt; 2021-03-28 15:19:08 - Finished PERMANOVA</span>
 <span class="fu"><a href="reference/ps_extra-accessors.html">perm_get</a></span><span class="op">(</span><span class="va">perm2</span><span class="op">)</span>
 <span class="co">#&gt; Permutation test for adonis under reduced model</span>
 <span class="co">#&gt; Marginal effects of terms</span>
@@ -331,7 +331,7 @@
 <span class="co">#&gt;  collate  en_GB.UTF-8                 </span>
 <span class="co">#&gt;  ctype    en_GB.UTF-8                 </span>
 <span class="co">#&gt;  tz       Europe/Amsterdam            </span>
-<span class="co">#&gt;  date     2021-03-24                  </span>
+<span class="co">#&gt;  date     2021-03-28                  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ─ Packages ───────────────────────────────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt;  package        * version    date       lib source        </span>

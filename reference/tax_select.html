@@ -40,7 +40,8 @@
 
 
 <meta property="og:title" content="Subset phyloseq object by (partial) taxa names — tax_select" />
-<meta property="og:description" content="Convenient name-based taxa selection/filtering of phyloseq object, including approximate name matching" />
+<meta property="og:description" content="Convenient name-based taxa selection/filtering of phyloseq object, including approximate name matching.
+Takes a phyloseq with tax table and a (partial) taxonomic name, or a list/vector of taxonomic names (full or partial matches)." />
 
 
 
@@ -72,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9005</span>
       </span>
     </div>
 
@@ -135,7 +136,8 @@
     </div>
 
     <div class="ref-description">
-    <p>Convenient name-based taxa selection/filtering of phyloseq object, including approximate name matching</p>
+    <p>Convenient name-based taxa selection/filtering of phyloseq object, including approximate name matching.
+Takes a phyloseq with tax table and a (partial) taxonomic name, or a list/vector of taxonomic names (full or partial matches).</p>
     </div>
 
     <pre class="usage"><span class='fu'>tax_select</span><span class='op'>(</span>
@@ -178,11 +180,14 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>tax-filtered phyloseq object</p>
+    <p>phyloseq object with fewer taxa</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Takes a phyloseq with tax table and a list/vector of taxonomic names (full or partial matches).
-It will also search the otu names/rownames, BUT only for perfect matches.</p>
+    <p>tax_select will also search the otu names/rownames, BUT only for perfect matches.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='ps_select.html'>ps_select</a></code> for selecting variables in phyloseq sample_data</p>
+<p><code><a href='https://rdrr.io/r/base/agrep.html'>agrep</a></code> for the function that powers the approximate matching in tax_select</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Get example phyloseq object data</span>

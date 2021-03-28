@@ -41,17 +41,7 @@
 
 <meta property="og:title" content="Plot (grouped and ordered) compositional barplots — comp_barplot" />
 <meta property="og:description" content="Stacked barplots showing composition of phyloseq samples for a specified number of coloured taxa.
-Normally your phyloseq object should contain count data, as by default comp_barplot() performs the &quot;compositional&quot; taxa transformation for you, and requires count input for some sample_order methods!
-sample_order: Either specify a list of sample names to order manually, or the bars/samples can/will be sorted by similarity, according to a specified distance measure (default aitchison),
-seriate_method specifies a seriation/ordering algorithm (default Ward hierarchical clustering with optimal leaf ordering, see seriation::list_seriation_methods())
-group_by: You can group the samples on distinct plots by levels of a variable in the phyloseq object. The list of ggplots produced can be arranged flexibly with the patchwork package functions. If you want to group by several variables you can create an interaction variable with interaction(var1, var2) in the phyloseq sample_data BEFORE using comp_barplot.
-facet_by can allow faceting of your plot(s) by a grouping variable. Using this approach is less flexible than using group_by but means you don't have to arrange a list of plots yourself like with the group_by argument. Using facet_by is equivalent to adding a call to facet_wrap(facets = facet_by, scales = &quot;free&quot;) to your plot(s). Calling facet_wrap() yourself is itself a more flexible option as you can add other arguments like the number of rows etc. However you must use keep_all_vars = TRUE if you will add faceting manually.
-bar_width: No gaps between bars, unless you want them (decrease width argument to add gaps between bars).
-bar_outline_colour: Bar outlines default to &quot;grey5&quot; for almost black outlines. Use NA if you don't want outlines.
-merge_other: controls whether bar outlines can be drawn around individual (lower abundance) taxa that are grouped in &quot;other&quot; category. If you want to see the diversity of taxa in &quot;other&quot; use merge_taxa = FALSE, or use TRUE if you prefer the cleaner merged look
-palette: Default colouring is consistent across multiple plots if created with the group_by argument, and the defaults scheme retains the colouring of the most abundant taxa irrespective of n_taxa
-
-" />
+Normally your phyloseq object should contain count data, as by default comp_barplot() performs the &quot;compositional&quot; taxa transformation for you, and requires count input for some sample_order methods!" />
 
 
 
@@ -83,7 +73,7 @@ palette: Default colouring is consistent across multiple plots if created with t
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9005</span>
       </span>
     </div>
 
@@ -147,17 +137,7 @@ palette: Default colouring is consistent across multiple plots if created with t
 
     <div class="ref-description">
     <p>Stacked barplots showing composition of phyloseq samples for a specified number of coloured taxa.
-Normally your phyloseq object should contain count data, as by default <code>comp_barplot()</code> performs the "compositional" taxa transformation for you, and requires count input for some sample_order methods!</p><ul>
-<li><p>sample_order: Either specify a list of sample names to order manually, or the bars/samples can/will be sorted by similarity, according to a specified distance measure (default aitchison),</p></li>
-<li><p>seriate_method specifies a seriation/ordering algorithm (default Ward hierarchical clustering with optimal leaf ordering, see seriation::list_seriation_methods())</p></li>
-<li><p>group_by: You can group the samples on distinct plots by levels of a variable in the phyloseq object. The list of ggplots produced can be arranged flexibly with the patchwork package functions. If you want to group by several variables you can create an interaction variable with interaction(var1, var2) in the phyloseq sample_data BEFORE using comp_barplot.</p></li>
-<li><p>facet_by can allow faceting of your plot(s) by a grouping variable. Using this approach is less flexible than using group_by but means you don't have to arrange a list of plots yourself like with the group_by argument. Using facet_by is equivalent to adding a call to facet_wrap(facets = facet_by, scales = "free") to your plot(s). Calling facet_wrap() yourself is itself a more flexible option as you can add other arguments like the number of rows etc. However you must use keep_all_vars = TRUE if you will add faceting manually.</p></li>
-<li><p>bar_width: No gaps between bars, unless you want them (decrease width argument to add gaps between bars).</p></li>
-<li><p>bar_outline_colour: Bar outlines default to "grey5" for almost black outlines. Use NA if you don't want outlines.</p></li>
-<li><p>merge_other: controls whether bar outlines can be drawn around individual (lower abundance) taxa that are grouped in "other" category. If you want to see the diversity of taxa in "other" use merge_taxa = FALSE, or use TRUE if you prefer the cleaner merged look</p></li>
-<li><p>palette: Default colouring is consistent across multiple plots if created with the group_by argument, and the defaults scheme retains the colouring of the most abundant taxa irrespective of n_taxa</p></li>
-</ul>
-
+Normally your phyloseq object should contain count data, as by default <code>comp_barplot()</code> performs the "compositional" taxa transformation for you, and requires count input for some sample_order methods!</p>
     </div>
 
     <pre class="usage"><span class='fu'>comp_barplot</span><span class='op'>(</span>
@@ -179,7 +159,10 @@ Normally your phyloseq object should contain count data, as by default <code>com
   tax_transform_for_ordering <span class='op'>=</span> <span class='st'>"identity"</span>,
   tax_transform_for_plot <span class='op'>=</span> <span class='st'>"compositional"</span>,
   seriate_method <span class='op'>=</span> <span class='st'>"OLO_ward"</span>,
-  keep_all_vars <span class='op'>=</span> <span class='cn'>TRUE</span>
+  keep_all_vars <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  interactive <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  max_taxa <span class='op'>=</span> <span class='fl'>10000</span>,
+  <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -276,6 +259,20 @@ e.g. "identity", if you have truly quantitative microbiome profiling data</p></t
       <td><p>FALSE may speed up internal melting with ps_melt for large phyloseq objects
 but TRUE is required for some post-hoc plot customisation</p></td>
     </tr>
+    <tr>
+      <th>interactive</th>
+      <td><p>creates plot suitable for use with ggiraph</p></td>
+    </tr>
+    <tr>
+      <th>max_taxa</th>
+      <td><p>maximum distinct taxa groups to show
+(only really useful for limiting complexity of interactive plots
+e.g. within ord_explore)</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>extra arguments passed to facet_wrap() (if facet_by is not NA)</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -284,6 +281,17 @@ but TRUE is required for some post-hoc plot customisation</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     
+<ul>
+<li><p>sample_order: Either specify a list of sample names to order manually, or the bars/samples can/will be sorted by similarity, according to a specified distance measure (default aitchison),</p></li>
+<li><p>seriate_method specifies a seriation/ordering algorithm (default Ward hierarchical clustering with optimal leaf ordering, see seriation::list_seriation_methods())</p></li>
+<li><p>group_by: You can group the samples on distinct plots by levels of a variable in the phyloseq object. The list of ggplots produced can be arranged flexibly with the patchwork package functions. If you want to group by several variables you can create an interaction variable with interaction(var1, var2) in the phyloseq sample_data BEFORE using comp_barplot.</p></li>
+<li><p>facet_by can allow faceting of your plot(s) by a grouping variable. Using this approach is less flexible than using group_by but means you don't have to arrange a list of plots yourself like with the group_by argument. Using facet_by is equivalent to adding a call to facet_wrap(facets = facet_by, scales = "free") to your plot(s). Calling facet_wrap() yourself is itself a more flexible option as you can add other arguments like the number of rows etc. However you must use keep_all_vars = TRUE if you will add faceting manually.</p></li>
+<li><p>bar_width: No gaps between bars, unless you want them (decrease width argument to add gaps between bars).</p></li>
+<li><p>bar_outline_colour: Bar outlines default to "grey5" for almost black outlines. Use NA if you don't want outlines.</p></li>
+<li><p>merge_other: controls whether bar outlines can be drawn around individual (lower abundance) taxa that are grouped in "other" category. If you want to see the diversity of taxa in "other" use merge_taxa = FALSE, or use TRUE if you prefer the cleaner merged look</p></li>
+<li><p>palette: Default colouring is consistent across multiple plots if created with the group_by argument, and the defaults scheme retains the colouring of the most abundant taxa irrespective of n_taxa</p></li>
+</ul>
+
 
 
 

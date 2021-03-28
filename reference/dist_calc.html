@@ -40,10 +40,22 @@
 
 
 <meta property="og:title" content="Calculate distances between pairs of samples in phyloseq object — dist_calc" />
-<meta property="og:description" content="Computes various unifrac distances, aitchison distance or any distance from vegan::vegdist().
-For use with ps_extra output of tax_transform (or tax_agg).
-Returns ps_extra object containing phyloseq and name of distance in addition to the distance matrix itself.
-Resulting object intended to be piped into ord_calc or permanova functions.
+<meta property="og:description" content="Can compute various sample-sample distances using the microbiota composition of your samples:
+bray curtis ('bray') or any other ecological distance from phyloseq::distance() / vegan::vegdist()
+unifrac distances (using the GUniFrac package)
+generalised: 'gunifrac' (optionally set weighting alpha in gunifrac alpha)
+unweighted: 'unifrac'
+weighted: 'wunifrac'
+variance adjusted weighted: 'va-wunifrac'
+
+aitchison distance (euclidean distance after centered log ratio transform clr, see details)
+euclidean distance
+
+
+Use dist_calc with ps_extra output of tax_transform (or tax_agg).
+It returns a ps_extra object containing the phyloseq and the name of the distance used
+in addition to the distance matrix itself.
+The resulting object is intended to be piped into ord_calc or dist_permanova functions.
 Alternatively you can directly access the distance matrix with dist_get()." />
 
 
@@ -76,7 +88,7 @@ Alternatively you can directly access the distance matrix with dist_get()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9005</span>
       </span>
     </div>
 
@@ -139,10 +151,22 @@ Alternatively you can directly access the distance matrix with dist_get()." />
     </div>
 
     <div class="ref-description">
-    <p>Computes various unifrac distances, aitchison distance or any distance from vegan::vegdist().
-For use with ps_extra output of tax_transform (or tax_agg).
-Returns ps_extra object containing phyloseq and name of distance in addition to the distance matrix itself.
-Resulting object intended to be piped into ord_calc or permanova functions.
+    <p>Can compute various sample-sample distances using the microbiota composition of your samples:</p><ul>
+<li><p>bray curtis ('bray') or any other ecological distance from phyloseq::distance() / vegan::vegdist()</p></li>
+<li><p>unifrac distances (using the GUniFrac package)</p><ul>
+<li><p>generalised: 'gunifrac' (optionally set weighting alpha in gunifrac alpha)</p></li>
+<li><p>unweighted: 'unifrac'</p></li>
+<li><p>weighted: 'wunifrac'</p></li>
+<li><p>variance adjusted weighted: 'va-wunifrac'</p></li>
+</ul></li>
+<li><p>aitchison distance (euclidean distance after centered log ratio transform clr, see details)</p></li>
+<li><p>euclidean distance</p></li>
+</ul>
+
+<p>Use dist_calc with ps_extra output of tax_transform (or tax_agg).
+It returns a ps_extra object containing the phyloseq and the name of the distance used
+in addition to the distance matrix itself.
+The resulting object is intended to be piped into ord_calc or dist_permanova functions.
 Alternatively you can directly access the distance matrix with dist_get().</p>
     </div>
 
@@ -159,7 +183,7 @@ Alternatively you can directly access the distance matrix with dist_get().</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>ps_extra object output from tax_agg() or a phyloseq object</p></td>
+      <td><p>ps_extra object output from tax_transform()</p></td>
     </tr>
     <tr>
       <th>dist</th>
@@ -171,7 +195,7 @@ Alternatively you can directly access the distance matrix with dist_get().</p>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>optional distance-specific named args passed to phyloseq::distance()</p></td>
+      <td><p>optional distance-specific named arguments passed to phyloseq::distance()</p></td>
     </tr>
     </table>
 
@@ -187,6 +211,13 @@ Alternatively you can directly access the distance matrix with dist_get().</p>
 
 <p>If ordination plots with taxon loading distances are desired, users require option 1.
 If the distance matrix is required for permanova, users require option 2.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='tax_transform.html'>tax_transform</a></code> for the function to use before dist_calc</p>
+<p><code><a href='ord_calc.html'>ord_calc</a></code></p>
+<p><code><a href='ord_plot.html'>ord_plot</a></code></p>
+<p><code><a href='dist_permanova.html'>dist_permanova</a></code></p>
+<p><code>phyloseq::<a href='https://rdrr.io/pkg/phyloseq/man/distance.html'>distance</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># bray curtis distance on genera-level features</span>
