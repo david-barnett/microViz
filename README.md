@@ -47,14 +47,16 @@ following instructions.
 # If you are on macOS, you might need to install xquartz to make the heatmaps work (ComplexHeatmaps package)
 # You can do this with homebrew, running the following command in your mac's Terminal: brew install --cask xquartz 
 
+# for installing from github you'll need the devtools package
+install.packages("devtools", type = "binary") # (not binary if you're on linux)
+
 # If you don't already have the latest versions of phyloseq and microbiome, you should install these from bioconductor:
 
 if (!requireNamespace("BiocManager", quietly = TRUE))
- install.packages("BiocManager")
+ install.packages("BiocManager", type = "binary") # (not binary if you're on linux)
 BiocManager::install(c("phyloseq", "microbiome"))
 
 # # Installing the latest version of this package # #
-install.packages("devtools")
 devtools::install_github("david-barnett/microViz@0.6.1") # check 0.6.1 is the latest version?
 # advanced tip: add @<commit-hash> after microViz to install a version from a particular commit
 ```
@@ -192,8 +194,8 @@ aitchison_perm <- dist_permanova(
   variables = "bmi_group + female"
 )
 #> Dropping samples with missings: 2
-#> 2021-03-29 13:10:03 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2021-03-29 13:10:03 - Finished PERMANOVA
+#> 2021-03-29 17:22:00 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2021-03-29 17:22:00 - Finished PERMANOVA
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
 #>            Df   SumOfSqs         R2        F Pr(>F)
@@ -215,8 +217,8 @@ your permanova directly using the ord\_plot function with constraints.
 ``` r
 perm2 <- dist_permanova(data = aitchison_dists, variables = c("weight", "female"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2021-03-29 13:10:03 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2021-03-29 13:10:04 - Finished PERMANOVA
+#> 2021-03-29 17:22:00 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2021-03-29 17:22:01 - Finished PERMANOVA
 perm_get(perm2)
 #> Permutation test for adonis under reduced model
 #> Marginal effects of terms

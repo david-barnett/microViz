@@ -1,11 +1,14 @@
 #' Interactively explore compositions of ordinated samples
 #'
 #' @description
+#' A Shiny app used like an interactive version of ord_plot (taking the output of ord_calc).
+#' Allows you to select samples on an ordination plot and view their composition with stacked barplots.
+#'
 #' Once running: click and drag to draw box over 2 or more samples to view their compositions.
 #' You can style the ordination plot points using the options on the left panel.
 #'
 #' @details
-#' If you get an error like the one below:
+#' If you get an interactive error like the one below:
 #'
 #' "ids don't have the same length than str (most often, it occurs because of clipping)"
 #'
@@ -40,10 +43,7 @@
 #'   dist_calc("bray") %>%
 #'   ord_calc(method = "PCoA")
 #'
-#' # ord_explore(
-#' #   data = ord1, auto_caption = NA,
-#' #   sample_id = "Sample_ID", ord_tooltip = "Sample_ID"
-#' # )
+#' # ord_explore(data = ord1, auto_caption = NA)
 #'
 #' # constrained biplot example #
 #' data("dietswap", package = "microbiome")
