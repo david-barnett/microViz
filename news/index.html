@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9007</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1</span>
       </span>
     </div>
 
@@ -100,7 +100,7 @@
       <a href="../articles/articles/Interactive-Ordination.html">Interactive Ordination Plot</a>
     </li>
     <li>
-      <a href="../articles/articles/Visualising-compositions.html">Visualising-compositions</a>
+      <a href="../articles/articles/Visualising-compositions.html">Visualising compositions</a>
     </li>
   </ul>
 </li>
@@ -132,15 +132,15 @@
       <small>Source: <a href='https://github.com/david-barnett/microViz/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="microviz-development-version" class="section level1">
-<h1 class="page-header" data-toc-text="development version">
-<a href="#microviz-development-version" class="anchor"></a>microViz (development version)</h1>
+    <div id="microviz-061" class="section level1">
+<h1 class="page-header" data-toc-text="0.6.1">
+<a href="#microviz-061" class="anchor"></a>microViz 0.6.1</h1>
 <div id="breaking-changes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#breaking-changes" class="anchor"></a>Breaking changes</h2>
 <ul>
 <li>
-<code>ord_plot_iris</code> and <code>ord_explore</code> no longer need ps argument of untransformed counts as (by default) <code>tax_transform</code> keeps the untransformed counts otu_table in the ps_extra object</li>
+<code>ord_plot_iris</code> and <code>ord_explore</code> no longer take ps argument of untransformed counts, because (by default) <code>tax_transform</code> now keeps the untransformed counts otu_table in the ps_extra object</li>
 </ul>
 </div>
 <div id="features" class="section level2">
@@ -148,9 +148,13 @@
 <a href="#features" class="anchor"></a>Features</h2>
 <ul>
 <li>
-<code>ord_plot</code> interactivity option with <code>ggiraph</code> package</li>
-<li>
 <code>ord_explore</code> now allows much better control over selection of points (using <code>ggiraph</code> functionality)</li>
+<li>
+<code>ord_plot</code> now has interactive option with <code>ggiraph</code> package</li>
+<li>
+<code>ord_plot_iris</code> gains ord_plot argument, allowing a simple pairing of iris plot and ordination to be made more easily</li>
+<li>
+<code>comp_barplot</code> (and by extension <code>ord_plot_iris</code>) can now be made interactive in a simple fashion, using ggiraph for hover/tooltip interaction with taxa</li>
 </ul>
 </div>
 </div>

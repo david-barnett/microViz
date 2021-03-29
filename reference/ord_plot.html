@@ -76,7 +76,7 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9007</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1</span>
       </span>
     </div>
 
@@ -105,7 +105,7 @@ Some other inspiration was from here: https://ourcodingclub.github.io/2018/05/04
       <a href="../articles/articles/Interactive-Ordination.html">Interactive Ordination Plot</a>
     </li>
     <li>
-      <a href="../articles/articles/Visualising-compositions.html">Visualising-compositions</a>
+      <a href="../articles/articles/Visualising-compositions.html">Visualising compositions</a>
     </li>
   </ul>
 </li>
@@ -372,9 +372,12 @@ drawn with geom_point using aes_string</p></td>
 <span class='co'># the automatic caption can record that no transformation was applied</span>
 <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"identity"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='co'># so caption can record (lack of) transform</span>
-  <span class='fu'><a href='dist_calc.html'>dist_calc</a></span><span class='op'>(</span><span class='st'>"bray"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='co'># bray curtis</span>
-  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='co'># guesses you want an unconstrained PCoA</span>
+  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"identity"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='co'># so caption can record (lack of) transform</span>
+  <span class='fu'><a href='dist_calc.html'>dist_calc</a></span><span class='op'>(</span><span class='st'>"bray"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='co'># bray curtis</span>
+  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='co'># guesses you want an unconstrained PCoA</span>
   <span class='fu'>ord_plot</span><span class='op'>(</span>colour <span class='op'>=</span> <span class='st'>"bmi_group"</span><span class='op'>)</span>
 </div><div class='img'><img src='ord_plot-7.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># it is possible to facet these plots</span>

@@ -74,7 +74,7 @@ Best paired with ordination plot made from same ord_calc output." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9007</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1</span>
       </span>
     </div>
 
@@ -103,7 +103,7 @@ Best paired with ordination plot made from same ord_calc output." />
       <a href="../articles/articles/Interactive-Ordination.html">Interactive Ordination Plot</a>
     </li>
     <li>
-      <a href="../articles/articles/Visualising-compositions.html">Visualising-compositions</a>
+      <a href="../articles/articles/Visualising-compositions.html">Visualising compositions</a>
     </li>
   </ul>
 </li>
@@ -145,9 +145,9 @@ Best paired with ordination plot made from same <code>ord_calc</code> output.</p
     <pre class="usage"><span class='fu'>ord_plot_iris</span><span class='op'>(</span>
   <span class='va'>data</span>,
   <span class='va'>tax_level</span>,
-  ps <span class='op'>=</span> <span class='cn'>NULL</span>,
   axes <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>,
   n_taxa <span class='op'>=</span> <span class='fl'>10</span>,
+  ord_plot <span class='op'>=</span> <span class='st'>"none"</span>,
   taxon_renamer <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
   palette <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"grey90"</span>, <span class='fu'><a href='https://rdrr.io/r/base/rev.html'>rev</a></span><span class='op'>(</span><span class='fu'><a href='distinct_palette.html'>distinct_palette</a></span><span class='op'>(</span><span class='va'>n_taxa</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>,
   anno_colour <span class='op'>=</span> <span class='cn'>NULL</span>,
@@ -173,11 +173,16 @@ Best paired with ordination plot made from same <code>ord_calc</code> output.</p
     </tr>
     <tr>
       <th>axes</th>
-      <td><p>which 2 axes of ordination to use for ordering</p></td>
+      <td><p>which 2 axes of ordination to use for ordering bars</p></td>
     </tr>
     <tr>
       <th>n_taxa</th>
-      <td><p>how many taxa to colour show distinct colours for (all other taxa grouped into "Other").</p></td>
+      <td><p>how many taxa to colour show distinct colours for (all other taxa grouped into "other").</p></td>
+    </tr>
+    <tr>
+      <th>ord_plot</th>
+      <td><p>add a matching ordination plot to your iris plot
+('list' returns separate plots in a list, 'above'/'below' uses patchwork to pair plots together into one)</p></td>
     </tr>
     <tr>
       <th>taxon_renamer</th>
@@ -218,7 +223,7 @@ Either "species" or "site" scores are scaled by eigenvalues, and the other set o
     </tr>
     <tr>
       <th>...</th>
-      <td><p>extra args passed to comp_barplot</p></td>
+      <td><p>extra args passed to comp_barplot e.g. bar_width</p></td>
     </tr>
     </table>
 
@@ -227,8 +232,10 @@ Either "species" or "site" scores are scaled by eigenvalues, and the other set o
     <p>ggplot</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>data must also contain counts table if taxa were transformed
+    <p>data must also contain counts table if taxa were transformed (e.g. for clr PCA ordination)
 (i.e. you must have used <code>tax_transform</code> with keep_counts = TRUE, if transformation was not "identity")</p>
+<p>You cannot set a variable fill aesthetic (only fixed) for the annotation points,
+as the fill is used for the taxonomic composition bars</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
@@ -273,15 +280,53 @@ Either "species" or "site" scores are scaled by eigenvalues, and the other set o
 <span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_brewer.html'>scale_colour_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Dark2"</span><span class='op'>)</span>
 </div><div class='img'><img src='ord_plot_iris-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># It is also possible to use comp_barplot customisation arguments</span>
+<span class='co'># like bar_width and bar_outline_colour, and to make interactive iris plots</span>
+<span class='co'># using ggiraph:</span>
+
+<span class='va'>hover_over_me</span> <span class='op'>&lt;-</span> <span class='fu'>ord_plot_iris</span><span class='op'>(</span>
+  data <span class='op'>=</span> <span class='va'>ord</span>,
+  tax_level <span class='op'>=</span> <span class='st'>"Genus"</span>,
+  n_taxa <span class='op'>=</span> <span class='fl'>10</span>,
+  anno_colour <span class='op'>=</span> <span class='st'>"nationality"</span>,
+  anno_colour_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>,
+  anno_binary <span class='op'>=</span> <span class='st'>"female"</span>,
+  anno_binary_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>shape <span class='op'>=</span> <span class='st'>"F"</span>, size <span class='op'>=</span> <span class='fl'>2.5</span><span class='op'>)</span>,
+  taxon_renamer <span class='op'>=</span> <span class='va'>tax_renamer</span>,
+  interactive <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  bar_width <span class='op'>=</span> <span class='fl'>0.8</span>, bar_outline_colour <span class='op'>=</span> <span class='st'>"black"</span>
+<span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_brewer.html'>scale_colour_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Dark2"</span><span class='op'>)</span>
+
+<span class='fu'>ggiraph</span><span class='fu'>::</span><span class='fu'><a href='https://davidgohel.github.io/ggiraph/reference/girafe.html'>girafe</a></span><span class='op'>(</span>ggobj <span class='op'>=</span> <span class='va'>hover_over_me</span><span class='op'>)</span>
+
 <span class='co'># Using PCA for ordination after transformations (e.g. clr) means the untransformed taxonomic</span>
-<span class='co'># data are not available for plotting as compositions.</span>
-<span class='co'># This means you also need to provide the untransformed phyloseq object e.g.</span>
+<span class='co'># data are only available for plotting as compositions if you transformed with</span>
+<span class='co'># tax_transform(keep_counts = TRUE) and your original data were in fact counts.</span>
+<span class='co'># Compositional data will also work, and you can set count_warn to FALSE to avoid the warning</span>
 
 <span class='va'>clr_pca</span> <span class='op'>&lt;-</span> <span class='va'>ps</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"PCA"</span><span class='op'>)</span>
 
+<span class='co'># you can generate a simple paired layout of ord_plot and iris plot</span>
+<span class='co'># or separately create and pair the plots yourself, for more control</span>
+
+<span class='co'># simple pairing</span>
+<span class='fu'>ord_plot_iris</span><span class='op'>(</span>
+  data <span class='op'>=</span> <span class='va'>clr_pca</span>, n_taxa <span class='op'>=</span> <span class='fl'>12</span>,
+  tax_level <span class='op'>=</span> <span class='st'>"Genus"</span>,
+  taxon_renamer <span class='op'>=</span> <span class='va'>tax_renamer</span>,
+  ord_plot <span class='op'>=</span> <span class='st'>"below"</span>,
+  bar_width <span class='op'>=</span> <span class='fl'>0.8</span>, bar_outline_colour <span class='op'>=</span> <span class='st'>"black"</span>,
+  anno_binary <span class='op'>=</span> <span class='st'>"african"</span>,
+  anno_binary_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
+    y <span class='op'>=</span> <span class='fl'>1.08</span>, colour <span class='op'>=</span> <span class='st'>"gray50"</span>, shape <span class='op'>=</span> <span class='st'>"circle open"</span>, size <span class='op'>=</span> <span class='fl'>1</span>, stroke <span class='op'>=</span> <span class='fl'>1.5</span>
+  <span class='op'>)</span>
+<span class='op'>)</span>
+</div><div class='img'><img src='ord_plot_iris-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># manual pairing</span>
 <span class='va'>plot1</span> <span class='op'>&lt;-</span> <span class='va'>clr_pca</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span>
   plot_taxa <span class='op'>=</span> <span class='fl'>6</span><span class='op'>:</span><span class='fl'>1</span>, tax_vec_length <span class='op'>=</span> <span class='fl'>0.6</span>,
   colour <span class='op'>=</span> <span class='st'>"gray50"</span>, shape <span class='op'>=</span> <span class='st'>"nationality"</span>,
@@ -301,7 +346,7 @@ Either "species" or "site" scores are scaled by eigenvalues, and the other set o
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>legend.text <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>7</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='fu'>cowplot</span><span class='fu'>::</span><span class='fu'><a href='https://wilkelab.org/cowplot/reference/plot_grid.html'>plot_grid</a></span><span class='op'>(</span><span class='va'>plot1</span>, <span class='va'>iris</span>, nrow <span class='op'>=</span> <span class='fl'>1</span>, align <span class='op'>=</span> <span class='st'>"h"</span>, axis <span class='op'>=</span> <span class='st'>"b"</span>, rel_widths <span class='op'>=</span> <span class='fl'>3</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>)</span>
-</div><div class='img'><img src='ord_plot_iris-3.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='img'><img src='ord_plot_iris-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># you can add multiple rings of binary annotations</span>
 <span class='fu'>ord_plot_iris</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>clr_pca</span>, n_taxa <span class='op'>=</span> <span class='fl'>15</span>,
@@ -314,7 +359,7 @@ Either "species" or "site" scores are scaled by eigenvalues, and the other set o
   <span class='op'>)</span>
 <span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>legend.text <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>7</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='img'><img src='ord_plot_iris-4.png' alt='' width='700' height='433' /></div></pre>
+</div><div class='img'><img src='ord_plot_iris-5.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
