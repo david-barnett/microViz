@@ -167,8 +167,7 @@
 #' patch & coord_flip() &
 #'   theme(axis.text.y = element_text(size = 5), legend.text = element_text(size = 6))
 #' # See https://patchwork.data-imaginist.com/index.html
-comp_barplot <- function(
-                         ps,
+comp_barplot <- function(ps,
                          tax_level,
                          n_taxa = 8,
                          tax_order = sum,

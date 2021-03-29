@@ -78,8 +78,7 @@
 #' key
 #' @export
 #' @rdname taxatree_plots
-taxatree_plots <- function(
-                           ps,
+taxatree_plots <- function(ps,
                            models_list,
                            var_selection = NULL,
                            var_renamer = function(x) identity(x),
@@ -267,8 +266,7 @@ taxatree_plots <- function(
 #'
 #' @rdname taxatree_plots
 #' @export
-taxatree_plotkey <- function(
-                             ps,
+taxatree_plotkey <- function(ps,
                              size_stat = "taxon_mean",
                              colour = "grey",
                              max_node_size = 8,

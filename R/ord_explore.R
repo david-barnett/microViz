@@ -150,7 +150,6 @@ ord_explore <- function(data,
           )
         )
       ),
-
       shiny::sidebarLayout(
         position = "left",
         sidebarPanel = shiny::sidebarPanel(
@@ -338,15 +337,13 @@ ord_explore <- function(data,
 
     # ord_plot aesthetic vars
     shape <- shiny::reactive({
-      switch(
-        input$shape_var_type,
+      switch(input$shape_var_type,
         "fixed" = input$ord_shape_num,
         "variable" = input$ord_shape_var
       )
     })
     size <- shiny::reactive({
-      switch(
-        input$size_var_type,
+      switch(input$size_var_type,
         "fixed" = input$ord_size_num,
         "variable" = input$ord_size_var
       )

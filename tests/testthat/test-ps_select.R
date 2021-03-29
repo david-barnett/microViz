@@ -6,4 +6,3 @@ test_that("dplyr selection helper selection works", {
     expected = c("Sample_ID", "SeqTech", "SampleID")
   )
 })
-

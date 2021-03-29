@@ -93,8 +93,7 @@
 #' # library(microbiomeutilities)
 #' # data("hmp2")
 #' # system.time(tax_fill_unknowns(hmp2, min_length = 1))
-tax_fill_unknowns <- function(
-                              ps,
+tax_fill_unknowns <- function(ps,
                               min_length = 4,
                               unknowns = NA,
                               levels = phyloseq::rank_names(ps),

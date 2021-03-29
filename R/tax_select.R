@@ -40,8 +40,7 @@
 #' pSeq %>% tax_select(tax_list = "Bif", strict_matches = FALSE, deselect = TRUE)
 #' # Incorrect example
 #' # pSeq %>% tax_select(tax_list = "Bif", strict_matches = TRUE) # fails
-tax_select <- function(
-                       ps,
+tax_select <- function(ps,
                        tax_list,
                        ranks_searched = "all",
                        strict_matches = FALSE,

@@ -36,8 +36,7 @@
 #' otu_table(pst)[1:8, 1:8]
 #' sample_data(pst) %>% head(8)
 ps_arrange <- function(ps, ..., .target = "sample_data") {
-  sample_order <- switch(
-    .target,
+  sample_order <- switch(.target,
     "sample_data" = {
       df <- data.frame(phyloseq::sample_data(ps))
       df <- tibble::rownames_to_column(df, var = ".temp_sample_name_var")

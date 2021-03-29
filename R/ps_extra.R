@@ -67,7 +67,7 @@ print.ps_extra_info <- function(x, ..., all = FALSE) {
     out <- paste(
       "tax_agg =", x[["tax_agg"]], "tax_transform =", x[["tax_transform"]]
     )
-    if (!identical(x[["tax_scale"]], NA_character_)){
+    if (!identical(x[["tax_scale"]], NA_character_)) {
       out <- paste(out, paste("tax_scale =", x[["tax_scale"]]))
     }
     cat(out)
@@ -83,8 +83,7 @@ print.ps_extra_info <- function(x, ..., all = FALSE) {
 #' @param ord ordination object
 #' @param info info about the other 3 args
 #' @noRd
-new_ps_extra <- function(
-                         ps,
+new_ps_extra <- function(ps,
                          dist = NULL,
                          ord = NULL,
                          info = new_ps_extra_info()) {
@@ -106,8 +105,7 @@ new_ps_extra <- function(
 #' @param constraints constraints (if any) for ord_calc()
 #' @param conditions conditions (if any) for ord_calc()
 #' @noRd
-new_ps_extra_info <- function(
-                              tax_agg = NA_character_,
+new_ps_extra_info <- function(tax_agg = NA_character_,
                               tax_transform = NA_character_,
                               tax_scale = NA_character_,
                               distMethod = NA_character_,

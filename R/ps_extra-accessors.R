@@ -119,11 +119,11 @@ samdat_tbl <- function(data, sample_names_col = ".sample_name") {
 }
 
 # get phyloseq with counts if available
-ps_counts <- function(data, warn = TRUE){
+ps_counts <- function(data, warn = TRUE) {
   # always get ps, regardless of ps_extra or phyloseq data or counts presence
   ps <- ps_get(data)
   # checking names of a ps will return NULL (and x %in% NULL returns FALSE)
-  if ("counts" %in% names(data)){
+  if ("counts" %in% names(data)) {
     # get counts and use them if they exist,
     # and check regardless if otutab returned will be counts
     counts <- data[["counts"]]
@@ -139,9 +139,9 @@ ps_counts <- function(data, warn = TRUE){
     # now check ps otu_table is counts
     test_matrix <- unclass(otu_get(ps))
     if (any(test_matrix < 1 & test_matrix != 0)) {
-      if(isTRUE(warn)){
+      if (isTRUE(warn)) {
         warning(mess)
-      } else if (identical(warn, "error")){
+      } else if (identical(warn, "error")) {
         stop(mess)
       } else {
         stop("warn argument value is invalid: should be T, F or 'error'")
@@ -150,4 +150,3 @@ ps_counts <- function(data, warn = TRUE){
   }
   return(ps)
 }
-

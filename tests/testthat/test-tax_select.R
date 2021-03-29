@@ -21,9 +21,4 @@ test_that("tax_select throws error on no matches", {
     tax_select(pS, tax_list = "Bif", strict_matches = TRUE),
     regexp = "No taxa matched"
   )
-
 })
-
-
-
-

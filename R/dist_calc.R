@@ -56,8 +56,7 @@
 #'   dist_calc("gunifrac") %>%
 #'   dist_get()
 #' class(gunifrac)
-dist_calc <- function(
-                      data,
+dist_calc <- function(data,
                       dist = c("bray", "gunifrac", "unifrac", "wunifrac", "va-wunifrac", "aitchison", "euclidean")[1],
                       gunifrac_alpha = 0.5,
                       ...) {

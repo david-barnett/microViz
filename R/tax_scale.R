@@ -34,8 +34,18 @@ tax_scale <- function(data, center = TRUE, scale = TRUE, do = NA) {
   # overwrite center and scale according to non-NA value of do arg, if given
   if (!identical(do, NA)) {
     stopifnot(do %in% c("both", "center", "scale", "neither"))
-    center <- switch(do, both = TRUE, center = TRUE, scale = FALSE, neither = FALSE)
-    scale <- switch(do, both = TRUE, center = FALSE, scale = TRUE, neither = FALSE)
+    center <- switch(do,
+      both = TRUE,
+      center = TRUE,
+      scale = FALSE,
+      neither = FALSE
+    )
+    scale <- switch(do,
+      both = TRUE,
+      center = FALSE,
+      scale = TRUE,
+      neither = FALSE
+    )
   }
   scaling_info <- paste(c("centered", "scaled")[c(center, scale)], collapse = "&")
 

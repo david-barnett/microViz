@@ -187,9 +187,12 @@ constrained_aitchison_rda \%>\%
 # the automatic caption can record that no transformation was applied
 dietswap \%>\%
   tax_agg("Genus") \%>\%
-  tax_transform("identity") \%>\% # so caption can record (lack of) transform
-  dist_calc("bray") \%>\% # bray curtis
-  ord_calc() \%>\% # guesses you want an unconstrained PCoA
+  tax_transform("identity") \%>\%
+  # so caption can record (lack of) transform
+  dist_calc("bray") \%>\%
+  # bray curtis
+  ord_calc() \%>\%
+  # guesses you want an unconstrained PCoA
   ord_plot(colour = "bmi_group")
 
 # it is possible to facet these plots

@@ -62,7 +62,6 @@ tax_transform <- function(data,
       warning("data were already transformed by: ", info[["tax_transform"]])
     }
     info[["tax_transform"]] <- transformation
-
   } else if (methods::is(data, "phyloseq")) {
     if (identical(rank, NA)) rank <- "unique"
     ps <- ps_get(tax_agg(data, rank = rank))
