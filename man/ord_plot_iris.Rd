@@ -7,9 +7,9 @@
 ord_plot_iris(
   data,
   tax_level,
-  ps = NULL,
   axes = 1:2,
   n_taxa = 10,
+  ord_plot = "none",
   taxon_renamer = function(x) identity(x),
   palette = c("grey90", rev(distinct_palette(n_taxa))),
   anno_colour = NULL,
@@ -27,9 +27,12 @@ ord_plot_iris(
 
 \item{tax_level}{taxonomic aggregation level (from rank_names(ps))}
 
-\item{axes}{which 2 axes of ordination to use for ordering}
+\item{axes}{which 2 axes of ordination to use for ordering bars}
 
-\item{n_taxa}{how many taxa to colour show distinct colours for (all other taxa grouped into "Other").}
+\item{n_taxa}{how many taxa to colour show distinct colours for (all other taxa grouped into "other").}
+
+\item{ord_plot}{add a matching ordination plot to your iris plot
+('list' returns separate plots in a list, 'above'/'below' uses patchwork to pair plots together into one)}
 
 \item{taxon_renamer}{function to rename taxa in the legend}
 
@@ -50,7 +53,7 @@ Either "species" or "site" scores are scaled by eigenvalues, and the other set o
 
 \item{count_warn}{warn if count data are not available? i.e. phyloseq otu_table is not positive integers and ps_extra counts slot is NULL}
 
-\item{...}{extra args passed to comp_barplot}
+\item{...}{extra args passed to comp_barplot e.g. bar_width}
 }
 \value{
 ggplot
@@ -61,8 +64,11 @@ Order of samples extracted from ordination axes in data.
 Best paired with ordination plot made from same \code{ord_calc} output.
 }
 \details{
-data must also contain counts table if taxa were transformed
+data must also contain counts table if taxa were transformed (e.g. for clr PCA ordination)
 (i.e. you must have used \code{tax_transform} with keep_counts = TRUE, if transformation was not "identity")
+
+You cannot set a variable fill aesthetic (only fixed) for the annotation points,
+as the fill is used for the taxonomic composition bars
 }
 \examples{
 library(dplyr)
@@ -107,15 +113,53 @@ ord_plot_iris(
 ) +
   scale_colour_brewer(palette = "Dark2")
 
+# It is also possible to use comp_barplot customisation arguments
+# like bar_width and bar_outline_colour, and to make interactive iris plots
+# using ggiraph:
+
+hover_over_me <- ord_plot_iris(
+  data = ord,
+  tax_level = "Genus",
+  n_taxa = 10,
+  anno_colour = "nationality",
+  anno_colour_style = list(size = 3),
+  anno_binary = "female",
+  anno_binary_style = list(shape = "F", size = 2.5),
+  taxon_renamer = tax_renamer,
+  interactive = TRUE,
+  bar_width = 0.8, bar_outline_colour = "black"
+) +
+  scale_colour_brewer(palette = "Dark2")
+
+ggiraph::girafe(ggobj = hover_over_me)
+
 # Using PCA for ordination after transformations (e.g. clr) means the untransformed taxonomic
-# data are not available for plotting as compositions.
-# This means you also need to provide the untransformed phyloseq object e.g.
+# data are only available for plotting as compositions if you transformed with
+# tax_transform(keep_counts = TRUE) and your original data were in fact counts.
+# Compositional data will also work, and you can set count_warn to FALSE to avoid the warning
 
 clr_pca <- ps \%>\%
   tax_agg("Genus") \%>\%
   tax_transform("clr") \%>\%
   ord_calc(method = "PCA")
 
+# you can generate a simple paired layout of ord_plot and iris plot
+# or separately create and pair the plots yourself, for more control
+
+# simple pairing
+ord_plot_iris(
+  data = clr_pca, n_taxa = 12,
+  tax_level = "Genus",
+  taxon_renamer = tax_renamer,
+  ord_plot = "below",
+  bar_width = 0.8, bar_outline_colour = "black",
+  anno_binary = "african",
+  anno_binary_style = list(
+    y = 1.08, colour = "gray50", shape = "circle open", size = 1, stroke = 1.5
+  )
+)
+
+# manual pairing
 plot1 <- clr_pca \%>\% ord_plot(
   plot_taxa = 6:1, tax_vec_length = 0.6,
   colour = "gray50", shape = "nationality",

@@ -1,11 +1,13 @@
-# microViz (development version)
+# microViz 0.6.1
 
 ## Breaking changes
-- `ord_plot_iris` and `ord_explore` no longer need ps argument of untransformed counts as (by default) `tax_transform` keeps the untransformed counts otu_table in the ps_extra object
+- `ord_plot_iris` and `ord_explore` no longer take ps argument of untransformed counts, because (by default) `tax_transform` now keeps the untransformed counts otu_table in the ps_extra object
 
 ## Features
-- `ord_plot` interactivity option with `ggiraph` package
 - `ord_explore` now allows much better control over selection of points (using `ggiraph` functionality)
+- `ord_plot` now has interactive option with `ggiraph` package
+- `ord_plot_iris` gains ord_plot argument, allowing a simple pairing of iris plot and ordination to be made more easily
+- `comp_barplot` (and by extension `ord_plot_iris`) can now be made interactive in a simple fashion, using ggiraph for hover/tooltip interaction with taxa
 
 # microViz 0.6.0 - "open sesame"
 

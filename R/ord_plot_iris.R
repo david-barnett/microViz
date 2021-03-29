@@ -1,17 +1,24 @@
 #' Circular compositional barplot sorted by ordination angle
 #'
+#' @description
 #' Use with `ord_calc` output as data argument.
 #' Order of samples extracted from ordination axes in data.
 #' Best paired with ordination plot made from same `ord_calc` output.
 #'
-#' data must also contain counts table if taxa were transformed
+#' @details
+#' data must also contain counts table if taxa were transformed (e.g. for clr PCA ordination)
 #' (i.e. you must have used `tax_transform` with keep_counts = TRUE, if transformation was not "identity")
+#'
+#' You cannot set a variable fill aesthetic (only fixed) for the annotation points,
+#' as the fill is used for the taxonomic composition bars
 #'
 #' @param data ps_extra list output of ord_calc
 #' @param tax_level taxonomic aggregation level (from rank_names(ps))
-#' @param axes which 2 axes of ordination to use for ordering
-#' @param n_taxa how many taxa to colour show distinct colours for (all other taxa grouped into "Other").
+#' @param axes which 2 axes of ordination to use for ordering bars
+#' @param n_taxa how many taxa to colour show distinct colours for (all other taxa grouped into "other").
 #' @param taxon_renamer function to rename taxa in the legend
+#' @param ord_plot add a matching ordination plot to your iris plot
+#' ('list' returns separate plots in a list, 'above'/'below' uses patchwork to pair plots together into one)
 #' @param palette colour palette
 #' @param anno_colour name of sample_data variable to use for colouring geom_segment annotation ring
 #' @param anno_colour_style list of further arguments passed to geom_segment e.g. size
@@ -22,7 +29,7 @@
 #' Relevant for constrained ordinations: Type 2, or type 1 scaling. See \url{https://sites.google.com/site/mb3gustame/constrained-analyses/rda}
 #' Either "species" or "site" scores are scaled by eigenvalues, and the other set of scores is left unscaled (from ?vegan::scores.cca)
 #' @param count_warn warn if count data are not available? i.e. phyloseq otu_table is not positive integers and ps_extra counts slot is NULL
-#' @param ... extra args passed to comp_barplot
+#' @param ... extra args passed to comp_barplot e.g. bar_width
 #'
 #' @return ggplot
 #' @export
@@ -72,15 +79,53 @@
 #' ) +
 #'   scale_colour_brewer(palette = "Dark2")
 #'
+#' # It is also possible to use comp_barplot customisation arguments
+#' # like bar_width and bar_outline_colour, and to make interactive iris plots
+#' # using ggiraph:
+#'
+#' hover_over_me <- ord_plot_iris(
+#'   data = ord,
+#'   tax_level = "Genus",
+#'   n_taxa = 10,
+#'   anno_colour = "nationality",
+#'   anno_colour_style = list(size = 3),
+#'   anno_binary = "female",
+#'   anno_binary_style = list(shape = "F", size = 2.5),
+#'   taxon_renamer = tax_renamer,
+#'   interactive = TRUE,
+#'   bar_width = 0.8, bar_outline_colour = "black"
+#' ) +
+#'   scale_colour_brewer(palette = "Dark2")
+#'
+#' ggiraph::girafe(ggobj = hover_over_me)
+#'
 #' # Using PCA for ordination after transformations (e.g. clr) means the untransformed taxonomic
-#' # data are not available for plotting as compositions.
-#' # This means you also need to provide the untransformed phyloseq object e.g.
+#' # data are only available for plotting as compositions if you transformed with
+#' # tax_transform(keep_counts = TRUE) and your original data were in fact counts.
+#' # Compositional data will also work, and you can set count_warn to FALSE to avoid the warning
 #'
 #' clr_pca <- ps %>%
 #'   tax_agg("Genus") %>%
 #'   tax_transform("clr") %>%
 #'   ord_calc(method = "PCA")
 #'
+#' # you can generate a simple paired layout of ord_plot and iris plot
+#' # or separately create and pair the plots yourself, for more control
+#'
+#' # simple pairing
+#' ord_plot_iris(
+#'   data = clr_pca, n_taxa = 12,
+#'   tax_level = "Genus",
+#'   taxon_renamer = tax_renamer,
+#'   ord_plot = "below",
+#'   bar_width = 0.8, bar_outline_colour = "black",
+#'   anno_binary = "african",
+#'   anno_binary_style = list(
+#'     y = 1.08, colour = "gray50", shape = "circle open", size = 1, stroke = 1.5
+#'   )
+#' )
+#'
+#' # manual pairing
 #' plot1 <- clr_pca %>% ord_plot(
 #'   plot_taxa = 6:1, tax_vec_length = 0.6,
 #'   colour = "gray50", shape = "nationality",
@@ -115,9 +160,9 @@
 #'   theme(legend.text = element_text(size = 7))
 ord_plot_iris <- function(data,
                           tax_level,
-                          ps = NULL,
                           axes = 1:2,
                           n_taxa = 10,
+                          ord_plot = "none", # list/above/below (left, right?)
                           taxon_renamer = function(x) identity(x),
                           palette = c("grey90", rev(distinct_palette(n_taxa))),
                           anno_colour = NULL,
@@ -128,30 +173,18 @@ ord_plot_iris <- function(data,
                           scaling = 2,
                           count_warn = TRUE,
                           ...) {
+  if (!identical(ord_plot, "none")) {
+    ord_p <- ord_plot(
+      data = data, axes = axes, taxon_renamer = taxon_renamer, center = TRUE,
+      colour = c(anno_colour, "darkgrey")[[1]] # darkgrey if anno_colour NULL
+    )
+  }
 
   # get count data, warns if not count
   ps <- ps_counts(data, warn = count_warn)
 
-  # get axes
-  df <- as.data.frame.matrix(
-    vegan::scores(
-      ord_get(data),
-      choices = axes, display = "sites", scaling = scaling
-    )
-  )
-
-  df[["ID"]] <- rownames(df)
-
-  # find anticlockwise angle from right x-axis
-  df[["angle"]] <- dplyr::if_else(
-    condition = df[[2]] > 0,
-    true = atan2(x = df[[1]], y = df[[2]]),
-    false = (2 * pi) + (atan2(x = df[[1]], y = df[[2]]))
-  )
-
-  df <- dplyr::arrange(df, .data$angle)
-  sorted_samples <- rownames(df)
-  ps <- ps_reorder(ps, sample_order = sorted_samples)
+  # sort samples by ordination order
+  ps <- ps_ord_sort(ps, ord = ord_get(data), axes = axes, scaling = scaling)
 
   # drop to only annotation vars, if any given
   annos <- c(anno_binary, anno_colour)
@@ -159,17 +192,28 @@ ord_plot_iris <- function(data,
     ps <- ps_select(ps, dplyr::all_of(annos))
   }
 
-  iris <- microViz::comp_barplot(
+  # fixed barplot args
+  fixed_args <- list(
     ps = ps,
     tax_level = tax_level,
     taxon_renamer = taxon_renamer,
     palette = palette,
     n_taxa = n_taxa,
-    sample_order = "default",
-    bar_outline_colour = NA,
-    keep_all_vars = TRUE,
-    ...
-  ) +
+    keep_all_vars = TRUE, # this is already handle by ord_plot_iris
+    sample_order = "default" # uses ps order already set by ps_ord_sort!
+  )
+
+  # default extra args to barplot still modifiable and extendible
+  modifiable_args <- list(bar_outline_colour = NA)
+  dots <- list(...)
+  modifiable_args[names(dots)] <- dots
+
+  # all args for barplot, bargs...
+  bargs <- c(fixed_args, modifiable_args)
+
+  iris <- do.call(comp_barplot, args = bargs)
+  # set up polar coordinates and style
+  iris <- iris +
     ggplot2::coord_polar(
       direction = -1,
       start = 3 * pi / 2,
@@ -181,6 +225,8 @@ ord_plot_iris <- function(data,
       legend.title = ggplot2::element_blank(),
       legend.text = ggplot2::element_text(size = 8)
     ) +
+    # this expansion to set inner and outer radius is fairly hackish
+    # TODO improve and maybe make flexible for user choice?
     ggplot2::scale_y_continuous(
       expand = ggplot2::expansion(add = c(0.5, -0.1))
     )
@@ -215,7 +261,66 @@ ord_plot_iris <- function(data,
       ab_args[names(anno_binary_style)] <- purrr::map(anno_binary_style, .f = i)
       # add to plot
       iris <- iris + do.call(ggplot2::geom_point, args = ab_args)
+      if (!identical(ord_plot, "none")) {
+        ab_args_ord <- ab_args[!names(ab_args) %in% c("y", "shape", "size")]
+        ab_args_ord[["shape"]] <- "circle open"
+        ord_p <- ord_p + do.call(ggplot2::geom_point, args = ab_args_ord)
+      }
     }
   }
-  iris
+  if (!identical(ord_plot, "none")) {
+    plots <- list(iris = iris, ord_plot = ord_p)
+    if (identical(ord_plot, "list")) {
+      return(plots)
+    } else if (!requireNamespace("patchwork")) {
+      warning("patchwork required to pair plots vertically! Returning list.")
+      return(plots)
+    } else if (identical(ord_plot, "below")) {
+      return(patchwork::wrap_plots(plots, ncol = 1))
+    } else if (identical(ord_plot, "above")) {
+      return(patchwork::wrap_plots(plots[2:1], ncol = 1))
+    } else {
+      stop(
+        "ord_plot argument must be one of 'none', 'list', 'below' or 'above'"
+      )
+    }
+  } else {
+    return(iris)
+  }
+}
+
+
+#' ordination sorting helper for iris plot
+#'
+#' returns a phyloseq sorted by rotation around selected ordination axes
+#'
+#' @param ps phyloseq
+#' @param ord any vegan ordination made from ps
+#' @param axes e.g. 1:2
+#' @param scaling
+#' Relevant for constrained ordinations: Type 2, or type 1 scaling.
+#'
+#' @noRd
+ps_ord_sort <- function(ps, ord, axes, scaling) {
+  # get axes
+  df <- as.data.frame.matrix(
+    vegan::scores(
+      ord,
+      choices = axes, display = "sites", scaling = scaling
+    )
+  )
+
+  df[["ID"]] <- rownames(df)
+
+  # find anticlockwise angle from right x-axis
+  df[["angle"]] <- dplyr::if_else(
+    condition = df[[2]] > 0,
+    true = atan2(x = df[[1]], y = df[[2]]),
+    false = (2 * pi) + (atan2(x = df[[1]], y = df[[2]]))
+  )
+
+  df <- dplyr::arrange(df, .data$angle)
+  sorted_samples <- rownames(df)
+  ps <- ps_reorder(ps, sample_order = sorted_samples)
+  return(ps)
 }
