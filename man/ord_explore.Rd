@@ -30,7 +30,7 @@ ord_explore(
 nothing, opens default browser
 }
 \description{
-A Shiny app used like an interactive version of ord_plot (taking the output of ord_calc)
+A Shiny app used like an interactive version of ord_plot (taking the output of ord_calc).
 Allows you to select samples on an ordination plot and view their composition with stacked barplots.
 
 Once running: click and drag to draw box over 2 or more samples to view their compositions.
