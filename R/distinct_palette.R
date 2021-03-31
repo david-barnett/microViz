@@ -1,3 +1,5 @@
+# TODO https://eleanormaclure.files.wordpress.com/2011/03/colour-coding.pdf
+# other colour palettes may be better? make options?
 #' Arbitrary expansion of the "Paired" colorbrewer palette
 #'
 #' Good for generating palettes for large sets of categories,
@@ -19,8 +21,8 @@ distinct_palette <- function(n = NA) {
       "#FDBF6F", "#FF7F00", "#CAB2D6", "#6A3D9A", "#FFFF99", "#B15928",
       # vivid interlude
       "#1ff8ff", # a bright blue
-      "#FDFF00", # lemon
-      # "#00FF00", # lime
+      # "#FDFF00", # lemon (clashes with #FFFF99 on some screens)
+      # "#00FF00", # lime (indistinguishable from bright blue on some screens)
       # next 8 colours generated with:
       # RColorBrewer::brewer.pal(n = 8, "Dark2")
       "#1B9E77", "#D95F02", "#7570B3", "#E7298A",
