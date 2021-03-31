@@ -127,7 +127,10 @@ ps <- tax_prepend_ranks(ps)
 ps <- ps \%>\% tax_filter(min_prevalence = 0.1, min_total_abundance = 10000)
 
 # specify variables used for modelling
-models <- taxatree_models(ps, tax_levels = 1:3, formula = ~ female + african, verbose = FALSE)
+models <- taxatree_models(
+  ps = ps, type = "bbdml", tax_levels = 1:3,
+  formula = ~ female + african, verbose = FALSE
+)
 plots <- taxatree_plots(ps, models_list = models, max_node_size = 4)
 patchwork::wrap_plots(plots, guides = "collect")
 key <- taxatree_plotkey(ps, taxon_renamer = function(x) stringr::str_remove(x, "^F: "))

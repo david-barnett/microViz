@@ -34,9 +34,9 @@ taxatree_models(
 
 \item{type}{name of modelling function to use}
 
-\item{variables}{vector of variable names to use in statistical model as right hand side}
+\item{variables}{vector of variable names to use in statistical model as right hand side (ignored if formula given)}
 
-\item{formula}{right hand side of a formula, as a formula object or character value}
+\item{formula}{(alternative to variables arg) right hand side of a formula, as a formula object or character value}
 
 \item{taxa}{taxa to model (named, numbered, logical selection, or defaulting to all if NULL)}
 
@@ -47,23 +47,28 @@ taxatree_models(
 \item{tax_levels}{names of ranks to model taxa at (or their index) or defaults to all ranks except the first}
 }
 \value{
-list of model objects or list of lists
+named list of model objects or list of lists
 }
 \description{
-\itemize{
-\item \code{tax_model} takes a phyloseq and returns a list of models, one for each taxon
-\item Same independent variables are used for all models, as specified in \code{variables} or \code{formula} argument (latter takes precedence).
-\item For \code{type = "bbdml"} the same variables/formula arg is used for modelling both the abundance and dispersion parameters.
-\item \code{taxatree_models} runs \code{tax_model} at multiple taxonomic ranks. Specify ranks to run over in \code{tax_levels} (plural!) argument.
-}
+\code{tax_model} provides a simple framework to statistically model the abundance of individual taxa in your data.
+You can choose which type of statistical model you want to fit, and you can choose at which rank and (optionally) which specific taxa to fit statistical models for.
+\code{tax_model} takes a phyloseq and returns a list of statistical models, one model for each taxon.
+The same independent variables are used for all models, as specified in \code{variables} or \code{formula} argument (latter takes precedence).
+
+\code{taxatree_models} runs \code{tax_model} on every taxon at multiple taxonomic ranks (you choose which ranks with the plural \code{tax_levels} argument),
+and returns the results as a named nested list designed for use with \code{taxatree_plots}.
+One list per rank, one model per taxon at each rank.
+
+\code{type = "bbdml"} will run beta binomial regression model(s) using the \code{corncob} package.
+For bbdml the same formula/variables is/are used for modelling both the abundance and dispersion parameters.
 }
 \details{
-\code{tax_model} can use parallel processing with the \code{future} package.
+\code{tax_model} and \code{taxatree_models} can use parallel processing with the \code{future} package.
 This can speed up analysis if you have many taxa to model.
 Run a line like this beforehand: \code{future::plan(future::multisession, workers = 3)}
 }
 \examples{
-# corncob stats testing
+# corncob stats
 library(corncob)
 library(dplyr)
 
@@ -77,28 +82,36 @@ ps <- ps \%>\% ps_mutate(
   obese = if_else(bmi_group == "obese", 1, 0, NaN)
 )
 
-# This example dataset has some taxa with the same name for phylum and family...
+# This example HITChip dataset has some taxa with the same name for phylum and family...
 # We can fix problems like this with the tax_prepend_ranks function
 ps <- tax_prepend_ranks(ps)
 
-# filter out rare taxa
+# filter out rare taxa (it is often difficult to fit multivariable models to rare taxa)
 ps <- ps \%>\% tax_filter(min_prevalence = 0.1, min_total_abundance = 10000)
 
 # specify variables used for modelling
 VARS <- c("female", "overweight", "obese")
 
-# Model first 3 genera using all VARS as predictors
+# Model first 3 genera using all VARS as predictors (just for a quick test)
 models <- tax_model(ps, tax_level = "Genus", taxa = 1:3, variables = VARS)
 # Alternative method using formula arg instead of variables to produce identical results
-models2 <- tax_model(ps, tax_level = "Genus", taxa = 1:3, formula = ~ female + overweight + obese)
+models2 <-
+  tax_model(ps, tax_level = "Genus", taxa = 1:3, formula = ~ female + overweight + obese)
 all.equal(models, models2) # should be TRUE
-# Model only one genus, NOTE the modified name, which was returned by tax_prepend_ranks defaults
+# Model only one genus, NOTE the modified name,
+# which was returned by tax_prepend_ranks defaults
 models3 <- ps \%>\%
   tax_model(tax_level = "Genus", taxa = "G: Bacteroides fragilis et rel.", variables = VARS)
-# Model all taxa at multiple taxonomic ranks (ranks 1 and 2) using only female variable as predictor
+# Model all taxa at multiple taxonomic ranks (ranks 1 and 2)
+# using only female variable as predictor
 models4 <- taxatree_models(ps, tax_levels = 1:2, formula = ~female, verbose = FALSE)
 
+# modelling proportion with simple linear regression is also possible via type = lm
+# and transforming the taxa to compositional first
 models_lm <- ps \%>\%
   microbiome::transform("compositional") \%>\%
   tax_model(tax_level = "Genus", taxa = 1:3, variables = VARS, type = "lm")
+}
+\seealso{
+\code{\link{taxatree_plots}} for how to plot the output of \code{taxatree_models}
 }

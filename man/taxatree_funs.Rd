@@ -4,25 +4,28 @@
 \alias{taxatree_funs}
 \alias{taxatree_nodes}
 \alias{taxatree_edges}
-\title{Create node and edge dataframes for taxonomic tree graphs}
+\title{Create node and edge dataframes for taxonomic tree graphs in taxatree_plots}
 \usage{
 taxatree_nodes(ps, ranks = "all")
 
 taxatree_edges(nodes_df)
 }
 \arguments{
-\item{ps}{phyloseq object}
+\item{ps}{phyloseq object or ps_extra}
 
 \item{ranks}{selection of taxonomic ranks to make nodes for (all, names or numbers)}
 
 \item{nodes_df}{the dataframe output of \code{taxatree_nodes} (possibly with extra info/stats joined to it)}
 }
 \description{
+Mostly you will not have to use these functions directly (see details):
+instead call \code{taxatree_plots} with the output of \code{taxatree_models}
 \itemize{
 \item \code{taxatree_nodes} creates taxon nodes and calculates basic info about each taxon. From a phyloseq object.
 \item \code{taxatree_edges} uses the output of \code{taxatree_nodes} to create a dataframe of edges.
 }
-
-\code{taxatree_nodes} makes nodes for taxa at all ranks or for a list of consecutive (rooted) ranks.
-You can also join at dataframe of additional taxon level information to the output of \code{taxatree_nodes} before calling taxatree_edges, e.g. the output of \code{models2stats_corncob}.
+}
+\details{
+\code{taxatree_nodes} makes nodes for taxa at all ranks or for a list of consecutive ranks (plus a root rank if tree not rooted).
+You can also join a data.frame of additional taxon level information to the output of \code{taxatree_nodes} before calling \code{taxatree_edges}.
 }

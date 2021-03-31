@@ -54,7 +54,10 @@
 #' ps <- ps %>% tax_filter(min_prevalence = 0.1, min_total_abundance = 10000)
 #'
 #' # specify variables used for modelling
-#' models <- taxatree_models(ps, tax_levels = 1:3, formula = ~ female + african, verbose = FALSE)
+#' models <- taxatree_models(
+#'   ps = ps, type = "bbdml", tax_levels = 1:3,
+#'   formula = ~ female + african, verbose = FALSE
+#' )
 #' plots <- taxatree_plots(ps, models_list = models, max_node_size = 4)
 #' patchwork::wrap_plots(plots, guides = "collect")
 #' key <- taxatree_plotkey(ps, taxon_renamer = function(x) stringr::str_remove(x, "^F: "))
@@ -281,7 +284,12 @@ taxatree_plotkey <- function(ps,
   # get tax_table values at desired ranks, to filter taxa for labelling
   taxa_to_label <- unique(as.character(unclass(phyloseq::tax_table(ps)[, label])))
 
-  # check if there is more than one value in top level
+  # numeric index of rank names
+  if (class(tax_levels)[[1]] %in% c("numeric", "integer", "logical")) {
+    tax_levels <- phyloseq::rank_names(ps)[tax_levels]
+  }
+
+  # check if there is more than one value in top rank level
   # if so, add a root level
   if (length(unique(unclass(phyloseq::tax_table(ps))[, 1])) > 1) {
     phyloseq::tax_table(ps) <- cbind(root = "root", phyloseq::tax_table(ps))
@@ -372,17 +380,21 @@ abs_sqrt <- function() {
 # helper function for drawing circles
 add_circles <- function(p, layout) {
   # find radii of circles
-  # dividing by 2 seems to be necessary for grob drawing
-  radii <- sqrt(layout[["x"]]^2 + layout[["y"]]^2) / 2
+
+  radii <- sqrt(layout[["x"]]^2 + layout[["y"]]^2)
   radii <- unique(round(radii, digits = 5))
   radii <- radii[radii != 0]
   # message(paste(radii, collapse = " "))
 
   # add background circles
   for (r in radii) {
-    p <- p + ggplot2::annotation_custom(
-      grid::circleGrob(r = r, gp = grid::gpar(fill = NA, col = "grey80", lwd = 0.3))
-    )
+    p <- p +
+      ggplot2::annotate(
+        geom = "path",
+        x = 0 + r * cos(seq(from = 0, to = 2 * pi, length.out = 100)),
+        y = 0 + r * sin(seq(from = 0, to = 2 * pi, length.out = 100)),
+        colour = "grey80", size = 0.1
+      )
   }
   return(p)
 }

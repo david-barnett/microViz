@@ -1,17 +1,21 @@
 #' @name taxatree_funs
 #'
-#' @title Create node and edge dataframes for taxonomic tree graphs
+#' @title Create node and edge dataframes for taxonomic tree graphs in taxatree_plots
 #'
 #' @description
+#'
+#'  Mostly you will not have to use these functions directly (see details):
+#'  instead call `taxatree_plots` with the output of `taxatree_models`
+#'
 #' - `taxatree_nodes` creates taxon nodes and calculates basic info about each taxon. From a phyloseq object.
 #'
 #' - `taxatree_edges` uses the output of `taxatree_nodes` to create a dataframe of edges.
 #'
-#' `taxatree_nodes` makes nodes for taxa at all ranks or for a list of consecutive (rooted) ranks.
-#' You can also join at dataframe of additional taxon level information to the output of `taxatree_nodes` before calling taxatree_edges, e.g. the output of `models2stats_corncob`.
+#' @details
+#' `taxatree_nodes` makes nodes for taxa at all ranks or for a list of consecutive ranks (plus a root rank if tree not rooted).
+#' You can also join a data.frame of additional taxon level information to the output of `taxatree_nodes` before calling `taxatree_edges`.
 #'
-#'
-#' @param ps phyloseq object
+#' @param ps phyloseq object or ps_extra
 #' @param ranks selection of taxonomic ranks to make nodes for (all, names or numbers)
 #' @param nodes_df the dataframe output of `taxatree_nodes` (possibly with extra info/stats joined to it)
 #'
@@ -19,6 +23,7 @@
 #' @export
 taxatree_nodes <- function(ps, ranks = "all") {
 
+  ps <- ps_get(ps)
   # identify numerical selection of ranks (all, names or numbers)
   available_rank_names <- phyloseq::rank_names(ps)
   if (identical(ranks, "all")) {
