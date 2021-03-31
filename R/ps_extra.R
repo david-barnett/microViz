@@ -19,6 +19,7 @@ print.ps_extra <- function(x, ...) {
   i <- x[["info"]]
   cat("\n")
   print(i)
+  # print distance matrix info and sample if present
   d <- x[["dist"]]
   if (!identical(d, NULL)) {
     d_size <- attr(d, "Size")
@@ -26,6 +27,7 @@ print.ps_extra <- function(x, ...) {
     cat(i[["distMethod"]], "distance matrix of size", d_size, "\n")
     cat(d[1:min(5, d_size)], "...")
   }
+  # print ordination class and call and constraints + conditions if present
   o <- x[["ord"]]
   if (!identical(o, NULL)) {
     cat("\n\nordination of class:", class(o), "\n")
@@ -46,11 +48,13 @@ print.ps_extra <- function(x, ...) {
       phyloseq::nsamples(counts), "samples ]"
     )
   }
+  # print permanova if present
   p <- x[["permanova"]]
   if (!identical(p, NULL)) {
     cat("\n\npermanova:\n")
     print(p)
   }
+  # print dist_bdisp names if present
   b <- x[["bdisp"]]
   if (!identical(b, NULL)) {
     cat("\n\nbetadisper:\n")

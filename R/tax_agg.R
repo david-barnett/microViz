@@ -145,13 +145,35 @@ tax_agg <- function(ps,
     if (!isTRUE(force)) {
       uniq_at_rank <- identical(length(new_tax_names), y = nrow(tt_distinct))
       if (!uniq_at_rank) {
-        stop("Taxa not unique at rank: ", rank, unknowns_message)
+        dupe_rows <- which(
+          duplicated(tt_distinct[[rank]]) |
+            duplicated(tt_distinct[[rank]], fromLast = TRUE)
+        )
+        message(
+          "Problematic values detected in tax_table:\n",
+          paste(unique(tt_distinct[[rank]][dupe_rows]), collapse = " ")
+        )
+        message("-")
+        tax_names <- rownames(tt_distinct)
+        message(paste(c("taxa_name", ranks), collapse = " / "))
+        for (r in dupe_rows) {
+          message(paste(
+            c(tax_names[r], tt_distinct[r, -(rank_index + 1)]),
+            collapse = " / "
+          ))
+        }
+        message("-")
+        stop(
+          "Taxa not unique at rank: ", rank,
+          "\nSee last messages for convergent taxa rows.", unknowns_message
+        )
       }
     } else {
       # FORCED aggregation
       tt_distinct <- dplyr::distinct(
-        .data = tt_distinct, .keep_all = TRUE, # keeps first rows encountered
-        dplyr::across(dplyr::all_of(rank))
+        # keeps first rows encountered
+        .data = tt_distinct, .keep_all = TRUE, # keeps all ranks
+        dplyr::across(dplyr::all_of(rank)) # only uses rank to make distinct
       )
     }
 

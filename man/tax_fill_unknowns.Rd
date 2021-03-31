@@ -57,11 +57,9 @@ By default (unknowns = NA), unknowns is set to a vector containing:
 }
 \examples{
 library(dplyr)
-library(tibble)
 library(phyloseq)
-library(microbiome)
 
-data(dietswap)
+data(dietswap, package = "microbiome")
 ps <- dietswap
 
 # create unknowns to test filling
