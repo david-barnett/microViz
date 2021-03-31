@@ -21,7 +21,7 @@
 # microViz::tax_agg output hasn't changed: Phylum
 
     Code
-      ps_get(tax_agg(ps = dietswap, level, sort_by = "name"))
+      ps_get(tax_agg(ps = dietswap, level, sort_by = "name", add_unique = TRUE))
     Output
       phyloseq-class experiment-level object
       otu_table()   OTU Table:         [ 8 taxa and 222 samples ]
@@ -41,7 +41,7 @@
 # microViz::tax_agg output hasn't changed: Family
 
     Code
-      ps_get(tax_agg(ps = dietswap, level, sort_by = "name"))
+      ps_get(tax_agg(ps = dietswap, level, sort_by = "name", add_unique = TRUE))
     Output
       phyloseq-class experiment-level object
       otu_table()   OTU Table:         [ 22 taxa and 222 samples ]

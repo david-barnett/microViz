@@ -116,8 +116,8 @@ and requires count input for some sample_order methods!
 
 }
 \examples{
-library(microbiome)
-data(dietswap)
+library(ggplot2)
+data(dietswap, package = "microbiome")
 
 # illustrative simple customised example
 dietswap \%>\%

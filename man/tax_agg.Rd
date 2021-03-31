@@ -4,12 +4,19 @@
 \alias{tax_agg}
 \title{Aggregate taxa and create ps_extra}
 \usage{
-tax_agg(ps, rank = "unique", sort_by = NA, top_N = NA, force = FALSE)
+tax_agg(
+  ps,
+  rank = NA,
+  sort_by = NA,
+  top_N = NA,
+  force = FALSE,
+  add_unique = FALSE
+)
 }
 \arguments{
 \item{ps}{phyloseq object}
 
-\item{rank}{NA or "unique" or name of valid taxonomic rank (try phyloseq::rank_names(ps))}
+\item{rank}{NA (for tax_names level) or name of valid taxonomic rank (try phyloseq::rank_names(ps)) or "unique"}
 
 \item{sort_by}{if not NA, how should the taxa be sorted, uses tax_sort(), takes same options as \code{by} arg}
 
@@ -20,8 +27,10 @@ which is the same as the unique column for the first top_N number of taxa, and "
 This avoids the "Taxa not unique at rank: ..." error, but may allow very inappropriate aggregation to occur.
 Do not use force = TRUE unless you know why you are doing this, and what the result will be.
 If you are getting an error with force = FALSE, it is almost certainly better to examine the tax_table and fix the problem.
-(force = TRUE is similar to microbiome::aggregate_taxa,
+force = TRUE is similar to microbiome::aggregate_taxa,
 which also does not check that the taxa are uniquely defined by only the aggregation level.}
+
+\item{add_unique}{if TRUE, adds a rank named unique, identical to the rownames after aggregation}
 }
 \value{
 ps_extra list object including phyloseq and tax_agg rank info
@@ -30,9 +39,10 @@ ps_extra list object including phyloseq and tax_agg rank info
 \code{tax_agg} sums the abundances of the phyloseq taxa at the given rank.
 It records the tax_agg rank argument in the info of the ps_extra object output.
 This ps_extra object tracks aggregation, and any further transformations and scaling,
-to help you keep track of what you have done with your phyloseq object.
+to help you keep track of what you have done with your phyloseq object and automatically caption ordination plots.
+
 tax_agg allows you to pass NA or "unique" to the rank argument which will NOT aggregate the taxa.
-It always adds a "unique" rank, which matches the tax_table row names (after any aggregation performed).
+If you use rank = "unique" or add_unique = TRUE, it will add a new rank called unique, identical to the taxa_names (after any aggregation)
 
 You should NOT use the \code{top_N} argument yourself unless you know what you are doing.
 top_N provides a feature inspired by the deprecated microbiome function aggregate_top_taxa
@@ -41,10 +51,16 @@ microViz comp_barplot (and ord_plot_iris) already run tax_agg with a top_N argum
 The tax_table produced when using top_N is otherwise INVALID FOR MOST OTHER ANALYSES.
 }
 \details{
-This function is inspired by microbiome::aggregate_taxa.
-However if microbiome::aggregate_taxa is used, microViz cannot track this aggregation.
-Except for the ordering of taxa, the resulting phyloseq objects are identical for aggregating a phyloseq with n ranks up to the n-1 rank.
-Aggregating at rank n with tax_agg still generates a "unique" column, but aggregate_taxa does not do this.
+This function is inspired by \code{microbiome::aggregate_taxa}.
+However if \code{microbiome::aggregate_taxa} is used, microViz cannot track this aggregation.
+
+Comparing aggregate_taxa and tax_agg:
+
+Except for the ordering of taxa, the resulting phyloseq objects are identical for aggregating a phyloseq with no ambiguous taxa.
+Taxa are ambiguous when the tax_table converges at a lower rank after branching, such as if two different genera share the same species (e.g. "s__").
+\code{microbiome::aggregate_taxa} handles ambiguous taxa by creating a "unique" rank with all of the taxonomic rank info pasted together into one, often very long, name.
+\code{tax_agg} throws an error, and directs the user to tax_fill_unknowns to fix the ambiguous taxa before aggregation,
+which should then result in (much) shorter unique names at the aggregation rank.
 }
 \examples{
 library(microbiome)
@@ -57,10 +73,9 @@ tax_agg(ps = dietswap, "Family") \%>\%
   ps_get() \%>\%
   tax_table()
 
-# this won't aggregate taxa,
-# but just add a new rank called unique, equal to taxa_names
-tax_agg(ps = dietswap, NA)
-identical(tax_agg(dietswap, NA), tax_agg(dietswap, "unique")) # TRUE
+# this won't aggregate taxa, but just adds a new rank called unique, equal to taxa_names
+tax_agg(ps = dietswap, rank = NA, add_unique = TRUE)
+identical(tax_agg(dietswap, NA, add_unique = TRUE), tax_agg(dietswap, "unique")) # TRUE
 
 # create some missing values
 tax_table(dietswap)[3:7, "Genus"] <- "g__"

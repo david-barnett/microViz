@@ -7,7 +7,7 @@ fixed_order <- c(
   "Actinobacteria", "Firmicutes", "Proteobacteria", "Bacteroidetes"
 )
 
-test_that("fixing order of comp_barplot works", {
+test_that("fixing tax order of comp_barplot works", {
   p <- dietswap %>%
     ps_filter(timepoint == 1) %>%
     comp_barplot(

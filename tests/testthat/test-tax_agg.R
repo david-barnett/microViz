@@ -24,7 +24,7 @@ for (level in agg_level_test) {
       # biome output must be sorted by name (using tax_sort)
       # it is not clear how to recreate the order produced by aggregate taxa itself
       biome <- tax_sort(microbiome::aggregate_taxa(x = dietswap, level = level), by = "name")
-      viz <- tax_sort(ps_get(tax_agg(ps = dietswap, level)), by = "name")
+      viz <- tax_sort(ps_get(tax_agg(ps = dietswap, level, add_unique = TRUE)), by = "name")
       expect_equal(object = viz, expected = biome)
     }
   )
@@ -39,7 +39,7 @@ for (level in agg_level_test) {
   test_that(
     desc = paste("microViz::tax_agg output hasn't changed:", level),
     code = {
-      expect_snapshot(ps_get(tax_agg(ps = dietswap, level, sort_by = "name")))
+      expect_snapshot(ps_get(tax_agg(ps = dietswap, level, sort_by = "name", add_unique = TRUE)))
     }
   )
 }
@@ -51,6 +51,16 @@ test_that(
     viz_tt <- tt_get(tax_agg(dietswap, rank = "unique", top_N = 40))
     viz_top <- unname(unclass(viz_tt)[, "top"])[1:40]
     expect_equal(object = viz_top, expected = biome_top)
+  }
+)
+
+test_that(
+  desc = paste("tax_top gives same results as tax_agg with top_N and no agg"),
+  code = {
+    tax_top_out <- tax_top(dietswap, n = 40, by = sum)
+    viz_tt <- tt_get(tax_agg(dietswap, rank = "unique", top_N = 40, sort_by = sum))
+    viz_top <- unname(unclass(viz_tt)[, "top"])[1:40]
+    expect_equal(object = tax_top_out, expected = viz_top)
   }
 )
 

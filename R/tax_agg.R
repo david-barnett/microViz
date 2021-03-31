@@ -4,9 +4,10 @@
 #' `tax_agg` sums the abundances of the phyloseq taxa at the given rank.
 #' It records the tax_agg rank argument in the info of the ps_extra object output.
 #' This ps_extra object tracks aggregation, and any further transformations and scaling,
-#' to help you keep track of what you have done with your phyloseq object.
+#' to help you keep track of what you have done with your phyloseq object and automatically caption ordination plots.
+#'
 #' tax_agg allows you to pass NA or "unique" to the rank argument which will NOT aggregate the taxa.
-#' It always adds a "unique" rank, which matches the tax_table row names (after any aggregation performed).
+#' If you use rank = "unique" or add_unique = TRUE, it will add a new rank called unique, identical to the taxa_names (after any aggregation)
 #'
 #' You should NOT use the `top_N` argument yourself unless you know what you are doing.
 #' top_N provides a feature inspired by the deprecated microbiome function aggregate_top_taxa
@@ -15,13 +16,20 @@
 #' The tax_table produced when using top_N is otherwise INVALID FOR MOST OTHER ANALYSES.
 #'
 #' @details
-#' This function is inspired by microbiome::aggregate_taxa.
-#' However if microbiome::aggregate_taxa is used, microViz cannot track this aggregation.
-#' Except for the ordering of taxa, the resulting phyloseq objects are identical for aggregating a phyloseq with n ranks up to the n-1 rank.
-#' Aggregating at rank n with tax_agg still generates a "unique" column, but aggregate_taxa does not do this.
+#' This function is inspired by `microbiome::aggregate_taxa`.
+#' However if `microbiome::aggregate_taxa` is used, microViz cannot track this aggregation.
+#'
+#' Comparing aggregate_taxa and tax_agg:
+#'
+#' Except for the ordering of taxa, the resulting phyloseq objects are identical for aggregating a phyloseq with no ambiguous taxa.
+#' Taxa are ambiguous when the tax_table converges at a lower rank after branching, such as if two different genera share the same species (e.g. "s__").
+#' `microbiome::aggregate_taxa` handles ambiguous taxa by creating a "unique" rank with all of the taxonomic rank info pasted together into one, often very long, name.
+#' `tax_agg` throws an error, and directs the user to tax_fill_unknowns to fix the ambiguous taxa before aggregation,
+#' which should then result in (much) shorter unique names at the aggregation rank.
 #'
 #' @param ps phyloseq object
-#' @param rank NA or "unique" or name of valid taxonomic rank (try phyloseq::rank_names(ps))
+#' @param rank
+#' NA (for tax_names level) or name of valid taxonomic rank (try phyloseq::rank_names(ps)) or "unique"
 #' @param sort_by if not NA, how should the taxa be sorted, uses tax_sort(), takes same options as `by` arg
 #' @param top_N
 #' NA does nothing, but if top_N is a number, it creates an extra tax_table column called top,
@@ -31,11 +39,13 @@
 #' This avoids the "Taxa not unique at rank: ..." error, but may allow very inappropriate aggregation to occur.
 #' Do not use force = TRUE unless you know why you are doing this, and what the result will be.
 #' If you are getting an error with force = FALSE, it is almost certainly better to examine the tax_table and fix the problem.
-#' (force = TRUE is similar to microbiome::aggregate_taxa,
+#' force = TRUE is similar to microbiome::aggregate_taxa,
 #' which also does not check that the taxa are uniquely defined by only the aggregation level.
+#' @param add_unique if TRUE, adds a rank named unique, identical to the rownames after aggregation
 #'
 #' @return ps_extra list object including phyloseq and tax_agg rank info
 #' @export
+#' @rdname tax_agg
 #'
 #' @examples
 #' library(microbiome)
@@ -48,10 +58,9 @@
 #'   ps_get() %>%
 #'   tax_table()
 #'
-#' # this won't aggregate taxa,
-#' # but just add a new rank called unique, equal to taxa_names
-#' tax_agg(ps = dietswap, NA)
-#' identical(tax_agg(dietswap, NA), tax_agg(dietswap, "unique")) # TRUE
+#' # this won't aggregate taxa, but just adds a new rank called unique, equal to taxa_names
+#' tax_agg(ps = dietswap, rank = NA, add_unique = TRUE)
+#' identical(tax_agg(dietswap, NA, add_unique = TRUE), tax_agg(dietswap, "unique")) # TRUE
 #'
 #' # create some missing values
 #' tax_table(dietswap)[3:7, "Genus"] <- "g__"
@@ -70,10 +79,11 @@
 #'   tax_fill_unknowns(unknowns = "some_unknown_family") %>%
 #'   tax_agg("Family")
 tax_agg <- function(ps,
-                    rank = "unique",
+                    rank = NA,
                     sort_by = NA,
                     top_N = NA,
-                    force = FALSE) {
+                    force = FALSE,
+                    add_unique = FALSE) {
   if (inherits(ps, "ps_extra")) {
     # currently just reset info
     warning(
@@ -187,9 +197,11 @@ tax_agg <- function(ps,
     # phyloseq
     ps_agg <- phyloseq::phyloseq(phyloseq::sample_data(ps), tt_new, otu_new)
   }
-  # add unique rank that matches taxa/rownames
-  # (like how microbiome aggregate_taxa works, in case any fun uses that col)
-  ps_agg <- tax_names2tt(ps_agg, colname = "unique")
+  if (isTRUE(add_unique) || identical(rank, "unique")) {
+    # add unique rank that matches taxa/rownames
+    # (like how microbiome aggregate_taxa works, in case any fun uses that col)
+    ps_agg <- tax_names2tt(ps_agg, colname = "unique")
+  }
 
   # if top_N set, set a default sort_by of sum, if necessary
   if (!identical(top_N, NA) && identical(sort_by, NA)) {
@@ -218,7 +230,18 @@ tax_agg <- function(ps,
 # https://github.com/r-lib/tidyselect/issues/201
 utils::globalVariables("where")
 
-# helper function adds unique names column to end of tax_table
+#' Add taxa_names as column in phyloseq tax_table
+#'
+#' The taxa names in your phyloseq may specify a further unique classification
+#' of your taxa, e.g. ASVs, that is not otherwise represented in the tax_table itself.
+#' This function fixes that, and allows you to include this level in taxatree_plots for example.
+#'
+#' @param data phyloseq object, or ps_extra or tax_table (taxonomyTable)
+#' @param colname name of new rank to add at right side of tax_table
+#'
+#' @return same class object as passed in to data
+#' @export
+#' @rdname tax_nammes2tt
 tax_names2tt <- function(data, colname = "unique") {
   # get tt
   tt <- tt_get(data)

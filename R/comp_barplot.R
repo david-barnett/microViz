@@ -73,8 +73,8 @@
 #' @export
 #'
 #' @examples
-#' library(microbiome)
-#' data(dietswap)
+#' library(ggplot2)
+#' data(dietswap, package = "microbiome")
 #'
 #' # illustrative simple customised example
 #' dietswap %>%
@@ -196,7 +196,7 @@ comp_barplot <- function(ps,
   ps <- phyloseq_validate(ps, remove_undetected = FALSE, verbose = TRUE)
 
   # how many taxa to plot (otherwise group into other)
-  ps <- tax_agg(ps, rank = tax_level)[["ps"]]
+  ps <- tax_agg(ps, rank = tax_level, add_unique = TRUE)[["ps"]]
 
   # calculate tax_order if rule given or external ordering vec given
   if (inherits(tax_order, "function") || identical(tax_order, "name")) {
@@ -219,7 +219,7 @@ comp_barplot <- function(ps,
   # merge "top" rank's "other" category into one taxon,
   # to allow drawing bar outlines, but not within "other"
   if (isTRUE(merge_other)) {
-    ps <- tax_agg(ps, rank = "top", force = TRUE)[["ps"]]
+    ps <- tax_agg(ps, rank = "top", force = TRUE, add_unique = TRUE)[["ps"]]
   }
   # aggregate the phyloseq at a high maximum number of displayable taxa
   phyloseq::tax_table(ps) <-
@@ -228,7 +228,7 @@ comp_barplot <- function(ps,
       N = max_taxa,
       other = "other", varname = "separate"
     )
-  ps <- tax_agg(ps, rank = "separate", force = TRUE)[["ps"]]
+  ps <- tax_agg(ps, rank = "separate", force = TRUE, add_unique = TRUE)[["ps"]]
 
   if (isFALSE(order_with_all_taxa)) ps_for_order <- ps
 
