@@ -111,7 +111,7 @@ phyloseq_validate <- function(ps,
     suspicious_names <- tax_common_unknowns(min_length = min_tax_length)
 
     taxfillmessage <-
-      "Consider using tax_fill_unknowns() to make taxa uniquely identifiable"
+      "Consider using tax_fix() to make taxa uniquely identifiable"
     if (anyNA(phyloseq::tax_table(ps))) {
       message("NAs detected in phyloseq tax_table:\n", taxfillmessage)
     } else if (any(nchar(phyloseq::tax_table(ps)) < min_tax_length)) {

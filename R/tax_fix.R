@@ -55,10 +55,10 @@
 #'
 #' ps
 #' tax_table(ps) %>% head(50)
-#' # tax_fill_unknowns with defaults should solve most problems
+#' # tax_fix with defaults should solve most problems
 #'
 #' # this will replace `unknown`s as well as short values including "g__" and "f__"
-#' tax_fill_unknowns(ps) %>%
+#' tax_fix(ps) %>%
 #'   tax_table() %>%
 #'   head(50)
 #'
@@ -67,12 +67,12 @@
 #' # WARNING:
 #' # only set `levels` arg if you know you won't create an invalid tax_table!
 #' ps %>%
-#'   tax_fill_unknowns(unknowns = NULL, levels = "Genus") %>%
+#'   tax_fix(unknowns = NULL, levels = "Genus") %>%
 #'   tax_table() %>%
 #'   head(50)
 #'
 #' # Change rank suffix and separator settings
-#' tax_fill_unknowns(ps, suffix_rank = "current", sep = " - ") %>%
+#' tax_fix(ps, suffix_rank = "current", sep = " - ") %>%
 #'   tax_table() %>%
 #'   head(50)
 #'
@@ -83,22 +83,22 @@
 #' # If you think your anonymous taxa should merge on tax_agg,
 #' # or you just want them to be named the all same for another reason,
 #' # set anon_unique = FALSE (compare the warning messages)
-#' tax_fill_unknowns(ps, anon_unique = FALSE)
-#' tax_fill_unknowns(ps, anon_unique = TRUE)
+#' tax_fix(ps, anon_unique = FALSE)
+#' tax_fix(ps, anon_unique = TRUE)
 #'
 #' # here's a larger example tax_table shows its still fast with 1000s rows,
 #' # from microbiomeutilities package
 #' # library(microbiomeutilities)
 #' # data("hmp2")
-#' # system.time(tax_fill_unknowns(hmp2, min_length = 1))
-tax_fill_unknowns <- function(ps,
-                              min_length = 4,
-                              unknowns = NA,
-                              levels = phyloseq::rank_names(ps),
-                              suffix_rank = "classified", # or current
-                              sep = " ",
-                              anon_unique = TRUE,
-                              verbose = TRUE) {
+#' # system.time(tax_fix(hmp2, min_length = 1))
+tax_fix <- function(ps,
+                    min_length = 4,
+                    unknowns = NA,
+                    levels = phyloseq::rank_names(ps),
+                    suffix_rank = "classified", # or current
+                    sep = " ",
+                    anon_unique = TRUE,
+                    verbose = TRUE) {
   if (methods::is(ps, "phyloseq")) {
     tt <- unclass(phyloseq::tax_table(ps))
   } else if (inherits(ps, "taxonomyTable")) {
@@ -214,7 +214,7 @@ tax_fill_unknowns <- function(ps,
 #'
 #' @description
 #'  Returns values often found in tax_tables (as assigned by e.g. DECIPHER or NGTAX2)
-#'  This function is used inside tax_fill_unknowns (these values are replaced)
+#'  This function is used inside tax_fix (these values are replaced)
 #'  This function is used inside phyloseq_validate (values are reported only)
 #'
 #' @param min_length

@@ -10,7 +10,7 @@
 #' @return phyloseq
 #' @export
 #'
-#' @seealso \code{\link{tax_fill_unknowns}} for fixing other tax_table problems
+#' @seealso \code{\link{tax_fix}} for fixing other tax_table problems
 #'
 #' @examples
 #' library(dplyr)

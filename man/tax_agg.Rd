@@ -59,7 +59,7 @@ Comparing aggregate_taxa and tax_agg:
 Except for the ordering of taxa, the resulting phyloseq objects are identical for aggregating a phyloseq with no ambiguous taxa.
 Taxa are ambiguous when the tax_table converges at a lower rank after branching, such as if two different genera share the same species (e.g. "s__").
 \code{microbiome::aggregate_taxa} handles ambiguous taxa by creating a "unique" rank with all of the taxonomic rank info pasted together into one, often very long, name.
-\code{tax_agg} throws an error, and directs the user to tax_fill_unknowns to fix the ambiguous taxa before aggregation,
+\code{tax_agg} throws an error, and directs the user to tax_fix to fix the ambiguous taxa before aggregation,
 which should then result in (much) shorter unique names at the aggregation rank.
 }
 \examples{
@@ -83,14 +83,14 @@ tax_table(dietswap)[3:7, "Genus"] <- "g__"
 # tax_agg(ps = dietswap, "Genus")
 # this will then work:
 dietswap \%>\%
-  tax_fill_unknowns() \%>\%
+  tax_fix() \%>\%
   tax_agg("Genus")
 
-# you can replace unknown values with `tax_fill_unknowns()`
+# you can replace unknown values with `tax_fix()`
 
-# default tax_fill_unknowns settings won't catch this long unknown
+# default tax_fix settings won't catch this long unknown
 tax_table(dietswap)[13:17, "Family"] <- "some_unknown_family"
 dietswap \%>\%
-  tax_fill_unknowns(unknowns = "some_unknown_family") \%>\%
+  tax_fix(unknowns = "some_unknown_family") \%>\%
   tax_agg("Family")
 }

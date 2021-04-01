@@ -63,7 +63,7 @@ tax_table(ps) %>% head(3)
 ps <- ps %>% tax_prepend_ranks()
 tax_table(ps) %>% head(3)
 # replace any uninformative tax_table values
-ps <- ps %>% tax_fill_unknowns()
+ps <- ps %>% tax_fix()
 
 # look at the effect of removing rare Genera, e.g. how many Genera are present in at least 5% of samples?
 ps %>% tax_filter(min_prevalence = 5 / 100, tax_level = "Genus")

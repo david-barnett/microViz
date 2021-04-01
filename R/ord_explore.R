@@ -38,7 +38,7 @@
 #'
 #' # simple example #
 #' taxa_names(enterotype)[1] <- "unclassified"
-#' ps <- tax_fill_unknowns(enterotype) # remove NA taxa
+#' ps <- tax_fix(enterotype) # remove NA taxa
 #' ord1 <- ps %>%
 #'   dist_calc("bray") %>%
 #'   ord_calc(method = "PCoA")
@@ -73,7 +73,7 @@
 #'
 #' # another dataset
 #' # microbiomeutilities::hmp2 %>%
-#' #   tax_fill_unknowns() %>%
+#' #   tax_fix() %>%
 #' #   dist_calc("aitchison") %>%
 #' #   ord_calc() %>%
 #' #   ord_explore()
@@ -84,7 +84,7 @@
 #' # The barplot is actually quite useless with the 16000+ anonymous OTUs
 #' # in this dataset, but the 1000s of unmerged "other" categories do render
 #' # phyloseq_validate(ps) %>%
-#' #   tax_fill_unknowns() %>%
+#' #   tax_fix() %>%
 #' #   dist_calc("aitchison") %>%
 #' #   ord_calc() %>%
 #' #   ord_explore()
