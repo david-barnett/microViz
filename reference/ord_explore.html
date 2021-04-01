@@ -40,7 +40,9 @@
 
 
 <meta property="og:title" content="Interactively explore compositions of ordinated samples — ord_explore" />
-<meta property="og:description" content="Once running: click and drag to draw box over 2 or more samples to view their compositions.
+<meta property="og:description" content="A Shiny app used like an interactive version of ord_plot (taking the output of ord_calc).
+Allows you to select samples on an ordination plot and view their composition with stacked barplots.
+Once running: click and drag to draw box over 2 or more samples to view their compositions.
 You can style the ordination plot points using the options on the left panel." />
 
 
@@ -73,7 +75,7 @@ You can style the ordination plot points using the options on the left panel." /
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1.9002</span>
       </span>
     </div>
 
@@ -136,7 +138,9 @@ You can style the ordination plot points using the options on the left panel." /
     </div>
 
     <div class="ref-description">
-    <p>Once running: click and drag to draw box over 2 or more samples to view their compositions.
+    <p>A Shiny app used like an interactive version of ord_plot (taking the output of ord_calc).
+Allows you to select samples on an ordination plot and view their composition with stacked barplots.</p>
+<p>Once running: click and drag to draw box over 2 or more samples to view their compositions.
 You can style the ordination plot points using the options on the left panel.</p>
     </div>
 
@@ -183,7 +187,7 @@ You can style the ordination plot points using the options on the left panel.</p
     <p>nothing, opens default browser</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>If you get an error like the one below:</p>
+    <p>If you get an interactive error like the one below:</p>
 <p>"ids don't have the same length than str (most often, it occurs because of clipping)"</p><ol>
 <li><p>make your points smaller</p></li>
 <li><p>set point shape to fixed, or to a variable with fewer categories</p></li>
@@ -210,10 +214,7 @@ that grouping variable cannot be used to select those samples</p>
   <span class='fu'><a href='dist_calc.html'>dist_calc</a></span><span class='op'>(</span><span class='st'>"bray"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"PCoA"</span><span class='op'>)</span>
 
-<span class='co'># ord_explore(</span>
-<span class='co'>#   data = ord1, auto_caption = NA,</span>
-<span class='co'>#   sample_id = "Sample_ID", ord_tooltip = "Sample_ID"</span>
-<span class='co'># )</span>
+<span class='co'># ord_explore(data = ord1, auto_caption = NA)</span>
 
 <span class='co'># constrained biplot example #</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span>

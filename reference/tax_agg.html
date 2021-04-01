@@ -43,9 +43,9 @@
 <meta property="og:description" content="tax_agg sums the abundances of the phyloseq taxa at the given rank.
 It records the tax_agg rank argument in the info of the ps_extra object output.
 This ps_extra object tracks aggregation, and any further transformations and scaling,
-to help you keep track of what you have done with your phyloseq object.
+to help you keep track of what you have done with your phyloseq object and automatically caption ordination plots.
 tax_agg allows you to pass NA or &quot;unique&quot; to the rank argument which will NOT aggregate the taxa.
-It always adds a &quot;unique&quot; rank, which matches the tax_table row names (after any aggregation performed).
+If you use rank = &quot;unique&quot; or add_unique = TRUE, it will add a new rank called unique, identical to the taxa_names (after any aggregation)
 You should NOT use the top_N argument yourself unless you know what you are doing.
 top_N provides a feature inspired by the deprecated microbiome function aggregate_top_taxa
 which is primarily useful for decluttering compositional barplots.
@@ -82,7 +82,7 @@ The tax_table produced when using top_N is otherwise INVALID FOR MOST OTHER ANAL
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1.9002</span>
       </span>
     </div>
 
@@ -148,9 +148,9 @@ The tax_table produced when using top_N is otherwise INVALID FOR MOST OTHER ANAL
     <p><code>tax_agg</code> sums the abundances of the phyloseq taxa at the given rank.
 It records the tax_agg rank argument in the info of the ps_extra object output.
 This ps_extra object tracks aggregation, and any further transformations and scaling,
-to help you keep track of what you have done with your phyloseq object.
-tax_agg allows you to pass NA or "unique" to the rank argument which will NOT aggregate the taxa.
-It always adds a "unique" rank, which matches the tax_table row names (after any aggregation performed).</p>
+to help you keep track of what you have done with your phyloseq object and automatically caption ordination plots.</p>
+<p>tax_agg allows you to pass NA or "unique" to the rank argument which will NOT aggregate the taxa.
+If you use rank = "unique" or add_unique = TRUE, it will add a new rank called unique, identical to the taxa_names (after any aggregation)</p>
 <p>You should NOT use the <code>top_N</code> argument yourself unless you know what you are doing.
 top_N provides a feature inspired by the deprecated microbiome function aggregate_top_taxa
 which is primarily useful for decluttering compositional barplots.
@@ -158,7 +158,14 @@ microViz comp_barplot (and ord_plot_iris) already run tax_agg with a top_N argum
 The tax_table produced when using top_N is otherwise INVALID FOR MOST OTHER ANALYSES.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>tax_agg</span><span class='op'>(</span><span class='va'>ps</span>, rank <span class='op'>=</span> <span class='st'>"unique"</span>, sort_by <span class='op'>=</span> <span class='cn'>NA</span>, top_N <span class='op'>=</span> <span class='cn'>NA</span>, force <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>tax_agg</span><span class='op'>(</span>
+  <span class='va'>ps</span>,
+  rank <span class='op'>=</span> <span class='cn'>NA</span>,
+  sort_by <span class='op'>=</span> <span class='cn'>NA</span>,
+  top_N <span class='op'>=</span> <span class='cn'>NA</span>,
+  force <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  add_unique <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -169,7 +176,7 @@ The tax_table produced when using top_N is otherwise INVALID FOR MOST OTHER ANAL
     </tr>
     <tr>
       <th>rank</th>
-      <td><p>NA or "unique" or name of valid taxonomic rank (try phyloseq::rank_names(ps))</p></td>
+      <td><p>NA (for tax_names level) or name of valid taxonomic rank (try phyloseq::rank_names(ps)) or "unique"</p></td>
     </tr>
     <tr>
       <th>sort_by</th>
@@ -186,8 +193,12 @@ which is the same as the unique column for the first top_N number of taxa, and "
 This avoids the "Taxa not unique at rank: ..." error, but may allow very inappropriate aggregation to occur.
 Do not use force = TRUE unless you know why you are doing this, and what the result will be.
 If you are getting an error with force = FALSE, it is almost certainly better to examine the tax_table and fix the problem.
-(force = TRUE is similar to microbiome::aggregate_taxa,
+force = TRUE is similar to microbiome::aggregate_taxa,
 which also does not check that the taxa are uniquely defined by only the aggregation level.</p></td>
+    </tr>
+    <tr>
+      <th>add_unique</th>
+      <td><p>if TRUE, adds a rank named unique, identical to the rownames after aggregation</p></td>
     </tr>
     </table>
 
@@ -196,10 +207,14 @@ which also does not check that the taxa are uniquely defined by only the aggrega
     <p>ps_extra list object including phyloseq and tax_agg rank info</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This function is inspired by microbiome::aggregate_taxa.
-However if microbiome::aggregate_taxa is used, microViz cannot track this aggregation.
-Except for the ordering of taxa, the resulting phyloseq objects are identical for aggregating a phyloseq with n ranks up to the n-1 rank.
-Aggregating at rank n with tax_agg still generates a "unique" column, but aggregate_taxa does not do this.</p>
+    <p>This function is inspired by <code><a href='https://rdrr.io/pkg/microbiome/man/aggregate_taxa.html'>microbiome::aggregate_taxa</a></code>.
+However if <code><a href='https://rdrr.io/pkg/microbiome/man/aggregate_taxa.html'>microbiome::aggregate_taxa</a></code> is used, microViz cannot track this aggregation.</p>
+<p>Comparing aggregate_taxa and tax_agg:</p>
+<p>Except for the ordering of taxa, the resulting phyloseq objects are identical for aggregating a phyloseq with no ambiguous taxa.
+Taxa are ambiguous when the tax_table converges at a lower rank after branching, such as if two different genera share the same species (e.g. "s__").
+<code><a href='https://rdrr.io/pkg/microbiome/man/aggregate_taxa.html'>microbiome::aggregate_taxa</a></code> handles ambiguous taxa by creating a "unique" rank with all of the taxonomic rank info pasted together into one, often very long, name.
+<code>tax_agg</code> throws an error, and directs the user to tax_fill_unknowns to fix the ambiguous taxa before aggregation,
+which should then result in (much) shorter unique names at the aggregation rank.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://microbiome.github.io/microbiome'>microbiome</a></span><span class='op'>)</span>
@@ -208,19 +223,19 @@ Aggregating at rank n with tax_agg still generates a "unique" column, but aggreg
 <span class='fu'>tax_agg</span><span class='op'>(</span>ps <span class='op'>=</span> <span class='va'>dietswap</span>, <span class='st'>"Phylum"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='ps_extra-accessors.html'>ps_get</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html'>tax_table</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Taxonomy Table:     [8 taxa by 2 taxonomic ranks]:
-#&gt;                 Phylum            unique           
-#&gt; Actinobacteria  "Actinobacteria"  "Actinobacteria" 
-#&gt; Firmicutes      "Firmicutes"      "Firmicutes"     
-#&gt; Proteobacteria  "Proteobacteria"  "Proteobacteria" 
-#&gt; Verrucomicrobia "Verrucomicrobia" "Verrucomicrobia"
-#&gt; Bacteroidetes   "Bacteroidetes"   "Bacteroidetes"  
-#&gt; Spirochaetes    "Spirochaetes"    "Spirochaetes"   
-#&gt; Fusobacteria    "Fusobacteria"    "Fusobacteria"   
-#&gt; Cyanobacteria   "Cyanobacteria"   "Cyanobacteria"  </div><div class='input'><span class='fu'>tax_agg</span><span class='op'>(</span>ps <span class='op'>=</span> <span class='va'>dietswap</span>, <span class='st'>"Family"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+</div><div class='output co'>#&gt; Taxonomy Table:     [8 taxa by 1 taxonomic ranks]:
+#&gt;                 Phylum           
+#&gt; Actinobacteria  "Actinobacteria" 
+#&gt; Firmicutes      "Firmicutes"     
+#&gt; Proteobacteria  "Proteobacteria" 
+#&gt; Verrucomicrobia "Verrucomicrobia"
+#&gt; Bacteroidetes   "Bacteroidetes"  
+#&gt; Spirochaetes    "Spirochaetes"   
+#&gt; Fusobacteria    "Fusobacteria"   
+#&gt; Cyanobacteria   "Cyanobacteria"  </div><div class='input'><span class='fu'>tax_agg</span><span class='op'>(</span>ps <span class='op'>=</span> <span class='va'>dietswap</span>, <span class='st'>"Family"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='ps_extra-accessors.html'>ps_get</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html'>tax_table</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Taxonomy Table:     [22 taxa by 3 taxonomic ranks]:
+</div><div class='output co'>#&gt; Taxonomy Table:     [22 taxa by 2 taxonomic ranks]:
 #&gt;                           Phylum            Family                     
 #&gt; Actinobacteria            "Actinobacteria"  "Actinobacteria"           
 #&gt; Bacilli                   "Firmicutes"      "Bacilli"                  
@@ -243,33 +258,9 @@ Aggregating at rank n with tax_agg still generates a "unique" column, but aggreg
 #&gt; Clostridium cluster XIII  "Firmicutes"      "Clostridium cluster XIII" 
 #&gt; Cyanobacteria             "Cyanobacteria"   "Cyanobacteria"            
 #&gt; Uncultured Clostridiales  "Firmicutes"      "Uncultured Clostridiales" 
-#&gt; Uncultured Mollicutes     "Firmicutes"      "Uncultured Mollicutes"    
-#&gt;                           unique                     
-#&gt; Actinobacteria            "Actinobacteria"           
-#&gt; Bacilli                   "Bacilli"                  
-#&gt; Proteobacteria            "Proteobacteria"           
-#&gt; Verrucomicrobia           "Verrucomicrobia"          
-#&gt; Bacteroidetes             "Bacteroidetes"            
-#&gt; Clostridium cluster XV    "Clostridium cluster XV"   
-#&gt; Clostridium cluster XIVa  "Clostridium cluster XIVa" 
-#&gt; Clostridium cluster IV    "Clostridium cluster IV"   
-#&gt; Clostridium cluster XI    "Clostridium cluster XI"   
-#&gt; Asteroleplasma            "Asteroleplasma"           
-#&gt; Spirochaetes              "Spirochaetes"             
-#&gt; Clostridium cluster XVI   "Clostridium cluster XVI"  
-#&gt; Clostridium cluster XVII  "Clostridium cluster XVII" 
-#&gt; Clostridium cluster I     "Clostridium cluster I"    
-#&gt; Clostridium cluster XVIII "Clostridium cluster XVIII"
-#&gt; Clostridium cluster III   "Clostridium cluster III"  
-#&gt; Clostridium cluster IX    "Clostridium cluster IX"   
-#&gt; Fusobacteria              "Fusobacteria"             
-#&gt; Clostridium cluster XIII  "Clostridium cluster XIII" 
-#&gt; Cyanobacteria             "Cyanobacteria"            
-#&gt; Uncultured Clostridiales  "Uncultured Clostridiales" 
-#&gt; Uncultured Mollicutes     "Uncultured Mollicutes"    </div><div class='input'>
-<span class='co'># this won't aggregate taxa,</span>
-<span class='co'># but just add a new rank called unique, equal to taxa_names</span>
-<span class='fu'>tax_agg</span><span class='op'>(</span>ps <span class='op'>=</span> <span class='va'>dietswap</span>, <span class='cn'>NA</span><span class='op'>)</span>
+#&gt; Uncultured Mollicutes     "Firmicutes"      "Uncultured Mollicutes"    </div><div class='input'>
+<span class='co'># this won't aggregate taxa, but just adds a new rank called unique, equal to taxa_names</span>
+<span class='fu'>tax_agg</span><span class='op'>(</span>ps <span class='op'>=</span> <span class='va'>dietswap</span>, rank <span class='op'>=</span> <span class='cn'>NA</span>, add_unique <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; ps_extra object - a list with phyloseq and extras:
 #&gt; 
 #&gt; phyloseq-class experiment-level object
@@ -278,7 +269,7 @@ Aggregating at rank n with tax_agg still generates a "unique" column, but aggreg
 #&gt; tax_table()   Taxonomy Table:    [ 130 taxa by 4 taxonomic ranks ]
 #&gt; 
 #&gt; phyloseq info:
-#&gt; tax_agg = unique tax_transform = NA</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span><span class='op'>(</span><span class='fu'>tax_agg</span><span class='op'>(</span><span class='va'>dietswap</span>, <span class='cn'>NA</span><span class='op'>)</span>, <span class='fu'>tax_agg</span><span class='op'>(</span><span class='va'>dietswap</span>, <span class='st'>"unique"</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># TRUE</span>
+#&gt; tax_agg = unique tax_transform = NA</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span><span class='op'>(</span><span class='fu'>tax_agg</span><span class='op'>(</span><span class='va'>dietswap</span>, <span class='cn'>NA</span>, add_unique <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>, <span class='fu'>tax_agg</span><span class='op'>(</span><span class='va'>dietswap</span>, <span class='st'>"unique"</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># TRUE</span>
 </div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># create some missing values</span>
 <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html'>tax_table</a></span><span class='op'>(</span><span class='va'>dietswap</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>:</span><span class='fl'>7</span>, <span class='st'>"Genus"</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='st'>"g__"</span>
@@ -293,7 +284,7 @@ Aggregating at rank n with tax_agg still generates a "unique" column, but aggreg
 #&gt; phyloseq-class experiment-level object
 #&gt; otu_table()   OTU Table:         [ 128 taxa and 222 samples ]
 #&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 128 taxa by 4 taxonomic ranks ]
+#&gt; tax_table()   Taxonomy Table:    [ 128 taxa by 3 taxonomic ranks ]
 #&gt; 
 #&gt; phyloseq info:
 #&gt; tax_agg = Genus tax_transform = NA</div><div class='input'>
@@ -309,7 +300,7 @@ Aggregating at rank n with tax_agg still generates a "unique" column, but aggreg
 #&gt; phyloseq-class experiment-level object
 #&gt; otu_table()   OTU Table:         [ 25 taxa and 222 samples ]
 #&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 25 taxa by 3 taxonomic ranks ]
+#&gt; tax_table()   Taxonomy Table:    [ 25 taxa by 2 taxonomic ranks ]
 #&gt; 
 #&gt; phyloseq info:
 #&gt; tax_agg = Family tax_transform = NA</div></pre>

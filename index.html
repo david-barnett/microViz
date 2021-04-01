@@ -5,14 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Microbiome Data Wrangling, Stats and Visualisation • microViz</title>
+<title>Microbiome Data Analysis and Visualization • microViz</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="Microbiome Data Wrangling, Stats and Visualisation">
-<meta property="og:description" content="Extends phyloseq and microbiome with further convenient and novel visualisation and data manipulation functionality.">
+<script src="pkgdown.js"></script><meta property="og:title" content="Microbiome Data Analysis and Visualization">
+<meta property="og:description" content="Extends phyloseq and microbiome with further visualization and data manipulation functionality.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1.9002</span>
       </span>
     </div>
 
@@ -93,7 +93,7 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>microViz provides functions for wrangling, stats and visualization of microbiome sequencing data. These functions are intended to be easy to use (with clear documentation) and modular (for extensibility and flexibility). microViz wraps, extends and complements popular microbial ecology packages like phyloseq, vegan, and microbiome.</p>
+<p>microViz provides functions for analysis and visualization of microbiome sequencing data. These functions are intended to be easy to use (with clear documentation) and modular (for extensibility and flexibility). microViz wraps, extends and complements popular microbial ecology packages like phyloseq, vegan, and microbiome.</p>
 <p><strong>See the documentation website for full details and examples:</strong> <a href="https://david-barnett.github.io/microViz/" class="uri">https://david-barnett.github.io/microViz/</a></p>
 <ul>
 <li>The <a href="https://david-barnett.github.io/microViz/articles/articles/microViz.html">“Get started”</a> page, and also <a href="https://david-barnett.github.io/microViz/index.html">this ReadMe</a>, show a few example analyses.</li>
@@ -113,14 +113,16 @@
 <span class="co"># If you are on macOS, you might need to install xquartz to make the heatmaps work (ComplexHeatmaps package)</span>
 <span class="co"># You can do this with homebrew, running the following command in your mac's Terminal: brew install --cask xquartz </span>
 
+<span class="co"># for installing from github you'll need the devtools package</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span>, type <span class="op">=</span> <span class="st">"binary"</span><span class="op">)</span> <span class="co"># (not binary if you're on linux)</span>
+
 <span class="co"># If you don't already have the latest versions of phyloseq and microbiome, you should install these from bioconductor:</span>
 
 <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
- <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
+ <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, type <span class="op">=</span> <span class="st">"binary"</span><span class="op">)</span> <span class="co"># (not binary if you're on linux)</span>
 <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu">install</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"phyloseq"</span>, <span class="st">"microbiome"</span><span class="op">)</span><span class="op">)</span>
 
 <span class="co"># # Installing the latest version of this package # #</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"david-barnett/microViz@0.6.1"</span><span class="op">)</span> <span class="co"># check 0.6.1 is the latest version?</span>
 <span class="co"># advanced tip: add @&lt;commit-hash&gt; after microViz to install a version from a particular commit</span></code></pre></div>
 </div>
@@ -240,8 +242,8 @@
   variables <span class="op">=</span> <span class="st">"bmi_group + female"</span>
 <span class="op">)</span>
 <span class="co">#&gt; Dropping samples with missings: 2</span>
-<span class="co">#&gt; 2021-03-29 13:10:03 - Starting PERMANOVA with 99 perms with 1 processes</span>
-<span class="co">#&gt; 2021-03-29 13:10:03 - Finished PERMANOVA</span>
+<span class="co">#&gt; 2021-03-30 16:24:47 - Starting PERMANOVA with 99 perms with 1 processes</span>
+<span class="co">#&gt; 2021-03-30 16:24:47 - Finished PERMANOVA</span>
 <span class="co"># view the permanova results</span>
 <span class="fu"><a href="reference/ps_extra-accessors.html">perm_get</a></span><span class="op">(</span><span class="va">aitchison_perm</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt;            Df   SumOfSqs         R2        F Pr(&gt;F)</span>
@@ -261,8 +263,8 @@
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">perm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/dist_permanova.html">dist_permanova</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">aitchison_dists</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"female"</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">321</span><span class="op">)</span>
 <span class="co">#&gt; Dropping samples with missings: 2</span>
-<span class="co">#&gt; 2021-03-29 13:10:03 - Starting PERMANOVA with 999 perms with 1 processes</span>
-<span class="co">#&gt; 2021-03-29 13:10:04 - Finished PERMANOVA</span>
+<span class="co">#&gt; 2021-03-30 16:24:47 - Starting PERMANOVA with 999 perms with 1 processes</span>
+<span class="co">#&gt; 2021-03-30 16:24:48 - Finished PERMANOVA</span>
 <span class="fu"><a href="reference/ps_extra-accessors.html">perm_get</a></span><span class="op">(</span><span class="va">perm2</span><span class="op">)</span>
 <span class="co">#&gt; Permutation test for adonis under reduced model</span>
 <span class="co">#&gt; Marginal effects of terms</span>
@@ -331,7 +333,7 @@
 <span class="co">#&gt;  collate  en_GB.UTF-8                 </span>
 <span class="co">#&gt;  ctype    en_GB.UTF-8                 </span>
 <span class="co">#&gt;  tz       Europe/Amsterdam            </span>
-<span class="co">#&gt;  date     2021-03-29                  </span>
+<span class="co">#&gt;  date     2021-03-30                  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ─ Packages ───────────────────────────────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt;  package        * version  date       lib source        </span>

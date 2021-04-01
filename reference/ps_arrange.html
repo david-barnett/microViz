@@ -75,7 +75,7 @@ Give this function arguments in the same way you would use dplyr::arrange()" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1.9002</span>
       </span>
     </div>
 
@@ -173,7 +173,20 @@ to set the order of the samples
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://dx.plos.org/10.1371/journal.pone.0061217'>phyloseq</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://microbiome.github.io/microbiome'>microbiome</a></span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>microbiome R package (microbiome.github.com)</span>
+#&gt; <span class='message'>    </span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'> Copyright (C) 2011-2020 Leo Lahti, </span>
+#&gt; <span class='message'>    Sudarshan Shetty et al. &lt;microbiome.github.io&gt;</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘microbiome’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:vegan’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    diversity</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:ggplot2’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    alpha</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:base’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    transform</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span><span class='op'>)</span>
 
 <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
   <span class='fu'>ps_arrange</span><span class='op'>(</span><span class='va'>subject</span>, <span class='va'>timepoint</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
