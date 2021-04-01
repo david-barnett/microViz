@@ -75,7 +75,7 @@ You can style the ordination plot points using the options on the left panel." /
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1.9003</span>
       </span>
     </div>
 
@@ -203,7 +203,7 @@ that grouping variable cannot be used to select those samples</p>
 
 <span class='co'># simple example #</span>
 <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html'>taxa_names</a></span><span class='op'>(</span><span class='va'>enterotype</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='st'>"unclassified"</span>
-<span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tax_fill_unknowns.html'>tax_fill_unknowns</a></span><span class='op'>(</span><span class='va'>enterotype</span><span class='op'>)</span> <span class='co'># remove NA taxa</span>
+<span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tax_fix.html'>tax_fix</a></span><span class='op'>(</span><span class='va'>enterotype</span><span class='op'>)</span> <span class='co'># remove NA taxa</span>
 </div><div class='output co'>#&gt; <span class='warning'>Warning: Row named: unclassified</span>
 #&gt; <span class='warning'>contains no non-unknown values, returning:</span>
 #&gt; <span class='warning'>'unclassified' for all replaced levels.</span>
@@ -245,7 +245,7 @@ that grouping variable cannot be used to select those samples</p>
 
 <span class='co'># another dataset</span>
 <span class='co'># microbiomeutilities::hmp2 %&gt;%</span>
-<span class='co'>#   tax_fill_unknowns() %&gt;%</span>
+<span class='co'>#   tax_fix() %&gt;%</span>
 <span class='co'>#   dist_calc("aitchison") %&gt;%</span>
 <span class='co'>#   ord_calc() %&gt;%</span>
 <span class='co'>#   ord_explore()</span>
@@ -256,7 +256,7 @@ that grouping variable cannot be used to select those samples</p>
 <span class='co'># The barplot is actually quite useless with the 16000+ anonymous OTUs</span>
 <span class='co'># in this dataset, but the 1000s of unmerged "other" categories do render</span>
 <span class='co'># phyloseq_validate(ps) %&gt;%</span>
-<span class='co'>#   tax_fill_unknowns() %&gt;%</span>
+<span class='co'>#   tax_fix() %&gt;%</span>
 <span class='co'>#   dist_calc("aitchison") %&gt;%</span>
 <span class='co'>#   ord_calc() %&gt;%</span>
 <span class='co'>#   ord_explore()</span>

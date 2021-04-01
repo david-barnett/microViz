@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Replace unknown, NA, or short tax_table values — tax_fill_unknowns • microViz</title>
+<title>Deprecated, use tax_fix — tax_fill_unknowns • microViz</title>
 
 
 <!-- jquery -->
@@ -39,13 +39,9 @@
 
 
 
-<meta property="og:title" content="Replace unknown, NA, or short tax_table values — tax_fill_unknowns" />
-<meta property="og:description" content="Identifies phyloseq tax_table values as unknown or uninformative and replaces them with the first informative value from a higher taxonomic rank.
-Short values in phyloseq tax_table are typically empty strings or &quot; &quot;, or &quot;g__&quot; etc. so it is helpful to replace them. Set min_length = 0 to avoid filtering on length.
-Values in unknowns are also removed, even if longer than min_length. It is up to the user to specify sensible values in unknowns if their dataset has other unwanted values.
-NA values are also replaced.
-
-" />
+<meta property="og:title" content="Deprecated, use tax_fix — tax_fill_unknowns" />
+<meta property="og:description" content="tax_fill_unknowns is deprecated, use tax_fix instead (with same arguments)
+or try out tax_fix_interactive()" />
 
 
 
@@ -77,7 +73,7 @@ NA values are also replaced.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1.9003</span>
       </span>
     </div>
 
@@ -134,29 +130,25 @@ NA values are also replaced.
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Replace unknown, NA, or short tax_table values</h1>
-    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/tax_fill_unknowns.R'><code>R/tax_fill_unknowns.R</code></a></small>
+    <h1>Deprecated, use tax_fix</h1>
+    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/tax_fill_unknowns_deprecated.R'><code>R/tax_fill_unknowns_deprecated.R</code></a></small>
     <div class="hidden name"><code>tax_fill_unknowns.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Identifies phyloseq tax_table values as unknown or uninformative and replaces them with the first informative value from a higher taxonomic rank.</p><ul>
-<li><p>Short values in phyloseq tax_table are typically empty strings or " ", or "g__" etc. so it is helpful to replace them. Set <code>min_length</code> = 0 to avoid filtering on length.</p></li>
-<li><p>Values in <code>unknowns</code> are also removed, even if longer than <code>min_length</code>. It is up to the user to specify sensible values in <code>unknowns</code> if their dataset has other unwanted values.</p></li>
-<li><p>NA values are also replaced.</p></li>
-</ul>
-
+    <p>tax_fill_unknowns is deprecated, use tax_fix instead (with same arguments)
+or try out tax_fix_interactive()</p>
     </div>
 
     <pre class="usage"><span class='fu'>tax_fill_unknowns</span><span class='op'>(</span>
-  <span class='va'>ps</span>,
-  min_length <span class='op'>=</span> <span class='fl'>4</span>,
-  unknowns <span class='op'>=</span> <span class='cn'>NA</span>,
-  levels <span class='op'>=</span> <span class='fu'>phyloseq</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/rank_names.html'>rank_names</a></span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span>,
-  suffix_rank <span class='op'>=</span> <span class='st'>"classified"</span>,
-  sep <span class='op'>=</span> <span class='st'>" "</span>,
-  anon_unique <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  verbose <span class='op'>=</span> <span class='cn'>TRUE</span>
+  ps <span class='op'>=</span> <span class='cn'>NULL</span>,
+  min_length <span class='op'>=</span> <span class='cn'>NULL</span>,
+  unknowns <span class='op'>=</span> <span class='cn'>NULL</span>,
+  levels <span class='op'>=</span> <span class='cn'>NULL</span>,
+  suffix_rank <span class='op'>=</span> <span class='cn'>NULL</span>,
+  sep <span class='op'>=</span> <span class='cn'>NULL</span>,
+  anon_unique <span class='op'>=</span> <span class='cn'>NULL</span>,
+  verbose <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -164,797 +156,42 @@ NA values are also replaced.
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>ps</th>
-      <td><p>phyloseq or tax_table (taxonomyTable)</p></td>
+      <td><p>deprecated, use tax_fix</p></td>
     </tr>
     <tr>
       <th>min_length</th>
-      <td><p>replace strings shorter than this</p></td>
+      <td><p>deprecated, use tax_fix</p></td>
     </tr>
     <tr>
       <th>unknowns</th>
-      <td><p>also replace strings matching any in this vector, NA default vector shown in details!</p></td>
+      <td><p>deprecated, use tax_fix</p></td>
     </tr>
     <tr>
       <th>levels</th>
-      <td><p>names of taxonomic levels to modify, defaults to all</p></td>
+      <td><p>deprecated, use tax_fix</p></td>
     </tr>
     <tr>
       <th>suffix_rank</th>
-      <td><p>"classified" (default) or "current", when replacing an entry, should the suffix be taken from the lowest classified rank for that taxon "classified", or the "current" unclassified rank?</p></td>
+      <td><p>deprecated, use tax_fix</p></td>
     </tr>
     <tr>
       <th>sep</th>
-      <td><p>character(s) separating new name and taxonomic rank level suffix (see suffix_rank)</p></td>
+      <td><p>deprecated, use tax_fix</p></td>
     </tr>
     <tr>
       <th>anon_unique</th>
-      <td><p>make anonymous taxa unique by replacing unknowns with taxa_name?
-otherwise they are replaced with paste("unknown", first_rank_name),
-which is therefore the same for every anonymous taxon, meaning they will be merged if tax_agg is used.
-(anonymous taxa are taxa with all unknown values in their tax_table row, i.e. cannot be classified even at highest rank available)</p></td>
+      <td><p>deprecated, use tax_fix</p></td>
     </tr>
     <tr>
       <th>verbose</th>
-      <td><p>emit warnings when cannot replace with informative name?</p></td>
+      <td><p>deprecated, use tax_fix</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>object same class as ps</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <p>nothing</p>
 
-    <p>By default (unknowns = NA), unknowns is set to a vector containing:
-'s__' 'g__' 'f__' 'o__' 'c__' 'p__' 'k__' 'S__' 'G__' 'F__' 'O__' 'C__' 'P__' 'K__' 'NA' 'NaN' ' ' ''
-'unknown' 'Unknown' 's__unknown' 's__Unknown' 's__NA' 'g__unknown' 'g__Unknown' 'g__NA'
-'f__unknown' 'f__Unknown' 'f__NA' 'o__unknown' 'o__Unknown' 'o__NA' 'c__unknown' 'c__Unknown' 'c__NA'
-'p__unknown' 'p__Unknown' 'p__NA' 'k__unknown' 'k__Unknown' 'k__NA' 'S__unknown' 'S__Unknown' 'S__NA'
-'G__unknown' 'G__Unknown' 'G__NA' 'F__unknown' 'F__Unknown' 'F__NA' 'O__unknown' 'O__Unknown' 'O__NA'
-'C__unknown' 'C__Unknown' 'C__NA' 'P__unknown' 'P__Unknown' 'P__NA' 'K__unknown' 'K__Unknown' 'K__NA'</p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://dx.plos.org/10.1371/journal.pone.0061217'>phyloseq</a></span><span class='op'>)</span>
-
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>dietswap</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span>
-<span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span>
-
-<span class='co'># create unknowns to test filling</span>
-<span class='va'>tt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html'>tax_table</a></span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span>
-<span class='va'>ntax</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/ntaxa-methods.html'>ntaxa</a></span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>123</span><span class='op'>)</span>
-<span class='va'>g</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='va'>ntax</span>, <span class='fl'>30</span><span class='op'>)</span>
-<span class='va'>f</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='va'>g</span>, <span class='fl'>10</span><span class='op'>)</span>
-<span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='va'>f</span>, <span class='fl'>3</span><span class='op'>)</span>
-<span class='va'>tt</span><span class='op'>[</span><span class='va'>g</span>, <span class='fl'>3</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='st'>"g__"</span>
-<span class='va'>tt</span><span class='op'>[</span><span class='va'>f</span>, <span class='fl'>2</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='st'>"f__"</span>
-<span class='va'>tt</span><span class='op'>[</span><span class='va'>p</span>, <span class='fl'>1</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='st'>"p__"</span>
-<span class='va'>tt</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='va'>ntax</span>, <span class='fl'>10</span><span class='op'>)</span>, <span class='fl'>3</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='st'>"unknown"</span>
-<span class='co'># create a row with only NAs</span>
-<span class='va'>tt</span><span class='op'>[</span><span class='fl'>1</span>, <span class='op'>]</span> <span class='op'>&lt;-</span> <span class='cn'>NA</span>
-
-<span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html'>tax_table</a></span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html'>tax_table</a></span><span class='op'>(</span><span class='va'>tt</span><span class='op'>)</span>
-
-<span class='va'>ps</span>
-</div><div class='output co'>#&gt; phyloseq-class experiment-level object
-#&gt; otu_table()   OTU Table:         [ 130 taxa and 222 samples ]
-#&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html'>tax_table</a></span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fl'>50</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Taxonomy Table:     [50 taxa by 3 taxonomic ranks]:
-#&gt;                                    Phylum           
-#&gt; Actinomycetaceae                   NA               
-#&gt; Aerococcus                         "Firmicutes"     
-#&gt; Aeromonas                          "Proteobacteria" 
-#&gt; Akkermansia                        "Verrucomicrobia"
-#&gt; Alcaligenes faecalis et rel.       "Proteobacteria" 
-#&gt; Allistipes et rel.                 "Bacteroidetes"  
-#&gt; Anaerobiospirillum                 "Proteobacteria" 
-#&gt; Anaerofustis                       "Firmicutes"     
-#&gt; Anaerostipes caccae et rel.        "Firmicutes"     
-#&gt; Anaerotruncus colihominis et rel.  "Firmicutes"     
-#&gt; Anaerovorax odorimutans et rel.    "Firmicutes"     
-#&gt; Aneurinibacillus                   "Firmicutes"     
-#&gt; Aquabacterium                      "Proteobacteria" 
-#&gt; Asteroleplasma et rel.             "Firmicutes"     
-#&gt; Atopobium                          "Actinobacteria" 
-#&gt; Bacillus                           "Firmicutes"     
-#&gt; Bacteroides fragilis et rel.       "Bacteroidetes"  
-#&gt; Bacteroides intestinalis et rel.   "Bacteroidetes"  
-#&gt; Bacteroides ovatus et rel.         "Bacteroidetes"  
-#&gt; Bacteroides plebeius et rel.       "Bacteroidetes"  
-#&gt; Bacteroides splachnicus et rel.    "Bacteroidetes"  
-#&gt; Bacteroides stercoris et rel.      "Bacteroidetes"  
-#&gt; Bacteroides uniformis et rel.      "Bacteroidetes"  
-#&gt; Bacteroides vulgatus et rel.       "Bacteroidetes"  
-#&gt; Bifidobacterium                    "p__"            
-#&gt; Bilophila et rel.                  "Proteobacteria" 
-#&gt; Brachyspira                        "Spirochaetes"   
-#&gt; Bryantella formatexigens et rel.   "Firmicutes"     
-#&gt; Bulleidia moorei et rel.           "Firmicutes"     
-#&gt; Burkholderia                       "Proteobacteria" 
-#&gt; Butyrivibrio crossotus et rel.     "Firmicutes"     
-#&gt; Campylobacter                      "Proteobacteria" 
-#&gt; Catenibacterium mitsuokai et rel.  "Firmicutes"     
-#&gt; Clostridium (sensu stricto)        "Firmicutes"     
-#&gt; Clostridium cellulosi et rel.      "Firmicutes"     
-#&gt; Clostridium colinum et rel.        "p__"            
-#&gt; Clostridium difficile et rel.      "Firmicutes"     
-#&gt; Clostridium felsineum et rel.      "Firmicutes"     
-#&gt; Clostridium leptum et rel.         "Firmicutes"     
-#&gt; Clostridium nexile et rel.         "Firmicutes"     
-#&gt; Clostridium orbiscindens et rel.   "Firmicutes"     
-#&gt; Clostridium ramosum et rel.        "Firmicutes"     
-#&gt; Clostridium sphenoides et rel.     "Firmicutes"     
-#&gt; Clostridium stercorarium et rel.   "Firmicutes"     
-#&gt; Clostridium symbiosum et rel.      "Firmicutes"     
-#&gt; Clostridium thermocellum et rel.   "Firmicutes"     
-#&gt; Collinsella                        "Actinobacteria" 
-#&gt; Coprobacillus catenaformis et rel. "Firmicutes"     
-#&gt; Coprococcus eutactus et rel.       "Firmicutes"     
-#&gt; Corynebacterium                    "Actinobacteria" 
-#&gt;                                    Family                     
-#&gt; Actinomycetaceae                   NA                         
-#&gt; Aerococcus                         "Bacilli"                  
-#&gt; Aeromonas                          "Proteobacteria"           
-#&gt; Akkermansia                        "Verrucomicrobia"          
-#&gt; Alcaligenes faecalis et rel.       "Proteobacteria"           
-#&gt; Allistipes et rel.                 "Bacteroidetes"            
-#&gt; Anaerobiospirillum                 "Proteobacteria"           
-#&gt; Anaerofustis                       "Clostridium cluster XV"   
-#&gt; Anaerostipes caccae et rel.        "Clostridium cluster XIVa" 
-#&gt; Anaerotruncus colihominis et rel.  "Clostridium cluster IV"   
-#&gt; Anaerovorax odorimutans et rel.    "Clostridium cluster XI"   
-#&gt; Aneurinibacillus                   "Bacilli"                  
-#&gt; Aquabacterium                      "Proteobacteria"           
-#&gt; Asteroleplasma et rel.             "Asteroleplasma"           
-#&gt; Atopobium                          "Actinobacteria"           
-#&gt; Bacillus                           "Bacilli"                  
-#&gt; Bacteroides fragilis et rel.       "Bacteroidetes"            
-#&gt; Bacteroides intestinalis et rel.   "Bacteroidetes"            
-#&gt; Bacteroides ovatus et rel.         "Bacteroidetes"            
-#&gt; Bacteroides plebeius et rel.       "Bacteroidetes"            
-#&gt; Bacteroides splachnicus et rel.    "Bacteroidetes"            
-#&gt; Bacteroides stercoris et rel.      "Bacteroidetes"            
-#&gt; Bacteroides uniformis et rel.      "Bacteroidetes"            
-#&gt; Bacteroides vulgatus et rel.       "Bacteroidetes"            
-#&gt; Bifidobacterium                    "f__"                      
-#&gt; Bilophila et rel.                  "f__"                      
-#&gt; Brachyspira                        "Spirochaetes"             
-#&gt; Bryantella formatexigens et rel.   "Clostridium cluster XIVa" 
-#&gt; Bulleidia moorei et rel.           "Clostridium cluster XVI"  
-#&gt; Burkholderia                       "Proteobacteria"           
-#&gt; Butyrivibrio crossotus et rel.     "Clostridium cluster XIVa" 
-#&gt; Campylobacter                      "Proteobacteria"           
-#&gt; Catenibacterium mitsuokai et rel.  "Clostridium cluster XVII" 
-#&gt; Clostridium (sensu stricto)        "Clostridium cluster I"    
-#&gt; Clostridium cellulosi et rel.      "Clostridium cluster IV"   
-#&gt; Clostridium colinum et rel.        "f__"                      
-#&gt; Clostridium difficile et rel.      "Clostridium cluster XI"   
-#&gt; Clostridium felsineum et rel.      "Clostridium cluster XI"   
-#&gt; Clostridium leptum et rel.         "Clostridium cluster IV"   
-#&gt; Clostridium nexile et rel.         "Clostridium cluster XIVa" 
-#&gt; Clostridium orbiscindens et rel.   "Clostridium cluster IV"   
-#&gt; Clostridium ramosum et rel.        "f__"                      
-#&gt; Clostridium sphenoides et rel.     "Clostridium cluster XIVa" 
-#&gt; Clostridium stercorarium et rel.   "Clostridium cluster III"  
-#&gt; Clostridium symbiosum et rel.      "Clostridium cluster XIVa" 
-#&gt; Clostridium thermocellum et rel.   "Clostridium cluster III"  
-#&gt; Collinsella                        "Actinobacteria"           
-#&gt; Coprobacillus catenaformis et rel. "Clostridium cluster XVIII"
-#&gt; Coprococcus eutactus et rel.       "Clostridium cluster XIVa" 
-#&gt; Corynebacterium                    "Actinobacteria"           
-#&gt;                                    Genus                               
-#&gt; Actinomycetaceae                   NA                                  
-#&gt; Aerococcus                         "Aerococcus"                        
-#&gt; Aeromonas                          "Aeromonas"                         
-#&gt; Akkermansia                        "Akkermansia"                       
-#&gt; Alcaligenes faecalis et rel.       "Alcaligenes faecalis et rel."      
-#&gt; Allistipes et rel.                 "Allistipes et rel."                
-#&gt; Anaerobiospirillum                 "g__"                               
-#&gt; Anaerofustis                       "Anaerofustis"                      
-#&gt; Anaerostipes caccae et rel.        "g__"                               
-#&gt; Anaerotruncus colihominis et rel.  "Anaerotruncus colihominis et rel." 
-#&gt; Anaerovorax odorimutans et rel.    "Anaerovorax odorimutans et rel."   
-#&gt; Aneurinibacillus                   "Aneurinibacillus"                  
-#&gt; Aquabacterium                      "unknown"                           
-#&gt; Asteroleplasma et rel.             "g__"                               
-#&gt; Atopobium                          "Atopobium"                         
-#&gt; Bacillus                           "Bacillus"                          
-#&gt; Bacteroides fragilis et rel.       "Bacteroides fragilis et rel."      
-#&gt; Bacteroides intestinalis et rel.   "Bacteroides intestinalis et rel."  
-#&gt; Bacteroides ovatus et rel.         "Bacteroides ovatus et rel."        
-#&gt; Bacteroides plebeius et rel.       "Bacteroides plebeius et rel."      
-#&gt; Bacteroides splachnicus et rel.    "Bacteroides splachnicus et rel."   
-#&gt; Bacteroides stercoris et rel.      "Bacteroides stercoris et rel."     
-#&gt; Bacteroides uniformis et rel.      "Bacteroides uniformis et rel."     
-#&gt; Bacteroides vulgatus et rel.       "Bacteroides vulgatus et rel."      
-#&gt; Bifidobacterium                    "g__"                               
-#&gt; Bilophila et rel.                  "g__"                               
-#&gt; Brachyspira                        "Brachyspira"                       
-#&gt; Bryantella formatexigens et rel.   "Bryantella formatexigens et rel."  
-#&gt; Bulleidia moorei et rel.           "Bulleidia moorei et rel."          
-#&gt; Burkholderia                       "Burkholderia"                      
-#&gt; Butyrivibrio crossotus et rel.     "Butyrivibrio crossotus et rel."    
-#&gt; Campylobacter                      "Campylobacter"                     
-#&gt; Catenibacterium mitsuokai et rel.  "Catenibacterium mitsuokai et rel." 
-#&gt; Clostridium (sensu stricto)        "unknown"                           
-#&gt; Clostridium cellulosi et rel.      "Clostridium cellulosi et rel."     
-#&gt; Clostridium colinum et rel.        "g__"                               
-#&gt; Clostridium difficile et rel.      "Clostridium difficile et rel."     
-#&gt; Clostridium felsineum et rel.      "Clostridium felsineum et rel."     
-#&gt; Clostridium leptum et rel.         "Clostridium leptum et rel."        
-#&gt; Clostridium nexile et rel.         "Clostridium nexile et rel."        
-#&gt; Clostridium orbiscindens et rel.   "Clostridium orbiscindens et rel."  
-#&gt; Clostridium ramosum et rel.        "g__"                               
-#&gt; Clostridium sphenoides et rel.     "g__"                               
-#&gt; Clostridium stercorarium et rel.   "Clostridium stercorarium et rel."  
-#&gt; Clostridium symbiosum et rel.      "Clostridium symbiosum et rel."     
-#&gt; Clostridium thermocellum et rel.   "Clostridium thermocellum et rel."  
-#&gt; Collinsella                        "Collinsella"                       
-#&gt; Coprobacillus catenaformis et rel. "Coprobacillus catenaformis et rel."
-#&gt; Coprococcus eutactus et rel.       "Coprococcus eutactus et rel."      
-#&gt; Corynebacterium                    "g__"                               </div><div class='input'><span class='co'># tax_fill_unknowns with defaults should solve most problems</span>
-
-<span class='co'># this will replace `unknown`s as well as short values including "g__" and "f__"</span>
-<span class='fu'>tax_fill_unknowns</span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html'>tax_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fl'>50</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Row named: Actinomycetaceae</span>
-#&gt; <span class='warning'>contains no non-unknown values, returning:</span>
-#&gt; <span class='warning'>'Actinomycetaceae' for all replaced levels.</span>
-#&gt; <span class='warning'>Consider editing this tax_table entry manually.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Row named: Bifidobacterium</span>
-#&gt; <span class='warning'>contains no non-unknown values, returning:</span>
-#&gt; <span class='warning'>'Bifidobacterium' for all replaced levels.</span>
-#&gt; <span class='warning'>Consider editing this tax_table entry manually.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Row named: Clostridium colinum et rel.</span>
-#&gt; <span class='warning'>contains no non-unknown values, returning:</span>
-#&gt; <span class='warning'>'Clostridium colinum et rel.' for all replaced levels.</span>
-#&gt; <span class='warning'>Consider editing this tax_table entry manually.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Row named: Escherichia coli et rel.</span>
-#&gt; <span class='warning'>contains no non-unknown values, returning:</span>
-#&gt; <span class='warning'>'Escherichia coli et rel.' for all replaced levels.</span>
-#&gt; <span class='warning'>Consider editing this tax_table entry manually.</span></div><div class='output co'>#&gt; Taxonomy Table:     [50 taxa by 3 taxonomic ranks]:
-#&gt;                                    Phylum                       
-#&gt; Actinomycetaceae                   "Actinomycetaceae"           
-#&gt; Aerococcus                         "Firmicutes"                 
-#&gt; Aeromonas                          "Proteobacteria"             
-#&gt; Akkermansia                        "Verrucomicrobia"            
-#&gt; Alcaligenes faecalis et rel.       "Proteobacteria"             
-#&gt; Allistipes et rel.                 "Bacteroidetes"              
-#&gt; Anaerobiospirillum                 "Proteobacteria"             
-#&gt; Anaerofustis                       "Firmicutes"                 
-#&gt; Anaerostipes caccae et rel.        "Firmicutes"                 
-#&gt; Anaerotruncus colihominis et rel.  "Firmicutes"                 
-#&gt; Anaerovorax odorimutans et rel.    "Firmicutes"                 
-#&gt; Aneurinibacillus                   "Firmicutes"                 
-#&gt; Aquabacterium                      "Proteobacteria"             
-#&gt; Asteroleplasma et rel.             "Firmicutes"                 
-#&gt; Atopobium                          "Actinobacteria"             
-#&gt; Bacillus                           "Firmicutes"                 
-#&gt; Bacteroides fragilis et rel.       "Bacteroidetes"              
-#&gt; Bacteroides intestinalis et rel.   "Bacteroidetes"              
-#&gt; Bacteroides ovatus et rel.         "Bacteroidetes"              
-#&gt; Bacteroides plebeius et rel.       "Bacteroidetes"              
-#&gt; Bacteroides splachnicus et rel.    "Bacteroidetes"              
-#&gt; Bacteroides stercoris et rel.      "Bacteroidetes"              
-#&gt; Bacteroides uniformis et rel.      "Bacteroidetes"              
-#&gt; Bacteroides vulgatus et rel.       "Bacteroidetes"              
-#&gt; Bifidobacterium                    "Bifidobacterium"            
-#&gt; Bilophila et rel.                  "Proteobacteria"             
-#&gt; Brachyspira                        "Spirochaetes"               
-#&gt; Bryantella formatexigens et rel.   "Firmicutes"                 
-#&gt; Bulleidia moorei et rel.           "Firmicutes"                 
-#&gt; Burkholderia                       "Proteobacteria"             
-#&gt; Butyrivibrio crossotus et rel.     "Firmicutes"                 
-#&gt; Campylobacter                      "Proteobacteria"             
-#&gt; Catenibacterium mitsuokai et rel.  "Firmicutes"                 
-#&gt; Clostridium (sensu stricto)        "Firmicutes"                 
-#&gt; Clostridium cellulosi et rel.      "Firmicutes"                 
-#&gt; Clostridium colinum et rel.        "Clostridium colinum et rel."
-#&gt; Clostridium difficile et rel.      "Firmicutes"                 
-#&gt; Clostridium felsineum et rel.      "Firmicutes"                 
-#&gt; Clostridium leptum et rel.         "Firmicutes"                 
-#&gt; Clostridium nexile et rel.         "Firmicutes"                 
-#&gt; Clostridium orbiscindens et rel.   "Firmicutes"                 
-#&gt; Clostridium ramosum et rel.        "Firmicutes"                 
-#&gt; Clostridium sphenoides et rel.     "Firmicutes"                 
-#&gt; Clostridium stercorarium et rel.   "Firmicutes"                 
-#&gt; Clostridium symbiosum et rel.      "Firmicutes"                 
-#&gt; Clostridium thermocellum et rel.   "Firmicutes"                 
-#&gt; Collinsella                        "Actinobacteria"             
-#&gt; Coprobacillus catenaformis et rel. "Firmicutes"                 
-#&gt; Coprococcus eutactus et rel.       "Firmicutes"                 
-#&gt; Corynebacterium                    "Actinobacteria"             
-#&gt;                                    Family                       
-#&gt; Actinomycetaceae                   "Actinomycetaceae"           
-#&gt; Aerococcus                         "Bacilli"                    
-#&gt; Aeromonas                          "Proteobacteria"             
-#&gt; Akkermansia                        "Verrucomicrobia"            
-#&gt; Alcaligenes faecalis et rel.       "Proteobacteria"             
-#&gt; Allistipes et rel.                 "Bacteroidetes"              
-#&gt; Anaerobiospirillum                 "Proteobacteria"             
-#&gt; Anaerofustis                       "Clostridium cluster XV"     
-#&gt; Anaerostipes caccae et rel.        "Clostridium cluster XIVa"   
-#&gt; Anaerotruncus colihominis et rel.  "Clostridium cluster IV"     
-#&gt; Anaerovorax odorimutans et rel.    "Clostridium cluster XI"     
-#&gt; Aneurinibacillus                   "Bacilli"                    
-#&gt; Aquabacterium                      "Proteobacteria"             
-#&gt; Asteroleplasma et rel.             "Asteroleplasma"             
-#&gt; Atopobium                          "Actinobacteria"             
-#&gt; Bacillus                           "Bacilli"                    
-#&gt; Bacteroides fragilis et rel.       "Bacteroidetes"              
-#&gt; Bacteroides intestinalis et rel.   "Bacteroidetes"              
-#&gt; Bacteroides ovatus et rel.         "Bacteroidetes"              
-#&gt; Bacteroides plebeius et rel.       "Bacteroidetes"              
-#&gt; Bacteroides splachnicus et rel.    "Bacteroidetes"              
-#&gt; Bacteroides stercoris et rel.      "Bacteroidetes"              
-#&gt; Bacteroides uniformis et rel.      "Bacteroidetes"              
-#&gt; Bacteroides vulgatus et rel.       "Bacteroidetes"              
-#&gt; Bifidobacterium                    "Bifidobacterium"            
-#&gt; Bilophila et rel.                  "Proteobacteria Phylum"      
-#&gt; Brachyspira                        "Spirochaetes"               
-#&gt; Bryantella formatexigens et rel.   "Clostridium cluster XIVa"   
-#&gt; Bulleidia moorei et rel.           "Clostridium cluster XVI"    
-#&gt; Burkholderia                       "Proteobacteria"             
-#&gt; Butyrivibrio crossotus et rel.     "Clostridium cluster XIVa"   
-#&gt; Campylobacter                      "Proteobacteria"             
-#&gt; Catenibacterium mitsuokai et rel.  "Clostridium cluster XVII"   
-#&gt; Clostridium (sensu stricto)        "Clostridium cluster I"      
-#&gt; Clostridium cellulosi et rel.      "Clostridium cluster IV"     
-#&gt; Clostridium colinum et rel.        "Clostridium colinum et rel."
-#&gt; Clostridium difficile et rel.      "Clostridium cluster XI"     
-#&gt; Clostridium felsineum et rel.      "Clostridium cluster XI"     
-#&gt; Clostridium leptum et rel.         "Clostridium cluster IV"     
-#&gt; Clostridium nexile et rel.         "Clostridium cluster XIVa"   
-#&gt; Clostridium orbiscindens et rel.   "Clostridium cluster IV"     
-#&gt; Clostridium ramosum et rel.        "Firmicutes Phylum"          
-#&gt; Clostridium sphenoides et rel.     "Clostridium cluster XIVa"   
-#&gt; Clostridium stercorarium et rel.   "Clostridium cluster III"    
-#&gt; Clostridium symbiosum et rel.      "Clostridium cluster XIVa"   
-#&gt; Clostridium thermocellum et rel.   "Clostridium cluster III"    
-#&gt; Collinsella                        "Actinobacteria"             
-#&gt; Coprobacillus catenaformis et rel. "Clostridium cluster XVIII"  
-#&gt; Coprococcus eutactus et rel.       "Clostridium cluster XIVa"   
-#&gt; Corynebacterium                    "Actinobacteria"             
-#&gt;                                    Genus                               
-#&gt; Actinomycetaceae                   "Actinomycetaceae"                  
-#&gt; Aerococcus                         "Aerococcus"                        
-#&gt; Aeromonas                          "Aeromonas"                         
-#&gt; Akkermansia                        "Akkermansia"                       
-#&gt; Alcaligenes faecalis et rel.       "Alcaligenes faecalis et rel."      
-#&gt; Allistipes et rel.                 "Allistipes et rel."                
-#&gt; Anaerobiospirillum                 "Proteobacteria Family"             
-#&gt; Anaerofustis                       "Anaerofustis"                      
-#&gt; Anaerostipes caccae et rel.        "Clostridium cluster XIVa Family"   
-#&gt; Anaerotruncus colihominis et rel.  "Anaerotruncus colihominis et rel." 
-#&gt; Anaerovorax odorimutans et rel.    "Anaerovorax odorimutans et rel."   
-#&gt; Aneurinibacillus                   "Aneurinibacillus"                  
-#&gt; Aquabacterium                      "Proteobacteria Family"             
-#&gt; Asteroleplasma et rel.             "Asteroleplasma Family"             
-#&gt; Atopobium                          "Atopobium"                         
-#&gt; Bacillus                           "Bacillus"                          
-#&gt; Bacteroides fragilis et rel.       "Bacteroides fragilis et rel."      
-#&gt; Bacteroides intestinalis et rel.   "Bacteroides intestinalis et rel."  
-#&gt; Bacteroides ovatus et rel.         "Bacteroides ovatus et rel."        
-#&gt; Bacteroides plebeius et rel.       "Bacteroides plebeius et rel."      
-#&gt; Bacteroides splachnicus et rel.    "Bacteroides splachnicus et rel."   
-#&gt; Bacteroides stercoris et rel.      "Bacteroides stercoris et rel."     
-#&gt; Bacteroides uniformis et rel.      "Bacteroides uniformis et rel."     
-#&gt; Bacteroides vulgatus et rel.       "Bacteroides vulgatus et rel."      
-#&gt; Bifidobacterium                    "Bifidobacterium"                   
-#&gt; Bilophila et rel.                  "Proteobacteria Phylum"             
-#&gt; Brachyspira                        "Brachyspira"                       
-#&gt; Bryantella formatexigens et rel.   "Bryantella formatexigens et rel."  
-#&gt; Bulleidia moorei et rel.           "Bulleidia moorei et rel."          
-#&gt; Burkholderia                       "Burkholderia"                      
-#&gt; Butyrivibrio crossotus et rel.     "Butyrivibrio crossotus et rel."    
-#&gt; Campylobacter                      "Campylobacter"                     
-#&gt; Catenibacterium mitsuokai et rel.  "Catenibacterium mitsuokai et rel." 
-#&gt; Clostridium (sensu stricto)        "Clostridium cluster I Family"      
-#&gt; Clostridium cellulosi et rel.      "Clostridium cellulosi et rel."     
-#&gt; Clostridium colinum et rel.        "Clostridium colinum et rel."       
-#&gt; Clostridium difficile et rel.      "Clostridium difficile et rel."     
-#&gt; Clostridium felsineum et rel.      "Clostridium felsineum et rel."     
-#&gt; Clostridium leptum et rel.         "Clostridium leptum et rel."        
-#&gt; Clostridium nexile et rel.         "Clostridium nexile et rel."        
-#&gt; Clostridium orbiscindens et rel.   "Clostridium orbiscindens et rel."  
-#&gt; Clostridium ramosum et rel.        "Firmicutes Phylum"                 
-#&gt; Clostridium sphenoides et rel.     "Clostridium cluster XIVa Family"   
-#&gt; Clostridium stercorarium et rel.   "Clostridium stercorarium et rel."  
-#&gt; Clostridium symbiosum et rel.      "Clostridium symbiosum et rel."     
-#&gt; Clostridium thermocellum et rel.   "Clostridium thermocellum et rel."  
-#&gt; Collinsella                        "Collinsella"                       
-#&gt; Coprobacillus catenaformis et rel. "Coprobacillus catenaformis et rel."
-#&gt; Coprococcus eutactus et rel.       "Coprococcus eutactus et rel."      
-#&gt; Corynebacterium                    "Actinobacteria Family"             </div><div class='input'>
-<span class='co'># This will only replace values in Genus column,</span>
-<span class='co'># and only replace short entries, and so won't replace literal "unknown"</span>
-<span class='co'># WARNING:</span>
-<span class='co'># only set `levels` arg if you know you won't create an invalid tax_table!</span>
-<span class='va'>ps</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>tax_fill_unknowns</span><span class='op'>(</span>unknowns <span class='op'>=</span> <span class='cn'>NULL</span>, levels <span class='op'>=</span> <span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html'>tax_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fl'>50</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Row named: Actinomycetaceae</span>
-#&gt; <span class='warning'>contains no non-unknown values, returning:</span>
-#&gt; <span class='warning'>'Actinomycetaceae' for all replaced levels.</span>
-#&gt; <span class='warning'>Consider editing this tax_table entry manually.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Row named: Bifidobacterium</span>
-#&gt; <span class='warning'>contains no non-unknown values, returning:</span>
-#&gt; <span class='warning'>'Bifidobacterium' for all replaced levels.</span>
-#&gt; <span class='warning'>Consider editing this tax_table entry manually.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Row named: Clostridium colinum et rel.</span>
-#&gt; <span class='warning'>contains no non-unknown values, returning:</span>
-#&gt; <span class='warning'>'Clostridium colinum et rel.' for all replaced levels.</span>
-#&gt; <span class='warning'>Consider editing this tax_table entry manually.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Row named: Escherichia coli et rel.</span>
-#&gt; <span class='warning'>contains no non-unknown values, returning:</span>
-#&gt; <span class='warning'>'Escherichia coli et rel.' for all replaced levels.</span>
-#&gt; <span class='warning'>Consider editing this tax_table entry manually.</span></div><div class='output co'>#&gt; Taxonomy Table:     [50 taxa by 3 taxonomic ranks]:
-#&gt;                                    Phylum           
-#&gt; Actinomycetaceae                   ""               
-#&gt; Aerococcus                         "Firmicutes"     
-#&gt; Aeromonas                          "Proteobacteria" 
-#&gt; Akkermansia                        "Verrucomicrobia"
-#&gt; Alcaligenes faecalis et rel.       "Proteobacteria" 
-#&gt; Allistipes et rel.                 "Bacteroidetes"  
-#&gt; Anaerobiospirillum                 "Proteobacteria" 
-#&gt; Anaerofustis                       "Firmicutes"     
-#&gt; Anaerostipes caccae et rel.        "Firmicutes"     
-#&gt; Anaerotruncus colihominis et rel.  "Firmicutes"     
-#&gt; Anaerovorax odorimutans et rel.    "Firmicutes"     
-#&gt; Aneurinibacillus                   "Firmicutes"     
-#&gt; Aquabacterium                      "Proteobacteria" 
-#&gt; Asteroleplasma et rel.             "Firmicutes"     
-#&gt; Atopobium                          "Actinobacteria" 
-#&gt; Bacillus                           "Firmicutes"     
-#&gt; Bacteroides fragilis et rel.       "Bacteroidetes"  
-#&gt; Bacteroides intestinalis et rel.   "Bacteroidetes"  
-#&gt; Bacteroides ovatus et rel.         "Bacteroidetes"  
-#&gt; Bacteroides plebeius et rel.       "Bacteroidetes"  
-#&gt; Bacteroides splachnicus et rel.    "Bacteroidetes"  
-#&gt; Bacteroides stercoris et rel.      "Bacteroidetes"  
-#&gt; Bacteroides uniformis et rel.      "Bacteroidetes"  
-#&gt; Bacteroides vulgatus et rel.       "Bacteroidetes"  
-#&gt; Bifidobacterium                    ""               
-#&gt; Bilophila et rel.                  "Proteobacteria" 
-#&gt; Brachyspira                        "Spirochaetes"   
-#&gt; Bryantella formatexigens et rel.   "Firmicutes"     
-#&gt; Bulleidia moorei et rel.           "Firmicutes"     
-#&gt; Burkholderia                       "Proteobacteria" 
-#&gt; Butyrivibrio crossotus et rel.     "Firmicutes"     
-#&gt; Campylobacter                      "Proteobacteria" 
-#&gt; Catenibacterium mitsuokai et rel.  "Firmicutes"     
-#&gt; Clostridium (sensu stricto)        "Firmicutes"     
-#&gt; Clostridium cellulosi et rel.      "Firmicutes"     
-#&gt; Clostridium colinum et rel.        ""               
-#&gt; Clostridium difficile et rel.      "Firmicutes"     
-#&gt; Clostridium felsineum et rel.      "Firmicutes"     
-#&gt; Clostridium leptum et rel.         "Firmicutes"     
-#&gt; Clostridium nexile et rel.         "Firmicutes"     
-#&gt; Clostridium orbiscindens et rel.   "Firmicutes"     
-#&gt; Clostridium ramosum et rel.        "Firmicutes"     
-#&gt; Clostridium sphenoides et rel.     "Firmicutes"     
-#&gt; Clostridium stercorarium et rel.   "Firmicutes"     
-#&gt; Clostridium symbiosum et rel.      "Firmicutes"     
-#&gt; Clostridium thermocellum et rel.   "Firmicutes"     
-#&gt; Collinsella                        "Actinobacteria" 
-#&gt; Coprobacillus catenaformis et rel. "Firmicutes"     
-#&gt; Coprococcus eutactus et rel.       "Firmicutes"     
-#&gt; Corynebacterium                    "Actinobacteria" 
-#&gt;                                    Family                     
-#&gt; Actinomycetaceae                   ""                         
-#&gt; Aerococcus                         "Bacilli"                  
-#&gt; Aeromonas                          "Proteobacteria"           
-#&gt; Akkermansia                        "Verrucomicrobia"          
-#&gt; Alcaligenes faecalis et rel.       "Proteobacteria"           
-#&gt; Allistipes et rel.                 "Bacteroidetes"            
-#&gt; Anaerobiospirillum                 "Proteobacteria"           
-#&gt; Anaerofustis                       "Clostridium cluster XV"   
-#&gt; Anaerostipes caccae et rel.        "Clostridium cluster XIVa" 
-#&gt; Anaerotruncus colihominis et rel.  "Clostridium cluster IV"   
-#&gt; Anaerovorax odorimutans et rel.    "Clostridium cluster XI"   
-#&gt; Aneurinibacillus                   "Bacilli"                  
-#&gt; Aquabacterium                      "Proteobacteria"           
-#&gt; Asteroleplasma et rel.             "Asteroleplasma"           
-#&gt; Atopobium                          "Actinobacteria"           
-#&gt; Bacillus                           "Bacilli"                  
-#&gt; Bacteroides fragilis et rel.       "Bacteroidetes"            
-#&gt; Bacteroides intestinalis et rel.   "Bacteroidetes"            
-#&gt; Bacteroides ovatus et rel.         "Bacteroidetes"            
-#&gt; Bacteroides plebeius et rel.       "Bacteroidetes"            
-#&gt; Bacteroides splachnicus et rel.    "Bacteroidetes"            
-#&gt; Bacteroides stercoris et rel.      "Bacteroidetes"            
-#&gt; Bacteroides uniformis et rel.      "Bacteroidetes"            
-#&gt; Bacteroides vulgatus et rel.       "Bacteroidetes"            
-#&gt; Bifidobacterium                    ""                         
-#&gt; Bilophila et rel.                  ""                         
-#&gt; Brachyspira                        "Spirochaetes"             
-#&gt; Bryantella formatexigens et rel.   "Clostridium cluster XIVa" 
-#&gt; Bulleidia moorei et rel.           "Clostridium cluster XVI"  
-#&gt; Burkholderia                       "Proteobacteria"           
-#&gt; Butyrivibrio crossotus et rel.     "Clostridium cluster XIVa" 
-#&gt; Campylobacter                      "Proteobacteria"           
-#&gt; Catenibacterium mitsuokai et rel.  "Clostridium cluster XVII" 
-#&gt; Clostridium (sensu stricto)        "Clostridium cluster I"    
-#&gt; Clostridium cellulosi et rel.      "Clostridium cluster IV"   
-#&gt; Clostridium colinum et rel.        ""                         
-#&gt; Clostridium difficile et rel.      "Clostridium cluster XI"   
-#&gt; Clostridium felsineum et rel.      "Clostridium cluster XI"   
-#&gt; Clostridium leptum et rel.         "Clostridium cluster IV"   
-#&gt; Clostridium nexile et rel.         "Clostridium cluster XIVa" 
-#&gt; Clostridium orbiscindens et rel.   "Clostridium cluster IV"   
-#&gt; Clostridium ramosum et rel.        ""                         
-#&gt; Clostridium sphenoides et rel.     "Clostridium cluster XIVa" 
-#&gt; Clostridium stercorarium et rel.   "Clostridium cluster III"  
-#&gt; Clostridium symbiosum et rel.      "Clostridium cluster XIVa" 
-#&gt; Clostridium thermocellum et rel.   "Clostridium cluster III"  
-#&gt; Collinsella                        "Actinobacteria"           
-#&gt; Coprobacillus catenaformis et rel. "Clostridium cluster XVIII"
-#&gt; Coprococcus eutactus et rel.       "Clostridium cluster XIVa" 
-#&gt; Corynebacterium                    "Actinobacteria"           
-#&gt;                                    Genus                               
-#&gt; Actinomycetaceae                   "Actinomycetaceae"                  
-#&gt; Aerococcus                         "Aerococcus"                        
-#&gt; Aeromonas                          "Aeromonas"                         
-#&gt; Akkermansia                        "Akkermansia"                       
-#&gt; Alcaligenes faecalis et rel.       "Alcaligenes faecalis et rel."      
-#&gt; Allistipes et rel.                 "Allistipes et rel."                
-#&gt; Anaerobiospirillum                 "Proteobacteria Family"             
-#&gt; Anaerofustis                       "Anaerofustis"                      
-#&gt; Anaerostipes caccae et rel.        "Clostridium cluster XIVa Family"   
-#&gt; Anaerotruncus colihominis et rel.  "Anaerotruncus colihominis et rel." 
-#&gt; Anaerovorax odorimutans et rel.    "Anaerovorax odorimutans et rel."   
-#&gt; Aneurinibacillus                   "Aneurinibacillus"                  
-#&gt; Aquabacterium                      "unknown"                           
-#&gt; Asteroleplasma et rel.             "Asteroleplasma Family"             
-#&gt; Atopobium                          "Atopobium"                         
-#&gt; Bacillus                           "Bacillus"                          
-#&gt; Bacteroides fragilis et rel.       "Bacteroides fragilis et rel."      
-#&gt; Bacteroides intestinalis et rel.   "Bacteroides intestinalis et rel."  
-#&gt; Bacteroides ovatus et rel.         "Bacteroides ovatus et rel."        
-#&gt; Bacteroides plebeius et rel.       "Bacteroides plebeius et rel."      
-#&gt; Bacteroides splachnicus et rel.    "Bacteroides splachnicus et rel."   
-#&gt; Bacteroides stercoris et rel.      "Bacteroides stercoris et rel."     
-#&gt; Bacteroides uniformis et rel.      "Bacteroides uniformis et rel."     
-#&gt; Bacteroides vulgatus et rel.       "Bacteroides vulgatus et rel."      
-#&gt; Bifidobacterium                    "Bifidobacterium"                   
-#&gt; Bilophila et rel.                  "Proteobacteria Phylum"             
-#&gt; Brachyspira                        "Brachyspira"                       
-#&gt; Bryantella formatexigens et rel.   "Bryantella formatexigens et rel."  
-#&gt; Bulleidia moorei et rel.           "Bulleidia moorei et rel."          
-#&gt; Burkholderia                       "Burkholderia"                      
-#&gt; Butyrivibrio crossotus et rel.     "Butyrivibrio crossotus et rel."    
-#&gt; Campylobacter                      "Campylobacter"                     
-#&gt; Catenibacterium mitsuokai et rel.  "Catenibacterium mitsuokai et rel." 
-#&gt; Clostridium (sensu stricto)        "unknown"                           
-#&gt; Clostridium cellulosi et rel.      "Clostridium cellulosi et rel."     
-#&gt; Clostridium colinum et rel.        "Clostridium colinum et rel."       
-#&gt; Clostridium difficile et rel.      "Clostridium difficile et rel."     
-#&gt; Clostridium felsineum et rel.      "Clostridium felsineum et rel."     
-#&gt; Clostridium leptum et rel.         "Clostridium leptum et rel."        
-#&gt; Clostridium nexile et rel.         "Clostridium nexile et rel."        
-#&gt; Clostridium orbiscindens et rel.   "Clostridium orbiscindens et rel."  
-#&gt; Clostridium ramosum et rel.        "Firmicutes Phylum"                 
-#&gt; Clostridium sphenoides et rel.     "Clostridium cluster XIVa Family"   
-#&gt; Clostridium stercorarium et rel.   "Clostridium stercorarium et rel."  
-#&gt; Clostridium symbiosum et rel.      "Clostridium symbiosum et rel."     
-#&gt; Clostridium thermocellum et rel.   "Clostridium thermocellum et rel."  
-#&gt; Collinsella                        "Collinsella"                       
-#&gt; Coprobacillus catenaformis et rel. "Coprobacillus catenaformis et rel."
-#&gt; Coprococcus eutactus et rel.       "Coprococcus eutactus et rel."      
-#&gt; Corynebacterium                    "Actinobacteria Family"             </div><div class='input'>
-<span class='co'># Change rank suffix and separator settings</span>
-<span class='fu'>tax_fill_unknowns</span><span class='op'>(</span><span class='va'>ps</span>, suffix_rank <span class='op'>=</span> <span class='st'>"current"</span>, sep <span class='op'>=</span> <span class='st'>" - "</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html'>tax_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fl'>50</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Row named: Actinomycetaceae</span>
-#&gt; <span class='warning'>contains no non-unknown values, returning:</span>
-#&gt; <span class='warning'>'Actinomycetaceae' for all replaced levels.</span>
-#&gt; <span class='warning'>Consider editing this tax_table entry manually.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Row named: Bifidobacterium</span>
-#&gt; <span class='warning'>contains no non-unknown values, returning:</span>
-#&gt; <span class='warning'>'Bifidobacterium' for all replaced levels.</span>
-#&gt; <span class='warning'>Consider editing this tax_table entry manually.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Row named: Clostridium colinum et rel.</span>
-#&gt; <span class='warning'>contains no non-unknown values, returning:</span>
-#&gt; <span class='warning'>'Clostridium colinum et rel.' for all replaced levels.</span>
-#&gt; <span class='warning'>Consider editing this tax_table entry manually.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Row named: Escherichia coli et rel.</span>
-#&gt; <span class='warning'>contains no non-unknown values, returning:</span>
-#&gt; <span class='warning'>'Escherichia coli et rel.' for all replaced levels.</span>
-#&gt; <span class='warning'>Consider editing this tax_table entry manually.</span></div><div class='output co'>#&gt; Taxonomy Table:     [50 taxa by 3 taxonomic ranks]:
-#&gt;                                    Phylum                       
-#&gt; Actinomycetaceae                   "Actinomycetaceae"           
-#&gt; Aerococcus                         "Firmicutes"                 
-#&gt; Aeromonas                          "Proteobacteria"             
-#&gt; Akkermansia                        "Verrucomicrobia"            
-#&gt; Alcaligenes faecalis et rel.       "Proteobacteria"             
-#&gt; Allistipes et rel.                 "Bacteroidetes"              
-#&gt; Anaerobiospirillum                 "Proteobacteria"             
-#&gt; Anaerofustis                       "Firmicutes"                 
-#&gt; Anaerostipes caccae et rel.        "Firmicutes"                 
-#&gt; Anaerotruncus colihominis et rel.  "Firmicutes"                 
-#&gt; Anaerovorax odorimutans et rel.    "Firmicutes"                 
-#&gt; Aneurinibacillus                   "Firmicutes"                 
-#&gt; Aquabacterium                      "Proteobacteria"             
-#&gt; Asteroleplasma et rel.             "Firmicutes"                 
-#&gt; Atopobium                          "Actinobacteria"             
-#&gt; Bacillus                           "Firmicutes"                 
-#&gt; Bacteroides fragilis et rel.       "Bacteroidetes"              
-#&gt; Bacteroides intestinalis et rel.   "Bacteroidetes"              
-#&gt; Bacteroides ovatus et rel.         "Bacteroidetes"              
-#&gt; Bacteroides plebeius et rel.       "Bacteroidetes"              
-#&gt; Bacteroides splachnicus et rel.    "Bacteroidetes"              
-#&gt; Bacteroides stercoris et rel.      "Bacteroidetes"              
-#&gt; Bacteroides uniformis et rel.      "Bacteroidetes"              
-#&gt; Bacteroides vulgatus et rel.       "Bacteroidetes"              
-#&gt; Bifidobacterium                    "Bifidobacterium"            
-#&gt; Bilophila et rel.                  "Proteobacteria"             
-#&gt; Brachyspira                        "Spirochaetes"               
-#&gt; Bryantella formatexigens et rel.   "Firmicutes"                 
-#&gt; Bulleidia moorei et rel.           "Firmicutes"                 
-#&gt; Burkholderia                       "Proteobacteria"             
-#&gt; Butyrivibrio crossotus et rel.     "Firmicutes"                 
-#&gt; Campylobacter                      "Proteobacteria"             
-#&gt; Catenibacterium mitsuokai et rel.  "Firmicutes"                 
-#&gt; Clostridium (sensu stricto)        "Firmicutes"                 
-#&gt; Clostridium cellulosi et rel.      "Firmicutes"                 
-#&gt; Clostridium colinum et rel.        "Clostridium colinum et rel."
-#&gt; Clostridium difficile et rel.      "Firmicutes"                 
-#&gt; Clostridium felsineum et rel.      "Firmicutes"                 
-#&gt; Clostridium leptum et rel.         "Firmicutes"                 
-#&gt; Clostridium nexile et rel.         "Firmicutes"                 
-#&gt; Clostridium orbiscindens et rel.   "Firmicutes"                 
-#&gt; Clostridium ramosum et rel.        "Firmicutes"                 
-#&gt; Clostridium sphenoides et rel.     "Firmicutes"                 
-#&gt; Clostridium stercorarium et rel.   "Firmicutes"                 
-#&gt; Clostridium symbiosum et rel.      "Firmicutes"                 
-#&gt; Clostridium thermocellum et rel.   "Firmicutes"                 
-#&gt; Collinsella                        "Actinobacteria"             
-#&gt; Coprobacillus catenaformis et rel. "Firmicutes"                 
-#&gt; Coprococcus eutactus et rel.       "Firmicutes"                 
-#&gt; Corynebacterium                    "Actinobacteria"             
-#&gt;                                    Family                       
-#&gt; Actinomycetaceae                   "Actinomycetaceae"           
-#&gt; Aerococcus                         "Bacilli"                    
-#&gt; Aeromonas                          "Proteobacteria"             
-#&gt; Akkermansia                        "Verrucomicrobia"            
-#&gt; Alcaligenes faecalis et rel.       "Proteobacteria"             
-#&gt; Allistipes et rel.                 "Bacteroidetes"              
-#&gt; Anaerobiospirillum                 "Proteobacteria"             
-#&gt; Anaerofustis                       "Clostridium cluster XV"     
-#&gt; Anaerostipes caccae et rel.        "Clostridium cluster XIVa"   
-#&gt; Anaerotruncus colihominis et rel.  "Clostridium cluster IV"     
-#&gt; Anaerovorax odorimutans et rel.    "Clostridium cluster XI"     
-#&gt; Aneurinibacillus                   "Bacilli"                    
-#&gt; Aquabacterium                      "Proteobacteria"             
-#&gt; Asteroleplasma et rel.             "Asteroleplasma"             
-#&gt; Atopobium                          "Actinobacteria"             
-#&gt; Bacillus                           "Bacilli"                    
-#&gt; Bacteroides fragilis et rel.       "Bacteroidetes"              
-#&gt; Bacteroides intestinalis et rel.   "Bacteroidetes"              
-#&gt; Bacteroides ovatus et rel.         "Bacteroidetes"              
-#&gt; Bacteroides plebeius et rel.       "Bacteroidetes"              
-#&gt; Bacteroides splachnicus et rel.    "Bacteroidetes"              
-#&gt; Bacteroides stercoris et rel.      "Bacteroidetes"              
-#&gt; Bacteroides uniformis et rel.      "Bacteroidetes"              
-#&gt; Bacteroides vulgatus et rel.       "Bacteroidetes"              
-#&gt; Bifidobacterium                    "Bifidobacterium"            
-#&gt; Bilophila et rel.                  "Proteobacteria - Family"    
-#&gt; Brachyspira                        "Spirochaetes"               
-#&gt; Bryantella formatexigens et rel.   "Clostridium cluster XIVa"   
-#&gt; Bulleidia moorei et rel.           "Clostridium cluster XVI"    
-#&gt; Burkholderia                       "Proteobacteria"             
-#&gt; Butyrivibrio crossotus et rel.     "Clostridium cluster XIVa"   
-#&gt; Campylobacter                      "Proteobacteria"             
-#&gt; Catenibacterium mitsuokai et rel.  "Clostridium cluster XVII"   
-#&gt; Clostridium (sensu stricto)        "Clostridium cluster I"      
-#&gt; Clostridium cellulosi et rel.      "Clostridium cluster IV"     
-#&gt; Clostridium colinum et rel.        "Clostridium colinum et rel."
-#&gt; Clostridium difficile et rel.      "Clostridium cluster XI"     
-#&gt; Clostridium felsineum et rel.      "Clostridium cluster XI"     
-#&gt; Clostridium leptum et rel.         "Clostridium cluster IV"     
-#&gt; Clostridium nexile et rel.         "Clostridium cluster XIVa"   
-#&gt; Clostridium orbiscindens et rel.   "Clostridium cluster IV"     
-#&gt; Clostridium ramosum et rel.        "Firmicutes - Family"        
-#&gt; Clostridium sphenoides et rel.     "Clostridium cluster XIVa"   
-#&gt; Clostridium stercorarium et rel.   "Clostridium cluster III"    
-#&gt; Clostridium symbiosum et rel.      "Clostridium cluster XIVa"   
-#&gt; Clostridium thermocellum et rel.   "Clostridium cluster III"    
-#&gt; Collinsella                        "Actinobacteria"             
-#&gt; Coprobacillus catenaformis et rel. "Clostridium cluster XVIII"  
-#&gt; Coprococcus eutactus et rel.       "Clostridium cluster XIVa"   
-#&gt; Corynebacterium                    "Actinobacteria"             
-#&gt;                                    Genus                               
-#&gt; Actinomycetaceae                   "Actinomycetaceae"                  
-#&gt; Aerococcus                         "Aerococcus"                        
-#&gt; Aeromonas                          "Aeromonas"                         
-#&gt; Akkermansia                        "Akkermansia"                       
-#&gt; Alcaligenes faecalis et rel.       "Alcaligenes faecalis et rel."      
-#&gt; Allistipes et rel.                 "Allistipes et rel."                
-#&gt; Anaerobiospirillum                 "Proteobacteria - Genus"            
-#&gt; Anaerofustis                       "Anaerofustis"                      
-#&gt; Anaerostipes caccae et rel.        "Clostridium cluster XIVa - Genus"  
-#&gt; Anaerotruncus colihominis et rel.  "Anaerotruncus colihominis et rel." 
-#&gt; Anaerovorax odorimutans et rel.    "Anaerovorax odorimutans et rel."   
-#&gt; Aneurinibacillus                   "Aneurinibacillus"                  
-#&gt; Aquabacterium                      "Proteobacteria - Genus"            
-#&gt; Asteroleplasma et rel.             "Asteroleplasma - Genus"            
-#&gt; Atopobium                          "Atopobium"                         
-#&gt; Bacillus                           "Bacillus"                          
-#&gt; Bacteroides fragilis et rel.       "Bacteroides fragilis et rel."      
-#&gt; Bacteroides intestinalis et rel.   "Bacteroides intestinalis et rel."  
-#&gt; Bacteroides ovatus et rel.         "Bacteroides ovatus et rel."        
-#&gt; Bacteroides plebeius et rel.       "Bacteroides plebeius et rel."      
-#&gt; Bacteroides splachnicus et rel.    "Bacteroides splachnicus et rel."   
-#&gt; Bacteroides stercoris et rel.      "Bacteroides stercoris et rel."     
-#&gt; Bacteroides uniformis et rel.      "Bacteroides uniformis et rel."     
-#&gt; Bacteroides vulgatus et rel.       "Bacteroides vulgatus et rel."      
-#&gt; Bifidobacterium                    "Bifidobacterium"                   
-#&gt; Bilophila et rel.                  "Proteobacteria - Genus"            
-#&gt; Brachyspira                        "Brachyspira"                       
-#&gt; Bryantella formatexigens et rel.   "Bryantella formatexigens et rel."  
-#&gt; Bulleidia moorei et rel.           "Bulleidia moorei et rel."          
-#&gt; Burkholderia                       "Burkholderia"                      
-#&gt; Butyrivibrio crossotus et rel.     "Butyrivibrio crossotus et rel."    
-#&gt; Campylobacter                      "Campylobacter"                     
-#&gt; Catenibacterium mitsuokai et rel.  "Catenibacterium mitsuokai et rel." 
-#&gt; Clostridium (sensu stricto)        "Clostridium cluster I - Genus"     
-#&gt; Clostridium cellulosi et rel.      "Clostridium cellulosi et rel."     
-#&gt; Clostridium colinum et rel.        "Clostridium colinum et rel."       
-#&gt; Clostridium difficile et rel.      "Clostridium difficile et rel."     
-#&gt; Clostridium felsineum et rel.      "Clostridium felsineum et rel."     
-#&gt; Clostridium leptum et rel.         "Clostridium leptum et rel."        
-#&gt; Clostridium nexile et rel.         "Clostridium nexile et rel."        
-#&gt; Clostridium orbiscindens et rel.   "Clostridium orbiscindens et rel."  
-#&gt; Clostridium ramosum et rel.        "Firmicutes - Genus"                
-#&gt; Clostridium sphenoides et rel.     "Clostridium cluster XIVa - Genus"  
-#&gt; Clostridium stercorarium et rel.   "Clostridium stercorarium et rel."  
-#&gt; Clostridium symbiosum et rel.      "Clostridium symbiosum et rel."     
-#&gt; Clostridium thermocellum et rel.   "Clostridium thermocellum et rel."  
-#&gt; Collinsella                        "Collinsella"                       
-#&gt; Coprobacillus catenaformis et rel. "Coprobacillus catenaformis et rel."
-#&gt; Coprococcus eutactus et rel.       "Coprococcus eutactus et rel."      
-#&gt; Corynebacterium                    "Actinobacteria - Genus"            </div><div class='input'>
-<span class='co'># by default, completely unclassified (anonymous) taxa are named by their</span>
-<span class='co'># taxa_names / rownames at all ranks.</span>
-<span class='co'># This makes anonymous taxa distinct from each other,</span>
-<span class='co'># and so they won't be merged on aggregation with tax_agg.</span>
-<span class='co'># If you think your anonymous taxa should merge on tax_agg,</span>
-<span class='co'># or you just want them to be named the all same for another reason,</span>
-<span class='co'># set anon_unique = FALSE (compare the warning messages)</span>
-<span class='fu'>tax_fill_unknowns</span><span class='op'>(</span><span class='va'>ps</span>, anon_unique <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Row named: Actinomycetaceae</span>
-#&gt; <span class='warning'>contains no non-unknown values, returning:</span>
-#&gt; <span class='warning'>'unclassified Phylum' for all replaced levels.</span>
-#&gt; <span class='warning'>Consider editing this tax_table entry manually.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Row named: Bifidobacterium</span>
-#&gt; <span class='warning'>contains no non-unknown values, returning:</span>
-#&gt; <span class='warning'>'unclassified Phylum' for all replaced levels.</span>
-#&gt; <span class='warning'>Consider editing this tax_table entry manually.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Row named: Clostridium colinum et rel.</span>
-#&gt; <span class='warning'>contains no non-unknown values, returning:</span>
-#&gt; <span class='warning'>'unclassified Phylum' for all replaced levels.</span>
-#&gt; <span class='warning'>Consider editing this tax_table entry manually.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Row named: Escherichia coli et rel.</span>
-#&gt; <span class='warning'>contains no non-unknown values, returning:</span>
-#&gt; <span class='warning'>'unclassified Phylum' for all replaced levels.</span>
-#&gt; <span class='warning'>Consider editing this tax_table entry manually.</span></div><div class='output co'>#&gt; phyloseq-class experiment-level object
-#&gt; otu_table()   OTU Table:         [ 130 taxa and 222 samples ]
-#&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]</div><div class='input'><span class='fu'>tax_fill_unknowns</span><span class='op'>(</span><span class='va'>ps</span>, anon_unique <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Row named: Actinomycetaceae</span>
-#&gt; <span class='warning'>contains no non-unknown values, returning:</span>
-#&gt; <span class='warning'>'Actinomycetaceae' for all replaced levels.</span>
-#&gt; <span class='warning'>Consider editing this tax_table entry manually.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Row named: Bifidobacterium</span>
-#&gt; <span class='warning'>contains no non-unknown values, returning:</span>
-#&gt; <span class='warning'>'Bifidobacterium' for all replaced levels.</span>
-#&gt; <span class='warning'>Consider editing this tax_table entry manually.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Row named: Clostridium colinum et rel.</span>
-#&gt; <span class='warning'>contains no non-unknown values, returning:</span>
-#&gt; <span class='warning'>'Clostridium colinum et rel.' for all replaced levels.</span>
-#&gt; <span class='warning'>Consider editing this tax_table entry manually.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Row named: Escherichia coli et rel.</span>
-#&gt; <span class='warning'>contains no non-unknown values, returning:</span>
-#&gt; <span class='warning'>'Escherichia coli et rel.' for all replaced levels.</span>
-#&gt; <span class='warning'>Consider editing this tax_table entry manually.</span></div><div class='output co'>#&gt; phyloseq-class experiment-level object
-#&gt; otu_table()   OTU Table:         [ 130 taxa and 222 samples ]
-#&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]</div><div class='input'>
-<span class='co'># here's a larger example tax_table shows its still fast with 1000s rows,</span>
-<span class='co'># from microbiomeutilities package</span>
-<span class='co'># library(microbiomeutilities)</span>
-<span class='co'># data("hmp2")</span>
-<span class='co'># system.time(tax_fill_unknowns(hmp2, min_length = 1))</span>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
