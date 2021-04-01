@@ -1,4 +1,10 @@
-# microViz (development version)
+# microViz 0.7.0 - "fickle fixes"
+
+## Breaking changes
+- `tax_fix` replaces the deprecated `tax_fill_unknowns`, `tax_fix` has all the same arguments except the 'levels' argument, which was removed
+
+## Features
+- `tax_fix_interactive` Shiny app will help you clean up your taxonomy table with `tax_fix`
 
 # microViz 0.6.1
 
