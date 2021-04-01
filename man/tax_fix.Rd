@@ -8,7 +8,6 @@ tax_fix(
   ps,
   min_length = 4,
   unknowns = NA,
-  levels = phyloseq::rank_names(ps),
   suffix_rank = "classified",
   sep = " ",
   anon_unique = TRUE,
@@ -22,9 +21,8 @@ tax_fix(
 
 \item{unknowns}{also replace strings matching any in this vector, NA default vector shown in details!}
 
-\item{levels}{names of taxonomic levels to modify, defaults to all}
-
-\item{suffix_rank}{"classified" (default) or "current", when replacing an entry, should the suffix be taken from the lowest classified rank for that taxon "classified", or the "current" unclassified rank?}
+\item{suffix_rank}{"classified" (default) or "current", when replacing an entry, should the suffix be taken from the lowest classified rank
+for that taxon, "classified", or the "current" unclassified rank?}
 
 \item{sep}{character(s) separating new name and taxonomic rank level suffix (see suffix_rank)}
 
@@ -79,8 +77,8 @@ tt[1, ] <- NA
 tax_table(ps) <- tax_table(tt)
 
 ps
-tax_table(ps) \%>\% head(50)
 # tax_fix with defaults should solve most problems
+tax_table(ps) \%>\% head(50)
 
 # this will replace `unknown`s as well as short values including "g__" and "f__"
 tax_fix(ps) \%>\%
@@ -89,10 +87,8 @@ tax_fix(ps) \%>\%
 
 # This will only replace values in Genus column,
 # and only replace short entries, and so won't replace literal "unknown"
-# WARNING:
-# only set `levels` arg if you know you won't create an invalid tax_table!
 ps \%>\%
-  tax_fix(unknowns = NULL, levels = "Genus") \%>\%
+  tax_fix(unknowns = NULL) \%>\%
   tax_table() \%>\%
   head(50)
 
@@ -116,4 +112,7 @@ tax_fix(ps, anon_unique = TRUE)
 # library(microbiomeutilities)
 # data("hmp2")
 # system.time(tax_fix(hmp2, min_length = 1))
+}
+\seealso{
+\code{\link{tax_fix_interactive}} for interactive tax_fix help
 }

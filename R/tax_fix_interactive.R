@@ -1,18 +1,20 @@
 #' Shiny app to help you use tax_fix
 #'
 #' @description
-#' Try this app if you get errors with tax_fix that are tricky to work past, or suggestions to use tax_fix that you don't understand.
+#' Try this app if you get errors with `tax_fix()` that are tricky to work past, or suggestions to use `tax_fix()` that you don't understand.
 #'
 #' The app shows you the tax_table of your data (searchable) with unknown values highlighted.
 #'
 #' It allows you to interactively modify minimum allowed length and to select further values to be defined as unknown.
 #'
-#' It will show you the right tax_fix() code to copy paste into your script to reproduce the interactive filtering.
+#' It will show you the correct `tax_fix()` code to copy paste into your script to reproduce the interactive filtering.
 #'
 #' @param data a phyloseq object
 #'
 #' @return nothing
 #' @export
+#'
+#' @seealso \code{\link{tax_fix}} for the non-interactive function to use in your scripts
 #'
 #' @examples
 #' library(dplyr)

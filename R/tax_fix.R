@@ -18,8 +18,9 @@
 #' @param ps phyloseq or tax_table (taxonomyTable)
 #' @param min_length replace strings shorter than this
 #' @param unknowns also replace strings matching any in this vector, NA default vector shown in details!
-#' @param levels names of taxonomic levels to modify, defaults to all
-#' @param suffix_rank "classified" (default) or "current", when replacing an entry, should the suffix be taken from the lowest classified rank for that taxon "classified", or the "current" unclassified rank?
+#' @param suffix_rank
+#' "classified" (default) or "current", when replacing an entry, should the suffix be taken from the lowest classified rank
+#'  for that taxon, "classified", or the "current" unclassified rank?
 #' @param sep character(s) separating new name and taxonomic rank level suffix (see suffix_rank)
 #' @param anon_unique make anonymous taxa unique by replacing unknowns with taxa_name?
 #' otherwise they are replaced with paste("unknown", first_rank_name),
@@ -29,6 +30,8 @@
 #'
 #' @return object same class as ps
 #' @export
+#'
+#' @seealso \code{\link{tax_fix_interactive}} for interactive tax_fix help
 #'
 #' @examples
 #' library(dplyr)
@@ -54,8 +57,8 @@
 #' tax_table(ps) <- tax_table(tt)
 #'
 #' ps
-#' tax_table(ps) %>% head(50)
 #' # tax_fix with defaults should solve most problems
+#' tax_table(ps) %>% head(50)
 #'
 #' # this will replace `unknown`s as well as short values including "g__" and "f__"
 #' tax_fix(ps) %>%
@@ -64,10 +67,8 @@
 #'
 #' # This will only replace values in Genus column,
 #' # and only replace short entries, and so won't replace literal "unknown"
-#' # WARNING:
-#' # only set `levels` arg if you know you won't create an invalid tax_table!
 #' ps %>%
-#'   tax_fix(unknowns = NULL, levels = "Genus") %>%
+#'   tax_fix(unknowns = NULL) %>%
 #'   tax_table() %>%
 #'   head(50)
 #'
@@ -94,7 +95,6 @@
 tax_fix <- function(ps,
                     min_length = 4,
                     unknowns = NA,
-                    levels = phyloseq::rank_names(ps),
                     suffix_rank = "classified", # or current
                     sep = " ",
                     anon_unique = TRUE,
@@ -111,10 +111,10 @@ tax_fix <- function(ps,
     unknowns <- tax_common_unknowns(min_length = min_length)
   }
 
-  # if (identical(ncol(tt), 1L)) stop("tax_table(ps) has only one rank/column!")
   # get rownames to ensure order doesn't change
   original_rownames <- rownames(tt)
   ranknames <- colnames(tt)
+  levels <- ranknames # TODO either fix levels functionality or remove completely
   tt[is.na(tt) | nchar(tt) < min_length | tt %in% unknowns] <- ""
   rowLengthOut <- ncol(tt) # save number of cols before adding .rownames.
   tt_extra <- cbind(tt, .rownames. = original_rownames)
