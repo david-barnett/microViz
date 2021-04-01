@@ -129,7 +129,7 @@ tax_fix_interactive <- function(data) {
         unknowns = input$selected, suffix_rank = input$suffix,
         anon_unique = input$anon_uniq
       )
-      tt_fixed <- unclass(microViz:::tt_get(ps_fixed))
+      tt_fixed <- unclass(tt_get(ps_fixed))
       as.data.frame.matrix(tt_fixed, optional = TRUE, make.names = FALSE)
     })
 
