@@ -4,10 +4,12 @@
 \alias{tax_fix_interactive}
 \title{Shiny app to help you use tax_fix}
 \usage{
-tax_fix_interactive(data)
+tax_fix_interactive(data, app_options = list(launch.browser = TRUE))
 }
 \arguments{
 \item{data}{a phyloseq object}
+
+\item{app_options}{options list passed to shinyApp()}
 }
 \value{
 nothing
