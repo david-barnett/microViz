@@ -173,7 +173,7 @@ iris <- ord_plot_iris(
   tax_level = "Genus",
   taxon_renamer = tax_renamer,
   anno_binary = "african",
-  anno_binary_style = list(y = 1.05, colour = "gray50", shape = "circle", size = 0.5)
+  anno_binary_style = list(y = 1.05, colour = "gray50", shape = "circle", size = 1)
 ) +
   # shrink legend text size
   theme(legend.text = element_text(size = 7))
