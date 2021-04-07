@@ -80,7 +80,6 @@
 #' @rdname Taxon-modelling
 #' @export
 tax_model <- function(ps, tax_level, type = "bbdml", variables = NULL, formula = NULL, taxa = NULL, verbose = TRUE, ...) {
-
   ps <- ps_get(ps)
   # check phyloseq for common problems (and fix or message about this)
   ps <- phyloseq_validate(ps, remove_undetected = TRUE, verbose = TRUE)

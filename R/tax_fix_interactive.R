@@ -110,7 +110,7 @@ tax_fix_interactive <- function(data,
           shiny::h5("Highlight:"),
           shiny::selectizeInput(
             inputId = "highlight", label = NULL,
-            multiple = FALSE, choices = c("Pick one:" = "", rownames(tt))
+            multiple = FALSE, choices = NULL
           )
         ),
         shiny::hr(),
@@ -162,7 +162,6 @@ tax_fix_interactive <- function(data,
             title = "Click here for tips!",
             shiny::htmlOutput(outputId = "tips")
           )
-
         )
       )
     ),
@@ -170,6 +169,12 @@ tax_fix_interactive <- function(data,
   )
 
   server <- function(input, output) {
+
+    # set highlighted row choices server side (better performance on big data)
+    shiny::updateSelectizeInput(
+      inputId = "highlight", server = TRUE,
+      choices = c("Pick one:" = "", rownames(tt))
+    )
 
     # main datatable ----------------------------------------------------------
     output$view <- DT::renderDataTable(
@@ -321,10 +326,8 @@ tax_fix_interactive <- function(data,
         </li>
       </ul>
       <hr>
-      "
-      )
+      ")
     })
-
   }
 
   shiny::shinyApp(ui = ui, server = server, options = app_options)

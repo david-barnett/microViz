@@ -22,7 +22,6 @@
 #' @rdname taxatree_funs
 #' @export
 taxatree_nodes <- function(ps, ranks = "all") {
-
   ps <- ps_get(ps)
   # identify numerical selection of ranks (all, names or numbers)
   available_rank_names <- phyloseq::rank_names(ps)

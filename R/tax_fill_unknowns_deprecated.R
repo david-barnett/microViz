@@ -15,16 +15,17 @@
 #' @return nothing
 #' @export
 tax_fill_unknowns <- function(
-  ps = NULL,
-  min_length = NULL,
-  unknowns = NULL,
-  levels = NULL,
-  suffix_rank = NULL,
-  sep = NULL,
-  anon_unique = NULL,
-  verbose = NULL
-){
-  stop("tax_fill_unknowns is deprecated.\n",
-       "Use tax_fix() instead (with same arguments)\n",
-       "or try out tax_fix_interactive() ! ")
+                              ps = NULL,
+                              min_length = NULL,
+                              unknowns = NULL,
+                              levels = NULL,
+                              suffix_rank = NULL,
+                              sep = NULL,
+                              anon_unique = NULL,
+                              verbose = NULL) {
+  stop(
+    "tax_fill_unknowns is deprecated.\n",
+    "Use tax_fix() instead (with same arguments)\n",
+    "or try out tax_fix_interactive() ! "
+  )
 }
