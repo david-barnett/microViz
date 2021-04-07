@@ -29,12 +29,12 @@ tags:
 
 # Summary 
 
-microViz is an R package for the statistical analysis and visualization of microbiota data. This package extends the functionality of popular microbial ecosystem data analysis R packages, including phyloseq[@mcmurdie_phyloseq_2013], vegan[@oksanen_vegan_2020] and microbiome[@lahti_microbiome_2012]. 
+microViz is an R package for the statistical analysis and visualization of microbiota data. This package extends the functionality of popular microbial ecosystem data analysis R packages, including phyloseq [@mcmurdie_phyloseq_2013], vegan [@oksanen_vegan_2020] and microbiome [@lahti_microbiome_2012]. 
 microViz provides a selection of powerful additions to the toolbox of researchers already familiar with phyloseq and microbiome, as well as assisting researchers with less R programming experience to independently explore and analyse their data and to generate publication-ready figures.
 
 The tools offered by microViz include:
 
-- A Shiny app for interactive exploration of microbiota data within R, pairing ordination plots with abundance bar charts [@shiny]
+- A Shiny app [@shiny] for interactive exploration of microbiota data within R, pairing ordination plots with abundance bar charts 
 - Easy to use functions for generating publication-ready ordination plots with ggplot2 [@wickham_ggplot2_2016], accommodating constrained and partial ordination, bi-plots and tri-plots, and automatic captioning designed to promote methodological transparency and reproducibility
 - A novel visualization approach pairing ordination plots with circular bar charts (iris plots) for comprehensive, intuitive and compact visualization of the similarity and composition of hundreds of microbial ecosystems
 - Correlation and composition heatmaps for microbiome data annotated with plots showing each taxon's prevalence and/or abundance
