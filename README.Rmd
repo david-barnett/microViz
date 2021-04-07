@@ -29,7 +29,7 @@ microViz wraps, extends and complements popular microbial ecology packages like 
 - The [reference](https://david-barnett.github.io/microViz/reference/index.html) page lists all functions and links to their documentation and examples
 - Example video of [Interactive Shiny app](https://david-barnett.github.io/microViz/articles/articles/Interactive-Ordination.html) for exploring your ordination plots!
 - Other articles pages discuss and give tutorials and more complicated examples (coming soon!)
-- The [changelog](https://david-barnett.github.io/microViz/news/index.html) describe important changes in new microViz package versions
+- The [changelog](https://david-barnett.github.io/microViz/news/index.html) describes important changes in new microViz package versions
 
 ## Installation
 
@@ -52,7 +52,7 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 BiocManager::install(c("phyloseq", "microbiome"))
 
 # # Installing the latest version of this package # #
-devtools::install_github("david-barnett/microViz@0.6.1") # check 0.6.1 is the latest version?
+devtools::install_github("david-barnett/microViz@0.7.0") # check 0.7.0 is the latest version?
 # advanced tip: add @<commit-hash> after microViz to install a version from a particular commit
 
 ```
@@ -148,7 +148,7 @@ customised_plot
 ## PERMANOVA
 
 You visualised your ordinated data in the plot above. 
-Below you can see how to perform a PERMANOVA to test the significance of BMI.
+Below you can see how to perform a PERMANOVA to test the significance of BMI's association with overall microbial composition.
 This example uses the Family-level aitchison distance to correspond with the plot above.
 
 ```{r}
@@ -176,6 +176,7 @@ info_get(aitchison_perm)
 ```
 
 ## Constrained ordination
+
 You could visualise the effect of the (numeric/logical) variables in your permanova directly using the ord_plot function with constraints.
 
 ```{r constrained-ord, fig.height=5, fig.width=7, dpi=300}
@@ -218,6 +219,7 @@ cor_heatmap(psq, taxa, anno_tax = tax_anno(undetected = 50))
 
 
 ## Session info
+
 ```{r}
 devtools::session_info()
 ```

@@ -33,7 +33,7 @@ packages like phyloseq, vegan, and microbiome.
     examples (coming soon\!)
   - The
     [changelog](https://david-barnett.github.io/microViz/news/index.html)
-    describe important changes in new microViz package versions
+    describes important changes in new microViz package versions
 
 ## Installation
 
@@ -57,7 +57,7 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 BiocManager::install(c("phyloseq", "microbiome"))
 
 # # Installing the latest version of this package # #
-devtools::install_github("david-barnett/microViz@0.6.1") # check 0.6.1 is the latest version?
+devtools::install_github("david-barnett/microViz@0.7.0") # check 0.7.0 is the latest version?
 # advanced tip: add @<commit-hash> after microViz to install a version from a particular commit
 ```
 
@@ -67,6 +67,7 @@ devtools::install_github("david-barnett/microViz@0.6.1") # check 0.6.1 is the la
 library(microViz)
 library(phyloseq)
 library(dplyr)
+#> Warning: package 'dplyr' was built under R version 4.0.4
 library(ggplot2)
 ```
 
@@ -170,9 +171,9 @@ customised_plot
 ## PERMANOVA
 
 You visualised your ordinated data in the plot above. Below you can see
-how to perform a PERMANOVA to test the significance of BMI. This example
-uses the Family-level aitchison distance to correspond with the plot
-above.
+how to perform a PERMANOVA to test the significance of BMI’s association
+with overall microbial composition. This example uses the Family-level
+aitchison distance to correspond with the plot above.
 
 ``` r
 # calculate distances
@@ -194,8 +195,8 @@ aitchison_perm <- dist_permanova(
   variables = "bmi_group + female"
 )
 #> Dropping samples with missings: 2
-#> 2021-03-30 16:24:47 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2021-03-30 16:24:47 - Finished PERMANOVA
+#> 2021-04-07 21:18:09 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2021-04-07 21:18:10 - Finished PERMANOVA
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
 #>            Df   SumOfSqs         R2        F Pr(>F)
@@ -217,8 +218,8 @@ your permanova directly using the ord\_plot function with constraints.
 ``` r
 perm2 <- dist_permanova(data = aitchison_dists, variables = c("weight", "female"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2021-03-30 16:24:47 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2021-03-30 16:24:48 - Finished PERMANOVA
+#> 2021-04-07 21:18:10 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2021-04-07 21:18:12 - Finished PERMANOVA
 perm_get(perm2)
 #> Permutation test for adonis under reduced model
 #> Marginal effects of terms
@@ -281,131 +282,130 @@ cor_heatmap(psq, taxa, anno_tax = tax_anno(undetected = 50))
 
 ``` r
 devtools::session_info()
-#> ─ Session info ───────────────────────────────────────────────────────────────────────────────────
+#> - Session info -----------------------------------------------------------------------------------
 #>  setting  value                       
 #>  version  R version 4.0.3 (2020-10-10)
-#>  os       Ubuntu 18.04.5 LTS          
-#>  system   x86_64, linux-gnu           
-#>  ui       X11                         
-#>  language en_GB:en                    
-#>  collate  en_GB.UTF-8                 
-#>  ctype    en_GB.UTF-8                 
-#>  tz       Europe/Amsterdam            
-#>  date     2021-03-30                  
+#>  os       Windows 10 x64              
+#>  system   x86_64, mingw32             
+#>  ui       RTerm                       
+#>  language (EN)                        
+#>  collate  English_United States.1252  
+#>  ctype    English_United States.1252  
+#>  tz       Europe/Berlin               
+#>  date     2021-04-07                  
 #> 
-#> ─ Packages ───────────────────────────────────────────────────────────────────────────────────────
-#>  package        * version  date       lib source        
-#>  ade4             1.7-16   2020-10-28 [1] CRAN (R 4.0.3)
-#>  ape              5.4-1    2020-08-13 [1] CRAN (R 4.0.3)
-#>  assertthat       0.2.1    2019-03-21 [1] CRAN (R 4.0.3)
-#>  Biobase          2.50.0   2020-10-27 [1] Bioconductor  
-#>  BiocGenerics     0.36.0   2020-10-27 [1] Bioconductor  
-#>  biomformat       1.18.0   2020-10-27 [1] Bioconductor  
-#>  Biostrings       2.58.0   2020-10-27 [1] Bioconductor  
-#>  cachem           1.0.4    2021-02-13 [1] CRAN (R 4.0.3)
-#>  Cairo            1.5-12.2 2020-07-07 [1] CRAN (R 4.0.3)
-#>  callr            3.6.0    2021-03-28 [1] CRAN (R 4.0.3)
-#>  circlize         0.4.12   2021-01-08 [1] CRAN (R 4.0.3)
-#>  cli              2.3.1    2021-02-23 [1] CRAN (R 4.0.3)
-#>  clue             0.3-58   2020-12-03 [1] CRAN (R 4.0.3)
-#>  cluster          2.1.0    2019-06-19 [2] CRAN (R 4.0.3)
-#>  codetools        0.2-18   2020-11-04 [1] CRAN (R 4.0.3)
-#>  colorspace       2.0-0    2020-11-11 [1] CRAN (R 4.0.3)
-#>  ComplexHeatmap   2.6.2    2020-11-12 [1] Bioconductor  
-#>  crayon           1.4.1    2021-02-08 [1] CRAN (R 4.0.3)
-#>  data.table       1.14.0   2021-02-21 [1] CRAN (R 4.0.3)
-#>  debugme          1.1.0    2017-10-22 [1] CRAN (R 4.0.3)
-#>  desc             1.3.0    2021-03-05 [1] CRAN (R 4.0.3)
-#>  devtools       * 2.3.2    2020-09-18 [1] CRAN (R 4.0.3)
-#>  digest           0.6.27   2020-10-24 [1] CRAN (R 4.0.3)
-#>  dplyr          * 1.0.5    2021-03-05 [1] CRAN (R 4.0.3)
-#>  ellipsis         0.3.1    2020-05-15 [1] CRAN (R 4.0.3)
-#>  evaluate         0.14     2019-05-28 [1] CRAN (R 4.0.3)
-#>  fansi            0.4.2    2021-01-15 [1] CRAN (R 4.0.3)
-#>  farver           2.1.0    2021-02-28 [1] CRAN (R 4.0.3)
-#>  fastmap          1.1.0    2021-01-25 [1] CRAN (R 4.0.3)
-#>  foreach          1.5.1    2020-10-15 [1] CRAN (R 4.0.3)
-#>  fs               1.5.0    2020-07-31 [1] CRAN (R 4.0.3)
-#>  generics         0.1.0    2020-10-31 [1] CRAN (R 4.0.3)
-#>  GetoptLong       1.0.5    2020-12-15 [1] CRAN (R 4.0.3)
-#>  ggplot2        * 3.3.3    2020-12-30 [1] CRAN (R 4.0.3)
-#>  GlobalOptions    0.1.2    2020-06-10 [1] CRAN (R 4.0.3)
-#>  glue             1.4.2    2020-08-27 [1] CRAN (R 4.0.3)
-#>  gtable           0.3.0    2019-03-25 [1] CRAN (R 4.0.3)
-#>  highr            0.8      2019-03-20 [1] CRAN (R 4.0.3)
-#>  hms              1.0.0    2021-01-13 [1] CRAN (R 4.0.3)
-#>  htmltools        0.5.1.1  2021-01-22 [1] CRAN (R 4.0.3)
-#>  igraph           1.2.6    2020-10-06 [1] CRAN (R 4.0.3)
-#>  IRanges          2.24.1   2020-12-12 [1] Bioconductor  
-#>  iterators        1.0.13   2020-10-15 [1] CRAN (R 4.0.3)
-#>  jsonlite         1.7.2    2020-12-09 [1] CRAN (R 4.0.3)
-#>  knitr            1.31     2021-01-27 [1] CRAN (R 4.0.3)
-#>  labeling         0.4.2    2020-10-20 [1] CRAN (R 4.0.3)
-#>  lattice          0.20-41  2020-04-02 [2] CRAN (R 4.0.3)
-#>  lifecycle        1.0.0    2021-02-15 [1] CRAN (R 4.0.3)
-#>  magick           2.7.1    2021-03-20 [1] CRAN (R 4.0.3)
-#>  magrittr         2.0.1    2020-11-17 [1] CRAN (R 4.0.3)
-#>  MASS             7.3-53   2020-09-09 [2] CRAN (R 4.0.3)
-#>  Matrix           1.3-2    2021-01-06 [1] CRAN (R 4.0.3)
-#>  matrixStats      0.58.0   2021-01-29 [1] CRAN (R 4.0.3)
-#>  memoise          2.0.0    2021-01-26 [1] CRAN (R 4.0.3)
-#>  mgcv             1.8-33   2020-08-27 [2] CRAN (R 4.0.3)
-#>  microbiome       1.12.0   2020-10-27 [1] Bioconductor  
-#>  microViz       * 0.6.1    2021-03-29 [1] local         
-#>  multtest         2.46.0   2020-10-27 [1] Bioconductor  
-#>  munsell          0.5.0    2018-06-12 [1] CRAN (R 4.0.3)
-#>  nlme             3.1-149  2020-08-23 [2] CRAN (R 4.0.3)
-#>  permute          0.9-5    2019-03-12 [1] CRAN (R 4.0.3)
-#>  phyloseq       * 1.34.0   2020-10-27 [1] Bioconductor  
-#>  pillar           1.5.1    2021-03-05 [1] CRAN (R 4.0.3)
-#>  pkgbuild         1.2.0    2020-12-15 [1] CRAN (R 4.0.3)
-#>  pkgconfig        2.0.3    2019-09-22 [1] CRAN (R 4.0.3)
-#>  pkgdown        * 1.6.1    2020-09-12 [1] CRAN (R 4.0.3)
-#>  pkgload          1.2.0    2021-02-23 [1] CRAN (R 4.0.3)
-#>  plyr             1.8.6    2020-03-03 [1] CRAN (R 4.0.3)
-#>  png              0.1-7    2013-12-03 [1] CRAN (R 4.0.3)
-#>  prettyunits      1.1.1    2020-01-24 [1] CRAN (R 4.0.3)
-#>  processx         3.5.0    2021-03-23 [1] CRAN (R 4.0.3)
-#>  progress         1.2.2    2019-05-16 [1] CRAN (R 4.0.3)
-#>  ps               1.6.0    2021-02-28 [1] CRAN (R 4.0.3)
-#>  purrr            0.3.4    2020-04-17 [1] CRAN (R 4.0.3)
-#>  R6               2.5.0    2020-10-28 [1] CRAN (R 4.0.3)
-#>  RColorBrewer     1.1-2    2014-12-07 [1] CRAN (R 4.0.3)
-#>  Rcpp             1.0.6    2021-01-15 [1] CRAN (R 4.0.3)
-#>  registry         0.5-1    2019-03-05 [1] CRAN (R 4.0.3)
-#>  remotes          2.2.0    2020-07-21 [1] CRAN (R 4.0.3)
-#>  reshape2         1.4.4    2020-04-09 [1] CRAN (R 4.0.3)
-#>  rhdf5            2.34.0   2020-10-27 [1] Bioconductor  
-#>  rhdf5filters     1.2.0    2020-10-27 [1] Bioconductor  
-#>  Rhdf5lib         1.12.1   2021-01-26 [1] Bioconductor  
-#>  rjson            0.2.20   2018-06-08 [1] CRAN (R 4.0.3)
-#>  rlang            0.4.10   2020-12-30 [1] CRAN (R 4.0.3)
-#>  rmarkdown        2.7      2021-02-19 [1] CRAN (R 4.0.3)
-#>  rprojroot        2.0.2    2020-11-15 [1] CRAN (R 4.0.3)
-#>  Rtsne            0.15     2018-11-10 [1] CRAN (R 4.0.3)
-#>  S4Vectors        0.28.1   2020-12-09 [1] Bioconductor  
-#>  scales           1.1.1    2020-05-11 [1] CRAN (R 4.0.3)
-#>  seriation        1.2-9    2020-10-01 [1] CRAN (R 4.0.3)
-#>  sessioninfo      1.1.1    2018-11-05 [1] CRAN (R 4.0.3)
-#>  shape            1.4.5    2020-09-13 [1] CRAN (R 4.0.3)
-#>  stringi          1.5.3    2020-09-09 [1] CRAN (R 4.0.3)
-#>  stringr          1.4.0    2019-02-10 [1] CRAN (R 4.0.3)
-#>  survival         3.2-7    2020-09-28 [2] CRAN (R 4.0.3)
-#>  testthat         3.0.2    2021-02-14 [1] CRAN (R 4.0.3)
-#>  tibble           3.1.0    2021-02-25 [1] CRAN (R 4.0.3)
-#>  tidyr            1.1.3    2021-03-03 [1] CRAN (R 4.0.3)
-#>  tidyselect       1.1.0    2020-05-11 [1] CRAN (R 4.0.3)
-#>  TSP              1.1-10   2020-04-17 [1] CRAN (R 4.0.3)
-#>  usethis        * 2.0.1    2021-02-10 [1] CRAN (R 4.0.3)
-#>  utf8             1.2.1    2021-03-12 [1] CRAN (R 4.0.3)
-#>  vctrs            0.3.6    2020-12-17 [1] CRAN (R 4.0.3)
-#>  vegan            2.5-7    2020-11-28 [1] CRAN (R 4.0.3)
-#>  withr            2.4.1    2021-01-26 [1] CRAN (R 4.0.3)
-#>  xfun             0.22     2021-03-11 [1] CRAN (R 4.0.3)
-#>  XVector          0.30.0   2020-10-27 [1] Bioconductor  
-#>  yaml             2.2.1    2020-02-01 [1] CRAN (R 4.0.3)
-#>  zlibbioc         1.36.0   2020-10-27 [1] Bioconductor  
+#> - Packages ---------------------------------------------------------------------------------------
+#>  ! package        * version  date       lib source        
+#>    ade4             1.7-16   2020-10-28 [1] CRAN (R 4.0.3)
+#>    ape              5.4-1    2020-08-13 [1] CRAN (R 4.0.3)
+#>    assertthat       0.2.1    2019-03-21 [1] CRAN (R 4.0.0)
+#>    Biobase          2.50.0   2020-10-27 [1] Bioconductor  
+#>    BiocGenerics     0.36.0   2020-10-27 [1] Bioconductor  
+#>    biomformat       1.18.0   2020-10-27 [1] Bioconductor  
+#>    Biostrings       2.58.0   2020-10-27 [1] Bioconductor  
+#>    cachem           1.0.4    2021-02-13 [1] CRAN (R 4.0.4)
+#>    Cairo            1.5-12.2 2020-07-07 [1] CRAN (R 4.0.3)
+#>    callr            3.5.1    2020-10-13 [1] CRAN (R 4.0.3)
+#>    circlize         0.4.12   2021-01-08 [1] CRAN (R 4.0.4)
+#>    cli              2.4.0    2021-04-05 [1] CRAN (R 4.0.3)
+#>    clue             0.3-58   2020-12-03 [1] CRAN (R 4.0.4)
+#>    cluster          2.1.1    2021-02-14 [1] CRAN (R 4.0.4)
+#>    codetools        0.2-18   2020-11-04 [1] CRAN (R 4.0.3)
+#>    colorspace       2.0-0    2020-11-11 [1] CRAN (R 4.0.3)
+#>    ComplexHeatmap   2.6.2    2020-11-12 [1] Bioconductor  
+#>    crayon           1.4.1    2021-02-08 [1] CRAN (R 4.0.4)
+#>    data.table       1.14.0   2021-02-21 [1] CRAN (R 4.0.4)
+#>    DBI              1.1.1    2021-01-15 [1] CRAN (R 4.0.3)
+#>    desc             1.3.0    2021-03-05 [1] CRAN (R 4.0.4)
+#>    devtools         2.3.2    2020-09-18 [1] CRAN (R 4.0.3)
+#>    digest           0.6.27   2020-10-24 [1] CRAN (R 4.0.3)
+#>    dplyr          * 1.0.5    2021-03-05 [1] CRAN (R 4.0.4)
+#>    ellipsis         0.3.1    2020-05-15 [1] CRAN (R 4.0.0)
+#>    evaluate         0.14     2019-05-28 [1] CRAN (R 4.0.0)
+#>    fansi            0.4.2    2021-01-15 [1] CRAN (R 4.0.3)
+#>    farver           2.1.0    2021-02-28 [1] CRAN (R 4.0.4)
+#>    fastmap          1.1.0    2021-01-25 [1] CRAN (R 4.0.3)
+#>    foreach          1.5.1    2020-10-15 [1] CRAN (R 4.0.3)
+#>    fs               1.5.0    2020-07-31 [1] CRAN (R 4.0.2)
+#>    generics         0.1.0    2020-10-31 [1] CRAN (R 4.0.3)
+#>    GetoptLong       1.0.5    2020-12-15 [1] CRAN (R 4.0.4)
+#>    ggplot2        * 3.3.3    2020-12-30 [1] CRAN (R 4.0.3)
+#>    GlobalOptions    0.1.2    2020-06-10 [1] CRAN (R 4.0.4)
+#>    glue             1.4.2    2020-08-27 [1] CRAN (R 4.0.2)
+#>    gtable           0.3.0    2019-03-25 [1] CRAN (R 4.0.0)
+#>    highr            0.8      2019-03-20 [1] CRAN (R 4.0.0)
+#>    hms              1.0.0    2021-01-13 [1] CRAN (R 4.0.3)
+#>    htmltools        0.5.1.1  2021-01-22 [1] CRAN (R 4.0.3)
+#>    igraph           1.2.6    2020-10-06 [1] CRAN (R 4.0.3)
+#>    IRanges          2.24.1   2020-12-12 [1] Bioconductor  
+#>    iterators        1.0.13   2020-10-15 [1] CRAN (R 4.0.3)
+#>    jsonlite         1.7.2    2020-12-09 [1] CRAN (R 4.0.3)
+#>    knitr            1.31     2021-01-27 [1] CRAN (R 4.0.3)
+#>    labeling         0.4.2    2020-10-20 [1] CRAN (R 4.0.3)
+#>    lattice          0.20-41  2020-04-02 [1] CRAN (R 4.0.3)
+#>    lifecycle        1.0.0    2021-02-15 [1] CRAN (R 4.0.4)
+#>    magrittr         2.0.1    2020-11-17 [1] CRAN (R 4.0.3)
+#>    MASS             7.3-53.1 2021-02-12 [1] CRAN (R 4.0.4)
+#>    Matrix           1.2-18   2019-11-27 [1] CRAN (R 4.0.3)
+#>    matrixStats      0.58.0   2021-01-29 [1] CRAN (R 4.0.4)
+#>    memoise          2.0.0    2021-01-26 [1] CRAN (R 4.0.3)
+#>    mgcv             1.8-34   2021-02-16 [1] CRAN (R 4.0.4)
+#>    microbiome       1.12.0   2020-10-27 [1] Bioconductor  
+#>    microViz       * 0.7.0    2021-04-07 [1] local         
+#>    multtest         2.46.0   2020-10-27 [1] Bioconductor  
+#>    munsell          0.5.0    2018-06-12 [1] CRAN (R 4.0.0)
+#>    nlme             3.1-152  2021-02-04 [1] CRAN (R 4.0.4)
+#>    permute          0.9-5    2019-03-12 [1] CRAN (R 4.0.0)
+#>    phyloseq       * 1.34.0   2020-10-27 [1] Bioconductor  
+#>    pillar           1.5.1    2021-03-05 [1] CRAN (R 4.0.3)
+#>    pkgbuild         1.2.0    2020-12-15 [1] CRAN (R 4.0.3)
+#>    pkgconfig        2.0.3    2019-09-22 [1] CRAN (R 4.0.0)
+#>    pkgload          1.2.0    2021-02-23 [1] CRAN (R 4.0.4)
+#>    plyr             1.8.6    2020-03-03 [1] CRAN (R 4.0.0)
+#>    png              0.1-7    2013-12-03 [1] CRAN (R 4.0.3)
+#>    prettyunits      1.1.1    2020-01-24 [1] CRAN (R 4.0.0)
+#>    processx         3.4.5    2020-11-30 [1] CRAN (R 4.0.3)
+#>    progress         1.2.2    2019-05-16 [1] CRAN (R 4.0.0)
+#>    ps               1.6.0    2021-02-28 [1] CRAN (R 4.0.4)
+#>    purrr            0.3.4    2020-04-17 [1] CRAN (R 4.0.0)
+#>    R6               2.5.0    2020-10-28 [1] CRAN (R 4.0.1)
+#>    RColorBrewer     1.1-2    2014-12-07 [1] CRAN (R 4.0.0)
+#>    Rcpp             1.0.6    2021-01-15 [1] CRAN (R 4.0.3)
+#>    registry         0.5-1    2019-03-05 [1] CRAN (R 4.0.0)
+#>    remotes          2.2.0    2020-07-21 [1] CRAN (R 4.0.3)
+#>    reshape2         1.4.4    2020-04-09 [1] CRAN (R 4.0.0)
+#>    rhdf5            2.34.0   2020-10-27 [1] Bioconductor  
+#>  D rhdf5filters     1.2.0    2020-10-27 [1] Bioconductor  
+#>    Rhdf5lib         1.12.1   2021-01-26 [1] Bioconductor  
+#>    rjson            0.2.20   2018-06-08 [1] CRAN (R 4.0.3)
+#>    rlang            0.4.10   2020-12-30 [1] CRAN (R 4.0.3)
+#>    rmarkdown        2.7      2021-02-19 [1] CRAN (R 4.0.4)
+#>    rprojroot        2.0.2    2020-11-15 [1] CRAN (R 4.0.3)
+#>    Rtsne            0.15     2018-11-10 [1] CRAN (R 4.0.2)
+#>    S4Vectors        0.28.1   2020-12-09 [1] Bioconductor  
+#>    scales           1.1.1    2020-05-11 [1] CRAN (R 4.0.0)
+#>    seriation        1.2-9    2020-10-01 [1] CRAN (R 4.0.3)
+#>    sessioninfo      1.1.1    2018-11-05 [1] CRAN (R 4.0.0)
+#>    shape            1.4.5    2020-09-13 [1] CRAN (R 4.0.3)
+#>    stringi          1.5.3    2020-09-09 [1] CRAN (R 4.0.3)
+#>    stringr          1.4.0    2019-02-10 [1] CRAN (R 4.0.0)
+#>    survival         3.2-7    2020-09-28 [1] CRAN (R 4.0.3)
+#>    testthat         3.0.2    2021-02-14 [1] CRAN (R 4.0.4)
+#>    tibble           3.1.0    2021-02-25 [1] CRAN (R 4.0.4)
+#>    tidyr            1.1.3    2021-03-03 [1] CRAN (R 4.0.4)
+#>    tidyselect       1.1.0    2020-05-11 [1] CRAN (R 4.0.0)
+#>    TSP              1.1-10   2020-04-17 [1] CRAN (R 4.0.3)
+#>    usethis          2.0.1    2021-02-10 [1] CRAN (R 4.0.4)
+#>    utf8             1.2.1    2021-03-12 [1] CRAN (R 4.0.4)
+#>    vctrs            0.3.7    2021-03-29 [1] CRAN (R 4.0.4)
+#>    vegan            2.5-7    2020-11-28 [1] CRAN (R 4.0.3)
+#>    withr            2.4.1    2021-01-26 [1] CRAN (R 4.0.3)
+#>    xfun             0.21     2021-02-10 [1] CRAN (R 4.0.4)
+#>    XVector          0.30.0   2020-10-28 [1] Bioconductor  
+#>    yaml             2.2.1    2020-02-01 [1] CRAN (R 4.0.0)
+#>    zlibbioc         1.36.0   2020-10-28 [1] Bioconductor  
 #> 
-#> [1] /home/david/R/x86_64-pc-linux-gnu-library/4.0
-#> [2] /opt/R/4.0.3/lib/R/library
+#> [1] C:/Program Files/R/R-4.0.3/library
+#> 
+#>  D -- DLL MD5 mismatch, broken installation.
 ```
