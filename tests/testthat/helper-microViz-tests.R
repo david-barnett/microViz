@@ -19,4 +19,3 @@ expect_snapshot_csv <- function(name, object) {
   path <- save_csv(object)
   testthat::expect_snapshot_file(path = path, name = paste0(name, ".csv"))
 }
-
