@@ -116,8 +116,8 @@ for (v in c("african", "female")) {
   test_that(paste("taxatree lm plots don't change:", v), {
     local_edition(3)
     options(width = 80)
-    expect_snapshot(signif(plots[[v]]$data$y, digits = 5))
-    expect_snapshot(signif(plots[[v]]$data$x, digits = 5))
+    expect_snapshot(round(plots[[v]]$data$y, digits = 8))
+    expect_snapshot(round(plots[[v]]$data$x, digits = 8))
     expect_snapshot(plots[[v]]$data$taxon_mean)
     expect_snapshot(plots[[v]]$data$p.value)
     expect_snapshot(plots[[v]]$data$estimate)
