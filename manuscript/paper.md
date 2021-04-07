@@ -3,25 +3,23 @@ title: 'microViz: an R package for microbiome data visualization and statistics'
 authors:
 - name: David J.M. Barnett
   orcid: 0000-0003-1961-7206
-  affiliation: 1, 2
+  affiliation: "1, 2"
 - name: Ilja C.W. Arts
   orcid: 0000-0001-6462-6692
-  affiliation: 1, 3
+  affiliation: 1
 - name: John Penders
   orcid: 0000-0001-9146-5919
-  affiliation: 2, 4, 5
-date: "6th April 2021"
+  affiliation: "2, 3, 4"
+date: "7th April 2021"
 affiliations:
 - name: Maastricht Centre for Systems Biology (MaCSBio)
   index: 1
 - name: Maastricht University Medical Centre+, Department of Medical Microbiology
   index: 2
-- name: School for Cardiovascular Diseases (CARIM), Department of Epidemiology
-  index: 3
 - name: Public Health Research Institute (CAPHRI)
-  index: 4
+  index: 3
 - name: School of Nutrition and Translational Research in Metabolism (NUTRIM)
-  index: 5
+  index: 4
 bibliography: microViz.bib
 tags:
 - R
