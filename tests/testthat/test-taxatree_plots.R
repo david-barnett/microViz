@@ -31,7 +31,7 @@ bb_models2 <- tax_model(
 )
 
 # test bbdml models
-for (t in testing_taxa){
+for (t in testing_taxa) {
   test_that(paste("tax_model bbdml results stay the same:", t), {
     local_edition(3)
     options(width = 80)
@@ -66,7 +66,7 @@ lm_models <- ps %>%
   )
 
 # test lm models
-for (t in testing_taxa){
+for (t in testing_taxa) {
   test_that(paste("tax_model compositional lm results stay the same:", t), {
     local_edition(3)
     options(width = 80)
@@ -107,7 +107,6 @@ test_that("taxatree plot scale limits are harmonised", {
 
 
 for (v in c("african", "female")) {
-
   test_that(paste("taxatree plots and key plot layouts match:", v), {
     expect_equal(plots[[v]]$data$x, keyplot$data$x)
     expect_equal(plots[[v]]$data$y, keyplot$data$y)
@@ -117,12 +116,11 @@ for (v in c("african", "female")) {
   test_that(paste("taxatree lm plots don't change:", v), {
     local_edition(3)
     options(width = 80)
-    expect_snapshot(plots[[v]]$data$y)
-    expect_snapshot(plots[[v]]$data$x)
+    expect_snapshot(signif(plots[[v]]$data$y, digits = 5))
+    expect_snapshot(signif(plots[[v]]$data$x, digits = 5))
     expect_snapshot(plots[[v]]$data$taxon_mean)
     expect_snapshot(plots[[v]]$data$p.value)
     expect_snapshot(plots[[v]]$data$estimate)
     expect_snapshot(plots[[v]]$data$taxon_from)
   })
 }
-
