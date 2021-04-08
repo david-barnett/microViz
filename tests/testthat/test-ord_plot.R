@@ -47,3 +47,35 @@ test_that("partialed bray CAP plot gives correct positions", {
   expect_snapshot(cat(p2$data[1:50, 2, drop = TRUE]))
   expect_snapshot(cat(p2$layers[[2]]$data[, 1, drop = TRUE]))
 })
+
+# aitchison and clr PCA equivalence ----------------------------------------
+
+p3 <- ps %>%
+  tax_transform(transformation = "identity", rank = "Genus") %>%
+  dist_calc("aitchison") %>%
+  ord_calc(method = "PCoA") %>%
+  ord_plot(colour = "bmi_group")
+
+p4 <- ps %>%
+  tax_transform(transformation = "clr", rank = "Genus") %>%
+  ord_calc(method = "PCA") %>%
+  ord_plot(colour = "bmi_group")
+
+test_that("clr PCA equivalent to aitchison PCoA", {
+  expect_equal(
+    object = abs(round(unname(p3$data[, 1:2]), digits = 10)),
+    expected = abs(round(unname(p4$data[, 1:2]), digits = 10))
+  )
+})
+
+test_that("aitchison plot hasn't changed", {
+  expect_snapshot(cat(p3$data[1:50, 1, drop = TRUE]))
+  expect_snapshot(cat(p3$data[1:50, 2, drop = TRUE]))
+  expect_snapshot(p3$layers)
+})
+
+test_that("clr PCA plot hasn't changed", {
+  expect_snapshot(cat(p4$data[1:50, 1, drop = TRUE]))
+  expect_snapshot(cat(p4$data[1:50, 2, drop = TRUE]))
+  expect_snapshot(p4$layers)
+})

@@ -187,6 +187,225 @@
               |     `--leaf "Uncultured Clostridiales II" 
               `--leaf "Prevotella oralis et rel." 
 
+# cor_heatmap with var_anno doesn't change: 
+
+    Code
+      v@matrix_param[names(v@matrix_param) != "cell_fun"]
+    Output
+      $row_km
+      [1] 1
+      
+      $row_km_repeats
+      [1] 1
+      
+      $row_gap
+      [1] 1mm
+      
+      $column_km
+      [1] 1
+      
+      $column_km_repeats
+      [1] 1
+      
+      $column_gap
+      [1] 1mm
+      
+      $jitter
+      [1] FALSE
+      
+      $gp
+      $col
+      [1] "white"
+      
+      $alpha
+      [1] 1
+      
+      $lty
+      [1] 1
+      
+      $lwd
+      [1] 0.5
+      
+      $lex
+      [1] 1
+      
+      $lineend
+      [1] "round"
+      
+      $linejoin
+      [1] "round"
+      
+      $lineheight
+      [1] 0.9
+      
+      
+      $border
+      [1] NA
+      
+      $border_gp
+      $col
+      [1] "black"
+      
+      
+      $width
+      [1] 5null
+      
+      $height
+      [1] 30null
+      
+
+---
+
+    Code
+      v@matrix_color_mapping
+    Output
+      Continuous color mapping:
+      name: pearson 
+      default breaks:
+      [1] -1.0 -0.5  0.0  0.5  1.0
+      
+      colors:
+      [1] "#11C638FF" "#54CC5CFF" "#E2E2E2FF" "#F2A346FF" "#EF9708FF"
+      
+
+---
+
+    Code
+      v@right_annotation@anno_list
+    Output
+      $prev
+      A single annotation with anno_barplot() function
+        name: prev 
+        position: row 
+        no legend
+        items: 30 
+        width: 15mm 
+        height: 1npc 
+        this object is  subsetable
+        8.94924444444444mm extension on the bottom 
+      
+      $abund
+      A single annotation with anno_boxplot() function
+        name: abund 
+        position: row 
+        no legend
+        items: 30 
+        width: 15mm 
+        height: 1npc 
+        this object is  subsetable
+        8.94924444444444mm extension on the bottom 
+      
+
+---
+
+    Code
+      v@top_annotation@anno_list
+    Output
+      $x
+      A single annotation with anno_histogram() function
+        name: x 
+        position: column 
+        no legend
+        items: 5 
+        width: 1npc 
+        height: 10mm 
+        this object is  subsetable
+        3.56915555555556mm extension on the left 
+        2.56915555555556mm extension on the right 
+      
+      $`log10(x+1)`
+      A single annotation with anno_boxplot() function
+        name: log10(x+1) 
+        position: column 
+        no legend
+        items: 5 
+        width: 1npc 
+        height: 20mm 
+        this object is  subsetable
+        5.92288888888889mm extension on the left 
+        15.0377333333333mm extension on the right 
+      
+
+---
+
+    Code
+      str(v@column_dend_param$obj)
+    Output
+      --[dendrogram w/ 2 branches and 5 members at h = 2.23]
+        |--leaf "african" 
+        `--[dendrogram w/ 2 branches and 4 members at h = 0.946]
+           |--[dendrogram w/ 2 branches and 2 members at h = 0.415]
+           |  |--leaf "timepoint" 
+           |  `--leaf "timepoint.within.group" 
+           `--[dendrogram w/ 2 branches and 2 members at h = 0.738]
+              |--leaf "weight" 
+              `--leaf "female" 
+
+---
+
+    Code
+      str(v@row_dend_param$obj)
+    Output
+      --[dendrogram w/ 2 branches and 30 members at h = 1.62]
+        |--[dendrogram w/ 2 branches and 6 members at h = 0.301]
+        |  |--[dendrogram w/ 2 branches and 2 members at h = 0.0866]
+        |  |  |--leaf "Allistipes et rel." 
+        |  |  `--leaf "Bacteroides vulgatus et rel." 
+        |  `--[dendrogram w/ 2 branches and 4 members at h = 0.223]
+        |     |--[dendrogram w/ 2 branches and 3 members at h = 0.139]
+        |     |  |--[dendrogram w/ 2 branches and 2 members at h = 0.119]
+        |     |  |  |--leaf "Bacteroides plebeius et rel." 
+        |     |  |  `--leaf "Tannerella et rel." 
+        |     |  `--leaf "Parabacteroides distasonis et rel." 
+        |     `--leaf "Bacteroides uniformis et rel." 
+        `--[dendrogram w/ 2 branches and 24 members at h = 1.11]
+           |--[dendrogram w/ 2 branches and 17 members at h = 0.716]
+           |  |--[dendrogram w/ 2 branches and 11 members at h = 0.547]
+           |  |  |--[dendrogram w/ 2 branches and 7 members at h = 0.39]
+           |  |  |  |--[dendrogram w/ 2 branches and 3 members at h = 0.309]
+           |  |  |  |  |--[dendrogram w/ 2 branches and 2 members at h = 0.165]
+           |  |  |  |  |  |--leaf "Prevotella tannerae et rel." 
+           |  |  |  |  |  `--leaf "Anaerostipes caccae et rel." 
+           |  |  |  |  `--leaf "Bryantella formatexigens et rel." 
+           |  |  |  `--[dendrogram w/ 2 branches and 4 members at h = 0.213]
+           |  |  |     |--[dendrogram w/ 2 branches and 2 members at h = 0.0816]
+           |  |  |     |  |--leaf "Subdoligranulum variable at rel." 
+           |  |  |     |  `--leaf "Bifidobacterium" 
+           |  |  |     `--[dendrogram w/ 2 branches and 2 members at h = 0.132]
+           |  |  |        |--leaf "Clostridium symbiosum et rel." 
+           |  |  |        `--leaf "Clostridium sphenoides et rel." 
+           |  |  `--[dendrogram w/ 2 branches and 4 members at h = 0.352]
+           |  |     |--leaf "Bacteroides fragilis et rel." 
+           |  |     `--[dendrogram w/ 2 branches and 3 members at h = 0.249]
+           |  |        |--[dendrogram w/ 2 branches and 2 members at h = 0.214]
+           |  |        |  |--leaf "Lachnospira pectinoschiza et rel." 
+           |  |        |  `--leaf "Lachnobacillus bovis et rel." 
+           |  |        `--leaf "Akkermansia" 
+           |  `--[dendrogram w/ 2 branches and 6 members at h = 0.295]
+           |     |--[dendrogram w/ 2 branches and 2 members at h = 0.119]
+           |     |  |--leaf "Escherichia coli et rel." 
+           |     |  `--leaf "Clostridium cellulosi et rel." 
+           |     `--[dendrogram w/ 2 branches and 4 members at h = 0.23]
+           |        |--[dendrogram w/ 2 branches and 3 members at h = 0.119]
+           |        |  |--leaf "Phascolarctobacterium faecium et rel." 
+           |        |  `--[dendrogram w/ 2 branches and 2 members at h = 0.0523]
+           |        |     |--leaf "Streptococcus mitis et rel." 
+           |        |     `--leaf "Streptococcus bovis et rel." 
+           |        `--leaf "Ruminococcus obeum et rel." 
+           `--[dendrogram w/ 2 branches and 7 members at h = 0.422]
+              |--[dendrogram w/ 2 branches and 6 members at h = 0.402]
+              |  |--[dendrogram w/ 2 branches and 4 members at h = 0.278]
+              |  |  |--[dendrogram w/ 2 branches and 3 members at h = 0.228]
+              |  |  |  |--[dendrogram w/ 2 branches and 2 members at h = 0.109]
+              |  |  |  |  |--leaf "Clostridium nexile et rel." 
+              |  |  |  |  `--leaf "Outgrouping clostridium cluster XIVa" 
+              |  |  |  `--leaf "Clostridium orbiscindens et rel." 
+              |  |  `--leaf "Uncultured Mollicutes" 
+              |  `--[dendrogram w/ 2 branches and 2 members at h = 0.221]
+              |     |--leaf "Sporobacter termitidis et rel." 
+              |     `--leaf "Uncultured Clostridiales II" 
+              `--leaf "Prevotella oralis et rel." 
+
 # comp_heatmap doesn't change: 
 
     Code
