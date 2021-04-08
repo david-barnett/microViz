@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# microViz <a href='https://david-barnett.github.io/microViz/index.html'><img src='man/figures/microViz.png' align="right" height="139" /></a>
+# microViz <a href='https://david-barnett.github.io/microViz/index.html'><img src='man/figures/microViz-smaller.png' align="right" height="139" /></a>
 
 <!-- badges: start -->
 
@@ -195,8 +195,8 @@ aitchison_perm <- dist_permanova(
   variables = "bmi_group + female"
 )
 #> Dropping samples with missings: 2
-#> 2021-04-08 20:07:25 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2021-04-08 20:07:26 - Finished PERMANOVA
+#> 2021-04-08 20:42:38 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2021-04-08 20:42:38 - Finished PERMANOVA
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
 #>            Df   SumOfSqs         R2        F Pr(>F)
@@ -218,8 +218,8 @@ your permanova directly using the ord\_plot function with constraints.
 ``` r
 perm2 <- dist_permanova(data = aitchison_dists, variables = c("weight", "female"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2021-04-08 20:07:26 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2021-04-08 20:07:26 - Finished PERMANOVA
+#> 2021-04-08 20:42:38 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2021-04-08 20:42:39 - Finished PERMANOVA
 perm_get(perm2)
 #> Permutation test for adonis under reduced model
 #> Marginal effects of terms
