@@ -7,4 +7,3 @@ test_that("tax_fix_interactive() works", {
 
   expect_pass(testApp(appDir = "apps/tax_fix_interactive/", compareImages = FALSE))
 })
-

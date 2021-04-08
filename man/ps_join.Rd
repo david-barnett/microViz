@@ -68,8 +68,7 @@ This will cause this function to fail, as additional rows cannot be added to the
 }
 \examples{
 library(phyloseq)
-library(microbiome)
-data("enterotype")
+data("enterotype", package = "phyloseq")
 
 x <- enterotype
 y <- data.frame(

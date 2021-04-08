@@ -14,8 +14,7 @@
 #'
 #' @return nothing
 #' @export
-tax_fill_unknowns <- function(
-                              ps = NULL,
+tax_fill_unknowns <- function(ps = NULL,
                               min_length = NULL,
                               unknowns = NULL,
                               levels = NULL,

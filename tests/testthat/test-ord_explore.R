@@ -7,4 +7,3 @@ test_that("ord_explore() works", {
 
   expect_pass(testApp(appDir = "apps/ord_explore/", compareImages = FALSE))
 })
-

@@ -142,7 +142,7 @@ ps_melt <- function(ps) {
   # (one sample-taxon observation per row)
   tb <- otutab %>%
     tibble::as_tibble(rownames = "OTU") %>%
-    tidyr::gather(key = "Sample", value = "Abundance", -OTU)
+    tidyr::gather(key = "Sample", value = "Abundance", -dplyr::all_of("OTU"))
   # Add the sample data if it exists
   if (!is.null(sampleVars)) {
     sam <- phyloseq::sample_data(ps) %>%

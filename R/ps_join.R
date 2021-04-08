@@ -39,8 +39,7 @@
 #'
 #' @examples
 #' library(phyloseq)
-#' library(microbiome)
-#' data("enterotype")
+#' data("enterotype", package = "phyloseq")
 #'
 #' x <- enterotype
 #' y <- data.frame(
