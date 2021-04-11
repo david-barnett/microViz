@@ -9,6 +9,8 @@ knitr::opts_chunk$set(
 )
 ```
 
+This article shows you how to quickly get started with interactive exploration of your data/ ordination plot.
+
 ```{r setup}
 library(phyloseq)
 library(microViz)
@@ -31,17 +33,16 @@ ord1 <- ps %>%
   ord_calc() # automagically picks PCoA
 ```
 
-Start interactive Shiny App
+Start interactive Shiny App: this will open a page in your default web browser.
 
-``` r
+``` {.r}
 ord_explore(data = ord1, auto_caption = NA)
 ```
 
-![Note: GIF is sped up x2: redrawing plots is not instantaneous, but pretty quick unless your dataset has many 1000s of samples](../../man/figures/20210329_ord_explore_dev_x2.gif){width=90%}
+![Note: GIF is sped up x2: redrawing plots is not instantaneous, but pretty quick unless your dataset has many 1000s of samples](images/20210329_ord_explore_dev_x2.gif)
 
 # Session info
+
 ```{r}
 devtools::session_info()
 ```
-
-
