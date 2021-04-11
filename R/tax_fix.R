@@ -124,8 +124,7 @@ tax_fix <- function(ps,
   # repair lost names
   names(tt_list) <- original_rownames
 
-  # message(names(tt_list))
-  # replace unknowns
+  # replace tax_table unknowns
   tt_out <- vapply(
     X = tt_list,
     FUN.VALUE = character(length = rowLengthOut),
@@ -151,45 +150,25 @@ tax_fix <- function(ps,
           vec <- rep(out, times = rowLengthOut)
         } else {
           # edit each unknown value in this row
-          vec <- vapply(
-            X = seq_along(vec),
-            FUN.VALUE = vec[1],
-            FUN = function(i) {
-              if (is_unknown[i]) {
-                known_above <- !is_unknown[1:(i - 1)]
-                if (!any(known_above)) {
-                  if (ranknames[[i]] %in% levels) {
-                    stop(
-                      "Unknown values detected to the left of known values\n",
-                      "in row named: ", vec[[rowLengthOut + 1]],
-                      "\nThis should not happen. Check/fix this row:\n",
-                      paste(vec[1:rowLengthOut], collapse = "; ")
-                    )
-                  }
-                  return(vec[i])
-                }
-                nearest_known <- max(which(known_above))
-                tax <- vec[nearest_known]
-                if (identical(suffix_rank, "classified")) level <- ranknames[[nearest_known]] else level <- ranknames[[i]]
-                tax <- paste(tax, level, sep = sep)
-                return(tax)
-              } else {
-                return(vec[i])
-              }
-            }
+          vec <- tax_fix_value(
+            vec = vec, is_unknown = is_unknown, ranknames = ranknames,
+            levels = levels, sep = sep, suffix_rank = suffix_rank,
+            rowLengthOut = rowLengthOut
           )
         }
       }
       return(vec[1:rowLengthOut])
     }
   )
+
+  # make match original tt format (taxa as rows, ranks as cols)
   if (inherits(tt_out, "matrix")) {
-    # transpose to match original tt (taxa as rows, ranks as cols)
     tt_out <- t(tt_out)
   } else {
     # vapply returns vector if tt had only 1 rank
     tt_out <- as.matrix(tt_out) # returns 1-column matrix
   }
+
   # ensure original row order
   tt_out <- tt_out[original_rownames, , drop = FALSE]
   # repair colnames
@@ -209,6 +188,58 @@ tax_fix <- function(ps,
   }
   return(ps)
 }
+
+#' internal helper for tax_fix
+#'
+#' @param vec row over which iteration is occuring
+#' @param is_unknown logical vector of length length(row)
+#' @param ranknames character vector of length length(row)
+#' @param rowLengthOut number of ranks, originally
+#'
+#' @inheritParams tax_fix
+#' @return fixed value
+#' @noRd
+tax_fix_value <- function(vec,
+                          is_unknown,
+                          ranknames,
+                          levels,
+                          rowLengthOut,
+                          suffix_rank,
+                          sep) {
+  vec_out <- vapply(
+    X = seq_along(vec),
+    FUN.VALUE = vec[1],
+    FUN = function(i) {
+      if (is_unknown[i]) {
+        known_above <- !is_unknown[1:(i - 1)]
+        if (!any(known_above)) {
+          if (ranknames[[i]] %in% levels) {
+            stop(
+              "Unknown values detected to the left of known values\n",
+              "in row named: ", vec[[rowLengthOut + 1]],
+              "\nThis should not happen. Check/fix this row:\n",
+              paste(vec[1:rowLengthOut], collapse = "; ")
+            )
+          }
+          return(vec[i])
+        }
+        nearest_known <- max(which(known_above))
+        tax <- vec[nearest_known]
+        if (identical(suffix_rank, "classified")) {
+          level <- ranknames[[nearest_known]]
+        } else {
+          level <- ranknames[[i]]
+        }
+        tax <- paste(tax, level, sep = sep)
+        return(tax)
+      } else {
+        return(vec[i])
+      }
+    }
+  )
+  return(vec_out)
+}
+
 
 #' Helper function returns vector of common unknown/uninformative tax table entries
 #'
