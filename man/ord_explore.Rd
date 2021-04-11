@@ -2,7 +2,7 @@
 % Please edit documentation in R/ord_explore.R
 \name{ord_explore}
 \alias{ord_explore}
-\title{Interactively explore compositions of ordinated samples}
+\title{Interactively explore microbial compositions of ordinated samples}
 \usage{
 ord_explore(
   data,
@@ -16,11 +16,11 @@ ord_explore(
 \arguments{
 \item{data}{ps_extra list output of ord_calc}
 
-\item{sample_id}{name of id variable for ordering}
+\item{sample_id}{name of sample ID variable to use as default for selecting samples}
 
 \item{seriate_method}{seriation method to order phyloseq samples by similarity}
 
-\item{tax_transform_for_ordering}{transform tax before ordering with ps_seriate}
+\item{tax_transform_for_ordering}{transform taxa before ordering with ps_seriate}
 
 \item{app_options}{passed to shinyApp() options argument}
 
@@ -31,10 +31,10 @@ nothing, opens default browser
 }
 \description{
 A Shiny app used like an interactive version of ord_plot (taking the output of ord_calc).
-Allows you to select samples on an ordination plot and view their composition with stacked barplots.
+You can select samples on an ordination plot and view their composition with stacked barplots.
 
-Once running: click and drag to draw box over 2 or more samples to view their compositions.
-You can style the ordination plot points using the options on the left panel.
+Once running: click and drag to select 2 or more samples to view their compositions.
+You can style the ordination plot points and compositional barplot using the options in the left panel.
 }
 \details{
 If you get an interactive error like the one below:

@@ -1,11 +1,12 @@
-#' Interactively explore compositions of ordinated samples
+#' Interactively explore microbial compositions of ordinated samples
 #'
 #' @description
 #' A Shiny app used like an interactive version of ord_plot (taking the output of ord_calc).
-#' Allows you to select samples on an ordination plot and view their composition with stacked barplots.
+#' You can select samples on an ordination plot and view their composition with stacked barplots.
 #'
-#' Once running: click and drag to draw box over 2 or more samples to view their compositions.
-#' You can style the ordination plot points using the options on the left panel.
+#' Once running: click and drag to select 2 or more samples to view their compositions.
+#' You can style the ordination plot points and compositional barplot using the options in the left panel.
+#'
 #'
 #' @details
 #' If you get an interactive error like the one below:
@@ -20,11 +21,11 @@
 #'
 #'
 #' @param data ps_extra list output of ord_calc
-#' @param sample_id name of id variable for ordering
+#' @param sample_id name of sample ID variable to use as default for selecting samples
 #' @param seriate_method
 #' seriation method to order phyloseq samples by similarity
 #' @param tax_transform_for_ordering
-#' transform tax before ordering with ps_seriate
+#' transform taxa before ordering with ps_seriate
 #' @param app_options passed to shinyApp() options argument
 #' @param ... additional arguments passed to ord_plot
 #'
@@ -335,20 +336,6 @@ ord_explore <- function(data,
 
   server <- function(input, output) {
 
-    # ord_plot aesthetic vars
-    shape <- shiny::reactive({
-      switch(input$shape_var_type,
-        "fixed" = input$ord_shape_num,
-        "variable" = input$ord_shape_var
-      )
-    })
-    size <- shiny::reactive({
-      switch(input$size_var_type,
-        "fixed" = input$ord_size_num,
-        "variable" = input$ord_size_var
-      )
-    })
-
     # ordination plot ---------------------------------------------------------
     output$ord_plot <- ggiraph::renderGirafe({
       p1 <- ord_plot(
@@ -381,49 +368,47 @@ ord_explore <- function(data,
       p1
     })
 
-    # composition plot --------------------------------------------------------
-
-    # message about lag with too many distinct taxa (and set maxtax = 50)
-    shiny::observeEvent(
-      eventExpr = {
-        input$interactive
-        input$merge_other
-      },
-      handlerExpr = {
-        if (isTRUE(input$interactive)) {
-          shiny::updateTabsetPanel(inputId = "tabs", selected = "girafe")
-          if (isFALSE(input$merge_other)) {
-            shiny::updateSliderInput(inputId = "taxmax", value = 40)
-            shiny::showNotification(
-              "ALERT: Max Distinct taxa reduced to 40 to avoid freezing!",
-              duration = 10, closeButton = TRUE, type = "warning"
-            )
-            shiny::showNotification(
-              "Interactive bars lag if too many taxa and/or samples shown!",
-              duration = 20, closeButton = TRUE, type = "warning"
-            )
-          }
-        } else {
-          shiny::updateTabsetPanel(inputId = "tabs", selected = "ggplot")
-        }
-      }
-    )
-
-    # order taxa using whole population
-    ordered_taxa <- shiny::reactive({
-      shiny::showNotification(" - Sorting taxa", duration = 2)
-      tax_top(
-        data = ps_ordered, n = NA,
-        by = get(input$tax_order),
-        rank = input$tax_level_comp
+    # ord_plot aesthetic vars
+    shape <- shiny::reactive({
+      switch(input$shape_var_type,
+             "fixed" = input$ord_shape_num,
+             "variable" = input$ord_shape_var
       )
     })
-    # set colour palette (depends on tax level of composition plot)
-    palet <- shiny::reactive({
-      shiny::showNotification(" - Setting taxa colour palette", duration = 2)
-      ord_explore_palet_fun(
-        ps = ps_ordered, tax_level = input$tax_level_comp,
-        top_by = get(input$tax_order)
+    size <- shiny::reactive({
+      switch(input$size_var_type,
+             "fixed" = input$ord_size_num,
+             "variable" = input$ord_size_var
+      )
+    })
+
+    # composition plot --------------------------------------------------------
+
+    # static version comps
+    output$comps_gg <- shiny::renderPlot({
+      comp_plot() + ggplot2::theme(
+        legend.text = ggplot2::element_text(size = 9)
+      )
+    })
+
+    # girafe version
+    output$comps_girafe <- ggiraph::renderggiraph({
+      ggiraph::girafe(
+        ggobj = comp_plot() +
+          # TODO work out how to match static/interactive sizes properly
+          ggplot2::theme(
+            text = ggplot2::element_text(size = 8)
+          ),
+        width_svg = 6, height_svg = 5, pointsize = 8,
+        options = list(
+          # ggiraph::opts_sizing(rescale = FALSE),
+          ggiraph::opts_zoom(min = 0.5, max = 3),
+          ggiraph::opts_hover(css = "fill:orange;stroke:gray;"),
+          ggiraph::opts_hover_inv("opacity:0.2"),
+          ggiraph::opts_selection(
+            type = "single", css = "fill:orange;stroke:gray;"
+          )
+        )
       )
     })
 
@@ -477,33 +462,50 @@ ord_explore <- function(data,
       p_comp
     })
 
-    # static version comps
-    output$comps_gg <- shiny::renderPlot({
-      comp_plot() + ggplot2::theme(
-        legend.text = ggplot2::element_text(size = 9)
+    # order taxa using whole population
+    ordered_taxa <- shiny::reactive({
+      shiny::showNotification(" - Sorting taxa", duration = 2)
+      tax_top(
+        data = ps_ordered, n = NA,
+        by = get(input$tax_order),
+        rank = input$tax_level_comp
+      )
+    })
+    # set colour palette (depends on tax level of composition plot)
+    palet <- shiny::reactive({
+      shiny::showNotification(" - Setting taxa colour palette", duration = 2)
+      ord_explore_palet_fun(
+        ps = ps_ordered, tax_level = input$tax_level_comp,
+        top_by = get(input$tax_order)
       )
     })
 
-    # girafe version
-    output$comps_girafe <- ggiraph::renderggiraph({
-      ggiraph::girafe(
-        ggobj = comp_plot() +
-          # TODO work out how to match static/interactive sizes properly
-          ggplot2::theme(
-            text = ggplot2::element_text(size = 8)
-          ),
-        width_svg = 6, height_svg = 5, pointsize = 8,
-        options = list(
-          # ggiraph::opts_sizing(rescale = FALSE),
-          ggiraph::opts_zoom(min = 0.5, max = 3),
-          ggiraph::opts_hover(css = "fill:orange;stroke:gray;"),
-          ggiraph::opts_hover_inv("opacity:0.2"),
-          ggiraph::opts_selection(
-            type = "single", css = "fill:orange;stroke:gray;"
-          )
-        )
-      )
-    })
+    # message about lag with too many distinct taxa (and set maxtax = 50)
+    shiny::observeEvent(
+      eventExpr = {
+        input$interactive
+        input$merge_other
+      },
+      handlerExpr = {
+        if (isTRUE(input$interactive)) {
+          shiny::updateTabsetPanel(inputId = "tabs", selected = "girafe")
+          if (isFALSE(input$merge_other)) {
+            shiny::updateSliderInput(inputId = "taxmax", value = 40)
+            shiny::showNotification(
+              "ALERT: Max Distinct taxa reduced to 40 to avoid freezing!",
+              duration = 10, closeButton = TRUE, type = "warning"
+            )
+            shiny::showNotification(
+              "Interactive bars lag if too many taxa and/or samples shown!",
+              duration = 20, closeButton = TRUE, type = "warning"
+            )
+          }
+        } else {
+          shiny::updateTabsetPanel(inputId = "tabs", selected = "ggplot")
+        }
+      }
+    )
+
   }
   # Run the application
   shiny::shinyApp(ui = ui, server = server, options = app_options)
