@@ -14,7 +14,8 @@
 #'
 #' @param ps phyloseq with sample data
 #' @param vars names of variables, whose (combined) levels identify groups from which only 1 sample is desired
-#' @param method keep 1 sample with max "readcount" or the "first" or "last" samples encountered in given sample_data order for each dupe group
+#' @param method
+#' keep 1 sample with max "readcount" or the "first" or "last" samples encountered in given sample_data order for each dupe group
 #' @param verbose message names of samples removed if TRUE (or "debug" for more info, when method = "readcount")
 #'
 #' @return phyloseq object
@@ -48,15 +49,21 @@ ps_dedupe <- function(ps,
                       vars,
                       method = "readcount",
                       verbose = TRUE) {
-  ps_df <- data.frame(phyloseq::sample_data(ps))
+  ps_df <- methods::as(phyloseq::sample_data(ps), Class = "data.frame")
 
   ps_df[[".temp_grouping_var"]] <- interaction(ps_df[, vars])
 
-  dupe_names <- unique(ps_df[[".temp_grouping_var"]][duplicated(ps_df[, ".temp_grouping_var"])])
-  no_dupe_samples <- rownames(ps_df)[!ps_df[[".temp_grouping_var"]] %in% dupe_names]
+  dupe_names <- unique(
+    ps_df[[".temp_grouping_var"]][duplicated(ps_df[, ".temp_grouping_var"])]
+  )
+  no_dupe_samples <-
+    rownames(ps_df)[!ps_df[[".temp_grouping_var"]] %in% dupe_names]
 
   rejects_message <- function(rejects) {
-    message(length(rejects), " samples being removed:\n", paste0(rejects, collapse = "; "))
+    message(
+      length(rejects), " samples being removed:\n",
+      paste0(rejects, collapse = "; ")
+    )
   }
 
   keepers <- switch(
@@ -64,30 +71,37 @@ ps_dedupe <- function(ps,
     "readcount" = {
       ps_df[[".temp_readcount_var"]] <- phyloseq::sample_sums(ps)
       ps_df[[".temp_sample_id_var"]] <- rownames(ps_df)
-      ps_df <- dplyr::filter(ps_df, .data[[".temp_grouping_var"]] %in% dupe_names)
+      ps_df <-
+        dplyr::filter(ps_df, .data[[".temp_grouping_var"]] %in% dupe_names)
       ps_df <- dplyr::group_by(ps_df, .data[[".temp_grouping_var"]])
-      df_sum <- dplyr::summarise(ps_df, max = max(.data[[".temp_readcount_var"]]))
+      df_sum <-
+        dplyr::summarise(ps_df, max = max(.data[[".temp_readcount_var"]]))
 
       keepers <- unlist(
         sapply(dupe_names, function(dn) {
           dupe_group <- ps_df[ps_df$.temp_grouping_var == dn, ]
           max_reads <- df_sum$max[df_sum$.temp_grouping_var == dn][[1]]
-          keepers <- dupe_group$.temp_sample_id_var[dupe_group$.temp_readcount_var == max_reads]
+          keepers <- dupe_group$.temp_sample_id_var[
+            dupe_group$.temp_readcount_var == max_reads
+          ]
           if (identical(verbose, "debug")) {
+            to_drop <- dupe_group$.temp_sample_id_var != keepers[[1]]
             message(
-              "\ngroup = ", dn, "\n", nrow(dupe_group), " dupes", "\nmax_reads = ", max_reads,
-              "\nmatches = ", paste(keepers, collapse = "; "), "\nkeeping: ", keepers[[1]],
+              "\ngroup = ", dn, "\n",
+              nrow(dupe_group), " dupes", "\nmax_reads = ", max_reads,
+              "\nmatches = ",
+              paste(keepers, collapse = "; "), "\nkeeping: ", keepers[[1]],
               "\ndropping: ",
-              paste(dupe_group$.temp_sample_id_var[dupe_group$.temp_sample_id_var != keepers[[1]]], collapse = "; ")
+              paste(dupe_group$.temp_sample_id_var[to_drop], collapse = "; ")
             )
           }
           keepers[[1]]
         })
       )
 
-
       if (!isFALSE(verbose)) {
-        rejects <- ps_df$.temp_sample_id_var[!ps_df$.temp_sample_id_var %in% keepers]
+        rejects <-
+          ps_df$.temp_sample_id_var[!ps_df$.temp_sample_id_var %in% keepers]
         rejects_message(rejects)
       }
       union(keepers, no_dupe_samples)

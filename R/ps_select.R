@@ -20,6 +20,7 @@
 #'   sample_data() %>%
 #'   head()
 ps_select <- function(ps, ...) {
+  ps <- ps_get(ps)
   df <- data.frame(phyloseq::sample_data(ps))
   df <- dplyr::select(.data = df, ...)
   phyloseq::sample_data(ps) <- df

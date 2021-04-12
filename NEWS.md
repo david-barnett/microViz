@@ -1,5 +1,8 @@
 # microViz (development version)
 
+## Fixes
+- Allow ps_seriate, ps_arrange, ps_reorder, ps_mutate, and ps_select to work directly with ps_extra objects, as this can be helpful when quickly exploring / printing aggregated data, as in the new "Working with phyloseq objects" tutorial.
+
 # microViz 0.7.0 - "fickle fixes"
 
 ## Breaking changes

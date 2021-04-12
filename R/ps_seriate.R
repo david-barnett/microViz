@@ -28,6 +28,8 @@
 #'   sample_data() %>%
 #'   head(8)
 ps_seriate <- function(ps, method = "OLO_ward", dist = "bray", tax_transform = "identity", add_variable = FALSE) {
+  ps <- ps_get(ps)
+
   if (phyloseq::nsamples(ps) > 2) {
     # transform taxa for ordering (facilitated primarily for clr for PCA_angle method)
     ps_transformed <- microbiome::transform(ps, transform = tax_transform)

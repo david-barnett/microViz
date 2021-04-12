@@ -38,9 +38,7 @@
 #'
 #' sample_data(ps)[1:10, ]
 ps_mutate <- function(ps, ..., .target = "sample_data") {
-  if (!inherits(ps, "phyloseq")) {
-    stop("ps must be a phyloseq object. It is of class: ", class(ps))
-  }
+  ps <- ps_get(ps)
 
   if (!identical(.target, "sample_data")) {
     stop("Only .target = 'sample_data', has been implemented so far.")
