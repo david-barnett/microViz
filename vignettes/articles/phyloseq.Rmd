@@ -1,0 +1,164 @@
+---
+title: "Working with phyloseq objects"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Intro
+
+This tutorial will show you how microViz makes working with phyloseq objects easier.
+
+```{r setup}
+library(dplyr)
+library(phyloseq)
+library(microViz)
+```
+
+## Getting your data into phyloseq
+
+phyloseq objects are probably the most commonly used data format for working with microbiome data in R.
+
+The creator of phyloseq, [Paul J. McMurdie](https://github.com/joey711), explains the structure of phyloseq objects and how to construct them on the [phyloseq website](https://joey711.github.io/phyloseq/import-data.html#phyloseq-ize_data_already_in_r).
+
+-   [biom format](http://biom-format.org/) files can be imported to phyloseq with the [`import_biom`](https://joey711.github.io/phyloseq/import-data.html#the_import_family_of_functions) function. Such biom files are generated (or can be) from many processing tools including QIIME [1](http://qiime.org/tutorials/index.html) / [2](https://docs.qiime2.org/2021.2/tutorials/exporting/), [MetaPhlAn](http://segatalab.cibio.unitn.it/tools/metaphlan/), and [NG-Tax](https://doi.org/10.3389/fgene.2019.01366).
+
+-   [mothur](https://mothur.org/) output is also directly supported via phyloseq's [`import_mothur`](https://joey711.github.io/phyloseq/import-data.html#_import_mothur) function.
+
+-   [DADA2](https://benjjneb.github.io/dada2/) output can converted to phyloseq according to these [DADA2 handoff instructions](https://benjjneb.github.io/dada2/tutorial.html#bonus-handoff-to-phyloseq)
+
+Don't worry too much about getting all of your sample metadata into your biom file or phyloseq object at the start, as `ps_join()` makes it easy to add sample data later.
+
+```{r example data}
+# This tutorial will just use some example data 
+# It is already available as a phyloseq object from the corncob package
+example_ps <- corncob::ibd_phylo
+example_ps
+```
+
+### Validating your phyloseq
+
+phyloseq checks that your sample and taxa names are consistent across the different slots of the phyloseq object. microViz provides `phyloseq_validate()` to check for and fix other possible problems with your phyloseq that might cause problems in later analyses. It is recommended to run this at the start of your analyses, and fix any problems identified.
+
+```{r validate ps}
+example_ps <- phyloseq_validate(example_ps, remove_undetected = TRUE)
+example_ps <- tax_fix(example_ps)
+
+```
+
+## microViz and phyloseq overview
+
+Once you have a valid phyloseq object, microViz provides several helpful functions for manipulating that object. The names and syntax of some functions will be familiar to users of dplyr, and reading [the dplyr help pages](https://dplyr.tidyverse.org/) may be useful for getting the most out of these functions.
+
+-   Add a data.frame of metadata to the sample_data slot with `ps_join()`
+
+-   Compute new sample_data variables with `ps_mutate()`
+
+-   Subset or reorder variables in sample_data with `ps_select()`
+
+-   Subset samples based on sample_data variables with `ps_filter()`
+
+-   Reorder samples (can be useful for examining sample data or plotting) with:
+
+    -   `ps_reorder()` : manually set sample order
+
+    -   `ps_arrange()` : order samples using sample_data variables
+
+    -   `ps_seriate()` : order samples according to microbiome similarity
+
+-   Remove duplicated/repeated samples with `ps_dedupe()`
+
+-   Remove samples with missing values in sample_data with `ps_drop_incomplete()`
+
+Check out the examples section on each function's [reference](https://david-barnett.github.io/microViz/reference/index.html#section-manipulating-sample-data) page for extensive usage examples.
+
+## Example sample manipulation
+
+Lets look at the sample data already in our example phyloseq.
+
+```{r example data tbl}
+# 91 samples, with 15 sample_data variables
+example_ps 
+# return sample data as a tibble for pretty printing
+samdat_tbl(example_ps)
+```
+
+Maybe you want to only select participants who have IBD (not controls). You can do that by filtering samples based on the values of the sample data variable: ibd
+
+```{r select ibd}
+example_ps %>% ps_filter(ibd == "ibd") # it is essential to use `==` , not just one `=`
+# notice that taxa that no longer appear in the remaining 67 samples have been removed!
+```
+
+More complicated filtering rules can be applied. Let's say you want female IBD patients with "mild" or "severe" activity, who are at least 13 years old.
+
+```{r select ibd 2}
+partial_ps <- example_ps %>% 
+  ps_filter(
+    gender == "female",
+    activity %in% c("mild", "severe"),
+    age >= 13
+  )
+partial_ps
+```
+
+Let's have a look at the sample data of these participants. We will also arrange the samples grouped by disease and in descending age order, and select only a few interesting variables to show.
+
+```{r arrange and select}
+partial_ps %>% 
+  ps_arrange(DiseaseState, desc(age)) %>% 
+  ps_select(DiseaseState, age, matches("activ"), abx) %>% # selection order is respected
+  samdat_tbl() # this adds the .sample_name variable
+```
+
+You can also sort sample by microbiome similarity with `ps_seriate()`.
+
+```{r seriate and plot}
+partial_ps %>% 
+  tax_agg("Genus") %>% 
+  ps_seriate(dist = "bray", method = "OLO_ward") %>% # these are the defaults
+  comp_barplot(tax_level = "Genus", sample_order = "default", n_taxa = 10)
+# note that comp_barplot with sample_order = "bray" will run 
+# this ps_seriate call internally, so you don't have to!
+
+```
+
+You can also arrange samples by abundance of one of more microbes using `ps_arrange()` with `.target = "otu_table"`. Arranging by taxon can only be done at the current taxonomic rank, so we will aggregate to Genus level first.
+
+```{r arrange by taxon}
+# Arranging by decreasing Bacteroides abundance
+partial_ps %>% 
+  tax_agg("Genus") %>% 
+  ps_arrange(desc(Bacteroides), .target = "otu_table") %>% 
+  otu_get() %>% # get the otu table
+  .[, 1:7] # show only a subset of the otu_table
+
+# Plot samples' compositions in this order
+partial_ps %>% 
+  tax_agg("Genus") %>% 
+  ps_arrange(desc(Bacteroides), .target = "otu_table") %>% 
+  comp_barplot(tax_level = "Genus", sample_order = "default", n_taxa = 10)
+# Notice this is sorted by bacteroides counts 
+# (this doesn't quite match relative abundance % due to sequencing depth variation)
+```
+
+## Other notes:
+
+### `ps_filter()` vs. `phyloseq::subset_samples()` 
+
+As well as filtering your samples, `ps_filter()` might also modify the otu_table and tax_table of the phyloseq object (unlike `phyloseq::subset_samples()`, which never does this).
+
+Why does it do this? \
+If you remove many samples from your dataset, often your phyloseq object will be left with taxa that never occur in any of the remaining samples (i.e. total counts of zero). `ps_filter()` removes those absent taxa by default.
+
+If you don't want this, you can set the `.keep_all_taxa` argument to `TRUE` in `ps_filter`.
+
+## Technical log
+
+```{r session info}
+devtools::session_info()
+```

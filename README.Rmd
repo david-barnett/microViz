@@ -1,5 +1,8 @@
 ---
 output: github_document
+editor_options: 
+  markdown: 
+    wrap: sentence
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -14,30 +17,44 @@ knitr::opts_chunk$set(
 options(width = 100)
 ```
 
-# microViz <a href='https://david-barnett.github.io/microViz/index.html'><img src='man/figures/microViz-smaller.png' align="right" height="139" /></a>
+# microViz <a href='https://david-barnett.github.io/microViz/index.html'><img src="man/figures/microViz-smaller.png" align="right" height="139"/></a>
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/david-barnett/microViz/workflows/R-CMD-check/badge.svg)](https://github.com/david-barnett/microViz/actions)
-[![codecov](https://codecov.io/gh/david-barnett/microViz/branch/main/graph/badge.svg?token=C1EoVkhnxA)](https://codecov.io/gh/david-barnett/microViz)
+
+[![R-CMD-check](https://github.com/david-barnett/microViz/workflows/R-CMD-check/badge.svg)](https://github.com/david-barnett/microViz/actions) [![codecov](https://codecov.io/gh/david-barnett/microViz/branch/main/graph/badge.svg?token=C1EoVkhnxA)](https://codecov.io/gh/david-barnett/microViz)
+
 <!-- badges: end -->
 
-microViz provides functions for analysis and visualization of microbiome sequencing data. These functions are intended to be easy to use (with clear documentation) and modular (for extensibility and flexibility). 
+microViz provides functions for analysis and visualization of microbiome sequencing data.
+These functions are intended to be easy to use and flexible.
 microViz wraps, extends and complements popular microbial ecology packages like phyloseq, vegan, and microbiome.
 
-**See the documentation website for full details and examples:** https://david-barnett.github.io/microViz/
+**See the documentation website for full details and examples:** <https://david-barnett.github.io/microViz/>
 
-- The ["Get started"](https://david-barnett.github.io/microViz/articles/articles/microViz.html) page, and also [this ReadMe](https://david-barnett.github.io/microViz/index.html), show a few example analyses.
-- The [reference](https://david-barnett.github.io/microViz/reference/index.html) page lists all functions and links to their documentation and examples
-- Example video of [Interactive Shiny app](https://david-barnett.github.io/microViz/articles/articles/Interactive-Ordination.html) for exploring your ordination plots!
-- Other articles pages discuss and give tutorials and more complicated examples (coming soon!)
-- The [changelog](https://david-barnett.github.io/microViz/news/index.html) describes important changes in new microViz package versions
+-   The ["Get started"](https://david-barnett.github.io/microViz/articles/articles/microViz.html) page, and also [this ReadMe](https://david-barnett.github.io/microViz/index.html), show a few example analyses.
+
+-   The [reference](https://david-barnett.github.io/microViz/reference/index.html) page lists all functions and links to their documentation and examples
+
+-   Example video of [Interactive Shiny app](https://david-barnett.github.io/microViz/articles/articles/Interactive-Ordination.html) for exploring your ordination plots!
+
+-   Other articles pages give tutorials and more complicated examples
+
+    -   [Working with phyloseq objects](https://david-barnett.github.io/microViz/articles/articles/phyloseq.html)
+
+    -   [Fixing your taxa table with tax_fix](https://david-barnett.github.io/microViz/articles/articles/tax-fixing.html)
+
+    -   [Visualising taxonomic compositions with customised barplots](https://david-barnett.github.io/microViz/articles/articles/Visualising-compositions.html)
+
+    -   (more coming soon! raise an issue on github if you have questions/requests)
+
+-   The [changelog](https://david-barnett.github.io/microViz/news/index.html) describes important changes in new microViz package versions
 
 ## Installation
 
 You can install the latest available microViz package version using the following instructions.
 
 ``` r
-# If you are on windows you will need to install RTools so that your computer can build this package
+# If you are on Windows you will need to install RTools so that your computer can build this package
 # Follow instructions here: http://jtleek.com/modules/01_DataScientistToolbox/02_10_rtools/
 
 # If you are on macOS, you might need to install xquartz to make the heatmaps work (ComplexHeatmaps package)
@@ -55,7 +72,6 @@ BiocManager::install(c("phyloseq", "microbiome"))
 # # Installing the latest version of this package # #
 devtools::install_github("david-barnett/microViz@0.7.0") # check 0.7.0 is the latest version?
 # advanced tip: add @<commit-hash> after microViz to install a version from a particular commit
-
 ```
 
 ## Examples below
@@ -102,20 +118,20 @@ dietswap %>%
   )
 ```
 
-
 ## Example ordination plot workflow
 
 Maybe visually inspecting all your samples isn't quite what you want.
-Ordination methods can also help you to visualise if overall microbial ecosystem composition differs markedly between groups, e.g. BMI.
+Ordination methods can also help you to visualise if overall microbial ecosystem composition differs markedly between groups, e.g.
+BMI.
 
-Here is one option to try first: 
+Here is one option to try first:
 
-1. Filter out rare taxa (e.g. remove Genera not present in at least 10% of samples) - use `tax_filter()`
-2. Aggregate the taxa into bacterial families (for example) - use `tax_agg()`
-3. Transform the microbial data with the centre-log-ratio transformation - use `tax_transform()`
-4. Perform PCA with the clr-transformed features (equivalent to aitchison distance PCoA) - use `ord_calc()`
-5. Plot the first 2 axes of this PCA ordination, colouring samples by group and adding taxon loading arrows to visualise which taxa generally differ across your samples - use `ord_plot()`
-6. Customise the theme of the ggplot as you like and/or add features like ellipses or annotations
+1.  Filter out rare taxa (e.g. remove Genera not present in at least 10% of samples) - use `tax_filter()`
+2.  Aggregate the taxa into bacterial families (for example) - use `tax_agg()`
+3.  Transform the microbial data with the centre-log-ratio transformation - use `tax_transform()`
+4.  Perform PCA with the clr-transformed features (equivalent to aitchison distance PCoA) - use `ord_calc()`
+5.  Plot the first 2 axes of this PCA ordination, colouring samples by group and adding taxon loading arrows to visualise which taxa generally differ across your samples - use `ord_plot()`
+6.  Customise the theme of the ggplot as you like and/or add features like ellipses or annotations
 
 ```{r ordination-plot, dpi=300}
 # perform ordination
@@ -125,7 +141,7 @@ unconstrained_aitchison_pca <-
   tax_agg("Family") %>%
   tax_transform("clr") %>%
   ord_calc() 
-# will automatically infer you want a "PCA" here
+# ord_calc will automatically infer you want a "PCA" here
 # specify explicitly with method = "PCA", or you can pick another method
 
 # create plot
@@ -148,7 +164,7 @@ customised_plot
 
 ## PERMANOVA
 
-You visualised your ordinated data in the plot above. 
+You visualised your ordinated data in the plot above.
 Below you can see how to perform a PERMANOVA to test the significance of BMI's association with overall microbial composition.
 This example uses the Family-level aitchison distance to correspond with the plot above.
 
@@ -216,8 +232,6 @@ taxa <- sample(microbiome::top_taxa(ps_get(psq))[1:50], size = 30)
 # actually draw the heatmap
 cor_heatmap(psq, taxa, anno_tax = tax_anno(undetected = 50))
 ```
-
-
 
 ## Session info
 
