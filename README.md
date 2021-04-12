@@ -73,7 +73,7 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 BiocManager::install(c("phyloseq", "microbiome"))
 
 # # Installing the latest version of this package # #
-devtools::install_github("david-barnett/microViz@0.7.0") # check 0.7.0 is the latest version?
+devtools::install_github("david-barnett/microViz@0.7.1") # check 0.7.1 is the latest version?
 # advanced tip: add @<commit-hash> after microViz to install a version from a particular commit
 ```
 
@@ -208,8 +208,8 @@ aitchison_perm <- dist_permanova(
   variables = "bmi_group + female"
 )
 #> Dropping samples with missings: 2
-#> 2021-04-12 13:19:52 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2021-04-12 13:19:52 - Finished PERMANOVA
+#> 2021-04-12 13:22:56 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2021-04-12 13:22:56 - Finished PERMANOVA
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
 #>            Df   SumOfSqs         R2        F Pr(>F)
@@ -231,8 +231,8 @@ your permanova directly using the ord\_plot function with constraints.
 ``` r
 perm2 <- dist_permanova(data = aitchison_dists, variables = c("weight", "female"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2021-04-12 13:19:52 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2021-04-12 13:19:53 - Finished PERMANOVA
+#> 2021-04-12 13:22:56 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2021-04-12 13:22:57 - Finished PERMANOVA
 perm_get(perm2)
 #> Permutation test for adonis under reduced model
 #> Marginal effects of terms
