@@ -148,11 +148,11 @@ partial_ps %>%
 
 ## Other notes:
 
-### `ps_filter()` vs. `phyloseq::subset_samples()` 
+### `ps_filter()` vs. `phyloseq::subset_samples()`
 
 As well as filtering your samples, `ps_filter()` might also modify the otu_table and tax_table of the phyloseq object (unlike `phyloseq::subset_samples()`, which never does this).
 
-Why does it do this? \
+Why does it do this?\
 If you remove many samples from your dataset, often your phyloseq object will be left with taxa that never occur in any of the remaining samples (i.e. total counts of zero). `ps_filter()` removes those absent taxa by default.
 
 If you don't want this, you can set the `.keep_all_taxa` argument to `TRUE` in `ps_filter`.
