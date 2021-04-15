@@ -69,8 +69,8 @@ test_that("clr PCA equivalent to aitchison PCoA", {
 })
 
 test_that("aitchison plot hasn't changed", {
-  expect_snapshot(cat(p3$data[1:50, 1, drop = TRUE]))
-  expect_snapshot(cat(p3$data[1:50, 2, drop = TRUE]))
+  expect_snapshot(cat(abs(p3$data[1:50, 1, drop = TRUE])))
+  expect_snapshot(cat(abs(p3$data[1:50, 2, drop = TRUE])))
   expect_snapshot(p3$layers)
 })
 
