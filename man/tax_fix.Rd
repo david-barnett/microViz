@@ -37,15 +37,19 @@ which is therefore the same for every anonymous taxon, meaning they will be merg
 object same class as ps
 }
 \description{
-Identifies phyloseq tax_table values as unknown or uninformative and replaces them with the first informative value from a higher taxonomic rank.
+Identifies phyloseq tax_table values as unknown or uninformative and
+replaces them with the first informative value from a higher taxonomic rank.
 \itemize{
-\item Short values in phyloseq tax_table are typically empty strings or " ", or "g__" etc. so it is helpful to replace them. Set \code{min_length} = 0 to avoid filtering on length.
-\item Values in \code{unknowns} are also removed, even if longer than \code{min_length}. It is up to the user to specify sensible values in \code{unknowns} if their dataset has other unwanted values.
+\item Short values in phyloseq tax_table are typically empty strings or " ", or "g__" etc.
+so it is helpful to replace them. Set \code{min_length} = 0 to avoid filtering on length.
+\item Values in \code{unknowns} are also removed, even if longer than \code{min_length}.
+It is up to the user to specify sensible values in \code{unknowns} if their dataset has other unwanted values.
 \item NA values are also replaced.
 }
 }
 \details{
 By default (unknowns = NA), unknowns is set to a vector containing:
+
 's__' 'g__' 'f__' 'o__' 'c__' 'p__' 'k__' 'S__' 'G__' 'F__' 'O__' 'C__' 'P__' 'K__' 'NA' 'NaN' ' ' ''
 'unknown' 'Unknown' 's__unknown' 's__Unknown' 's__NA' 'g__unknown' 'g__Unknown' 'g__NA'
 'f__unknown' 'f__Unknown' 'f__NA' 'o__unknown' 'o__Unknown' 'o__NA' 'c__unknown' 'c__Unknown' 'c__NA'

@@ -1,6 +1,7 @@
 # microViz (development version)
 
 - ord_explore now compatible with Shiny version >=1.5.0
+- tax_fix now sends messages about fixing completely anonymous rows, instead of warnings
 
 # microViz 0.7.1
 

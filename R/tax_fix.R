@@ -1,13 +1,17 @@
 #' Replace unknown, NA, or short tax_table values
 #'
 #' @description
-#' Identifies phyloseq tax_table values as unknown or uninformative and replaces them with the first informative value from a higher taxonomic rank.
-#' - Short values in phyloseq tax_table are typically empty strings or " ", or "g__" etc. so it is helpful to replace them. Set `min_length` = 0 to avoid filtering on length.
-#' - Values in `unknowns` are also removed, even if longer than `min_length`. It is up to the user to specify sensible values in `unknowns` if their dataset has other unwanted values.
+#' Identifies phyloseq tax_table values as unknown or uninformative and
+#' replaces them with the first informative value from a higher taxonomic rank.
+#' - Short values in phyloseq tax_table are typically empty strings or " ", or "g__" etc.
+#' so it is helpful to replace them. Set `min_length` = 0 to avoid filtering on length.
+#' - Values in `unknowns` are also removed, even if longer than `min_length`.
+#' It is up to the user to specify sensible values in `unknowns` if their dataset has other unwanted values.
 #' - NA values are also replaced.
 #'
 #' @details
 #' By default (unknowns = NA), unknowns is set to a vector containing:
+#'
 #' 's__' 'g__' 'f__' 'o__' 'c__' 'p__' 'k__' 'S__' 'G__' 'F__' 'O__' 'C__' 'P__' 'K__' 'NA' 'NaN' ' ' ''
 #' 'unknown' 'Unknown' 's__unknown' 's__Unknown' 's__NA' 'g__unknown' 'g__Unknown' 'g__NA'
 #' 'f__unknown' 'f__Unknown' 'f__NA' 'o__unknown' 'o__Unknown' 'o__NA' 'c__unknown' 'c__Unknown' 'c__NA'
@@ -140,7 +144,7 @@ tax_fix <- function(ps,
             out <- paste("unclassified", ranknames[[1]])
           }
           if (isTRUE(verbose)) {
-            warning(
+            message(
               "Row named: ", vec[[rowLengthOut + 1]],
               "\ncontains no non-unknown values, returning:\n'",
               out, "' for all replaced levels.\n",
