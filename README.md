@@ -8,8 +8,8 @@
 [![R-CMD-check](https://github.com/david-barnett/microViz/workflows/R-CMD-check/badge.svg)](https://github.com/david-barnett/microViz/actions)
 [![codecov](https://codecov.io/gh/david-barnett/microViz/branch/main/graph/badge.svg?token=C1EoVkhnxA)](https://codecov.io/gh/david-barnett/microViz)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4680616.svg)](https://doi.org/10.5281/zenodo.4680616)
-![Docker Cloud Build
-Status](https://img.shields.io/docker/cloud/build/barnettdavid/microviz-rocker-verse)
+[![Docker Cloud Build
+Status](https://img.shields.io/docker/cloud/build/barnettdavid/microviz-rocker-verse)](https://hub.docker.com/r/barnettdavid/microviz-rocker-verse)
 
 <!-- badges: end -->
 
@@ -227,8 +227,8 @@ aitchison_perm <- dist_permanova(
   variables = "bmi_group + female"
 )
 #> Dropping samples with missings: 2
-#> 2021-04-21 21:30:32 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2021-04-21 21:30:32 - Finished PERMANOVA
+#> 2021-04-21 21:48:49 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2021-04-21 21:48:50 - Finished PERMANOVA
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
 #>            Df   SumOfSqs         R2        F Pr(>F)
@@ -250,8 +250,8 @@ your permanova directly using the ord\_plot function with constraints.
 ``` r
 perm2 <- dist_permanova(data = aitchison_dists, variables = c("weight", "female"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2021-04-21 21:30:33 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2021-04-21 21:30:33 - Finished PERMANOVA
+#> 2021-04-21 21:48:50 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2021-04-21 21:48:51 - Finished PERMANOVA
 perm_get(perm2)
 #> Permutation test for adonis under reduced model
 #> Marginal effects of terms
