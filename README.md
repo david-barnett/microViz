@@ -7,6 +7,9 @@
 
 [![R-CMD-check](https://github.com/david-barnett/microViz/workflows/R-CMD-check/badge.svg)](https://github.com/david-barnett/microViz/actions)
 [![codecov](https://codecov.io/gh/david-barnett/microViz/branch/main/graph/badge.svg?token=C1EoVkhnxA)](https://codecov.io/gh/david-barnett/microViz)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4680616.svg)](https://doi.org/10.5281/zenodo.4680616)
+![Docker Cloud Build
+Status](https://img.shields.io/docker/cloud/build/barnettdavid/microviz-rocker-verse)
 
 <!-- badges: end -->
 
@@ -73,7 +76,7 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 BiocManager::install(c("phyloseq", "microbiome"))
 
 # # Installing the latest "released" version of this package # #
-devtools::install_github("david-barnett/microViz@0.7.1") # check 0.7.1 is the latest release
+devtools::install_github("david-barnett/microViz@0.7.2") # check 0.7.2 is the latest release
 
 # # If you encounter bugs: please try installing the very latest development version:
 devtools::install_github("david-barnett/microViz")
@@ -224,8 +227,8 @@ aitchison_perm <- dist_permanova(
   variables = "bmi_group + female"
 )
 #> Dropping samples with missings: 2
-#> 2021-04-21 10:35:54 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2021-04-21 10:35:54 - Finished PERMANOVA
+#> 2021-04-21 21:30:32 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2021-04-21 21:30:32 - Finished PERMANOVA
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
 #>            Df   SumOfSqs         R2        F Pr(>F)
@@ -247,8 +250,8 @@ your permanova directly using the ord\_plot function with constraints.
 ``` r
 perm2 <- dist_permanova(data = aitchison_dists, variables = c("weight", "female"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2021-04-21 10:35:54 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2021-04-21 10:35:55 - Finished PERMANOVA
+#> 2021-04-21 21:30:33 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2021-04-21 21:30:33 - Finished PERMANOVA
 perm_get(perm2)
 #> Permutation test for adonis under reduced model
 #> Marginal effects of terms
@@ -337,7 +340,7 @@ devtools::session_info()
 #>  ade4             1.7-16   2020-10-28 [1] CRAN (R 4.0.3)
 #>  ape              5.4-1    2020-08-13 [1] CRAN (R 4.0.3)
 #>  Biobase          2.50.0   2020-10-27 [1] Bioconductor  
-#>  BiocGenerics     0.36.0   2020-10-27 [1] Bioconductor  
+#>  BiocGenerics     0.36.1   2021-04-16 [1] Bioconductor  
 #>  biomformat       1.18.0   2020-10-27 [1] Bioconductor  
 #>  Biostrings       2.58.0   2020-10-27 [1] Bioconductor  
 #>  cachem           1.0.4    2021-02-13 [1] CRAN (R 4.0.3)
@@ -345,7 +348,7 @@ devtools::session_info()
 #>  callr            3.6.0    2021-03-28 [1] CRAN (R 4.0.3)
 #>  circlize         0.4.12   2021-01-08 [1] CRAN (R 4.0.3)
 #>  cli              2.4.0    2021-04-05 [1] CRAN (R 4.0.3)
-#>  clue             0.3-58   2020-12-03 [1] CRAN (R 4.0.3)
+#>  clue             0.3-59   2021-04-16 [1] CRAN (R 4.0.3)
 #>  cluster          2.1.0    2019-06-19 [2] CRAN (R 4.0.3)
 #>  codetools        0.2-18   2020-11-04 [1] CRAN (R 4.0.3)
 #>  colorspace       2.0-0    2020-11-11 [1] CRAN (R 4.0.3)
@@ -388,7 +391,7 @@ devtools::session_info()
 #>  memoise          2.0.0    2021-01-26 [1] CRAN (R 4.0.3)
 #>  mgcv             1.8-33   2020-08-27 [2] CRAN (R 4.0.3)
 #>  microbiome       1.12.0   2020-10-27 [1] Bioconductor  
-#>  microViz       * 0.7.1    2021-04-12 [1] local         
+#>  microViz       * 0.7.2    2021-04-21 [1] local         
 #>  multtest         2.46.0   2020-10-27 [1] Bioconductor  
 #>  munsell          0.5.0    2018-06-12 [1] CRAN (R 4.0.3)
 #>  nlme             3.1-149  2020-08-23 [2] CRAN (R 4.0.3)
@@ -429,7 +432,7 @@ devtools::session_info()
 #>  stringr          1.4.0    2019-02-10 [1] CRAN (R 4.0.3)
 #>  survival         3.2-7    2020-09-28 [2] CRAN (R 4.0.3)
 #>  testthat         3.0.2    2021-02-14 [1] CRAN (R 4.0.3)
-#>  tibble           3.1.0    2021-02-25 [1] CRAN (R 4.0.3)
+#>  tibble           3.1.1    2021-04-18 [1] CRAN (R 4.0.3)
 #>  tidyr            1.1.3    2021-03-03 [1] CRAN (R 4.0.3)
 #>  tidyselect       1.1.0    2020-05-11 [1] CRAN (R 4.0.3)
 #>  TSP              1.1-10   2020-04-17 [1] CRAN (R 4.0.3)
@@ -437,7 +440,7 @@ devtools::session_info()
 #>  utf8             1.2.1    2021-03-12 [1] CRAN (R 4.0.3)
 #>  vctrs            0.3.7    2021-03-29 [1] CRAN (R 4.0.3)
 #>  vegan            2.5-7    2020-11-28 [1] CRAN (R 4.0.3)
-#>  withr            2.4.1    2021-01-26 [1] CRAN (R 4.0.3)
+#>  withr            2.4.2    2021-04-18 [1] CRAN (R 4.0.3)
 #>  xfun             0.22     2021-03-11 [1] CRAN (R 4.0.3)
 #>  XVector          0.30.0   2020-10-27 [1] Bioconductor  
 #>  yaml             2.2.1    2020-02-01 [1] CRAN (R 4.0.3)
