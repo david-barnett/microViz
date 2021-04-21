@@ -334,7 +334,7 @@ ord_explore <- function(data,
 
   # SERVER ------------------------------------------------------------------
 
-  server <- function(input, output) {
+  server <- function(input, output, session) {
 
     # ordination plot ---------------------------------------------------------
     output$ord_plot <- ggiraph::renderGirafe({
@@ -488,7 +488,9 @@ ord_explore <- function(data,
       },
       handlerExpr = {
         if (isTRUE(input$interactive)) {
-          shiny::updateTabsetPanel(inputId = "tabs", selected = "girafe")
+          shiny::updateTabsetPanel(
+            session = session, inputId = "tabs", selected = "girafe"
+          )
           if (isFALSE(input$merge_other)) {
             shiny::updateSliderInput(inputId = "taxmax", value = 40)
             shiny::showNotification(
@@ -501,7 +503,9 @@ ord_explore <- function(data,
             )
           }
         } else {
-          shiny::updateTabsetPanel(inputId = "tabs", selected = "ggplot")
+          shiny::updateTabsetPanel(
+            session = session, inputId = "tabs", selected = "ggplot"
+          )
         }
       }
     )
