@@ -263,8 +263,8 @@
   variables <span class="op">=</span> <span class="st">"bmi_group + female"</span>
 <span class="op">)</span>
 <span class="co">#&gt; Dropping samples with missings: 2</span>
-<span class="co">#&gt; 2021-04-21 21:30:32 - Starting PERMANOVA with 99 perms with 1 processes</span>
-<span class="co">#&gt; 2021-04-21 21:30:32 - Finished PERMANOVA</span>
+<span class="co">#&gt; 2021-04-21 21:48:49 - Starting PERMANOVA with 99 perms with 1 processes</span>
+<span class="co">#&gt; 2021-04-21 21:48:50 - Finished PERMANOVA</span>
 <span class="co"># view the permanova results</span>
 <span class="fu"><a href="reference/ps_extra-accessors.html">perm_get</a></span><span class="op">(</span><span class="va">aitchison_perm</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt;            Df   SumOfSqs         R2        F Pr(&gt;F)</span>
@@ -284,8 +284,8 @@
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">perm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/dist_permanova.html">dist_permanova</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">aitchison_dists</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"female"</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">321</span><span class="op">)</span>
 <span class="co">#&gt; Dropping samples with missings: 2</span>
-<span class="co">#&gt; 2021-04-21 21:30:33 - Starting PERMANOVA with 999 perms with 1 processes</span>
-<span class="co">#&gt; 2021-04-21 21:30:33 - Finished PERMANOVA</span>
+<span class="co">#&gt; 2021-04-21 21:48:50 - Starting PERMANOVA with 999 perms with 1 processes</span>
+<span class="co">#&gt; 2021-04-21 21:48:51 - Finished PERMANOVA</span>
 <span class="fu"><a href="reference/ps_extra-accessors.html">perm_get</a></span><span class="op">(</span><span class="va">perm2</span><span class="op">)</span>
 <span class="co">#&gt; Permutation test for adonis under reduced model</span>
 <span class="co">#&gt; Marginal effects of terms</span>
@@ -508,6 +508,7 @@
 <li><a href="https://github.com/david-barnett/microViz/actions"><img src="https://github.com/david-barnett/microViz/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://codecov.io/gh/david-barnett/microViz"><img src="https://codecov.io/gh/david-barnett/microViz/branch/main/graph/badge.svg?token=C1EoVkhnxA" alt="codecov"></a></li>
 <li><a href="https://doi.org/10.5281/zenodo.4680616"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.4680616.svg" alt="DOI"></a></li>
+<li><a href="https://hub.docker.com/r/barnettdavid/microviz-rocker-verse"><img src="https://img.shields.io/docker/cloud/build/barnettdavid/microviz-rocker-verse" alt="Docker Cloud Build Status"></a></li>
 </ul>
 </div>
 </div>
