@@ -224,8 +224,8 @@ aitchison_perm <- dist_permanova(
   variables = "bmi_group + female"
 )
 #> Dropping samples with missings: 2
-#> 2021-04-21 10:32:44 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2021-04-21 10:32:44 - Finished PERMANOVA
+#> 2021-04-21 10:35:54 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2021-04-21 10:35:54 - Finished PERMANOVA
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
 #>            Df   SumOfSqs         R2        F Pr(>F)
@@ -247,8 +247,8 @@ your permanova directly using the ord\_plot function with constraints.
 ``` r
 perm2 <- dist_permanova(data = aitchison_dists, variables = c("weight", "female"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2021-04-21 10:32:44 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2021-04-21 10:32:45 - Finished PERMANOVA
+#> 2021-04-21 10:35:54 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2021-04-21 10:35:55 - Finished PERMANOVA
 perm_get(perm2)
 #> Permutation test for adonis under reduced model
 #> Marginal effects of terms
@@ -313,7 +313,7 @@ cor_heatmap(psq, taxa, anno_tax = tax_anno(undetected = 50))
 consider citing the Zenodo archive DOI:
 <https://doi.org/10.5281/zenodo.4644057>
 
-Publication pending: microViz has been submitting to a peer-reviewed
+Publication pending: microViz has been submitted to a peer-reviewed
 journal.
 
 ## Session info
