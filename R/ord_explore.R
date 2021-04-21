@@ -492,7 +492,9 @@ ord_explore <- function(data,
             session = session, inputId = "tabs", selected = "girafe"
           )
           if (isFALSE(input$merge_other)) {
-            shiny::updateSliderInput(inputId = "taxmax", value = 40)
+            shiny::updateSliderInput(
+              session = session, inputId = "taxmax", value = 40
+            )
             shiny::showNotification(
               "ALERT: Max Distinct taxa reduced to 40 to avoid freezing!",
               duration = 10, closeButton = TRUE, type = "warning"
