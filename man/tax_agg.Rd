@@ -41,10 +41,15 @@ It records the tax_agg rank argument in the info of the ps_extra object output.
 This ps_extra object tracks aggregation, and any further transformations and scaling,
 to help you keep track of what you have done with your phyloseq object and automatically caption ordination plots.
 
+Instead of tax_agg, consider using \code{tax_transform()} with a rank argument instead, to both aggregate and transform the taxa.
+This is also useful when you want to aggregate but not transform the taxa,
+and yet still log the "identity" transformation in ps_extra for captioning your ordination plots.
+e.g. \code{tax_transform(rank = "Genus", transformation = "identity")}
+
 tax_agg allows you to pass NA or "unique" to the rank argument which will NOT aggregate the taxa.
 If you use rank = "unique" or add_unique = TRUE, it will add a new rank called unique, identical to the taxa_names (after any aggregation)
 
-You should NOT use the \code{top_N} argument yourself unless you know what you are doing.
+Be aware: you should not use the top_N argument yourself without good reason.
 top_N provides a feature inspired by the deprecated microbiome function aggregate_top_taxa
 which is primarily useful for decluttering compositional barplots.
 microViz comp_barplot (and ord_plot_iris) already run tax_agg with a top_N argument for you, so you should not.
@@ -56,10 +61,13 @@ However if \code{microbiome::aggregate_taxa} is used, microViz cannot track this
 
 Comparing aggregate_taxa and tax_agg:
 
-Except for the ordering of taxa, the resulting phyloseq objects are identical for aggregating a phyloseq with no ambiguous taxa.
-Taxa are ambiguous when the tax_table converges at a lower rank after branching, such as if two different genera share the same species (e.g. "s__").
-\code{microbiome::aggregate_taxa} handles ambiguous taxa by creating a "unique" rank with all of the taxonomic rank info pasted together into one, often very long, name.
-\code{tax_agg} throws an error, and directs the user to tax_fix to fix the ambiguous taxa before aggregation,
+Except for the ordering of taxa, and the addition of a "unique" rank being optional,
+the resulting phyloseq objects are identical for aggregating a phyloseq with no ambiguous taxa.
+Taxa are ambiguous when the tax_table converges at a lower rank after branching,
+such as if two different genera share the same species (e.g. "s__").
+\code{microbiome::aggregate_taxa} handles ambiguous taxa by creating a "unique" rank with all
+of the taxonomic rank info pasted together into one, often very long, name.
+\code{tax_agg} throws an error, and directs the user to \code{tax_fix()} to fix the ambiguous taxa before aggregation,
 which should then result in (much) shorter unique names at the aggregation rank.
 }
 \examples{
@@ -93,4 +101,9 @@ tax_table(dietswap)[13:17, "Family"] <- "some_unknown_family"
 dietswap \%>\%
   tax_fix(unknowns = "some_unknown_family") \%>\%
   tax_agg("Family")
+}
+\seealso{
+\code{\link{tax_fix}}
+
+\code{\link{tax_transform}}
 }
