@@ -25,9 +25,9 @@ options(width = 100)
 
 <!-- badges: end -->
 
-microViz provides functions for analysis and visualization of microbiome sequencing data.
-These functions are intended to be easy to use and flexible.
-microViz wraps, extends and complements popular microbial ecology packages like phyloseq, vegan, and microbiome.
+:package: microViz is an R package for analysis and visualization of microbiome sequencing data.
+microViz functions are intended to be easy to use and flexible.
+microViz extends and complements popular microbial ecology packages like phyloseq, vegan, and microbiome.
 
 **See the documentation website for full details and examples:** <https://david-barnett.github.io/microViz/>
 
@@ -63,18 +63,29 @@ You can install the latest available microViz package version using the followin
 # for installing from github you'll need the devtools package
 install.packages("devtools", type = "binary") # (not binary if you're on linux)
 
-# If you don't already have the latest versions of phyloseq and microbiome, you should install these from bioconductor:
+# If you don't already have the latest versions of phyloseq and microbiome, you can install these from Bioconductor:
 
 if (!requireNamespace("BiocManager", quietly = TRUE))
  install.packages("BiocManager", type = "binary") # (not binary if you're on linux)
 BiocManager::install(c("phyloseq", "microbiome"))
 
-# # Installing the latest version of this package # #
-devtools::install_github("david-barnett/microViz@0.7.1") # check 0.7.1 is the latest version?
+# # Installing the latest "released" version of this package # #
+devtools::install_github("david-barnett/microViz@0.7.1") # check 0.7.1 is the latest release
+
+# # If you encounter bugs: please try installing the very latest development version:
+devtools::install_github("david-barnett/microViz")
+
 # advanced tip: add @<commit-hash> after microViz to install a version from a particular commit
 ```
 
-## Examples below
+:package: I highly recommend using [renv](https://rstudio.github.io/renv/index.html) for managing your R package installations across multiple projects.
+
+:whale: Alternatively, for Docker users an image with the main branch installed is available at: <https://hub.docker.com/r/barnettdavid/microviz-rocker-verse>
+
+:date: microViz is tested to work with R version 4.0.0 and higher, on Windows, MacOS, and Ubuntu 18 and 20.
+R version 3.6.\* should probably work, but I don't formally test this.
+
+## A few examples
 
 ```{r load, message=FALSE}
 library(microViz)
@@ -97,7 +108,7 @@ dietswap <- dietswap %>%
 sample_data(dietswap)$female[c(3, 4)] <- NA
 ```
 
-## Looking at your data
+### Looking at your data
 
 You have quite a few samples in your phyloseq object, and would like to visualise their compositions.
 Perhaps these example data differ across BMI groups?
@@ -118,7 +129,7 @@ dietswap %>%
   )
 ```
 
-## Example ordination plot workflow
+### Example ordination plot workflow
 
 Maybe visually inspecting all your samples isn't quite what you want.
 Ordination methods can also help you to visualise if overall microbial ecosystem composition differs markedly between groups, e.g.
@@ -162,7 +173,7 @@ customised_plot <- pca_plot +
 customised_plot
 ```
 
-## PERMANOVA
+### PERMANOVA
 
 You visualised your ordinated data in the plot above.
 Below you can see how to perform a PERMANOVA to test the significance of BMI's association with overall microbial composition.
@@ -192,7 +203,7 @@ perm_get(aitchison_perm) %>% as.data.frame()
 info_get(aitchison_perm)
 ```
 
-## Constrained ordination
+### Constrained ordination
 
 You could visualise the effect of the (numeric/logical) variables in your permanova directly using the ord_plot function with constraints.
 
@@ -209,7 +220,7 @@ ord_calc(perm2, constraints = c("weight", "female")) %>%
   stat_ellipse(aes(colour = sex)) + scale_color_brewer(palette = "Dark2")
 ```
 
-## Heatmaps
+### Heatmaps
 
 microViz heatmaps are powered by `ComplexHeatmap` and annotated with taxa prevalence and/or abundance.
 
@@ -232,6 +243,12 @@ taxa <- sample(microbiome::top_taxa(ps_get(psq))[1:50], size = 30)
 # actually draw the heatmap
 cor_heatmap(psq, taxa, anno_tax = tax_anno(undetected = 50))
 ```
+
+## Citation
+
+:innocent: If you find any part of microViz useful to your work, please consider citing the Zenodo archive DOI: <https://doi.org/10.5281/zenodo.4644057>
+
+:crossed_fingers: Publication pending: microViz has been submitting to a peer-reviewed journal.
 
 ## Session info
 

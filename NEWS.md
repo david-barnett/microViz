@@ -1,5 +1,7 @@
 # microViz (development version)
 
+- ord_explore now compatible with Shiny version >=1.5.0
+
 # microViz 0.7.1
 
 ## Fixes

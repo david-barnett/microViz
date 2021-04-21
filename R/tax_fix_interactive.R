@@ -168,10 +168,11 @@ tax_fix_interactive <- function(data,
     shiny::hr()
   )
 
-  server <- function(input, output) {
+  server <- function(input, output, session) {
 
     # set highlighted row choices server side (better performance on big data)
     shiny::updateSelectizeInput(
+      session = session,
       inputId = "highlight", server = TRUE,
       choices = c("Pick one:" = "", rownames(tt))
     )
@@ -261,6 +262,7 @@ tax_fix_interactive <- function(data,
       eventExpr = input$min_char,
       handlerExpr = {
         shiny::updateSelectizeInput(
+          session = session,
           inputId = "selected",
           choices = unique_tt_vals[nchar(unique_tt_vals) >= input$min_char],
           selected = input$selected[nchar(input$selected) >= input$min_char]

@@ -10,9 +10,9 @@
 
 <!-- badges: end -->
 
-microViz provides functions for analysis and visualization of microbiome
-sequencing data. These functions are intended to be easy to use and
-flexible. microViz wraps, extends and complements popular microbial
+:package: microViz is an R package for analysis and visualization of
+microbiome sequencing data. microViz functions are intended to be easy
+to use and flexible. microViz extends and complements popular microbial
 ecology packages like phyloseq, vegan, and microbiome.
 
 **See the documentation website for full details and examples:**
@@ -66,18 +66,34 @@ following instructions.
 # for installing from github you'll need the devtools package
 install.packages("devtools", type = "binary") # (not binary if you're on linux)
 
-# If you don't already have the latest versions of phyloseq and microbiome, you should install these from bioconductor:
+# If you don't already have the latest versions of phyloseq and microbiome, you can install these from Bioconductor:
 
 if (!requireNamespace("BiocManager", quietly = TRUE))
  install.packages("BiocManager", type = "binary") # (not binary if you're on linux)
 BiocManager::install(c("phyloseq", "microbiome"))
 
-# # Installing the latest version of this package # #
-devtools::install_github("david-barnett/microViz@0.7.1") # check 0.7.1 is the latest version?
+# # Installing the latest "released" version of this package # #
+devtools::install_github("david-barnett/microViz@0.7.1") # check 0.7.1 is the latest release
+
+# # If you encounter bugs: please try installing the very latest development version:
+devtools::install_github("david-barnett/microViz")
+
 # advanced tip: add @<commit-hash> after microViz to install a version from a particular commit
 ```
 
-## Examples below
+:package: I highly recommend using
+[renv](https://rstudio.github.io/renv/index.html) for managing your R
+package installations across multiple projects.
+
+:whale: Alternatively, for Docker users an image with the main branch
+installed is available at:
+<https://hub.docker.com/r/barnettdavid/microviz-rocker-verse>
+
+:date: microViz is tested to work with R version 4.0.0 and higher, on
+Windows, MacOS, and Ubuntu 18 and 20. R version 3.6.\* should probably
+work, but I don’t formally test this.
+
+## A few examples
 
 ``` r
 library(microViz)
@@ -100,7 +116,7 @@ dietswap <- dietswap %>%
 sample_data(dietswap)$female[c(3, 4)] <- NA
 ```
 
-## Looking at your data
+### Looking at your data
 
 You have quite a few samples in your phyloseq object, and would like to
 visualise their compositions. Perhaps these example data differ across
@@ -127,7 +143,7 @@ dietswap %>%
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
-## Example ordination plot workflow
+### Example ordination plot workflow
 
 Maybe visually inspecting all your samples isn’t quite what you want.
 Ordination methods can also help you to visualise if overall microbial
@@ -181,7 +197,7 @@ customised_plot
 
 <img src="man/figures/README-ordination-plot-1.png" width="100%" />
 
-## PERMANOVA
+### PERMANOVA
 
 You visualised your ordinated data in the plot above. Below you can see
 how to perform a PERMANOVA to test the significance of BMI’s association
@@ -208,8 +224,8 @@ aitchison_perm <- dist_permanova(
   variables = "bmi_group + female"
 )
 #> Dropping samples with missings: 2
-#> 2021-04-12 13:22:56 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2021-04-12 13:22:56 - Finished PERMANOVA
+#> 2021-04-21 09:50:14 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2021-04-21 09:50:14 - Finished PERMANOVA
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
 #>            Df   SumOfSqs         R2        F Pr(>F)
@@ -223,7 +239,7 @@ info_get(aitchison_perm)
 #> tax_agg = Family tax_transform = identity
 ```
 
-## Constrained ordination
+### Constrained ordination
 
 You could visualise the effect of the (numeric/logical) variables in
 your permanova directly using the ord\_plot function with constraints.
@@ -231,8 +247,8 @@ your permanova directly using the ord\_plot function with constraints.
 ``` r
 perm2 <- dist_permanova(data = aitchison_dists, variables = c("weight", "female"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2021-04-12 13:22:56 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2021-04-12 13:22:57 - Finished PERMANOVA
+#> 2021-04-21 09:50:14 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2021-04-21 09:50:15 - Finished PERMANOVA
 perm_get(perm2)
 #> Permutation test for adonis under reduced model
 #> Marginal effects of terms
@@ -263,7 +279,7 @@ ord_calc(perm2, constraints = c("weight", "female")) %>%
 
 <img src="man/figures/README-constrained-ord-1.png" width="100%" />
 
-## Heatmaps
+### Heatmaps
 
 microViz heatmaps are powered by `ComplexHeatmap` and annotated with
 taxa prevalence and/or abundance.
@@ -291,6 +307,15 @@ cor_heatmap(psq, taxa, anno_tax = tax_anno(undetected = 50))
 
 <img src="man/figures/README-heatmap-1.png" width="100%" />
 
+## Citation
+
+If you find any part of microViz useful to your work, please consider
+citing the Zenodo archive DOI: <https://doi.org/10.5281/zenodo.4644057>
+:innocent:
+
+Manuscript review pending: microViz has been submitting to a
+peer-reviewed journal, JOSS. :crossed\_fingers:
+
 ## Session info
 
 ``` r
@@ -305,7 +330,7 @@ devtools::session_info()
 #>  collate  en_GB.UTF-8                 
 #>  ctype    en_GB.UTF-8                 
 #>  tz       Europe/Amsterdam            
-#>  date     2021-04-12                  
+#>  date     2021-04-21                  
 #> 
 #> ─ Packages ───────────────────────────────────────────────────────────────────────────────────────
 #>  package        * version  date       lib source        
@@ -327,9 +352,8 @@ devtools::session_info()
 #>  ComplexHeatmap   2.6.2    2020-11-12 [1] Bioconductor  
 #>  crayon           1.4.1    2021-02-08 [1] CRAN (R 4.0.3)
 #>  data.table       1.14.0   2021-02-21 [1] CRAN (R 4.0.3)
-#>  debugme          1.1.0    2017-10-22 [1] CRAN (R 4.0.3)
 #>  desc             1.3.0    2021-03-05 [1] CRAN (R 4.0.3)
-#>  devtools       * 2.3.2    2020-09-18 [1] CRAN (R 4.0.3)
+#>  devtools       * 2.4.0    2021-04-07 [1] CRAN (R 4.0.3)
 #>  digest           0.6.27   2020-10-24 [1] CRAN (R 4.0.3)
 #>  dplyr          * 1.0.5    2021-03-05 [1] CRAN (R 4.0.3)
 #>  ellipsis         0.3.1    2020-05-15 [1] CRAN (R 4.0.3)
@@ -370,15 +394,15 @@ devtools::session_info()
 #>  nlme             3.1-149  2020-08-23 [2] CRAN (R 4.0.3)
 #>  permute          0.9-5    2019-03-12 [1] CRAN (R 4.0.3)
 #>  phyloseq       * 1.34.0   2020-10-27 [1] Bioconductor  
-#>  pillar           1.5.1    2021-03-05 [1] CRAN (R 4.0.3)
+#>  pillar           1.6.0    2021-04-13 [1] CRAN (R 4.0.3)
 #>  pkgbuild         1.2.0    2020-12-15 [1] CRAN (R 4.0.3)
 #>  pkgconfig        2.0.3    2019-09-22 [1] CRAN (R 4.0.3)
 #>  pkgdown        * 1.6.1    2020-09-12 [1] CRAN (R 4.0.3)
-#>  pkgload          1.2.0    2021-02-23 [1] CRAN (R 4.0.3)
+#>  pkgload          1.2.1    2021-04-06 [1] CRAN (R 4.0.3)
 #>  plyr             1.8.6    2020-03-03 [1] CRAN (R 4.0.3)
 #>  png              0.1-7    2013-12-03 [1] CRAN (R 4.0.3)
 #>  prettyunits      1.1.1    2020-01-24 [1] CRAN (R 4.0.3)
-#>  processx         3.5.0    2021-03-23 [1] CRAN (R 4.0.3)
+#>  processx         3.5.1    2021-04-04 [1] CRAN (R 4.0.3)
 #>  progress         1.2.2    2019-05-16 [1] CRAN (R 4.0.3)
 #>  ps               1.6.0    2021-02-28 [1] CRAN (R 4.0.3)
 #>  purrr            0.3.4    2020-04-17 [1] CRAN (R 4.0.3)
@@ -386,7 +410,7 @@ devtools::session_info()
 #>  RColorBrewer     1.1-2    2014-12-07 [1] CRAN (R 4.0.3)
 #>  Rcpp             1.0.6    2021-01-15 [1] CRAN (R 4.0.3)
 #>  registry         0.5-1    2019-03-05 [1] CRAN (R 4.0.3)
-#>  remotes          2.2.0    2020-07-21 [1] CRAN (R 4.0.3)
+#>  remotes          2.3.0    2021-04-01 [1] CRAN (R 4.0.3)
 #>  reshape2         1.4.4    2020-04-09 [1] CRAN (R 4.0.3)
 #>  rhdf5            2.34.0   2020-10-27 [1] Bioconductor  
 #>  rhdf5filters     1.2.0    2020-10-27 [1] Bioconductor  
