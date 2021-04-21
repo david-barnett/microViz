@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.1.9002</span>
       </span>
     </div>
 
@@ -100,7 +100,7 @@
 <!-- badges: start -->
 
 <!-- badges: end -->
-<p>microViz provides functions for analysis and visualization of microbiome sequencing data. These functions are intended to be easy to use and flexible. microViz wraps, extends and complements popular microbial ecology packages like phyloseq, vegan, and microbiome.</p>
+<p><span class="emoji" data-emoji="package">📦</span> microViz is an R package for analysis and visualization of microbiome sequencing data. microViz functions are intended to be easy to use and flexible. microViz extends and complements popular microbial ecology packages like phyloseq, vegan, and microbiome.</p>
 <p><strong>See the documentation website for full details and examples:</strong> <a href="https://david-barnett.github.io/microViz/" class="uri">https://david-barnett.github.io/microViz/</a></p>
 <ul>
 <li><p>The <a href="https://david-barnett.github.io/microViz/articles/articles/microViz.html">“Get started”</a> page, and also <a href="https://david-barnett.github.io/microViz/index.html">this ReadMe</a>, show a few example analyses.</p></li>
@@ -131,19 +131,26 @@
 <span class="co"># for installing from github you'll need the devtools package</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span>, type <span class="op">=</span> <span class="st">"binary"</span><span class="op">)</span> <span class="co"># (not binary if you're on linux)</span>
 
-<span class="co"># If you don't already have the latest versions of phyloseq and microbiome, you should install these from bioconductor:</span>
+<span class="co"># If you don't already have the latest versions of phyloseq and microbiome, you can install these from Bioconductor:</span>
 
 <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, type <span class="op">=</span> <span class="st">"binary"</span><span class="op">)</span> <span class="co"># (not binary if you're on linux)</span>
 <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu">install</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"phyloseq"</span>, <span class="st">"microbiome"</span><span class="op">)</span><span class="op">)</span>
 
-<span class="co"># # Installing the latest version of this package # #</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"david-barnett/microViz@0.7.1"</span><span class="op">)</span> <span class="co"># check 0.7.1 is the latest version?</span>
+<span class="co"># # Installing the latest "released" version of this package # #</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"david-barnett/microViz@0.7.1"</span><span class="op">)</span> <span class="co"># check 0.7.1 is the latest release</span>
+
+<span class="co"># # If you encounter bugs: please try installing the very latest development version:</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"david-barnett/microViz"</span><span class="op">)</span>
+
 <span class="co"># advanced tip: add @&lt;commit-hash&gt; after microViz to install a version from a particular commit</span></code></pre></div>
+<p><span class="emoji" data-emoji="package">📦</span> I highly recommend using <a href="https://rstudio.github.io/renv/index.html">renv</a> for managing your R package installations across multiple projects.</p>
+<p><span class="emoji" data-emoji="whale">🐳</span> Alternatively, for Docker users an image with the main branch installed is available at: <a href="https://hub.docker.com/r/barnettdavid/microviz-rocker-verse" class="uri">https://hub.docker.com/r/barnettdavid/microviz-rocker-verse</a></p>
+<p><span class="emoji" data-emoji="date">📅</span> microViz is tested to work with R version 4.0.0 and higher, on Windows, MacOS, and Ubuntu 18 and 20. R version 3.6.* should probably work, but I don’t formally test this.</p>
 </div>
-<div id="examples-below" class="section level2">
+<div id="a-few-examples" class="section level2">
 <h2 class="hasAnchor">
-<a href="#examples-below" class="anchor"></a>Examples below</h2>
+<a href="#a-few-examples" class="anchor"></a>A few examples</h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/david-barnett/microViz">microViz</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://dx.plos.org/10.1371/journal.pone.0061217">phyloseq</a></span><span class="op">)</span>
@@ -161,10 +168,9 @@
   <span class="op">)</span>
 <span class="co"># add a couple of missing values to show how microViz handles missing data</span>
 <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html">sample_data</a></span><span class="op">(</span><span class="va">dietswap</span><span class="op">)</span><span class="op">$</span><span class="va">female</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></code></pre></div>
-</div>
-<div id="looking-at-your-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#looking-at-your-data" class="anchor"></a>Looking at your data</h2>
+<div id="looking-at-your-data" class="section level3">
+<h3 class="hasAnchor">
+<a href="#looking-at-your-data" class="anchor"></a>Looking at your data</h3>
 <p>You have quite a few samples in your phyloseq object, and would like to visualise their compositions. Perhaps these example data differ across BMI groups?</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dietswap</span> <span class="op">%&gt;%</span>
@@ -185,9 +191,9 @@
 <span class="co">#&gt;   reorder.hclust vegan</span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-2-1.png" width="100%"></p>
 </div>
-<div id="example-ordination-plot-workflow" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example-ordination-plot-workflow" class="anchor"></a>Example ordination plot workflow</h2>
+<div id="example-ordination-plot-workflow" class="section level3">
+<h3 class="hasAnchor">
+<a href="#example-ordination-plot-workflow" class="anchor"></a>Example ordination plot workflow</h3>
 <p>Maybe visually inspecting all your samples isn’t quite what you want. Ordination methods can also help you to visualise if overall microbial ecosystem composition differs markedly between groups, e.g. BMI.</p>
 <p>Here is one option to try first:</p>
 <ol>
@@ -233,9 +239,9 @@
 <span class="va">customised_plot</span></code></pre></div>
 <p><img src="reference/figures/README-ordination-plot-1.png" width="100%"></p>
 </div>
-<div id="permanova" class="section level2">
-<h2 class="hasAnchor">
-<a href="#permanova" class="anchor"></a>PERMANOVA</h2>
+<div id="permanova" class="section level3">
+<h3 class="hasAnchor">
+<a href="#permanova" class="anchor"></a>PERMANOVA</h3>
 <p>You visualised your ordinated data in the plot above. Below you can see how to perform a PERMANOVA to test the significance of BMI’s association with overall microbial composition. This example uses the Family-level aitchison distance to correspond with the plot above.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># calculate distances</span>
@@ -257,8 +263,8 @@
   variables <span class="op">=</span> <span class="st">"bmi_group + female"</span>
 <span class="op">)</span>
 <span class="co">#&gt; Dropping samples with missings: 2</span>
-<span class="co">#&gt; 2021-04-12 13:22:56 - Starting PERMANOVA with 99 perms with 1 processes</span>
-<span class="co">#&gt; 2021-04-12 13:22:56 - Finished PERMANOVA</span>
+<span class="co">#&gt; 2021-04-21 09:50:14 - Starting PERMANOVA with 99 perms with 1 processes</span>
+<span class="co">#&gt; 2021-04-21 09:50:14 - Finished PERMANOVA</span>
 <span class="co"># view the permanova results</span>
 <span class="fu"><a href="reference/ps_extra-accessors.html">perm_get</a></span><span class="op">(</span><span class="va">aitchison_perm</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt;            Df   SumOfSqs         R2        F Pr(&gt;F)</span>
@@ -271,15 +277,15 @@
 <span class="co">#&gt; phyloseq info:</span>
 <span class="co">#&gt; tax_agg = Family tax_transform = identity</span></code></pre></div>
 </div>
-<div id="constrained-ordination" class="section level2">
-<h2 class="hasAnchor">
-<a href="#constrained-ordination" class="anchor"></a>Constrained ordination</h2>
+<div id="constrained-ordination" class="section level3">
+<h3 class="hasAnchor">
+<a href="#constrained-ordination" class="anchor"></a>Constrained ordination</h3>
 <p>You could visualise the effect of the (numeric/logical) variables in your permanova directly using the ord_plot function with constraints.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">perm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/dist_permanova.html">dist_permanova</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">aitchison_dists</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"female"</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">321</span><span class="op">)</span>
 <span class="co">#&gt; Dropping samples with missings: 2</span>
-<span class="co">#&gt; 2021-04-12 13:22:56 - Starting PERMANOVA with 999 perms with 1 processes</span>
-<span class="co">#&gt; 2021-04-12 13:22:57 - Finished PERMANOVA</span>
+<span class="co">#&gt; 2021-04-21 09:50:14 - Starting PERMANOVA with 999 perms with 1 processes</span>
+<span class="co">#&gt; 2021-04-21 09:50:15 - Finished PERMANOVA</span>
 <span class="fu"><a href="reference/ps_extra-accessors.html">perm_get</a></span><span class="op">(</span><span class="va">perm2</span><span class="op">)</span>
 <span class="co">#&gt; Permutation test for adonis under reduced model</span>
 <span class="co">#&gt; Marginal effects of terms</span>
@@ -308,9 +314,9 @@
 <span class="co">#&gt;  female</span></code></pre></div>
 <p><img src="reference/figures/README-constrained-ord-1.png" width="100%"></p>
 </div>
-<div id="heatmaps" class="section level2">
-<h2 class="hasAnchor">
-<a href="#heatmaps" class="anchor"></a>Heatmaps</h2>
+<div id="heatmaps" class="section level3">
+<h3 class="hasAnchor">
+<a href="#heatmaps" class="anchor"></a>Heatmaps</h3>
 <p>microViz heatmaps are powered by <code>ComplexHeatmap</code> and annotated with taxa prevalence and/or abundance.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># set up the data with numerical variables and filter to top taxa</span>
@@ -333,6 +339,13 @@
 <span class="fu"><a href="reference/cor_heatmap.html">cor_heatmap</a></span><span class="op">(</span><span class="va">psq</span>, <span class="va">taxa</span>, anno_tax <span class="op">=</span> <span class="fu"><a href="reference/heatmap-annotations.html">tax_anno</a></span><span class="op">(</span>undetected <span class="op">=</span> <span class="fl">50</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-heatmap-1.png" width="100%"></p>
 </div>
+</div>
+<div id="citation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#citation" class="anchor"></a>Citation</h2>
+<p>If you find any part of microViz useful to your work, please consider citing the Zenodo archive DOI: <a href="https://doi.org/10.5281/zenodo.4644057" class="uri">https://doi.org/10.5281/zenodo.4644057</a> <span class="emoji" data-emoji="innocent">😇</span></p>
+<p>Manuscript review pending: microViz has been submitting to a peer-reviewed journal, JOSS. :crossed_fingers:</p>
+</div>
 <div id="session-info" class="section level2">
 <h2 class="hasAnchor">
 <a href="#session-info" class="anchor"></a>Session info</h2>
@@ -348,7 +361,7 @@
 <span class="co">#&gt;  collate  en_GB.UTF-8                 </span>
 <span class="co">#&gt;  ctype    en_GB.UTF-8                 </span>
 <span class="co">#&gt;  tz       Europe/Amsterdam            </span>
-<span class="co">#&gt;  date     2021-04-12                  </span>
+<span class="co">#&gt;  date     2021-04-21                  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ─ Packages ───────────────────────────────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt;  package        * version  date       lib source        </span>
@@ -370,9 +383,8 @@
 <span class="co">#&gt;  ComplexHeatmap   2.6.2    2020-11-12 [1] Bioconductor  </span>
 <span class="co">#&gt;  crayon           1.4.1    2021-02-08 [1] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  data.table       1.14.0   2021-02-21 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  debugme          1.1.0    2017-10-22 [1] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  desc             1.3.0    2021-03-05 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  devtools       * 2.3.2    2020-09-18 [1] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  devtools       * 2.4.0    2021-04-07 [1] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  digest           0.6.27   2020-10-24 [1] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  dplyr          * 1.0.5    2021-03-05 [1] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  ellipsis         0.3.1    2020-05-15 [1] CRAN (R 4.0.3)</span>
@@ -413,15 +425,15 @@
 <span class="co">#&gt;  nlme             3.1-149  2020-08-23 [2] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  permute          0.9-5    2019-03-12 [1] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  phyloseq       * 1.34.0   2020-10-27 [1] Bioconductor  </span>
-<span class="co">#&gt;  pillar           1.5.1    2021-03-05 [1] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  pillar           1.6.0    2021-04-13 [1] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  pkgbuild         1.2.0    2020-12-15 [1] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  pkgconfig        2.0.3    2019-09-22 [1] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  pkgdown        * 1.6.1    2020-09-12 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  pkgload          1.2.0    2021-02-23 [1] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  pkgload          1.2.1    2021-04-06 [1] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  plyr             1.8.6    2020-03-03 [1] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  png              0.1-7    2013-12-03 [1] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  prettyunits      1.1.1    2020-01-24 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  processx         3.5.0    2021-03-23 [1] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  processx         3.5.1    2021-04-04 [1] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  progress         1.2.2    2019-05-16 [1] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  ps               1.6.0    2021-02-28 [1] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  purrr            0.3.4    2020-04-17 [1] CRAN (R 4.0.3)</span>
@@ -429,7 +441,7 @@
 <span class="co">#&gt;  RColorBrewer     1.1-2    2014-12-07 [1] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  Rcpp             1.0.6    2021-01-15 [1] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  registry         0.5-1    2019-03-05 [1] CRAN (R 4.0.3)</span>
-<span class="co">#&gt;  remotes          2.2.0    2020-07-21 [1] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  remotes          2.3.0    2021-04-01 [1] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  reshape2         1.4.4    2020-04-09 [1] CRAN (R 4.0.3)</span>
 <span class="co">#&gt;  rhdf5            2.34.0   2020-10-27 [1] Bioconductor  </span>
 <span class="co">#&gt;  rhdf5filters     1.2.0    2020-10-27 [1] Bioconductor  </span>
