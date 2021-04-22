@@ -65,19 +65,24 @@ phyloseq_validate <- function(ps,
 
   # check for NULL sample data
   if (identical(phyloseq::access(ps, "sam_data"), NULL)) {
-    message(
-      "Note: Replacing missing sample_data with a dataframe ",
-      "of only sample_names.\n", silencing_advice
-    )
+    if (isTRUE(verbose)) {
+      message(
+        "Note: Replacing missing sample_data with a dataframe ",
+        "of only sample_names.\n", silencing_advice
+      )
+    }
     phyloseq::sample_data(ps) <- samdat_init(ps)
   }
 
   # check for NULL tax_table
   if (identical(phyloseq::access(ps, "tax_table"), NULL)) {
-    message(
-      "Note: Replacing missing tax_table with a 1-column table ",
-      "of only taxa_names.\n", silencing_advice
-    )
+    if (isTRUE(verbose)) {
+      message(
+        "Note: Replacing missing tax_table with a 1-column table ",
+        "of only taxa_names.\n", silencing_advice
+      )
+    }
+
     taxons <- phyloseq::taxa_names(ps)
     phyloseq::tax_table(ps) <-
       matrix(data = taxons, ncol = 1, dimnames = list(taxons, "unique"))
@@ -89,7 +94,7 @@ phyloseq_validate <- function(ps,
     tax_sums <- phyloseq::taxa_sums(ps)
     zero_sums <- tax_sums == 0
     if (any(zero_sums, na.rm = TRUE)) {
-      if (verbose) {
+      if (isTRUE(verbose)) {
         warning(
           "Some taxa_sums were zero, removing the following taxa:\n\t",
           paste(names(tax_sums)[zero_sums], collapse = " \n\t"),
@@ -107,7 +112,7 @@ phyloseq_validate <- function(ps,
     }
   }
 
-  if (verbose) {
+  if (isTRUE(verbose)) {
     # check tax_table for uninformative entries
     suspicious_names <- tax_common_unknowns(min_length = min_tax_length)
 

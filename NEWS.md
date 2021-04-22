@@ -1,3 +1,7 @@
+# microViz 0.7.3
+
+- Fix phyloseq_validate verbose = FALSE.
+
 # microViz 0.7.2
 
 ## Fixes
