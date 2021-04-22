@@ -85,8 +85,8 @@ ggplot
 \description{
 Draw ordination plot. Utilises results of \code{\link{ord_calc}}.
 \itemize{
+\item For an extensive tutorial see the ordination vignette: \url{https://david-barnett.github.io/microViz/articles/ordination.html}
 \item For interpretation see the the relevant pages on PCA, PCoA, RDA, or CCA on the "gusta me" website: \url{https://sites.google.com/site/mb3gustame/}
-\item Some other inspiration was from here: \url{https://ourcodingclub.github.io/2018/05/04/ordination.html}
 }
 }
 \details{

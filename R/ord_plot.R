@@ -1,8 +1,8 @@
 #' Customisable ggplot ordination (using ord_calc result)
 #'
 #' Draw ordination plot. Utilises results of \code{\link{ord_calc}}.
+#' - For an extensive tutorial see the ordination vignette: \url{https://david-barnett.github.io/microViz/articles/ordination.html}
 #' - For interpretation see the the relevant pages on PCA, PCoA, RDA, or CCA on the "gusta me" website: \url{https://sites.google.com/site/mb3gustame/}
-#' - Some other inspiration was from here: \url{https://ourcodingclub.github.io/2018/05/04/ordination.html}
 #'
 #' How to specify the plot_taxa argument (when using PCA, CCA or RDA):
 #' - FALSE --> plot no taxa vectors or labels

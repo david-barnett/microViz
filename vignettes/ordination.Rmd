@@ -1,0 +1,122 @@
+---
+title: "Ordination plots"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Ordination plots}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Intro
+
+This article will show you how to create and customise ordination plots, like PCA and RDA, with microViz.
+
+```{r setup}
+library(phyloseq)
+library(ggplot2)
+library(microViz)
+```
+
+We will use example data from stool samples from an inflammatory bowel disease (IBD) study, borrowed from the great `corncob` package. See the article about [working with phyloseq objects](https://david-barnett.github.io/microViz/articles/articles/phyloseq.html) if you want to get started with your own data, or just to learn more about manipulating phyloseq objects with microViz.
+
+```{r get data}
+ibd <- corncob::ibd_phylo
+ibd
+```
+
+First we check the phyloseq object and fix any uninformative tax_table entries (see the article on [fixing your tax_table](https://david-barnett.github.io/microViz/articles/articles/tax-fixing.html) for more info).
+
+```{r fix it}
+ibd <- phyloseq_validate(ibd, remove_undetected = TRUE)
+ibd <- tax_fix(ibd) # try tax_fix_interactive if you have problems with your own data
+```
+
+## Motivation
+
+Ordination plots are a great way to see any clustering or other patterns of microbiota (dis)similarity in (many) samples. Ordinations like PCA or PCoA show the largest patterns of variation in your data, and constrained ordination techniques like RDA or CCA can show you microbial variation that could be explained by other variables in your sample_data (but interpret constrained ordinations with care, and ideally test for the statistical significance of any hypothesised associations using a method like PERMANOVA, see `dist_permanova()`).
+
+Check out the [Gusta Me website](https://sites.google.com/site/mb3gustame/) for a gentle theoretical introduction to [PCA](https://sites.google.com/site/mb3gustame/indirect-gradient-analysis/pca), [PCoA](https://sites.google.com/site/mb3gustame/dissimilarity-based-methods/principal-coordinates-analysis), [RDA](https://sites.google.com/site/mb3gustame/constrained-analyses/rda), [CCA](https://sites.google.com/site/mb3gustame/constrained-analyses/cca) and more.
+
+Ordination plots can also be paired with barplots for greater insight into microbial compositions, e.g. see `ord_plot_iris()` and the `ord_explore()` interactive [Shiny app](https://david-barnett.github.io/microViz/articles/articles/Interactive-Ordination.html).
+
+## Prepare your microbes
+
+When creating an ordination plot, you first need to prepare the microbiota variables.
+
+-   Decide at which taxonomic rank to aggregate your data, e.g. "Genus"
+
+-   Consider transforming the microbial counts, e.g. using the "clr" (centred log ratio) transformation, which is often recommended for compositional data ([like sequencing data](https://doi.org/10.3389/fmicb.2017.02224 "Gloor 2017"))
+
+```{r clr}
+ibd %>% 
+  tax_transform(transformation = "clr", rank = "Genus")
+```
+
+-   Some methods, such as [PCoA](#pcoa), require a matrix of pairwise distances between samples, which you can easily calculate with `dist_calc()`. Normally you should NOT transform your data when using a distance-based method, but it is useful to record an "identity" transformation anyway, to make it clear you have not transformed your data.
+
+```{r identity}
+ibd %>% 
+  tax_transform(transformation = "identity", rank = "Genus") %>% 
+  dist_calc("bray") # bray curtis distance
+```
+
+-   Some dissimilarity measures, such as unweighted UniFrac, do not consider the abundance of each taxon when calculating dissimilarity, and so may be (overly) sensitive to differences in rare/low-abundance taxa. So you might want to filter out very rare taxa, with `tax_filter()` before using `dist_calc(ps, dist = "unifrac")`. Distances that are (implicitly) abundance weighted, including Generalised UniFrac, Bray-Curtis and Aitchison distance, should be less sensitive to rare taxa / filtering threshold choices.
+
+### ps_extra
+
+Notice that the objects created above are of class "ps_extra". This is just a simple S3 list object that holds your phyloseq object and additional stuff created from this phyloseq object, such as a distance matrix, as well as info in any transformation and aggregation applied to your taxa. microViz uses this to automatically create plot captions, to help you and your collaborators remember how you made each plot! You can access the phyloseq object, distance matrix and other parts of a ps_extra object with `ps_get()`, `dist_get()`, and friends.
+
+## PCA
+
+Principle ***components*** analysis is an unconstrained method that does not use a distance matrix. PCA directly uses the (transformed) microbial variables, so you do not need `dist_calc()`. `ord_calc` performs the ordination (adding it to the ps_extra object) and `ord_plot()` creates the ggplot2 scatterplot (which you can customise like other ggplot objects). 
+
+Each point is a sample, and samples that appear closer together are typically more similar to each other than samples which are further apart. So by colouring the points by IBD status you can see that the microbiota from people with IBD is often, but not always, highly distinct from people without IBD.
+
+```{r pca, fig.width=7, fig.height=5}
+ibd %>% 
+  tax_transform("clr", rank = "Genus") %>% 
+  # when no distance matrix or constraints are supplied, PCA is the default/auto ordination method
+  ord_calc() %>% 
+  ord_plot(color = "ibd", shape = "DiseaseState") +
+  scale_colour_brewer(palette = "Dark2")
+```
+
+One benefit of not using a distance matrix, is that you can plot taxa "loadings" onto your PCA axes, using the plot_taxa argument. microViz plots all of the taxa loading vectors in light grey, and you choose how many of the vectors to label, starting with the longest arrows (alternatively you can name particular taxa to label).
+
+The relative length of each loading vector indicates its contribution to each PCA axis shown, and allows you to roughly estimate which samples will contain more of that taxon e.g. samples on the left of the plot below, will typically contain more *Escherichia*/*Shigella* than samples on the right, and this taxon contributes heavily to the PC1 axis.
+
+```{r pca loadings, fig.width=7, fig.height=5}
+ibd %>% 
+  tax_transform("clr", rank = "Genus") %>% 
+  # when no distance matrix or constraints are supplied, PCA is the default/auto ordination method
+  ord_calc(method = "PCA") %>% 
+  ord_plot(color = "ibd", shape = "DiseaseState", plot_taxa = 1:5) +
+  scale_colour_brewer(palette = "Dark2")
+```
+
+microViz also allows you directly visualize the sample compositions on a circular barplot or "iris plot" (named because it kind of looks like an eyeball), alongside the PCA plot. The samples on the iris plot are automatically arranged by their rotational position around the center/origin of the PCA plot. 
+
+```{r iris, fig.height=8, fig.width=7}
+ibd %>% 
+  tax_transform("clr", rank = "Genus") %>% 
+  # when no distance matrix or constraints are supplied, PCA is the default/auto ordination method
+  ord_calc() %>% 
+  ord_plot_iris(tax_level = "Genus", ord_plot = "above", anno_colour = "ibd")
+```
+
+## To be continued
+
+Article in development, check back soon.
+
+## Session info
+
+```{r session}
+devtools::session_info()
+```
