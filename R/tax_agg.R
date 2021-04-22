@@ -84,12 +84,14 @@
 #'   tax_agg("Genus")
 #'
 #' # you can replace unknown values with `tax_fix()`
-#'
-#' # default tax_fix settings won't catch this long unknown
+#' # which will fix most problems, like the common "g__" and "s__"
+#' # but default tax_fix settings won't catch this long unknown
 #' tax_table(dietswap)[13:17, "Family"] <- "some_unknown_family"
 #' dietswap %>%
 #'   tax_fix(unknowns = "some_unknown_family") %>%
 #'   tax_agg("Family")
+#'
+#' # try tax_fix_interactive() for more help
 tax_agg <- function(ps,
                     rank = NA,
                     sort_by = NA,
@@ -108,7 +110,7 @@ tax_agg <- function(ps,
 
   # set up messages sent by multiple stop calls
   unknowns_message <-
-    "\nTo fix, try using `tax_fix()` before this function."
+    "\nTo fix, try tax_fix() or tax_fix_interactive() before this function."
 
   ranks <- phyloseq::rank_names(ps)
   bad_rank_message <-

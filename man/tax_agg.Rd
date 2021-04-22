@@ -95,12 +95,14 @@ dietswap \%>\%
   tax_agg("Genus")
 
 # you can replace unknown values with `tax_fix()`
-
-# default tax_fix settings won't catch this long unknown
+# which will fix most problems, like the common "g__" and "s__"
+# but default tax_fix settings won't catch this long unknown
 tax_table(dietswap)[13:17, "Family"] <- "some_unknown_family"
 dietswap \%>\%
   tax_fix(unknowns = "some_unknown_family") \%>\%
   tax_agg("Family")
+
+# try tax_fix_interactive() for more help
 }
 \seealso{
 \code{\link{tax_fix}}

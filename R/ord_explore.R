@@ -38,7 +38,7 @@
 #' data("enterotype")
 #'
 #' # simple example #
-#' taxa_names(enterotype)[1] <- "unclassified"
+#' taxa_names(enterotype)[1] <- "unclassified" # replaces the "-1" taxon name
 #' ps <- tax_fix(enterotype) # remove NA taxa
 #' ord1 <- ps %>%
 #'   dist_calc("bray") %>%
@@ -46,7 +46,8 @@
 #'
 #' # ord_explore(data = ord1, auto_caption = NA)
 #'
-#' # constrained biplot example #
+#' # constrained ordination example #
+#'
 #' data("dietswap", package = "microbiome")
 #'
 #' # create a couple of numerical variables to use as constraints
@@ -61,9 +62,6 @@
 #'   tax_transform("clr") %>%
 #'   ord_calc(constraints = c("weight", "female"))
 #'
-#' # note if you want to visualise an ordination that required transformation
-#' # you must take care to provide an untransformed phyloseq to ps,
-#' # otherwise the compositions plotted will be also transformed!
 #' # constrained_aitchison_rda %>%
 #' #   ord_explore(
 #' #     plot_taxa = 1:5, tax_lab_style = list(size = 3),
@@ -79,6 +77,7 @@
 #' #   ord_calc() %>%
 #' #   ord_explore()
 #'
+#' # another dataset
 #' data("soilrep", package = "phyloseq")
 #' # test auto creation of SAMPLE var
 #' ps <- soilrep %>% ps_select(-Sample)

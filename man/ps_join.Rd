@@ -22,7 +22,7 @@ ps_join(
 
 \item{by}{A character vector of variables to join by (col must be present in both x and y or paired via a named vector like c("xname" = "yname", etc.))}
 
-\item{match_sample_names}{match against the phyloseq sample_names by naming a variable in the additional dataframe (catenated to any variables named in by)}
+\item{match_sample_names}{match against the phyloseq sample_names by naming a variable in the additional dataframe (this is in addition to any variables named in by)}
 
 \item{keep_sample_name_col}{should the column named in match_sample_names be kept in the returned phyloseq's sample_data? (only relevant if match_sample_names is not NULL)}
 
@@ -120,4 +120,11 @@ intersect(sample_names(out2A), sample_names(out2B))
 out3 <- ps_join(x = x, y = y, by = c("Sample_ID" = "ID_var", "SeqTech"), type = "inner")
 out3
 sample_data(out3)[1:6, ]
+}
+\seealso{
+\code{\link{ps_mutate}} for computing new variables from existing sample data
+
+\code{\link{ps_select}} for selecting only some sample_data variables
+
+\url{https://www.garrickadenbuie.com/project/tidyexplain/} for an animated introduction to joining dataframes
 }

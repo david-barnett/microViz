@@ -4,9 +4,10 @@
 
 #' Check for (and fix) common problems with phyloseq objects
 #'
-#' - Checks for, and messages about, common uninformative entries in the tax_table, which often cause unwanted results
-#' - Replaces missing sample_data with a dataframe including only sample_names (as "SAMPLE" variable)
-#' - Removes taxa where phyloseq::taxa_sums() is equal to zero, with a warning, if remove_undetected = TRUE
+#' - It checks for, and messages about, common uninformative entries in the tax_table, which often cause unwanted results
+#' - If there is no sample_data, it creates a sample_data dataframe with the sample_names (as "SAMPLE" variable)
+#' - If there is no tax_table, it creates a 1-column tax_table matrix with the taxa_names, and calls the rank "unique"
+#' - If remove_undetected = TRUE, it removes taxa where `phyloseq::taxa_sums()` is equal to zero, with a warning
 #'
 #' @param ps phyloseq object
 #' @param remove_undetected if TRUE, removes taxa that sum to zero across all samples

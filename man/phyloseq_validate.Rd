@@ -25,9 +25,10 @@ possibly modified phyloseq object
 }
 \description{
 \itemize{
-\item Checks for, and messages about, common uninformative entries in the tax_table, which often cause unwanted results
-\item Replaces missing sample_data with a dataframe including only sample_names (as "SAMPLE" variable)
-\item Removes taxa where phyloseq::taxa_sums() is equal to zero, with a warning, if remove_undetected = TRUE
+\item It checks for, and messages about, common uninformative entries in the tax_table, which often cause unwanted results
+\item If there is no sample_data, it creates a sample_data dataframe with the sample_names (as "SAMPLE" variable)
+\item If there is no tax_table, it creates a 1-column tax_table matrix with the taxa_names, and calls the rank "unique"
+\item If remove_undetected = TRUE, it removes taxa where \code{phyloseq::taxa_sums()} is equal to zero, with a warning
 }
 }
 \examples{

@@ -28,7 +28,7 @@
 #' @param x phyloseq (or dataframe)
 #' @param y dataframe (or phyloseq for e.g. type = "right")
 #' @param by A character vector of variables to join by (col must be present in both x and y or paired via a named vector like c("xname" = "yname", etc.))
-#' @param match_sample_names match against the phyloseq sample_names by naming a variable in the additional dataframe (catenated to any variables named in by)
+#' @param match_sample_names match against the phyloseq sample_names by naming a variable in the additional dataframe (this is in addition to any variables named in by)
 #' @param keep_sample_name_col should the column named in match_sample_names be kept in the returned phyloseq's sample_data? (only relevant if match_sample_names is not NULL)
 #' @param sample_name_natural_join if TRUE, use sample_name AND all shared colnames to match rows (only relevant if match_sample_names is not NULL, this arg takes precedence over anything also entered in `by` arg)
 #' @param type name of type of join e.g. "left", "right", "inner", "semi" (see dplyr help pages)
@@ -36,6 +36,10 @@
 #'
 #' @return phyloseq with modified sample_data (and possibly filtered)
 #' @export
+#'
+#' @seealso \code{\link{ps_mutate}} for computing new variables from existing sample data
+#' @seealso \code{\link{ps_select}} for selecting only some sample_data variables
+#' @seealso \url{https://www.garrickadenbuie.com/project/tidyexplain/} for an animated introduction to joining dataframes
 #'
 #' @examples
 #' library(phyloseq)
