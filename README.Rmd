@@ -43,9 +43,11 @@ microViz extends and complements popular microbial ecology packages like phylose
 
     -   [Fixing your taxa table with tax_fix](https://david-barnett.github.io/microViz/articles/articles/tax-fixing.html)
 
+    -   [Creating ordination plots](https://david-barnett.github.io/microViz/articles/ordination.html) (e.g. PCA or PCoA)
+
     -   [Visualising taxonomic compositions with customised barplots](https://david-barnett.github.io/microViz/articles/articles/Visualising-compositions.html)
 
-    -   (more coming soon! raise an issue on github if you have questions/requests)
+    -   (more coming soon! Post on [GitHub discussions](https://github.com/david-barnett/microViz/discussions) if you have questions/requests)
 
 -   The [changelog](https://david-barnett.github.io/microViz/news/index.html) describes important changes in new microViz package versions
 
@@ -64,15 +66,14 @@ You can install the latest available microViz package version using the followin
 install.packages("devtools", type = "binary") # (not binary if you're on linux)
 
 # If you don't already have the latest versions of phyloseq and microbiome, you can install these from Bioconductor:
-
 if (!requireNamespace("BiocManager", quietly = TRUE))
  install.packages("BiocManager", type = "binary") # (not binary if you're on linux)
 BiocManager::install(c("phyloseq", "microbiome"))
 
-# # Installing the latest "released" version of this package # #
-devtools::install_github("david-barnett/microViz@0.7.2") # check 0.7.2 is the latest release
+# Installing the latest "released" version of this package # #
+devtools::install_github("david-barnett/microViz@0.7.3") # check 0.7.3 is the latest release
 
-# # If you encounter bugs: please try installing the very latest development version:
+# If you encounter bugs: please try installing the very latest development version:
 devtools::install_github("david-barnett/microViz")
 
 # advanced tip: add @<commit-hash> after microViz to install a version from a particular commit

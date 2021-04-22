@@ -45,11 +45,16 @@ ecology packages like phyloseq, vegan, and microbiome.
     -   [Fixing your taxa table with
         tax\_fix](https://david-barnett.github.io/microViz/articles/articles/tax-fixing.html)
 
+    -   [Creating ordination
+        plots](https://david-barnett.github.io/microViz/articles/ordination.html)
+        (e.g. PCA or PCoA)
+
     -   [Visualising taxonomic compositions with customised
         barplots](https://david-barnett.github.io/microViz/articles/articles/Visualising-compositions.html)
 
-    -   (more coming soon! raise an issue on github if you have
-        questions/requests)
+    -   (more coming soon! Post on [GitHub
+        discussions](https://github.com/david-barnett/microViz/discussions)
+        if you have questions/requests)
 
 -   The
     [changelog](https://david-barnett.github.io/microViz/news/index.html)
@@ -77,7 +82,7 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 BiocManager::install(c("phyloseq", "microbiome"))
 
 # # Installing the latest "released" version of this package # #
-devtools::install_github("david-barnett/microViz@0.7.2") # check 0.7.2 is the latest release
+devtools::install_github("david-barnett/microViz@0.7.3") # check 0.7.3 is the latest release
 
 # # If you encounter bugs: please try installing the very latest development version:
 devtools::install_github("david-barnett/microViz")
@@ -228,8 +233,8 @@ aitchison_perm <- dist_permanova(
   variables = "bmi_group + female"
 )
 #> Dropping samples with missings: 2
-#> 2021-04-22 14:35:58 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2021-04-22 14:35:58 - Finished PERMANOVA
+#> 2021-04-22 23:45:27 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2021-04-22 23:45:27 - Finished PERMANOVA
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
 #>            Df   SumOfSqs         R2        F Pr(>F)
@@ -251,8 +256,8 @@ your permanova directly using the ord\_plot function with constraints.
 ``` r
 perm2 <- dist_permanova(data = aitchison_dists, variables = c("weight", "female"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2021-04-22 14:35:58 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2021-04-22 14:35:59 - Finished PERMANOVA
+#> 2021-04-22 23:45:27 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2021-04-22 23:45:28 - Finished PERMANOVA
 perm_get(perm2)
 #> Permutation test for adonis under reduced model
 #> Marginal effects of terms
