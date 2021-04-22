@@ -370,14 +370,14 @@ ord_explore <- function(data,
     # ord_plot aesthetic vars
     shape <- shiny::reactive({
       switch(input$shape_var_type,
-             "fixed" = input$ord_shape_num,
-             "variable" = input$ord_shape_var
+        "fixed" = input$ord_shape_num,
+        "variable" = input$ord_shape_var
       )
     })
     size <- shiny::reactive({
       switch(input$size_var_type,
-             "fixed" = input$ord_size_num,
-             "variable" = input$ord_size_var
+        "fixed" = input$ord_size_num,
+        "variable" = input$ord_size_var
       )
     })
 
@@ -510,7 +510,6 @@ ord_explore <- function(data,
         }
       }
     )
-
   }
   # Run the application
   shiny::shinyApp(ui = ui, server = server, options = app_options)

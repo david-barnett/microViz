@@ -7,7 +7,8 @@
 * Website: https://david-barnett.github.io/microViz/
 * Useful? Consider citing: https://zenodo.org/record/4644057
 * Silence: suppressPackageStartupMessages(library(microViz))
-")
+"
+  )
 
   packageStartupMessage(msg)
 }

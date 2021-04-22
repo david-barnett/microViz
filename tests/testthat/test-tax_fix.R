@@ -63,11 +63,10 @@ for (pseq in names(datasets)) {
 # tax_common_unknowns ==========================
 test_that("tax_common_unknowns doesn't change", {
   local_edition(3)
-  for (i in 0:5){
+  for (i in 0:5) {
     expect_snapshot_csv(
       name = paste0("tax_common_unknowns-", i),
       object = tax_common_unknowns(min_length = i)
     )
   }
 })
-
