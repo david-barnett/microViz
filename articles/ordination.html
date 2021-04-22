@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.3</span>
       </span>
     </div>
 
@@ -110,16 +110,17 @@
 <div id="intro" class="section level2">
 <h2 class="hasAnchor">
 <a href="#intro" class="anchor"></a>Intro</h2>
-<p>This article will show you how to create and customise ordination plots, like PCA and RDA, with microViz.</p>
+<p>This article will show you how to create and customise ordination plots, like <a href="#pca">PCA</a> and <a href="#rda">RDA</a>, with microViz.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://dx.plos.org/10.1371/journal.pone.0061217">phyloseq</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/david-barnett/microViz">microViz</a></span><span class="op">)</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; * microViz version 0.7.2 - Copyright (C) 2021 David Barnett</span>
+<span class="co">#&gt; * microViz version 0.7.3 - Copyright (C) 2021 David Barnett</span>
 <span class="co">#&gt; * Website: https://david-barnett.github.io/microViz/</span>
 <span class="co">#&gt; * Useful? Consider citing: https://zenodo.org/record/4644057</span>
-<span class="co">#&gt; * Silence: suppressPackageStartupMessages(library(microViz))</span></code></pre></div>
+<span class="co">#&gt; * Silence: suppressPackageStartupMessages(library(microViz))</span>
+<span class="fu">knitr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/knitr/man/opts_chunk.html">opts_chunk</a></span><span class="op">$</span><span class="fu">set</span><span class="op">(</span>fig.width <span class="op">=</span> <span class="fl">7</span>, fig.height <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></code></pre></div>
 <p>We will use example data from stool samples from an inflammatory bowel disease (IBD) study, borrowed from the great <code>corncob</code> package. See the article about <a href="https://david-barnett.github.io/microViz/articles/articles/phyloseq.html">working with phyloseq objects</a> if you want to get started with your own data, or just to learn more about manipulating phyloseq objects with microViz.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ibd</span> <span class="op">&lt;-</span> <span class="fu">corncob</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/corncob/man/ibd_phylo.html">ibd_phylo</a></span>
@@ -189,13 +190,13 @@
 <div id="ps_extra" class="section level3">
 <h3 class="hasAnchor">
 <a href="#ps_extra" class="anchor"></a>ps_extra</h3>
-<p>Notice that the objects created above are of class “ps_extra”. This is just a simple S3 list object that holds your phyloseq object and additional stuff created from this phyloseq object, such as a distance matrix, as well as info in any transformation and aggregation applied to your taxa. microViz uses this to automatically create plot captions, to help you and your collaborators remember how you made each plot! You can access the phyloseq object, distance matrix and other parts of a ps_extra object with <code><a href="../reference/ps_extra-accessors.html">ps_get()</a></code>, <code><a href="../reference/ps_extra-accessors.html">dist_get()</a></code>, and friends.</p>
+<p>Notice that the objects created above are of class “ps_extra”. This is just a simple S3 list object that holds your phyloseq object and additional stuff created from this phyloseq object, such as a distance matrix, as well as info on any transformation and aggregation applied to your taxa. microViz uses this to automatically create plot captions, to help you and your collaborators remember how you made each plot! You can access the phyloseq object, distance matrix and other parts of a ps_extra object with <code><a href="../reference/ps_extra-accessors.html">ps_get()</a></code>, <code><a href="../reference/ps_extra-accessors.html">dist_get()</a></code>, and friends.</p>
 </div>
 </div>
 <div id="pca" class="section level2">
 <h2 class="hasAnchor">
 <a href="#pca" class="anchor"></a>PCA</h2>
-<p>Principle <strong><em>components</em></strong> analysis is an unconstrained method that does not use a distance matrix. PCA directly uses the (transformed) microbial variables, so you do not need <code><a href="../reference/dist_calc.html">dist_calc()</a></code>. <code>ord_calc</code> performs the ordination (adding it to the ps_extra object) and <code><a href="../reference/ord_plot.html">ord_plot()</a></code> creates the ggplot2 scatterplot (which you can customise like other ggplot objects).</p>
+<p>Principle <strong><em>Components</em></strong> Analysis is an unconstrained method that does not use a distance matrix. PCA directly uses the (transformed) microbial variables, so you do not need <code><a href="../reference/dist_calc.html">dist_calc()</a></code>. <code>ord_calc</code> performs the ordination (adding it to the ps_extra object) and <code><a href="../reference/ord_plot.html">ord_plot()</a></code> creates the ggplot2 scatterplot (which you can customise like other ggplot objects).</p>
 <p>Each point is a sample, and samples that appear closer together are typically more similar to each other than samples which are further apart. So by colouring the points by IBD status you can see that the microbiota from people with IBD is often, but not always, highly distinct from people without IBD.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ibd</span> <span class="op">%&gt;%</span> 
@@ -215,7 +216,7 @@
   <span class="fu"><a href="../reference/ord_plot.html">ord_plot</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"ibd"</span>, shape <span class="op">=</span> <span class="st">"DiseaseState"</span>, plot_taxa <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_colour_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Dark2"</span><span class="op">)</span></code></pre></div>
 <p><img src="ordination_files/figure-html/pca%20loadings-1.png" width="672"></p>
-<p>microViz also allows you directly visualize the sample compositions on a circular barplot or “iris plot” (named because it kind of looks like an eyeball), alongside the PCA plot. The samples on the iris plot are automatically arranged by their rotational position around the center/origin of the PCA plot.</p>
+<p>microViz also allows you directly visualize the sample compositions on a circular barplot or “iris plot” (named because it looks kinda like an eyeball) alongside the PCA plot. The samples on the iris plot are automatically arranged by their rotational position around the center/origin of the PCA plot.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ibd</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"clr"</span>, rank <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
@@ -225,15 +226,118 @@
 <span class="co">#&gt; Loading required namespace: patchwork</span></code></pre></div>
 <p><img src="ordination_files/figure-html/iris-1.png" width="672"></p>
 </div>
-<div id="to-be-continued" class="section level2">
+<div id="pcoa" class="section level2">
 <h2 class="hasAnchor">
-<a href="#to-be-continued" class="anchor"></a>To be continued</h2>
-<p>Article in development, check back soon.</p>
+<a href="#pcoa" class="anchor"></a>PCoA</h2>
+<p>Principle <strong><em>Co-ordinates</em></strong> Analysis is also an unconstrained method, but it does require a distance matrix. In an ecological context, a distance (or more generally a “dissimilarity”) measure indicates how different a pair of (microbial) ecosystems are. This can be calculated in many ways.</p>
+<div id="aitchison-distance" class="section level3">
+<h3 class="hasAnchor">
+<a href="#aitchison-distance" class="anchor"></a>Aitchison distance</h3>
+<p>The <a href="https://en.wikipedia.org/wiki/Euclidean_distance">Euclidean distance</a> is similar to the distance we humans are familiar with in the physical world. The results of a PCA is practically equivalent to a PCoA with Euclidean distances. The Aitchison distance is a dissimilarity measure calculated as the Euclidean distance between observations (samples) after performing a centred log ratio (“clr”) transformation. That is why the Aitchison distance PCoA, below, looks the same as the PCA we made earlier. However, we cannot use plot_taxa, as the taxa loadings are only available for PCA (and related methods like RDA).</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ibd</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"identity"</span>, rank <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># don't transform!</span>
+  <span class="fu"><a href="../reference/dist_calc.html">dist_calc</a></span><span class="op">(</span><span class="st">"aitchison"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/ord_calc.html">ord_calc</a></span><span class="op">(</span><span class="st">"PCoA"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/ord_plot.html">ord_plot</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"ibd"</span>, shape <span class="op">=</span> <span class="st">"DiseaseState"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_colour_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Dark2"</span><span class="op">)</span></code></pre></div>
+<p><img src="ordination_files/figure-html/aitchison%20pcoa-1.png" width="672"></p>
+<p>Note that PCoA is also known as MDS, for (metric) Multi-Dimensional Scaling, hence the axes names.</p>
+</div>
+<div id="ecological-dissimilarities" class="section level3">
+<h3 class="hasAnchor">
+<a href="#ecological-dissimilarities" class="anchor"></a>Ecological dissimilarities</h3>
+<p>Over the years, ecologists have invented numerous ways of quantifying dissimilarity between pairs of ecosystems. One ubiquitous example is the <a href="https://en.wikipedia.org/wiki/Bray%E2%80%93Curtis_dissimilarity">Bray-Curtis</a> dissimilarity measure, shown below.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ibd</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"identity"</span>, rank <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># don't transform!</span>
+  <span class="fu"><a href="../reference/dist_calc.html">dist_calc</a></span><span class="op">(</span><span class="st">"bray"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/ord_calc.html">ord_calc</a></span><span class="op">(</span><span class="st">"PCoA"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/ord_plot.html">ord_plot</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"ibd"</span>, shape <span class="op">=</span> <span class="st">"DiseaseState"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_colour_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Dark2"</span><span class="op">)</span></code></pre></div>
+<p><img src="ordination_files/figure-html/bray-1.png" width="672"></p>
+<p>Beyond Bray-Curtis, microViz <code><a href="../reference/dist_calc.html">dist_calc()</a></code> can also help you calculate all the other ecological distances listed in <code><a href="https://rdrr.io/pkg/phyloseq/man/distanceMethodList.html">phyloseq::distanceMethodList</a></code> such the Jensen-Shannon Divergence, <code>"jsd"</code>, or Jaccard dissimilarity <code>"jaccard"</code>. Beware that if you want a binary dissimilarity measure from <code><a href="https://rdrr.io/pkg/vegan/man/vegdist.html">vegan::vegdist()</a></code> (i.e. only using presence/absence info, and noting all the caveats about sensitivity to low abundance taxa) you will need to pass <code>binary = TRUE</code>, as below.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ibd</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"identity"</span>, rank <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/dist_calc.html">dist_calc</a></span><span class="op">(</span>dist <span class="op">=</span> <span class="st">"jaccard"</span>, binary <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/ord_calc.html">ord_calc</a></span><span class="op">(</span><span class="st">"PCoA"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/ord_plot.html">ord_plot</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"ibd"</span>, shape <span class="op">=</span> <span class="st">"DiseaseState"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_colour_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Dark2"</span><span class="op">)</span></code></pre></div>
+<p><img src="ordination_files/figure-html/binary%20jaccard-1.png" width="672"></p>
+</div>
+<div id="unifrac-distances" class="section level3">
+<h3 class="hasAnchor">
+<a href="#unifrac-distances" class="anchor"></a>UniFrac distances</h3>
+<p>If you have a phylogenetic tree available, and <a href="https://david-barnett.github.io/microViz/articles/articles/phyloseq.html#getting-your-data-into-phyloseq">attached to your phyloseq object</a>. You can calculate dissimilarities from the <a href="https://en.wikipedia.org/wiki/UniFrac">UniFrac family</a> of methods, which take into account the phylogenetic relatedness of the taxa / sequences in your samples when calculating dissimilarity. Un-weighted UniFrac, <code><a href="../reference/dist_calc.html">dist_calc(dist = "unifrac")</a></code>, does not consider the relative abundance of taxa, only their presence (detection) or absence, which can make it (overly) sensitive to rare taxa, sequencing artefacts, and abundance filtering choices. Conversely, weighted UniFrac, <code>"wunifrac"</code>, does put (perhaps too much) more importance on highly abundant taxa, when determining dissimilarities. The Generalised UniFrac, <code>"gunifrac"</code>, finds a balance between these two extremes, and by adjusting the <code>gunifrac_alpha</code> argument of <code><a href="../reference/dist_calc.html">dist_calc()</a></code>, you can tune this balance to your liking (although the 0.5 default should be fine!).</p>
+<p>Below is a Generalised UniFrac example using a different, and tiny, example dataset from the phyloseq package that has a phylogenetic tree.</p>
+<p>You should <strong>not</strong> aggregate taxa before using a phylogenetic distance measure, but you can and probably should register the choice not to transform or aggregate, as below.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"esophagus"</span>, package <span class="op">=</span> <span class="st">"phyloseq"</span><span class="op">)</span>
+<span class="va">esophagus</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/phyloseq_validate.html">phyloseq_validate</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"identity"</span>, rank <span class="op">=</span> <span class="st">"unique"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/dist_calc.html">dist_calc</a></span><span class="op">(</span><span class="st">"gunifrac"</span>, gunifrac_alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
+<span class="co">#&gt; ps_extra object - a list with phyloseq and extras:</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; phyloseq-class experiment-level object</span>
+<span class="co">#&gt; otu_table()   OTU Table:         [ 58 taxa and 3 samples ]</span>
+<span class="co">#&gt; sample_data() Sample Data:       [ 3 samples by 1 sample variables ]</span>
+<span class="co">#&gt; tax_table()   Taxonomy Table:    [ 58 taxa by 1 taxonomic ranks ]</span>
+<span class="co">#&gt; phy_tree()    Phylogenetic Tree: [ 58 tips and 57 internal nodes ]</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; phyloseq info:</span>
+<span class="co">#&gt; tax_agg = unique tax_transform = identity</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; gunifrac_0.5 distance matrix of size 3 </span>
+<span class="co">#&gt; 0.4404284 0.4332325 0.4969773 ...</span></code></pre></div>
+</div>
+</div>
+<div id="further-dimensions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#further-dimensions" class="anchor"></a>Further dimensions</h2>
+<p>You can show other dimensions / axes of an ordination than just the first two, by setting the axes argument. You can judge from the variation explained by each successive axis (on a scree plot) whether this is worthwhile information to show, e.g. in the example below, it could be interesting to also show the 3rd axis, but not any others.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ibd</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"identity"</span>, rank <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># don't transform!</span>
+  <span class="fu"><a href="../reference/dist_calc.html">dist_calc</a></span><span class="op">(</span><span class="st">"bray"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/ord_calc.html">ord_calc</a></span><span class="op">(</span><span class="st">"PCoA"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/ps_extra-accessors.html">ord_get</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/plot_scree.html">plot_scree</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">6</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p><img src="ordination_files/figure-html/scree-1.png" width="480"></p>
+<p>Let us view the 1st and 3rd axes, and add IBD/non-IBD group ellipses.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ibd</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"identity"</span>, rank <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># don't transform!</span>
+  <span class="fu"><a href="../reference/dist_calc.html">dist_calc</a></span><span class="op">(</span><span class="st">"bray"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/ord_calc.html">ord_calc</a></span><span class="op">(</span><span class="st">"PCoA"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/ord_plot.html">ord_plot</a></span><span class="op">(</span>axes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"ibd"</span>, shape <span class="op">=</span> <span class="st">"DiseaseState"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_colour_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Dark2"</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/stat_ellipse.html">stat_ellipse</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">ibd</span>, linetype <span class="op">=</span> <span class="va">ibd</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p><img src="ordination_files/figure-html/bray%203-1.png" width="672"></p>
+</div>
+<div id="rda" class="section level2">
+<h2 class="hasAnchor">
+<a href="#rda" class="anchor"></a>RDA</h2>
+<p>Redundancy analysis is a constrained ordination method.</p>
+<p>Tutorial coming soon, for now see <code><a href="../reference/ord_plot.html">ord_plot()</a></code> for examples.</p>
+<div id="partial-ordinations" class="section level3">
+<h3 class="hasAnchor">
+<a href="#partial-ordinations" class="anchor"></a>Partial ordinations</h3>
+<p>Tutorial coming soon, for now see <code><a href="../reference/ord_plot.html">ord_plot()</a></code> for examples.</p>
+</div>
+</div>
+<div id="customising-your-ordination-plot" class="section level2">
+<h2 class="hasAnchor">
+<a href="#customising-your-ordination-plot" class="anchor"></a>Customising your ordination plot</h2>
+<p>It is possible to modify the aesthetic style of the taxon loading and constraint vectors of your ordination plots. e.g. making them smaller or more transparent.</p>
+<p>It is also possible to rename the taxa labels using a function passed to the <code>taxon_renamer</code> argument of <code><a href="../reference/ord_plot.html">ord_plot()</a></code>.</p>
+<p>Tutorial coming soon!</p>
 </div>
 <div id="session-info" class="section level2">
 <h2 class="hasAnchor">
 <a href="#session-info" class="anchor"></a>Session info</h2>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sessioninfo/man/session_info.html">session_info</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; ─ Session info ───────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt;  setting  value                       </span>
@@ -257,7 +361,7 @@
 <span class="co">#&gt;  Biostrings     2.58.0   2020-10-27 [1] Bioconductor                         </span>
 <span class="co">#&gt;  bslib          0.2.4    2021-01-25 [1] CRAN (R 4.0.2)                       </span>
 <span class="co">#&gt;  cachem         1.0.4    2021-02-13 [1] CRAN (R 4.0.3)                       </span>
-<span class="co">#&gt;  callr          3.6.0    2021-03-28 [1] CRAN (R 4.0.2)                       </span>
+<span class="co">#&gt;  callr          3.7.0    2021-04-20 [1] CRAN (R 4.0.2)                       </span>
 <span class="co">#&gt;  cli            2.4.0    2021-04-05 [1] CRAN (R 4.0.2)                       </span>
 <span class="co">#&gt;  cluster        2.1.1    2021-02-14 [2] CRAN (R 4.0.5)                       </span>
 <span class="co">#&gt;  codetools      0.2-18   2020-11-04 [2] CRAN (R 4.0.5)                       </span>
@@ -280,6 +384,7 @@
 <span class="co">#&gt;  ggplot2      * 3.3.3    2020-12-30 [1] CRAN (R 4.0.2)                       </span>
 <span class="co">#&gt;  glue           1.4.2    2020-08-27 [1] CRAN (R 4.0.2)                       </span>
 <span class="co">#&gt;  gtable         0.3.0    2019-03-25 [1] CRAN (R 4.0.2)                       </span>
+<span class="co">#&gt;  GUniFrac       1.1      2018-02-12 [1] CRAN (R 4.0.2)                       </span>
 <span class="co">#&gt;  highr          0.9      2021-04-16 [1] CRAN (R 4.0.2)                       </span>
 <span class="co">#&gt;  hms            1.0.0    2021-01-13 [1] CRAN (R 4.0.2)                       </span>
 <span class="co">#&gt;  htmltools      0.5.1.1  2021-01-22 [1] CRAN (R 4.0.2)                       </span>
@@ -295,10 +400,11 @@
 <span class="co">#&gt;  magrittr       2.0.1    2020-11-17 [1] CRAN (R 4.0.2)                       </span>
 <span class="co">#&gt;  MASS           7.3-53.1 2021-02-12 [2] CRAN (R 4.0.5)                       </span>
 <span class="co">#&gt;  Matrix         1.3-2    2021-01-06 [2] CRAN (R 4.0.5)                       </span>
+<span class="co">#&gt;  matrixStats    0.58.0   2021-01-29 [1] CRAN (R 4.0.2)                       </span>
 <span class="co">#&gt;  memoise        2.0.0    2021-01-26 [1] CRAN (R 4.0.2)                       </span>
 <span class="co">#&gt;  mgcv           1.8-34   2021-02-16 [2] CRAN (R 4.0.5)                       </span>
 <span class="co">#&gt;  microbiome     1.12.0   2020-10-27 [1] Bioconductor                         </span>
-<span class="co">#&gt;  microViz     * 0.7.2    2021-04-22 [1] local                                </span>
+<span class="co">#&gt;  microViz     * 0.7.3    2021-04-22 [1] local                                </span>
 <span class="co">#&gt;  multtest       2.46.0   2020-10-27 [1] Bioconductor                         </span>
 <span class="co">#&gt;  munsell        0.5.0    2018-06-12 [1] CRAN (R 4.0.2)                       </span>
 <span class="co">#&gt;  nlme           3.1-152  2021-02-04 [2] CRAN (R 4.0.5)                       </span>
