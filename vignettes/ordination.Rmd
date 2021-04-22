@@ -16,12 +16,13 @@ knitr::opts_chunk$set(
 
 ## Intro
 
-This article will show you how to create and customise ordination plots, like PCA and RDA, with microViz.
+This article will show you how to create and customise ordination plots, like [PCA](#pca) and [RDA](#rda), with microViz.
 
 ```{r setup}
 library(phyloseq)
 library(ggplot2)
 library(microViz)
+knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
 ```
 
 We will use example data from stool samples from an inflammatory bowel disease (IBD) study, borrowed from the great `corncob` package. See the article about [working with phyloseq objects](https://david-barnett.github.io/microViz/articles/articles/phyloseq.html) if you want to get started with your own data, or just to learn more about manipulating phyloseq objects with microViz.
@@ -71,15 +72,15 @@ ibd %>%
 
 ### ps_extra
 
-Notice that the objects created above are of class "ps_extra". This is just a simple S3 list object that holds your phyloseq object and additional stuff created from this phyloseq object, such as a distance matrix, as well as info in any transformation and aggregation applied to your taxa. microViz uses this to automatically create plot captions, to help you and your collaborators remember how you made each plot! You can access the phyloseq object, distance matrix and other parts of a ps_extra object with `ps_get()`, `dist_get()`, and friends.
+Notice that the objects created above are of class "ps_extra". This is just a simple S3 list object that holds your phyloseq object and additional stuff created from this phyloseq object, such as a distance matrix, as well as info on any transformation and aggregation applied to your taxa. microViz uses this to automatically create plot captions, to help you and your collaborators remember how you made each plot! You can access the phyloseq object, distance matrix and other parts of a ps_extra object with `ps_get()`, `dist_get()`, and friends.
 
 ## PCA
 
-Principle ***components*** analysis is an unconstrained method that does not use a distance matrix. PCA directly uses the (transformed) microbial variables, so you do not need `dist_calc()`. `ord_calc` performs the ordination (adding it to the ps_extra object) and `ord_plot()` creates the ggplot2 scatterplot (which you can customise like other ggplot objects). 
+Principle ***Components*** Analysis is an unconstrained method that does not use a distance matrix. PCA directly uses the (transformed) microbial variables, so you do not need `dist_calc()`. `ord_calc` performs the ordination (adding it to the ps_extra object) and `ord_plot()` creates the ggplot2 scatterplot (which you can customise like other ggplot objects).
 
 Each point is a sample, and samples that appear closer together are typically more similar to each other than samples which are further apart. So by colouring the points by IBD status you can see that the microbiota from people with IBD is often, but not always, highly distinct from people without IBD.
 
-```{r pca, fig.width=7, fig.height=5}
+```{r pca}
 ibd %>% 
   tax_transform("clr", rank = "Genus") %>% 
   # when no distance matrix or constraints are supplied, PCA is the default/auto ordination method
@@ -92,7 +93,7 @@ One benefit of not using a distance matrix, is that you can plot taxa "loadings"
 
 The relative length of each loading vector indicates its contribution to each PCA axis shown, and allows you to roughly estimate which samples will contain more of that taxon e.g. samples on the left of the plot below, will typically contain more *Escherichia*/*Shigella* than samples on the right, and this taxon contributes heavily to the PC1 axis.
 
-```{r pca loadings, fig.width=7, fig.height=5}
+```{r pca loadings}
 ibd %>% 
   tax_transform("clr", rank = "Genus") %>% 
   # when no distance matrix or constraints are supplied, PCA is the default/auto ordination method
@@ -101,7 +102,7 @@ ibd %>%
   scale_colour_brewer(palette = "Dark2")
 ```
 
-microViz also allows you directly visualize the sample compositions on a circular barplot or "iris plot" (named because it kind of looks like an eyeball), alongside the PCA plot. The samples on the iris plot are automatically arranged by their rotational position around the center/origin of the PCA plot. 
+microViz also allows you directly visualize the sample compositions on a circular barplot or "iris plot" (named because it looks kinda like an eyeball) alongside the PCA plot. The samples on the iris plot are automatically arranged by their rotational position around the center/origin of the PCA plot.
 
 ```{r iris, fig.height=8, fig.width=7}
 ibd %>% 
@@ -111,9 +112,108 @@ ibd %>%
   ord_plot_iris(tax_level = "Genus", ord_plot = "above", anno_colour = "ibd")
 ```
 
-## To be continued
+## PCoA {#pcoa}
 
-Article in development, check back soon.
+Principle ***Co-ordinates*** Analysis is also an unconstrained method, but it does require a distance matrix. In an ecological context, a distance (or more generally a "dissimilarity") measure indicates how different a pair of (microbial) ecosystems are. This can be calculated in many ways.
+
+### Aitchison distance
+
+The [Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance) is similar to the distance we humans are familiar with in the physical world. The results of a PCA is practically equivalent to a PCoA with Euclidean distances. The Aitchison distance is a dissimilarity measure calculated as the Euclidean distance between observations (samples) after performing a centred log ratio ("clr") transformation. That is why the Aitchison distance PCoA, below, looks the same as the PCA we made earlier. However, we cannot use plot_taxa, as the taxa loadings are only available for PCA (and related methods like RDA).
+
+```{r aitchison pcoa}
+ibd %>% 
+  tax_transform("identity", rank = "Genus") %>% # don't transform!
+  dist_calc("aitchison") %>% 
+  ord_calc("PCoA") %>% 
+  ord_plot(color = "ibd", shape = "DiseaseState") +
+  scale_colour_brewer(palette = "Dark2")
+```
+
+Note that PCoA is also known as MDS, for (metric) Multi-Dimensional Scaling, hence the axes names.
+
+### Ecological dissimilarities
+
+Over the years, ecologists have invented numerous ways of quantifying dissimilarity between pairs of ecosystems. One ubiquitous example is the [Bray-Curtis](https://en.wikipedia.org/wiki/Bray–Curtis_dissimilarity) dissimilarity measure, shown below.
+
+```{r bray}
+ibd %>% 
+  tax_transform("identity", rank = "Genus") %>% # don't transform!
+  dist_calc("bray") %>% 
+  ord_calc("PCoA") %>% 
+  ord_plot(color = "ibd", shape = "DiseaseState") +
+  scale_colour_brewer(palette = "Dark2")
+```
+
+Beyond Bray-Curtis, microViz `dist_calc()` can also help you calculate all the other ecological distances listed in `phyloseq::distanceMethodList` such the Jensen-Shannon Divergence, `"jsd"`, or Jaccard dissimilarity `"jaccard"`. Beware that if you want a binary dissimilarity measure from `vegan::vegdist()` (i.e. only using presence/absence info, and noting all the caveats about sensitivity to low abundance taxa) you will need to pass `binary = TRUE`, as below.
+
+```{r binary jaccard}
+ibd %>% 
+  tax_transform("identity", rank = "Genus") %>% 
+  dist_calc(dist = "jaccard", binary = TRUE) %>% 
+  ord_calc("PCoA") %>% 
+  ord_plot(color = "ibd", shape = "DiseaseState") +
+  scale_colour_brewer(palette = "Dark2")
+```
+
+### UniFrac distances
+
+If you have a phylogenetic tree available, and [attached to your phyloseq object](https://david-barnett.github.io/microViz/articles/articles/phyloseq.html#getting-your-data-into-phyloseq). You can calculate dissimilarities from the [UniFrac family](https://en.wikipedia.org/wiki/UniFrac) of methods, which take into account the phylogenetic relatedness of the taxa / sequences in your samples when calculating dissimilarity. Un-weighted UniFrac, `dist_calc(dist = "unifrac")`, does not consider the relative abundance of taxa, only their presence (detection) or absence, which can make it (overly) sensitive to rare taxa, sequencing artefacts, and abundance filtering choices. Conversely, weighted UniFrac, `"wunifrac"`, does put (perhaps too much) more importance on highly abundant taxa, when determining dissimilarities. The Generalised UniFrac, `"gunifrac"`, finds a balance between these two extremes, and by adjusting the `gunifrac_alpha` argument of `dist_calc()`, you can tune this balance to your liking (although the 0.5 default should be fine!).
+
+Below is a Generalised UniFrac example using a different, and tiny, example dataset from the phyloseq package that has a phylogenetic tree.
+
+You should **not** aggregate taxa before using a phylogenetic distance measure, but you can and probably should register the choice not to transform or aggregate, as below.
+
+```{r gunifrac}
+data("esophagus", package = "phyloseq")
+esophagus %>%
+  phyloseq_validate(verbose = FALSE) %>% 
+  tax_transform("identity", rank = "unique") %>% 
+  dist_calc("gunifrac", gunifrac_alpha = 0.5)
+
+```
+
+## Further dimensions
+
+You can show other dimensions / axes of an ordination than just the first two, by setting the axes argument. You can judge from the variation explained by each successive axis (on a scree plot) whether this is worthwhile information to show, e.g. in the example below, it could be interesting to also show the 3rd axis, but not any others.
+
+```{r scree, fig.width=5, fig.height=3}
+ibd %>% 
+  tax_transform("identity", rank = "Genus") %>% # don't transform!
+  dist_calc("bray") %>% 
+  ord_calc("PCoA") %>% 
+  ord_get() %>% 
+  phyloseq::plot_scree() + theme(axis.text.x = element_text(size = 6))
+```
+
+Let us view the 1st and 3rd axes, and add IBD/non-IBD group ellipses.
+
+```{r bray 3}
+ibd %>% 
+  tax_transform("identity", rank = "Genus") %>% # don't transform!
+  dist_calc("bray") %>% 
+  ord_calc("PCoA") %>% 
+  ord_plot(axes = c(1, 3), color = "ibd", shape = "DiseaseState") +
+  scale_colour_brewer(palette = "Dark2") + 
+  stat_ellipse(aes(color = ibd, linetype = ibd))
+```
+
+## RDA
+
+Redundancy analysis is a constrained ordination method.
+
+Tutorial coming soon, for now see `ord_plot()` for examples.
+
+### Partial ordinations
+
+Tutorial coming soon, for now see `ord_plot()` for examples.
+
+## Customising your ordination plot
+
+It is possible to modify the aesthetic style of the taxon loading and constraint vectors of your ordination plots. e.g. making them smaller or more transparent.
+
+It is also possible to rename the taxa labels using a function passed to the `taxon_renamer` argument of `ord_plot()`.
+
+Tutorial coming soon!
 
 ## Session info
 
