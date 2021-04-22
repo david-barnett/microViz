@@ -42,9 +42,10 @@
 <meta property="og:title" content="Check for (and fix) common problems with phyloseq objects — phyloseq_validate" />
 <meta property="og:description" content="
 
-Checks for, and messages about, common uninformative entries in the tax_table, which often cause unwanted results
-Replaces missing sample_data with a dataframe including only sample_names (as &quot;SAMPLE&quot; variable)
-Removes taxa where phyloseq::taxa_sums() is equal to zero, with a warning, if remove_undetected = TRUE
+It checks for, and messages about, common uninformative entries in the tax_table, which often cause unwanted results
+If there is no sample_data, it creates a sample_data dataframe with the sample_names (as &quot;SAMPLE&quot; variable)
+If there is no tax_table, it creates a 1-column tax_table matrix with the taxa_names, and calls the rank &quot;unique&quot;
+If remove_undetected = TRUE, it removes taxa where phyloseq::taxa_sums() is equal to zero, with a warning
 
 " />
 
@@ -115,6 +116,9 @@ Removes taxa where phyloseq::taxa_sums() is equal to zero, with a warning, if re
     <li>
       <a href="../articles/articles/tax-fixing.html">Fixing your tax_table</a>
     </li>
+    <li>
+      <a href="../articles/ordination.html">Ordination plots</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -149,9 +153,10 @@ Removes taxa where phyloseq::taxa_sums() is equal to zero, with a warning, if re
     <div class="ref-description">
     
 <ul>
-<li><p>Checks for, and messages about, common uninformative entries in the tax_table, which often cause unwanted results</p></li>
-<li><p>Replaces missing sample_data with a dataframe including only sample_names (as "SAMPLE" variable)</p></li>
-<li><p>Removes taxa where phyloseq::taxa_sums() is equal to zero, with a warning, if remove_undetected = TRUE</p></li>
+<li><p>It checks for, and messages about, common uninformative entries in the tax_table, which often cause unwanted results</p></li>
+<li><p>If there is no sample_data, it creates a sample_data dataframe with the sample_names (as "SAMPLE" variable)</p></li>
+<li><p>If there is no tax_table, it creates a 1-column tax_table matrix with the taxa_names, and calls the rank "unique"</p></li>
+<li><p>If remove_undetected = TRUE, it removes taxa where <code><a href='https://rdrr.io/pkg/phyloseq/man/taxa_sums.html'>phyloseq::taxa_sums()</a></code> is equal to zero, with a warning</p></li>
 </ul>
 
     </div>

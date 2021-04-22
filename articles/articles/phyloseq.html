@@ -68,6 +68,9 @@
     <li>
       <a href="../../articles/articles/tax-fixing.html">Fixing your tax_table</a>
     </li>
+    <li>
+      <a href="../../articles/ordination.html">Ordination plots</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -266,8 +269,8 @@
   <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Genus"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="../../reference/ps_arrange.html">ps_arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">Bacteroides</span><span class="op">)</span>, .target <span class="op">=</span> <span class="st">"otu_table"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="../../reference/ps_extra-accessors.html">otu_get</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># get the otu table</span>
-  <span class="va">.</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">7</span><span class="op">]</span> <span class="co"># show only a subset of the otu_table</span>
-<span class="co">#&gt; OTU Table:          [7 taxa and 9 samples]</span>
+  <span class="va">.</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span> <span class="co"># show only a subset of the otu_table</span>
+<span class="co">#&gt; OTU Table:          [6 taxa and 9 samples]</span>
 <span class="co">#&gt;                      taxa are columns</span>
 <span class="co">#&gt;      Prevotella Clostridium_XlVa Hallella Veillonella Bacteroides Blautia</span>
 <span class="co">#&gt; 009A       4480              462        4         250        1542       0</span>
@@ -279,16 +282,6 @@
 <span class="co">#&gt; 114C          0               44        0           6           0     236</span>
 <span class="co">#&gt; 120D          0                0        0           0           0       0</span>
 <span class="co">#&gt; 164A          0                0        0           0           0       0</span>
-<span class="co">#&gt;      Enterococcus</span>
-<span class="co">#&gt; 009A           12</span>
-<span class="co">#&gt; 195A            0</span>
-<span class="co">#&gt; 166A            1</span>
-<span class="co">#&gt; 099A            0</span>
-<span class="co">#&gt; 186A           22</span>
-<span class="co">#&gt; 038A            0</span>
-<span class="co">#&gt; 114C            0</span>
-<span class="co">#&gt; 120D          134</span>
-<span class="co">#&gt; 164A          602</span>
 
 <span class="co"># Plot samples' compositions in this order</span>
 <span class="va">partial_ps</span> <span class="op">%&gt;%</span> 
@@ -328,7 +321,7 @@ If you remove many samples from your dataset, often your phyloseq object will be
 <span class="co">#&gt;  collate  en_US.UTF-8                 </span>
 <span class="co">#&gt;  ctype    en_US.UTF-8                 </span>
 <span class="co">#&gt;  tz       UTC                         </span>
-<span class="co">#&gt;  date     2021-04-21                  </span>
+<span class="co">#&gt;  date     2021-04-22                  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ─ Packages ───────────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt;  package      * version  date       lib source                               </span>
@@ -381,7 +374,7 @@ If you remove many samples from your dataset, often your phyloseq object will be
 <span class="co">#&gt;  memoise        2.0.0    2021-01-26 [1] CRAN (R 4.0.2)                       </span>
 <span class="co">#&gt;  mgcv           1.8-34   2021-02-16 [2] CRAN (R 4.0.5)                       </span>
 <span class="co">#&gt;  microbiome     1.12.0   2020-10-27 [1] Bioconductor                         </span>
-<span class="co">#&gt;  microViz     * 0.7.2    2021-04-21 [1] local                                </span>
+<span class="co">#&gt;  microViz     * 0.7.2    2021-04-22 [1] local                                </span>
 <span class="co">#&gt;  multtest       2.46.0   2020-10-27 [1] Bioconductor                         </span>
 <span class="co">#&gt;  munsell        0.5.0    2018-06-12 [1] CRAN (R 4.0.2)                       </span>
 <span class="co">#&gt;  nlme           3.1-152  2021-02-04 [2] CRAN (R 4.0.5)                       </span>

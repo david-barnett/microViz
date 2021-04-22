@@ -123,6 +123,9 @@ The tax_table produced when using top_N is otherwise INVALID FOR MOST OTHER ANAL
     <li>
       <a href="../articles/articles/tax-fixing.html">Fixing your tax_table</a>
     </li>
+    <li>
+      <a href="../articles/ordination.html">Ordination plots</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -310,8 +313,8 @@ which should then result in (much) shorter unique names at the aggregation rank.
 #&gt; phyloseq info:
 #&gt; tax_agg = Genus tax_transform = NA</div><div class='input'>
 <span class='co'># you can replace unknown values with `tax_fix()`</span>
-
-<span class='co'># default tax_fix settings won't catch this long unknown</span>
+<span class='co'># which will fix most problems, like the common "g__" and "s__"</span>
+<span class='co'># but default tax_fix settings won't catch this long unknown</span>
 <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html'>tax_table</a></span><span class='op'>(</span><span class='va'>dietswap</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>13</span><span class='op'>:</span><span class='fl'>17</span>, <span class='st'>"Family"</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='st'>"some_unknown_family"</span>
 <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='tax_fix.html'>tax_fix</a></span><span class='op'>(</span>unknowns <span class='op'>=</span> <span class='st'>"some_unknown_family"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
@@ -324,7 +327,9 @@ which should then result in (much) shorter unique names at the aggregation rank.
 #&gt; tax_table()   Taxonomy Table:    [ 25 taxa by 2 taxonomic ranks ]
 #&gt; 
 #&gt; phyloseq info:
-#&gt; tax_agg = Family tax_transform = NA</div></pre>
+#&gt; tax_agg = Family tax_transform = NA</div><div class='input'>
+<span class='co'># try tax_fix_interactive() for more help</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
