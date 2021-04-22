@@ -10,6 +10,7 @@
 [![DOI](https://zenodo.org/badge/307119750.svg)](https://zenodo.org/badge/latestdoi/307119750)
 [![Docker Cloud Build
 Status](https://img.shields.io/docker/cloud/build/barnettdavid/microviz-rocker-verse)](https://hub.docker.com/r/barnettdavid/microviz-rocker-verse)
+[![status](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa/status.svg)](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa)
 
 <!-- badges: end -->
 
@@ -227,8 +228,8 @@ aitchison_perm <- dist_permanova(
   variables = "bmi_group + female"
 )
 #> Dropping samples with missings: 2
-#> 2021-04-21 22:06:38 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2021-04-21 22:06:38 - Finished PERMANOVA
+#> 2021-04-22 14:35:58 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2021-04-22 14:35:58 - Finished PERMANOVA
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
 #>            Df   SumOfSqs         R2        F Pr(>F)
@@ -250,8 +251,8 @@ your permanova directly using the ord\_plot function with constraints.
 ``` r
 perm2 <- dist_permanova(data = aitchison_dists, variables = c("weight", "female"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2021-04-21 22:06:38 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2021-04-21 22:06:39 - Finished PERMANOVA
+#> 2021-04-22 14:35:58 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2021-04-22 14:35:59 - Finished PERMANOVA
 perm_get(perm2)
 #> Permutation test for adonis under reduced model
 #> Marginal effects of terms
@@ -333,7 +334,7 @@ devtools::session_info()
 #>  collate  en_GB.UTF-8                 
 #>  ctype    en_GB.UTF-8                 
 #>  tz       Europe/Amsterdam            
-#>  date     2021-04-21                  
+#>  date     2021-04-22                  
 #> 
 #> ─ Packages ───────────────────────────────────────────────────────────────────────────────────────
 #>  package        * version  date       lib source        
