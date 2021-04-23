@@ -1,3 +1,3 @@
-FROM rocker/verse:4.0.4
+FROM rocker/verse:latest
 
 RUN R -e "remotes::install_github('david-barnett/microViz')"
