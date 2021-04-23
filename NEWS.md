@@ -1,3 +1,7 @@
+# microViz (development version)
+
+- Removed deprecated tax_fill_unknowns
+
 # microViz 0.7.3
 
 - Fix phyloseq_validate verbose = FALSE.
