@@ -114,8 +114,9 @@
 <ul>
 <li><p><a href="https://david-barnett.github.io/microViz/articles/articles/phyloseq.html">Working with phyloseq objects</a></p></li>
 <li><p><a href="https://david-barnett.github.io/microViz/articles/articles/tax-fixing.html">Fixing your taxa table with tax_fix</a></p></li>
+<li><p><a href="https://david-barnett.github.io/microViz/articles/ordination.html">Creating ordination plots</a> (e.g. PCA or PCoA)</p></li>
 <li><p><a href="https://david-barnett.github.io/microViz/articles/articles/Visualising-compositions.html">Visualising taxonomic compositions with customised barplots</a></p></li>
-<li><p>(more coming soon! raise an issue on github if you have questions/requests)</p></li>
+<li><p>(more coming soon! Post on <a href="https://github.com/david-barnett/microViz/discussions">GitHub discussions</a> if you have questions/requests)</p></li>
 </ul>
 </li>
 <li><p>The <a href="https://david-barnett.github.io/microViz/news/index.html">changelog</a> describes important changes in new microViz package versions</p></li>
@@ -141,7 +142,7 @@
 <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu">install</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"phyloseq"</span>, <span class="st">"microbiome"</span><span class="op">)</span><span class="op">)</span>
 
 <span class="co"># # Installing the latest "released" version of this package # #</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"david-barnett/microViz@0.7.2"</span><span class="op">)</span> <span class="co"># check 0.7.2 is the latest release</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"david-barnett/microViz@0.7.3"</span><span class="op">)</span> <span class="co"># check 0.7.3 is the latest release</span>
 
 <span class="co"># # If you encounter bugs: please try installing the very latest development version:</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"david-barnett/microViz"</span><span class="op">)</span>
@@ -266,8 +267,8 @@
   variables <span class="op">=</span> <span class="st">"bmi_group + female"</span>
 <span class="op">)</span>
 <span class="co">#&gt; Dropping samples with missings: 2</span>
-<span class="co">#&gt; 2021-04-22 14:35:58 - Starting PERMANOVA with 99 perms with 1 processes</span>
-<span class="co">#&gt; 2021-04-22 14:35:58 - Finished PERMANOVA</span>
+<span class="co">#&gt; 2021-04-22 23:45:27 - Starting PERMANOVA with 99 perms with 1 processes</span>
+<span class="co">#&gt; 2021-04-22 23:45:27 - Finished PERMANOVA</span>
 <span class="co"># view the permanova results</span>
 <span class="fu"><a href="reference/ps_extra-accessors.html">perm_get</a></span><span class="op">(</span><span class="va">aitchison_perm</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt;            Df   SumOfSqs         R2        F Pr(&gt;F)</span>
@@ -287,8 +288,8 @@
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">perm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/dist_permanova.html">dist_permanova</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">aitchison_dists</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"female"</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">321</span><span class="op">)</span>
 <span class="co">#&gt; Dropping samples with missings: 2</span>
-<span class="co">#&gt; 2021-04-22 14:35:58 - Starting PERMANOVA with 999 perms with 1 processes</span>
-<span class="co">#&gt; 2021-04-22 14:35:59 - Finished PERMANOVA</span>
+<span class="co">#&gt; 2021-04-22 23:45:27 - Starting PERMANOVA with 999 perms with 1 processes</span>
+<span class="co">#&gt; 2021-04-22 23:45:28 - Finished PERMANOVA</span>
 <span class="fu"><a href="reference/ps_extra-accessors.html">perm_get</a></span><span class="op">(</span><span class="va">perm2</span><span class="op">)</span>
 <span class="co">#&gt; Permutation test for adonis under reduced model</span>
 <span class="co">#&gt; Marginal effects of terms</span>
