@@ -40,15 +40,20 @@
 
 
 <meta property="og:title" content="Statistical modelling for individual taxa in a phyloseq — Taxon-modelling" />
-<meta property="og:description" content="tax_model provides a simple framework to statistically model the abundance of individual taxa in your data.
-You can choose which type of statistical model you want to fit, and you can choose at which rank and (optionally) which specific taxa to fit statistical models for.
+<meta property="og:description" content="tax_model provides a simple framework to statistically model the abundance
+of individual taxa in your data.
+You can choose which type of statistical model you want to fit, and you can
+choose at which rank and (optionally) which specific taxa to fit statistical models for.
 tax_model takes a phyloseq and returns a list of statistical models, one model for each taxon.
-The same independent variables are used for all models, as specified in variables or formula argument (latter takes precedence).
-taxatree_models runs tax_model on every taxon at multiple taxonomic ranks (you choose which ranks with the plural tax_levels argument),
+The same independent variables are used for all models,
+as specified in variables or formula argument (latter takes precedence).
+taxatree_models runs tax_model on every taxon at multiple taxonomic ranks
+(you choose which ranks with the plural tax_levels argument),
 and returns the results as a named nested list designed for use with taxatree_plots.
 One list per rank, one model per taxon at each rank.
 type = &quot;bbdml&quot; will run beta binomial regression model(s) using the corncob package.
-For bbdml the same formula/variables is/are used for modelling both the abundance and dispersion parameters." />
+For bbdml the same formula/variables is/are used for modelling both the
+abundance and dispersion parameters." />
 
 
 
@@ -80,7 +85,7 @@ For bbdml the same formula/variables is/are used for modelling both the abundanc
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.3.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.3.9004</span>
       </span>
     </div>
 
@@ -152,15 +157,20 @@ For bbdml the same formula/variables is/are used for modelling both the abundanc
     </div>
 
     <div class="ref-description">
-    <p><code>tax_model</code> provides a simple framework to statistically model the abundance of individual taxa in your data.
-You can choose which type of statistical model you want to fit, and you can choose at which rank and (optionally) which specific taxa to fit statistical models for.
+    <p><code>tax_model</code> provides a simple framework to statistically model the abundance
+of individual taxa in your data.
+You can choose which type of statistical model you want to fit, and you can
+choose at which rank and (optionally) which specific taxa to fit statistical models for.
 <code>tax_model</code> takes a phyloseq and returns a list of statistical models, one model for each taxon.
-The same independent variables are used for all models, as specified in <code>variables</code> or <code>formula</code> argument (latter takes precedence).</p>
-<p><code>taxatree_models</code> runs <code>tax_model</code> on every taxon at multiple taxonomic ranks (you choose which ranks with the plural <code>tax_levels</code> argument),
+The same independent variables are used for all models,
+as specified in <code>variables</code> or <code>formula</code> argument (latter takes precedence).</p>
+<p><code>taxatree_models</code> runs <code>tax_model</code> on every taxon at multiple taxonomic ranks
+(you choose which ranks with the plural <code>tax_levels</code> argument),
 and returns the results as a named nested list designed for use with <code>taxatree_plots</code>.
 One list per rank, one model per taxon at each rank.</p>
 <p><code>type = "bbdml"</code> will run beta binomial regression model(s) using the <code>corncob</code> package.
-For bbdml the same formula/variables is/are used for modelling both the abundance and dispersion parameters.</p>
+For bbdml the same formula/variables is/are used for modelling both the
+abundance and dispersion parameters.</p>
     </div>
 
     <pre class="usage"><span class='fu'>tax_model</span><span class='op'>(</span>
@@ -280,7 +290,7 @@ Run a line like this beforehand: <code><a href='https://rdrr.io/pkg/future/man/p
 </div><div class='output co'>#&gt; <span class='message'>Modelling: G: Bacteroides fragilis et rel.</span></div><div class='input'><span class='co'># Model all taxa at multiple taxonomic ranks (ranks 1 and 2)</span>
 <span class='co'># using only female variable as predictor</span>
 <span class='va'>models4</span> <span class='op'>&lt;-</span> <span class='fu'>taxatree_models</span><span class='op'>(</span><span class='va'>ps</span>, tax_levels <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, formula <span class='op'>=</span> <span class='op'>~</span><span class='va'>female</span>, verbose <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>2021-04-24 14:02:26 - modelling at level: Phylum</span></div><div class='output co'>#&gt; <span class='message'>2021-04-24 14:02:27 - modelling at level: Family</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>2021-04-24 20:44:38 - modelling at level: Phylum</span></div><div class='output co'>#&gt; <span class='message'>2021-04-24 20:44:40 - modelling at level: Family</span></div><div class='input'>
 <span class='co'># modelling proportion with simple linear regression is also possible via type = lm</span>
 <span class='co'># and transforming the taxa to compositional first</span>
 <span class='va'>models_lm</span> <span class='op'>&lt;-</span> <span class='va'>ps</span> <span class='op'>%&gt;%</span>
