@@ -50,17 +50,22 @@ taxatree_models(
 named list of model objects or list of lists
 }
 \description{
-\code{tax_model} provides a simple framework to statistically model the abundance of individual taxa in your data.
-You can choose which type of statistical model you want to fit, and you can choose at which rank and (optionally) which specific taxa to fit statistical models for.
+\code{tax_model} provides a simple framework to statistically model the abundance
+of individual taxa in your data.
+You can choose which type of statistical model you want to fit, and you can
+choose at which rank and (optionally) which specific taxa to fit statistical models for.
 \code{tax_model} takes a phyloseq and returns a list of statistical models, one model for each taxon.
-The same independent variables are used for all models, as specified in \code{variables} or \code{formula} argument (latter takes precedence).
+The same independent variables are used for all models,
+as specified in \code{variables} or \code{formula} argument (latter takes precedence).
 
-\code{taxatree_models} runs \code{tax_model} on every taxon at multiple taxonomic ranks (you choose which ranks with the plural \code{tax_levels} argument),
+\code{taxatree_models} runs \code{tax_model} on every taxon at multiple taxonomic ranks
+(you choose which ranks with the plural \code{tax_levels} argument),
 and returns the results as a named nested list designed for use with \code{taxatree_plots}.
 One list per rank, one model per taxon at each rank.
 
 \code{type = "bbdml"} will run beta binomial regression model(s) using the \code{corncob} package.
-For bbdml the same formula/variables is/are used for modelling both the abundance and dispersion parameters.
+For bbdml the same formula/variables is/are used for modelling both the
+abundance and dispersion parameters.
 }
 \details{
 \code{tax_model} and \code{taxatree_models} can use parallel processing with the \code{future} package.

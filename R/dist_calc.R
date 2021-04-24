@@ -88,7 +88,7 @@ dist_calc <- function(data,
     if (identical(ps@phy_tree, NULL)) {
       warning("unifrac distances require un-aggregated taxa and a phylogenetic tree.")
     }
-    if(!requireNamespace("GUniFrac", quietly = TRUE)) {
+    if (!requireNamespace("GUniFrac", quietly = TRUE)) {
       stop("You need to install package 'GUniFrac' to use unifrac distances.")
     }
 
