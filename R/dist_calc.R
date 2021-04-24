@@ -88,6 +88,10 @@ dist_calc <- function(data,
     if (identical(ps@phy_tree, NULL)) {
       warning("unifrac distances require un-aggregated taxa and a phylogenetic tree.")
     }
+    if(!requireNamespace("GUniFrac", quietly = TRUE)) {
+      stop("You need to install package 'GUniFrac' to use unifrac distances.")
+    }
+
     # much faster than phyloseq version of unifrac measures and results are the same (to floating point precision)
     distMats <- GUniFrac::GUniFrac(
       otu.tab = otu_get(ps),
