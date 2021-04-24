@@ -2,22 +2,18 @@ app <- ShinyDriver$new("../../", seed = 1)
 app$snapshotInit("mytest")
 
 app$setInputs(min_char = 0)
+tmp <- app$waitForValue("view_rows_all", iotype = "input", ignore = list(NULL))
 app$snapshot()
+app$setInputs(selected = "Anaerostipes caccae et rel.")
 app$snapshot()
-app$setInputs(selected = "Firmicutes")
+app$setInputs(highlight = "Actinomycetaceae")
 app$snapshot()
-app$setInputs(highlight = "Aerococcus")
+app$setInputs(tab = "fixed")
+tmp <- app$waitForValue("in_tt_rows_all", iotype = "input", ignore = list(NULL))
 app$snapshot()
+app$setInputs(tab = "tips")
 app$snapshot()
-app$setInputs(suffix = "current")
-app$setInputs(sep = " ...")
-app$setInputs(selected = character(0))
-app$setInputs(selected = "Anaerofustis")
-app$snapshot()
+rm(tmp)
 
-# https://github.com/rfaelens/exampleShinyTest/blob/master/tests/shinyTest/tests/test.R
-# wait for the process to close gracefully
-# this allows covr to write out the coverage results
-p <- app$.__enclos_env__$private$shinyProcess
-p$interrupt()
-p$wait()
+# After making changes to the test script, run it with:
+# testApp("tests/testthat/apps/tax_fix_interactive", "mytest.R")

@@ -144,13 +144,16 @@ tax_fix_interactive <- function(data,
         width = 10,
         shiny::br(),
         shiny::tabsetPanel(
+          id = "tab",
           shiny::tabPanel(
             title = "Full tax_table (check for longer unknowns to add?)",
+            value = "full",
             shiny::br(),
             DT::dataTableOutput("view")
           ),
           shiny::tabPanel(
             title = "Fixed taxa (see rows that will be altered, and to what)",
+            value = "fixed",
             shiny::h4("Before"),
             DT::dataTableOutput("in_tt"),
             shiny::br(),
@@ -160,6 +163,7 @@ tax_fix_interactive <- function(data,
           ),
           shiny::tabPanel(
             title = "Click here for tips!",
+            value = "tips",
             shiny::htmlOutput(outputId = "tips")
           )
         )

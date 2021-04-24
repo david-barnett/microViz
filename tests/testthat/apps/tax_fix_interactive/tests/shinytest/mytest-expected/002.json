@@ -3,9 +3,10 @@
     "anon_uniq": true,
     "highlight": "",
     "min_char": 0,
-    "selected": null,
+    "selected": "Anaerostipes caccae et rel.",
     "sep": " ",
     "suffix": "classified",
+    "tab": "full",
     "view_cell_clicked": {
 
     },
@@ -282,7 +283,7 @@
     "view_state": null
   },
   "output": {
-    "code": "your_phyloseq %>%\n tax_fix(\n  min_length = 0,\n  unknowns = c(\"\"),\n  sep = \" \", anon_unique = TRUE,\n  suffix_rank = \"classified\"\n )",
+    "code": "your_phyloseq %>%\n tax_fix(\n  min_length = 0,\n  unknowns = c(\"Anaerostipes caccae et rel.\"),\n  sep = \" \", anon_unique = TRUE,\n  suffix_rank = \"classified\"\n )",
     "too_short": "character(0)",
     "view": {
       "x": {
@@ -307,7 +308,7 @@
               "targets": 0
             }
           ],
-          "rowCallback": "function(row, data, displayNum, displayIndex, dataIndex) {\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'background-color':value == \"NA\" ? \"red\" : null});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'background-color':value == \"NA\" ? \"red\" : null});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'background-color':value == \"NA\" ? \"red\" : null});\n}",
+          "rowCallback": "function(row, data, displayNum, displayIndex, dataIndex) {\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'background-color':value == \"NA\" ? \"red\" : value == \"Anaerostipes caccae et rel.\" ? \"red\" : null});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'background-color':value == \"NA\" ? \"red\" : value == \"Anaerostipes caccae et rel.\" ? \"red\" : null});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'background-color':value == \"NA\" ? \"red\" : value == \"Anaerostipes caccae et rel.\" ? \"red\" : null});\n}",
           "ajax": {
             "type": "POST",
             "data": "function(d) {\nd.search.caseInsensitive = true;\nd.search.smart = true;\nd.escape = true;\nvar encodeAmp = function(x) { x.value = x.value.replace(/&/g, \"%26\"); }\nencodeAmp(d.search);\n$.each(d.columns, function(i, v) {encodeAmp(v.search);});\n}"
