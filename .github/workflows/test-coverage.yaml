@@ -10,9 +10,11 @@ name: test-coverage
 
 jobs:
   test-coverage:
-    runs-on: macOS-latest
+    runs-on: ubuntu-20.04
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      NOT_CRAN: 'true'
+      RSPM: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"
     steps:
       - uses: actions/checkout@v2
 
@@ -34,13 +36,17 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
 
-      - name: Install XQuartz on macOS
-        run: brew install --cask xquartz
+      - name: Install system dependencies
+        run: |
+          while read -r cmd
+          do
+            eval sudo $cmd
+          done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "20.04"))')
 
       - name: Install dependencies
         run: |
           install.packages(c("remotes"))
-          remotes::install_deps(dependencies = TRUE, type = "binary")
+          remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("covr")
         shell: Rscript {0}
 
