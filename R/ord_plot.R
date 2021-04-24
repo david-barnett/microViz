@@ -203,7 +203,7 @@ ord_plot <-
       for (v in ellipses) {
         if (
           !is.null(v) && !(class(v) %in% c("logical", "numeric", "integer")) &&
-            !(v %in% c(variables, grDevices::colors()))
+            !(v %in% c(variables, grDevices::colors(), ggplot2_shapes()))
         ) {
           stop(v, " is not a variable in the sample metadata")
         }
@@ -475,5 +475,17 @@ get_plot_limits <- function(plot) {
       min = gb$layout$panel_params[[1]]$y.range[1],
       max = gb$layout$panel_params[[1]]$y.range[2]
     )
+  )
+}
+
+ggplot2_shapes <- function(){
+  c(
+    "circle", paste("circle", c("open", "filled", "cross", "plus", "small")),
+    "bullet",
+    "square", paste("square", c("open", "filled", "cross", "plus", "triangle")),
+    "diamond", paste("diamond", c("open", "filled", "plus")),
+    "triangle", paste("triangle", c("open", "filled", "square")),
+    paste("triangle down", c("open", "filled")),
+    "plus", "cross", "asterisk"
   )
 }

@@ -96,6 +96,9 @@ ord_explore <- function(data,
                         ...) {
   # SETUP -------------------------------------------------------------------
 
+  # widths of plots including space for legends, in inches
+  p_width <- c(7, 10)
+
   # create a SAMPLE id variable
   data$ps <- ps_mutate(data$ps, SAMPLE = phyloseq::sample_names(data$ps))
 
@@ -137,7 +140,7 @@ ord_explore <- function(data,
         shiny::tags$style(
           shiny::HTML(
             "body {
-              line-height: 1.2;
+              line-height: 1;
             }
             /* allow dropdown menus to show in split layout input blocks */
             .shiny-split-layout > div {
@@ -165,6 +168,19 @@ ord_explore <- function(data,
                 selected = c(sample_id, "SAMPLE")[[1]]
               )
             ),
+            # shape
+            shiny::splitLayout(
+              cellWidths = c("30%", "70%"),
+              shiny::helpText("Shape:"),
+              shiny::selectInput(
+                inputId = "ord_shape", label = NULL,
+                choices = list(
+                  Variable = phyloseq::sample_variables(ps),
+                  Fixed = ggplot2_shapes()
+                ),
+                selected = "circle filled"
+              )
+            ),
             shiny::splitLayout(
               cellWidths = c("30%", "70%"),
               shiny::helpText("Color:"),
@@ -177,30 +193,12 @@ ord_explore <- function(data,
                 selected = "gray"
               )
             ),
-            shiny::sliderInput(
-              inputId = "ord_alpha", label = "Point alpha",
-              value = 0.6, min = 0, max = 1, ticks = FALSE
-            ),
-            # shape
-            shiny::radioButtons(
-              inputId = "shape_var_type",
-              label = "Point shape:", inline = TRUE,
-              choices = c(
-                "Fixed" = "fixed",
-                "Variable" = "variable"
-              ),
-              selected = "fixed"
-            ),
             shiny::splitLayout(
-              cellWidths = c("35%", "65%"),
-              shiny::numericInput(
-                inputId = "ord_shape_num", label = NULL,
-                value = 21, min = 1, step = 1, max = 21
-              ),
-              shiny::selectInput(
-                inputId = "ord_shape_var", label = NULL,
-                choices = categorical_vars,
-                selected = NULL
+              cellWidths = c("30%", "70%"),
+              shiny::helpText("Alpha:"),
+              shiny::sliderInput(
+                inputId = "ord_alpha", label = NULL,
+                value = 0.6, min = 0, max = 1, ticks = FALSE
               )
             ),
             # size
@@ -303,7 +301,8 @@ ord_explore <- function(data,
               width = 11,
               # interactive ordination plot
               ggiraph::girafeOutput(
-                outputId = "ord_plot", height = "4.5in", width = "6in"
+                outputId = "ord_plot", height = "4.5in",
+                width = paste0(p_width[[1]], "in")
               )
             )
           ),
@@ -315,13 +314,15 @@ ord_explore <- function(data,
                 shiny::tabPanel(
                   title = "ggplot",
                   shiny::plotOutput(
-                    height = "5in", width = "6in", outputId = "comps_gg"
+                    outputId = "comps_gg",
+                    height = "5in", width = paste0(p_width[[2]], "in")
                   )
                 ),
                 shiny::tabPanel(
                   title = "girafe",
                   ggiraph::girafeOutput(
-                    outputId = "comps_girafe", height = "5in", width = "6in"
+                    outputId = "comps_girafe",
+                    height = "5in", width = paste0(p_width[[2]], "in")
                   )
                 )
               )
@@ -339,7 +340,7 @@ ord_explore <- function(data,
     output$ord_plot <- ggiraph::renderGirafe({
       p1 <- ord_plot(
         data,
-        shape = shape(),
+        shape = input$ord_shape,
         size = size(),
         colour = input$ord_colour,
         fill = input$ord_colour,
@@ -350,9 +351,12 @@ ord_explore <- function(data,
         ...
       ) +
         ggplot2::scale_shape_discrete(na.translate = TRUE, na.value = 1)
+
+      p1 <- legend_separate(p1, rel_widths = c(80, 20))
+
       p1 <- ggiraph::girafe(
         code = print(p1),
-        width_svg = 6, height_svg = 4.5,
+        width_svg = p_width[[1]], height_svg = 4.5,
         options = list(
           ggiraph::opts_hover(
             css = "fill:orange;stroke:black;cursor:pointer;",
@@ -367,13 +371,6 @@ ord_explore <- function(data,
       p1
     })
 
-    # ord_plot aesthetic vars
-    shape <- shiny::reactive({
-      switch(input$shape_var_type,
-        "fixed" = input$ord_shape_num,
-        "variable" = input$ord_shape_var
-      )
-    })
     size <- shiny::reactive({
       switch(input$size_var_type,
         "fixed" = input$ord_size_num,
@@ -385,20 +382,28 @@ ord_explore <- function(data,
 
     # static version comps
     output$comps_gg <- shiny::renderPlot({
-      comp_plot() + ggplot2::theme(
-        legend.text = ggplot2::element_text(size = 9)
+      legend_separate(
+        ggplot = comp_plot() + ggplot2::theme(
+          legend.text = ggplot2::element_text(size = 9),
+          legend.key.size = ggplot2::unit(8, "mm")
+        ),
+        rel_widths = c(70, 30)
       )
     })
 
     # girafe version
     output$comps_girafe <- ggiraph::renderggiraph({
-      ggiraph::girafe(
-        ggobj = comp_plot() +
+      gg <- legend_separate(
+        ggplot = comp_plot() +
           # TODO work out how to match static/interactive sizes properly
           ggplot2::theme(
             text = ggplot2::element_text(size = 8)
           ),
-        width_svg = 6, height_svg = 5, pointsize = 8,
+        rel_widths = c(70, 30)
+      )
+      ggiraph::girafe(
+        ggobj = gg,
+        width_svg = p_width[[2]], "in", height_svg = 5,
         options = list(
           # ggiraph::opts_sizing(rescale = FALSE),
           ggiraph::opts_zoom(min = 0.5, max = 3),
@@ -446,7 +451,8 @@ ord_explore <- function(data,
 
         p_comp <- p_comp +
           ggplot2::coord_flip() +
-          ggplot2::labs(x = NULL, y = NULL)
+          ggplot2::labs(x = NULL, y = NULL) +
+          ggplot2::theme(legend.justification = "left")
       } else {
         p_comp <- ggplot2::ggplot() +
           ggplot2::annotate(
@@ -541,4 +547,22 @@ ord_explore_palet_fun <- function(ps,
   palet <- c(palet, c(other = other))
 
   return(palet)
+}
+
+
+#' Use cowplot to place ggplot legend alongside plot
+#'
+#' This aims to ensure plot sizing remains the same,
+#' whether or not a legend is present
+#'
+#' @param ggplot a ggplot object with or without a legend
+#' @param rel_widths passed to cowplot::plot_grid
+#'
+#' @return
+#' @noRd
+legend_separate <- function(ggplot, rel_widths = c(3, 1)) {
+  leg <- cowplot::get_legend(ggplot)
+  ggplot <- ggplot + ggplot2::theme(legend.position = "none")
+  out <- cowplot::plot_grid(ggplot, leg, rel_widths = rel_widths)
+  return(out)
 }
