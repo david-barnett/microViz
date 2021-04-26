@@ -35,59 +35,67 @@
 #' @examples
 #' library(phyloseq)
 #' library(dplyr)
-#' data("enterotype")
 #'
 #' # simple example #
-#' taxa_names(enterotype)[1] <- "unclassified" # replaces the "-1" taxon name
-#' ps <- tax_fix(enterotype) # remove NA taxa
-#' ord1 <- ps %>%
-#'   dist_calc("bray") %>%
-#'   ord_calc(method = "PCoA")
+#' if (interactive()) {
+#'   data("enterotype")
+#'   taxa_names(enterotype)[1] <- "unclassified" # replaces the "-1" taxon name
+#'   ps <- tax_fix(enterotype) # remove NA taxa
+#'   ord1 <- ps %>%
+#'     tax_transform("identity", rank = "Genus") %>%
+#'     dist_calc("bray") %>%
+#'     ord_calc(method = "PCoA")
 #'
-#' # ord_explore(data = ord1, auto_caption = NA)
+#'   ord_explore(data = ord1, auto_caption = NA)
+#' }
 #'
 #' # constrained ordination example #
+#' if (interactive()) {
+#'   data("dietswap", package = "microbiome")
 #'
-#' data("dietswap", package = "microbiome")
+#'   # create a couple of numerical variables to use as constraints
+#'   dietswap <- dietswap %>%
+#'     ps_mutate(
+#'       weight = recode(bmi_group, obese = 3, overweight = 2, lean = 1),
+#'       female = if_else(sex == "female", true = 1, false = 0)
+#'     ) %>%
+#'     tax_agg("Genus")
 #'
-#' # create a couple of numerical variables to use as constraints
-#' dietswap <- dietswap %>%
-#'   ps_mutate(
-#'     weight = recode(bmi_group, obese = 3, overweight = 2, lean = 1),
-#'     female = if_else(sex == "female", true = 1, false = 0)
-#'   ) %>%
-#'   tax_agg("Genus")
+#'   constrained_aitchison_rda <- dietswap %>%
+#'     tax_transform("clr") %>%
+#'     ord_calc(constraints = c("weight", "female"))
 #'
-#' constrained_aitchison_rda <- dietswap %>%
-#'   tax_transform("clr") %>%
-#'   ord_calc(constraints = c("weight", "female"))
-#'
-#' # constrained_aitchison_rda %>%
-#' #   ord_explore(
-#' #     plot_taxa = 1:5, tax_lab_style = list(size = 3),
-#' #     constraint_lab_style = list(size = 4), auto_caption = 7
-#' #   )
+#'   constrained_aitchison_rda %>%
+#'     ord_explore(
+#'       plot_taxa = 1:5, tax_lab_style = list(size = 3),
+#'       constraint_lab_style = list(size = 4), auto_caption = 7
+#'     )
+#' }
 #' # try changing the point colour to bmi_group or similar
 #' # (style interactively! e.g. colour doesn't work as argument to ord_explore)
 #'
 #' # another dataset
-#' # microbiomeutilities::hmp2 %>%
-#' #   tax_fix() %>%
-#' #   dist_calc("aitchison") %>%
-#' #   ord_calc() %>%
-#' #   ord_explore()
+#' if (interactive()) {
+#'   microbiomeutilities::hmp2 %>%
+#'     tax_fix() %>%
+#'     dist_calc("aitchison") %>%
+#'     ord_calc() %>%
+#'     ord_explore()
+#' }
 #'
 #' # another dataset
-#' data("soilrep", package = "phyloseq")
-#' # test auto creation of SAMPLE var
-#' ps <- soilrep %>% ps_select(-Sample)
-#' # The barplot is actually quite useless with the 16000+ anonymous OTUs
-#' # in this dataset, but the 1000s of unmerged "other" categories do render
-#' # phyloseq_validate(ps) %>%
-#' #   tax_fix() %>%
-#' #   dist_calc("aitchison") %>%
-#' #   ord_calc() %>%
-#' #   ord_explore()
+#' if (interactive()) {
+#'   data("soilrep", package = "phyloseq")
+#'   # test auto creation of SAMPLE var
+#'   ps <- soilrep %>% ps_select(-Sample)
+#'   # The barplot is actually quite useless with the 16000+ anonymous OTUs
+#'   # in this dataset, but the 1000s of unmerged "other" categories do render
+#'   phyloseq_validate(ps) %>%
+#'     tax_fix() %>%
+#'     dist_calc("aitchison") %>%
+#'     ord_calc() %>%
+#'     ord_explore()
+#' }
 ord_explore <- function(data,
                         sample_id = NULL, # id var name for data_id ggiraph
                         seriate_method = "OLO_ward", # ordering samples
@@ -97,20 +105,23 @@ ord_explore <- function(data,
   # SETUP -------------------------------------------------------------------
 
   # widths of plots including space for legends, in inches
-  p_width <- c(7, 10)
+  p_width <- c(7, 9)
 
   # create a SAMPLE id variable
   data$ps <- ps_mutate(data$ps, SAMPLE = phyloseq::sample_names(data$ps))
 
-  # sample data of `data` used in ord_plot (but otu table not used by ord_plot)
-  ps <- ps_counts(data, warn = TRUE)
+  # get info about input data to initialise settings modal choices
+  info <- list(
+    rank = info_get(data)[["tax_agg"]],
+    trans = info_get(data)[["tax_transform"]],
+    scale = info_get(data)[["tax_scale"]],
+    dist = info_get(data)[["distMethod"]],
+    ord = info_get(data)[["ordMethod"]],
+    constraints = info_get(data)[["constraints"]],
+    conditions = info_get(data)[["conditions"]]
+  )
 
-  # dist needed if a distance-based seriate_method is requested as is default
-  dist <- info_get(data)[["distMethod"]]
-  if (is.na(dist)) {
-    dist <- "euclidean"
-    tax_transform_for_ordering <- info_get(data)[["tax_transform"]]
-  }
+  ps <- ps_get(data)
   samdat <- methods::as(phyloseq::sample_data(ps), "data.frame")
 
   # get list of certain types of variables for populating selectize lists
@@ -120,14 +131,6 @@ ord_explore <- function(data,
   categorical_vars <-
     colnames(samdat[, sapply(samdat, function(x) !is.numeric(x))])
 
-  # reorder samples based on hierarchical clustering
-  message("Ordering samples with ", seriate_method, "...")
-  ps_ordered <- ps_seriate(
-    ps,
-    dist = dist, method = seriate_method,
-    tax_transform = tax_transform_for_ordering
-  )
-  message("Finished ordering.\n")
   message("To stop the app: Click red stop button or hit Esc in the console")
 
   # APP ---------------------------------------------------------------------
@@ -155,12 +158,25 @@ ord_explore <- function(data,
       ),
       shiny::sidebarLayout(
         position = "left",
+        ## inputs UI ----------------------------------------------------------
         sidebarPanel = shiny::sidebarPanel(
           width = 3,
           shiny::fluidRow(
             shiny::h4("Ordination options"),
             shiny::splitLayout(
-              cellWidths = c("30%", "70%"),
+              cellWidths = c("30%", "30%", "30%"),
+              shiny::helpText("Dims:"),
+              shiny::numericInput(
+                inputId = "x1", label = NULL,
+                value = 1, min = 1, max = 15, step = 1
+              ),
+              shiny::numericInput(
+                inputId = "y1", label = NULL,
+                value = 2, min = 1, max = 15, step = 1
+              )
+            ),
+            shiny::splitLayout(
+              cellWidths = c("30%", "65%"),
               shiny::helpText("Click:"),
               shiny::selectInput(
                 inputId = "id_var", label = NULL,
@@ -170,7 +186,7 @@ ord_explore <- function(data,
             ),
             # shape
             shiny::splitLayout(
-              cellWidths = c("30%", "70%"),
+              cellWidths = c("30%", "65%"),
               shiny::helpText("Shape:"),
               shiny::selectInput(
                 inputId = "ord_shape", label = NULL,
@@ -182,7 +198,7 @@ ord_explore <- function(data,
               )
             ),
             shiny::splitLayout(
-              cellWidths = c("30%", "70%"),
+              cellWidths = c("30%", "65%"),
               shiny::helpText("Color:"),
               shiny::selectInput(
                 inputId = "ord_colour", label = NULL,
@@ -194,7 +210,7 @@ ord_explore <- function(data,
               )
             ),
             shiny::splitLayout(
-              cellWidths = c("30%", "70%"),
+              cellWidths = c("30%", "65%"),
               shiny::helpText("Alpha:"),
               shiny::sliderInput(
                 inputId = "ord_alpha", label = NULL,
@@ -223,20 +239,28 @@ ord_explore <- function(data,
                 selected = NULL
               )
             ),
+            shiny::actionButton(
+              inputId = "settings",
+              class = "btn-success",
+              label = "Ordination builder"
+            )
           ),
+          shiny::hr(),
           shiny::fluidRow(
             shiny::h4("Composition options"),
             shiny::splitLayout(
-              cellWidths = c("30%", "70%"),
+              cellWidths = c("30%", "65%"),
               shiny::helpText("Labels:"),
               shiny::selectInput(
                 inputId = "comp_label", label = NULL,
-                choices = union("SAMPLE", phyloseq::sample_variables(ps)),
+                choices = union(
+                  "SAMPLE", phyloseq::sample_variables(ps)
+                ),
                 selected = "SAMPLE"
               )
             ),
             shiny::splitLayout(
-              cellWidths = c("30%", "70%"),
+              cellWidths = c("30%", "65%"),
               shiny::helpText("Facets:"),
               shiny::selectInput(
                 inputId = "facet_by", label = NULL,
@@ -246,7 +270,7 @@ ord_explore <- function(data,
             ),
             # rank
             shiny::splitLayout(
-              cellWidths = c("30%", "70%"),
+              cellWidths = c("30%", "65%"),
               shiny::helpText("Rank:"),
               shiny::selectInput(
                 inputId = "tax_level_comp", label = NULL,
@@ -258,7 +282,7 @@ ord_explore <- function(data,
               )
             ),
             shiny::splitLayout(
-              cellWidths = c("30%", "70%"),
+              cellWidths = c("30%", "65%"),
               shiny::helpText("Order:"),
               shiny::selectInput(
                 inputId = "tax_order", label = NULL,
@@ -267,7 +291,7 @@ ord_explore <- function(data,
               )
             ),
             shiny::splitLayout(
-              cellWidths = c("45%", "55%"),
+              cellWidths = c("45%", "50%"),
               shiny::helpText("N Colors:"),
               shiny::sliderInput(
                 inputId = "ntaxa", label = NULL,
@@ -276,7 +300,7 @@ ord_explore <- function(data,
               )
             ),
             shiny::splitLayout(
-              cellWidths = c("45%", "55%"),
+              cellWidths = c("45%", "50%"),
               shiny::helpText("N Distinct:"),
               shiny::sliderInput(
                 inputId = "taxmax", label = NULL,
@@ -284,16 +308,20 @@ ord_explore <- function(data,
                 round = TRUE, ticks = FALSE
               )
             ),
-            shiny::checkboxInput(
-              inputId = "merge_other", label = "Merge other?",
-              value = TRUE
-            ),
-            shiny::checkboxInput(
-              inputId = "interactive", label = "Interactive bars?",
-              value = FALSE
+            shiny::splitLayout(
+              cellWidths = c("47.5%", "47.5%"),
+              shiny::checkboxInput(
+                inputId = "interactive", label = "Interactive",
+                value = TRUE
+              ),
+              shiny::checkboxInput(
+                inputId = "merge_other", label = "Merge other",
+                value = TRUE
+              )
             )
           )
         ),
+        ## plots UI ----------------------------------------------------------
         mainPanel = shiny::mainPanel(
           width = 9,
           shiny::fluidRow(
@@ -310,7 +338,7 @@ ord_explore <- function(data,
             shiny::column(
               width = 11, align = "center",
               shiny::tabsetPanel(
-                selected = "ggplot", type = "hidden", id = "tabs",
+                selected = "girafe", type = "hidden", id = "tabs",
                 shiny::tabPanel(
                   title = "ggplot",
                   shiny::plotOutput(
@@ -332,28 +360,184 @@ ord_explore <- function(data,
       )
     )
 
-  # SERVER ------------------------------------------------------------------
+  # SERVER --------------------------------------------------------------------
 
   server <- function(input, output, session) {
 
+    # settings modal ----------------------------------------------------------
+    ## modal dialog -----------------------------------------------------------
+    settingsModal <- shiny::reactive(
+      shiny::modalDialog(
+        shiny::h3("Ordination Builder"),
+        shiny::helpText("Choose options to modify ordination created:"),
+        shiny::selectizeInput(
+          inputId = "rank", label = "Rank",
+          selected = m_sel$rank,
+          choices = rev(phyloseq::rank_names(ps))
+        ),
+        shiny::selectizeInput(
+          inputId = "trans", label = "Transformation.",
+          choices = c(
+            "None (identity)" = "identity",
+            "Centred log ratio (clr)" = "clr",
+            "log10p", "compositional", "hellinger"
+          ),
+          selected = m_sel$trans
+        ),
+        shiny::selectizeInput(
+          inputId = "dist", label = "Distance",
+          choices = union(
+            c("none", "bray", "aitchison", "euclidean"),
+            unlist(phyloseq::distanceMethodList)
+          ),
+          selected = m_sel$distInfo
+        ),
+        shiny::selectizeInput(
+          inputId = "method", label = "Ordination method",
+          choices = c(
+            "auto (chooses for you)" = "auto",
+            "PCA (Principle Components Analysis)" = "PCA",
+            "PCoA (Principle Co-ordinates Analysis)" = "PCoA",
+            "RDA (Redundancy Analysis)" = "RDA",
+            "CAP (Constrained PCoA)" = "CAP",
+            "NMDS (Non-metric MDS)",
+            "CCA (Canonical Correspondence Analysis)" = "CCA"
+          ),
+          selected = m_sel$ordInfo
+        ),
+        footer = shiny::tagList(
+          shiny::modalButton("Cancel"),
+          shiny::actionButton(inputId = "build", "Build")
+        )
+      )
+    )
+    ## show modal -------------------------------------------------------------
+    # if data provided to ord_explore has no ordination, open settingsModal
+    shiny::observeEvent(
+      eventExpr = data,
+      handlerExpr = {
+        if (identical(ord_get(data), NULL)) {
+          shiny::showModal(ui = settingsModal(), session = session)
+        }
+      }
+    )
+
+    # Show settings modal when button is clicked.
+    shiny::observeEvent(input$settings, {
+      shiny::showModal(ui = settingsModal(), session = session)
+    })
+
+    ## modal memory -----------------------------------------------------------
+    ### selected --------------------------------------------------------------
+    # for remembering selected and possible choices in modal selectize inputs
+    # initialise selected choices
+    m_sel <- shiny::reactiveValues(
+      rank = if (is.na(info$rank)) "unique" else info$rank,
+      trans = if (is.na(info$trans)) "identity" else info$trans,
+      scale = if (is.na(info$scale)) "neither" else info$scale,
+      distInfo = if (is.na(info$dist)) "none" else info$dist,
+      ordInfo = if (is.na(info$ord)) "auto" else info$ord,
+      const = if (is.na(info$constraints)) NULL else info$constraints,
+      conds = if (is.na(info$conditions)) NULL else info$conditions,
+      x1 = 1, y1 = 2
+    )
+
+    # update selected choices whenever model selection confirmed
+    shiny::observeEvent(
+      eventExpr = input$build,
+      handlerExpr = {
+        m_sel$rank <- input$rank
+        m_sel$trans <- input$trans
+        m_sel$distInfo <- input$dist
+        m_sel$ordInfo <- input$method
+        # TODO scale inputs
+        # m_sel$scale <- input$scale
+        # TODO constraints and conditions inputs
+
+      }
+    )
+
+
+    ### choices ---------------------------------------------------------------
+    # TODO adjust choice availability dynamically to prevent user errors
+
+
+    # build ordination --------------------------------------------------------
+
+    ## initialise reactive data ----------------------------------------------
+    # initialise data reactive values with data provided
+    v <- shiny::reactiveValues(
+      dat = data, # for ord_plot
+      comp_dat = ps_seriate(
+        ps = ps_counts(data, warn = TRUE),
+        method = seriate_method,
+        tax_transform = shiny::isolate(m_sel$trans),
+        dist = setdiff(
+          c(shiny::isolate(m_sel$distInfo), "euclidean"), "none"
+        )[[1]]
+      ) # for comp_barplot (samples can be reordered)
+    )
+
+    # when build button clicked, update ordination and close modal
+    shiny::observeEvent(
+      eventExpr = input$build,
+      handlerExpr = {
+        out <- try(
+          expr = {
+            v$dat <- ord_build(
+              data = data,
+              rank = input$rank,
+              trans = input$trans,
+              dist = if (input$dist == "none") NA else input$dist,
+              method = input$method
+            )
+          }
+        )
+        if (inherits(out, "try-error")) {
+          shiny::showNotification(
+            ui = "Invalid build combination, try again!",
+            type = "error", session = session
+          )
+        } else {
+          shiny::removeModal(session = session)
+        }
+      }
+    )
+
     # ordination plot ---------------------------------------------------------
     output$ord_plot <- ggiraph::renderGirafe({
-      p1 <- ord_plot(
-        data,
-        shape = input$ord_shape,
-        size = size(),
-        colour = input$ord_colour,
-        fill = input$ord_colour,
-        alpha = input$ord_alpha,
-        interactive = TRUE,
-        data_id = input$id_var,
-        tooltip = input$id_var,
-        ...
-      ) +
-        ggplot2::scale_shape_discrete(na.translate = TRUE, na.value = 1)
+      if (identical(ord_get(v$dat), NULL)) {
+        # placeholder instructions if data does not have ordination already
+        p1 <- ggplot2::ggplot() +
+          ggplot2::annotate(
+            geom = "text", x = 0.1, y = 0.5, size = 3,
+            label = paste0(
+              "Click on the 'Ordination Builder' button.\n\n",
+              "(data provided to ord_explore does not contain an ordination)"
+            )
+          ) +
+          ggplot2::theme_void()
+      } else {
+        # create ordination ggplot
+        p1 <- ord_plot(
+          v$dat,
+          axes = c(input$x1, input$y1),
+          shape = input$ord_shape,
+          size = size(),
+          colour = input$ord_colour,
+          fill = input$ord_colour,
+          alpha = input$ord_alpha,
+          interactive = TRUE,
+          data_id = input$id_var,
+          tooltip = input$id_var,
+          ...
+        ) +
+          ggplot2::scale_shape_discrete(na.translate = TRUE, na.value = 1)
 
-      p1 <- legend_separate(p1, rel_widths = c(80, 20))
-
+        # (blank) legend in separate plot for consistent sizing of main plot
+        p1 <- legend_separate(p1, rel_widths = c(80, 20))
+      }
+      # make ggplot into interactive ggiraph object
       p1 <- ggiraph::girafe(
         code = print(p1),
         width_svg = p_width[[1]], height_svg = 4.5,
@@ -368,7 +552,7 @@ ord_explore <- function(data,
           ggiraph::opts_zoom(min = 0.5, max = 5)
         )
       )
-      p1
+      return(p1)
     })
 
     size <- shiny::reactive({
@@ -379,6 +563,97 @@ ord_explore <- function(data,
     })
 
     # composition plot --------------------------------------------------------
+
+    ## reorder samples on ord build -------------------------------------------
+    # reorder samples based on hierarchical clustering
+    shiny::observeEvent(
+      eventExpr = input$build,
+      handlerExpr = {
+        message("Ordering samples with ", seriate_method, "...")
+        v$comp_dat <- ps_seriate(
+          ps = v$comp_dat, method = seriate_method,
+          tax_transform = m_sel$trans,
+          dist = setdiff(x = c(m_sel$distInfo, "euclidean"), y = "none")[[1]]
+        )
+      }
+    )
+
+    ## tax order & colour -----------------------------------------------------
+    # order taxa using ALL samples
+    ordered_taxa <- shiny::reactive({
+      shiny::showNotification(
+        ui = " - Sorting taxa", duration = 2, session = session
+      )
+      tax_top(
+        data = v$comp_dat, n = NA,
+        by = get(input$tax_order),
+        rank = input$tax_level_comp
+      )
+    })
+    # set colour palette using ALL samples
+    # (depends on tax level of composition plot)
+    palet <- shiny::reactive({
+      shiny::showNotification(
+        ui = " - Setting taxa colour palette", duration = 2, session = session
+      )
+      ord_explore_palet_fun(
+        ps = v$comp_dat, tax_level = input$tax_level_comp,
+        top_by = get(input$tax_order)
+      )
+    })
+
+    ## build ggplot ----------------------------------------------------------
+
+    # make plot
+    comp_plot <- shiny::reactive({
+      # get ggiraph interactivity
+      selected_samples <- input$ord_plot_selected
+      # logical selection of kept samples
+      sample_kept <-
+        phyloseq::sample_data(v$comp_dat)[[input$id_var]] %in% selected_samples
+      if (sum(sample_kept) >= 2) {
+        # TODO fix issue that comp_barplot only works with 2+ samples
+        # select samples
+        ps_sel <-
+          phyloseq::prune_samples(x = v$comp_dat, samples = sample_kept)
+
+        facet_by <-
+          ifelse(input$facet_by == "NA", yes = NA, no = input$facet_by)
+
+        # plot composition of selected samples
+        p_comp <- ps_sel %>%
+          comp_barplot(
+            n_taxa = input$ntaxa,
+            tax_level = input$tax_level_comp,
+            tax_order = ordered_taxa(),
+            palette = palet(),
+            bar_outline_colour = "black",
+            sample_order = "default",
+            label = input$comp_label,
+            merge_other = input$merge_other,
+            interactive = TRUE,
+            max_taxa = input$taxmax,
+            facet_by = facet_by,
+            ncol = 1
+          )
+        p_comp <- p_comp +
+          ggplot2::coord_flip() +
+          ggplot2::labs(x = NULL, y = NULL) +
+          ggplot2::theme(legend.justification = "left")
+
+      } else {
+        p_comp <- ggplot2::ggplot() +
+          ggplot2::annotate(
+            geom = "text", x = 0.1, y = 0.5, size = 3,
+            label = paste0(
+              "Select 2 or more samples on the ordination plot above\n",
+              "either by clicking or by using the lasso selection tool"
+            )
+          ) +
+          ggplot2::theme_void()
+      }
+      p_comp
+    })
 
     # static version comps
     output$comps_gg <- shiny::renderPlot({
@@ -391,7 +666,8 @@ ord_explore <- function(data,
       )
     })
 
-    # girafe version
+    ## build girafe -----------------------------------------------------------
+    # interactive girafe composition plot
     output$comps_girafe <- ggiraph::renderggiraph({
       gg <- legend_separate(
         ggplot = comp_plot() +
@@ -416,76 +692,9 @@ ord_explore <- function(data,
       )
     })
 
-    # make plot
-    comp_plot <- shiny::reactive({
-      # get ggiraph interactivity
-      selected_samples <- input$ord_plot_selected
-      # logical selection of kept samples
-      sample_kept <-
-        phyloseq::sample_data(ps_ordered)[[input$id_var]] %in% selected_samples
-      if (sum(sample_kept) >= 2) {
-        # TODO fix issue that comp_barplot only works with 2+ samples
-        # select samples
-        ps_sel <-
-          phyloseq::prune_samples(x = ps_ordered, samples = sample_kept)
-
-        facet_by <-
-          ifelse(input$facet_by == "NA", yes = NA, no = input$facet_by)
-
-        # plot composition of selected samples
-        p_comp <- ps_sel %>%
-          comp_barplot(
-            n_taxa = input$ntaxa,
-            tax_level = input$tax_level_comp,
-            tax_order = ordered_taxa(),
-            palette = palet(),
-            bar_outline_colour = "black",
-            sample_order = "default",
-            label = input$comp_label,
-            merge_other = input$merge_other,
-            interactive = TRUE,
-            max_taxa = input$taxmax,
-            facet_by = facet_by,
-            ncol = 1
-          )
-
-        p_comp <- p_comp +
-          ggplot2::coord_flip() +
-          ggplot2::labs(x = NULL, y = NULL) +
-          ggplot2::theme(legend.justification = "left")
-      } else {
-        p_comp <- ggplot2::ggplot() +
-          ggplot2::annotate(
-            geom = "text", x = 0.1, y = 0.5, size = 3,
-            label = paste0(
-              "Select 2 or more samples on the ordination plot above\n",
-              "either by clicking or by using the lasso selection tool"
-            )
-          ) +
-          ggplot2::theme_void()
-      }
-      p_comp
-    })
-
-    # order taxa using whole population
-    ordered_taxa <- shiny::reactive({
-      shiny::showNotification(" - Sorting taxa", duration = 2)
-      tax_top(
-        data = ps_ordered, n = NA,
-        by = get(input$tax_order),
-        rank = input$tax_level_comp
-      )
-    })
-    # set colour palette (depends on tax level of composition plot)
-    palet <- shiny::reactive({
-      shiny::showNotification(" - Setting taxa colour palette", duration = 2)
-      ord_explore_palet_fun(
-        ps = ps_ordered, tax_level = input$tax_level_comp,
-        top_by = get(input$tax_order)
-      )
-    })
-
-    # message about lag with too many distinct taxa (and set maxtax = 50)
+    ## tabs & notifications --------------------------------------------------
+    # handling (de)selection of interactive and "merge other" checkboxes
+    # interactive and static plots exist on two separate tabs
     shiny::observeEvent(
       eventExpr = {
         input$interactive
@@ -500,13 +709,16 @@ ord_explore <- function(data,
             shiny::updateSliderInput(
               session = session, inputId = "taxmax", value = 40
             )
+            # warn about lag with too many distinct taxa (and set maxtax = 50)
             shiny::showNotification(
               "ALERT: Max Distinct taxa reduced to 40 to avoid freezing!",
-              duration = 10, closeButton = TRUE, type = "warning"
+              duration = 10, closeButton = TRUE, type = "warning",
+              session = session
             )
             shiny::showNotification(
               "Interactive bars lag if too many taxa and/or samples shown!",
-              duration = 20, closeButton = TRUE, type = "warning"
+              duration = 20, closeButton = TRUE, type = "warning",
+              session = session
             )
           }
         } else {
@@ -521,6 +733,22 @@ ord_explore <- function(data,
   shiny::shinyApp(ui = ui, server = server, options = app_options)
 }
 
+# Create ordination from data, bundling several steps
+ord_build <- function(data,
+                      rank = "unique",
+                      trans = "clr",
+                      dist = NA,
+                      method = "auto",
+                      ...) {
+  dat <- ps_counts(data, warn = TRUE)
+  dat <- tax_agg(ps = dat, rank = rank)
+  dat <- tax_transform(data = dat, transformation = trans)
+  if (!identical(dist, NA)) {
+    dat <- dist_calc(data = dat, dist = dist)
+  }
+  dat <- ord_calc(data = dat, method = method, ...)
+  return(dat)
+}
 
 #' Create fixed named palette for ord_explore: tax_name = colour
 #'

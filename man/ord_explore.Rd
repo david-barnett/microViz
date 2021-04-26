@@ -51,57 +51,65 @@ that grouping variable cannot be used to select those samples
 \examples{
 library(phyloseq)
 library(dplyr)
-data("enterotype")
 
 # simple example #
-taxa_names(enterotype)[1] <- "unclassified" # replaces the "-1" taxon name
-ps <- tax_fix(enterotype) # remove NA taxa
-ord1 <- ps \%>\%
-  dist_calc("bray") \%>\%
-  ord_calc(method = "PCoA")
+if (interactive()) {
+  data("enterotype")
+  taxa_names(enterotype)[1] <- "unclassified" # replaces the "-1" taxon name
+  ps <- tax_fix(enterotype) # remove NA taxa
+  ord1 <- ps \%>\%
+    tax_transform("identity", rank = "Genus") \%>\%
+    dist_calc("bray") \%>\%
+    ord_calc(method = "PCoA")
 
-# ord_explore(data = ord1, auto_caption = NA)
+  ord_explore(data = ord1, auto_caption = NA)
+}
 
 # constrained ordination example #
+if (interactive()) {
+  data("dietswap", package = "microbiome")
 
-data("dietswap", package = "microbiome")
+  # create a couple of numerical variables to use as constraints
+  dietswap <- dietswap \%>\%
+    ps_mutate(
+      weight = recode(bmi_group, obese = 3, overweight = 2, lean = 1),
+      female = if_else(sex == "female", true = 1, false = 0)
+    ) \%>\%
+    tax_agg("Genus")
 
-# create a couple of numerical variables to use as constraints
-dietswap <- dietswap \%>\%
-  ps_mutate(
-    weight = recode(bmi_group, obese = 3, overweight = 2, lean = 1),
-    female = if_else(sex == "female", true = 1, false = 0)
-  ) \%>\%
-  tax_agg("Genus")
+  constrained_aitchison_rda <- dietswap \%>\%
+    tax_transform("clr") \%>\%
+    ord_calc(constraints = c("weight", "female"))
 
-constrained_aitchison_rda <- dietswap \%>\%
-  tax_transform("clr") \%>\%
-  ord_calc(constraints = c("weight", "female"))
-
-# constrained_aitchison_rda \%>\%
-#   ord_explore(
-#     plot_taxa = 1:5, tax_lab_style = list(size = 3),
-#     constraint_lab_style = list(size = 4), auto_caption = 7
-#   )
+  constrained_aitchison_rda \%>\%
+    ord_explore(
+      plot_taxa = 1:5, tax_lab_style = list(size = 3),
+      constraint_lab_style = list(size = 4), auto_caption = 7
+    )
+}
 # try changing the point colour to bmi_group or similar
 # (style interactively! e.g. colour doesn't work as argument to ord_explore)
 
 # another dataset
-# microbiomeutilities::hmp2 \%>\%
-#   tax_fix() \%>\%
-#   dist_calc("aitchison") \%>\%
-#   ord_calc() \%>\%
-#   ord_explore()
+if (interactive()) {
+  microbiomeutilities::hmp2 \%>\%
+    tax_fix() \%>\%
+    dist_calc("aitchison") \%>\%
+    ord_calc() \%>\%
+    ord_explore()
+}
 
 # another dataset
-data("soilrep", package = "phyloseq")
-# test auto creation of SAMPLE var
-ps <- soilrep \%>\% ps_select(-Sample)
-# The barplot is actually quite useless with the 16000+ anonymous OTUs
-# in this dataset, but the 1000s of unmerged "other" categories do render
-# phyloseq_validate(ps) \%>\%
-#   tax_fix() \%>\%
-#   dist_calc("aitchison") \%>\%
-#   ord_calc() \%>\%
-#   ord_explore()
+if (interactive()) {
+  data("soilrep", package = "phyloseq")
+  # test auto creation of SAMPLE var
+  ps <- soilrep \%>\% ps_select(-Sample)
+  # The barplot is actually quite useless with the 16000+ anonymous OTUs
+  # in this dataset, but the 1000s of unmerged "other" categories do render
+  phyloseq_validate(ps) \%>\%
+    tax_fix() \%>\%
+    dist_calc("aitchison") \%>\%
+    ord_calc() \%>\%
+    ord_explore()
+}
 }
