@@ -10,11 +10,12 @@ ord_explore(
   seriate_method = "OLO_ward",
   tax_transform_for_ordering = "identity",
   app_options = list(launch.browser = TRUE),
+  plot_widths = c(6, 7),
   ...
 )
 }
 \arguments{
-\item{data}{ps_extra list output of ord_calc}
+\item{data}{ps_extra list output of ord_calc, or phyloseq}
 
 \item{sample_id}{name of sample ID variable to use as default for selecting samples}
 
@@ -24,17 +25,31 @@ ord_explore(
 
 \item{app_options}{passed to shinyApp() options argument}
 
+\item{plot_widths}{widths of plots in inches, including any legends
+(first number is ordination, second is composition barplot)}
+
 \item{...}{additional arguments passed to ord_plot}
 }
 \value{
 nothing, opens default browser
 }
 \description{
-A Shiny app used like an interactive version of ord_plot (taking the output of ord_calc).
+A Shiny app used like an interactive version of \code{ord_plot()}.
 You can select samples on an ordination plot and view their composition with stacked barplots.
 
-Once running: click and drag to select 2 or more samples to view their compositions.
-You can style the ordination plot points and compositional barplot using the options in the left panel.
+You can give the \code{ord_explore()} data argument either of the following:
+\itemize{
+\item the output of \code{ord_calc()} (i.e. a ps_extra with an ordination)
+\item a plain phyloseq object: \code{ord_explore()} will help you build an ordination
+}
+
+Once running:
+\enumerate{
+\item edit the ordination if required
+\item style the ordination plot (e.g. choose dimensions; set colour and size; ...)
+\item click or use the lasso tool to select 2 or more samples to view their compositions
+\item style the taxonomic compositions barplot
+}
 }
 \details{
 If you get an interactive error like the one below:
@@ -52,7 +67,13 @@ that grouping variable cannot be used to select those samples
 library(phyloseq)
 library(dplyr)
 
-# simple example #
+if (interactive()) {
+  corncob::ibd_phylo \%>\%
+    tax_fix() \%>\%
+    ord_explore()
+}
+
+# simple example with precalculated ordination #
 if (interactive()) {
   data("enterotype")
   taxa_names(enterotype)[1] <- "unclassified" # replaces the "-1" taxon name
@@ -62,7 +83,7 @@ if (interactive()) {
     dist_calc("bray") \%>\%
     ord_calc(method = "PCoA")
 
-  ord_explore(data = ord1, auto_caption = NA)
+  ord_explore(data = ord1, auto_caption = 6)
 }
 
 # constrained ordination example #
