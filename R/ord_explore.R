@@ -48,6 +48,7 @@
 #' library(phyloseq)
 #' library(dplyr)
 #'
+#' # example of quickstart approach with interactive ordination calculation #
 #' if (interactive()) {
 #'   corncob::ibd_phylo %>%
 #'     tax_fix() %>%
@@ -119,7 +120,7 @@ ord_explore <- function(data,
                         seriate_method = "OLO_ward", # ordering samples
                         tax_transform_for_ordering = "identity", # samples
                         app_options = list(launch.browser = TRUE), # shinyApp()
-                        plot_widths = c(6, 7),
+                        plot_widths = c(7, 9),
                         ...) {
   # SETUP -------------------------------------------------------------------
 
@@ -284,10 +285,10 @@ ord_explore <- function(data,
               shiny::splitLayout(
                 cellWidths = c("30%", "65%"),
                 shiny::helpText("Alpha:"),
-                shiny::selectInput(
+                shiny::selectizeInput(
                   inputId = "ord_alpha_var", label = NULL,
-                  choices = numerical_vars,
-                  selected = NULL
+                  choices = numerical_vars, selected = NULL,
+                  options = list(placeholder = 'numeric var?')
                 )
               )
             ),
@@ -310,10 +311,10 @@ ord_explore <- function(data,
               shiny::splitLayout(
                 cellWidths = c("30%", "65%"),
                 shiny::helpText("Size:"),
-                shiny::selectInput(
+                shiny::selectizeInput(
                   inputId = "ord_size_var", label = NULL,
-                  choices = numerical_vars,
-                  selected = NULL
+                  choices = numerical_vars, selected = NULL,
+                  options = list(placeholder = 'numeric var?')
                 )
               )
             )
@@ -391,7 +392,7 @@ ord_explore <- function(data,
                 shiny::helpText("N Distinct:"),
                 shiny::sliderInput(
                   inputId = "taxmax", label = NULL,
-                  min = 1, max = 500, value = 200, step = 1,
+                  min = 1, max = 500, value = 100, step = 1,
                   round = TRUE, ticks = FALSE
                 )
               )
@@ -476,39 +477,35 @@ ord_explore <- function(data,
         shiny::hr(),
         shiny::selectizeInput(
           inputId = "method", label = "Ordination method",
-          choices = c(
-            "auto (select options below!)" = "auto",
-            "PCA (Principle Components Analysis)" = "PCA",
-            "PCoA (Principle Co-ordinates Analysis)" = "PCoA",
-            "RDA (Redundancy Analysis)" = "RDA",
-            "CAP (Constrained PCoA)" = "CAP",
-            "NMDS (Non-metric MDS)" = "NMDS",
-            "CCA (Canonical Correspondence Analysis)" = "CCA"
+          choices = m_choices$ordInfo, selected = m_sel$ordInfo
+        ),
+        shiny::checkboxInput(
+          inputId = "concons",
+          label = "Constrain or condition ordination? (requires numeric vars)",
+          value = FALSE
+        ),
+        shiny::conditionalPanel(
+          condition = "input.concons == true",
+          shiny::selectizeInput(
+            inputId = "const", label = "Constraints", multiple = TRUE,
+            choices = m_choices$const, selected = m_sel$const
           ),
-          selected = m_sel$ordInfo
+          shiny::selectizeInput(
+            inputId = "conds", label = "Conditions", multiple = TRUE,
+            choices = m_choices$conds, selected = m_sel$conds
+          )
         ),
         shiny::selectizeInput(
-          inputId = "rank", label = "Rank",
-          selected = m_sel$rank,
-          choices = rev(phyloseq::rank_names(ps))
+          inputId = "dist", label = "Distance / Dissimilarity",
+          choices = m_choices$distInfo, selected = m_sel$distInfo
         ),
         shiny::selectizeInput(
-          inputId = "dist", label = "Distance",
-          choices = union(
-            c("none", "bray", "aitchison", "euclidean"),
-            unlist(phyloseq::distanceMethodList)
-          ),
-          selected = m_sel$distInfo
+          inputId = "rank", label = "Taxonomic Rank",
+          selected = m_sel$rank, choices = m_choices$rank
         ),
         shiny::selectizeInput(
-          inputId = "trans", label = "Transformation",
-          choices = c(
-            "No transformation (identity)" = "identity",
-            "Centred log ratio (clr)" = "clr",
-            "log base 10 with pseudocount (log10p)" = "log10p",
-            "compositional", "hellinger"
-          ),
-          selected = m_sel$trans
+          inputId = "trans", label = "Taxa transformation",
+          choices = m_choices$trans, selected = m_sel$trans
         ),
         footer = shiny::tagList(
           shiny::modalButton("Cancel", icon = shiny::icon("times")),
@@ -544,18 +541,18 @@ ord_explore <- function(data,
     ## modal memory -----------------------------------------------------------
     ### selected --------------------------------------------------------------
     # for remembering selected and possible choices in modal selectize inputs
-    # initialise selected choices
+    #### initialise selected choices ------------------------------------------
     m_sel <- shiny::reactiveValues(
       rank = if (is.na(info$rank)) "unique" else info$rank,
       trans = if (is.na(info$trans)) "identity" else info$trans,
-      scale = if (is.na(info$scale)) "neither" else info$scale,
+      # scale = if (is.na(info$scale)) "neither" else info$scale,
       distInfo = if (is.na(info$dist)) "none" else info$dist,
       ordInfo = if (is.na(info$ord)) "auto" else info$ord,
       const = if (is.na(info$constraints)) NULL else info$constraints,
-      conds = if (is.na(info$conditions)) NULL else info$conditions,
-      x1 = 1, y1 = 2
+      conds = if (is.na(info$conditions)) NULL else info$conditions
     )
 
+    #### update selected ------------------------------------------------------
     # update selected choices whenever model selection confirmed
     shiny::observeEvent(
       eventExpr = input$build,
@@ -575,6 +572,20 @@ ord_explore <- function(data,
     ### choices ---------------------------------------------------------------
     # TODO adjust choice availability dynamically to prevent user errors
 
+    #### initialise choices ---------------------------------------------------
+    m_choices <- shiny::reactiveValues(
+      rank = rev(phyloseq::rank_names(ps)),
+      trans = trans_choices(type = "all"),
+      # scale = if (is.na(info$scale)) "neither" else info$scale,
+      distInfo = union(
+        c("none", "bray", "aitchison", "euclidean", "gunifrac"),
+        unlist(phyloseq::distanceMethodList)
+      ),
+      ordInfo = ord_choices(type = "all"),
+      const = numerical_vars, conds = numerical_vars
+    )
+
+    #### update choices -------------------------------------------------------
 
     # Edit Ordination --------------------------------------------------------
 
@@ -698,11 +709,21 @@ ord_explore <- function(data,
     })
 
     size <- shiny::reactive({
-      if (isTRUE(input$sizeFixed)) input$ord_size_num else input$ord_size_var
+      if (isTRUE(input$sizeFixed)) {
+        input$ord_size_num
+      } else {
+        shiny::req(input$ord_size_var, cancelOutput = TRUE)
+      }
     })
     alpha <- shiny::reactive({
-      if (isTRUE(input$alphaFixed)) input$ord_alpha_num else input$ord_alpha_var
+      if (isTRUE(input$alphaFixed)) {
+        input$ord_alpha_num
+      } else {
+        shiny::req(input$ord_alpha_var, cancelOutput = TRUE)
+      }
     })
+
+    # barplot compositions ----------------------------------------------------
 
     ## tax order & colour -----------------------------------------------------
     # order taxa using ALL samples
@@ -756,9 +777,9 @@ ord_explore <- function(data,
             bar_outline_colour = "black",
             sample_order = "default",
             label = input$comp_label,
-            merge_other = input$mergeOther,
             interactive = TRUE,
             max_taxa = input$taxmax,
+            merge_other = input$mergeOther,
             facet_by = facet_by,
             ncol = 1
           )
@@ -853,6 +874,9 @@ ord_explore <- function(data,
   shiny::shinyApp(ui = ui, server = server, options = app_options)
 }
 
+
+# helper functions ------------------------------------------------------------
+
 # Create ordination from data, bundling several steps
 ord_build <- function(data,
                       rank = "unique",
@@ -926,4 +950,56 @@ ggmessage <- function(message, size = 3) {
     ) +
     ggplot2::theme_void()
   return(plot)
+}
+
+#' Helps provide list of named choices for ordination builder modal input
+#'
+#' Finds intersection of type choices? (if not all)
+#' e.g. constrained AND uses distance
+#'
+#' type options below: (provide multiple to be specific)
+#' "all", "unconstrained", "constrained", "dist", "noDist"
+#'
+#' @param type vector specifying which type of ordinations to provide
+#'
+#' @return named vector of choices
+ord_choices <- function(type) {
+  # individual options
+  all <- c(
+    "auto" = "auto (select options below!)",
+    "PCA" = "PCA (Principle Components Analysis)",
+    "PCoA" = "PCoA (Principle Co-ordinates Analysis)",
+    "RDA" = "RDA (Redundancy Analysis)",
+    "CAP" = "CAP (Constrained PCoA)",
+    "CCA" = "CCA (Canonical Correspondence Analysis)",
+    "NMDS" = "NMDS (Non-metric MDS)"
+  )
+  # overlapping type lists
+  l <- list(
+    all = names(all),
+    unconstrained = c("PCA", "PCoA", "NMDS"),
+    constrained = c("RDA", "CAP", "CCA"),
+    dist = c("PCoA", "CAP", "NMDS"),
+    noDist = c("PCA", "RDA", "CCA")
+  )
+  # select choices by name, with value as long description
+  choices <- purrr::reduce(l[type], intersect)
+  choices_desc <- all[union("auto", choices)]
+  # flip names and values and return, ready for use as selectize input choices
+  out <- setNames(names(choices_desc), choices_desc)
+  return(out)
+}
+
+# type can be identity or nonIdentity
+trans_choices <- function(type) {
+  l <- list(
+    identity = c("No transformation (identity)" = "identity"),
+    nonIdentity = c(
+      "Centred log ratio (clr)" = "clr",
+      "log base 10 with pseudocount (log10p)" = "log10p",
+      "compositional", "hellinger"
+    )
+  )
+  l$all <- c(l$identity, l$nonIdentity)
+  return(l[type])
 }

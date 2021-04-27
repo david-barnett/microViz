@@ -10,7 +10,7 @@ ord_explore(
   seriate_method = "OLO_ward",
   tax_transform_for_ordering = "identity",
   app_options = list(launch.browser = TRUE),
-  plot_widths = c(6, 7),
+  plot_widths = c(7, 9),
   ...
 )
 }
@@ -67,6 +67,7 @@ that grouping variable cannot be used to select those samples
 library(phyloseq)
 library(dplyr)
 
+# example of quickstart approach with interactive ordination calculation #
 if (interactive()) {
   corncob::ibd_phylo \%>\%
     tax_fix() \%>\%
