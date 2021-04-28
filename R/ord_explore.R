@@ -128,45 +128,7 @@ ord_explore <- function(data,
   # TODO how to better handle this choice?
   p_width <- plot_widths # 1st is ordination, 2nd is composition
 
-  # if data is plain phyloseq, validate and convert to ps_extra
-  if (methods::is(data, "phyloseq")) {
-    data <- tax_transform(phyloseq_validate(data), "identity", rank = "unique")
-  }
-
-  # create a SAMPLE id variable
-  data$ps <- ps_mutate(data$ps, SAMPLE = phyloseq::sample_names(data$ps))
-
-  # get info about input data to initialise settings modal choices
-  info <- list(
-    rank = info_get(data)[["tax_agg"]],
-    trans = info_get(data)[["tax_transform"]],
-    scale = info_get(data)[["tax_scale"]],
-    dist = info_get(data)[["distMethod"]],
-    ord = info_get(data)[["ordMethod"]],
-    constraints = info_get(data)[["constraints"]],
-    conditions = info_get(data)[["conditions"]]
-  )
-  # TODO fix ps_seriate so this info isn't necessary
-  if (is.na(info$rank) || is.na(info$trans)) {
-    warning(
-      "Guessing tax rank is 'unique', and transformation is 'identity'",
-      "\nPlease use tax_transform and/or tax_agg to set this info explicitly!"
-    )
-    warnOnStart <- TRUE
-    info$rank <- "unique"
-    info$trans <- "identity"
-  } else {
-    warnOnStart <- FALSE
-  }
-
-  # get list of certain types of variables for populating selectize lists
-  ps <- ps_get(data)
-  samdat <- methods::as(phyloseq::sample_data(ps), "data.frame")
-  numerical_vars <- colnames(
-    samdat[, sapply(X = samdat, function(x) !is.character(x) & !is.factor(x))]
-  )
-  categorical_vars <-
-    colnames(samdat[, sapply(samdat, function(x) !is.numeric(x))])
+  init <- ord_explore_init(data)
 
   message("To stop the app: Click red stop button or hit Esc in the console")
 
@@ -207,16 +169,14 @@ ord_explore <- function(data,
               style = "display:inline-block; width:47.5%",
               shiny::actionButton(
                 inputId = "settings", icon = shiny::icon("cog"),
-                class = "btn-secondary", width = "100%",
-                label = "Edit"
+                label = "Edit", class = "btn-secondary", width = "100%"
               )
             ),
             shiny::div(
               style = "display:inline-block; width:47.5%",
               shiny::actionButton(
                 inputId = "code", icon = shiny::icon("code"),
-                class = "btn-secondary", width = "100%",
-                label = "Code"
+                label = "Code", class = "btn-secondary", width = "100%"
               )
             ),
             shiny::h4("Ordination options"),
@@ -236,21 +196,19 @@ ord_explore <- function(data,
               cellWidths = c("30%", "65%"),
               shiny::helpText("Select:"),
               shiny::selectInput(
-                inputId = "id_var", label = NULL,
-                choices = union("SAMPLE", colnames(samdat)),
-                selected = c(sample_id, "SAMPLE")[[1]]
+                inputId = "id_var", label = NULL, choices = init$vars$all,
+                selected = c(sample_id, "SAMPLE")[[1]] # 'SAMPLE' if id = NULL
               )
             ),
             shiny::splitLayout(
               cellWidths = c("30%", "65%"),
               shiny::helpText("Colour:"),
               shiny::selectInput(
-                inputId = "ord_colour", label = NULL,
+                inputId = "ord_colour", label = NULL, selected = "azure4",
                 choices = list(
-                  Variable = phyloseq::sample_variables(ps),
+                  Variable = init$vars$all,
                   Fixed = grDevices::colors(distinct = TRUE)
-                ),
-                selected = "azure4"
+                )
               )
             ),
             # shape
@@ -259,11 +217,11 @@ ord_explore <- function(data,
               shiny::helpText("Shape:"),
               shiny::selectInput(
                 inputId = "ord_shape", label = NULL,
+                selected = "circle filled",
                 choices = list(
-                  Variable = phyloseq::sample_variables(ps),
+                  Variable = init$vars$all,
                   Fixed = ggplot2_shapes()
-                ),
-                selected = "circle filled"
+                )
               )
             ),
             #### alpha --------------------------------------------------------
@@ -287,7 +245,7 @@ ord_explore <- function(data,
                 shiny::helpText("Alpha:"),
                 shiny::selectizeInput(
                   inputId = "ord_alpha_var", label = NULL,
-                  choices = numerical_vars, selected = NULL,
+                  choices = init$vars$num, selected = NULL,
                   options = list(placeholder = "numeric var?")
                 )
               )
@@ -313,7 +271,7 @@ ord_explore <- function(data,
                 shiny::helpText("Size:"),
                 shiny::selectizeInput(
                   inputId = "ord_size_var", label = NULL,
-                  choices = numerical_vars, selected = NULL,
+                  choices = init$vars$num, selected = NULL,
                   options = list(placeholder = "numeric var?")
                 )
               )
@@ -327,20 +285,16 @@ ord_explore <- function(data,
               cellWidths = c("30%", "65%"),
               shiny::helpText("Labels:"),
               shiny::selectInput(
-                inputId = "comp_label", label = NULL,
-                choices = union(
-                  "SAMPLE", phyloseq::sample_variables(ps)
-                ),
-                selected = "SAMPLE"
+                inputId = "comp_label", label = NULL, selected = "SAMPLE",
+                choices = init$vars$all
               )
             ),
             shiny::splitLayout(
               cellWidths = c("30%", "65%"),
               shiny::helpText("Facets:"),
               shiny::selectInput(
-                inputId = "facet_by", label = NULL,
-                choices = c("NA", categorical_vars),
-                selected = "NA"
+                inputId = "facet_by", label = NULL, selected = "NA",
+                choices = union("NA", init$vars$cat)
               )
             ),
             # rank
@@ -348,21 +302,16 @@ ord_explore <- function(data,
               cellWidths = c("30%", "65%"),
               shiny::helpText("Rank:"),
               shiny::selectInput(
-                inputId = "tax_level_comp", label = NULL,
-                choices = phyloseq::rank_names(ps),
-                selected = utils::tail(
-                  setdiff(phyloseq::rank_names(ps), "unique"),
-                  n = 1
-                )
+                inputId = "tax_level_comp", label = NULL, choices = init$ranks,
+                selected = utils::tail(setdiff(init$ranks, "unique"), n = 1)
               )
             ),
             shiny::splitLayout(
               cellWidths = c("30%", "65%"),
               shiny::helpText("Order:"),
               shiny::selectInput(
-                inputId = "tax_order", label = NULL,
+                inputId = "tax_order", label = NULL, selected = "sum",
                 choices = c("sum", "median", "mean", "max", "var"),
-                selected = "sum"
               )
             ),
             shiny::splitLayout(
@@ -377,12 +326,10 @@ ord_explore <- function(data,
             shiny::splitLayout(
               cellWidths = c("47.5%", "47.5%"),
               shiny::checkboxInput(
-                inputId = "interactive", label = "Interactive",
-                value = TRUE
+                inputId = "interactive", label = "Interactive", value = TRUE
               ),
               shiny::checkboxInput(
-                inputId = "mergeOther", label = "Merge other",
-                value = TRUE
+                inputId = "mergeOther", label = "Merge other", value = TRUE
               )
             ),
             shiny::conditionalPanel(
@@ -441,15 +388,8 @@ ord_explore <- function(data,
   # SERVER --------------------------------------------------------------------
 
   server <- function(input, output, session) {
-    if (warnOnStart) {
-      shiny::showNotification(
-        type = "error", duration = 10,
-        "WARNING: Guessing tax rank = 'unique' and transformation = 'identity'"
-      )
-      shiny::showNotification(
-        type = "error", duration = 10,
-        "\nPlease use tax_transform and/or tax_agg to set this info explicitly!"
-      )
+    if (!isFALSE(init$warn)) {
+      shiny::showNotification(type = "error", duration = 10, ui = init$warn)
     }
 
     # code modal --------------------------------------------------------------
@@ -488,19 +428,20 @@ ord_explore <- function(data,
           choices = m_choices$distInfo, selected = m_sel$distInfo
         ),
         shiny::checkboxInput(
-          inputId = "concons",
-          label = "Constrain or condition ordination? (requires numeric vars)",
+          inputId = "concons", label = "Constrain or condition ordination?",
           value = m_sel$concons
         ),
         shiny::conditionalPanel(
           condition = "input.concons == true",
           shiny::selectizeInput(
             inputId = "const", label = "Constraints", multiple = TRUE,
-            choices = m_choices$const, selected = m_sel$const
+            choices = m_choices$const, selected = m_sel$const,
+            options = list(placeholder = "numeric vars?")
           ),
           shiny::selectizeInput(
             inputId = "conds", label = "Conditions", multiple = TRUE,
-            choices = m_choices$conds, selected = m_sel$conds
+            choices = m_choices$conds, selected = m_sel$conds,
+            options = list(placeholder = "numeric vars?")
           )
         ),
         shiny::selectizeInput(
@@ -509,7 +450,7 @@ ord_explore <- function(data,
         ),
         footer = shiny::tagList(
           shiny::modalButton("Cancel", icon = shiny::icon("times")),
-          if (!identical(ord_get(data), NULL)) {
+          if (!identical(ord_get(init$data), NULL)) {
             shiny::actionButton(
               inputId = "originalOrd", label = "Use original ordination",
               icon = shiny::icon("history"), class = "btn-primary"
@@ -525,9 +466,9 @@ ord_explore <- function(data,
     ## show modal -------------------------------------------------------------
     # if data provided to ord_explore has no ordination, open settingsModal
     shiny::observeEvent(
-      eventExpr = data,
+      eventExpr = init$data,
       handlerExpr = {
-        if (identical(ord_get(data), NULL)) {
+        if (identical(ord_get(init$data), NULL)) {
           shiny::showModal(ui = settingsModal(), session = session)
         }
       }
@@ -543,18 +484,14 @@ ord_explore <- function(data,
     # for remembering selected and possible choices in modal selectize inputs
     #### initialise selected choices ------------------------------------------
     m_sel <- shiny::reactiveValues(
-      rank = if (is.na(info$rank)) "unique" else info$rank,
-      trans = if (is.na(info$trans)) "identity" else info$trans,
+      rank = init$info$rank, trans = init$info$trans,
       # scale = if (is.na(info$scale)) "neither" else info$scale,
-      distInfo = if (is.na(info$dist)) "none" else info$dist,
-      ordInfo = if (is.na(info$ord)) "auto" else info$ord,
-      const = read_cons(info$constraints),
-      conds = read_cons(info$conditions),
-      concons = # constrained or conditioned (checkbox)
-      if (is.na(info$constraints) & is.na(info$conditions)) FALSE else TRUE
+      distInfo = init$info$dist, ordInfo = init$info$ord,
+      const = init$info$constraints, conds = init$info$conditions,
+      concons = init$info$concons # constrained or conditioned (checkbox)
     )
 
-    #### update selected ------------------------------------------------------
+    #### update on build ------------------------------------------------------
     # update selected choices whenever model selection confirmed
     shiny::observeEvent(
       eventExpr = input$build,
@@ -573,19 +510,18 @@ ord_explore <- function(data,
     )
 
     ### choices ---------------------------------------------------------------
-    # TODO adjust choice availability dynamically to prevent user errors
 
     #### initialise choices ---------------------------------------------------
     m_choices <- shiny::reactiveValues(
-      rank = rev(phyloseq::rank_names(ps)),
-      trans = trans_choices(type = "all"),
+      rank = rev(init$ranks), trans = trans_choices(type = "all"),
       # scale = if (is.na(info$scale)) "neither" else info$scale,
       distInfo = union(
         c("none", "bray", "aitchison", "euclidean", "gunifrac"),
         unlist(phyloseq::distanceMethodList)
       ),
+      # TODO dist_choices function (separate unifrac and check for phy_tree)
       ordInfo = ord_choices(type = "all"),
-      const = numerical_vars, conds = numerical_vars
+      const = init$vars$num, conds = init$vars$num
     )
 
     #### update choices -------------------------------------------------------
@@ -622,9 +558,9 @@ ord_explore <- function(data,
     ## initialise reactive data ----------------------------------------------
     # initialise data reactive values with data provided
     v <- shiny::reactiveValues(
-      dat = data, # for ord_plot
+      dat = init$data, # for ord_plot
       comp_dat = ps_seriate( # for comp_barplot (samples can be reordered)
-        ps = ps_counts(data, warn = TRUE),
+        ps = ps_counts(init$data, warn = TRUE),
         method = seriate_method,
         tax_transform = shiny::isolate(m_sel$trans),
         dist = setdiff(
@@ -638,11 +574,10 @@ ord_explore <- function(data,
     shiny::observeEvent(
       eventExpr = input$build,
       handlerExpr = {
-        print(input$const)
         out <- try(
           expr = {
             v$dat <- ord_build(
-              data = data,
+              data = init$data,
               rank = input$rank,
               trans = input$trans,
               dist = if (input$dist == "none") NA else input$dist,
@@ -677,14 +612,16 @@ ord_explore <- function(data,
     shiny::observeEvent(
       eventExpr = input$originalOrd,
       handlerExpr = {
-        v$dat <- data
+        v$dat <- init$data
         shiny::showNotification(
           ui = "Reordering samples for barplot", type = "warning"
         )
-        v$comp_dat <- ps_seriate( # for comp_barplot (samples can be reordered)
-          ps = ps_counts(data, warn = TRUE),
+        # for comp_barplot (samples can be reordered)
+        v$comp_dat <- ps_seriate(
+          ps = ps_counts(init$data, warn = TRUE),
           method = seriate_method,
-          tax_transform = info$trans,
+          tax_transform = init$info$trans,
+          # get current distance, if not "none", else use euclidean
           dist = setdiff(
             c(shiny::isolate(m_sel$distInfo), "euclidean"), "none"
           )[[1]]
@@ -910,6 +847,91 @@ ord_explore <- function(data,
 
 # helper functions ------------------------------------------------------------
 
+#' Handle ord_explore input data
+#'
+#' Take input data and return list with:
+#'
+#' - processed ps_extra data (added SAMPLE variable)
+#' - ordination builder modal default options
+#' - sample variable lists for input choices
+#'
+#' @param data data as passed to ord_explore
+#'
+#' @return a list of lists
+#' @noRd
+ord_explore_init <- function(data) {
+
+  # if data is plain phyloseq, validate and convert to ps_extra
+  if (methods::is(data, "phyloseq")) {
+    data <- tax_transform(phyloseq_validate(data), "identity", rank = "unique")
+  }
+
+  # create a SAMPLE id variable
+  data$ps <- ps_mutate(data$ps, SAMPLE = phyloseq::sample_names(data$ps))
+
+  # ordination info -----------------------------------------------------------
+  # get info about input data to initialise settings modal choices
+  info <- list(
+    rank = info_get(data)[["tax_agg"]],
+    trans = info_get(data)[["tax_transform"]],
+    scale = info_get(data)[["tax_scale"]],
+    dist = info_get(data)[["distMethod"]],
+    ord = info_get(data)[["ordMethod"]],
+    constraints = read_cons(info_get(data)[["constraints"]]),
+    conditions = read_cons(info_get(data)[["conditions"]])
+  )
+  # read_cons returns NULL if no constraints / conditions found
+  info$concons <- length(c(info$constraints, info$conditions)) > 0
+
+  # handle missing ordination info --------------------------------------------
+  # Set up a warning (and shiny notification) if information is complete
+  # TODO fix ps_seriate so this info isn't necessary
+  if (is.na(info$rank) || is.na(info$trans)) {
+    warn <- NULL # initialise
+    if (is.na(info$rank)) {
+      info$rank <- "unique"
+      warn <- "tax rank is 'unique'"
+    }
+    if (is.na(info$trans)) {
+      info$trans <- "identity"
+      warn <- paste(warn, "transformation is 'identity'", sep = " and ")
+    }
+    # add "Guessing" and end bit to warning
+    warn <- paste(
+      "Guessing", warn,
+      "\nPlease use tax_transform and/or tax_agg to set this info explicitly!"
+    )
+    warning(warn)
+  } else {
+    warn <- FALSE
+  }
+  # scale = if (is.na(info$scale)) "neither" else info$scale,
+  if (is.na(info$dist)) info$dist <- "none"
+  if (is.na(info$ord)) info$ord <- "auto"
+
+
+  # variables and ranks -------------------------------------------------------
+  # get list of certain types of variables for populating selectize lists
+  ps <- ps_get(data)
+  ranks <- phyloseq::rank_names(ps)
+  samdat <- methods::as(phyloseq::sample_data(ps), "data.frame")
+
+  is_num <- function(x) !is.character(x) & !is.factor(x)
+  is_cat <- function(x) !is.numeric(x)
+
+  vars <- list(
+    all = phyloseq::sample_variables(ps),
+    num = colnames(samdat[, sapply(X = samdat, FUN = is_num)]),
+    cat = colnames(samdat[, sapply(samdat, FUN = is_cat)])
+  )
+
+  out <- list(
+    data = data, info = info, vars = vars, ranks = ranks, warn = warn
+  )
+  return(out)
+}
+
+
 # Create ordination from data, bundling several steps
 ord_build <- function(data,
                       rank = "unique",
@@ -1038,16 +1060,31 @@ ord_choices <- function(type) {
   return(out)
 }
 
-# type can be identity or nonIdentity
+# type can be all, identity, nonIdentity or log
 trans_choices <- function(type) {
-  l <- list(
-    identity = c("No transformation (identity)" = "identity"),
-    nonIdentity = c(
-      "Centred log ratio (clr)" = "clr",
-      "log base 10 with pseudocount (log10p)" = "log10p",
-      "compositional", "hellinger"
-    )
+  # individual options
+  all <- list(
+    "identity" = "identity (no transformation)",
+    "clr" = "clr (centred log ratio)",
+    "log10p" = "log10p (log base 10 with pseudocount)",
+    "compositional" = "compositional",
+    "hellinger" = "hellinger",
+    log
   )
-  l$all <- c(l$identity, l$nonIdentity)
-  return(l[type])
+  # overlapping type lists
+  l <- list(
+    all = names(all),
+    identity = "identity",
+    nonIdentity = setdiff(names(all), "identity"),
+    log = c("clr", "log10p")
+  )
+  # select choices by name, with value as long description
+  choices <- purrr::reduce(l[type], intersect)
+  choices_desc <- all[choices]
+  # flip names and values and return, ready for use as selectize input choices
+  out <- setNames(names(choices_desc), choices_desc)
+
+  # add other vegan
+
+  return(out)
 }
