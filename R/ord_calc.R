@@ -198,8 +198,9 @@ ord_calc <- function(data,
         )
       }
       if (isTRUE(scale_cc)) {
-        phyloseq::sample_data(ps)[, v] <-
+        phyloseq::sample_data(ps)[, v] <- as.numeric(
           scale(vec[!is.na(vec)], center = TRUE, scale = TRUE)
+        )
       }
     }
   }
