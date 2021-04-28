@@ -288,7 +288,7 @@ ord_explore <- function(data,
                 shiny::selectizeInput(
                   inputId = "ord_alpha_var", label = NULL,
                   choices = numerical_vars, selected = NULL,
-                  options = list(placeholder = 'numeric var?')
+                  options = list(placeholder = "numeric var?")
                 )
               )
             ),
@@ -314,7 +314,7 @@ ord_explore <- function(data,
                 shiny::selectizeInput(
                   inputId = "ord_size_var", label = NULL,
                   choices = numerical_vars, selected = NULL,
-                  options = list(placeholder = 'numeric var?')
+                  options = list(placeholder = "numeric var?")
                 )
               )
             )
@@ -476,13 +476,21 @@ ord_explore <- function(data,
         shiny::helpText("Choose options to modify ordination created:"),
         shiny::hr(),
         shiny::selectizeInput(
-          inputId = "method", label = "Ordination method",
-          choices = m_choices$ordInfo, selected = m_sel$ordInfo
+          inputId = "rank", label = "Taxonomic Rank",
+          selected = m_sel$rank, choices = m_choices$rank
+        ),
+        shiny::selectizeInput(
+          inputId = "trans", label = "Taxa transformation",
+          choices = m_choices$trans, selected = m_sel$trans
+        ),
+        shiny::selectizeInput(
+          inputId = "dist", label = "Distance / Dissimilarity",
+          choices = m_choices$distInfo, selected = m_sel$distInfo
         ),
         shiny::checkboxInput(
           inputId = "concons",
           label = "Constrain or condition ordination? (requires numeric vars)",
-          value = FALSE
+          value = m_sel$concons
         ),
         shiny::conditionalPanel(
           condition = "input.concons == true",
@@ -496,16 +504,8 @@ ord_explore <- function(data,
           )
         ),
         shiny::selectizeInput(
-          inputId = "dist", label = "Distance / Dissimilarity",
-          choices = m_choices$distInfo, selected = m_sel$distInfo
-        ),
-        shiny::selectizeInput(
-          inputId = "rank", label = "Taxonomic Rank",
-          selected = m_sel$rank, choices = m_choices$rank
-        ),
-        shiny::selectizeInput(
-          inputId = "trans", label = "Taxa transformation",
-          choices = m_choices$trans, selected = m_sel$trans
+          inputId = "method", label = "Ordination method",
+          choices = m_choices$ordInfo, selected = m_sel$ordInfo
         ),
         footer = shiny::tagList(
           shiny::modalButton("Cancel", icon = shiny::icon("times")),
@@ -548,8 +548,10 @@ ord_explore <- function(data,
       # scale = if (is.na(info$scale)) "neither" else info$scale,
       distInfo = if (is.na(info$dist)) "none" else info$dist,
       ordInfo = if (is.na(info$ord)) "auto" else info$ord,
-      const = if (is.na(info$constraints)) NULL else info$constraints,
-      conds = if (is.na(info$conditions)) NULL else info$conditions
+      const = read_cons(info$constraints),
+      conds = read_cons(info$conditions),
+      concons = # constrained or conditioned (checkbox)
+      if (is.na(info$constraints) & is.na(info$conditions)) FALSE else TRUE
     )
 
     #### update selected ------------------------------------------------------
@@ -566,6 +568,7 @@ ord_explore <- function(data,
         # TODO constraints and conditions inputs
         m_sel$const <- input$const
         m_sel$conds <- input$conds
+        m_sel$concons <- input$concons
       }
     )
 
@@ -586,6 +589,33 @@ ord_explore <- function(data,
     )
 
     #### update choices -------------------------------------------------------
+    # modify ordination choices if distance or constraints/conds change
+    shiny::observeEvent(
+      ignoreInit = TRUE,
+      eventExpr = {
+        input$dist
+        input$concons
+      },
+      handlerExpr = {
+        x <-
+          if (input$dist == "none") {
+            if (isTRUE(input$concons)) {
+              ord_choices(c("noDist", "constrained"))
+            } else {
+              ord_choices(c("noDist", "unconstrained"))
+            }
+          } else {
+            if (isTRUE(input$concons)) {
+              ord_choices(c("dist", "constrained"))
+            } else {
+              ord_choices(c("dist", "unconstrained"))
+            }
+          }
+        updateSelectizeInput(
+          session = session, inputId = "method", choices = x
+        )
+      }
+    )
 
     # Edit Ordination --------------------------------------------------------
 
@@ -608,6 +638,7 @@ ord_explore <- function(data,
     shiny::observeEvent(
       eventExpr = input$build,
       handlerExpr = {
+        print(input$const)
         out <- try(
           expr = {
             v$dat <- ord_build(
@@ -615,7 +646,9 @@ ord_explore <- function(data,
               rank = input$rank,
               trans = input$trans,
               dist = if (input$dist == "none") NA else input$dist,
-              method = input$method
+              method = input$method,
+              constraints = input$const,
+              conditions = input$conds
             )
           }
         )
@@ -883,15 +916,29 @@ ord_build <- function(data,
                       trans = "clr",
                       dist = NA,
                       method = "auto",
-                      ...) {
+                      constraints = NULL,
+                      conditions = NULL) {
   dat <- ps_counts(data, warn = TRUE)
   dat <- tax_agg(ps = dat, rank = rank)
   dat <- tax_transform(data = dat, transformation = trans)
   if (!identical(dist, NA)) {
     dat <- dist_calc(data = dat, dist = dist)
   }
-  dat <- ord_calc(data = dat, method = method, ...)
+  dat <- ord_calc(
+    data = dat, method = method,
+    constraints = constraints, conditions = conditions
+  )
   return(dat)
+}
+
+# simple helper function that takes string representing constraints or
+# conditions stored in ps_extra info and splits by "+" or returns NULL if NA
+read_cons <- function(cons_string) {
+  if (is.na(cons_string)) {
+    return(NULL)
+  } else {
+    return(unlist(strsplit(x = cons_string, split = "+", fixed = TRUE)))
+  }
 }
 
 #' Create fixed named palette for ord_explore: tax_name = colour
@@ -963,10 +1010,11 @@ ggmessage <- function(message, size = 3) {
 #' @param type vector specifying which type of ordinations to provide
 #'
 #' @return named vector of choices
+#' @noRd
 ord_choices <- function(type) {
   # individual options
   all <- c(
-    "auto" = "auto (select options below!)",
+    "auto" = "auto (picks 1 of options below)",
     "PCA" = "PCA (Principle Components Analysis)",
     "PCoA" = "PCoA (Principle Co-ordinates Analysis)",
     "RDA" = "RDA (Redundancy Analysis)",
