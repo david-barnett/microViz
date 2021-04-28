@@ -1,32 +1,50 @@
 #' Transform taxa in phyloseq object and record transformation
 #'
+#' @description
 #' Transform taxa features, and optionally aggregate at specified taxonomic rank beforehand.
-#' You can pipe the results of tax_agg into tax_transform, or equivalently set the rank argument in tax_transform.
-#' This function uses microbiome::transform() internally and can perform the same transformations but returns a ps_extra list
-#' containing ps (the transformed phyloseq object) and extra info used for annotating ord_plot() plots:
-#' tax_transform (a string recording the transformation), and tax_agg
-#' (a string recording the taxonomic aggregation rank if specified here or earlier in tax_agg).
-#' See details for notes about some of the available transformations.
+#' You can pipe the results of `tax_agg` into `tax_transform`,
+#' or equivalently set the rank argument in `tax_transform`.
 #'
 #' @details
-#' - transformation = "clr" performs the centered log ratio transformation using microbiome::transform(), after adding a small pseudocount.
-#' - transformation = "compositional" converts the data into proportions, from 0 to 1.
-#' - transformation = "binary" can be used to transform tax abundances into presence/abundance data.
+#' This function often uses `microbiome::transform` internally and can perform the
+#' same transformations, including many from `vegan::decostand` (where the default MARGIN = 2).
+#' See below for notes about some of the available transformations.
 #'
-#' By default, otu_table values of 0 are kept as 0, and all positive values are converted to 1.
+#' `tax_transform` returns a `ps_extra` list containing the transformed phyloseq object and
+#' extra info (used for annotating `ord_plot` ordinations):
+#'
+#' - tax_transform (a string recording the transformation),
+#' - tax_agg (a string recording the taxonomic aggregation rank if specified here or earlier in `tax_agg`).
+#'
+#' A few commonly used transformations:
+#'
+#' - "clr" performs the centered log ratio transformation using `microbiome::transform`,
+#' which adds a small pseudocount of min(relative abundance)/2.
+#' - "compositional" converts the data into proportions, from 0 to 1.
+#' - "identity" does not transform the data, and records this choice for `ord_plot`
+#' - "binary" can be used to transform tax abundances into presence/abundance data.
+#'
+#' Binary transform notes:
+#'
+#' By default, otu_table values of 0 are kept as 0, and all positive values are converted to 1 (like `decostand(method = "pa")`).
 #' You can set a different threshold, by passing e.g. undetected = 10, for example, in which case all abundances of 10 or below would be converted to 0s.
 #' All abundances above 10 would be converted to 1s. Use any numeric value.
 #'
-#' @param data ps_extra list output from tax_agg, or a phyloseq object
-#' @param transformation any valid taxa transformation from microbiome::transform
-#' @param rank If data is phyloseq: data are aggregated at this rank before transforming. If NA, runs tax_agg(data, rank = NA). However if rank is NA and data is already ps_extra, this does nothing.
+#' @param data `ps_extra` list output from `tax_agg`, or a phyloseq object
+#' @param transformation any valid taxa transformation (e.g. from `microbiome::transform`)
+#' @param rank
+#' If data is phyloseq: data are aggregated at this rank before transforming.
+#' If NA, runs tax_agg(data, rank = NA).
+#' If rank is NA and data is already ps_extra, any preceding aggregation is left as is.
 #' @param keep_counts if TRUE, store the pre-transformation count data in ps_extra counts slot
-#' @param ... any extra arguments passed to microbiome::transform() or pass undetected = a number when using transformation = "binary"
+#' @param ... any extra arguments passed to `microbiome::transform` or pass undetected = a number when using transformation = "binary"
 #'
-#' @return ps_extra list including phyloseq object and info
+#' @return `ps_extra` list including phyloseq object and info
 #' @export
-#' @seealso \code{microbiome::\link[microbiome]{transform}} for info on other transformations available with tax_transform
+#' @seealso \code{microbiome::\link[microbiome]{transform}} for some more info on available transformations
+#' @seealso \code{vegan::\link[vegan]{decostand}} for even more transformation options
 #' @seealso \code{\link{tax_agg}}
+#'
 #' @examples
 #' library(microbiome)
 #' data("dietswap", package = "microbiome")
