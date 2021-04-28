@@ -93,10 +93,13 @@
 #' # try changing the point colour to bmi_group or similar
 #' # (style interactively! e.g. colour doesn't work as argument to ord_explore)
 #'
-#' # another dataset
+#' # another dataset, where "size" variable drives gradient on PC1
+#' # (try setting size and/or alpha to correspond to "size"!)
+#' # then edit the ordination to use "size" as a condition, see what happens
 #' if (interactive()) {
 #'   microbiomeutilities::hmp2 %>%
 #'     tax_fix() %>%
+#'     tax_transform(rank = "Genus", "identity") %>%
 #'     dist_calc("aitchison") %>%
 #'     ord_calc() %>%
 #'     ord_explore()
@@ -216,8 +219,7 @@ ord_explore <- function(data,
               cellWidths = c("30%", "65%"),
               shiny::helpText("Shape:"),
               shiny::selectInput(
-                inputId = "ord_shape", label = NULL,
-                selected = "circle filled",
+                inputId = "ord_shape", label = NULL, selected = "circle",
                 choices = list(
                   Variable = init$vars$all,
                   Fixed = ggplot2_shapes()
@@ -302,8 +304,8 @@ ord_explore <- function(data,
               cellWidths = c("30%", "65%"),
               shiny::helpText("Rank:"),
               shiny::selectInput(
-                inputId = "tax_level_comp", label = NULL, choices = init$ranks,
-                selected = utils::tail(setdiff(init$ranks, "unique"), n = 1)
+                inputId = "tax_level_comp", label = NULL,
+                choices = init$ranks, selected = init$info$rank
               )
             ),
             shiny::splitLayout(
@@ -502,10 +504,13 @@ ord_explore <- function(data,
         m_sel$ordInfo <- input$method
         # TODO scale inputs
         # m_sel$scale <- input$scale
-        # TODO constraints and conditions inputs
         m_sel$const <- input$const
         m_sel$conds <- input$conds
         m_sel$concons <- input$concons
+        # update default choice of taxonomic rank for composition plot
+        shiny::updateSelectizeInput(
+          session = session, inputId = "tax_level_comp", selected = input$rank
+        )
       }
     )
 
@@ -514,17 +519,14 @@ ord_explore <- function(data,
     #### initialise choices ---------------------------------------------------
     m_choices <- shiny::reactiveValues(
       rank = rev(init$ranks), trans = trans_choices(type = "all"),
-      # scale = if (is.na(info$scale)) "neither" else info$scale,
-      distInfo = union(
-        c("none", "bray", "aitchison", "euclidean", "gunifrac"),
-        unlist(phyloseq::distanceMethodList)
-      ),
-      # TODO dist_choices function (separate unifrac and check for phy_tree)
+      # scale = # TODO
+      distInfo = dist_choices(init$data, type = "all"),
       ordInfo = ord_choices(type = "all"),
       const = init$vars$num, conds = init$vars$num
     )
 
     #### update choices -------------------------------------------------------
+
     # modify ordination choices if distance or constraints/conds change
     shiny::observeEvent(
       ignoreInit = TRUE,
@@ -549,6 +551,18 @@ ord_explore <- function(data,
           }
         updateSelectizeInput(
           session = session, inputId = "method", choices = x
+        )
+      }
+    )
+    # remove aitchison distance if log10p or clr transform used
+    shiny::observeEvent(
+      ignoreInit = TRUE,
+      eventExpr = input$trans,
+      handlerExpr = {
+        x <- dist_choices(init$data, type = "all")
+        if (input$trans %in% trans_choices("log")) x <- x[x != "aitchison"]
+        updateSelectizeInput(
+          session = session, inputId = "dist", choices = x
         )
       }
     )
@@ -868,6 +882,7 @@ ord_explore_init <- function(data) {
 
   # create a SAMPLE id variable
   data$ps <- ps_mutate(data$ps, SAMPLE = phyloseq::sample_names(data$ps))
+  data <- tax_names2tt(data, colname = "unique")
 
   # ordination info -----------------------------------------------------------
   # get info about input data to initialise settings modal choices
@@ -909,7 +924,6 @@ ord_explore_init <- function(data) {
   if (is.na(info$dist)) info$dist <- "none"
   if (is.na(info$ord)) info$ord <- "auto"
 
-
   # variables and ranks -------------------------------------------------------
   # get list of certain types of variables for populating selectize lists
   ps <- ps_get(data)
@@ -918,7 +932,6 @@ ord_explore_init <- function(data) {
 
   is_num <- function(x) !is.character(x) & !is.factor(x)
   is_cat <- function(x) !is.numeric(x)
-
   vars <- list(
     all = phyloseq::sample_variables(ps),
     num = colnames(samdat[, sapply(X = samdat, FUN = is_num)]),
@@ -1060,6 +1073,45 @@ ord_choices <- function(type) {
   return(out)
 }
 
+# data must be ps_extra/phyloseq input as to ord_explore
+# type can be all or noTree, but data without phy_tree also adds noTree to type
+dist_choices <- function(data, type) {
+  ps <- ps_get(data)
+  # if no phylogenetic tree, can't use unifrac methods
+  if (identical(phyloseq::phy_tree(ps, errorIfNULL = FALSE), NULL)) {
+    type <- union(type, "noTree")
+  }
+  # individual options
+  all <- c(
+    "none" = "none (for PCA/RDA/CCA)",
+    "bray" = "bray (Bray-Curtis)",
+    "aitchison" = "aitchison (a.k.a. CLR & euclidean)",
+    "euclidean" = "euclidean",
+    "gunifrac" = "gunifrac (Generalised UniFrac, alpha=0.5)",
+    "unifrac" = "unifrac (unweighted UniFrac)",
+    "wunifrac" = "wunifrac (weighted UniFrac)",
+    "va-wunifrac" = "va-wunifrac (variance adjusted weighted)"
+  )
+  # add more phyloseq dist methods
+  pdists <- unlist(phyloseq::distanceMethodList)
+  more <- setNames(object = pdists, nm = pdists)
+  all <- c(all, more[!names(more) %in% all])
+
+  # overlapping type lists
+  l <- list(
+    all = names(all),
+    noTree = c(paste0(c("g", "w", "", "va-w"), "unifrac"), "dpcoa")
+  )
+  l$noTree <- setdiff(l$all, l$tree)
+
+  # select choices by name, with value as long description
+  choices <- purrr::reduce(l[type], intersect)
+  choices_desc <- all[choices]
+  # flip names and values and return, ready for use as selectize input choices
+  out <- setNames(names(choices_desc), choices_desc)
+  return(out)
+}
+
 # type can be all, identity, nonIdentity or log
 trans_choices <- function(type) {
   # individual options
@@ -1068,8 +1120,7 @@ trans_choices <- function(type) {
     "clr" = "clr (centred log ratio)",
     "log10p" = "log10p (log base 10 with pseudocount)",
     "compositional" = "compositional",
-    "hellinger" = "hellinger",
-    log
+    "hellinger" = "hellinger"
   )
   # overlapping type lists
   l <- list(
@@ -1083,8 +1134,6 @@ trans_choices <- function(type) {
   choices_desc <- all[choices]
   # flip names and values and return, ready for use as selectize input choices
   out <- setNames(names(choices_desc), choices_desc)
-
-  # add other vegan
 
   return(out)
 }

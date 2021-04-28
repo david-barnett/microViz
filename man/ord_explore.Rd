@@ -112,10 +112,13 @@ if (interactive()) {
 # try changing the point colour to bmi_group or similar
 # (style interactively! e.g. colour doesn't work as argument to ord_explore)
 
-# another dataset
+# another dataset, where "size" variable drives gradient on PC1
+# (try setting size and/or alpha to correspond to "size"!)
+# then edit the ordination to use "size" as a condition, see what happens
 if (interactive()) {
   microbiomeutilities::hmp2 \%>\%
     tax_fix() \%>\%
+    tax_transform(rank = "Genus", "identity") \%>\%
     dist_calc("aitchison") \%>\%
     ord_calc() \%>\%
     ord_explore()
