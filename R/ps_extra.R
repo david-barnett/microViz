@@ -18,7 +18,7 @@ print.ps_extra <- function(x, ...) {
   print(x[["ps"]])
   i <- x[["info"]]
   cat("\n")
-  print(i)
+  print(i, all = FALSE)
   # print distance matrix info and sample if present
   d <- x[["dist"]]
   if (!identical(d, NULL)) {
@@ -65,8 +65,8 @@ print.ps_extra <- function(x, ...) {
 
 #' @export
 #' @noRd
-print.ps_extra_info <- function(x, ..., all = FALSE) {
-  cat("phyloseq info:\n")
+print.ps_extra_info <- function(x, ..., all = TRUE) {
+  cat("ps_extra info:\n")
   if (isFALSE(all)) {
     out <- paste(
       "tax_agg =", x[["tax_agg"]], "tax_transform =", x[["tax_transform"]]
