@@ -277,7 +277,7 @@ utils::globalVariables("where")
 #'
 #' @return same class object as passed in to data
 #' @export
-#' @rdname tax_nammes2tt
+#' @rdname tax_names2tt
 tax_names2tt <- function(data, colname = "unique") {
   # get tt
   tt <- tt_get(data)
