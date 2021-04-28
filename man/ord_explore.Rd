@@ -116,7 +116,8 @@ if (interactive()) {
 # (try setting size and/or alpha to correspond to "size"!)
 # then edit the ordination to use "size" as a condition, see what happens
 if (interactive()) {
-  microbiomeutilities::hmp2 \%>\%
+  # hmp2 <- microbiomeutilities::hmp2
+  hmp2 \%>\%
     tax_fix() \%>\%
     tax_transform(rank = "Genus", "identity") \%>\%
     dist_calc("aitchison") \%>\%

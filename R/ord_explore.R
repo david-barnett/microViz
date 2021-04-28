@@ -97,7 +97,8 @@
 #' # (try setting size and/or alpha to correspond to "size"!)
 #' # then edit the ordination to use "size" as a condition, see what happens
 #' if (interactive()) {
-#'   microbiomeutilities::hmp2 %>%
+#'   # hmp2 <- microbiomeutilities::hmp2
+#'   hmp2 %>%
 #'     tax_fix() %>%
 #'     tax_transform(rank = "Genus", "identity") %>%
 #'     dist_calc("aitchison") %>%
@@ -549,7 +550,7 @@ ord_explore <- function(data,
               ord_choices(c("dist", "unconstrained"))
             }
           }
-        updateSelectizeInput(
+        shiny::updateSelectizeInput(
           session = session, inputId = "method", choices = x
         )
       }
@@ -561,7 +562,7 @@ ord_explore <- function(data,
       handlerExpr = {
         x <- dist_choices(init$data, type = "all")
         if (input$trans %in% trans_choices("log")) x <- x[x != "aitchison"]
-        updateSelectizeInput(
+        shiny::updateSelectizeInput(
           session = session, inputId = "dist", choices = x
         )
       }
