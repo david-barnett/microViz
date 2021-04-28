@@ -40,10 +40,20 @@
 
 
 <meta property="og:title" content="Interactively explore microbial compositions of ordinated samples — ord_explore" />
-<meta property="og:description" content="A Shiny app used like an interactive version of ord_plot (taking the output of ord_calc).
+<meta property="og:description" content="A Shiny app used like an interactive version of ord_plot().
 You can select samples on an ordination plot and view their composition with stacked barplots.
-Once running: click and drag to select 2 or more samples to view their compositions.
-You can style the ordination plot points and compositional barplot using the options in the left panel." />
+You can give the ord_explore() data argument either of the following:
+the output of ord_calc() (i.e. a ps_extra with an ordination)
+a plain phyloseq object: ord_explore() will help you build an ordination
+
+
+Once running:
+edit the ordination if required
+style the ordination plot (e.g. choose dimensions; set colour and size; ...)
+click or use the lasso tool to select 2 or more samples to view their compositions
+style the taxonomic compositions barplot
+
+" />
 
 
 
@@ -75,7 +85,7 @@ You can style the ordination plot points and compositional barplot using the opt
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.3.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.3.9011</span>
       </span>
     </div>
 
@@ -147,10 +157,20 @@ You can style the ordination plot points and compositional barplot using the opt
     </div>
 
     <div class="ref-description">
-    <p>A Shiny app used like an interactive version of ord_plot (taking the output of ord_calc).
+    <p>A Shiny app used like an interactive version of <code><a href='ord_plot.html'>ord_plot()</a></code>.
 You can select samples on an ordination plot and view their composition with stacked barplots.</p>
-<p>Once running: click and drag to select 2 or more samples to view their compositions.
-You can style the ordination plot points and compositional barplot using the options in the left panel.</p>
+<p>You can give the <code>ord_explore()</code> data argument either of the following:</p><ul>
+<li><p>the output of <code><a href='ord_calc.html'>ord_calc()</a></code> (i.e. a ps_extra with an ordination)</p></li>
+<li><p>a plain phyloseq object: <code>ord_explore()</code> will help you build an ordination</p></li>
+</ul>
+
+<p>Once running:</p><ol>
+<li><p>edit the ordination if required</p></li>
+<li><p>style the ordination plot (e.g. choose dimensions; set colour and size; ...)</p></li>
+<li><p>click or use the lasso tool to select 2 or more samples to view their compositions</p></li>
+<li><p>style the taxonomic compositions barplot</p></li>
+</ol>
+
     </div>
 
     <pre class="usage"><span class='fu'>ord_explore</span><span class='op'>(</span>
@@ -159,6 +179,7 @@ You can style the ordination plot points and compositional barplot using the opt
   seriate_method <span class='op'>=</span> <span class='st'>"OLO_ward"</span>,
   tax_transform_for_ordering <span class='op'>=</span> <span class='st'>"identity"</span>,
   app_options <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>launch.browser <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,
+  plot_widths <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>7</span>, <span class='fl'>9</span><span class='op'>)</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
@@ -167,7 +188,7 @@ You can style the ordination plot points and compositional barplot using the opt
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>ps_extra list output of ord_calc</p></td>
+      <td><p>ps_extra list output of ord_calc, or phyloseq</p></td>
     </tr>
     <tr>
       <th>sample_id</th>
@@ -184,6 +205,11 @@ You can style the ordination plot points and compositional barplot using the opt
     <tr>
       <th>app_options</th>
       <td><p>passed to shinyApp() options argument</p></td>
+    </tr>
+    <tr>
+      <th>plot_widths</th>
+      <td><p>widths of plots in inches, including any legends
+(first number is ordination, second is composition barplot)</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -208,66 +234,77 @@ that grouping variable cannot be used to select those samples</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://dx.plos.org/10.1371/journal.pone.0061217'>phyloseq</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"enterotype"</span><span class='op'>)</span>
 
-<span class='co'># simple example #</span>
-<span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html'>taxa_names</a></span><span class='op'>(</span><span class='va'>enterotype</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='st'>"unclassified"</span> <span class='co'># replaces the "-1" taxon name</span>
-<span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tax_fix.html'>tax_fix</a></span><span class='op'>(</span><span class='va'>enterotype</span><span class='op'>)</span> <span class='co'># remove NA taxa</span>
-</div><div class='output co'>#&gt; <span class='message'>Row named: unclassified</span>
-#&gt; <span class='message'>contains no non-unknown values, returning:</span>
-#&gt; <span class='message'>'unclassified' for all replaced levels.</span>
-#&gt; <span class='message'>Consider editing this tax_table entry manually.</span></div><div class='output co'>#&gt; <span class='message'>Row named: Bacteria</span>
-#&gt; <span class='message'>contains no non-unknown values, returning:</span>
-#&gt; <span class='message'>'Bacteria' for all replaced levels.</span>
-#&gt; <span class='message'>Consider editing this tax_table entry manually.</span></div><div class='input'><span class='va'>ord1</span> <span class='op'>&lt;-</span> <span class='va'>ps</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='dist_calc.html'>dist_calc</a></span><span class='op'>(</span><span class='st'>"bray"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"PCoA"</span><span class='op'>)</span>
+<span class='co'># example of quickstart approach with interactive ordination calculation #</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='fu'>corncob</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/corncob/man/ibd_phylo.html'>ibd_phylo</a></span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='tax_fix.html'>tax_fix</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>ord_explore</span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>}</span>
 
-<span class='co'># ord_explore(data = ord1, auto_caption = NA)</span>
+<span class='co'># simple example with precalculated ordination #</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"enterotype"</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html'>taxa_names</a></span><span class='op'>(</span><span class='va'>enterotype</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='st'>"unclassified"</span> <span class='co'># replaces the "-1" taxon name</span>
+  <span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tax_fix.html'>tax_fix</a></span><span class='op'>(</span><span class='va'>enterotype</span><span class='op'>)</span> <span class='co'># remove NA taxa</span>
+  <span class='va'>ord1</span> <span class='op'>&lt;-</span> <span class='va'>ps</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"identity"</span>, rank <span class='op'>=</span> <span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='dist_calc.html'>dist_calc</a></span><span class='op'>(</span><span class='st'>"bray"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"PCoA"</span><span class='op'>)</span>
+
+  <span class='fu'>ord_explore</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>ord1</span>, auto_caption <span class='op'>=</span> <span class='fl'>6</span><span class='op'>)</span>
+<span class='op'>}</span>
 
 <span class='co'># constrained ordination example #</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span>
 
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span>
+  <span class='co'># create a couple of numerical variables to use as constraints</span>
+  <span class='va'>dietswap</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='ps_mutate.html'>ps_mutate</a></span><span class='op'>(</span>
+      weight <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/recode.html'>recode</a></span><span class='op'>(</span><span class='va'>bmi_group</span>, obese <span class='op'>=</span> <span class='fl'>3</span>, overweight <span class='op'>=</span> <span class='fl'>2</span>, lean <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>,
+      female <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>sex</span> <span class='op'>==</span> <span class='st'>"female"</span>, true <span class='op'>=</span> <span class='fl'>1</span>, false <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
+    <span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='st'>"Genus"</span><span class='op'>)</span>
 
-<span class='co'># create a couple of numerical variables to use as constraints</span>
-<span class='va'>dietswap</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ps_mutate.html'>ps_mutate</a></span><span class='op'>(</span>
-    weight <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/recode.html'>recode</a></span><span class='op'>(</span><span class='va'>bmi_group</span>, obese <span class='op'>=</span> <span class='fl'>3</span>, overweight <span class='op'>=</span> <span class='fl'>2</span>, lean <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>,
-    female <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>sex</span> <span class='op'>==</span> <span class='st'>"female"</span>, true <span class='op'>=</span> <span class='fl'>1</span>, false <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
-  <span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='st'>"Genus"</span><span class='op'>)</span>
+  <span class='va'>constrained_aitchison_rda</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>constraints <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"weight"</span>, <span class='st'>"female"</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='va'>constrained_aitchison_rda</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>constraints <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"weight"</span>, <span class='st'>"female"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Centering (mean) and scaling (sd) the constraints and conditions: </span></div><div class='output co'>#&gt; <span class='message'>	weight</span></div><div class='output co'>#&gt; <span class='message'>	female</span></div><div class='input'>
-<span class='co'># constrained_aitchison_rda %&gt;%</span>
-<span class='co'>#   ord_explore(</span>
-<span class='co'>#     plot_taxa = 1:5, tax_lab_style = list(size = 3),</span>
-<span class='co'>#     constraint_lab_style = list(size = 4), auto_caption = 7</span>
-<span class='co'>#   )</span>
+  <span class='va'>constrained_aitchison_rda</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>ord_explore</span><span class='op'>(</span>
+      plot_taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, tax_lab_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>,
+      constraint_lab_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span>, auto_caption <span class='op'>=</span> <span class='fl'>7</span>
+    <span class='op'>)</span>
+<span class='op'>}</span>
 <span class='co'># try changing the point colour to bmi_group or similar</span>
 <span class='co'># (style interactively! e.g. colour doesn't work as argument to ord_explore)</span>
 
-<span class='co'># another dataset</span>
-<span class='co'># microbiomeutilities::hmp2 %&gt;%</span>
-<span class='co'>#   tax_fix() %&gt;%</span>
-<span class='co'>#   dist_calc("aitchison") %&gt;%</span>
-<span class='co'>#   ord_calc() %&gt;%</span>
-<span class='co'>#   ord_explore()</span>
+<span class='co'># another dataset, where "size" variable drives gradient on PC1</span>
+<span class='co'># (try setting size and/or alpha to correspond to "size"!)</span>
+<span class='co'># then edit the ordination to use "size" as a condition, see what happens</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='fu'>microbiomeutilities</span><span class='fu'>::</span><span class='va'>hmp2</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='tax_fix.html'>tax_fix</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span>rank <span class='op'>=</span> <span class='st'>"Genus"</span>, <span class='st'>"identity"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='dist_calc.html'>dist_calc</a></span><span class='op'>(</span><span class='st'>"aitchison"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>ord_explore</span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>}</span>
 
 <span class='co'># another dataset</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"soilrep"</span>, package <span class='op'>=</span> <span class='st'>"phyloseq"</span><span class='op'>)</span>
-<span class='co'># test auto creation of SAMPLE var</span>
-<span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>soilrep</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='ps_select.html'>ps_select</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>Sample</span><span class='op'>)</span>
-<span class='co'># The barplot is actually quite useless with the 16000+ anonymous OTUs</span>
-<span class='co'># in this dataset, but the 1000s of unmerged "other" categories do render</span>
-<span class='co'># phyloseq_validate(ps) %&gt;%</span>
-<span class='co'>#   tax_fix() %&gt;%</span>
-<span class='co'>#   dist_calc("aitchison") %&gt;%</span>
-<span class='co'>#   ord_calc() %&gt;%</span>
-<span class='co'>#   ord_explore()</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"soilrep"</span>, package <span class='op'>=</span> <span class='st'>"phyloseq"</span><span class='op'>)</span>
+  <span class='co'># test auto creation of SAMPLE var</span>
+  <span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>soilrep</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='ps_select.html'>ps_select</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>Sample</span><span class='op'>)</span>
+  <span class='co'># The barplot is actually quite useless with the 16000+ anonymous OTUs</span>
+  <span class='co'># in this dataset, but the 1000s of unmerged "other" categories do render</span>
+  <span class='fu'><a href='phyloseq_validate.html'>phyloseq_validate</a></span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='tax_fix.html'>tax_fix</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='dist_calc.html'>dist_calc</a></span><span class='op'>(</span><span class='st'>"aitchison"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>ord_explore</span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>}</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

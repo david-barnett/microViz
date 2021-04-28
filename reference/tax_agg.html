@@ -86,7 +86,7 @@ The tax_table produced when using top_N is otherwise INVALID FOR MOST OTHER ANAL
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.3.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.3.9011</span>
       </span>
     </div>
 
@@ -292,7 +292,7 @@ which should then result in (much) shorter unique names at the aggregation rank.
 #&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
 #&gt; tax_table()   Taxonomy Table:    [ 130 taxa by 4 taxonomic ranks ]
 #&gt; 
-#&gt; phyloseq info:
+#&gt; ps_extra info:
 #&gt; tax_agg = unique tax_transform = NA</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span><span class='op'>(</span><span class='fu'>tax_agg</span><span class='op'>(</span><span class='va'>dietswap</span>, <span class='cn'>NA</span>, add_unique <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>, <span class='fu'>tax_agg</span><span class='op'>(</span><span class='va'>dietswap</span>, <span class='st'>"unique"</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># TRUE</span>
 </div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># create some missing values</span>
@@ -310,7 +310,7 @@ which should then result in (much) shorter unique names at the aggregation rank.
 #&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
 #&gt; tax_table()   Taxonomy Table:    [ 128 taxa by 3 taxonomic ranks ]
 #&gt; 
-#&gt; phyloseq info:
+#&gt; ps_extra info:
 #&gt; tax_agg = Genus tax_transform = NA</div><div class='input'>
 <span class='co'># you can replace unknown values with `tax_fix()`</span>
 <span class='co'># which will fix most problems, like the common "g__" and "s__"</span>
@@ -326,7 +326,7 @@ which should then result in (much) shorter unique names at the aggregation rank.
 #&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
 #&gt; tax_table()   Taxonomy Table:    [ 25 taxa by 2 taxonomic ranks ]
 #&gt; 
-#&gt; phyloseq info:
+#&gt; ps_extra info:
 #&gt; tax_agg = Family tax_transform = NA</div><div class='input'>
 <span class='co'># try tax_fix_interactive() for more help</span>
 </div></pre>

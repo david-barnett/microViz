@@ -41,12 +41,8 @@
 
 <meta property="og:title" content="Transform taxa in phyloseq object and record transformation — tax_transform" />
 <meta property="og:description" content="Transform taxa features, and optionally aggregate at specified taxonomic rank beforehand.
-You can pipe the results of tax_agg into tax_transform, or equivalently set the rank argument in tax_transform.
-This function uses microbiome::transform() internally and can perform the same transformations but returns a ps_extra list
-containing ps (the transformed phyloseq object) and extra info used for annotating ord_plot() plots:
-tax_transform (a string recording the transformation), and tax_agg
-(a string recording the taxonomic aggregation rank if specified here or earlier in tax_agg).
-See details for notes about some of the available transformations." />
+You can pipe the results of tax_agg into tax_transform,
+or equivalently set the rank argument in tax_transform." />
 
 
 
@@ -78,7 +74,7 @@ See details for notes about some of the available transformations." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.3.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.3.9011</span>
       </span>
     </div>
 
@@ -151,12 +147,8 @@ See details for notes about some of the available transformations." />
 
     <div class="ref-description">
     <p>Transform taxa features, and optionally aggregate at specified taxonomic rank beforehand.
-You can pipe the results of tax_agg into tax_transform, or equivalently set the rank argument in tax_transform.
-This function uses microbiome::transform() internally and can perform the same transformations but returns a ps_extra list
-containing ps (the transformed phyloseq object) and extra info used for annotating ord_plot() plots:
-tax_transform (a string recording the transformation), and tax_agg
-(a string recording the taxonomic aggregation rank if specified here or earlier in tax_agg).
-See details for notes about some of the available transformations.</p>
+You can pipe the results of <code>tax_agg</code> into <code>tax_transform</code>,
+or equivalently set the rank argument in <code>tax_transform</code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>tax_transform</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>transformation</span>, rank <span class='op'>=</span> <span class='cn'>NA</span>, keep_counts <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
@@ -166,15 +158,17 @@ See details for notes about some of the available transformations.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>ps_extra list output from tax_agg, or a phyloseq object</p></td>
+      <td><p><code>ps_extra</code> list output from <code>tax_agg</code>, or a phyloseq object</p></td>
     </tr>
     <tr>
       <th>transformation</th>
-      <td><p>any valid taxa transformation from microbiome::transform</p></td>
+      <td><p>any valid taxa transformation (e.g. from <code><a href='https://rdrr.io/pkg/microbiome/man/transform.html'>microbiome::transform</a></code>)</p></td>
     </tr>
     <tr>
       <th>rank</th>
-      <td><p>If data is phyloseq: data are aggregated at this rank before transforming. If NA, runs tax_agg(data, rank = NA). However if rank is NA and data is already ps_extra, this does nothing.</p></td>
+      <td><p>If data is phyloseq: data are aggregated at this rank before transforming.
+If NA, runs tax_agg(data, rank = NA).
+If rank is NA and data is already ps_extra, any preceding aggregation is left as is.</p></td>
     </tr>
     <tr>
       <th>keep_counts</th>
@@ -182,28 +176,40 @@ See details for notes about some of the available transformations.</p>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>any extra arguments passed to microbiome::transform() or pass undetected = a number when using transformation = "binary"</p></td>
+      <td><p>any extra arguments passed to <code><a href='https://rdrr.io/pkg/microbiome/man/transform.html'>microbiome::transform</a></code> or pass undetected = a number when using transformation = "binary"</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>ps_extra list including phyloseq object and info</p>
+    <p><code>ps_extra</code> list including phyloseq object and info</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    
-<ul>
-<li><p>transformation = "clr" performs the centered log ratio transformation using microbiome::transform(), after adding a small pseudocount.</p></li>
-<li><p>transformation = "compositional" converts the data into proportions, from 0 to 1.</p></li>
-<li><p>transformation = "binary" can be used to transform tax abundances into presence/abundance data.</p></li>
+    <p>This function often uses <code><a href='https://rdrr.io/pkg/microbiome/man/transform.html'>microbiome::transform</a></code> internally and can perform the
+same transformations, including many from <code><a href='https://rdrr.io/pkg/vegan/man/decostand.html'>vegan::decostand</a></code> (where the default MARGIN = 2).
+See below for notes about some of the available transformations.</p>
+<p><code>tax_transform</code> returns a <code>ps_extra</code> list containing the transformed phyloseq object and
+extra info (used for annotating <code>ord_plot</code> ordinations):</p><ul>
+<li><p>tax_transform (a string recording the transformation),</p></li>
+<li><p>tax_agg (a string recording the taxonomic aggregation rank if specified here or earlier in <code>tax_agg</code>).</p></li>
 </ul>
 
-<p>By default, otu_table values of 0 are kept as 0, and all positive values are converted to 1.
+<p>A few commonly used transformations:</p><ul>
+<li><p>"clr" performs the centered log ratio transformation using <code><a href='https://rdrr.io/pkg/microbiome/man/transform.html'>microbiome::transform</a></code>,
+which adds a small pseudocount of min(relative abundance)/2.</p></li>
+<li><p>"compositional" converts the data into proportions, from 0 to 1.</p></li>
+<li><p>"identity" does not transform the data, and records this choice for <code>ord_plot</code></p></li>
+<li><p>"binary" can be used to transform tax abundances into presence/abundance data.</p></li>
+</ul>
+
+<p>Binary transform notes:</p>
+<p>By default, otu_table values of 0 are kept as 0, and all positive values are converted to 1 (like <code><a href='https://rdrr.io/pkg/vegan/man/decostand.html'>decostand(method = "pa")</a></code>).
 You can set a different threshold, by passing e.g. undetected = 10, for example, in which case all abundances of 10 or below would be converted to 0s.
 All abundances above 10 would be converted to 1s. Use any numeric value.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>microbiome::<a href='https://rdrr.io/pkg/microbiome/man/transform.html'>transform</a></code> for info on other transformations available with tax_transform</p>
+    <div class='dont-index'><p><code>microbiome::<a href='https://rdrr.io/pkg/microbiome/man/transform.html'>transform</a></code> for some more info on available transformations</p>
+<p><code>vegan::<a href='https://rdrr.io/pkg/vegan/man/decostand.html'>decostand</a></code> for even more transformation options</p>
 <p><code><a href='tax_agg.html'>tax_agg</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -219,7 +225,7 @@ All abundances above 10 would be converted to 1s. Use any numeric value.</p>
 #&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
 #&gt; tax_table()   Taxonomy Table:    [ 8 taxa by 1 taxonomic ranks ]
 #&gt; 
-#&gt; phyloseq info:
+#&gt; ps_extra info:
 #&gt; tax_agg = Phylum tax_transform = clr
 #&gt; 
 #&gt; $counts OTU Table: [ 8 taxa and 222 samples ]</div><div class='input'><span class='co'># equivalent to old, two-step method</span>
@@ -231,7 +237,7 @@ All abundances above 10 would be converted to 1s. Use any numeric value.</p>
 #&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
 #&gt; tax_table()   Taxonomy Table:    [ 8 taxa by 1 taxonomic ranks ]
 #&gt; 
-#&gt; phyloseq info:
+#&gt; ps_extra info:
 #&gt; tax_agg = Phylum tax_transform = clr
 #&gt; 
 #&gt; $counts OTU Table: [ 8 taxa and 222 samples ]</div><div class='input'>
@@ -244,7 +250,7 @@ All abundances above 10 would be converted to 1s. Use any numeric value.</p>
 #&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
 #&gt; tax_table()   Taxonomy Table:    [ 130 taxa by 4 taxonomic ranks ]
 #&gt; 
-#&gt; phyloseq info:
+#&gt; ps_extra info:
 #&gt; tax_agg = unique tax_transform = identity</div><div class='input'>
 <span class='co'># binary transformation (convert abundances to presence/absence or detected/undetected)</span>
 <span class='fu'>tax_transform</span><span class='op'>(</span><span class='va'>dietswap</span>, transformation <span class='op'>=</span> <span class='st'>"binary"</span><span class='op'>)</span>
@@ -255,7 +261,7 @@ All abundances above 10 would be converted to 1s. Use any numeric value.</p>
 #&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
 #&gt; tax_table()   Taxonomy Table:    [ 130 taxa by 4 taxonomic ranks ]
 #&gt; 
-#&gt; phyloseq info:
+#&gt; ps_extra info:
 #&gt; tax_agg = unique tax_transform = binary
 #&gt; 
 #&gt; $counts OTU Table: [ 130 taxa and 222 samples ]</div><div class='input'><span class='co'># change detection threshold by setting undetected argument (default is 0)</span>
