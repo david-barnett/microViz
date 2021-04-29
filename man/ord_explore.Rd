@@ -66,18 +66,18 @@ Limitation: When a selection grouping variable is NA for some samples,
 that grouping variable cannot be used to select those samples
 }
 \examples{
-library(phyloseq)
-library(dplyr)
-
-# example of quickstart approach with interactive ordination calculation #
+# example code only runs in interactive R session
 if (interactive()) {
+  library(phyloseq)
+  library(dplyr)
+
+  # example of quickstart approach with interactive ordination calculation #
   corncob::ibd_phylo \%>\%
     tax_fix() \%>\%
     ord_explore()
-}
 
-# simple example with precalculated ordination #
-if (interactive()) {
+
+  # simple example with precalculated ordination #
   data("enterotype")
   taxa_names(enterotype)[1] <- "unclassified" # replaces the "-1" taxon name
   ps <- tax_fix(enterotype) # remove NA taxa
@@ -87,10 +87,8 @@ if (interactive()) {
     ord_calc(method = "PCoA")
 
   ord_explore(data = ord1, auto_caption = 6)
-}
 
-# constrained ordination example #
-if (interactive()) {
+  # constrained ordination example #
   data("dietswap", package = "microbiome")
 
   # create a couple of numerical variables to use as constraints
@@ -110,14 +108,12 @@ if (interactive()) {
       plot_taxa = 1:5, tax_lab_style = list(size = 3),
       constraint_lab_style = list(size = 4), auto_caption = 7
     )
-}
-# try changing the point colour to bmi_group or similar
-# (style interactively! e.g. colour doesn't work as argument to ord_explore)
+  # Try changing the point colour to bmi_group or similar
+  # Style interactively! (setting e.g. colour as an argument doesn't work)
 
-# another dataset, where "size" variable drives gradient on PC1
-# (try setting size and/or alpha to correspond to "size"!)
-# then edit the ordination to use "size" as a condition, see what happens
-if (interactive()) {
+  # Another dataset, where "size" variable drives gradient on PC1
+  # Try setting size and/or alpha to correspond to "size"!
+  # Then edit the ordination to use "size" as a condition, see what happens
   # hmp2 <- microbiomeutilities::hmp2
   hmp2 \%>\%
     tax_fix() \%>\%
@@ -125,10 +121,8 @@ if (interactive()) {
     dist_calc("aitchison") \%>\%
     ord_calc() \%>\%
     ord_explore()
-}
 
-# another dataset
-if (interactive()) {
+  # another dataset
   data("soilrep", package = "phyloseq")
   # test auto creation of SAMPLE var
   ps <- soilrep \%>\% ps_select(-Sample)
