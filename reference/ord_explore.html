@@ -42,16 +42,18 @@
 <meta property="og:title" content="Interactively explore microbial compositions of ordinated samples — ord_explore" />
 <meta property="og:description" content="A Shiny app used like an interactive version of ord_plot().
 You can select samples on an ordination plot and view their composition with stacked barplots.
-You can give the ord_explore() data argument either of the following:
+The ord_explore() data argument takes either:
 the output of ord_calc() (i.e. a ps_extra with an ordination)
 a plain phyloseq object: ord_explore() will help you build an ordination
 
 
-Once running:
+Once the app is running (in your browser):
 edit the ordination if required
 style the ordination plot (e.g. choose dimensions; set colour and size; ...)
 click or use the lasso tool to select 2 or more samples to view their compositions
 style the taxonomic compositions barplot
+stop the app by clicking the red stop button in the R console
+(closing the web browser window doesn't stop the app)
 
 " />
 
@@ -85,7 +87,7 @@ style the taxonomic compositions barplot
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.3.9012</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.3.9015</span>
       </span>
     </div>
 
@@ -159,16 +161,18 @@ style the taxonomic compositions barplot
     <div class="ref-description">
     <p>A Shiny app used like an interactive version of <code><a href='ord_plot.html'>ord_plot()</a></code>.
 You can select samples on an ordination plot and view their composition with stacked barplots.</p>
-<p>You can give the <code>ord_explore()</code> data argument either of the following:</p><ul>
+<p>The <code>ord_explore()</code> data argument takes either:</p><ul>
 <li><p>the output of <code><a href='ord_calc.html'>ord_calc()</a></code> (i.e. a ps_extra with an ordination)</p></li>
 <li><p>a plain phyloseq object: <code>ord_explore()</code> will help you build an ordination</p></li>
 </ul>
 
-<p>Once running:</p><ol>
+<p>Once the app is running (in your browser):</p><ol>
 <li><p>edit the ordination if required</p></li>
 <li><p>style the ordination plot (e.g. choose dimensions; set colour and size; ...)</p></li>
 <li><p>click or use the lasso tool to select 2 or more samples to view their compositions</p></li>
 <li><p>style the taxonomic compositions barplot</p></li>
+<li><p>stop the app by clicking the red stop button in the R console
+(closing the web browser window doesn't stop the app)</p></li>
 </ol>
 
     </div>
@@ -232,18 +236,18 @@ You can select samples on an ordination plot and view their composition with sta
 that grouping variable cannot be used to select those samples</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://dx.plos.org/10.1371/journal.pone.0061217'>phyloseq</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-
-<span class='co'># example of quickstart approach with interactive ordination calculation #</span>
+    <pre class="examples"><div class='input'><span class='co'># example code only runs in interactive R session</span>
 <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://dx.plos.org/10.1371/journal.pone.0061217'>phyloseq</a></span><span class='op'>)</span>
+  <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
+
+  <span class='co'># example of quickstart approach with interactive ordination calculation #</span>
   <span class='fu'>corncob</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/corncob/man/ibd_phylo.html'>ibd_phylo</a></span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='tax_fix.html'>tax_fix</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'>ord_explore</span><span class='op'>(</span><span class='op'>)</span>
-<span class='op'>}</span>
 
-<span class='co'># simple example with precalculated ordination #</span>
-<span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+
+  <span class='co'># simple example with precalculated ordination #</span>
   <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"enterotype"</span><span class='op'>)</span>
   <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html'>taxa_names</a></span><span class='op'>(</span><span class='va'>enterotype</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='st'>"unclassified"</span> <span class='co'># replaces the "-1" taxon name</span>
   <span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tax_fix.html'>tax_fix</a></span><span class='op'>(</span><span class='va'>enterotype</span><span class='op'>)</span> <span class='co'># remove NA taxa</span>
@@ -253,10 +257,8 @@ that grouping variable cannot be used to select those samples</p>
     <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"PCoA"</span><span class='op'>)</span>
 
   <span class='fu'>ord_explore</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>ord1</span>, auto_caption <span class='op'>=</span> <span class='fl'>6</span><span class='op'>)</span>
-<span class='op'>}</span>
 
-<span class='co'># constrained ordination example #</span>
-<span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='co'># constrained ordination example #</span>
   <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span>
 
   <span class='co'># create a couple of numerical variables to use as constraints</span>
@@ -276,14 +278,12 @@ that grouping variable cannot be used to select those samples</p>
       plot_taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, tax_lab_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>,
       constraint_lab_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span>, auto_caption <span class='op'>=</span> <span class='fl'>7</span>
     <span class='op'>)</span>
-<span class='op'>}</span>
-<span class='co'># try changing the point colour to bmi_group or similar</span>
-<span class='co'># (style interactively! e.g. colour doesn't work as argument to ord_explore)</span>
+  <span class='co'># Try changing the point colour to bmi_group or similar</span>
+  <span class='co'># Style interactively! (setting e.g. colour as an argument doesn't work)</span>
 
-<span class='co'># another dataset, where "size" variable drives gradient on PC1</span>
-<span class='co'># (try setting size and/or alpha to correspond to "size"!)</span>
-<span class='co'># then edit the ordination to use "size" as a condition, see what happens</span>
-<span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='co'># Another dataset, where "size" variable drives gradient on PC1</span>
+  <span class='co'># Try setting size and/or alpha to correspond to "size"!</span>
+  <span class='co'># Then edit the ordination to use "size" as a condition, see what happens</span>
   <span class='co'># hmp2 &lt;- microbiomeutilities::hmp2</span>
   <span class='va'>hmp2</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='tax_fix.html'>tax_fix</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
@@ -291,10 +291,8 @@ that grouping variable cannot be used to select those samples</p>
     <span class='fu'><a href='dist_calc.html'>dist_calc</a></span><span class='op'>(</span><span class='st'>"aitchison"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'>ord_explore</span><span class='op'>(</span><span class='op'>)</span>
-<span class='op'>}</span>
 
-<span class='co'># another dataset</span>
-<span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='co'># another dataset</span>
   <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"soilrep"</span>, package <span class='op'>=</span> <span class='st'>"phyloseq"</span><span class='op'>)</span>
   <span class='co'># test auto creation of SAMPLE var</span>
   <span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>soilrep</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='ps_select.html'>ps_select</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>Sample</span><span class='op'>)</span>
