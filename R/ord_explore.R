@@ -185,11 +185,11 @@ ord_explore <- function(data,
               shiny::helpText("Dims:"),
               shiny::numericInput(
                 inputId = "x1", label = NULL,
-                value = 1, min = 1, max = 15, step = 1
+                value = 1, min = 1, max = 150, step = 1
               ),
               shiny::numericInput(
                 inputId = "y1", label = NULL,
-                value = 2, min = 1, max = 15, step = 1
+                value = 2, min = 1, max = 150, step = 1
               )
             ),
             shiny::splitLayout(
@@ -655,6 +655,8 @@ ord_explore <- function(data,
 
     # ordination plot ---------------------------------------------------------
     output$ord_plot <- ggiraph::renderGirafe({
+      # prevent execution if no axes selected
+      shiny::req(input$x1, input$y1, cancelOutput = TRUE)
       if (identical(ord_get(v$dat), NULL)) {
         # placeholder instructions if data does not have ordination already
         p1 <- ggmessage(paste0(

@@ -186,7 +186,7 @@ ord_plot <-
     if (inherits(data, "ps_extra") && !identical(ordination, NULL)) {
       info <- info_get(data)
     } else {
-      stop("data argument should be a ps_extra list, specifically the output from ord_calc")
+      stop("data argument should be a ps_extra list, i.e. output of ord_calc")
     }
 
     # get ellipses optional arguments (aesthetics for geom_point)
@@ -245,7 +245,7 @@ ord_plot <-
 
       # compute summary of ordination object to ensure
       # consistent scaling of components
-      ordsum <- summary(ordination, scaling = scaling)
+      ordsum <- summary(ordination, scaling = scaling, axes = max(axes))
 
       # retrieve scores from model object
       siteScoresDf <- as.data.frame(ordsum[["sites"]][, axes, drop = FALSE])
