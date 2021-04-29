@@ -1,21 +1,20 @@
 # microViz (development version)
 
-- Removed deprecated tax_fill_unknowns
+- `ord_explore` Shiny app GUI can now be used to interactively generate ordination plots, and to generate `ord_plot` code.
+- Removed deprecated `tax_fill_unknowns` function
 
 # microViz 0.7.3
 
-- Fix phyloseq_validate verbose = FALSE.
+- `phyloseq_validate` verbose = FALSE is actually silent now.
 
 # microViz 0.7.2
 
-## Fixes
-- ord_explore now compatible with Shiny version >=1.5.0
-- tax_fix now sends messages about fixing completely anonymous rows, instead of warnings
+- `ord_explore` now compatible with Shiny version >=1.5.0
+- `tax_fix` now sends messages about fixing completely anonymous rows, instead of warnings
 
 # microViz 0.7.1
 
-## Fixes
-- Allow ps_seriate, ps_arrange, ps_reorder, ps_mutate, and ps_select to work directly with ps_extra objects, as this can be helpful when quickly exploring / printing aggregated data, as in the new "Working with phyloseq objects" tutorial.
+Allows `ps_seriate`, `ps_arrange`, `ps_reorder`, `ps_mutate`, and `ps_select` to work directly with `ps_extra` objects, as this can be helpful when quickly exploring / printing aggregated data, as in the new "Working with phyloseq objects" tutorial.
 
 # microViz 0.7.0 - "fickle fixes"
 
