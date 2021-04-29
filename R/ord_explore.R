@@ -4,18 +4,20 @@
 #' A Shiny app used like an interactive version of `ord_plot()`.
 #' You can select samples on an ordination plot and view their composition with stacked barplots.
 #'
-#' You can give the `ord_explore()` data argument either of the following:
+#' The `ord_explore()` data argument takes either:
 #'
 #' - the output of `ord_calc()` (i.e. a ps_extra with an ordination)
 #' - a plain phyloseq object: `ord_explore()` will help you build an ordination
 #'
 #'
-#' Once running:
+#' Once the app is running (in your browser):
 #'
 #' 1. edit the ordination if required
 #' 2. style the ordination plot (e.g. choose dimensions; set colour and size; ...)
 #' 3. click or use the lasso tool to select 2 or more samples to view their compositions
 #' 4. style the taxonomic compositions barplot
+#' 5. stop the app by clicking the red stop button in the R console
+#' (closing the web browser window doesn't stop the app)
 #'
 #' @details
 #' If you get an interactive error like the one below:
@@ -396,13 +398,24 @@ ord_explore <- function(data,
     }
 
     # code modal --------------------------------------------------------------
-    # TODO
     codeModal <- shiny::reactive(
       shiny::modalDialog(
         easyClose = TRUE,
         shiny::h3(shiny::icon("code"), "Ordination plot code"),
         shiny::hr(),
-        shiny::helpText("Code generation feature coming soon!"),
+        shiny::renderPrint({
+          ord_code(
+            rank = m_sel$rank, trans = m_sel$trans, dist = m_sel$distInfo,
+            ord = m_sel$ordInfo, const = m_sel$const, conds = m_sel$conds,
+            x = input$x1, y = input$y1, colour = input$ord_colour, fill = colour,
+            shape = input$ord_shape, alpha = alpha(), size = size()
+          )
+        }),
+        shiny::hr(),
+        shiny::helpText(
+          "Note: replace `your_phyloseq` with the ",
+          "object you used for ord_explore's data argument"
+        ),
         footer = shiny::modalButton("Close", icon = shiny::icon("times"))
       )
     )
@@ -738,7 +751,7 @@ ord_explore <- function(data,
 
     # make plot
     comp_plot <- shiny::reactive({
-      # get ggiraph interactivity
+      # get ggiraph interactively selected datapoints (values of id_var)
       selected_samples <- input$ord_plot_selected
       # logical selection of kept samples
       sample_kept <-
@@ -945,6 +958,49 @@ ord_explore_init <- function(data) {
   return(out)
 }
 
+# generate code-styled text for reproducing ordination plot
+ord_code <- function(rank, trans, dist, ord, const, conds,
+                     x, y, colour, fill, shape, alpha, size) {
+  # prepare dist_calc line if distance needed
+  if (dist != "none") {
+    dist_calc_line <- paste0(" dist_calc(dist = ", dist, ") %>%")
+  } else {
+    dist_calc_line <- NULL
+  }
+  # prepare constraint and condition argument lines if necessary
+  if (!identical(const, NULL)) {
+    const <- paste0(
+      '  constraints = c("', paste(const, collapse = '", "'), '"),'
+    )
+  }
+  if (!identical(conds, NULL)) {
+    conds <- paste0(
+      '  conditions = c("', paste(conds, collapse = '", "'), '"),'
+    )
+  }
+  # prepare alpha and size, which could be numeric or character
+  if (!is.numeric(alpha)) alpha <- paste0('"', alpha, '"')
+  if (!is.numeric(size)) size <- paste0('"', size, '"')
+
+  cat(
+    "your_phyloseq %>%",
+    paste0(
+      ' tax_transform(rank = "', rank, '", transformation = "', trans, '") %>%'
+    ),
+    dist_calc_line,
+    " ord_calc(",
+    const, conds,
+    paste0('  method = "', ord, '"'),
+    " ) %>% ",
+    " ord_plot(",
+    paste0("  axes = c(", x, ", ", y, "),"),
+    paste0('  colour = "', colour, '", fill = "', colour, '",'),
+    paste0('  shape = "', shape, '", alpha = ', alpha, ','),
+    paste0('  size = ', size),
+    " )",
+    sep = "\n"
+  )
+}
 
 # Create ordination from data, bundling several steps
 ord_build <- function(data,

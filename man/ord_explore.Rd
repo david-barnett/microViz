@@ -37,18 +37,20 @@ nothing, opens default browser
 A Shiny app used like an interactive version of \code{ord_plot()}.
 You can select samples on an ordination plot and view their composition with stacked barplots.
 
-You can give the \code{ord_explore()} data argument either of the following:
+The \code{ord_explore()} data argument takes either:
 \itemize{
 \item the output of \code{ord_calc()} (i.e. a ps_extra with an ordination)
 \item a plain phyloseq object: \code{ord_explore()} will help you build an ordination
 }
 
-Once running:
+Once the app is running (in your browser):
 \enumerate{
 \item edit the ordination if required
 \item style the ordination plot (e.g. choose dimensions; set colour and size; ...)
 \item click or use the lasso tool to select 2 or more samples to view their compositions
 \item style the taxonomic compositions barplot
+\item stop the app by clicking the red stop button in the R console
+(closing the web browser window doesn't stop the app)
 }
 }
 \details{
