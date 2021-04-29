@@ -407,7 +407,8 @@ ord_explore <- function(data,
           ord_code(
             rank = m_sel$rank, trans = m_sel$trans, dist = m_sel$distInfo,
             ord = m_sel$ordInfo, const = m_sel$const, conds = m_sel$conds,
-            x = input$x1, y = input$y1, colour = input$ord_colour, fill = colour,
+            x = input$x1, y = input$y1, colour = input$ord_colour,
+            fill = input$ord_colour, # TODO make fill configurable
             shape = input$ord_shape, alpha = alpha(), size = size()
           )
         }),
@@ -1126,7 +1127,7 @@ ord_choices <- function(type) {
   choices <- purrr::reduce(l[type], intersect)
   choices_desc <- all[union("auto", choices)]
   # flip names and values and return, ready for use as selectize input choices
-  out <- setNames(names(choices_desc), choices_desc)
+  out <- stats::setNames(names(choices_desc), choices_desc)
   return(out)
 }
 
@@ -1151,7 +1152,7 @@ dist_choices <- function(data, type) {
   )
   # add more phyloseq dist methods
   pdists <- unlist(phyloseq::distanceMethodList)
-  more <- setNames(object = pdists, nm = pdists)
+  more <- stats::setNames(object = pdists, nm = pdists)
   all <- c(all, more[!names(more) %in% all])
 
   # overlapping type lists
@@ -1165,7 +1166,7 @@ dist_choices <- function(data, type) {
   choices <- purrr::reduce(l[type], intersect)
   choices_desc <- all[choices]
   # flip names and values and return, ready for use as selectize input choices
-  out <- setNames(names(choices_desc), choices_desc)
+  out <- stats::setNames(names(choices_desc), choices_desc)
   return(out)
 }
 
@@ -1190,7 +1191,7 @@ trans_choices <- function(type) {
   choices <- purrr::reduce(l[type], intersect)
   choices_desc <- all[choices]
   # flip names and values and return, ready for use as selectize input choices
-  out <- setNames(names(choices_desc), choices_desc)
+  out <- stats::setNames(names(choices_desc), choices_desc)
 
   return(out)
 }
