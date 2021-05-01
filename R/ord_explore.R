@@ -1154,7 +1154,7 @@ dist_choices <- function(data, type) {
   # overlapping type lists
   l <- list(
     all = names(all),
-    noTree = c(paste0(c("g", "w", "", "va-w"), "unifrac"), "dpcoa")
+    tree = c(paste0(c("g", "w", "", "va-w"), "unifrac"), "dpcoa")
   )
   l$noTree <- setdiff(l$all, l$tree)
 
