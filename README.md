@@ -257,8 +257,8 @@ aitchison_perm <- dist_permanova(
   variables = "bmi_group + female"
 )
 #> Dropping samples with missings: 2
-#> 2021-05-01 15:06:21 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2021-05-01 15:06:21 - Finished PERMANOVA
+#> 2021-05-01 15:11:48 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2021-05-01 15:11:48 - Finished PERMANOVA
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
 #>            Df   SumOfSqs         R2        F Pr(>F)
@@ -286,8 +286,8 @@ your permanova directly using the ord\_plot function with constraints.
 ``` r
 perm2 <- dist_permanova(data = aitchison_dists, variables = c("weight", "female"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2021-05-01 15:06:21 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2021-05-01 15:06:22 - Finished PERMANOVA
+#> 2021-05-01 15:11:48 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2021-05-01 15:11:48 - Finished PERMANOVA
 perm_get(perm2)
 #> Permutation test for adonis under reduced model
 #> Marginal effects of terms
@@ -362,7 +362,7 @@ contributions are all welcome. Feel free to create a [GitHub
 Issue](https://github.com/david-barnett/microViz/issues) or write on the
 [Discussions](https://github.com/david-barnett/microViz/discussions)
 page. Alternatively you could also contact me (David) on Twitter
-[@\_david\_barnett\_](https://twitter.com/_david_barnett) .
+[@\_david\_barnett\_](https://twitter.com/_david_barnett_) .
 
 This project is released with a [Contributor Code of
 Conduct](https://david-barnett.github.io/microViz/CODE_OF_CONDUCT.html)
