@@ -66,28 +66,25 @@ You can install the latest available microViz package version using the
 following instructions.
 
 ``` r
-# If you are on Windows you will need to install RTools so that your computer can build this package
+# Windows users will need to have RTools installed so that your computer can build this package
 # Follow instructions here: http://jtleek.com/modules/01_DataScientistToolbox/02_10_rtools/
 
-# If you are on macOS, you might need to install xquartz to make the heatmaps work (ComplexHeatmaps package)
+# macOS users might need to install xquartz to make the heatmaps work (ComplexHeatmaps package)
 # You can do this with homebrew, running the following command in your mac's Terminal: brew install --cask xquartz 
 
 # for installing from github you'll need the devtools package
 install.packages("devtools", type = "binary") # (not binary if you're on linux)
 
 # If you don't already have the latest versions of phyloseq and microbiome, you can install these from Bioconductor:
-
 if (!requireNamespace("BiocManager", quietly = TRUE))
  install.packages("BiocManager", type = "binary") # (not binary if you're on linux)
 BiocManager::install(c("phyloseq", "microbiome"))
 
-# # Installing the latest "released" version of this package # #
-devtools::install_github("david-barnett/microViz@0.7.3") # check 0.7.3 is the latest release
+# Installing the latest "released" version of this package
+devtools::install_github("david-barnett/microViz@0.7.4") # check 0.7.4 is the latest release
 
-# # If you encounter bugs: please try installing the very latest development version:
+# If you encounter a bug please try installing the latest version & let me know if the bug persists!
 devtools::install_github("david-barnett/microViz")
-
-# advanced tip: add @<commit-hash> after microViz to install a version from a particular commit
 ```
 
 :package: I highly recommend using
@@ -98,16 +95,43 @@ package installations across multiple projects.
 installed is available at:
 <https://hub.docker.com/r/barnettdavid/microviz-rocker-verse>
 
-:date: microViz is tested to work with R version 4.0.0 and higher, on
-Windows, MacOS, and Ubuntu 18 and 20. R version 3.6.\* should probably
-work, but I don’t formally test this.
+:date: microViz is tested to work with R version 4 on Windows, MacOS,
+and Ubuntu 18 and 20. R version 3.6.\* should probably work, but I don’t
+formally test this.
 
-## A few examples
+## Interactive ordination exploration
 
 ``` r
 library(microViz)
+```
+
+microViz provides a Shiny app for an easy way to start exploring your
+microbiome data: all you need is a phyloseq object.
+
+``` r
+# example data from corncob package
+pseq <- corncob::ibd_phylo %>% tax_fix() %>% phyloseq_validate()
+```
+
+``` r
+ord_explore(pseq) # gif generated with microViz version 0.7.4 (plays at 1.75x speed)
+```
+
+![](vignettes/articles/images/20210429_ord_explore_x175.gif)
+
+## Example analyses
+
+``` r
 library(phyloseq)
 library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
 library(ggplot2)
 ```
 
@@ -233,8 +257,8 @@ aitchison_perm <- dist_permanova(
   variables = "bmi_group + female"
 )
 #> Dropping samples with missings: 2
-#> 2021-04-22 23:45:27 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2021-04-22 23:45:27 - Finished PERMANOVA
+#> 2021-05-01 15:06:21 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2021-05-01 15:06:21 - Finished PERMANOVA
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
 #>            Df   SumOfSqs         R2        F Pr(>F)
@@ -244,8 +268,14 @@ perm_get(aitchison_perm) %>% as.data.frame()
 #> Total     219 2453.98430 1.00000000       NA     NA
 # view the info stored about the distance calculation
 info_get(aitchison_perm)
-#> phyloseq info:
-#> tax_agg = Family tax_transform = identity
+#> ps_extra info:
+#> tax_agg = Family 
+#> tax_transform = identity 
+#> tax_scale = NA 
+#> distMethod = aitchison 
+#> ordMethod = NA 
+#> constraints = NA 
+#> conditions = NA
 ```
 
 ### Constrained ordination
@@ -256,8 +286,8 @@ your permanova directly using the ord\_plot function with constraints.
 ``` r
 perm2 <- dist_permanova(data = aitchison_dists, variables = c("weight", "female"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2021-04-22 23:45:27 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2021-04-22 23:45:28 - Finished PERMANOVA
+#> 2021-05-01 15:06:21 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2021-05-01 15:06:22 - Finished PERMANOVA
 perm_get(perm2)
 #> Permutation test for adonis under reduced model
 #> Marginal effects of terms
@@ -325,6 +355,19 @@ consider citing the Zenodo archive DOI:
 Publication pending: microViz has been submitted to a peer-reviewed
 journal.
 
+## Contributing
+
+Bug reports, questions, suggestions for new features, and other
+contributions are all welcome. Feel free to create a [GitHub
+Issue](https://github.com/david-barnett/microViz/issues) or write on the
+[Discussions](https://github.com/david-barnett/microViz/discussions)
+page. Alternatively you could also contact me (David) on Twitter
+[@\_david\_barnett\_](https://twitter.com/_david_barnett) .
+
+This project is released with a [Contributor Code of
+Conduct](https://david-barnett.github.io/microViz/CODE_OF_CONDUCT.html)
+and by participating in this project you agree to abide by its terms.
+
 ## Session info
 
 ``` r
@@ -339,33 +382,34 @@ devtools::session_info()
 #>  collate  en_GB.UTF-8                 
 #>  ctype    en_GB.UTF-8                 
 #>  tz       Europe/Amsterdam            
-#>  date     2021-04-22                  
+#>  date     2021-05-01                  
 #> 
 #> ─ Packages ───────────────────────────────────────────────────────────────────────────────────────
 #>  package        * version  date       lib source        
 #>  ade4             1.7-16   2020-10-28 [1] CRAN (R 4.0.3)
-#>  ape              5.4-1    2020-08-13 [1] CRAN (R 4.0.3)
+#>  ape              5.5      2021-04-25 [1] RSPM (R 4.0.4)
 #>  Biobase          2.50.0   2020-10-27 [1] Bioconductor  
 #>  BiocGenerics     0.36.1   2021-04-16 [1] Bioconductor  
 #>  biomformat       1.18.0   2020-10-27 [1] Bioconductor  
 #>  Biostrings       2.58.0   2020-10-27 [1] Bioconductor  
 #>  cachem           1.0.4    2021-02-13 [1] CRAN (R 4.0.3)
 #>  Cairo            1.5-12.2 2020-07-07 [1] CRAN (R 4.0.3)
-#>  callr            3.6.0    2021-03-28 [1] CRAN (R 4.0.3)
+#>  callr            3.7.0    2021-04-20 [1] RSPM (R 4.0.4)
 #>  circlize         0.4.12   2021-01-08 [1] CRAN (R 4.0.3)
-#>  cli              2.4.0    2021-04-05 [1] CRAN (R 4.0.3)
+#>  cli              2.5.0    2021-04-26 [1] RSPM (R 4.0.4)
 #>  clue             0.3-59   2021-04-16 [1] CRAN (R 4.0.3)
 #>  cluster          2.1.0    2019-06-19 [2] CRAN (R 4.0.3)
 #>  codetools        0.2-18   2020-11-04 [1] CRAN (R 4.0.3)
 #>  colorspace       2.0-0    2020-11-11 [1] CRAN (R 4.0.3)
 #>  ComplexHeatmap   2.6.2    2020-11-12 [1] Bioconductor  
+#>  corncob          0.2.0    2021-03-11 [1] CRAN (R 4.0.3)
 #>  crayon           1.4.1    2021-02-08 [1] CRAN (R 4.0.3)
 #>  data.table       1.14.0   2021-02-21 [1] CRAN (R 4.0.3)
 #>  desc             1.3.0    2021-03-05 [1] CRAN (R 4.0.3)
 #>  devtools       * 2.4.0    2021-04-07 [1] CRAN (R 4.0.3)
 #>  digest           0.6.27   2020-10-24 [1] CRAN (R 4.0.3)
 #>  dplyr          * 1.0.5    2021-03-05 [1] CRAN (R 4.0.3)
-#>  ellipsis         0.3.1    2020-05-15 [1] CRAN (R 4.0.3)
+#>  ellipsis         0.3.2    2021-04-29 [1] RSPM (R 4.0.4)
 #>  evaluate         0.14     2019-05-28 [1] CRAN (R 4.0.3)
 #>  fansi            0.4.2    2021-01-15 [1] CRAN (R 4.0.3)
 #>  farver           2.1.0    2021-02-28 [1] CRAN (R 4.0.3)
@@ -378,14 +422,14 @@ devtools::session_info()
 #>  GlobalOptions    0.1.2    2020-06-10 [1] CRAN (R 4.0.3)
 #>  glue             1.4.2    2020-08-27 [1] CRAN (R 4.0.3)
 #>  gtable           0.3.0    2019-03-25 [1] CRAN (R 4.0.3)
-#>  highr            0.8      2019-03-20 [1] CRAN (R 4.0.3)
+#>  highr            0.9      2021-04-16 [1] RSPM (R 4.0.4)
 #>  hms              1.0.0    2021-01-13 [1] CRAN (R 4.0.3)
 #>  htmltools        0.5.1.1  2021-01-22 [1] CRAN (R 4.0.3)
 #>  igraph           1.2.6    2020-10-06 [1] CRAN (R 4.0.3)
 #>  IRanges          2.24.1   2020-12-12 [1] Bioconductor  
 #>  iterators        1.0.13   2020-10-15 [1] CRAN (R 4.0.3)
 #>  jsonlite         1.7.2    2020-12-09 [1] CRAN (R 4.0.3)
-#>  knitr            1.31     2021-01-27 [1] CRAN (R 4.0.3)
+#>  knitr            1.32     2021-04-14 [1] RSPM (R 4.0.4)
 #>  labeling         0.4.2    2020-10-20 [1] CRAN (R 4.0.3)
 #>  lattice          0.20-41  2020-04-02 [2] CRAN (R 4.0.3)
 #>  lifecycle        1.0.0    2021-02-15 [1] CRAN (R 4.0.3)
@@ -397,7 +441,7 @@ devtools::session_info()
 #>  memoise          2.0.0    2021-01-26 [1] CRAN (R 4.0.3)
 #>  mgcv             1.8-33   2020-08-27 [2] CRAN (R 4.0.3)
 #>  microbiome       1.12.0   2020-10-27 [1] Bioconductor  
-#>  microViz       * 0.7.2    2021-04-21 [1] local         
+#>  microViz       * 0.7.4    2021-05-01 [1] local         
 #>  multtest         2.46.0   2020-10-27 [1] Bioconductor  
 #>  munsell          0.5.0    2018-06-12 [1] CRAN (R 4.0.3)
 #>  nlme             3.1-149  2020-08-23 [2] CRAN (R 4.0.3)
@@ -444,8 +488,8 @@ devtools::session_info()
 #>  TSP              1.1-10   2020-04-17 [1] CRAN (R 4.0.3)
 #>  usethis        * 2.0.1    2021-02-10 [1] CRAN (R 4.0.3)
 #>  utf8             1.2.1    2021-03-12 [1] CRAN (R 4.0.3)
-#>  vctrs            0.3.7    2021-03-29 [1] CRAN (R 4.0.3)
-#>  vegan            2.5-7    2020-11-28 [1] CRAN (R 4.0.3)
+#>  vctrs            0.3.8    2021-04-29 [1] RSPM (R 4.0.4)
+#>  vegan            2.5-7    2020-11-28 [1] RSPM (R 4.0.3)
 #>  withr            2.4.2    2021-04-18 [1] CRAN (R 4.0.3)
 #>  xfun             0.22     2021-03-11 [1] CRAN (R 4.0.3)
 #>  XVector          0.30.0   2020-10-27 [1] Bioconductor  

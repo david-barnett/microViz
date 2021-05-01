@@ -56,10 +56,10 @@ microViz extends and complements popular microbial ecology packages like phylose
 You can install the latest available microViz package version using the following instructions.
 
 ``` r
-# If you are on Windows you will need to install RTools so that your computer can build this package
+# Windows users will need to have RTools installed so that your computer can build this package
 # Follow instructions here: http://jtleek.com/modules/01_DataScientistToolbox/02_10_rtools/
 
-# If you are on macOS, you might need to install xquartz to make the heatmaps work (ComplexHeatmaps package)
+# macOS users might need to install xquartz to make the heatmaps work (ComplexHeatmaps package)
 # You can do this with homebrew, running the following command in your mac's Terminal: brew install --cask xquartz 
 
 # for installing from github you'll need the devtools package
@@ -70,26 +70,42 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
  install.packages("BiocManager", type = "binary") # (not binary if you're on linux)
 BiocManager::install(c("phyloseq", "microbiome"))
 
-# Installing the latest "released" version of this package # #
-devtools::install_github("david-barnett/microViz@0.7.3") # check 0.7.3 is the latest release
+# Installing the latest "released" version of this package
+devtools::install_github("david-barnett/microViz@0.7.4") # check 0.7.4 is the latest release
 
-# If you encounter bugs: please try installing the very latest development version:
+# If you encounter a bug please try installing the latest version & let me know if the bug persists!
 devtools::install_github("david-barnett/microViz")
-
-# advanced tip: add @<commit-hash> after microViz to install a version from a particular commit
 ```
 
 :package: I highly recommend using [renv](https://rstudio.github.io/renv/index.html) for managing your R package installations across multiple projects.
 
 :whale: Alternatively, for Docker users an image with the main branch installed is available at: <https://hub.docker.com/r/barnettdavid/microviz-rocker-verse>
 
-:date: microViz is tested to work with R version 4.0.0 and higher, on Windows, MacOS, and Ubuntu 18 and 20.
+:date: microViz is tested to work with R version 4 on Windows, MacOS, and Ubuntu 18 and 20.
 R version 3.6.\* should probably work, but I don't formally test this.
 
-## A few examples
+## Interactive ordination exploration
 
 ```{r load, message=FALSE}
 library(microViz)
+```
+
+microViz provides a Shiny app for an easy way to start exploring your microbiome data: all you need is a phyloseq object.
+
+```{r example ord_explore}
+# example data from corncob package
+pseq <- corncob::ibd_phylo %>% tax_fix() %>% phyloseq_validate()
+```
+
+``` {.r}
+ord_explore(pseq) # gif generated with microViz version 0.7.4 (plays at 1.75x speed)
+```
+
+![](vignettes/articles/images/20210429_ord_explore_x175.gif)
+
+## Example analyses
+
+```{r packages}
 library(phyloseq)
 library(dplyr)
 library(ggplot2)
@@ -251,8 +267,16 @@ cor_heatmap(psq, taxa, anno_tax = tax_anno(undetected = 50))
 
 Publication pending: microViz has been submitted to a peer-reviewed journal.
 
+## Contributing
+
+Bug reports, questions, suggestions for new features, and other contributions are all welcome.
+Feel free to create a [GitHub Issue](https://github.com/david-barnett/microViz/issues) or write on the [Discussions](https://github.com/david-barnett/microViz/discussions) page.
+Alternatively you could also contact me (David) on Twitter [\@\_david_barnett\_](https://twitter.com/_david_barnett) .
+
+This project is released with a [Contributor Code of Conduct](https://david-barnett.github.io/microViz/CODE_OF_CONDUCT.html) and by participating in this project you agree to abide by its terms.
+
 ## Session info
 
-```{r}
+```{r session info}
 devtools::session_info()
 ```

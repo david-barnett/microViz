@@ -1,6 +1,6 @@
-# microViz (development version)
+# microViz 0.7.4
 
-- `ord_explore` Shiny app GUI can now be used to interactively generate ordination plots, and to generate `ord_plot` code
+- `ord_explore` Shiny app GUI can now also be used to interactively generate ordination plots, and to generate `ord_plot` code
 - `ord_plot` bug fix - can now plot any dimension
 - Removed deprecated `tax_fill_unknowns` function
 

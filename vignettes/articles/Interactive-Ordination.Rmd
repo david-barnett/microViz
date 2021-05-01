@@ -16,7 +16,25 @@ library(phyloseq)
 library(microViz)
 ```
 
-Get example data and clean up the taxa just a little.
+## Example
+
+Example data loaded from the corncob package. All you need is a valid phyloseq object, and to run `tax_fix` to [ensure the tax_table doesn't contain problematic names](https://david-barnett.github.io/microViz/articles/articles/tax-fixing.html).
+
+```{r example}
+pseq <- corncob::ibd_phylo %>% tax_fix() %>% phyloseq_validate()
+```
+
+The gif animation below shows the result of running `ord_explore`, the animation starts immediately after interactively selecting "Genus" level aggregation, "clr" transformation, and the "PCA" ordination method from the "Edit" menu.
+
+``` {.R}
+ord_explore(pseq)
+```
+
+![](images/20210429_ord_explore_x175.gif)
+
+## Another (old) example
+
+Get example dataset from the phyloseq package and clean up the taxa just a little.
 
 ```{r get data}
 data("enterotype", package = "phyloseq")
@@ -33,16 +51,16 @@ ord1 <- ps %>%
   ord_calc() # automagically picks PCoA
 ```
 
-Start interactive Shiny App: this will open a page in your default web browser.
+Start interactive Shiny App. Note that the gif animation shown is from an outdated version of microViz. More recent versions of `ord_explore` allow editing the ordination shown, and generating `ord_plot` code.
 
 ``` {.r}
 ord_explore(data = ord1, auto_caption = NA)
 ```
 
-![Note: GIF is sped up x2: redrawing plots is not instantaneous, but pretty quick unless your dataset has many 1000s of samples](images/20210329_ord_explore_dev_x2.gif)
+![Note: GIF is sped up x2: redrawing plots is not instantaneous, but pretty quick unless your dataset has many 1000s of samples. Date of creation: 29/03/2021](images/20210329_ord_explore_dev_x2.gif)
 
 # Session info
 
-```{r}
+```{r session info}
 devtools::session_info()
 ```
