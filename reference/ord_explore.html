@@ -87,7 +87,7 @@ stop the app by clicking the red stop button in the R console
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.4.9001</span>
       </span>
     </div>
 
@@ -246,7 +246,6 @@ that grouping variable cannot be used to select those samples</p>
     <span class='fu'><a href='tax_fix.html'>tax_fix</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'>ord_explore</span><span class='op'>(</span><span class='op'>)</span>
 
-
   <span class='co'># simple example with precalculated ordination #</span>
   <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"enterotype"</span><span class='op'>)</span>
   <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html'>taxa_names</a></span><span class='op'>(</span><span class='va'>enterotype</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='st'>"unclassified"</span> <span class='co'># replaces the "-1" taxon name</span>
@@ -273,13 +272,15 @@ that grouping variable cannot be used to select those samples</p>
     <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>constraints <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"weight"</span>, <span class='st'>"female"</span><span class='op'>)</span><span class='op'>)</span>
 
+  <span class='co'># label style arguments can be passed to ord_explore</span>
   <span class='va'>constrained_aitchison_rda</span> <span class='op'>%&gt;%</span>
     <span class='fu'>ord_explore</span><span class='op'>(</span>
-      plot_taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, tax_lab_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>,
-      constraint_lab_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span>, auto_caption <span class='op'>=</span> <span class='fl'>7</span>
+      tax_lab_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>,
+      constraint_lab_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span>, auto_caption <span class='op'>=</span> <span class='fl'>6</span>
     <span class='op'>)</span>
   <span class='co'># Try changing the point colour to bmi_group or similar</span>
-  <span class='co'># Style interactively! (setting e.g. colour as an argument doesn't work)</span>
+  <span class='co'># Style points interactively!</span>
+  <span class='co'># (setting colour/shape/etc as arguments doesn't work)</span>
 
   <span class='co'># Another dataset, where "size" variable drives gradient on PC1</span>
   <span class='co'># Try setting size and/or alpha to correspond to "size"!</span>
