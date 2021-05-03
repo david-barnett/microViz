@@ -1,3 +1,7 @@
+# microViz (development version)
+
+- `ord_explore` can now draw stat_ellipse or taxa loading vectors
+
 # microViz 0.7.4
 
 - `ord_explore` Shiny app GUI can now also be used to interactively generate ordination plots, and to generate `ord_plot` code

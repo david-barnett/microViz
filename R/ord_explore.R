@@ -57,7 +57,6 @@
 #'     tax_fix() %>%
 #'     ord_explore()
 #'
-#'
 #'   # simple example with precalculated ordination #
 #'   data("enterotype")
 #'   taxa_names(enterotype)[1] <- "unclassified" # replaces the "-1" taxon name
@@ -84,13 +83,15 @@
 #'     tax_transform("clr") %>%
 #'     ord_calc(constraints = c("weight", "female"))
 #'
+#'   # label style arguments can be passed to ord_explore
 #'   constrained_aitchison_rda %>%
 #'     ord_explore(
-#'       plot_taxa = 1:5, tax_lab_style = list(size = 3),
-#'       constraint_lab_style = list(size = 4), auto_caption = 7
+#'       tax_lab_style = list(size = 3),
+#'       constraint_lab_style = list(size = 4), auto_caption = 6
 #'     )
 #'   # Try changing the point colour to bmi_group or similar
-#'   # Style interactively! (setting e.g. colour as an argument doesn't work)
+#'   # Style points interactively!
+#'   # (setting colour/shape/etc as arguments doesn't work)
 #'
 #'   # Another dataset, where "size" variable drives gradient on PC1
 #'   # Try setting size and/or alpha to correspond to "size"!
@@ -151,7 +152,10 @@ ord_explore <- function(data,
             .shiny-split-layout > div {
               overflow: visible;
             }
-            .selectize-input, .irs, .form-control {
+            .form-group {
+              margin-bottom: 10px;
+            }
+            .selectize-input, .selectize-dropdown, .irs, .form-control {
               font-size: 12px;
             }
             "
@@ -200,17 +204,6 @@ ord_explore <- function(data,
                 selected = c(sample_id, "SAMPLE")[[1]] # 'SAMPLE' if id = NULL
               )
             ),
-            shiny::splitLayout(
-              cellWidths = c("30%", "65%"),
-              shiny::helpText("Colour:"),
-              shiny::selectInput(
-                inputId = "ord_colour", label = NULL, selected = "azure4",
-                choices = list(
-                  Variable = init$vars$all,
-                  Fixed = grDevices::colors(distinct = TRUE)
-                )
-              )
-            ),
             # shape
             shiny::splitLayout(
               cellWidths = c("30%", "65%"),
@@ -220,6 +213,18 @@ ord_explore <- function(data,
                 choices = list(
                   Variable = init$vars$all,
                   Fixed = ggplot2_shapes()
+                )
+              )
+            ),
+            #### colour -------------------------------------------------------
+            shiny::splitLayout(
+              cellWidths = c("30%", "65%"),
+              shiny::helpText("Colour:"),
+              shiny::selectInput(
+                inputId = "ord_colour", label = NULL, selected = "azure4",
+                choices = list(
+                  Variable = init$vars$all,
+                  Fixed = grDevices::colors(distinct = TRUE)
                 )
               )
             ),
@@ -274,6 +279,29 @@ ord_explore <- function(data,
                   options = list(placeholder = "numeric var?")
                 )
               )
+            ),
+            #### additions ----------------------------------------------------
+            shiny::splitLayout(
+              cellWidths = c("20%", "75%"),
+              shiny::helpText("Add:"),
+              shiny::selectInput(
+                inputId = "add", label = NULL, selected = "nothing",
+                choices = c(
+                  "nothing", "ellipses (coloured)" = "ellipses",
+                  "taxa (PCA/RDA/CCA)" = "taxa"
+                )
+              )
+            ),
+            shiny::conditionalPanel(
+              condition = "input.add == 'taxa'",
+              shiny::splitLayout(
+                cellWidths = c("50%", "45%"),
+                shiny::helpText("N labels:"),
+                shiny::numericInput(
+                  inputId = "nLabels", label = NULL, value = 3,
+                  min = 1, max = 25, step = 1
+                )
+              )
             )
           ),
           shiny::hr(),
@@ -317,9 +345,8 @@ ord_explore <- function(data,
               cellWidths = c("45%", "50%"),
               shiny::helpText("N Colors:"),
               shiny::sliderInput(
-                inputId = "ntaxa", label = NULL,
-                min = 1, max = 39, value = 9, step = 1,
-                round = TRUE, ticks = FALSE
+                inputId = "ntaxa", label = NULL, min = 1, max = 39,
+                value = 9, step = 1, round = TRUE, ticks = FALSE
               )
             ),
             shiny::splitLayout(
@@ -337,9 +364,8 @@ ord_explore <- function(data,
                 cellWidths = c("45%", "50%"),
                 shiny::helpText("N Distinct:"),
                 shiny::sliderInput(
-                  inputId = "taxmax", label = NULL,
-                  min = 1, max = 500, value = 100, step = 1,
-                  round = TRUE, ticks = FALSE
+                  inputId = "taxmax", label = NULL, min = 1, max = 500,
+                  value = 100, step = 1, round = TRUE, ticks = FALSE
                 )
               )
             )
@@ -403,7 +429,8 @@ ord_explore <- function(data,
             ord = m_sel$ordInfo, const = m_sel$const, conds = m_sel$conds,
             x = input$x1, y = input$y1, colour = input$ord_colour,
             fill = input$ord_colour, # TODO make fill configurable
-            shape = input$ord_shape, alpha = alpha(), size = size()
+            shape = input$ord_shape, alpha = alpha(), size = size(),
+            plot_taxa = plot_taxa(), ellipses = ellipses()
           )
         }),
         shiny::hr(),
@@ -600,13 +627,10 @@ ord_explore <- function(data,
         out <- try(
           expr = {
             v$dat <- ord_build(
-              data = init$data,
-              rank = input$rank,
-              trans = input$trans,
+              data = init$data, rank = input$rank, trans = input$trans,
               dist = if (input$dist == "none") NA else input$dist,
               method = input$method,
-              constraints = input$const,
-              conditions = input$conds
+              constraints = input$const, conditions = input$conds
             )
           }
         )
@@ -642,8 +666,7 @@ ord_explore <- function(data,
         # for comp_barplot (samples can be reordered)
         v$comp_dat <- ps_seriate(
           ps = ps_counts(init$data, warn = TRUE),
-          method = seriate_method,
-          tax_transform = init$info$trans,
+          method = seriate_method, tax_transform = init$info$trans,
           # get current distance, if not "none", else use euclidean
           dist = setdiff(
             c(shiny::isolate(m_sel$distInfo), "euclidean"), "none"
@@ -653,7 +676,7 @@ ord_explore <- function(data,
       }
     )
 
-    # ordination plot ---------------------------------------------------------
+    # ord_plot ----------------------------------------------------------------
     output$ord_plot <- ggiraph::renderGirafe({
       # prevent execution if no axes selected
       shiny::req(input$x1, input$y1, cancelOutput = TRUE)
@@ -668,19 +691,18 @@ ord_explore <- function(data,
       } else {
         # create ordination ggplot
         p1 <- ord_plot(
-          v$dat,
-          axes = c(input$x1, input$y1),
-          shape = input$ord_shape,
-          size = size(),
-          colour = input$ord_colour,
-          fill = input$ord_colour,
-          alpha = alpha(),
-          interactive = TRUE,
-          data_id = input$id_var,
-          tooltip = input$id_var,
-          ...
+          v$dat, axes = c(input$x1, input$y1), shape = input$ord_shape,
+          size = size(), colour = input$ord_colour, fill = input$ord_colour,
+          alpha = alpha(), interactive = TRUE, data_id = input$id_var,
+          tooltip = input$id_var, plot_taxa = plot_taxa(), ...
         ) +
           ggplot2::scale_shape_discrete(na.translate = TRUE, na.value = 1)
+        # optionally add group 95% ellipses
+        if (ellipses()) {
+          p1 <- p1 + ggplot2::stat_ellipse(
+            ggplot2::aes(colour = .data[[input$ord_colour]])
+          )
+        }
 
         # (blank) legend in separate plot for consistent sizing of main plot
         p1 <- legend_separate(p1, rel_widths = c(80, 20))
@@ -690,6 +712,7 @@ ord_explore <- function(data,
         code = print(p1),
         width_svg = p_width[[1]], height_svg = 4.5,
         options = list(
+          ggiraph::opts_toolbar(saveaspng = FALSE),
           ggiraph::opts_hover(
             css = "fill:orange;stroke:black;cursor:pointer;",
             reactive = TRUE
@@ -703,6 +726,7 @@ ord_explore <- function(data,
       return(p1)
     })
 
+    ## arg helpers ------------------------------------------------------------
     size <- shiny::reactive({
       if (isTRUE(input$sizeFixed)) {
         input$ord_size_num
@@ -717,8 +741,18 @@ ord_explore <- function(data,
         shiny::req(input$ord_alpha_var, cancelOutput = TRUE)
       }
     })
+    plot_taxa <- shiny::reactive({
+      if (input$add != "taxa"){
+        FALSE
+      } else {
+        seq_len(input$nLabels)
+      }
+    })
+    ellipses <- shiny::reactive({
+      input$add == "ellipses" & input$ord_colour %in% init$vars$all
+    })
 
-    # barplot compositions ----------------------------------------------------
+    # comp_barplot ------------------------------------------------------------
 
     ## tax order & colour -----------------------------------------------------
     # order taxa using ALL samples
@@ -818,6 +852,7 @@ ord_explore <- function(data,
         width_svg = p_width[[2]], "in", height_svg = 5,
         options = list(
           # ggiraph::opts_sizing(rescale = FALSE),
+          ggiraph::opts_toolbar(saveaspng = FALSE),
           ggiraph::opts_zoom(min = 0.5, max = 3),
           ggiraph::opts_hover(css = "fill:orange;stroke:gray;"),
           ggiraph::opts_hover_inv("opacity:0.2"),
@@ -956,8 +991,8 @@ ord_explore_init <- function(data) {
 }
 
 # generate code-styled text for reproducing ordination plot
-ord_code <- function(rank, trans, dist, ord, const, conds,
-                     x, y, colour, fill, shape, alpha, size) {
+ord_code <- function(rank, trans, dist, ord, const, conds, x, y,
+                     colour, fill, shape, alpha, size, plot_taxa, ellipses) {
   # prepare dist_calc line if distance needed
   if (dist != "none") {
     dist_calc_line <- paste0(" dist_calc(dist = ", dist, ") %>%")
@@ -975,9 +1010,24 @@ ord_code <- function(rank, trans, dist, ord, const, conds,
       '  conditions = c("', paste(conds, collapse = '", "'), '"),'
     )
   }
+  # prepare plot_taxa line if not default
+  taxa_line <- paste0("  plot_taxa = 1:", length(plot_taxa), ",")
+  if (isFALSE(plot_taxa)) taxa_line <- NULL
   # prepare alpha and size, which could be numeric or character
   if (!is.numeric(alpha)) alpha <- paste0('"', alpha, '"')
   if (!is.numeric(size)) size <- paste0('"', size, '"')
+  # prepare ellipses if necessary
+  if (isTRUE(ellipses)) {
+    end_lines <- paste(
+      sep = "\n",
+      " ) +",
+      " ggplot2::stat_ellipse(",
+      paste0('  ggplot2::aes(colour = .data[["', colour, '"]])'),
+      " )"
+    )
+  } else {
+    end_lines <- " )"
+  }
 
   cat(
     "your_phyloseq %>%",
@@ -990,11 +1040,11 @@ ord_code <- function(rank, trans, dist, ord, const, conds,
     paste0('  method = "', ord, '"'),
     " ) %>% ",
     " ord_plot(",
-    paste0("  axes = c(", x, ", ", y, "),"),
+    paste0("  axes = c(", x, ", ", y, "),"), taxa_line,
     paste0('  colour = "', colour, '", fill = "', colour, '",'),
     paste0('  shape = "', shape, '", alpha = ', alpha, ","),
     paste0("  size = ", size),
-    " )",
+    end_lines,
     sep = "\n"
   )
 }

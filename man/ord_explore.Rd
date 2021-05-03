@@ -76,7 +76,6 @@ if (interactive()) {
     tax_fix() \%>\%
     ord_explore()
 
-
   # simple example with precalculated ordination #
   data("enterotype")
   taxa_names(enterotype)[1] <- "unclassified" # replaces the "-1" taxon name
@@ -103,13 +102,15 @@ if (interactive()) {
     tax_transform("clr") \%>\%
     ord_calc(constraints = c("weight", "female"))
 
+  # label style arguments can be passed to ord_explore
   constrained_aitchison_rda \%>\%
     ord_explore(
-      plot_taxa = 1:5, tax_lab_style = list(size = 3),
-      constraint_lab_style = list(size = 4), auto_caption = 7
+      tax_lab_style = list(size = 3),
+      constraint_lab_style = list(size = 4), auto_caption = 6
     )
   # Try changing the point colour to bmi_group or similar
-  # Style interactively! (setting e.g. colour as an argument doesn't work)
+  # Style points interactively!
+  # (setting colour/shape/etc as arguments doesn't work)
 
   # Another dataset, where "size" variable drives gradient on PC1
   # Try setting size and/or alpha to correspond to "size"!
