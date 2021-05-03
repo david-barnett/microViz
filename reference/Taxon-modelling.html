@@ -37,6 +37,12 @@
 <script src="../pkgdown.js"></script>
 
 
+<!-- docsearch -->
+<script src="../docsearch.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link href="../docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+
 
 
 <meta property="og:title" content="Statistical modelling for individual taxa in a phyloseq — Taxon-modelling" />
@@ -139,6 +145,12 @@ abundance and dispersion parameters." />
   </a>
 </li>
       </ul>
+      
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+        </div>
+      </form>
       
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -290,7 +302,7 @@ Run a line like this beforehand: <code><a href='https://rdrr.io/pkg/future/man/p
 </div><div class='output co'>#&gt; <span class='message'>Modelling: G: Bacteroides fragilis et rel.</span></div><div class='input'><span class='co'># Model all taxa at multiple taxonomic ranks (ranks 1 and 2)</span>
 <span class='co'># using only female variable as predictor</span>
 <span class='va'>models4</span> <span class='op'>&lt;-</span> <span class='fu'>taxatree_models</span><span class='op'>(</span><span class='va'>ps</span>, tax_levels <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, formula <span class='op'>=</span> <span class='op'>~</span><span class='va'>female</span>, verbose <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>2021-05-03 13:56:08 - modelling at level: Phylum</span></div><div class='output co'>#&gt; <span class='message'>2021-05-03 13:56:09 - modelling at level: Family</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>2021-05-03 14:16:15 - modelling at level: Phylum</span></div><div class='output co'>#&gt; <span class='message'>2021-05-03 14:16:16 - modelling at level: Family</span></div><div class='input'>
 <span class='co'># modelling proportion with simple linear regression is also possible via type = lm</span>
 <span class='co'># and transforming the taxa to compositional first</span>
 <span class='va'>models_lm</span> <span class='op'>&lt;-</span> <span class='va'>ps</span> <span class='op'>%&gt;%</span>
@@ -319,6 +331,23 @@ Run a line like this beforehand: <code><a href='https://rdrr.io/pkg/future/man/p
    </div>
 
   
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script>
+<script>
+  docsearch({
+    
+    
+    apiKey: '22e6f0a75b7b1ffae9bf5bc5b58864d7',
+    indexName: 'microViz',
+    inputSelector: 'input#search-input.form-control',
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
+  });
+</script>
+
 
 
   </body>
