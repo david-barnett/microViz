@@ -1,10 +1,10 @@
 # internal helper functions only used for testing with `testthat`
-# ref
+# ref:
 # https://testthat.r-lib.org/articles/custom-expectation.html
 # https://testthat.r-lib.org/reference/expect_snapshot_file.html
 #
 
-# save csv
+# save csv and return path to it
 save_csv <- function(object) {
   path <- base::tempfile(fileext = ".csv")
   utils::write.csv(x = object, file = path)
