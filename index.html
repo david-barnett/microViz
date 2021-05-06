@@ -111,48 +111,55 @@
 <!-- badges: start -->
 
 <!-- badges: end -->
-<p><span class="emoji" data-emoji="package">📦</span> microViz is an R package for analysis and visualization of microbiome sequencing data. microViz functions are intended to be easy to use and flexible. microViz extends and complements popular microbial ecology packages like phyloseq, vegan, and microbiome.</p>
-<p><strong>See the documentation website for full details and examples:</strong> <a href="https://david-barnett.github.io/microViz/" class="uri">https://david-barnett.github.io/microViz/</a></p>
+<div id="overview" class="section level2">
+<h2 class="hasAnchor">
+<a href="#overview" class="anchor"></a>Overview</h2>
+<p><span class="emoji" data-emoji="package">📦</span> <code>microViz</code> is an R package for analysis and visualization of microbiome sequencing data.</p>
+<p><span class="emoji" data-emoji="hammer">🔨</span> <code>microViz</code> functions are intended to be easy to use and flexible.</p>
+<p>:microbe: <code>microViz</code> extends and complements popular microbial ecology packages like <code>phyloseq</code>, <code>vegan</code>, and <code>microbiome</code>.</p>
+</div>
+<div id="learn-more" class="section level2">
+<h2 class="hasAnchor">
+<a href="#learn-more" class="anchor"></a>Learn more</h2>
+<p><span class="emoji" data-emoji="paperclip">📎</span> This website is the best place for documentation and examples: <a href="https://david-barnett.github.io/microViz/" class="uri">https://david-barnett.github.io/microViz/</a></p>
 <ul>
-<li><p>The <a href="https://david-barnett.github.io/microViz/articles/articles/microViz.html">“Get started”</a> page, and also <a href="https://david-barnett.github.io/microViz/index.html">this ReadMe</a>, show a few example analyses.</p></li>
-<li><p>The <a href="https://david-barnett.github.io/microViz/reference/index.html">reference</a> page lists all functions and links to their documentation and examples</p></li>
-<li><p>Example video of <a href="https://david-barnett.github.io/microViz/articles/articles/Interactive-Ordination.html">Interactive Shiny app</a> for exploring your ordination plots!</p></li>
+<li><p><strong>The <a href="https://david-barnett.github.io/microViz/articles/articles/microViz.html">“Get started”</a> page</strong> shows a few example analyses (as does this ReadMe)</p></li>
+<li><p><strong>The <a href="https://david-barnett.github.io/microViz/reference/index.html">Reference</a> page</strong> lists all functions and links to help pages and examples</p></li>
+<li><p><strong>The <a href="https://david-barnett.github.io/microViz/news/index.html">Changelog</a></strong> describes important changes in new microViz package versions</p></li>
 <li>
-<p>Other articles pages give tutorials and more complicated examples</p>
+<p><strong>The Articles pages</strong> give tutorials and further examples</p>
 <ul>
 <li><p><a href="https://david-barnett.github.io/microViz/articles/articles/phyloseq.html">Working with phyloseq objects</a></p></li>
 <li><p><a href="https://david-barnett.github.io/microViz/articles/articles/tax-fixing.html">Fixing your taxa table with tax_fix</a></p></li>
 <li><p><a href="https://david-barnett.github.io/microViz/articles/ordination.html">Creating ordination plots</a> (e.g. PCA or PCoA)</p></li>
-<li><p><a href="https://david-barnett.github.io/microViz/articles/articles/Visualising-compositions.html">Visualising taxonomic compositions with customised barplots</a></p></li>
-<li><p>(more coming soon! Post on <a href="https://github.com/david-barnett/microViz/discussions">GitHub discussions</a> if you have questions/requests)</p></li>
+<li><p><a href="https://david-barnett.github.io/microViz/articles/articles/Interactive-Ordination.html">Interactive ordination plots with ord_explore</a></p></li>
+<li><p><a href="https://david-barnett.github.io/microViz/articles/articles/Visualising-compositions.html">Visualising taxonomic compositions with comp_barplot</a></p></li>
+<li><p>More coming soon! Post on <a href="https://github.com/david-barnett/microViz/discussions">GitHub discussions</a> if you have questions/requests</p></li>
 </ul>
 </li>
-<li><p>The <a href="https://david-barnett.github.io/microViz/news/index.html">changelog</a> describes important changes in new microViz package versions</p></li>
 </ul>
+</div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install the latest available microViz package version using the following instructions.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Windows users will need to have RTools installed so that your computer can build this package</span>
-<span class="co"># Follow instructions here: http://jtleek.com/modules/01_DataScientistToolbox/02_10_rtools/</span>
-
-<span class="co"># macOS users might need to install xquartz to make the heatmaps work (ComplexHeatmaps package)</span>
-<span class="co"># You can do this with homebrew, running the following command in your mac's Terminal: brew install --cask xquartz </span>
-
-<span class="co"># for installing from github you'll need the devtools package</span>
+<code class="sourceCode R"><span class="co"># Installing from github requires the devtools package</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span>, type <span class="op">=</span> <span class="st">"binary"</span><span class="op">)</span> <span class="co"># (not binary if you're on linux)</span>
 
-<span class="co"># If you don't already have the latest versions of phyloseq and microbiome, you can install these from Bioconductor:</span>
+<span class="co"># You can install the latest versions of phyloseq and microbiome from Bioconductor:</span>
 <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, type <span class="op">=</span> <span class="st">"binary"</span><span class="op">)</span> <span class="co"># (not binary if you're on linux)</span>
 <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu">install</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"phyloseq"</span>, <span class="st">"microbiome"</span><span class="op">)</span><span class="op">)</span>
 
-<span class="co"># Installing the latest "released" version of this package</span>
+<span class="co"># To install the latest "released" version of this package</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"david-barnett/microViz@0.7.4"</span><span class="op">)</span> <span class="co"># check 0.7.4 is the latest release</span>
 
-<span class="co"># If you encounter a bug please try installing the latest version &amp; let me know if the bug persists!</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"david-barnett/microViz"</span><span class="op">)</span></code></pre></div>
+<span class="co"># To install the very latest version:</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"david-barnett/microViz"</span><span class="op">)</span>
+<span class="co"># If you encounter a bug please try the latest version &amp; let me know if the bug persists!</span></code></pre></div>
+<p><span class="emoji" data-emoji="computer">💻</span> <strong>Windows users</strong> - will need to have RTools installed so that your computer can build this package (follow instructions here: <a href="http://jtleek.com/modules/01_DataScientistToolbox/02_10_rtools/" class="uri">http://jtleek.com/modules/01_DataScientistToolbox/02_10_rtools/</a>)</p>
+<p><strong><span class="emoji" data-emoji="apple">🍎</span> macOS</strong> <strong>users</strong> - might need to install <a href="https://www.xquartz.org/">xquartz</a> to make the heatmaps work (to do this with homebrew, run the following command in your mac’s Terminal: <code>brew install --cask xquartz</code></p>
 <p><span class="emoji" data-emoji="package">📦</span> I highly recommend using <a href="https://rstudio.github.io/renv/index.html">renv</a> for managing your R package installations across multiple projects.</p>
 <p><span class="emoji" data-emoji="whale">🐳</span> Alternatively, for Docker users an image with the main branch installed is available at: <a href="https://hub.docker.com/r/barnettdavid/microviz-rocker-verse" class="uri">https://hub.docker.com/r/barnettdavid/microviz-rocker-verse</a></p>
 <p><span class="emoji" data-emoji="date">📅</span> microViz is tested to work with R version 4 on Windows, MacOS, and Ubuntu 18 and 20. R version 3.6.* should probably work, but I don’t formally test this.</p>
@@ -292,8 +299,8 @@
   variables <span class="op">=</span> <span class="st">"bmi_group + female"</span>
 <span class="op">)</span>
 <span class="co">#&gt; Dropping samples with missings: 2</span>
-<span class="co">#&gt; 2021-05-01 15:11:48 - Starting PERMANOVA with 99 perms with 1 processes</span>
-<span class="co">#&gt; 2021-05-01 15:11:48 - Finished PERMANOVA</span>
+<span class="co">#&gt; 2021-05-06 09:11:26 - Starting PERMANOVA with 99 perms with 1 processes</span>
+<span class="co">#&gt; 2021-05-06 09:11:26 - Finished PERMANOVA</span>
 <span class="co"># view the permanova results</span>
 <span class="fu"><a href="reference/ps_extra-accessors.html">perm_get</a></span><span class="op">(</span><span class="va">aitchison_perm</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt;            Df   SumOfSqs         R2        F Pr(&gt;F)</span>
@@ -319,8 +326,8 @@
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">perm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/dist_permanova.html">dist_permanova</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">aitchison_dists</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"female"</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">321</span><span class="op">)</span>
 <span class="co">#&gt; Dropping samples with missings: 2</span>
-<span class="co">#&gt; 2021-05-01 15:11:48 - Starting PERMANOVA with 999 perms with 1 processes</span>
-<span class="co">#&gt; 2021-05-01 15:11:48 - Finished PERMANOVA</span>
+<span class="co">#&gt; 2021-05-06 09:11:26 - Starting PERMANOVA with 999 perms with 1 processes</span>
+<span class="co">#&gt; 2021-05-06 09:11:27 - Finished PERMANOVA</span>
 <span class="fu"><a href="reference/ps_extra-accessors.html">perm_get</a></span><span class="op">(</span><span class="va">perm2</span><span class="op">)</span>
 <span class="co">#&gt; Permutation test for adonis under reduced model</span>
 <span class="co">#&gt; Marginal effects of terms</span>
@@ -402,7 +409,7 @@
 <span class="co">#&gt;  collate  en_GB.UTF-8                 </span>
 <span class="co">#&gt;  ctype    en_GB.UTF-8                 </span>
 <span class="co">#&gt;  tz       Europe/Amsterdam            </span>
-<span class="co">#&gt;  date     2021-05-01                  </span>
+<span class="co">#&gt;  date     2021-05-06                  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ─ Packages ───────────────────────────────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt;  package        * version  date       lib source        </span>
