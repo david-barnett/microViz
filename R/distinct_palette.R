@@ -34,7 +34,7 @@ distinct_palette <- function(n = NA) {
       "#7edc45",
       "#5c47b8",
       "#cfd251",
-      "hotpink",
+      "#ff69b4", # hotpink
       "#69c86c",
       "#cd3e50",
       "#83d5af",

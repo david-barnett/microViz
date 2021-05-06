@@ -185,8 +185,7 @@ ord_explore <- function(data,
             ),
             shiny::h4("Ordination options"),
             shiny::splitLayout(
-              cellWidths = c("30%", "30%", "30%"),
-              shiny::helpText("Dims:"),
+              cellWidths = c("30%", "30%", "30%"), shiny::helpText("Dims:"),
               shiny::numericInput(
                 inputId = "x1", label = NULL,
                 value = 1, min = 1, max = 150, step = 1
@@ -197,8 +196,7 @@ ord_explore <- function(data,
               )
             ),
             shiny::splitLayout(
-              cellWidths = c("30%", "65%"),
-              shiny::helpText("Select:"),
+              cellWidths = c("30%", "65%"), shiny::helpText("Select:"),
               shiny::selectInput(
                 inputId = "id_var", label = NULL, choices = init$vars$all,
                 selected = c(sample_id, "SAMPLE")[[1]] # 'SAMPLE' if id = NULL
@@ -206,20 +204,17 @@ ord_explore <- function(data,
             ),
             # shape
             shiny::splitLayout(
-              cellWidths = c("30%", "65%"),
-              shiny::helpText("Shape:"),
+              cellWidths = c("30%", "65%"), shiny::helpText("Shape:"),
               shiny::selectInput(
                 inputId = "ord_shape", label = NULL, selected = "circle",
                 choices = list(
-                  Variable = init$vars$all,
-                  Fixed = ggplot2_shapes()
+                  Variable = init$vars$all, Fixed = ggplot2_shapes()
                 )
               )
             ),
             #### colour -------------------------------------------------------
             shiny::splitLayout(
-              cellWidths = c("30%", "65%"),
-              shiny::helpText("Colour:"),
+              cellWidths = c("30%", "65%"), shiny::helpText("Colour:"),
               shiny::selectInput(
                 inputId = "ord_colour", label = NULL, selected = "azure4",
                 choices = list(
@@ -245,8 +240,7 @@ ord_explore <- function(data,
             shiny::conditionalPanel(
               condition = "input.alphaFixed == false",
               shiny::splitLayout(
-                cellWidths = c("30%", "65%"),
-                shiny::helpText("Alpha:"),
+                cellWidths = c("30%", "65%"), shiny::helpText("Alpha:"),
                 shiny::selectizeInput(
                   inputId = "ord_alpha_var", label = NULL,
                   choices = init$vars$num, selected = NULL,
@@ -282,12 +276,12 @@ ord_explore <- function(data,
             ),
             #### additions ----------------------------------------------------
             shiny::splitLayout(
-              cellWidths = c("20%", "75%"),
-              shiny::helpText("Add:"),
+              cellWidths = c("20%", "75%"), shiny::helpText("Add:"),
               shiny::selectInput(
                 inputId = "add", label = NULL, selected = "nothing",
                 choices = c(
-                  "nothing", "ellipses (coloured)" = "ellipses",
+                  "nothing",
+                  "ellipses (coloured)" = "ellipses",
                   "taxa (PCA/RDA/CCA)" = "taxa"
                 )
               )
@@ -295,8 +289,7 @@ ord_explore <- function(data,
             shiny::conditionalPanel(
               condition = "input.add == 'taxa'",
               shiny::splitLayout(
-                cellWidths = c("50%", "45%"),
-                shiny::helpText("N labels:"),
+                cellWidths = c("50%", "45%"), shiny::helpText("N labels:"),
                 shiny::numericInput(
                   inputId = "nLabels", label = NULL, value = 3,
                   min = 1, max = 25, step = 1
@@ -309,41 +302,36 @@ ord_explore <- function(data,
           shiny::fluidRow(
             shiny::h4("Composition options"),
             shiny::splitLayout(
-              cellWidths = c("30%", "65%"),
-              shiny::helpText("Labels:"),
+              cellWidths = c("30%", "65%"), shiny::helpText("Labels:"),
               shiny::selectInput(
                 inputId = "comp_label", label = NULL, selected = "SAMPLE",
                 choices = init$vars$all
               )
             ),
             shiny::splitLayout(
-              cellWidths = c("30%", "65%"),
-              shiny::helpText("Facets:"),
+              cellWidths = c("30%", "65%"), shiny::helpText("Facets:"),
               shiny::selectInput(
                 inputId = "facet_by", label = NULL, selected = "NA",
-                choices = union("NA", init$vars$cat)
+                choices = union("NA", init$vars$all)
               )
             ),
             # rank
             shiny::splitLayout(
-              cellWidths = c("30%", "65%"),
-              shiny::helpText("Rank:"),
+              cellWidths = c("30%", "65%"), shiny::helpText("Rank:"),
               shiny::selectInput(
                 inputId = "tax_level_comp", label = NULL,
                 choices = init$ranks, selected = init$info$rank
               )
             ),
             shiny::splitLayout(
-              cellWidths = c("30%", "65%"),
-              shiny::helpText("Order:"),
+              cellWidths = c("30%", "65%"), shiny::helpText("Order:"),
               shiny::selectInput(
                 inputId = "tax_order", label = NULL, selected = "sum",
                 choices = c("sum", "median", "mean", "max", "var"),
               )
             ),
             shiny::splitLayout(
-              cellWidths = c("45%", "50%"),
-              shiny::helpText("N Colors:"),
+              cellWidths = c("45%", "50%"), shiny::helpText("N Colors:"),
               shiny::sliderInput(
                 inputId = "ntaxa", label = NULL, min = 1, max = 39,
                 value = 9, step = 1, round = TRUE, ticks = FALSE
@@ -361,8 +349,7 @@ ord_explore <- function(data,
             shiny::conditionalPanel(
               condition = "input.mergeOther == false", # ? false
               shiny::splitLayout(
-                cellWidths = c("45%", "50%"),
-                shiny::helpText("N Distinct:"),
+                cellWidths = c("45%", "50%"), shiny::helpText("N Distinct:"),
                 shiny::sliderInput(
                   inputId = "taxmax", label = NULL, min = 1, max = 500,
                   value = 100, step = 1, round = TRUE, ticks = FALSE
@@ -425,8 +412,9 @@ ord_explore <- function(data,
         shiny::hr(),
         shiny::renderPrint({
           ord_code(
-            rank = m_sel$rank, trans = m_sel$trans, dist = m_sel$distInfo,
-            ord = m_sel$ordInfo, const = m_sel$const, conds = m_sel$conds,
+            rank = ordSelected$rank, trans = ordSelected$trans,
+            dist = ordSelected$dist, ord = ordSelected$ord,
+            const = ordSelected$const, conds = ordSelected$conds,
             x = input$x1, y = input$y1, colour = input$ord_colour,
             fill = input$ord_colour, # TODO make fill configurable
             shape = input$ord_shape, alpha = alpha(), size = size(),
@@ -455,36 +443,36 @@ ord_explore <- function(data,
         shiny::hr(),
         shiny::selectizeInput(
           inputId = "rank", label = "Taxonomic Rank",
-          selected = m_sel$rank, choices = m_choices$rank
+          selected = ordSelected$rank, choices = ordChoices$rank
         ),
         shiny::selectizeInput(
           inputId = "trans", label = "Taxa transformation",
-          choices = m_choices$trans, selected = m_sel$trans
+          choices = ordChoices$trans, selected = ordSelected$trans
         ),
         shiny::selectizeInput(
           inputId = "dist", label = "Distance / Dissimilarity",
-          choices = m_choices$distInfo, selected = m_sel$distInfo
+          choices = ordChoices$dist, selected = ordSelected$dist
         ),
         shiny::checkboxInput(
-          inputId = "concons", label = "Constrain or condition ordination?",
-          value = m_sel$concons
+          inputId = "isCon", label = "Constrain or condition ordination?",
+          value = ordSelected$isCon
         ),
         shiny::conditionalPanel(
-          condition = "input.concons == true",
+          condition = "input.isCon == true",
           shiny::selectizeInput(
             inputId = "const", label = "Constraints", multiple = TRUE,
-            choices = m_choices$const, selected = m_sel$const,
+            choices = ordChoices$const, selected = ordSelected$const,
             options = list(placeholder = "numeric vars?")
           ),
           shiny::selectizeInput(
             inputId = "conds", label = "Conditions", multiple = TRUE,
-            choices = m_choices$conds, selected = m_sel$conds,
+            choices = ordChoices$conds, selected = ordSelected$conds,
             options = list(placeholder = "numeric vars?")
           )
         ),
         shiny::selectizeInput(
           inputId = "method", label = "Ordination method",
-          choices = m_choices$ordInfo, selected = m_sel$ordInfo
+          choices = ordChoices$ord, selected = ordSelected$ord
         ),
         footer = shiny::tagList(
           shiny::modalButton("Cancel", icon = shiny::icon("times")),
@@ -521,12 +509,12 @@ ord_explore <- function(data,
     ### selected --------------------------------------------------------------
     # for remembering selected and possible choices in modal selectize inputs
     #### initialise selected choices ------------------------------------------
-    m_sel <- shiny::reactiveValues(
+    ordSelected <- shiny::reactiveValues(
       rank = init$info$rank, trans = init$info$trans,
       # scale = if (is.na(info$scale)) "neither" else info$scale,
-      distInfo = init$info$dist, ordInfo = init$info$ord,
+      dist = init$info$dist, ord = init$info$ord,
       const = init$info$constraints, conds = init$info$conditions,
-      concons = init$info$concons # constrained or conditioned (checkbox)
+      isCon = init$info$isCon # constrained or conditioned (checkbox)
     )
 
     #### update on build ------------------------------------------------------
@@ -534,15 +522,15 @@ ord_explore <- function(data,
     shiny::observeEvent(
       eventExpr = input$build,
       handlerExpr = {
-        m_sel$rank <- input$rank
-        m_sel$trans <- input$trans
-        m_sel$distInfo <- input$dist
-        m_sel$ordInfo <- input$method
+        ordSelected$rank <- input$rank
+        ordSelected$trans <- input$trans
+        ordSelected$dist <- input$dist
+        ordSelected$ord <- input$method
         # TODO scale inputs
-        # m_sel$scale <- input$scale
-        m_sel$const <- input$const
-        m_sel$conds <- input$conds
-        m_sel$concons <- input$concons
+        # ordSelected$scale <- input$scale
+        ordSelected$const <- input$const
+        ordSelected$conds <- input$conds
+        ordSelected$isCon <- input$isCon
         # update default choice of taxonomic rank for composition plot
         shiny::updateSelectizeInput(
           session = session, inputId = "tax_level_comp", selected = input$rank
@@ -553,11 +541,11 @@ ord_explore <- function(data,
     ### choices ---------------------------------------------------------------
 
     #### initialise choices ---------------------------------------------------
-    m_choices <- shiny::reactiveValues(
+    ordChoices <- shiny::reactiveValues(
       rank = rev(init$ranks), trans = trans_choices(type = "all"),
       # scale = # TODO
-      distInfo = dist_choices(init$data, type = "all"),
-      ordInfo = ord_choices(type = "all"),
+      dist = dist_choices(init$data, type = "all"),
+      ord = ord_choices(type = "all"),
       const = init$vars$num, conds = init$vars$num
     )
 
@@ -568,18 +556,18 @@ ord_explore <- function(data,
       ignoreInit = TRUE,
       eventExpr = {
         input$dist
-        input$concons
+        input$isCon
       },
       handlerExpr = {
         x <-
           if (input$dist == "none") {
-            if (isTRUE(input$concons)) {
+            if (isTRUE(input$isCon)) {
               ord_choices(c("noDist", "constrained"))
             } else {
               ord_choices(c("noDist", "unconstrained"))
             }
           } else {
-            if (isTRUE(input$concons)) {
+            if (isTRUE(input$isCon)) {
               ord_choices(c("dist", "constrained"))
             } else {
               ord_choices(c("dist", "unconstrained"))
@@ -612,9 +600,9 @@ ord_explore <- function(data,
       comp_dat = ps_seriate( # for comp_barplot (samples can be reordered)
         ps = ps_counts(init$data, warn = TRUE),
         method = seriate_method,
-        tax_transform = shiny::isolate(m_sel$trans),
+        tax_transform = shiny::isolate(ordSelected$trans),
         dist = setdiff(
-          c(shiny::isolate(m_sel$distInfo), "euclidean"), "none"
+          c(shiny::isolate(ordSelected$dist), "euclidean"), "none"
         )[[1]]
       )
     )
@@ -636,7 +624,10 @@ ord_explore <- function(data,
         )
         if (inherits(out, "try-error")) {
           shiny::showNotification(
-            ui = "Invalid combination of options: try again!",
+            ui = paste(
+              "Invalid combination of options: try again!",
+              "See R console for error message(s)."
+            ),
             type = "error", session = session
           )
         } else {
@@ -646,8 +637,8 @@ ord_explore <- function(data,
           )
           v$comp_dat <- ps_seriate(
             ps = v$comp_dat, method = seriate_method,
-            tax_transform = m_sel$trans,
-            dist = setdiff(x = c(m_sel$distInfo, "euclidean"), y = "none")[[1]]
+            tax_transform = ordSelected$trans,
+            dist = setdiff(c(ordSelected$dist, "euclidean"), "none")[[1]]
           )
         }
       }
@@ -669,7 +660,7 @@ ord_explore <- function(data,
           method = seriate_method, tax_transform = init$info$trans,
           # get current distance, if not "none", else use euclidean
           dist = setdiff(
-            c(shiny::isolate(m_sel$distInfo), "euclidean"), "none"
+            c(shiny::isolate(ordSelected$dist), "euclidean"), "none"
           )[[1]]
         )
         shiny::removeModal(session = session)
@@ -691,7 +682,7 @@ ord_explore <- function(data,
       } else {
         # create ordination ggplot
         p1 <- ord_plot(
-          v$dat, axes = c(input$x1, input$y1), shape = input$ord_shape,
+          data = v$dat, axes = c(input$x1, input$y1), shape = input$ord_shape,
           size = size(), colour = input$ord_colour, fill = input$ord_colour,
           alpha = alpha(), interactive = TRUE, data_id = input$id_var,
           tooltip = input$id_var, plot_taxa = plot_taxa(), ...
@@ -742,7 +733,7 @@ ord_explore <- function(data,
       }
     })
     plot_taxa <- shiny::reactive({
-      if (input$add != "taxa"){
+      if (input$add != "taxa") {
         FALSE
       } else {
         seq_len(input$nLabels)
@@ -883,13 +874,11 @@ ord_explore <- function(data,
             # warn about lag with too many distinct taxa (and set maxtax = 50)
             shiny::showNotification(
               "ALERT: Max Distinct taxa reduced to 40 to avoid freezing!",
-              duration = 10, closeButton = TRUE, type = "warning",
-              session = session
+              duration = 10, type = "warning", session = session
             )
             shiny::showNotification(
               "Interactive bars lag if too many taxa and/or samples shown!",
-              duration = 20, closeButton = TRUE, type = "warning",
-              session = session
+              duration = 20, type = "warning", session = session
             )
           }
         } else {
@@ -906,6 +895,8 @@ ord_explore <- function(data,
 
 
 # helper functions ------------------------------------------------------------
+
+## ordination helpers --------------------------------------------------------
 
 #' Handle ord_explore input data
 #'
@@ -942,7 +933,7 @@ ord_explore_init <- function(data) {
     conditions = read_cons(info_get(data)[["conditions"]])
   )
   # read_cons returns NULL if no constraints / conditions found
-  info$concons <- length(c(info$constraints, info$conditions)) > 0
+  info$isCon <- length(c(info$constraints, info$conditions)) > 0
 
   # handle missing ordination info --------------------------------------------
   # Set up a warning (and shiny notification) if information is complete
@@ -990,63 +981,14 @@ ord_explore_init <- function(data) {
   return(out)
 }
 
-# generate code-styled text for reproducing ordination plot
-ord_code <- function(rank, trans, dist, ord, const, conds, x, y,
-                     colour, fill, shape, alpha, size, plot_taxa, ellipses) {
-  # prepare dist_calc line if distance needed
-  if (dist != "none") {
-    dist_calc_line <- paste0(" dist_calc(dist = ", dist, ") %>%")
+# simple helper function that takes string representing constraints or
+# conditions stored in ps_extra info and splits by "+" or returns NULL if NA
+read_cons <- function(cons_string) {
+  if (is.na(cons_string)) {
+    return(NULL)
   } else {
-    dist_calc_line <- NULL
+    return(unlist(strsplit(x = cons_string, split = "+", fixed = TRUE)))
   }
-  # prepare constraint and condition argument lines if necessary
-  if (!identical(const, NULL)) {
-    const <- paste0(
-      '  constraints = c("', paste(const, collapse = '", "'), '"),'
-    )
-  }
-  if (!identical(conds, NULL)) {
-    conds <- paste0(
-      '  conditions = c("', paste(conds, collapse = '", "'), '"),'
-    )
-  }
-  # prepare plot_taxa line if not default
-  taxa_line <- paste0("  plot_taxa = 1:", length(plot_taxa), ",")
-  if (isFALSE(plot_taxa)) taxa_line <- NULL
-  # prepare alpha and size, which could be numeric or character
-  if (!is.numeric(alpha)) alpha <- paste0('"', alpha, '"')
-  if (!is.numeric(size)) size <- paste0('"', size, '"')
-  # prepare ellipses if necessary
-  if (isTRUE(ellipses)) {
-    end_lines <- paste(
-      sep = "\n",
-      " ) +",
-      " ggplot2::stat_ellipse(",
-      paste0('  ggplot2::aes(colour = .data[["', colour, '"]])'),
-      " )"
-    )
-  } else {
-    end_lines <- " )"
-  }
-
-  cat(
-    "your_phyloseq %>%",
-    paste0(
-      ' tax_transform(rank = "', rank, '", transformation = "', trans, '") %>%'
-    ),
-    dist_calc_line,
-    " ord_calc(",
-    const, conds,
-    paste0('  method = "', ord, '"'),
-    " ) %>% ",
-    " ord_plot(",
-    paste0("  axes = c(", x, ", ", y, "),"), taxa_line,
-    paste0('  colour = "', colour, '", fill = "', colour, '",'),
-    paste0('  shape = "', shape, '", alpha = ', alpha, ","),
-    paste0("  size = ", size),
-    end_lines,
-    sep = "\n"
-  )
 }
 
 # Create ordination from data, bundling several steps
@@ -1070,74 +1012,7 @@ ord_build <- function(data,
   return(dat)
 }
 
-# simple helper function that takes string representing constraints or
-# conditions stored in ps_extra info and splits by "+" or returns NULL if NA
-read_cons <- function(cons_string) {
-  if (is.na(cons_string)) {
-    return(NULL)
-  } else {
-    return(unlist(strsplit(x = cons_string, split = "+", fixed = TRUE)))
-  }
-}
-
-#' Create fixed named palette for ord_explore: tax_name = colour
-#'
-#' @param ps phyloseq object
-#' @param tax_level tax_level at which to create fixed palette
-#'
-#' @return named vector of colours
-#' @noRd
-ord_explore_palet_fun <- function(ps,
-                                  tax_level,
-                                  top_by = sum,
-                                  other = "grey90") {
-  # set up colour palette and link to common taxa names and "Other"
-  palet <- distinct_palette(n = NA)
-  top_tax <- tax_top(ps, n = NA, by = top_by, rank = tax_level)
-  numb <- min(length(top_tax), length(palet))
-  palet <- palet[seq_len(numb)]
-  names(palet) <- top_tax[seq_len(numb)]
-  palet <- c(palet, c(other = other))
-  return(palet)
-}
-
-
-#' Use cowplot to place ggplot legend alongside plot
-#'
-#' This aims to ensure plot sizing remains the same,
-#' whether or not a legend is present
-#'
-#' @param ggplot a ggplot object with or without a legend
-#' @param rel_widths passed to cowplot::plot_grid
-#'
-#' @return
-#' @noRd
-legend_separate <- function(ggplot, rel_widths = c(3, 1)) {
-  leg <- cowplot::get_legend(ggplot)
-  ggplot <- ggplot + ggplot2::theme(legend.position = "none")
-  out <- cowplot::plot_grid(ggplot, leg, rel_widths = rel_widths)
-  return(out)
-}
-
-#' Create simple ggplot with text annotation
-#'
-#' Useful as a placeholder with instructions
-#'
-#' @param message text to display
-#' @param size size of text
-#'
-#' @return ggplot
-#' @noRd
-ggmessage <- function(message, size = 3) {
-  plot <- ggplot2::ggplot() +
-    ggplot2::annotate(
-      geom = "text", x = 0.1, y = 0.5, size = 3,
-      label = message
-    ) +
-    ggplot2::theme_void()
-  return(plot)
-}
-
+### choice helpers -------------------------------------------------------------
 #' Helps provide list of named choices for ordination builder modal input
 #'
 #' Finds intersection of type choices? (if not all)
@@ -1199,7 +1074,7 @@ dist_choices <- function(data, type) {
   # add more phyloseq dist methods
   pdists <- unlist(phyloseq::distanceMethodList)
   more <- stats::setNames(object = pdists, nm = pdists)
-  all <- c(all, more[!names(more) %in% all])
+  all <- c(all, more[!names(more) %in% names(all)])
 
   # overlapping type lists
   l <- list(
@@ -1240,4 +1115,139 @@ trans_choices <- function(type) {
   out <- stats::setNames(names(choices_desc), choices_desc)
 
   return(out)
+}
+
+### code modal helpers --------------------------------------------------------
+# generate code-styled text for reproducing ordination plot
+ord_code <- function(rank, trans, dist, ord, const, conds, x, y,
+                     colour, fill, shape, alpha, size, plot_taxa, ellipses) {
+  # prepare dist_calc line if distance needed
+  dist_calc_line <- ord_code_dist(dist)
+
+  # prepare constraint and condition argument lines if necessary
+  if (!identical(const, NULL)) {
+    const <- paste0(
+      '  constraints = c("', paste(const, collapse = '", "'), '"),'
+    )
+  }
+  if (!identical(conds, NULL)) {
+    conds <- paste0(
+      '  conditions = c("', paste(conds, collapse = '", "'), '"),'
+    )
+  }
+
+  # prepare plot_taxa line if not default
+  taxa_line <- paste0("  plot_taxa = 1:", length(plot_taxa), ",")
+  if (isFALSE(plot_taxa)) taxa_line <- NULL
+
+  # prepare alpha and size, which could be numeric or character
+  if (!is.numeric(alpha)) alpha <- paste0('"', alpha, '"')
+  if (!is.numeric(size)) size <- paste0('"', size, '"')
+
+  # prepare extra stat_ellipse lines for end of code if necessary
+  end_lines <- ord_code_end(ellipses = ellipses, colour = colour)
+
+  # output code-style text
+  cat(
+    "your_phyloseq %>%",
+    paste0(
+      ' tax_transform(rank = "', rank, '", transformation = "', trans, '") %>%'
+    ),
+    dist_calc_line,
+    " ord_calc(",
+    const, conds,
+    paste0('  method = "', ord, '"'),
+    " ) %>% ",
+    " ord_plot(",
+    paste0("  axes = c(", x, ", ", y, "),"), taxa_line,
+    paste0('  colour = "', colour, '", fill = "', colour, '",'),
+    paste0('  shape = "', shape, '", alpha = ', alpha, ","),
+    paste0("  size = ", size),
+    end_lines,
+    sep = "\n"
+  )
+}
+
+# prepare dist_calc line if distance needed
+ord_code_dist <- function(dist) {
+  if (dist == "none") {
+    return(NULL)
+  } else {
+    return(paste0(' dist_calc(dist = "', dist, '") %>%'))
+  }
+}
+
+# prepare stat_ellipse lines for ord_code output if necessary
+ord_code_end <- function(ellipses, colour) {
+  if (isTRUE(ellipses)) {
+    end_lines <- paste(
+      sep = "\n",
+      " ) +",
+      " ggplot2::stat_ellipse(",
+      paste0('  ggplot2::aes(colour = .data[["', colour, '"]])'),
+      " )"
+    )
+  } else {
+    end_lines <- " )"
+  }
+  return(end_lines)
+}
+
+## other helpers --------------------------------------------------------------
+#' Create fixed named palette for ord_explore: tax_name = colour
+#'
+#' @param ps phyloseq object
+#' @param tax_level tax_level at which to create fixed palette
+#'
+#' @return named vector of colours
+#' @noRd
+ord_explore_palet_fun <- function(ps,
+                                  tax_level,
+                                  top_by = sum,
+                                  other = "grey90") {
+  # set up colour palette and link to common taxa names and "Other"
+  palet <- distinct_palette(n = NA)
+  top_tax <- tax_top(ps, n = NA, by = top_by, rank = tax_level)
+  numb <- min(length(top_tax), length(palet))
+  palet <- palet[seq_len(numb)]
+  names(palet) <- top_tax[seq_len(numb)]
+  palet <- c(palet, c(other = other))
+  return(palet)
+}
+
+
+#' Use cowplot to place ggplot legend alongside plot
+#'
+#' This aims to ensure plot sizing remains the same,
+#' whether or not a legend is present
+#'
+#' @param ggplot a ggplot object with or without a legend
+#' @param rel_widths passed to cowplot::plot_grid
+#'
+#' @return
+#' @noRd
+legend_separate <- function(ggplot, rel_widths = c(3, 1)) {
+  leg <- cowplot::get_legend(ggplot)
+  ggplot <- ggplot + ggplot2::theme(legend.position = "none")
+  out <- cowplot::plot_grid(ggplot, leg, rel_widths = rel_widths)
+  return(out)
+}
+
+#' Create simple ggplot with text annotation
+#'
+#' Useful as a placeholder with instructions
+#'
+#' @param message text to display
+#' @param size size of text
+#'
+#' @return ggplot
+#' @noRd
+ggmessage <- function(message, size = 3) {
+  plot <- ggplot2::ggplot() +
+    ggplot2::annotate(
+      geom = "text", x = 0.1, y = 0.5, size = 3,
+      label = message
+    ) +
+    ggplot2::theme_void()
+  return(plot)
 }
