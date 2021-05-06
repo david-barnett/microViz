@@ -25,19 +25,25 @@ options(width = 100)
 
 <!-- badges: end -->
 
-:package: microViz is an R package for analysis and visualization of microbiome sequencing data.
-microViz functions are intended to be easy to use and flexible.
-microViz extends and complements popular microbial ecology packages like phyloseq, vegan, and microbiome.
+## Overview
 
-**See the documentation website for full details and examples:** <https://david-barnett.github.io/microViz/>
+:package: `microViz` is an R package for analysis and visualization of microbiome sequencing data.
 
--   The ["Get started"](https://david-barnett.github.io/microViz/articles/articles/microViz.html) page, and also [this ReadMe](https://david-barnett.github.io/microViz/index.html), show a few example analyses.
+:hammer: `microViz` functions are intended to be easy to use and flexible.
 
--   The [reference](https://david-barnett.github.io/microViz/reference/index.html) page lists all functions and links to their documentation and examples
+:microbe: `microViz` extends and complements popular microbial ecology packages like `phyloseq`, `vegan`, and `microbiome`.
 
--   Example video of [Interactive Shiny app](https://david-barnett.github.io/microViz/articles/articles/Interactive-Ordination.html) for exploring your ordination plots!
+## Learn more
 
--   Other articles pages give tutorials and more complicated examples
+:paperclip: This website is the best place for documentation and examples: <https://david-barnett.github.io/microViz/>
+
+-   **The ["Get started"](https://david-barnett.github.io/microViz/articles/articles/microViz.html) page** shows a few example analyses (as does this ReadMe)
+
+-   **The [Reference](https://david-barnett.github.io/microViz/reference/index.html) page** lists all functions and links to help pages and examples
+
+-   **The [Changelog](https://david-barnett.github.io/microViz/news/index.html)** describes important changes in new microViz package versions
+
+-   **The Articles pages** give tutorials and further examples
 
     -   [Working with phyloseq objects](https://david-barnett.github.io/microViz/articles/articles/phyloseq.html)
 
@@ -45,37 +51,37 @@ microViz extends and complements popular microbial ecology packages like phylose
 
     -   [Creating ordination plots](https://david-barnett.github.io/microViz/articles/ordination.html) (e.g. PCA or PCoA)
 
-    -   [Visualising taxonomic compositions with customised barplots](https://david-barnett.github.io/microViz/articles/articles/Visualising-compositions.html)
+    -   [Interactive ordination plots with ord_explore](https://david-barnett.github.io/microViz/articles/articles/Interactive-Ordination.html)
 
-    -   (more coming soon! Post on [GitHub discussions](https://github.com/david-barnett/microViz/discussions) if you have questions/requests)
+    -   [Visualising taxonomic compositions with comp_barplot](https://david-barnett.github.io/microViz/articles/articles/Visualising-compositions.html)
 
--   The [changelog](https://david-barnett.github.io/microViz/news/index.html) describes important changes in new microViz package versions
+    -   More coming soon!
+        Post on [GitHub discussions](https://github.com/david-barnett/microViz/discussions) if you have questions/requests
 
 ## Installation
 
 You can install the latest available microViz package version using the following instructions.
 
 ``` r
-# Windows users will need to have RTools installed so that your computer can build this package
-# Follow instructions here: http://jtleek.com/modules/01_DataScientistToolbox/02_10_rtools/
-
-# macOS users might need to install xquartz to make the heatmaps work (ComplexHeatmaps package)
-# You can do this with homebrew, running the following command in your mac's Terminal: brew install --cask xquartz 
-
-# for installing from github you'll need the devtools package
+# Installing from github requires the devtools package
 install.packages("devtools", type = "binary") # (not binary if you're on linux)
 
-# If you don't already have the latest versions of phyloseq and microbiome, you can install these from Bioconductor:
+# You can install the latest versions of phyloseq and microbiome from Bioconductor:
 if (!requireNamespace("BiocManager", quietly = TRUE))
  install.packages("BiocManager", type = "binary") # (not binary if you're on linux)
 BiocManager::install(c("phyloseq", "microbiome"))
 
-# Installing the latest "released" version of this package
+# To install the latest "released" version of this package
 devtools::install_github("david-barnett/microViz@0.7.4") # check 0.7.4 is the latest release
 
-# If you encounter a bug please try installing the latest version & let me know if the bug persists!
+# To install the very latest version:
 devtools::install_github("david-barnett/microViz")
+# If you encounter a bug please try the latest version & let me know if the bug persists!
 ```
+
+:computer: **Windows users** - will need to have RTools installed so that your computer can build this package (follow instructions here: <http://jtleek.com/modules/01_DataScientistToolbox/02_10_rtools/>)
+
+**:apple: macOS** **users** - might need to install [xquartz](https://www.xquartz.org/) to make the heatmaps work (to do this with homebrew, run the following command in your mac's Terminal: `brew install --cask xquartz`
 
 :package: I highly recommend using [renv](https://rstudio.github.io/renv/index.html) for managing your R package installations across multiple projects.
 
@@ -196,7 +202,7 @@ You visualised your ordinated data in the plot above.
 Below you can see how to perform a PERMANOVA to test the significance of BMI's association with overall microbial composition.
 This example uses the Family-level aitchison distance to correspond with the plot above.
 
-```{r}
+```{r permanova}
 # calculate distances
 aitchison_dists <-
   dietswap %>%

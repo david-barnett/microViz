@@ -14,30 +14,35 @@ Status](https://img.shields.io/docker/cloud/build/barnettdavid/microviz-rocker-v
 
 <!-- badges: end -->
 
-:package: microViz is an R package for analysis and visualization of
-microbiome sequencing data. microViz functions are intended to be easy
-to use and flexible. microViz extends and complements popular microbial
-ecology packages like phyloseq, vegan, and microbiome.
+## Overview
 
-**See the documentation website for full details and examples:**
-<https://david-barnett.github.io/microViz/>
+:package: `microViz` is an R package for analysis and visualization of
+microbiome sequencing data.
 
--   The [“Get
+:hammer: `microViz` functions are intended to be easy to use and
+flexible.
+
+:microbe: `microViz` extends and complements popular microbial ecology
+packages like `phyloseq`, `vegan`, and `microbiome`.
+
+## Learn more
+
+:paperclip: This website is the best place for documentation and
+examples: <https://david-barnett.github.io/microViz/>
+
+-   **The [“Get
     started”](https://david-barnett.github.io/microViz/articles/articles/microViz.html)
-    page, and also [this
-    ReadMe](https://david-barnett.github.io/microViz/index.html), show a
-    few example analyses.
+    page** shows a few example analyses (as does this ReadMe)
 
--   The
-    [reference](https://david-barnett.github.io/microViz/reference/index.html)
-    page lists all functions and links to their documentation and
-    examples
+-   **The
+    [Reference](https://david-barnett.github.io/microViz/reference/index.html)
+    page** lists all functions and links to help pages and examples
 
--   Example video of [Interactive Shiny
-    app](https://david-barnett.github.io/microViz/articles/articles/Interactive-Ordination.html)
-    for exploring your ordination plots!
+-   **The
+    [Changelog](https://david-barnett.github.io/microViz/news/index.html)**
+    describes important changes in new microViz package versions
 
--   Other articles pages give tutorials and more complicated examples
+-   **The Articles pages** give tutorials and further examples
 
     -   [Working with phyloseq
         objects](https://david-barnett.github.io/microViz/articles/articles/phyloseq.html)
@@ -49,16 +54,15 @@ ecology packages like phyloseq, vegan, and microbiome.
         plots](https://david-barnett.github.io/microViz/articles/ordination.html)
         (e.g. PCA or PCoA)
 
-    -   [Visualising taxonomic compositions with customised
-        barplots](https://david-barnett.github.io/microViz/articles/articles/Visualising-compositions.html)
+    -   [Interactive ordination plots with
+        ord\_explore](https://david-barnett.github.io/microViz/articles/articles/Interactive-Ordination.html)
 
-    -   (more coming soon! Post on [GitHub
+    -   [Visualising taxonomic compositions with
+        comp\_barplot](https://david-barnett.github.io/microViz/articles/articles/Visualising-compositions.html)
+
+    -   More coming soon! Post on [GitHub
         discussions](https://github.com/david-barnett/microViz/discussions)
-        if you have questions/requests)
-
--   The
-    [changelog](https://david-barnett.github.io/microViz/news/index.html)
-    describes important changes in new microViz package versions
+        if you have questions/requests
 
 ## Installation
 
@@ -66,26 +70,30 @@ You can install the latest available microViz package version using the
 following instructions.
 
 ``` r
-# Windows users will need to have RTools installed so that your computer can build this package
-# Follow instructions here: http://jtleek.com/modules/01_DataScientistToolbox/02_10_rtools/
-
-# macOS users might need to install xquartz to make the heatmaps work (ComplexHeatmaps package)
-# You can do this with homebrew, running the following command in your mac's Terminal: brew install --cask xquartz 
-
-# for installing from github you'll need the devtools package
+# Installing from github requires the devtools package
 install.packages("devtools", type = "binary") # (not binary if you're on linux)
 
-# If you don't already have the latest versions of phyloseq and microbiome, you can install these from Bioconductor:
+# You can install the latest versions of phyloseq and microbiome from Bioconductor:
 if (!requireNamespace("BiocManager", quietly = TRUE))
  install.packages("BiocManager", type = "binary") # (not binary if you're on linux)
 BiocManager::install(c("phyloseq", "microbiome"))
 
-# Installing the latest "released" version of this package
+# To install the latest "released" version of this package
 devtools::install_github("david-barnett/microViz@0.7.4") # check 0.7.4 is the latest release
 
-# If you encounter a bug please try installing the latest version & let me know if the bug persists!
+# To install the very latest version:
 devtools::install_github("david-barnett/microViz")
+# If you encounter a bug please try the latest version & let me know if the bug persists!
 ```
+
+:computer: **Windows users** - will need to have RTools installed so
+that your computer can build this package (follow instructions here:
+<http://jtleek.com/modules/01_DataScientistToolbox/02_10_rtools/>)
+
+**:apple: macOS** **users** - might need to install
+[xquartz](https://www.xquartz.org/) to make the heatmaps work (to do
+this with homebrew, run the following command in your mac’s Terminal:
+`brew install --cask xquartz`
 
 :package: I highly recommend using
 [renv](https://rstudio.github.io/renv/index.html) for managing your R
@@ -257,8 +265,8 @@ aitchison_perm <- dist_permanova(
   variables = "bmi_group + female"
 )
 #> Dropping samples with missings: 2
-#> 2021-05-01 15:11:48 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2021-05-01 15:11:48 - Finished PERMANOVA
+#> 2021-05-06 09:11:26 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2021-05-06 09:11:26 - Finished PERMANOVA
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
 #>            Df   SumOfSqs         R2        F Pr(>F)
@@ -286,8 +294,8 @@ your permanova directly using the ord\_plot function with constraints.
 ``` r
 perm2 <- dist_permanova(data = aitchison_dists, variables = c("weight", "female"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2021-05-01 15:11:48 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2021-05-01 15:11:48 - Finished PERMANOVA
+#> 2021-05-06 09:11:26 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2021-05-06 09:11:27 - Finished PERMANOVA
 perm_get(perm2)
 #> Permutation test for adonis under reduced model
 #> Marginal effects of terms
@@ -382,7 +390,7 @@ devtools::session_info()
 #>  collate  en_GB.UTF-8                 
 #>  ctype    en_GB.UTF-8                 
 #>  tz       Europe/Amsterdam            
-#>  date     2021-05-01                  
+#>  date     2021-05-06                  
 #> 
 #> ─ Packages ───────────────────────────────────────────────────────────────────────────────────────
 #>  package        * version  date       lib source        
