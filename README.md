@@ -23,7 +23,7 @@ microbiome sequencing data.
 flexible.
 
 :microscope: `microViz` extends and complements popular microbial
-ecology packages like `phyloseq`, `vegan`, and `microbiome`.
+ecology packages like `phyloseq`, `vegan`, & `microbiome`.
 
 ## Learn more
 
@@ -265,8 +265,8 @@ aitchison_perm <- dist_permanova(
   variables = "bmi_group + female"
 )
 #> Dropping samples with missings: 2
-#> 2021-05-06 13:49:58 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2021-05-06 13:49:58 - Finished PERMANOVA
+#> 2021-05-06 13:53:45 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2021-05-06 13:53:45 - Finished PERMANOVA
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
 #>            Df   SumOfSqs         R2        F Pr(>F)
@@ -294,8 +294,8 @@ your permanova directly using the ord\_plot function with constraints.
 ``` r
 perm2 <- dist_permanova(data = aitchison_dists, variables = c("weight", "female"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2021-05-06 13:49:58 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2021-05-06 13:49:59 - Finished PERMANOVA
+#> 2021-05-06 13:53:45 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2021-05-06 13:53:46 - Finished PERMANOVA
 perm_get(perm2)
 #> Permutation test for adonis under reduced model
 #> Marginal effects of terms
