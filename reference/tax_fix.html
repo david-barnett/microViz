@@ -49,12 +49,14 @@
 <meta property="og:description" content="Identifies phyloseq tax_table values as unknown or uninformative and
 replaces them with the first informative value from a higher taxonomic rank.
 Short values in phyloseq tax_table are typically empty strings or &quot; &quot;, or &quot;g__&quot; etc.
-so it is helpful to replace them. Set min_length = 0 to avoid filtering on length.
+so it is helpful to replace them. (If this is unwanted: set min_length = 0 to avoid filtering on length.)
 Values in unknowns are also removed, even if longer than min_length.
 It is up to the user to specify sensible values in unknowns if their dataset has other unwanted values.
 NA values are also replaced.
 
-" />
+
+See this article for an extended discussion of tax_table fixing.
+https://david-barnett.github.io/microViz/articles/articles/tax-fixing.html" />
 
 
 
@@ -86,7 +88,7 @@ NA values are also replaced.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.4.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.4.9005</span>
       </span>
     </div>
 
@@ -167,12 +169,14 @@ NA values are also replaced.
     <p>Identifies phyloseq tax_table values as unknown or uninformative and
 replaces them with the first informative value from a higher taxonomic rank.</p><ul>
 <li><p>Short values in phyloseq tax_table are typically empty strings or " ", or "g__" etc.
-so it is helpful to replace them. Set <code>min_length</code> = 0 to avoid filtering on length.</p></li>
+so it is helpful to replace them. (If this is unwanted: set <code>min_length</code> = 0 to avoid filtering on length.)</p></li>
 <li><p>Values in <code>unknowns</code> are also removed, even if longer than <code>min_length</code>.
 It is up to the user to specify sensible values in <code>unknowns</code> if their dataset has other unwanted values.</p></li>
 <li><p>NA values are also replaced.</p></li>
 </ul>
 
+<p>See this article for an extended discussion of tax_table fixing.
+<a href='https://david-barnett.github.io/microViz/articles/articles/tax-fixing.html'>https://david-barnett.github.io/microViz/articles/articles/tax-fixing.html</a></p>
     </div>
 
     <pre class="usage"><span class='fu'>tax_fix</span><span class='op'>(</span>
@@ -421,7 +425,7 @@ which is therefore the same for every anonymous taxon, meaning they will be merg
 #&gt; Coprobacillus catenaformis et rel. "Coprobacillus catenaformis et rel."
 #&gt; Coprococcus eutactus et rel.       "Coprococcus eutactus et rel."      
 #&gt; Corynebacterium                    "g__"                               </div><div class='input'>
-<span class='co'># this will replace `unknown`s as well as short values including "g__" and "f__"</span>
+<span class='co'># this will replace "unknown"s as well as short values including "g__" and "f__"</span>
 <span class='fu'>tax_fix</span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html'>tax_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fl'>50</span><span class='op'>)</span>
@@ -591,8 +595,7 @@ which is therefore the same for every anonymous taxon, meaning they will be merg
 #&gt; Coprobacillus catenaformis et rel. "Coprobacillus catenaformis et rel."
 #&gt; Coprococcus eutactus et rel.       "Coprococcus eutactus et rel."      
 #&gt; Corynebacterium                    "Actinobacteria Family"             </div><div class='input'>
-<span class='co'># This will only replace values in Genus column,</span>
-<span class='co'># and only replace short entries, and so won't replace literal "unknown"</span>
+<span class='co'># This will only replace short entries, and so won't replace literal "unknown" values</span>
 <span class='va'>ps</span> <span class='op'>%&gt;%</span>
   <span class='fu'>tax_fix</span><span class='op'>(</span>unknowns <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html'>tax_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>

@@ -92,7 +92,7 @@ The tax_table produced when using top_N is otherwise INVALID FOR MOST OTHER ANAL
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.4.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.4.9005</span>
       </span>
     </div>
 
@@ -250,6 +250,7 @@ which should then result in (much) shorter unique names at the aggregation rank.
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='tax_fix.html'>tax_fix</a></code></p>
+<p><code><a href='tax_fix_interactive.html'>tax_fix_interactive</a></code></p>
 <p><code><a href='tax_transform.html'>tax_transform</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -295,22 +296,12 @@ which should then result in (much) shorter unique names at the aggregation rank.
 #&gt; Cyanobacteria             "Cyanobacteria"   "Cyanobacteria"            
 #&gt; Uncultured Clostridiales  "Firmicutes"      "Uncultured Clostridiales" 
 #&gt; Uncultured Mollicutes     "Firmicutes"      "Uncultured Mollicutes"    </div><div class='input'>
-<span class='co'># this won't aggregate taxa, but just adds a new rank called unique, equal to taxa_names</span>
-<span class='fu'>tax_agg</span><span class='op'>(</span>ps <span class='op'>=</span> <span class='va'>dietswap</span>, rank <span class='op'>=</span> <span class='cn'>NA</span>, add_unique <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; ps_extra object - a list with phyloseq and extras:
-#&gt; 
-#&gt; phyloseq-class experiment-level object
-#&gt; otu_table()   OTU Table:         [ 130 taxa and 222 samples ]
-#&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 130 taxa by 4 taxonomic ranks ]
-#&gt; 
-#&gt; ps_extra info:
-#&gt; tax_agg = unique tax_transform = NA</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span><span class='op'>(</span><span class='fu'>tax_agg</span><span class='op'>(</span><span class='va'>dietswap</span>, <span class='cn'>NA</span>, add_unique <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>, <span class='fu'>tax_agg</span><span class='op'>(</span><span class='va'>dietswap</span>, <span class='st'>"unique"</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># TRUE</span>
-</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># create some missing values</span>
 <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html'>tax_table</a></span><span class='op'>(</span><span class='va'>dietswap</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>:</span><span class='fl'>7</span>, <span class='st'>"Genus"</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='st'>"g__"</span>
-<span class='co'># this will produce an error, instructing the user to use fill_unknowns</span>
+
+<span class='co'># this will produce an error, instructing the user to use tax_fix</span>
 <span class='co'># tax_agg(ps = dietswap, "Genus")</span>
+
 <span class='co'># this will then work:</span>
 <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='tax_fix.html'>tax_fix</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
@@ -340,7 +331,22 @@ which should then result in (much) shorter unique names at the aggregation rank.
 #&gt; 
 #&gt; ps_extra info:
 #&gt; tax_agg = Family tax_transform = NA</div><div class='input'>
-<span class='co'># try tax_fix_interactive() for more help</span>
+<span class='co'># try tax_fix_interactive() to help you find and fix all the uninformative</span>
+<span class='co'># and converging values in your taxonomy table.</span>
+
+<span class='co'># the code below won't aggregate taxa,</span>
+<span class='co'># but just adds a new rank called unique, equal to taxa_names</span>
+<span class='fu'>tax_agg</span><span class='op'>(</span>ps <span class='op'>=</span> <span class='va'>dietswap</span>, rank <span class='op'>=</span> <span class='cn'>NA</span>, add_unique <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; ps_extra object - a list with phyloseq and extras:
+#&gt; 
+#&gt; phyloseq-class experiment-level object
+#&gt; otu_table()   OTU Table:         [ 130 taxa and 222 samples ]
+#&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
+#&gt; tax_table()   Taxonomy Table:    [ 130 taxa by 4 taxonomic ranks ]
+#&gt; 
+#&gt; ps_extra info:
+#&gt; tax_agg = unique tax_transform = NA</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span><span class='op'>(</span><span class='fu'>tax_agg</span><span class='op'>(</span><span class='va'>dietswap</span>, <span class='cn'>NA</span>, add_unique <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>, <span class='fu'>tax_agg</span><span class='op'>(</span><span class='va'>dietswap</span>, <span class='st'>"unique"</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># TRUE</span>
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
