@@ -87,13 +87,12 @@ ps
 # tax_fix with defaults should solve most problems
 tax_table(ps) \%>\% head(50)
 
-# this will replace `unknown`s as well as short values including "g__" and "f__"
+# this will replace "unknown"s as well as short values including "g__" and "f__"
 tax_fix(ps) \%>\%
   tax_table() \%>\%
   head(50)
 
-# This will only replace values in Genus column,
-# and only replace short entries, and so won't replace literal "unknown"
+# This will only replace short entries, and so won't replace literal "unknown" values
 ps \%>\%
   tax_fix(unknowns = NULL) \%>\%
   tax_table() \%>\%

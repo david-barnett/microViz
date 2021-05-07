@@ -1,6 +1,7 @@
 # microViz (development version)
 
 - `ord_explore` can now draw stat_ellipse or taxa loading vectors
+- `tax_agg` error messages now include personalised suggested tax_fix code
 
 # microViz 0.7.4
 

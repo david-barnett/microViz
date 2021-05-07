@@ -2,6 +2,7 @@ library(phyloseq)
 library(microbiome)
 data("dietswap")
 
+options(width = 80)
 local_edition(3)
 
 test_that("microbiome's dietswap data hasn't changed", {
@@ -75,3 +76,15 @@ test_that(
     expect_equal(object = viz_top, expected = biome_top)
   }
 )
+
+test_that("tax_fix error prompt looks right", {
+  expect_snapshot(cat(taxFixPrompt()))
+  expect_snapshot(cat(taxFixPrompt(unknowns = c("anUnknown", "another"))))
+})
+
+test_that("tax_agg errors on NAs or convergent values", {
+  phyloseq::tax_table(dietswap)[3, "Genus"] <- NA
+  expect_snapshot(tax_agg(dietswap, rank = "Genus"), error = TRUE)
+  phyloseq::tax_table(dietswap)[3:10, "Genus"] <- "g__"
+  expect_snapshot(tax_agg(dietswap, rank = "Genus"), error = TRUE)
+})

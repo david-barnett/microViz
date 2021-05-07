@@ -97,7 +97,6 @@
 #' # but just adds a new rank called unique, equal to taxa_names
 #' tax_agg(ps = dietswap, rank = NA, add_unique = TRUE)
 #' identical(tax_agg(dietswap, NA, add_unique = TRUE), tax_agg(dietswap, "unique")) # TRUE
-#'
 tax_agg <- function(ps,
                     rank = NA,
                     sort_by = NA,
@@ -353,14 +352,14 @@ getDuplicatedTaxa <- function(tt_distinct, ranks, rank, rank_index) {
 }
 
 # generate personalised error text to show how to use tax_fix
-taxFixPrompt <- function(unknowns = NULL){
-  if (!identical(unknowns, NULL)){
+taxFixPrompt <- function(unknowns = NULL) {
+  if (!identical(unknowns, NULL)) {
     unknowns <-
       paste0('unknowns = c("', paste(unknowns, collapse = '", "'), '")')
   }
-  taxFixLine <-
-    paste0("\nTo fix this problem, try `yourData %>% tax_fix(", unknowns, ")`")
+  taxFixLine <- paste0(
+    "\nTo fix the problem, try:\n`yourData %>% tax_fix(", unknowns, ")`"
+  )
   extraLine <- "\nTry tax_fix_interactive() to find and fix further problems"
   paste0(taxFixLine, extraLine)
 }
-
