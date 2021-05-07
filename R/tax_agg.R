@@ -94,7 +94,7 @@
 #' # and converging values in your taxonomy table.
 #'
 #' # the code below won't aggregate taxa,
-#' but just adds a new rank called unique, equal to taxa_names
+#' # but just adds a new rank called unique, equal to taxa_names
 #' tax_agg(ps = dietswap, rank = NA, add_unique = TRUE)
 #' identical(tax_agg(dietswap, NA, add_unique = TRUE), tax_agg(dietswap, "unique")) # TRUE
 #'
