@@ -41,11 +41,14 @@ Identifies phyloseq tax_table values as unknown or uninformative and
 replaces them with the first informative value from a higher taxonomic rank.
 \itemize{
 \item Short values in phyloseq tax_table are typically empty strings or " ", or "g__" etc.
-so it is helpful to replace them. Set \code{min_length} = 0 to avoid filtering on length.
+so it is helpful to replace them. (If this is unwanted: set \code{min_length} = 0 to avoid filtering on length.)
 \item Values in \code{unknowns} are also removed, even if longer than \code{min_length}.
 It is up to the user to specify sensible values in \code{unknowns} if their dataset has other unwanted values.
 \item NA values are also replaced.
 }
+
+See this article for an extended discussion of tax_table fixing.
+\url{https://david-barnett.github.io/microViz/articles/articles/tax-fixing.html}
 }
 \details{
 By default (unknowns = NA), unknowns is set to a vector containing:

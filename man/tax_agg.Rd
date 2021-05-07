@@ -81,14 +81,12 @@ tax_agg(ps = dietswap, "Family") \%>\%
   ps_get() \%>\%
   tax_table()
 
-# this won't aggregate taxa, but just adds a new rank called unique, equal to taxa_names
-tax_agg(ps = dietswap, rank = NA, add_unique = TRUE)
-identical(tax_agg(dietswap, NA, add_unique = TRUE), tax_agg(dietswap, "unique")) # TRUE
-
 # create some missing values
 tax_table(dietswap)[3:7, "Genus"] <- "g__"
-# this will produce an error, instructing the user to use fill_unknowns
+
+# this will produce an error, instructing the user to use tax_fix
 # tax_agg(ps = dietswap, "Genus")
+
 # this will then work:
 dietswap \%>\%
   tax_fix() \%>\%
@@ -102,10 +100,19 @@ dietswap \%>\%
   tax_fix(unknowns = "some_unknown_family") \%>\%
   tax_agg("Family")
 
-# try tax_fix_interactive() for more help
+# try tax_fix_interactive() to help you find and fix all the uninformative
+# and converging values in your taxonomy table.
+
+# the code below won't aggregate taxa,
+but just adds a new rank called unique, equal to taxa_names
+tax_agg(ps = dietswap, rank = NA, add_unique = TRUE)
+identical(tax_agg(dietswap, NA, add_unique = TRUE), tax_agg(dietswap, "unique")) # TRUE
+
 }
 \seealso{
 \code{\link{tax_fix}}
+
+\code{\link{tax_fix_interactive}}
 
 \code{\link{tax_transform}}
 }

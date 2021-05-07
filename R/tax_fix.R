@@ -4,10 +4,13 @@
 #' Identifies phyloseq tax_table values as unknown or uninformative and
 #' replaces them with the first informative value from a higher taxonomic rank.
 #' - Short values in phyloseq tax_table are typically empty strings or " ", or "g__" etc.
-#' so it is helpful to replace them. Set `min_length` = 0 to avoid filtering on length.
+#' so it is helpful to replace them. (If this is unwanted: set `min_length` = 0 to avoid filtering on length.)
 #' - Values in `unknowns` are also removed, even if longer than `min_length`.
 #' It is up to the user to specify sensible values in `unknowns` if their dataset has other unwanted values.
 #' - NA values are also replaced.
+#'
+#' See this article for an extended discussion of tax_table fixing.
+#' \url{https://david-barnett.github.io/microViz/articles/articles/tax-fixing.html}
 #'
 #' @details
 #' By default (unknowns = NA), unknowns is set to a vector containing:

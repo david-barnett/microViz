@@ -478,7 +478,7 @@ get_plot_limits <- function(plot) {
   )
 }
 
-ggplot2_shapes <- function(){
+ggplot2_shapes <- function() {
   c(
     "circle", paste("circle", c("open", "filled", "cross", "plus", "small")),
     "bullet",
