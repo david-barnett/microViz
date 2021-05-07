@@ -88,7 +88,6 @@ tax_fix_interactive(example_data)
 3.  T**axa with the same `tax_table` entry repeated across multiple ranks**: This is a problem for functions like `taxatree_plots()`, which need distinct entries at each rank to build the tree structure for plotting. This might happen after you `tax_fix` data with problem 1. of this list, or in data from e.g. microarray methods like HITchip. The solution is to use `tax_prepend_ranks()` (after `tax_fix`) to add the first character of the rank to all tax_table entries (you will also need set the `tax_fix` argument suffix_rank = "current").
 4.  **Informative but duplicated `tax_table` entries:** e.g. you don't want to delete/replace a genus name completely, but it is shared by two families and thus blocking `tax_agg`. The solution is to rename (one of) these values manually to make them distinct. `tax_table(yourPhyloseq)["targetTaxonName", "targetRank"] <- "newBetterGenusName"`
 5.  **Really long taxa_names():** e.g. you have DNA sequences as names. See `tax_name()` for an easy way to rename all your taxa.
-6.  
 
 ## Abundance filtering as a solution
 
