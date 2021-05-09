@@ -2,14 +2,14 @@
 #'
 #' @description
 #' `dist_permanova` runs a Permutational Multivariate ANOVA (aka Non-parametric MANOVA).
-#' This is way to test for the statistical significance of (independent)
+#' This is a way to test for the statistical significance of (independent)
 #' associations between variables in your phyloseq::sample_data(),
 #' and a microbiota distance matrix you have already calculated with dist_calc().
 #'
 #' This function is a wrapper around vegan's `adonis2()` function. See `?vegan::adonis2()` for more insight.
 #'
 #' You can also read this excellent book chapter on PERMANOVA by Marti Anderson:
-#' \url{https://doi.org/10.1002/9781118445112.stat07841}
+#' \doi{10.1002/9781118445112.stat07841}
 #'
 #' Or this NPMANOVA page on GUSTA ME:
 #' \url{https://sites.google.com/site/mb3gustame/hypothesis-tests/manova/npmanova}

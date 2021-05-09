@@ -94,6 +94,19 @@ test_that("ord_code_end helper works", {
   expect_snapshot(cat(ord_code_end(ellipses = FALSE, colour = "aVar")))
 })
 
+# ord_build ------------------------------------------------------------------
+test_that("ord_build works", {
+  local_edition(3)
+  expect_snapshot(ord_build(
+    data = dietswap, rank = "Genus", trans = "identity", dist = "bray",
+    method = "PCoA", constraints = NULL, conditions = NULL
+  ))
+  expect_snapshot(ord_build(
+    data = dietswap, rank = "Genus", trans = "clr", dist = NA,
+    method = "auto", constraints = NULL, conditions = NULL
+  ))
+})
+
 # palet_fun ------------------------------------------------------------------
 test_that("ord_explore_palet_fun works", {
   local_edition(3)

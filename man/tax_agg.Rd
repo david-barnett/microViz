@@ -107,7 +107,6 @@ dietswap \%>\%
 # but just adds a new rank called unique, equal to taxa_names
 tax_agg(ps = dietswap, rank = NA, add_unique = TRUE)
 identical(tax_agg(dietswap, NA, add_unique = TRUE), tax_agg(dietswap, "unique")) # TRUE
-
 }
 \seealso{
 \code{\link{tax_fix}}

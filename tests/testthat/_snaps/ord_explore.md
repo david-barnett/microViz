@@ -541,6 +541,51 @@
     Output
        )
 
+# ord_build works
+
+    Code
+      ord_build(data = dietswap, rank = "Genus", trans = "identity", dist = "bray",
+        method = "PCoA", constraints = NULL, conditions = NULL)
+    Output
+      ps_extra object - a list with phyloseq and extras:
+      
+      phyloseq-class experiment-level object
+      otu_table()   OTU Table:         [ 130 taxa and 222 samples ]
+      sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
+      tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]
+      
+      ps_extra info:
+      tax_agg = Genus tax_transform = identity
+      
+      bray distance matrix of size 222 
+      0.7639533 0.7851213 0.6680796 0.7699252 0.80507 ...
+      
+      ordination of class: capscale rda cca 
+      capscale(formula = distance ~ 1, data = data)
+      
+
+---
+
+    Code
+      ord_build(data = dietswap, rank = "Genus", trans = "clr", dist = NA, method = "auto",
+        constraints = NULL, conditions = NULL)
+    Output
+      ps_extra object - a list with phyloseq and extras:
+      
+      phyloseq-class experiment-level object
+      otu_table()   OTU Table:         [ 130 taxa and 222 samples ]
+      sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
+      tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]
+      
+      ps_extra info:
+      tax_agg = Genus tax_transform = clr
+      
+      ordination of class: rda cca 
+      rda(formula = OTU ~ 1, data = data)
+      
+      
+      $counts OTU Table: [ 130 taxa and 222 samples ]
+
 # ord_explore_palet_fun works
 
     Code
