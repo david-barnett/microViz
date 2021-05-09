@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.4.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.5</span>
       </span>
     </div>
 
@@ -145,15 +145,14 @@
 <p>You can install the latest available microViz package version using the following instructions.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Installing from github requires the devtools package</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span>, type <span class="op">=</span> <span class="st">"binary"</span><span class="op">)</span> <span class="co"># (not binary if you're on linux)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span> 
 
 <span class="co"># You can install the latest versions of phyloseq and microbiome from Bioconductor:</span>
-<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
- <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, type <span class="op">=</span> <span class="st">"binary"</span><span class="op">)</span> <span class="co"># (not binary if you're on linux)</span>
+<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span> 
 <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu">install</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"phyloseq"</span>, <span class="st">"microbiome"</span><span class="op">)</span><span class="op">)</span>
 
 <span class="co"># To install the latest "released" version of this package</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"david-barnett/microViz@0.7.4"</span><span class="op">)</span> <span class="co"># check 0.7.4 is the latest release</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"david-barnett/microViz@0.7.5"</span><span class="op">)</span> <span class="co"># check 0.7.5 is the latest release</span>
 
 <span class="co"># To install the very latest version:</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"david-barnett/microViz"</span><span class="op">)</span>
@@ -183,6 +182,7 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://dx.plos.org/10.1371/journal.pone.0061217">phyloseq</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
+<span class="co">#&gt; Warning: package 'dplyr' was built under R version 4.0.4</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Attaching package: 'dplyr'</span>
 <span class="co">#&gt; The following objects are masked from 'package:stats':</span>
@@ -231,7 +231,7 @@
 <h3 class="hasAnchor">
 <a href="#example-ordination-plot-workflow" class="anchor"></a>Example ordination plot workflow</h3>
 <p>Maybe visually inspecting all your samples isn’t quite what you want. Ordination methods can also help you to visualise if overall microbial ecosystem composition differs markedly between groups, e.g. BMI.</p>
-<p>Here is one option to try first:</p>
+<p>Here is one option as an example:</p>
 <ol>
 <li>Filter out rare taxa (e.g. remove Genera not present in at least 10% of samples) - use <code><a href="reference/tax_filter.html">tax_filter()</a></code>
 </li>
@@ -299,8 +299,8 @@
   variables <span class="op">=</span> <span class="st">"bmi_group + female"</span>
 <span class="op">)</span>
 <span class="co">#&gt; Dropping samples with missings: 2</span>
-<span class="co">#&gt; 2021-05-06 13:53:45 - Starting PERMANOVA with 99 perms with 1 processes</span>
-<span class="co">#&gt; 2021-05-06 13:53:45 - Finished PERMANOVA</span>
+<span class="co">#&gt; 2021-05-09 13:09:06 - Starting PERMANOVA with 99 perms with 1 processes</span>
+<span class="co">#&gt; 2021-05-09 13:09:06 - Finished PERMANOVA</span>
 <span class="co"># view the permanova results</span>
 <span class="fu"><a href="reference/ps_extra-accessors.html">perm_get</a></span><span class="op">(</span><span class="va">aitchison_perm</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt;            Df   SumOfSqs         R2        F Pr(&gt;F)</span>
@@ -326,8 +326,8 @@
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">perm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/dist_permanova.html">dist_permanova</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">aitchison_dists</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"female"</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">321</span><span class="op">)</span>
 <span class="co">#&gt; Dropping samples with missings: 2</span>
-<span class="co">#&gt; 2021-05-06 13:53:45 - Starting PERMANOVA with 999 perms with 1 processes</span>
-<span class="co">#&gt; 2021-05-06 13:53:46 - Finished PERMANOVA</span>
+<span class="co">#&gt; 2021-05-09 13:09:06 - Starting PERMANOVA with 999 perms with 1 processes</span>
+<span class="co">#&gt; 2021-05-09 13:09:07 - Finished PERMANOVA</span>
 <span class="fu"><a href="reference/ps_extra-accessors.html">perm_get</a></span><span class="op">(</span><span class="va">perm2</span><span class="op">)</span>
 <span class="co">#&gt; Permutation test for adonis under reduced model</span>
 <span class="co">#&gt; Marginal effects of terms</span>
@@ -417,21 +417,21 @@
 <span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; other attached packages:</span>
-<span class="co">#&gt; [1] ggplot2_3.3.3   dplyr_1.0.5     phyloseq_1.34.0 microViz_0.7.4  devtools_2.4.0  usethis_2.0.1  </span>
+<span class="co">#&gt; [1] ggplot2_3.3.3   dplyr_1.0.6     phyloseq_1.34.0 microViz_0.7.5  devtools_2.4.0  usethis_2.0.1  </span>
 <span class="co">#&gt; [7] pkgdown_1.6.1  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; loaded via a namespace (and not attached):</span>
 <span class="co">#&gt;   [1] nlme_3.1-149         matrixStats_0.58.0   fs_1.5.0             RColorBrewer_1.1-2  </span>
 <span class="co">#&gt;   [5] progress_1.2.2       rprojroot_2.0.2      tools_4.0.3          utf8_1.2.1          </span>
 <span class="co">#&gt;   [9] R6_2.5.0             vegan_2.5-7          BiocGenerics_0.36.1  mgcv_1.8-33         </span>
-<span class="co">#&gt;  [13] colorspace_2.0-0     GetoptLong_1.0.5     permute_0.9-5        rhdf5filters_1.2.0  </span>
-<span class="co">#&gt;  [17] ade4_1.7-16          withr_2.4.2          tidyselect_1.1.0     prettyunits_1.1.1   </span>
+<span class="co">#&gt;  [13] colorspace_2.0-1     GetoptLong_1.0.5     permute_0.9-5        rhdf5filters_1.2.1  </span>
+<span class="co">#&gt;  [17] ade4_1.7-16          withr_2.4.2          tidyselect_1.1.1     prettyunits_1.1.1   </span>
 <span class="co">#&gt;  [21] processx_3.5.1       compiler_4.0.3       microbiome_1.12.0    cli_2.5.0           </span>
 <span class="co">#&gt;  [25] Biobase_2.50.0       Cairo_1.5-12.2       TSP_1.1-10           desc_1.3.0          </span>
 <span class="co">#&gt;  [29] labeling_0.4.2       scales_1.1.1         callr_3.7.0          stringr_1.4.0       </span>
 <span class="co">#&gt;  [33] digest_0.6.27        rmarkdown_2.7        XVector_0.30.0       pkgconfig_2.0.3     </span>
 <span class="co">#&gt;  [37] htmltools_0.5.1.1    sessioninfo_1.1.1    highr_0.9            fastmap_1.1.0       </span>
-<span class="co">#&gt;  [41] GlobalOptions_0.1.2  rlang_0.4.10         shape_1.4.5          farver_2.1.0        </span>
+<span class="co">#&gt;  [41] GlobalOptions_0.1.2  rlang_0.4.11         shape_1.4.5          farver_2.1.0        </span>
 <span class="co">#&gt;  [45] generics_0.1.0       jsonlite_1.7.2       magrittr_2.0.1       biomformat_1.18.0   </span>
 <span class="co">#&gt;  [49] Matrix_1.3-2         Rcpp_1.0.6           munsell_0.5.0        S4Vectors_0.28.1    </span>
 <span class="co">#&gt;  [53] Rhdf5lib_1.12.1      fansi_0.4.2          ape_5.5              lifecycle_1.0.0     </span>

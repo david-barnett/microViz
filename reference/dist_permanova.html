@@ -47,12 +47,12 @@
 
 <meta property="og:title" content="Calculate PERMANOVA after dist_calc() — dist_permanova" />
 <meta property="og:description" content="dist_permanova runs a Permutational Multivariate ANOVA (aka Non-parametric MANOVA).
-This is way to test for the statistical significance of (independent)
+This is a way to test for the statistical significance of (independent)
 associations between variables in your phyloseq::sample_data(),
 and a microbiota distance matrix you have already calculated with dist_calc().
 This function is a wrapper around vegan's adonis2() function. See ?vegan::adonis2() for more insight.
 You can also read this excellent book chapter on PERMANOVA by Marti Anderson:
-https://doi.org/10.1002/9781118445112.stat07841
+doi: 10.1002/9781118445112.stat07841
 Or this NPMANOVA page on GUSTA ME:
 https://sites.google.com/site/mb3gustame/hypothesis-tests/manova/npmanova" />
 
@@ -86,7 +86,7 @@ https://sites.google.com/site/mb3gustame/hypothesis-tests/manova/npmanova" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.4.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.5</span>
       </span>
     </div>
 
@@ -165,12 +165,12 @@ https://sites.google.com/site/mb3gustame/hypothesis-tests/manova/npmanova" />
 
     <div class="ref-description">
     <p><code>dist_permanova</code> runs a Permutational Multivariate ANOVA (aka Non-parametric MANOVA).
-This is way to test for the statistical significance of (independent)
+This is a way to test for the statistical significance of (independent)
 associations between variables in your phyloseq::sample_data(),
 and a microbiota distance matrix you have already calculated with dist_calc().</p>
 <p>This function is a wrapper around vegan's <code><a href='https://rdrr.io/pkg/vegan/man/adonis.html'>adonis2()</a></code> function. See <code>?vegan::adonis2()</code> for more insight.</p>
 <p>You can also read this excellent book chapter on PERMANOVA by Marti Anderson:
-<a href='https://doi.org/10.1002/9781118445112.stat07841'>https://doi.org/10.1002/9781118445112.stat07841</a></p>
+doi: <a href='https://doi.org/10.1002/9781118445112.stat07841'>10.1002/9781118445112.stat07841</a></p>
 <p>Or this NPMANOVA page on GUSTA ME:
 <a href='https://sites.google.com/site/mb3gustame/hypothesis-tests/manova/npmanova'>https://sites.google.com/site/mb3gustame/hypothesis-tests/manova/npmanova</a></p>
     </div>
@@ -268,7 +268,7 @@ you should rename the offending variable (e.g. avoid any of "+" "</em>" "|" or "
     n_processes <span class='op'>=</span> <span class='fl'>1</span>,
     n_perms <span class='op'>=</span> <span class='fl'>99</span> <span class='co'># only 99 perms used in examples for speed (use 9999+!)</span>
   <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 4</span></div><div class='output co'>#&gt; <span class='message'>2021-05-07 20:37:22 - Starting PERMANOVA with 99 perms with 1 processes</span></div><div class='output co'>#&gt; <span class='message'>2021-05-07 20:37:22 - Finished PERMANOVA</span></div><div class='input'><span class='va'>PERM</span>
+</div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 4</span></div><div class='output co'>#&gt; <span class='message'>2021-05-09 11:24:35 - Starting PERMANOVA with 99 perms with 1 processes</span></div><div class='output co'>#&gt; <span class='message'>2021-05-09 11:24:36 - Finished PERMANOVA</span></div><div class='input'><span class='va'>PERM</span>
 </div><div class='output co'>#&gt; ps_extra object - a list with phyloseq and extras:
 #&gt; 
 #&gt; phyloseq-class experiment-level object
@@ -322,7 +322,7 @@ you should rename the offending variable (e.g. avoid any of "+" "</em>" "|" or "
     variables <span class='op'>=</span> <span class='st'>"nationality + sex * bmi_group"</span>,
     n_processes <span class='op'>=</span> <span class='fl'>1</span>, n_perms <span class='op'>=</span> <span class='fl'>99</span>
   <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 4</span></div><div class='output co'>#&gt; <span class='message'>2021-05-07 20:37:22 - Starting PERMANOVA with 99 perms with 1 processes</span></div><div class='output co'>#&gt; <span class='message'>2021-05-07 20:37:23 - Finished PERMANOVA</span></div><div class='input'><span class='va'>PERM2</span><span class='op'>$</span><span class='va'>permanova</span>
+</div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 4</span></div><div class='output co'>#&gt; <span class='message'>2021-05-09 11:24:36 - Starting PERMANOVA with 99 perms with 1 processes</span></div><div class='output co'>#&gt; <span class='message'>2021-05-09 11:24:36 - Finished PERMANOVA</span></div><div class='input'><span class='va'>PERM2</span><span class='op'>$</span><span class='va'>permanova</span>
 </div><div class='output co'>#&gt; Permutation test for adonis under reduced model
 #&gt; Marginal effects of terms
 #&gt; Permutation: free
@@ -344,7 +344,7 @@ you should rename the offending variable (e.g. avoid any of "+" "</em>" "|" or "
     interactions <span class='op'>=</span> <span class='st'>"sex * bmi_group"</span>,
     n_processes <span class='op'>=</span> <span class='fl'>1</span>, n_perms <span class='op'>=</span> <span class='fl'>99</span>
   <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 4</span></div><div class='output co'>#&gt; <span class='message'>2021-05-07 20:37:23 - Starting PERMANOVA with 99 perms with 1 processes</span></div><div class='output co'>#&gt; <span class='message'>2021-05-07 20:37:23 - Finished PERMANOVA</span></div><div class='input'><span class='va'>PERM3</span><span class='op'>$</span><span class='va'>permanova</span>
+</div><div class='output co'>#&gt; <span class='message'>Dropping samples with missings: 4</span></div><div class='output co'>#&gt; <span class='message'>2021-05-09 11:24:36 - Starting PERMANOVA with 99 perms with 1 processes</span></div><div class='output co'>#&gt; <span class='message'>2021-05-09 11:24:37 - Finished PERMANOVA</span></div><div class='input'><span class='va'>PERM3</span><span class='op'>$</span><span class='va'>permanova</span>
 </div><div class='output co'>#&gt; Permutation test for adonis under reduced model
 #&gt; Marginal effects of terms
 #&gt; Permutation: free
