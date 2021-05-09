@@ -71,15 +71,14 @@ following instructions.
 
 ``` r
 # Installing from github requires the devtools package
-install.packages("devtools", type = "binary") # (not binary if you're on linux)
+install.packages("devtools") 
 
 # You can install the latest versions of phyloseq and microbiome from Bioconductor:
-if (!requireNamespace("BiocManager", quietly = TRUE))
- install.packages("BiocManager", type = "binary") # (not binary if you're on linux)
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager") 
 BiocManager::install(c("phyloseq", "microbiome"))
 
 # To install the latest "released" version of this package
-devtools::install_github("david-barnett/microViz@0.7.4") # check 0.7.4 is the latest release
+devtools::install_github("david-barnett/microViz@0.7.5") # check 0.7.5 is the latest release
 
 # To install the very latest version:
 devtools::install_github("david-barnett/microViz")
@@ -132,6 +131,7 @@ ord_explore(pseq) # gif generated with microViz version 0.7.4 (plays at 1.75x sp
 ``` r
 library(phyloseq)
 library(dplyr)
+#> Warning: package 'dplyr' was built under R version 4.0.4
 #> 
 #> Attaching package: 'dplyr'
 #> The following objects are masked from 'package:stats':
@@ -190,7 +190,7 @@ Maybe visually inspecting all your samples isn’t quite what you want.
 Ordination methods can also help you to visualise if overall microbial
 ecosystem composition differs markedly between groups, e.g. BMI.
 
-Here is one option to try first:
+Here is one option as an example:
 
 1.  Filter out rare taxa (e.g. remove Genera not present in at least 10%
     of samples) - use `tax_filter()`
@@ -265,8 +265,8 @@ aitchison_perm <- dist_permanova(
   variables = "bmi_group + female"
 )
 #> Dropping samples with missings: 2
-#> 2021-05-06 13:53:45 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2021-05-06 13:53:45 - Finished PERMANOVA
+#> 2021-05-09 13:09:06 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2021-05-09 13:09:06 - Finished PERMANOVA
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
 #>            Df   SumOfSqs         R2        F Pr(>F)
@@ -294,8 +294,8 @@ your permanova directly using the ord\_plot function with constraints.
 ``` r
 perm2 <- dist_permanova(data = aitchison_dists, variables = c("weight", "female"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2021-05-06 13:53:45 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2021-05-06 13:53:46 - Finished PERMANOVA
+#> 2021-05-09 13:09:06 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2021-05-09 13:09:07 - Finished PERMANOVA
 perm_get(perm2)
 #> Permutation test for adonis under reduced model
 #> Marginal effects of terms
@@ -398,21 +398,21 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] ggplot2_3.3.3   dplyr_1.0.5     phyloseq_1.34.0 microViz_0.7.4  devtools_2.4.0  usethis_2.0.1  
+#> [1] ggplot2_3.3.3   dplyr_1.0.6     phyloseq_1.34.0 microViz_0.7.5  devtools_2.4.0  usethis_2.0.1  
 #> [7] pkgdown_1.6.1  
 #> 
 #> loaded via a namespace (and not attached):
 #>   [1] nlme_3.1-149         matrixStats_0.58.0   fs_1.5.0             RColorBrewer_1.1-2  
 #>   [5] progress_1.2.2       rprojroot_2.0.2      tools_4.0.3          utf8_1.2.1          
 #>   [9] R6_2.5.0             vegan_2.5-7          BiocGenerics_0.36.1  mgcv_1.8-33         
-#>  [13] colorspace_2.0-0     GetoptLong_1.0.5     permute_0.9-5        rhdf5filters_1.2.0  
-#>  [17] ade4_1.7-16          withr_2.4.2          tidyselect_1.1.0     prettyunits_1.1.1   
+#>  [13] colorspace_2.0-1     GetoptLong_1.0.5     permute_0.9-5        rhdf5filters_1.2.1  
+#>  [17] ade4_1.7-16          withr_2.4.2          tidyselect_1.1.1     prettyunits_1.1.1   
 #>  [21] processx_3.5.1       compiler_4.0.3       microbiome_1.12.0    cli_2.5.0           
 #>  [25] Biobase_2.50.0       Cairo_1.5-12.2       TSP_1.1-10           desc_1.3.0          
 #>  [29] labeling_0.4.2       scales_1.1.1         callr_3.7.0          stringr_1.4.0       
 #>  [33] digest_0.6.27        rmarkdown_2.7        XVector_0.30.0       pkgconfig_2.0.3     
 #>  [37] htmltools_0.5.1.1    sessioninfo_1.1.1    highr_0.9            fastmap_1.1.0       
-#>  [41] GlobalOptions_0.1.2  rlang_0.4.10         shape_1.4.5          farver_2.1.0        
+#>  [41] GlobalOptions_0.1.2  rlang_0.4.11         shape_1.4.5          farver_2.1.0        
 #>  [45] generics_0.1.0       jsonlite_1.7.2       magrittr_2.0.1       biomformat_1.18.0   
 #>  [49] Matrix_1.3-2         Rcpp_1.0.6           munsell_0.5.0        S4Vectors_0.28.1    
 #>  [53] Rhdf5lib_1.12.1      fansi_0.4.2          ape_5.5              lifecycle_1.0.0     
