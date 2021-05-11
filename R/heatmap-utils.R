@@ -109,17 +109,18 @@ df_to_numeric_matrix <- function(df, vars = NA, trans_fun = NA) {
     df <- df[, sapply(df, function(x) is.numeric(x) | is.logical(x) | is.integer(x)), drop = FALSE]
     mat <- as.matrix.data.frame(df)
   }
-  possible_vars <- colnames(mat)
-  if (length(possible_vars) == 0) stop("no variables in data are numeric/integer/logical")
+  num_vars <- colnames(mat)
+  if (length(num_vars) == 0) stop("no numeric/integer/logical variables found")
   if (!identical(vars, NA)) {
     stopifnot(is.character(vars))
-    if (all(vars %in% possible_vars)) {
+    if (all(vars %in% num_vars)) {
       mat <- mat[, vars, drop = FALSE]
     } else {
-      max <- min(length(possible_vars), 10)
       stop(
-        paste(vars[!vars %in% possible_vars], collapse = " "), " is/are not valid variable names in the (sample_) data\n",
-        "Possible numeric/integer/logical variables include:\n", paste(possible_vars[1:min], collapse = " ")
+        paste(vars[!vars %in% num_vars], collapse = " "),
+        " is/are not valid variable names in the (sample_) data\n",
+        "Possible numeric/integer/logical variables include:\n",
+        paste(utils::head(x = num_vars, n = 10), collapse = " ")
       )
     }
   }
