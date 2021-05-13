@@ -839,8 +839,7 @@ ord_explore <- function(data,
         rel_widths = c(70, 30)
       )
       ggiraph::girafe(
-        ggobj = gg,
-        width_svg = p_width[[2]], "in", height_svg = 5,
+        ggobj = gg, width_svg = p_width[[2]], "in", height_svg = 5,
         options = list(
           # ggiraph::opts_sizing(rescale = FALSE),
           ggiraph::opts_toolbar(saveaspng = FALSE),
@@ -1198,6 +1197,7 @@ ord_code_end <- function(ellipses, colour) {
 #'
 #' @param ps phyloseq object
 #' @param tax_level tax_level at which to create fixed palette
+#' @param other colour of "other" category
 #'
 #' @return named vector of colours
 #' @noRd
@@ -1205,12 +1205,12 @@ ord_explore_palet_fun <- function(ps,
                                   tax_level,
                                   top_by = sum,
                                   other = "grey90") {
-  # set up colour palette and link to common taxa names and "Other"
+  # set up colour palette and link to common taxa names and "other"
   palet <- distinct_palette(n = NA)
   top_tax <- tax_top(ps, n = NA, by = top_by, rank = tax_level)
-  numb <- min(length(top_tax), length(palet))
-  palet <- palet[seq_len(numb)]
-  names(palet) <- top_tax[seq_len(numb)]
+  numberOfColors <- min(length(top_tax), length(palet))
+  palet <- palet[seq_len(numberOfColors)]
+  names(palet) <- top_tax[seq_len(numberOfColors)]
   palet <- c(palet, c(other = other))
   return(palet)
 }
@@ -1245,7 +1245,7 @@ legend_separate <- function(ggplot, rel_widths = c(3, 1)) {
 ggmessage <- function(message, size = 3) {
   plot <- ggplot2::ggplot() +
     ggplot2::annotate(
-      geom = "text", x = 0.1, y = 0.5, size = 3,
+      geom = "text", x = 0.1, y = 0.5, size = size,
       label = message
     ) +
     ggplot2::theme_void()
