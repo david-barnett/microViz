@@ -1,5 +1,7 @@
 # microViz (development version)
 
+- `phyloseq_validate` no longer checks "unique" tax_table rank column for NAs or nchar<4 (avoiding warnings in ord_explore caused by short taxa_names)
+
 # microViz 0.7.5
 
 - `ord_explore` can now draw stat_ellipse or taxa loading vectors

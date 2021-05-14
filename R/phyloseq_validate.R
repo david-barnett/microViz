@@ -51,18 +51,6 @@ phyloseq_validate <- function(ps,
   silencing_advice <-
     "Try `ps <- phyloseq_validate(ps, verbose = FALSE)` to avoid this message"
 
-  # # check and fix storage mode
-  # old_store_mode <- storage.mode(phyloseq::otu_table(ps))
-  # if (old_store_mode != "double") {
-  #   if (verbose) {
-  #     message(
-  #       "Note: changing OTU table's storage.mode from '",
-  #       old_store_mode, "' to 'double'.\n", silencing_advice
-  #     )
-  #   }
-  #   storage.mode(phyloseq::otu_table(ps)) <- "double"
-  # }
-
   # check for NULL sample data
   if (identical(phyloseq::access(ps, "sam_data"), NULL)) {
     if (isTRUE(verbose)) {
@@ -86,6 +74,32 @@ phyloseq_validate <- function(ps,
     taxons <- phyloseq::taxa_names(ps)
     phyloseq::tax_table(ps) <-
       matrix(data = taxons, ncol = 1, dimnames = list(taxons, "unique"))
+
+  } else if (isTRUE(verbose)) {
+    # check tax_table for uninformative entries
+    suspicious_names <- tax_common_unknowns(min_length = min_tax_length)
+
+    # check tax_table except any "unique" column, likely made from taxa names
+    ranks <- phyloseq::rank_names(ps)
+    ranks <- ranks[ranks != "unique"]
+    taxTab <- phyloseq::tax_table(ps)[, ranks, drop = FALSE]
+
+    taxfillmessage <-
+      "Consider using tax_fix() to make taxa uniquely identifiable"
+    if (anyNA(taxTab)) {
+      message("NAs detected in phyloseq tax_table:\n", taxfillmessage)
+    } else if (any(nchar(taxTab) < min_tax_length)) {
+      message(
+        "Short values detected in phyloseq tax_table (nchar<",
+        min_tax_length, ") :\n", taxfillmessage
+      )
+    } else if (any(taxTab %in% suspicious_names)) {
+      message(
+        "Suspicious values detected in phyloseq tax_table:\n", taxfillmessage
+      )
+      bad <- unclass(tt_get(ps))[tt_get(ps) %in% suspicious_names]
+      message("Detected: '", paste(unique(bad), collapse = "', '"), "'\n")
+    }
   }
 
   if (isTRUE(remove_undetected)) {
@@ -112,27 +126,6 @@ phyloseq_validate <- function(ps,
     }
   }
 
-  if (isTRUE(verbose)) {
-    # check tax_table for uninformative entries
-    suspicious_names <- tax_common_unknowns(min_length = min_tax_length)
-
-    taxfillmessage <-
-      "Consider using tax_fix() to make taxa uniquely identifiable"
-    if (anyNA(phyloseq::tax_table(ps))) {
-      message("NAs detected in phyloseq tax_table:\n", taxfillmessage)
-    } else if (any(nchar(phyloseq::tax_table(ps)) < min_tax_length)) {
-      message(
-        "Short values detected in phyloseq tax_table (nchar<",
-        min_tax_length, ") :\n", taxfillmessage
-      )
-    } else if (any(phyloseq::tax_table(ps) %in% suspicious_names)) {
-      message(
-        "Suspicious values detected in phyloseq tax_table:\n", taxfillmessage
-      )
-      bad <- unclass(tt_get(ps))[tt_get(ps) %in% suspicious_names]
-      message("Detected: '", paste(unique(bad), collapse = "', '"), "'\n")
-    }
-  }
   return(ps)
 }
 
