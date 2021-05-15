@@ -412,9 +412,9 @@ ord_explore <- function(data,
         shiny::hr(),
         shiny::renderPrint({
           ord_code(
-            rank = ordSelected$rank, trans = ordSelected$trans,
-            dist = ordSelected$dist, ord = ordSelected$ord,
-            const = ordSelected$const, conds = ordSelected$conds,
+            rank = ord1chosen$rank, trans = ord1chosen$trans,
+            dist = ord1chosen$dist, ord = ord1chosen$ord,
+            const = ord1chosen$const, conds = ord1chosen$conds,
             x = input$x1, y = input$y1, colour = input$ord_colour,
             fill = input$ord_colour, # TODO make fill configurable
             shape = input$ord_shape, alpha = alpha(), size = size(),
@@ -443,36 +443,36 @@ ord_explore <- function(data,
         shiny::hr(),
         shiny::selectizeInput(
           inputId = "rank", label = "Taxonomic Rank",
-          selected = ordSelected$rank, choices = ordChoices$rank
+          selected = ord1chosen$rank, choices = ordChoices$rank
         ),
         shiny::selectizeInput(
           inputId = "trans", label = "Taxa transformation",
-          choices = ordChoices$trans, selected = ordSelected$trans
+          choices = ordChoices$trans, selected = ord1chosen$trans
         ),
         shiny::selectizeInput(
           inputId = "dist", label = "Distance / Dissimilarity",
-          choices = ordChoices$dist, selected = ordSelected$dist
+          choices = ordChoices$dist, selected = ord1chosen$dist
         ),
         shiny::checkboxInput(
           inputId = "isCon", label = "Constrain or condition ordination?",
-          value = ordSelected$isCon
+          value = ord1chosen$isCon
         ),
         shiny::conditionalPanel(
           condition = "input.isCon == true",
           shiny::selectizeInput(
             inputId = "const", label = "Constraints", multiple = TRUE,
-            choices = ordChoices$const, selected = ordSelected$const,
+            choices = ordChoices$const, selected = ord1chosen$const,
             options = list(placeholder = "numeric vars?")
           ),
           shiny::selectizeInput(
             inputId = "conds", label = "Conditions", multiple = TRUE,
-            choices = ordChoices$conds, selected = ordSelected$conds,
+            choices = ordChoices$conds, selected = ord1chosen$conds,
             options = list(placeholder = "numeric vars?")
           )
         ),
         shiny::selectizeInput(
           inputId = "method", label = "Ordination method",
-          choices = ordChoices$ord, selected = ordSelected$ord
+          choices = ordChoices$ord, selected = ord1chosen$ord
         ),
         footer = shiny::tagList(
           shiny::modalButton("Cancel", icon = shiny::icon("times")),
@@ -509,7 +509,7 @@ ord_explore <- function(data,
     ### selected --------------------------------------------------------------
     # for remembering selected and possible choices in modal selectize inputs
     #### initialise selected choices ------------------------------------------
-    ordSelected <- shiny::reactiveValues(
+    ord1chosen <- shiny::reactiveValues(
       rank = init$info$rank, trans = init$info$trans,
       # scale = if (is.na(info$scale)) "neither" else info$scale,
       dist = init$info$dist, ord = init$info$ord,
@@ -522,15 +522,15 @@ ord_explore <- function(data,
     shiny::observeEvent(
       eventExpr = input$build,
       handlerExpr = {
-        ordSelected$rank <- input$rank
-        ordSelected$trans <- input$trans
-        ordSelected$dist <- input$dist
-        ordSelected$ord <- input$method
+        ord1chosen$rank <- input$rank
+        ord1chosen$trans <- input$trans
+        ord1chosen$dist <- input$dist
+        ord1chosen$ord <- input$method
         # TODO scale inputs
-        # ordSelected$scale <- input$scale
-        ordSelected$const <- input$const
-        ordSelected$conds <- input$conds
-        ordSelected$isCon <- input$isCon
+        # ord1chosen$scale <- input$scale
+        ord1chosen$const <- input$const
+        ord1chosen$conds <- input$conds
+        ord1chosen$isCon <- input$isCon
         # update default choice of taxonomic rank for composition plot
         shiny::updateSelectizeInput(
           session = session, inputId = "tax_level_comp", selected = input$rank
@@ -595,14 +595,14 @@ ord_explore <- function(data,
 
     ## initialise reactive data ----------------------------------------------
     # initialise data reactive values with data provided
-    v <- shiny::reactiveValues(
-      dat = init$data, # for ord_plot
-      comp_dat = ps_seriate( # for comp_barplot (samples can be reordered)
+    phylos <- shiny::reactiveValues(
+      ord1 = init$data, # for ord_plot
+      comps = ps_seriate( # for comp_barplot (samples can be reordered)
         ps = ps_counts(init$data, warn = TRUE),
         method = seriate_method,
-        tax_transform = shiny::isolate(ordSelected$trans),
+        tax_transform = shiny::isolate(ord1chosen$trans),
         dist = setdiff(
-          c(shiny::isolate(ordSelected$dist), "euclidean"), "none"
+          c(shiny::isolate(ord1chosen$dist), "euclidean"), "none"
         )[[1]]
       )
     )
@@ -614,7 +614,7 @@ ord_explore <- function(data,
       handlerExpr = {
         out <- try(
           expr = {
-            v$dat <- ord_build(
+            phylos$ord1 <- ord_build(
               data = init$data, rank = input$rank, trans = input$trans,
               dist = if (input$dist == "none") NA else input$dist,
               method = input$method,
@@ -635,10 +635,10 @@ ord_explore <- function(data,
           shiny::showNotification(
             ui = "Reordering samples for barplot", type = "warning"
           )
-          v$comp_dat <- ps_seriate(
-            ps = v$comp_dat, method = seriate_method,
-            tax_transform = ordSelected$trans,
-            dist = setdiff(c(ordSelected$dist, "euclidean"), "none")[[1]]
+          phylos$comps <- ps_seriate(
+            ps = phylos$comps, method = seriate_method,
+            tax_transform = ord1chosen$trans,
+            dist = setdiff(c(ord1chosen$dist, "euclidean"), "none")[[1]]
           )
         }
       }
@@ -650,54 +650,36 @@ ord_explore <- function(data,
     shiny::observeEvent(
       eventExpr = input$originalOrd,
       handlerExpr = {
-        v$dat <- init$data
+        phylos$ord1 <- init$data
         shiny::showNotification(
           ui = "Reordering samples for barplot", type = "warning"
         )
         # for comp_barplot (samples can be reordered)
-        v$comp_dat <- ps_seriate(
+        phylos$comps <- ps_seriate(
           ps = ps_counts(init$data, warn = TRUE),
           method = seriate_method, tax_transform = init$info$trans,
           # get current distance, if not "none", else use euclidean
           dist = setdiff(
-            c(shiny::isolate(ordSelected$dist), "euclidean"), "none"
+            c(shiny::isolate(ord1chosen$dist), "euclidean"), "none"
           )[[1]]
         )
         shiny::removeModal(session = session)
       }
     )
 
-    # ord_plot ----------------------------------------------------------------
+    # ord plot ----------------------------------------------------------------
     output$ord_plot <- ggiraph::renderGirafe({
       # prevent execution if no axes selected
       shiny::req(input$x1, input$y1, cancelOutput = TRUE)
-      if (identical(ord_get(v$dat), NULL)) {
-        # placeholder instructions if data does not have ordination already
-        p1 <- ggmessage(paste0(
-          "Click on the 'Edit Ordination' button.\n\n",
-          "(data provided to ord_explore does not contain an ordination)"
-        ))
-      } else if (input$x1 == input$y1) {
-        p1 <- ggmessage("You must choose a different dimension for each axis")
-      } else {
-        # create ordination ggplot
-        p1 <- ord_plot(
-          data = v$dat, axes = c(input$x1, input$y1), shape = input$ord_shape,
-          size = size(), colour = input$ord_colour, fill = input$ord_colour,
-          alpha = alpha(), interactive = TRUE, data_id = input$id_var,
-          tooltip = input$id_var, plot_taxa = plot_taxa(), ...
-        ) +
-          ggplot2::scale_shape_discrete(na.translate = TRUE, na.value = 1)
-        # optionally add group 95% ellipses
-        if (ellipses()) {
-          p1 <- p1 + ggplot2::stat_ellipse(
-            ggplot2::aes(colour = .data[[input$ord_colour]])
-          )
-        }
+      p1 <- ord_ggplot(
+        ord = phylos$ord1, x = input$x1, y = input$y1, shape = input$ord_shape,
+        size = size(), colour = input$ord_colour, alpha = alpha(),
+        id = input$id_var, plot_taxa = plot_taxa(), ellipses = ellipses(), ...
+      )
 
-        # (blank) legend in separate plot for consistent sizing of main plot
-        p1 <- legend_separate(p1, rel_widths = c(80, 20))
-      }
+      # (blank) legend in separate plot for consistent sizing of main plot
+      p1 <- legend_separate(p1, rel_widths = c(80, 20))
+
       # make ggplot into interactive ggiraph object
       p1 <- ggiraph::girafe(
         code = print(p1),
@@ -743,7 +725,7 @@ ord_explore <- function(data,
       input$add == "ellipses" & input$ord_colour %in% init$vars$all
     })
 
-    # comp_barplot ------------------------------------------------------------
+    # barplot -----------------------------------------------------------------
 
     ## tax order & colour -----------------------------------------------------
     # order taxa using ALL samples
@@ -752,7 +734,7 @@ ord_explore <- function(data,
         ui = " - Sorting taxa", duration = 2, session = session
       )
       tax_top(
-        data = v$comp_dat, n = NA,
+        data = phylos$comps, n = NA,
         by = get(input$tax_order),
         rank = input$tax_level_comp
       )
@@ -764,93 +746,48 @@ ord_explore <- function(data,
         ui = " - Setting taxa colour palette", duration = 2, session = session
       )
       ord_explore_palet_fun(
-        ps = v$comp_dat, tax_level = input$tax_level_comp,
+        ps = phylos$comps, tax_level = input$tax_level_comp,
         top_by = get(input$tax_order)
       )
     })
 
     ## build ggplot ----------------------------------------------------------
 
-    # make plot
     comp_plot <- shiny::reactive({
-      # get ggiraph interactively selected datapoints (values of id_var)
-      selected_samples <- input$ord_plot_selected
-      # logical selection of kept samples
-      sample_kept <-
-        phyloseq::sample_data(v$comp_dat)[[input$id_var]] %in% selected_samples
-      if (sum(sample_kept) >= 2) {
-        # TODO fix issue that comp_barplot only works with 2+ samples
-        # select samples
-        ps_sel <-
-          phyloseq::prune_samples(x = v$comp_dat, samples = sample_kept)
+      # make logical vector indicating whether sample is selected on ord plot
+      isSampleSelected <- markSelectedSamples(
+        ordSel = input$ord_plot_selected, id = input$id_var, ps = phylos$comps
+      )
 
-        facet_by <-
-          ifelse(input$facet_by == "NA", yes = NA, no = input$facet_by)
-
-        # plot composition of selected samples
-        p_comp <- ps_sel %>%
-          comp_barplot(
-            n_taxa = input$ntaxa,
-            tax_level = input$tax_level_comp,
-            tax_order = ordered_taxa(),
-            palette = palet(),
-            bar_outline_colour = "black",
-            sample_order = "default",
-            label = input$comp_label,
-            interactive = TRUE,
-            max_taxa = input$taxmax,
-            merge_other = input$mergeOther,
-            facet_by = facet_by,
-            ncol = 1
-          )
-        p_comp <- p_comp +
-          ggplot2::coord_flip() +
-          ggplot2::labs(x = NULL, y = NULL) +
-          ggplot2::theme(legend.justification = "left")
-      } else {
-        p_comp <- ggmessage(paste0(
-          "Select 2 or more samples on the ordination plot above\n",
-          "either by clicking or by using the lasso selection tool"
-        ))
-      }
-      p_comp
-    })
-
-    # static version comps
-    output$comps_gg <- shiny::renderPlot({
-      legend_separate(
-        ggplot = comp_plot() + ggplot2::theme(
-          legend.text = ggplot2::element_text(size = 9),
-          legend.key.size = ggplot2::unit(8, "mm")
-        ),
-        rel_widths = c(70, 30)
+      # make barplot (or placeholder)
+      barplot <- ggBarplot(
+        selected = isSampleSelected, ps = phylos$comps,
+        facet_by = input$facet_by, n_taxa = input$ntaxa,
+        tax_level = input$tax_level_comp, tax_order = ordered_taxa(),
+        palette = palet(), label = input$comp_label,
+        max_taxa = input$taxmax, merge_other = input$mergeOther
       )
     })
 
-    ## build girafe -----------------------------------------------------------
+    ## render ggplot ----------------------------------------------------------
+    # static ggplot version of compositional barplot or placeholder
+    output$comps_gg <- shiny::renderPlot({
+      # tweak sizing of legend text and squares for ggplot output
+      plot <- comp_plot() + ggplot2::theme(
+        legend.text = ggplot2::element_text(size = 9),
+        legend.key.size = ggplot2::unit(8, "mm")
+      )
+      legend_separate(ggplot = plot, rel_widths = c(70, 30))
+    })
+
+    ## render girafe ----------------------------------------------------------
     # interactive girafe composition plot
     output$comps_girafe <- ggiraph::renderggiraph({
-      gg <- legend_separate(
-        ggplot = comp_plot() +
-          # TODO work out how to match static/interactive sizes properly
-          ggplot2::theme(
-            text = ggplot2::element_text(size = 8)
-          ),
-        rel_widths = c(70, 30)
-      )
-      ggiraph::girafe(
-        ggobj = gg, width_svg = p_width[[2]], "in", height_svg = 5,
-        options = list(
-          # ggiraph::opts_sizing(rescale = FALSE),
-          ggiraph::opts_toolbar(saveaspng = FALSE),
-          ggiraph::opts_zoom(min = 0.5, max = 3),
-          ggiraph::opts_hover(css = "fill:orange;stroke:gray;"),
-          ggiraph::opts_hover_inv("opacity:0.2"),
-          ggiraph::opts_selection(
-            type = "single", css = "fill:orange;stroke:gray;"
-          )
-        )
-      )
+      # TODO work out how to match static/interactive sizes properly
+      gg <- comp_plot() + ggplot2::theme(text = ggplot2::element_text(size = 8))
+      gg <- legend_separate(ggplot = gg, rel_widths = c(70, 30))
+      # make interactive html barplot
+      girafeBarplot(gg = gg, width = p_width[[2]], height = 5)
     })
 
     ## tabs & notifications --------------------------------------------------
@@ -1009,6 +946,35 @@ ord_build <- function(data,
     constraints = constraints, conditions = conditions
   )
   return(dat)
+}
+
+# create ggplot from built ordination and aesthetic settings
+ord_ggplot <- function(ord, x, y, shape, size, colour, alpha, id,
+                       plot_taxa, ellipses, ...) {
+  if (identical(ord_get(ord), NULL)) {
+    # placeholder instructions if data does not have ordination already
+    p1 <- ggmessage(paste0(
+      "Click on the 'Edit Ordination' button.\n\n",
+      "(data provided to ord_explore does not contain an ordination)"
+    ))
+  } else if (x == y) {
+    p1 <- ggmessage("You must choose a different dimension for each axis")
+  } else {
+    # create ordination ggplot
+    p1 <- ord_plot(
+      data = ord, axes = c(x, y), shape = shape, size = size,
+      colour = colour, fill = colour, alpha = alpha, plot_taxa = plot_taxa,
+      interactive = TRUE, data_id = id, tooltip = id, ...
+    ) +
+      ggplot2::scale_shape_discrete(na.translate = TRUE, na.value = 1)
+    # optionally add group 95% ellipses
+    if (ellipses) {
+      p1 <- p1 + ggplot2::stat_ellipse(
+        ggplot2::aes(colour = .data[[colour]])
+      )
+    }
+  }
+  return(p1)
 }
 
 ### choice helpers -------------------------------------------------------------
@@ -1250,4 +1216,93 @@ ggmessage <- function(message, size = 3) {
     ) +
     ggplot2::theme_void()
   return(plot)
+}
+
+## barplot helpers ------------------------------------------------------------
+
+#' identify which samples in phyloseq are selected on ordination plot
+#'
+#' @param ordSel values of id that are selected on ordination plot
+#' @param id variable used to select (sets of) samples on ordination plot
+#' @param ps phyloseq object
+#'
+#' @return logical vector
+#' @noRd
+markSelectedSamples <- function(ordSel, id, ps) {
+  phyloseq::sample_data(ps)[[id]] %in% ordSel
+}
+
+#' create comp_barplot or placeholder from given settings
+#'
+#' thin wrapper around comp_barplot itself
+#'
+#' @param selected logical vector indicating which samples in ps are selected
+#' @param ps phyloseq
+#' @param facet_by input$facet_by
+#' @param n_taxa number of taxa to colour in barplot
+#' @param tax_level rank at which to agg barplot
+#' @param tax_order how to order taxa
+#' @param palette to colour taxa
+#' @param label variable name to label samples with
+#' @param max_taxa maximum number of distinct taxa (relevant if merge is FALSE)
+#' @param merge_other merge grey coloured taxa into "other"?
+#'
+#' @return ggplot barplot
+#' @noRd
+ggBarplot <- function(selected, ps, facet_by, n_taxa, tax_level, tax_order,
+                      palette, label, max_taxa, merge_other) {
+  if (sum(selected) >= 2) {
+    # TODO fix issue that comp_barplot only works with 2+ samples
+    # select samples
+    psSelected <- phyloseq::prune_samples(x = ps, samples = selected)
+
+    # necessary?
+    if (identical(facet_by, "NA")) facet_by <- NA
+
+    # plot composition of selected samples
+    plot <- psSelected %>%
+      comp_barplot(
+        n_taxa = n_taxa, tax_level = tax_level, tax_order = tax_order,
+        palette = palette, label = label,
+        max_taxa = max_taxa, merge_other = merge_other,
+        bar_outline_colour = "black", sample_order = "default",
+        interactive = TRUE,
+        facet_by = facet_by, ncol = 1
+      )
+    # style plot
+    plot <- plot +
+      ggplot2::coord_flip() +
+      ggplot2::labs(x = NULL, y = NULL) +
+      ggplot2::theme(legend.justification = "left")
+  } else {
+    plot <- ggmessage(paste0(
+      "Select 2 or more samples on the ordination plot above\n",
+      "either by clicking or by using the lasso selection tool"
+    ))
+  }
+  return(plot)
+}
+
+#' create girafe object from ggplot barplot
+#'
+#' @param gg ggplot output of ggBarplot
+#' @param width output width of svg desired
+#' @param height output height of svg desired
+#'
+#' @return htmlWidget girafe S3 list object
+#' @noRd
+girafeBarplot <- function(gg, width, height) {
+  ggiraph::girafe(
+    ggobj = gg, width_svg = width, "in", height_svg = 5,
+    options = list(
+      # ggiraph::opts_sizing(rescale = FALSE),
+      ggiraph::opts_toolbar(saveaspng = FALSE),
+      ggiraph::opts_zoom(min = 0.5, max = 3),
+      ggiraph::opts_hover(css = "fill:orange;stroke:gray;"),
+      ggiraph::opts_hover_inv("opacity:0.2"),
+      ggiraph::opts_selection(
+        type = "single", css = "fill:orange;stroke:gray;"
+      )
+    )
+  )
 }
