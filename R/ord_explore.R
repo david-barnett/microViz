@@ -1256,9 +1256,6 @@ ggBarplot <- function(selected, ps, facet_by, n_taxa, tax_level, tax_order,
     # select samples
     psSelected <- phyloseq::prune_samples(x = ps, samples = selected)
 
-    # necessary?
-    if (identical(facet_by, "NA")) facet_by <- NA
-
     # plot composition of selected samples
     plot <- psSelected %>%
       comp_barplot(
@@ -1266,9 +1263,17 @@ ggBarplot <- function(selected, ps, facet_by, n_taxa, tax_level, tax_order,
         palette = palette, label = label,
         max_taxa = max_taxa, merge_other = merge_other,
         bar_outline_colour = "black", sample_order = "default",
-        interactive = TRUE,
-        facet_by = facet_by, ncol = 1
+        bar_outline_width = 0.05,
+        interactive = TRUE
       )
+
+    # add facet grid if requested
+    if (!identical(facet_by, "NA")) {
+      plot <- plot + ggplot2::facet_grid(
+        rows = facet_by, scales = "free_y", space = "free_y"
+      )
+    }
+
     # style plot
     plot <- plot +
       ggplot2::coord_flip() +
