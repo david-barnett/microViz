@@ -1158,66 +1158,6 @@ ord_code_end <- function(ellipses, colour) {
   return(end_lines)
 }
 
-## other helpers --------------------------------------------------------------
-#' Create fixed named palette for ord_explore: tax_name = colour
-#'
-#' @param ps phyloseq object
-#' @param tax_level tax_level at which to create fixed palette
-#' @param other colour of "other" category
-#'
-#' @return named vector of colours
-#' @noRd
-ord_explore_palet_fun <- function(ps,
-                                  tax_level,
-                                  top_by = sum,
-                                  other = "grey90") {
-  # set up colour palette and link to common taxa names and "other"
-  palet <- distinct_palette(n = NA)
-  top_tax <- tax_top(ps, n = NA, by = top_by, rank = tax_level)
-  numberOfColors <- min(length(top_tax), length(palet))
-  palet <- palet[seq_len(numberOfColors)]
-  names(palet) <- top_tax[seq_len(numberOfColors)]
-  palet <- c(palet, c(other = other))
-  return(palet)
-}
-
-
-#' Use cowplot to place ggplot legend alongside plot
-#'
-#' This aims to ensure plot sizing remains the same,
-#' whether or not a legend is present
-#'
-#' @param ggplot a ggplot object with or without a legend
-#' @param rel_widths passed to cowplot::plot_grid
-#'
-#' @return
-#' @noRd
-legend_separate <- function(ggplot, rel_widths = c(3, 1)) {
-  leg <- cowplot::get_legend(ggplot)
-  ggplot <- ggplot + ggplot2::theme(legend.position = "none")
-  out <- cowplot::plot_grid(ggplot, leg, rel_widths = rel_widths)
-  return(out)
-}
-
-#' Create simple ggplot with text annotation
-#'
-#' Useful as a placeholder with instructions
-#'
-#' @param message text to display
-#' @param size size of text
-#'
-#' @return ggplot
-#' @noRd
-ggmessage <- function(message, size = 3) {
-  plot <- ggplot2::ggplot() +
-    ggplot2::annotate(
-      geom = "text", x = 0.1, y = 0.5, size = size,
-      label = message
-    ) +
-    ggplot2::theme_void()
-  return(plot)
-}
-
 ## barplot helpers ------------------------------------------------------------
 
 #' identify which samples in phyloseq are selected on ordination plot
@@ -1311,3 +1251,64 @@ girafeBarplot <- function(gg, width, height) {
     )
   )
 }
+
+## other helpers --------------------------------------------------------------
+#' Create fixed named palette for ord_explore: tax_name = colour
+#'
+#' @param ps phyloseq object
+#' @param tax_level tax_level at which to create fixed palette
+#' @param other colour of "other" category
+#'
+#' @return named vector of colours
+#' @noRd
+ord_explore_palet_fun <- function(ps,
+                                  tax_level,
+                                  top_by = sum,
+                                  other = "grey90") {
+  # set up colour palette and link to common taxa names and "other"
+  palet <- distinct_palette(n = NA)
+  top_tax <- tax_top(ps, n = NA, by = top_by, rank = tax_level)
+  numberOfColors <- min(length(top_tax), length(palet))
+  palet <- palet[seq_len(numberOfColors)]
+  names(palet) <- top_tax[seq_len(numberOfColors)]
+  palet <- c(palet, c(other = other))
+  return(palet)
+}
+
+
+#' Use cowplot to place ggplot legend alongside plot
+#'
+#' This aims to ensure plot sizing remains the same,
+#' whether or not a legend is present
+#'
+#' @param ggplot a ggplot object with or without a legend
+#' @param rel_widths passed to cowplot::plot_grid
+#'
+#' @return
+#' @noRd
+legend_separate <- function(ggplot, rel_widths = c(3, 1)) {
+  leg <- cowplot::get_legend(ggplot)
+  ggplot <- ggplot + ggplot2::theme(legend.position = "none")
+  out <- cowplot::plot_grid(ggplot, leg, rel_widths = rel_widths)
+  return(out)
+}
+
+#' Create simple ggplot with text annotation
+#'
+#' Useful as a placeholder with instructions
+#'
+#' @param message text to display
+#' @param size size of text
+#'
+#' @return ggplot
+#' @noRd
+ggmessage <- function(message, size = 3) {
+  plot <- ggplot2::ggplot() +
+    ggplot2::annotate(
+      geom = "text", x = 0.1, y = 0.5, size = size,
+      label = message
+    ) +
+    ggplot2::theme_void()
+  return(plot)
+}
+
