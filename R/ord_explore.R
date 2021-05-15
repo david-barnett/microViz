@@ -676,26 +676,10 @@ ord_explore <- function(data,
         size = size(), colour = input$ord_colour, alpha = alpha(),
         id = input$id_var, plot_taxa = plot_taxa(), ellipses = ellipses(), ...
       )
-
       # (blank) legend in separate plot for consistent sizing of main plot
       p1 <- legend_separate(p1, rel_widths = c(80, 20))
-
       # make ggplot into interactive ggiraph object
-      p1 <- ggiraph::girafe(
-        code = print(p1),
-        width_svg = p_width[[1]], height_svg = 4.5,
-        options = list(
-          ggiraph::opts_toolbar(saveaspng = FALSE),
-          ggiraph::opts_hover(
-            css = "fill:orange;stroke:black;cursor:pointer;",
-            reactive = TRUE
-          ),
-          ggiraph::opts_selection(
-            type = "multiple", css = "stroke:black;stroke-width:2"
-          ),
-          ggiraph::opts_zoom(min = 0.5, max = 5)
-        )
-      )
+      p1 <- ord_girafe(gg = p1, width = p_width[[1]], height = 4.5)
       return(p1)
     })
 
@@ -977,6 +961,25 @@ ord_ggplot <- function(ord, x, y, shape, size, colour, alpha, id,
   return(p1)
 }
 
+# create girafe interactive plot from ggplot ord_plot
+ord_girafe <- function(gg, width, height){
+  ggiraph::girafe(
+    ggobj = gg, width_svg = width, height_svg = height,
+    options = list(
+      ggiraph::opts_toolbar(saveaspng = FALSE),
+      ggiraph::opts_hover(
+        css = "stroke:black;cursor:pointer;stroke-opacity:1;stroke-width:2",
+        reactive = TRUE
+      ),
+      ggiraph::opts_selection(
+        type = "multiple",
+        css = "stroke:black;stroke-width:1;stroke-opacity:1;fill-opacity:1;"
+      ),
+      ggiraph::opts_zoom(min = 0.5, max = 5)
+    )
+  )
+}
+
 ### choice helpers -------------------------------------------------------------
 #' Helps provide list of named choices for ordination builder modal input
 #'
@@ -1238,15 +1241,15 @@ ggBarplot <- function(selected, ps, facet_by, n_taxa, tax_level, tax_order,
 #' @noRd
 girafeBarplot <- function(gg, width, height) {
   ggiraph::girafe(
-    ggobj = gg, width_svg = width, "in", height_svg = 5,
+    ggobj = gg, width_svg = width, height_svg = 5,
     options = list(
       # ggiraph::opts_sizing(rescale = FALSE),
       ggiraph::opts_toolbar(saveaspng = FALSE),
       ggiraph::opts_zoom(min = 0.5, max = 3),
-      ggiraph::opts_hover(css = "fill:orange;stroke:gray;"),
+      ggiraph::opts_hover(css = "fill:black;stroke:black;"),
       ggiraph::opts_hover_inv("opacity:0.2"),
       ggiraph::opts_selection(
-        type = "single", css = "fill:orange;stroke:gray;"
+        type = "single", css = "fill:black;stroke:black;"
       )
     )
   )
