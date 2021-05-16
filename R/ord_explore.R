@@ -281,6 +281,7 @@ ord_explore <- function(data,
                 inputId = "add", label = NULL, selected = "nothing",
                 choices = c(
                   "nothing",
+                  "convex hulls (coloured)" = "chulls",
                   "ellipses (coloured)" = "ellipses",
                   "taxa (PCA/RDA/CCA)" = "taxa"
                 )
@@ -674,7 +675,8 @@ ord_explore <- function(data,
       p1 <- ord_ggplot(
         ord = phylos$ord1, x = input$x1, y = input$y1, shape = input$ord_shape,
         size = size(), colour = input$ord_colour, alpha = alpha(),
-        id = input$id_var, plot_taxa = plot_taxa(), ellipses = ellipses(), ...
+        id = input$id_var, plot_taxa = plot_taxa(),
+        ellipses = ellipses(), chulls = chulls(), ...
       )
       # (blank) legend in separate plot for consistent sizing of main plot
       p1 <- legend_separate(p1, rel_widths = c(80, 20))
@@ -707,6 +709,9 @@ ord_explore <- function(data,
     })
     ellipses <- shiny::reactive({
       input$add == "ellipses" & input$ord_colour %in% init$vars$all
+    })
+    chulls <- shiny::reactive({
+      input$add == "chulls" & input$ord_colour %in% init$vars$all
     })
 
     # barplot -----------------------------------------------------------------
@@ -934,7 +939,7 @@ ord_build <- function(data,
 
 # create ggplot from built ordination and aesthetic settings
 ord_ggplot <- function(ord, x, y, shape, size, colour, alpha, id,
-                       plot_taxa, ellipses, ...) {
+                       plot_taxa, ellipses, chulls, ...) {
   if (identical(ord_get(ord), NULL)) {
     # placeholder instructions if data does not have ordination already
     p1 <- ggmessage(paste0(
@@ -957,6 +962,8 @@ ord_ggplot <- function(ord, x, y, shape, size, colour, alpha, id,
         ggplot2::aes(colour = .data[[colour]])
       )
     }
+    # optionally add group convex hulls
+    if (chulls) p1 <- p1 + stat_chull(ggplot2::aes(colour = .data[[colour]]))
   }
   return(p1)
 }

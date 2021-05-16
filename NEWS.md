@@ -1,6 +1,8 @@
 # microViz (development version)
 
-- `phyloseq_validate` no longer checks "unique" tax_table rank column for NAs or nchar<4 (avoiding warnings in ord_explore caused by short taxa_names)
+- `stat_chulls` added, for drawing convex hulls on ord_plot and ord_explore ordinations
+- `phyloseq_validate` no longer checks "unique" tax_table rank column for NAs or nchar<4 
+(avoiding warnings in ord_explore caused by short taxa_names)
 
 # microViz 0.7.5
 
