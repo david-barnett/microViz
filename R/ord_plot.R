@@ -181,6 +181,8 @@ ord_plot <-
            ...) {
     ps <- ps_get(data)
     ordination <- ord_get(data)
+    # check ordination and phyloseq size (should never fail if ord_calc used)
+    stopifnot(stats::nobs(ordination) == phyloseq::nsamples(ps))
 
     # check input data object class and extract the most used objects to function env
     if (inherits(data, "ps_extra") && !identical(ordination, NULL)) {
@@ -209,9 +211,6 @@ ord_plot <-
         }
       }
     }
-
-    # double-check ordination size against phyloseq (should never fail if ord_calc used)
-    stopifnot(stats::nobs(ordination) == phyloseq::nsamples(ps))
 
     # get and transform aesthetic metadata ------------------------------------
     meta <- data.frame(phyloseq::sample_data(ps), check.names = FALSE)
