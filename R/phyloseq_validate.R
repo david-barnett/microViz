@@ -74,7 +74,6 @@ phyloseq_validate <- function(ps,
     taxons <- phyloseq::taxa_names(ps)
     phyloseq::tax_table(ps) <-
       matrix(data = taxons, ncol = 1, dimnames = list(taxons, "unique"))
-
   } else if (isTRUE(verbose)) {
     # check tax_table for uninformative entries
     suspicious_names <- tax_common_unknowns(min_length = min_tax_length)
