@@ -202,7 +202,7 @@ ord_plot <-
       variables <- phyloseq::sample_variables(ps)
       for (v in ellipses) {
         if (
-          !is.null(v) && !(class(v) %in% c("logical", "numeric", "integer")) &&
+          !is.null(v) && !inherits(v, c("logical", "numeric", "integer")) &&
             !(v %in% c(variables, grDevices::colors(), ggplot2_shapes()))
         ) {
           stop(v, " is not a variable in the sample metadata")
@@ -222,7 +222,7 @@ ord_plot <-
 
     # set colour variables to factors, if they're not null or numeric-like
     if (!is.null(aestheticArgs$colour)) {
-      if (class(meta[[aestheticArgs$colour]]) %in% c("numeric", "difftime")) {
+      if (inherits(meta[[aestheticArgs$colour]], c("numeric", "difftime"))) {
         meta[[aestheticArgs$colour]] <- as.numeric(meta[[aestheticArgs$colour]])
       } else {
         meta[[aestheticArgs$colour]] <- as.factor(meta[[aestheticArgs$colour]])
