@@ -93,6 +93,13 @@
 #'   # Style points interactively!
 #'   # (setting colour/shape/etc as arguments doesn't work)
 #'
+#'   # dietswap is actually a longitudinal dataset, with multiple samples per
+#'   # subject. If we arrange by timepoint first (!!!), we can use the "paths"
+#'   # additional plot layer from the ord_explore "Add:" menu to track
+#'   # individual subjects over time.
+#'   dietswap %>% ps_arrange(timepoint) %>% tax_fix() %>% ord_explore()
+#'
+#'
 #'   # Another dataset, where "size" variable drives gradient on PC1
 #'   # Try setting size and/or alpha to correspond to "size"!
 #'   # Then edit the ordination to use "size" as a condition, see what happens
@@ -283,7 +290,8 @@ ord_explore <- function(data,
                   "nothing",
                   "convex hulls (coloured)" = "chulls",
                   "ellipses (coloured)" = "ellipses",
-                  "taxa (PCA/RDA/CCA)" = "taxa"
+                  "taxa (PCA/RDA/CCA)" = "taxa",
+                  "paths (for sorted data!)" = "paths"
                 )
               )
             ),
@@ -294,6 +302,23 @@ ord_explore <- function(data,
                 shiny::numericInput(
                   inputId = "nLabels", label = NULL, value = 3,
                   min = 1, max = 25, step = 1
+                )
+              )
+            ),
+            shiny::conditionalPanel(
+              condition = "input.add == 'paths'",
+              shiny::splitLayout(
+                cellWidths = c("40%", "55%"), shiny::helpText("Group ID:"),
+                shiny::selectizeInput(
+                  inputId = "pathGroupID", label = NULL,
+                  choices = init$vars$all, selected = NULL
+                )
+              ),
+              shiny::splitLayout(
+                cellWidths = c("40%", "55%"), shiny::helpText("Selected:"),
+                shiny::selectizeInput(
+                  inputId = "pathGroupsChosen", label = NULL,
+                  choices = character(0), selected = NULL, multiple = TRUE
                 )
               )
             )
@@ -676,7 +701,7 @@ ord_explore <- function(data,
         ord = phylos$ord1, x = input$x1, y = input$y1, shape = input$ord_shape,
         size = size(), colour = input$ord_colour, alpha = alpha(),
         id = input$id_var, plot_taxa = plot_taxa(),
-        ellipses = ellipses(), chulls = chulls(), ...
+        ellipses = ellipses(), chulls = chulls(), paths = paths(), ...
       )
       # (blank) legend in separate plot for consistent sizing of main plot
       p1 <- legend_separate(p1, rel_widths = c(80, 20))
@@ -713,6 +738,28 @@ ord_explore <- function(data,
     chulls <- shiny::reactive({
       input$add == "chulls" & input$ord_colour %in% init$vars$all
     })
+    paths <- shiny::reactive({
+      if (input$add == "paths" && length(input$pathGroupsChosen) > 0){
+        list(
+          id_var = shiny::isolate(input$pathGroupID),
+          id_values = input$pathGroupsChosen,
+          colour = input$ord_colour,
+          all_vars = init$vars$all
+        )
+      } else {
+        NULL
+      }
+    })
+    # update path group selection choices depending on ID variable selected
+    shiny::observeEvent(
+      eventExpr = input$pathGroupID,
+      handlerExpr = {
+        shiny::updateSelectizeInput(
+          session = session, inputId = "pathGroupsChosen",
+          choices = unique(samdat_tbl(phylos$ord1)[[input$pathGroupID]])
+        )
+      }
+    )
 
     # barplot -----------------------------------------------------------------
 
@@ -939,7 +986,7 @@ ord_build <- function(data,
 
 # create ggplot from built ordination and aesthetic settings
 ord_ggplot <- function(ord, x, y, shape, size, colour, alpha, id,
-                       plot_taxa, ellipses, chulls, ...) {
+                       plot_taxa, ellipses, chulls, paths, ...) {
   if (identical(ord_get(ord), NULL)) {
     # placeholder instructions if data does not have ordination already
     p1 <- ggmessage(paste0(
@@ -964,6 +1011,21 @@ ord_ggplot <- function(ord, x, y, shape, size, colour, alpha, id,
     }
     # optionally add group convex hulls
     if (chulls) p1 <- p1 + stat_chull(ggplot2::aes(colour = .data[[colour]]))
+
+    # optionally add (time) paths to selected groups
+    if (!identical(paths, NULL)){
+      if (paths$colour %in% paths$all_vars){
+        p1 <- add_paths(
+          ggplot = p1, id_var = paths$id_var, id_values = paths$id_values,
+          mapping = ggplot2::aes(colour = .data[[paths$colour]])
+        )
+      } else {
+        p1 <- add_paths(
+          ggplot = p1, id_var = paths$id_var, id_values = paths$id_values,
+          colour = paths$colour
+        )
+      }
+    }
   }
   return(p1)
 }

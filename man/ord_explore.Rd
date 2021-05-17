@@ -112,6 +112,13 @@ if (interactive()) {
   # Style points interactively!
   # (setting colour/shape/etc as arguments doesn't work)
 
+  # dietswap is actually a longitudinal dataset, with multiple samples per
+  # subject. If we arrange by timepoint first (!!!), we can use the "paths"
+  # additional plot layer from the ord_explore "Add:" menu to track
+  # individual subjects over time.
+  dietswap \%>\% ps_arrange(timepoint) \%>\% tax_fix() \%>\% ord_explore()
+
+
   # Another dataset, where "size" variable drives gradient on PC1
   # Try setting size and/or alpha to correspond to "size"!
   # Then edit the ordination to use "size" as a condition, see what happens
