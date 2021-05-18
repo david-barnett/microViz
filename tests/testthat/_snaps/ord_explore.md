@@ -524,7 +524,7 @@
     Code
       cat(ord_code_dist("none"))
 
-# ord_code_end helper works
+# ord_code_stat and paths helpers work
 
     Code
       cat(ord_code_stat(ellipses = TRUE, chulls = FALSE, colour = "aVar"))
@@ -539,6 +539,42 @@
     Code
       cat(ord_code_stat(ellipses = FALSE, chulls = FALSE, colour = "aVar"))
     Output
+       )
+
+---
+
+    Code
+      cat(ord_code_stat(ellipses = FALSE, chulls = TRUE, colour = "aVar"))
+    Output
+       ) +
+       stat_chull(
+        ggplot2::aes(colour = aVar)
+       )
+
+---
+
+    Code
+      cat(ord_code_paths(paths = list(colour = "aVar", id_var = "bVar", id_values = letters[
+        1:4], all_vars = "aVar")))
+    Output
+       ) %>%
+       add_paths(
+        id_var = "bVar", 
+        id_values = c("a", "b", "c", "d"),
+        mapping = ggplot2::aes(colour = aVar)
+       )
+
+---
+
+    Code
+      cat(ord_code_paths(paths = list(colour = "aVar", id_var = "bVar", id_values = letters[
+        1:4], all_vars = c("otherVar", "anotherVar"))))
+    Output
+       ) %>%
+       add_paths(
+        id_var = "bVar", 
+        id_values = c("a", "b", "c", "d"),
+        colour = "aVar"
        )
 
 # ord_build works

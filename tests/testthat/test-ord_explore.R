@@ -89,7 +89,7 @@ test_that("ord_code_dist helper works", {
   expect_snapshot(cat(ord_code_dist("none")))
 })
 
-test_that("ord_code_end helper works", {
+test_that("ord_code_stat and paths helpers work", {
   local_edition(3)
   expect_snapshot(
     cat(ord_code_stat(ellipses = TRUE, chulls = FALSE, colour = "aVar"))
@@ -97,6 +97,21 @@ test_that("ord_code_end helper works", {
   expect_snapshot(
     cat(ord_code_stat(ellipses = FALSE, chulls = FALSE, colour = "aVar"))
   )
+  expect_snapshot(
+    cat(ord_code_stat(ellipses = FALSE, chulls = TRUE, colour = "aVar"))
+  )
+  expect_snapshot(cat(
+    ord_code_paths(paths = list(
+      colour = "aVar", id_var = "bVar", id_values = letters[1:4],
+      all_vars = "aVar"
+    ))
+  ))
+  expect_snapshot(cat(
+    ord_code_paths(paths = list(
+      colour = "aVar", id_var = "bVar", id_values = letters[1:4],
+      all_vars = c("otherVar", "anotherVar")
+    ))
+  ))
 })
 
 # ord_build ------------------------------------------------------------------
@@ -122,7 +137,7 @@ test_that("ord_explore_palet_fun works", {
 })
 
 # ord_explore ----------------------------------------------------------------
-test_that("ord_explore() starts", {
+test_that("ord_explore() works", {
   testthat::skip_on_cran()
   testthat::skip_on_bioc()
   testthat::skip_on_os("windows")

@@ -64,6 +64,11 @@ If you get an interactive error like the one below:
 
 Limitation: When a selection grouping variable is NA for some samples,
 that grouping variable cannot be used to select those samples
+
+On some web browsers, e.g. firefox, the numeric inputs' buttons are sometimes
+hard to click.
+As a workaround, you can click the box and type a number or use the arrow keys.
+This problem occurs in all Shiny apps, not just microViz.
 }
 \examples{
 # example code only runs in interactive R session

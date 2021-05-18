@@ -30,6 +30,10 @@
 #' Limitation: When a selection grouping variable is NA for some samples,
 #' that grouping variable cannot be used to select those samples
 #'
+#' On some web browsers, e.g. firefox, the numeric inputs' buttons are sometimes
+#' hard to click.
+#' As a workaround, you can click the box and type a number or use the arrow keys.
+#' This problem occurs in all Shiny apps, not just microViz.
 #'
 #' @param data ps_extra list output of ord_calc, or phyloseq
 #' @param sample_id name of sample ID variable to use as default for selecting samples
@@ -1037,7 +1041,7 @@ ord_ggplot <- function(ord, x, y, shape, size, colour, alpha, id,
 # create girafe interactive plot from ggplot ord_plot
 ord_girafe <- function(gg, width, height) {
   ggiraph::girafe(
-    ggobj = gg, width_svg = width, height_svg = height,
+    ggobj = gg, width_svg = width, height_svg = height, canvas_id = "svg_ord1",
     options = list(
       ggiraph::opts_toolbar(saveaspng = FALSE),
       ggiraph::opts_hover(
@@ -1252,6 +1256,7 @@ ord_code_paths <- function(paths) {
   end_lines <- paste(
     sep = "\n", " ) %>%", " add_paths(", varArg, valsArg, colour, " )"
   )
+  return(end_lines)
 }
 
 ## barplot helpers ------------------------------------------------------------
@@ -1334,7 +1339,7 @@ ggBarplot <- function(selected, ps, facet_by, n_taxa, tax_level, tax_order,
 #' @noRd
 girafeBarplot <- function(gg, width, height) {
   ggiraph::girafe(
-    ggobj = gg, width_svg = width, height_svg = 5,
+    ggobj = gg, width_svg = width, height_svg = 5, canvas_id = "svg_barplot",
     options = list(
       # ggiraph::opts_sizing(rescale = FALSE),
       ggiraph::opts_toolbar(saveaspng = FALSE),
