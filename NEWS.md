@@ -1,6 +1,10 @@
 # microViz (development version)
 
+## Features
 - `stat_chulls` added, for drawing convex hulls on ord_plot and ord_explore ordinations
+- `add_paths` added, for drawing geom_paths connecting a subset of samples (over time) on an ordination plot
+
+## Fixes
 - `phyloseq_validate` no longer checks "unique" tax_table rank column for NAs or nchar<4 
 (avoiding warnings in ord_explore caused by short taxa_names)
 
