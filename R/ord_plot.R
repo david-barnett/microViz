@@ -194,11 +194,9 @@ ord_plot <-
     # get ellipses optional arguments (aesthetics for geom_point)
     ellipses <- list(...)
     # properly delete any ellipses arguments set to NULL
-    if (length(ellipses) > 0) {
-      ellipses[sapply(ellipses, is.null)] <- NULL
-    }
+    if (length(ellipses) > 0) ellipses[sapply(ellipses, is.null)] <- NULL
 
-    # check there are still ellipses args left after removing nulls
+    # check there are STILL ellipses args left after removing nulls
     if (length(ellipses) > 0) {
       # check aesthetics colour, shape, size and alpha are all in dataset (or numeric-esque)
       variables <- phyloseq::sample_variables(ps)

@@ -116,7 +116,10 @@ if (interactive()) {
   # subject. If we arrange by timepoint first (!!!), we can use the "paths"
   # additional plot layer from the ord_explore "Add:" menu to track
   # individual subjects over time.
-  dietswap \%>\% ps_arrange(timepoint) \%>\% tax_fix() \%>\% ord_explore()
+  dietswap \%>\%
+    ps_arrange(timepoint) \%>\%
+    tax_fix() \%>\%
+    ord_explore()
 
 
   # Another dataset, where "size" variable drives gradient on PC1

@@ -74,7 +74,8 @@ test_that("ord_code helper works", {
             rank = "Genus", trans = "identity", dist = "none",
             ord = "RDA", const = c, conds = NULL, x = 1, y = 2,
             colour = "v", fill = "v", shape = "var",
-            alpha = a, size = 1, plot_taxa = p, ellipses = FALSE
+            alpha = a, size = 1, plot_taxa = p,
+            ellipses = FALSE, chulls = FALSE, paths = NULL
           )
         })
       }
@@ -90,8 +91,12 @@ test_that("ord_code_dist helper works", {
 
 test_that("ord_code_end helper works", {
   local_edition(3)
-  expect_snapshot(cat(ord_code_end(ellipses = TRUE, colour = "aVar")))
-  expect_snapshot(cat(ord_code_end(ellipses = FALSE, colour = "aVar")))
+  expect_snapshot(
+    cat(ord_code_stat(ellipses = TRUE, chulls = FALSE, colour = "aVar"))
+  )
+  expect_snapshot(
+    cat(ord_code_stat(ellipses = FALSE, chulls = FALSE, colour = "aVar"))
+  )
 })
 
 # ord_build ------------------------------------------------------------------

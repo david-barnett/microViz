@@ -97,7 +97,10 @@
 #'   # subject. If we arrange by timepoint first (!!!), we can use the "paths"
 #'   # additional plot layer from the ord_explore "Add:" menu to track
 #'   # individual subjects over time.
-#'   dietswap %>% ps_arrange(timepoint) %>% tax_fix() %>% ord_explore()
+#'   dietswap %>%
+#'     ps_arrange(timepoint) %>%
+#'     tax_fix() %>%
+#'     ord_explore()
 #'
 #'
 #'   # Another dataset, where "size" variable drives gradient on PC1
@@ -444,7 +447,8 @@ ord_explore <- function(data,
             x = input$x1, y = input$y1, colour = input$ord_colour,
             fill = input$ord_colour, # TODO make fill configurable
             shape = input$ord_shape, alpha = alpha(), size = size(),
-            plot_taxa = plot_taxa(), ellipses = ellipses()
+            plot_taxa = plot_taxa(), ellipses = ellipses(),
+            chulls = chulls(), paths = paths()
           )
         }),
         shiny::hr(),
@@ -739,7 +743,7 @@ ord_explore <- function(data,
       input$add == "chulls" & input$ord_colour %in% init$vars$all
     })
     paths <- shiny::reactive({
-      if (input$add == "paths" && length(input$pathGroupsChosen) > 0){
+      if (input$add == "paths" && length(input$pathGroupsChosen) > 0) {
         list(
           id_var = shiny::isolate(input$pathGroupID),
           id_values = input$pathGroupsChosen,
@@ -1013,8 +1017,8 @@ ord_ggplot <- function(ord, x, y, shape, size, colour, alpha, id,
     if (chulls) p1 <- p1 + stat_chull(ggplot2::aes(colour = .data[[colour]]))
 
     # optionally add (time) paths to selected groups
-    if (!identical(paths, NULL)){
-      if (paths$colour %in% paths$all_vars){
+    if (!identical(paths, NULL)) {
+      if (paths$colour %in% paths$all_vars) {
         p1 <- add_paths(
           ggplot = p1, id_var = paths$id_var, id_values = paths$id_values,
           mapping = ggplot2::aes(colour = .data[[paths$colour]])
@@ -1031,7 +1035,7 @@ ord_ggplot <- function(ord, x, y, shape, size, colour, alpha, id,
 }
 
 # create girafe interactive plot from ggplot ord_plot
-ord_girafe <- function(gg, width, height){
+ord_girafe <- function(gg, width, height) {
   ggiraph::girafe(
     ggobj = gg, width_svg = width, height_svg = height,
     options = list(
@@ -1157,7 +1161,8 @@ trans_choices <- function(type) {
 ### code modal helpers --------------------------------------------------------
 # generate code-styled text for reproducing ordination plot
 ord_code <- function(rank, trans, dist, ord, const, conds, x, y,
-                     colour, fill, shape, alpha, size, plot_taxa, ellipses) {
+                     colour, fill, shape, alpha, size,
+                     plot_taxa, ellipses, chulls, paths) {
   # prepare dist_calc line if distance needed
   dist_calc_line <- ord_code_dist(dist)
 
@@ -1181,8 +1186,15 @@ ord_code <- function(rank, trans, dist, ord, const, conds, x, y,
   if (!is.numeric(alpha)) alpha <- paste0('"', alpha, '"')
   if (!is.numeric(size)) size <- paste0('"', size, '"')
 
-  # prepare extra stat_ellipse lines for end of code if necessary
-  end_lines <- ord_code_end(ellipses = ellipses, colour = colour)
+  # prepare add_paths code for end if necessary
+  if (!identical(NULL, paths)) {
+    end_lines <- ord_code_paths(paths)
+  } else {
+    # prepare extra stat_ellipse/chull lines for end of code if necessary
+    end_lines <- ord_code_stat(
+      ellipses = ellipses, chulls = chulls, colour = colour
+    )
+  }
 
   # output code-style text
   cat(
@@ -1215,19 +1227,31 @@ ord_code_dist <- function(dist) {
 }
 
 # prepare stat_ellipse lines for ord_code output if necessary
-ord_code_end <- function(ellipses, colour) {
-  if (isTRUE(ellipses)) {
-    end_lines <- paste(
-      sep = "\n",
-      " ) +",
-      " ggplot2::stat_ellipse(",
-      paste0('  ggplot2::aes(colour = .data[["', colour, '"]])'),
-      " )"
-    )
+ord_code_stat <- function(ellipses, chulls, colour) {
+  if (ellipses || chulls) {
+    if (ellipses) stat <- " ggplot2::stat_ellipse("
+    if (chulls) stat <- " stat_chull("
+    colourAes <- paste0('  ggplot2::aes(colour = ', colour, ')')
+    end_lines <- paste(sep = "\n", " ) +", stat, colourAes, " )")
   } else {
     end_lines <- " )"
   }
   return(end_lines)
+}
+
+# prepare add_paths code for end of ord_code if necessary
+ord_code_paths <- function(paths) {
+  varArg <- paste0('  id_var = "', paths$id_var, '", ')
+  valsVec <- paste0('c("', paste(paths$id_values, collapse = '", "'), '")')
+  valsArg <- paste0("  id_values = ", valsVec, ",")
+  if (paths$colour %in% paths$all_vars) {
+    colour <- paste0('  mapping = ggplot2::aes(colour = ', paths$colour, ')')
+  } else {
+    colour <- paste0('  colour = "', paths$colour, '"')
+  }
+  end_lines <- paste(
+    sep = "\n", " ) %>%", " add_paths(", varArg, valsArg, colour, " )"
+  )
 }
 
 ## barplot helpers ------------------------------------------------------------
@@ -1383,4 +1407,3 @@ ggmessage <- function(message, size = 3) {
     ggplot2::theme_void()
   return(plot)
 }
-
