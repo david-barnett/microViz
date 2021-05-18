@@ -93,7 +93,7 @@ stop the app by clicking the red stop button in the R console
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.5.9009</span>
       </span>
     </div>
 
@@ -293,6 +293,16 @@ that grouping variable cannot be used to select those samples</p>
   <span class='co'># Try changing the point colour to bmi_group or similar</span>
   <span class='co'># Style points interactively!</span>
   <span class='co'># (setting colour/shape/etc as arguments doesn't work)</span>
+
+  <span class='co'># dietswap is actually a longitudinal dataset, with multiple samples per</span>
+  <span class='co'># subject. If we arrange by timepoint first (!!!), we can use the "paths"</span>
+  <span class='co'># additional plot layer from the ord_explore "Add:" menu to track</span>
+  <span class='co'># individual subjects over time.</span>
+  <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='ps_arrange.html'>ps_arrange</a></span><span class='op'>(</span><span class='va'>timepoint</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='tax_fix.html'>tax_fix</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>ord_explore</span><span class='op'>(</span><span class='op'>)</span>
+
 
   <span class='co'># Another dataset, where "size" variable drives gradient on PC1</span>
   <span class='co'># Try setting size and/or alpha to correspond to "size"!</span>
