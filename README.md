@@ -78,7 +78,7 @@ if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocMana
 BiocManager::install(c("phyloseq", "microbiome"))
 
 # To install the latest "released" version of this package
-devtools::install_github("david-barnett/microViz@0.7.5") # check 0.7.5 is the latest release
+devtools::install_github("david-barnett/microViz@0.7.6") # check 0.7.6 is the latest release
 
 # To install the very latest version:
 devtools::install_github("david-barnett/microViz")
@@ -265,8 +265,8 @@ aitchison_perm <- dist_permanova(
   variables = "bmi_group + female"
 )
 #> Dropping samples with missings: 2
-#> 2021-05-09 13:09:06 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2021-05-09 13:09:06 - Finished PERMANOVA
+#> 2021-05-20 08:57:15 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2021-05-20 08:57:16 - Finished PERMANOVA
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
 #>            Df   SumOfSqs         R2        F Pr(>F)
@@ -294,8 +294,8 @@ your permanova directly using the ord\_plot function with constraints.
 ``` r
 perm2 <- dist_permanova(data = aitchison_dists, variables = c("weight", "female"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2021-05-09 13:09:06 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2021-05-09 13:09:07 - Finished PERMANOVA
+#> 2021-05-20 08:57:16 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2021-05-20 08:57:16 - Finished PERMANOVA
 perm_get(perm2)
 #> Permutation test for adonis under reduced model
 #> Marginal effects of terms
@@ -398,7 +398,7 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] ggplot2_3.3.3   dplyr_1.0.6     phyloseq_1.34.0 microViz_0.7.5  devtools_2.4.0  usethis_2.0.1  
+#> [1] ggplot2_3.3.3   dplyr_1.0.6     phyloseq_1.34.0 microViz_0.7.6  devtools_2.4.0  usethis_2.0.1  
 #> [7] pkgdown_1.6.1  
 #> 
 #> loaded via a namespace (and not attached):
@@ -416,17 +416,17 @@ sessionInfo()
 #>  [45] generics_0.1.0       jsonlite_1.7.2       magrittr_2.0.1       biomformat_1.18.0   
 #>  [49] Matrix_1.3-2         Rcpp_1.0.6           munsell_0.5.0        S4Vectors_0.28.1    
 #>  [53] Rhdf5lib_1.12.1      fansi_0.4.2          ape_5.5              lifecycle_1.0.0     
-#>  [57] stringi_1.5.3        yaml_2.2.1           MASS_7.3-53          zlibbioc_1.36.0     
+#>  [57] stringi_1.6.2        yaml_2.2.1           MASS_7.3-53          zlibbioc_1.36.0     
 #>  [61] rhdf5_2.34.0         pkgbuild_1.2.0       Rtsne_0.15           plyr_1.8.6          
 #>  [65] grid_4.0.3           parallel_4.0.3       crayon_1.4.1         lattice_0.20-41     
 #>  [69] Biostrings_2.58.0    splines_4.0.3        multtest_2.46.0      circlize_0.4.12     
-#>  [73] hms_1.0.0            magick_2.7.1         ComplexHeatmap_2.6.2 knitr_1.32          
-#>  [77] ps_1.6.0             pillar_1.6.0         igraph_1.2.6         rjson_0.2.20        
+#>  [73] hms_1.1.0            magick_2.7.1         ComplexHeatmap_2.6.2 knitr_1.32          
+#>  [77] ps_1.6.0             pillar_1.6.1         igraph_1.2.6         rjson_0.2.20        
 #>  [81] reshape2_1.4.4       codetools_0.2-18     stats4_4.0.3         pkgload_1.2.1       
 #>  [85] glue_1.4.2           corncob_0.2.0        evaluate_0.14        data.table_1.14.0   
 #>  [89] remotes_2.3.0        png_0.1-7            vctrs_0.3.8          foreach_1.5.1       
 #>  [93] testthat_3.0.2       gtable_0.3.0         purrr_0.3.4          tidyr_1.1.3         
-#>  [97] clue_0.3-59          cachem_1.0.4         xfun_0.22            survival_3.2-7      
-#> [101] seriation_1.2-9      tibble_3.1.1         iterators_1.0.13     registry_0.5-1      
+#>  [97] clue_0.3-59          cachem_1.0.5         xfun_0.22            survival_3.2-7      
+#> [101] seriation_1.2-9      tibble_3.1.2         iterators_1.0.13     registry_0.5-1      
 #> [105] memoise_2.0.0        IRanges_2.24.1       cluster_2.1.0        ellipsis_0.3.2
 ```

@@ -1,4 +1,4 @@
-# microViz (development version)
+# microViz 0.7.6
 
 ## Features
 - `stat_chulls` added, for drawing convex hulls on ord_plot and ord_explore ordinations
