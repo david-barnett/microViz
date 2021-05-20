@@ -1235,7 +1235,7 @@ ord_code_stat <- function(ellipses, chulls, colour) {
   if (ellipses || chulls) {
     if (ellipses) stat <- " ggplot2::stat_ellipse("
     if (chulls) stat <- " stat_chull("
-    colourAes <- paste0('  ggplot2::aes(colour = ', colour, ')')
+    colourAes <- paste0("  ggplot2::aes(colour = ", colour, ")")
     end_lines <- paste(sep = "\n", " ) +", stat, colourAes, " )")
   } else {
     end_lines <- " )"
@@ -1249,7 +1249,7 @@ ord_code_paths <- function(paths) {
   valsVec <- paste0('c("', paste(paths$id_values, collapse = '", "'), '")')
   valsArg <- paste0("  id_values = ", valsVec, ",")
   if (paths$colour %in% paths$all_vars) {
-    colour <- paste0('  mapping = ggplot2::aes(colour = ', paths$colour, ')')
+    colour <- paste0("  mapping = ggplot2::aes(colour = ", paths$colour, ")")
   } else {
     colour <- paste0('  colour = "', paths$colour, '"')
   }
