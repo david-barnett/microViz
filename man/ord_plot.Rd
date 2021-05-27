@@ -2,7 +2,7 @@
 % Please edit documentation in R/ord_plot.R
 \name{ord_plot}
 \alias{ord_plot}
-\title{Customisable ggplot ordination (using ord_calc result)}
+\title{Customisable ggplot2 ordination plot}
 \usage{
 ord_plot(
   data,
@@ -30,9 +30,9 @@ ord_plot(
 )
 }
 \arguments{
-\item{data}{list object output from ord_calc}
+\item{data}{ps_extra list object, output from ord_calc}
 
-\item{axes}{which axes to plot: numerical vector of length 2}
+\item{axes}{which axes to plot: numerical vector of length 2, e.g. 1:2 or c(3,5)}
 
 \item{plot_taxa}{if ord_calc method was "PCA/RDA" draw the taxa loading vectors (see details)}
 
@@ -74,7 +74,7 @@ Either "species" or "site" scores are scaled by eigenvalues, and the other set o
 
 \item{expand}{expand plot limits a little bit further than data range?}
 
-\item{interactive}{creates plot suitable for use with ggiraph}
+\item{interactive}{creates plot suitable for use with ggiraph (used in ord_explore)}
 
 \item{...}{pass aesthetics arguments for sample points,
 drawn with geom_point using aes_string}
@@ -86,7 +86,7 @@ ggplot
 Draw ordination plot. Utilises results of \code{\link{ord_calc}}.
 \itemize{
 \item For an extensive tutorial see the ordination vignette: \url{https://david-barnett.github.io/microViz/articles/ordination.html}
-\item For interpretation see the the relevant pages on PCA, PCoA, RDA, or CCA on the "gusta me" website: \url{https://sites.google.com/site/mb3gustame/}
+\item For interpretation see the the relevant pages on PCA, PCoA, RDA, or CCA on the GUide to STatistical Analysis in Microbial Ecology (GUSTA ME) website: \url{https://sites.google.com/site/mb3gustame/}
 }
 }
 \details{
@@ -211,4 +211,9 @@ unconstrained_aitchison_pca \%>\%
   theme(line = element_blank(), axis.text = element_blank()) +
   stat_density2d_filled(show.legend = FALSE) +
   geom_point(size = 1, shape = 21, colour = "black", fill = "white")
+}
+\seealso{
+\code{\link{ord_explore}} for interactive ordination plots
+
+\code{\link{ord_calc}} for calculating an ordination to plot with ord_plot
 }

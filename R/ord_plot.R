@@ -1,8 +1,8 @@
-#' Customisable ggplot ordination (using ord_calc result)
+#' Customisable ggplot2 ordination plot
 #'
 #' Draw ordination plot. Utilises results of \code{\link{ord_calc}}.
 #' - For an extensive tutorial see the ordination vignette: \url{https://david-barnett.github.io/microViz/articles/ordination.html}
-#' - For interpretation see the the relevant pages on PCA, PCoA, RDA, or CCA on the "gusta me" website: \url{https://sites.google.com/site/mb3gustame/}
+#' - For interpretation see the the relevant pages on PCA, PCoA, RDA, or CCA on the GUide to STatistical Analysis in Microbial Ecology (GUSTA ME) website: \url{https://sites.google.com/site/mb3gustame/}
 #'
 #' How to specify the plot_taxa argument (when using PCA, CCA or RDA):
 #' - FALSE --> plot no taxa vectors or labels
@@ -10,8 +10,8 @@
 #' - single numeric value e.g. 0.75 --> plot labels for taxa with line length > 0.75
 #' - character vector e.g. c('g__Bacteroides', 'g__Veillonella') --> plot labels for the exactly named taxa
 #'
-#' @param data list object output from ord_calc
-#' @param axes which axes to plot: numerical vector of length 2
+#' @param data ps_extra list object, output from ord_calc
+#' @param axes which axes to plot: numerical vector of length 2, e.g. 1:2 or c(3,5)
 #' @param plot_taxa if ord_calc method was "PCA/RDA" draw the taxa loading vectors (see details)
 #' @param tax_vec_length NA = auto-scaling for line segment drawn for any taxa.
 #' Alternatively provide a numeric length multiplier yourself.
@@ -35,13 +35,15 @@
 #' @param center expand plot limits to center around origin point (0,0)
 #' @param clip clipping of labels that extend outside plot limits?
 #' @param expand expand plot limits a little bit further than data range?
-#' @param interactive creates plot suitable for use with ggiraph
+#' @param interactive creates plot suitable for use with ggiraph (used in ord_explore)
 #' @param ...
 #' pass aesthetics arguments for sample points,
 #' drawn with geom_point using aes_string
 #'
 #' @return ggplot
 #' @export
+#' @seealso \code{\link{ord_explore}} for interactive ordination plots
+#' @seealso \code{\link{ord_calc}} for calculating an ordination to plot with ord_plot
 #'
 #' @examples
 #' library(ggplot2)

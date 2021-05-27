@@ -18,11 +18,13 @@ knitr::opts_chunk$set(
 
 This article will show you how to create and customise ordination plots, like [PCA](#pca) and [RDA](#rda), with microViz.
 
+For an even quicker start with ordinating your phyloseq data, check out the `ord_explore` [Shiny app](https://david-barnett.github.io/microViz/articles/articles/Interactive-Ordination.html), which allows you to create ordination plots with a point and click interface, and generates `ord_plot` code for you to copy. Return to this article to understand more about creating and customising your ordination plotting script.
+
 ```{r setup}
 library(phyloseq)
 library(ggplot2)
 library(microViz)
-knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
+knitr::opts_chunk$set(fig.width = 7, fig.height = 6)
 ```
 
 We will use example data from stool samples from an inflammatory bowel disease (IBD) study, borrowed from the great `corncob` package. See the article about [working with phyloseq objects](https://david-barnett.github.io/microViz/articles/articles/phyloseq.html) if you want to get started with your own data, or just to learn more about manipulating phyloseq objects with microViz.
@@ -32,18 +34,18 @@ ibd <- corncob::ibd_phylo
 ibd
 ```
 
-First we check the phyloseq object and fix any uninformative tax_table entries (see the article on [fixing your tax_table](https://david-barnett.github.io/microViz/articles/articles/tax-fixing.html) for more info).
+First we fix any uninformative tax_table entries and check the phyloseq object (see the article on [fixing your tax_table](https://david-barnett.github.io/microViz/articles/articles/tax-fixing.html) for more info).
 
 ```{r fix it}
-ibd <- phyloseq_validate(ibd, remove_undetected = TRUE)
 ibd <- tax_fix(ibd) # try tax_fix_interactive if you have problems with your own data
+ibd <- phyloseq_validate(ibd, remove_undetected = TRUE)
 ```
 
 ## Motivation
 
 Ordination plots are a great way to see any clustering or other patterns of microbiota (dis)similarity in (many) samples. Ordinations like PCA or PCoA show the largest patterns of variation in your data, and constrained ordination techniques like RDA or CCA can show you microbial variation that could be explained by other variables in your sample_data (but interpret constrained ordinations with care, and ideally test for the statistical significance of any hypothesised associations using a method like PERMANOVA, see `dist_permanova()`).
 
-Check out the [Gusta Me website](https://sites.google.com/site/mb3gustame/) for a gentle theoretical introduction to [PCA](https://sites.google.com/site/mb3gustame/indirect-gradient-analysis/pca), [PCoA](https://sites.google.com/site/mb3gustame/dissimilarity-based-methods/principal-coordinates-analysis), [RDA](https://sites.google.com/site/mb3gustame/constrained-analyses/rda), [CCA](https://sites.google.com/site/mb3gustame/constrained-analyses/cca) and more.
+Check out the GUide to STatistical Analysis in Microbial Ecology (GUSTA ME)[website](https://sites.google.com/site/mb3gustame/) for a gentle theoretical introduction to [PCA](https://sites.google.com/site/mb3gustame/indirect-gradient-analysis/pca), [PCoA](https://sites.google.com/site/mb3gustame/dissimilarity-based-methods/principal-coordinates-analysis), [RDA](https://sites.google.com/site/mb3gustame/constrained-analyses/rda), [CCA](https://sites.google.com/site/mb3gustame/constrained-analyses/cca) and more.
 
 Ordination plots can also be paired with barplots for greater insight into microbial compositions, e.g. see `ord_plot_iris()` and the `ord_explore()` interactive [Shiny app](https://david-barnett.github.io/microViz/articles/articles/Interactive-Ordination.html).
 
@@ -74,7 +76,7 @@ ibd %>%
 
 Notice that the objects created above are of class "ps_extra". This is just a simple S3 list object that holds your phyloseq object and additional stuff created from this phyloseq object, such as a distance matrix, as well as info on any transformation and aggregation applied to your taxa. microViz uses this to automatically create plot captions, to help you and your collaborators remember how you made each plot! You can access the phyloseq object, distance matrix and other parts of a ps_extra object with `ps_get()`, `dist_get()`, and friends.
 
-## PCA
+## PCA {#pca}
 
 Principle ***Components*** Analysis is an unconstrained method that does not use a distance matrix. PCA directly uses the (transformed) microbial variables, so you do not need `dist_calc()`. `ord_calc` performs the ordination (adding it to the ps_extra object) and `ord_plot()` creates the ggplot2 scatterplot (which you can customise like other ggplot objects).
 
@@ -85,7 +87,7 @@ ibd %>%
   tax_transform("clr", rank = "Genus") %>% 
   # when no distance matrix or constraints are supplied, PCA is the default/auto ordination method
   ord_calc() %>% 
-  ord_plot(color = "ibd", shape = "DiseaseState") +
+  ord_plot(color = "ibd", shape = "DiseaseState", size = 2) +
   scale_colour_brewer(palette = "Dark2")
 ```
 
@@ -98,7 +100,7 @@ ibd %>%
   tax_transform("clr", rank = "Genus") %>% 
   # when no distance matrix or constraints are supplied, PCA is the default/auto ordination method
   ord_calc(method = "PCA") %>% 
-  ord_plot(color = "ibd", shape = "DiseaseState", plot_taxa = 1:5) +
+  ord_plot(color = "ibd", shape = "DiseaseState", plot_taxa = 1:5, size = 2) +
   scale_colour_brewer(palette = "Dark2")
 ```
 
@@ -111,6 +113,8 @@ ibd %>%
   ord_calc() %>% 
   ord_plot_iris(tax_level = "Genus", ord_plot = "above", anno_colour = "ibd")
 ```
+
+Here we created the ordination plot as a quick accompaniment to the circular barchart, but it is more flexible to create and customise the ordination plot and iris plot separately, and then pair them afterwards with patchwork. See the `ord_plot_iris` [docs](https://david-barnett.github.io/microViz/reference/ord_plot_iris.html) for examples.
 
 ## PCoA {#pcoa}
 
@@ -125,7 +129,7 @@ ibd %>%
   tax_transform("identity", rank = "Genus") %>% # don't transform!
   dist_calc("aitchison") %>% 
   ord_calc("PCoA") %>% 
-  ord_plot(color = "ibd", shape = "DiseaseState") +
+  ord_plot(color = "ibd", shape = "DiseaseState", size = 2) +
   scale_colour_brewer(palette = "Dark2")
 ```
 
@@ -140,7 +144,7 @@ ibd %>%
   tax_transform("identity", rank = "Genus") %>% # don't transform!
   dist_calc("bray") %>% 
   ord_calc("PCoA") %>% 
-  ord_plot(color = "ibd", shape = "DiseaseState") +
+  ord_plot(color = "ibd", shape = "DiseaseState", size = 2) +
   scale_colour_brewer(palette = "Dark2")
 ```
 
@@ -151,7 +155,7 @@ ibd %>%
   tax_transform("identity", rank = "Genus") %>% 
   dist_calc(dist = "jaccard", binary = TRUE) %>% 
   ord_calc("PCoA") %>% 
-  ord_plot(color = "ibd", shape = "DiseaseState") +
+  ord_plot(color = "ibd", shape = "DiseaseState", size = 2) +
   scale_colour_brewer(palette = "Dark2")
 ```
 
@@ -185,35 +189,99 @@ ibd %>%
   phyloseq::plot_scree() + theme(axis.text.x = element_text(size = 6))
 ```
 
-Let us view the 1st and 3rd axes, and add IBD/non-IBD group ellipses.
+Let us view the 1st and 3rd axes.
 
 ```{r bray 3}
 ibd %>% 
   tax_transform("identity", rank = "Genus") %>% # don't transform!
   dist_calc("bray") %>% 
   ord_calc("PCoA") %>% 
-  ord_plot(axes = c(1, 3), color = "ibd", shape = "DiseaseState") +
-  scale_colour_brewer(palette = "Dark2") + 
-  stat_ellipse(aes(color = ibd, linetype = ibd))
+  ord_plot(axes = c(1, 3), color = "ibd", shape = "DiseaseState", size = 2) +
+  scale_colour_brewer(palette = "Dark2") 
 ```
 
-## RDA
+## RDA {#rda}
 
-Redundancy analysis is a constrained ordination method.
+Redundancy analysis is a constrained ordination method. It displays the microbial variation that can also be explained by selected constraint variables.
 
-Tutorial coming soon, for now see `ord_plot()` for examples.
+*Behind the scenes, a linear regression model is created for each microbial abundance variable (using the constraints as the explanatory variables) and a PCA is performed using the fitted values of the microbial abundances.*
+
+Starting from the same phyloseq object `ibd` the code below first creates a couple of binary (0/1) numeric variables to use a constraint variables. This is easy enough with ps_mutate.
+
+Then we aggregate and transform our taxa, and like PCA we skip the dist_calc step.
+
+```{r rda, fig.height=7, fig.width=7}
+ibd %>%
+  ps_mutate(
+    IBD = as.numeric(ibd == "ibd"),
+    Female = as.numeric(gender == "female"),
+    Abx. = as.numeric(abx == "abx")
+  ) %>%
+  tax_transform("clr", rank = "Genus") %>%
+  ord_calc(
+    constraints = c("IBD", "Female", "Abx."),
+    # method = "RDA", # Note: you can specify RDA explicitly, and it is good practice to do so, but microViz can guess automatically that you want an RDA here (helpful if you don't remember the name?)
+    scale_cc = FALSE # doesn't make a difference
+  ) %>%
+  ord_plot(
+    colour = "DiseaseState", size = 2, alpha = 0.5, shape = "active",
+    plot_taxa = 1:8
+  )
+```
+
+### Customising your ordination plot
+
+The plot above looks okay by default, but it is fairly easy to tweak ord_plot further to get the style just how you want it. The code below has comments to explain which part makes which changes to the plot.
+
+```{r rda custom, fig.width=7, fig.height=8}
+# first we make a function that replaces any unwanted "_" in our taxa labels with spaces
+library(stringr) 
+renamer <- function(x) str_replace(x, pattern = "_", replacement = " ")
+
+ibd %>%
+  ps_mutate(
+    IBD = as.numeric(ibd == "ibd"),
+    Female = as.numeric(gender == "female"),
+    Abx. = as.numeric(abx == "abx")
+  ) %>%
+  tax_transform("clr", rank = "Genus") %>%
+  ord_calc(
+    constraints = c("IBD", "Female", "Abx."),
+    method = "RDA",
+    scale_cc = FALSE # doesn't make a difference
+  ) %>%
+  ord_plot(
+    colour = "DiseaseState", size = 2, alpha = 0.5, shape = "active",
+    auto_caption = NA, # remove the helpful automatic caption
+    plot_taxa = 1:8, taxon_renamer = renamer, # renamer is the function we made earlier
+    tax_lab_length = 3.4, # this multiplier moves the labels, independently of the arrowheads
+    tax_lab_style = list(size = 1.8, alpha = 0.5), # give a list of aesthetics to tweak the taxa labels' default style
+    constraint_vec_length = 3, # this adjusts the length of the constraint arrows, and the labels track these lengths by default
+    constraint_vec_style = list(size = 1.5, alpha = 0.5), # this styles the constraint arrows
+    constraint_lab_style = list(size = 3) # this styles the constraint labels
+  ) +
+  # the functions below are from ggplot2:
+  # You can pick a different colour scale, such as a color_brewer palette
+  scale_colour_brewer(palette = "Set1") +
+  # You can set any scale's values manually, such as the shapes used
+  scale_shape_manual(values = c(
+    active = "circle", mild = "circle cross",
+    inactive = "circle open", control = "square open"
+  )) +
+  # this is how you add a title and subtitle
+  ggtitle(
+    label = "[Insert your exciting interpretations here?]",
+    subtitle = "RDA with clr-transformed genera: constraints in red, taxa in black"
+  ) +
+  # and this is how you make your own caption
+  labs(caption = "91 samples, 178 genera. Type 2 scaling.") +
+  # this is one way to set the aspect ratio of the plot
+  coord_fixed(ratio = 1, clip = "off")
+```
 
 ### Partial ordinations
 
 Tutorial coming soon, for now see `ord_plot()` for examples.
-
-## Customising your ordination plot
-
-It is possible to modify the aesthetic style of the taxon loading and constraint vectors of your ordination plots. e.g. making them smaller or more transparent.
-
-It is also possible to rename the taxa labels using a function passed to the `taxon_renamer` argument of `ord_plot()`.
-
-Tutorial coming soon!
 
 ## Session info
 
