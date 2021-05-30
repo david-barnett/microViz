@@ -371,10 +371,10 @@ ord_explore <- function(data,
               )
             ),
             shiny::splitLayout(
-              cellWidths = c("45%", "50%"), shiny::helpText("N Colors:"),
-              shiny::sliderInput(
+              cellWidths = c("55%", "40%"), shiny::helpText("Taxa Colours:"),
+              shiny::numericInput(
                 inputId = "ntaxa", label = NULL, min = 1, max = 39,
-                value = 9, step = 1, round = TRUE, ticks = FALSE
+                value = 9, step = 1
               )
             ),
             shiny::splitLayout(
@@ -387,12 +387,13 @@ ord_explore <- function(data,
               )
             ),
             shiny::conditionalPanel(
-              condition = "input.mergeOther == false", # ? false
+              condition = "input.mergeOther == false",
               shiny::splitLayout(
-                cellWidths = c("45%", "50%"), shiny::helpText("N Distinct:"),
-                shiny::sliderInput(
+                cellWidths = c("55%", "40%"),
+                shiny::helpText("Taxa Distinct:"),
+                shiny::numericInput(
                   inputId = "taxmax", label = NULL, min = 1, max = 500,
-                  value = 100, step = 1, round = TRUE, ticks = FALSE
+                  value = 50, step = 1
                 )
               )
             )
@@ -503,12 +504,12 @@ ord_explore <- function(data,
           shiny::selectizeInput(
             inputId = "const", label = "Constraints", multiple = TRUE,
             choices = ordChoices$const, selected = ord1chosen$const,
-            options = list(placeholder = "numeric vars?")
+            options = list(placeholder = "Select numeric variable(s):")
           ),
           shiny::selectizeInput(
             inputId = "conds", label = "Conditions", multiple = TRUE,
             choices = ordChoices$conds, selected = ord1chosen$conds,
-            options = list(placeholder = "numeric vars?")
+            options = list(placeholder = "Select numeric variable(s):")
           )
         ),
         shiny::selectizeInput(
