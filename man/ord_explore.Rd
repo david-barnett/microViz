@@ -59,7 +59,7 @@ Once the app is running (in your browser), you can:
 }
 \item Style the taxonomic compositions barplot
 \itemize{
-\item The samples are ordered using the distance method
+\item The samples are ordered using the seriate_method argument and the same transformation and distance as used in the ordination plot
 \item The app may lag if you select 100s of samples and ungroup the "other" category
 \item To avoid this lag: either reduce the number of taxa or samples, or deselect "Interactive" barplot
 }

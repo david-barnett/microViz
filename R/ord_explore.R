@@ -21,7 +21,7 @@
 #'    - By default samples can be selected individually
 #'    - Set the "Select" option to another variable to select by level of that variable
 #' 4. Style the taxonomic compositions barplot
-#'    - The samples are ordered using the distance method
+#'    - The samples are ordered using the seriate_method argument and the same transformation and distance as used in the ordination plot
 #'    - The app may lag if you select 100s of samples and ungroup the "other" category
 #'    - To avoid this lag: either reduce the number of taxa or samples, or deselect "Interactive" barplot
 #' 5. Stop the app by clicking the red stop button in the R console
