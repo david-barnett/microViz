@@ -140,7 +140,7 @@
 #' }
 ord_explore <- function(data,
                         sample_id = NULL, # id var name for data_id ggiraph
-                        seriate_method = "Spectral", # ordering samples
+                        seriate_method = "OLO_ward", # ordering samples
                         app_options = list(launch.browser = TRUE), # shinyApp()
                         plot_widths = c(7, 9),
                         ...) {

@@ -7,7 +7,7 @@
 ord_explore(
   data,
   sample_id = NULL,
-  seriate_method = "Spectral",
+  seriate_method = "OLO_ward",
   app_options = list(launch.browser = TRUE),
   plot_widths = c(7, 9),
   ...
