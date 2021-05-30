@@ -858,14 +858,7 @@ ord_explore <- function(data,
             session = session, inputId = "tabs", selected = "girafe"
           )
           if (isFALSE(input$mergeOther)) {
-            shiny::updateSliderInput(
-              session = session, inputId = "taxmax", value = 40
-            )
-            # warn about lag with too many distinct taxa (and set maxtax = 50)
-            shiny::showNotification(
-              "ALERT: Max Distinct taxa reduced to 40 to avoid freezing!",
-              duration = 10, type = "warning", session = session
-            )
+            # warn about lag with too many distinct taxa
             shiny::showNotification(
               "Interactive bars lag if too many taxa and/or samples shown!",
               duration = 20, type = "warning", session = session
@@ -959,7 +952,7 @@ ord_explore_init <- function(data) {
 
   is_num <- function(x) !is.character(x) & !is.factor(x)
   is_cat <- function(x) !is.numeric(x)
-  isShapeSafe <- function(x){
+  isShapeSafe <- function(x) {
     u <- unique(x)
     length(u[!is.na(u)]) < 6
   }
