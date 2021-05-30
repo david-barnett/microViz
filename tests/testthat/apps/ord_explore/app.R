@@ -11,4 +11,4 @@ ord1 <- ps %>%
   dist_calc("bray") %>%
   ord_calc("PCoA")
 
-ord_explore(data = ord1)
+ord_explore(data = ord1, seriate_method = "OLO_ward")

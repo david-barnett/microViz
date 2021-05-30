@@ -223,13 +223,13 @@ ord_explore <- function(data,
                 selected = c(sample_id, "SAMPLE")[[1]] # 'SAMPLE' if id = NULL
               )
             ),
-            # shape
+            #### shape --------------------------------------------------------
             shiny::splitLayout(
               cellWidths = c("30%", "65%"), shiny::helpText("Shape:"),
               shiny::selectInput(
                 inputId = "ord_shape", label = NULL, selected = "circle",
                 choices = list(
-                  Variable = init$vars$all, Fixed = ggplot2_shapes()
+                  Variable = init$vars$shapeSafe, Fixed = ggplot2_shapes()
                 )
               )
             ),
@@ -959,10 +959,15 @@ ord_explore_init <- function(data) {
 
   is_num <- function(x) !is.character(x) & !is.factor(x)
   is_cat <- function(x) !is.numeric(x)
+  isShapeSafe <- function(x){
+    u <- unique(x)
+    length(u[!is.na(u)]) < 6
+  }
   vars <- list(
     all = phyloseq::sample_variables(ps),
     num = colnames(samdat[, sapply(X = samdat, FUN = is_num)]),
-    cat = colnames(samdat[, sapply(samdat, FUN = is_cat)])
+    cat = colnames(samdat[, sapply(samdat, FUN = is_cat)]),
+    shapeSafe = colnames(samdat[, sapply(samdat, FUN = isShapeSafe)])
   )
 
   out <- list(

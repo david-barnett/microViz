@@ -53,6 +53,10 @@
       [1] "subject"     "sex"         "nationality" "group"       "sample"     
       [6] "bmi_group"   "SAMPLE"     
       
+      $vars$shapeSafe
+      [1] "sex"                    "nationality"            "group"                 
+      [4] "timepoint.within.group" "bmi_group"             
+      
       
       $ranks
       [1] "Phylum" "Family" "Genus"  "unique"
@@ -124,6 +128,11 @@
       [1] "subject"     "sex"         "nationality" "group"       "sample"     
       [6] "bmi_group"   "SAMPLE"     
       
+      $vars$shapeSafe
+      [1] "sex"                    "nationality"            "group"                 
+      [4] "timepoint.within.group" "bmi_group"              "weight"                
+      [7] "female"                
+      
       
       $ranks
       [1] "Phylum" "Family" "Genus"  "unique"
@@ -188,6 +197,9 @@
       character(0)
       
       $vars$cat
+      NULL
+      
+      $vars$shapeSafe
       NULL
       
       
