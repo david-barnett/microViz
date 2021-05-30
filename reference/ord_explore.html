@@ -46,22 +46,40 @@
 
 
 <meta property="og:title" content="Interactively explore microbial compositions of ordinated samples — ord_explore" />
-<meta property="og:description" content="A Shiny app used like an interactive version of ord_plot().
-You can select samples on an ordination plot and view their composition with stacked barplots.
+<meta property="og:description" content="A Shiny app used to create and explore an interactive version of ord_plot().
+You can select samples on an ordination plot to view their composition with stacked barplots.
 The ord_explore() data argument takes either:
 the output of ord_calc() (i.e. a ps_extra with an ordination)
 a plain phyloseq object: ord_explore() will help you build an ordination
 
 
-Once the app is running (in your browser):
-edit the ordination if required
-style the ordination plot (e.g. choose dimensions; set colour and size; ...)
-click or use the lasso tool to select 2 or more samples to view their compositions
-style the taxonomic compositions barplot
-stop the app by clicking the red stop button in the R console
-(closing the web browser window doesn't stop the app)
+Once the app is running (in your browser), you can:
+Create/edit the ordination if required
+look at the R console error messages if your chosen options don't build
 
-" />
+Style the ordination plot (e.g. choose dimensions; set colour and size; ...)
+Taxa loading arrows can be added only to PCA, RDA and CCA plots
+Convex hulls or ellipses can only be drawn if Colour is set to a variable
+To track individuals over time with the path plotter, your data MUST already be sorted by time (e.g. with ps_arrange)!
+
+Click on or use the lasso tool to select 2 or more samples to view their compositions
+By default samples can be selected individually
+Set the &quot;Select&quot; option to another variable to select by level of that variable
+
+Style the taxonomic compositions barplot
+The samples are ordered using the distance method
+The app may lag if you select 100s of samples and ungroup the &quot;other&quot; category
+To avoid this lag: either reduce the number of taxa or samples, or deselect &quot;Interactive&quot; barplot
+
+Stop the app by clicking the red stop button in the R console
+Closing the web browser window doesn't stop the app,
+(you can find the app again at the local http address shown in the R console)
+Don't forget to copy the ordination plot code before you close the app
+
+
+
+See the Details section for some known limitations of the app.
+Please report any other app problems on the microViz GitHub issues page." />
 
 
 
@@ -93,7 +111,7 @@ stop the app by clicking the red stop button in the R console
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.6.9002</span>
       </span>
     </div>
 
@@ -171,29 +189,46 @@ stop the app by clicking the red stop button in the R console
     </div>
 
     <div class="ref-description">
-    <p>A Shiny app used like an interactive version of <code><a href='ord_plot.html'>ord_plot()</a></code>.
-You can select samples on an ordination plot and view their composition with stacked barplots.</p>
+    <p>A Shiny app used to create and explore an interactive version of <code><a href='ord_plot.html'>ord_plot()</a></code>.
+You can select samples on an ordination plot to view their composition with stacked barplots.</p>
 <p>The <code>ord_explore()</code> data argument takes either:</p><ul>
 <li><p>the output of <code><a href='ord_calc.html'>ord_calc()</a></code> (i.e. a ps_extra with an ordination)</p></li>
 <li><p>a plain phyloseq object: <code>ord_explore()</code> will help you build an ordination</p></li>
 </ul>
 
-<p>Once the app is running (in your browser):</p><ol>
-<li><p>edit the ordination if required</p></li>
-<li><p>style the ordination plot (e.g. choose dimensions; set colour and size; ...)</p></li>
-<li><p>click or use the lasso tool to select 2 or more samples to view their compositions</p></li>
-<li><p>style the taxonomic compositions barplot</p></li>
-<li><p>stop the app by clicking the red stop button in the R console
-(closing the web browser window doesn't stop the app)</p></li>
+<p>Once the app is running (in your browser), you can:</p><ol>
+<li><p>Create/edit the ordination if required</p><ul>
+<li><p>look at the R console error messages if your chosen options don't build</p></li>
+</ul></li>
+<li><p>Style the ordination plot (e.g. choose dimensions; set colour and size; ...)</p><ul>
+<li><p>Taxa loading arrows can be added only to PCA, RDA and CCA plots</p></li>
+<li><p>Convex hulls or ellipses can only be drawn if Colour is set to a variable</p></li>
+<li><p>To track individuals over time with the path plotter, your data MUST already be sorted by time (e.g. with ps_arrange)!</p></li>
+</ul></li>
+<li><p>Click on or use the lasso tool to select 2 or more samples to view their compositions</p><ul>
+<li><p>By default samples can be selected individually</p></li>
+<li><p>Set the "Select" option to another variable to select by level of that variable</p></li>
+</ul></li>
+<li><p>Style the taxonomic compositions barplot</p><ul>
+<li><p>The samples are ordered using the distance method</p></li>
+<li><p>The app may lag if you select 100s of samples and ungroup the "other" category</p></li>
+<li><p>To avoid this lag: either reduce the number of taxa or samples, or deselect "Interactive" barplot</p></li>
+</ul></li>
+<li><p>Stop the app by clicking the red stop button in the R console</p><ul>
+<li><p>Closing the web browser window doesn't stop the app,
+(you can find the app again at the local http address shown in the R console)</p></li>
+<li><p>Don't forget to copy the ordination plot code before you close the app</p></li>
+</ul></li>
 </ol>
 
+<p>See the Details section for some known limitations of the app.
+Please report any other app problems on the microViz GitHub issues page.</p>
     </div>
 
     <pre class="usage"><span class='fu'>ord_explore</span><span class='op'>(</span>
   <span class='va'>data</span>,
   sample_id <span class='op'>=</span> <span class='cn'>NULL</span>,
   seriate_method <span class='op'>=</span> <span class='st'>"OLO_ward"</span>,
-  tax_transform_for_ordering <span class='op'>=</span> <span class='st'>"identity"</span>,
   app_options <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>launch.browser <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,
   plot_widths <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>7</span>, <span class='fl'>9</span><span class='op'>)</span>,
   <span class='va'>...</span>
@@ -215,10 +250,6 @@ You can select samples on an ordination plot and view their composition with sta
       <td><p>seriation method to order phyloseq samples by similarity</p></td>
     </tr>
     <tr>
-      <th>tax_transform_for_ordering</th>
-      <td><p>transform taxa before ordering with ps_seriate</p></td>
-    </tr>
-    <tr>
       <th>app_options</th>
       <td><p>passed to shinyApp() options argument</p></td>
     </tr>
@@ -238,14 +269,13 @@ You can select samples on an ordination plot and view their composition with sta
     <p>nothing, opens default browser</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>If you get an interactive error like the one below:</p>
-<p>"ids don't have the same length than str (most often, it occurs because of clipping)"</p><ol>
-<li><p>make your points smaller</p></li>
-<li><p>set point shape to fixed, or to a variable with fewer categories</p></li>
-</ol>
+    <p>Limitations:</p><ul>
+<li><p>If a "Select:" grouping variable is NA for some samples,
+then that grouping variable cannot be used to select those samples</p></li>
+<li><p>"Shape:" can only be mapped to variables with a maximum of 5 distinct levels,
+not including NAs. NAs in the shape variable are shown as hollow circles.</p></li>
+</ul>
 
-<p>Limitation: When a selection grouping variable is NA for some samples,
-that grouping variable cannot be used to select those samples</p>
 <p>On some web browsers, e.g. firefox, the numeric inputs' buttons are sometimes
 hard to click.
 As a workaround, you can click the box and type a number or use the arrow keys.

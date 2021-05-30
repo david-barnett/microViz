@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Reorder taxa in phyloseq object using vector of names — tax_reorder • microViz</title>
+<title>Filled shapes for ggiraph interactive plots — scale_shape_girafe_filled • microViz</title>
 
 
 <!-- jquery -->
@@ -45,8 +45,11 @@
 
 
 
-<meta property="og:title" content="Reorder taxa in phyloseq object using vector of names — tax_reorder" />
-<meta property="og:description" content="Reorder taxa in phyloseq object using vector of names" />
+<meta property="og:title" content="Filled shapes for ggiraph interactive plots — scale_shape_girafe_filled" />
+<meta property="og:description" content="Generates a custom ggplot2 shape scale, as used in ord_explore's ordination.
+Uses filled shapes, therefore fill aesthetic must be set, in addition to
+colour, to have filled shapes.
+Points with NA values for the shape variable are shown as hollow circles." />
 
 
 
@@ -150,55 +153,48 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Reorder taxa in phyloseq object using vector of names</h1>
-    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/tax_sort.R'><code>R/tax_sort.R</code></a></small>
-    <div class="hidden name"><code>tax_reorder.Rd</code></div>
+    <h1>Filled shapes for ggiraph interactive plots</h1>
+    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/scale_shape_girafe_filled.R'><code>R/scale_shape_girafe_filled.R</code></a></small>
+    <div class="hidden name"><code>scale_shape_girafe_filled.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Reorder taxa in phyloseq object using vector of names</p>
+    <p>Generates a custom ggplot2 shape scale, as used in ord_explore's ordination.
+Uses filled shapes, therefore fill aesthetic must be set, in addition to
+colour, to have filled shapes.
+Points with NA values for the shape variable are shown as hollow circles.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>tax_reorder</span><span class='op'>(</span><span class='va'>ps</span>, <span class='va'>tax_order</span>, tree_warn <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>scale_shape_girafe_filled</span><span class='op'>(</span><span class='op'>)</span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>ps</th>
-      <td><p>phyloseq object</p></td>
-    </tr>
-    <tr>
-      <th>tax_order</th>
-      <td><p>names or current numerical indices of taxa
-in desired order and same length as taxa_names(ps)</p></td>
-    </tr>
-    <tr>
-      <th>tree_warn</th>
-      <td><p>If phylogenetic tree is present in phyloseq phy_tree slot, taxa cannot be reordered.
-Default behaviour of tax_sort is to remove the phylogenetic tree and warn about this.
-tree_warn = FALSE will suppress the warning message, but still remove the tree!</p></td>
-    </tr>
-    </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>phyloseq object (always without phy_tree)</p>
+    <p>ggplot2 Scale object</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Composite shapes e.g. number 7 "square cross" cause ggiraph interactive
+plots to fail when a variable shape and tooltip is set.</p>
+<p>Shapes used are, in order: "circle filled", "triangle filled",
+"square filled", "diamond filled", and "triangle down filled"</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span>
-<span class='va'>new_order</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
-  <span class='st'>"Fusobacteria"</span>, <span class='st'>"Cyanobacteria"</span>, <span class='st'>"Verrucomicrobia"</span>, <span class='st'>"Spirochaetes"</span>,
-  <span class='st'>"Actinobacteria"</span>, <span class='st'>"Firmicutes"</span>, <span class='st'>"Proteobacteria"</span>, <span class='st'>"Bacteroidetes"</span>
-<span class='op'>)</span>
-<span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='va'>dietswap</span>, rank <span class='op'>=</span> <span class='st'>"Phylum"</span><span class='op'>)</span><span class='op'>[[</span><span class='st'>"ps"</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>phyloseq</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html'>taxa_names</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "Actinobacteria"  "Firmicutes"      "Proteobacteria"  "Verrucomicrobia"
-#&gt; [5] "Bacteroidetes"   "Spirochaetes"    "Fusobacteria"    "Cyanobacteria"  </div><div class='input'><span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='va'>dietswap</span>, rank <span class='op'>=</span> <span class='st'>"Phylum"</span><span class='op'>)</span><span class='op'>[[</span><span class='st'>"ps"</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>microViz</span><span class='fu'>:::</span><span class='fu'>tax_reorder</span><span class='op'>(</span>tax_order <span class='op'>=</span> <span class='va'>new_order</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>phyloseq</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html'>taxa_names</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "Fusobacteria"    "Cyanobacteria"   "Verrucomicrobia" "Spirochaetes"   
-#&gt; [5] "Actinobacteria"  "Firmicutes"      "Proteobacteria"  "Bacteroidetes"  </div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>corncob</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/corncob/man/ibd_phylo.html'>ibd_phylo</a></span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='tax_fix.html'>tax_fix</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='phyloseq_validate.html'>phyloseq_validate</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span>rank <span class='op'>=</span> <span class='st'>"Genus"</span>, transformation <span class='op'>=</span> <span class='st'>"clr"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>
+    method <span class='op'>=</span> <span class='st'>"PCA"</span>
+  <span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span>
+    axes <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>,
+    plot_taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>,
+    colour <span class='op'>=</span> <span class='st'>"DiseaseState"</span>, fill <span class='op'>=</span> <span class='st'>"DiseaseState"</span>,
+    shape <span class='op'>=</span> <span class='st'>"circle"</span>, alpha <span class='op'>=</span> <span class='fl'>0.5</span>,
+    size <span class='op'>=</span> <span class='fl'>3</span>
+  <span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>scale_shape_girafe_filled</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='img'><img src='scale_shape_girafe_filled-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
