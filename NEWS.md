@@ -1,3 +1,7 @@
+# microViz (development version)
+
+- `ord_explore` shapes palette limited to 5 shapes returned by new `scale_shape_girafe_filled` function
+
 # microViz 0.7.6
 
 ## Features

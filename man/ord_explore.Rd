@@ -7,8 +7,7 @@
 ord_explore(
   data,
   sample_id = NULL,
-  seriate_method = "OLO_ward",
-  tax_transform_for_ordering = "identity",
+  seriate_method = "Spectral",
   app_options = list(launch.browser = TRUE),
   plot_widths = c(7, 9),
   ...
@@ -21,8 +20,6 @@ ord_explore(
 
 \item{seriate_method}{seriation method to order phyloseq samples by similarity}
 
-\item{tax_transform_for_ordering}{transform taxa before ordering with ps_seriate}
-
 \item{app_options}{passed to shinyApp() options argument}
 
 \item{plot_widths}{widths of plots in inches, including any legends
@@ -34,8 +31,8 @@ ord_explore(
 nothing, opens default browser
 }
 \description{
-A Shiny app used like an interactive version of \code{ord_plot()}.
-You can select samples on an ordination plot and view their composition with stacked barplots.
+A Shiny app used to create and explore an interactive version of \code{ord_plot()}.
+You can select samples on an ordination plot to view their composition with stacked barplots.
 
 The \code{ord_explore()} data argument takes either:
 \itemize{
@@ -43,27 +40,48 @@ The \code{ord_explore()} data argument takes either:
 \item a plain phyloseq object: \code{ord_explore()} will help you build an ordination
 }
 
-Once the app is running (in your browser):
+Once the app is running (in your browser), you can:
 \enumerate{
-\item edit the ordination if required
-\item style the ordination plot (e.g. choose dimensions; set colour and size; ...)
-\item click or use the lasso tool to select 2 or more samples to view their compositions
-\item style the taxonomic compositions barplot
-\item stop the app by clicking the red stop button in the R console
-(closing the web browser window doesn't stop the app)
+\item Create/edit the ordination if required
+\itemize{
+\item look at the R console error messages if your chosen options don't build
 }
+\item Style the ordination plot (e.g. choose dimensions; set colour and size; ...)
+\itemize{
+\item Taxa loading arrows can be added only to PCA, RDA and CCA plots
+\item Convex hulls or ellipses can only be drawn if Colour is set to a variable
+\item To track individuals over time with the path plotter, your data MUST already be sorted by time (e.g. with ps_arrange)!
+}
+\item Click on or use the lasso tool to select 2 or more samples to view their compositions
+\itemize{
+\item By default samples can be selected individually
+\item Set the "Select" option to another variable to select by level of that variable
+}
+\item Style the taxonomic compositions barplot
+\itemize{
+\item The samples are ordered using the distance method
+\item The app may lag if you select 100s of samples and ungroup the "other" category
+\item To avoid this lag: either reduce the number of taxa or samples, or deselect "Interactive" barplot
+}
+\item Stop the app by clicking the red stop button in the R console
+\itemize{
+\item Closing the web browser window doesn't stop the app,
+(you can find the app again at the local http address shown in the R console)
+\item Don't forget to copy the ordination plot code before you close the app
+}
+}
+
+See the Details section for some known limitations of the app.
+Please report any other app problems on the microViz GitHub issues page.
 }
 \details{
-If you get an interactive error like the one below:
-
-"ids don't have the same length than str (most often, it occurs because of clipping)"
-\enumerate{
-\item make your points smaller
-\item set point shape to fixed, or to a variable with fewer categories
+Limitations:
+\itemize{
+\item If a "Select:" grouping variable is NA for some samples,
+then that grouping variable cannot be used to select those samples
+\item "Shape:" can only be mapped to variables with a maximum of 5 distinct levels,
+not including NAs. NAs in the shape variable are shown as hollow circles.
 }
-
-Limitation: When a selection grouping variable is NA for some samples,
-that grouping variable cannot be used to select those samples
 
 On some web browsers, e.g. firefox, the numeric inputs' buttons are sometimes
 hard to click.

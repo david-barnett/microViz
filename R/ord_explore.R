@@ -1,34 +1,44 @@
 #' Interactively explore microbial compositions of ordinated samples
 #'
 #' @description
-#' A Shiny app used like an interactive version of `ord_plot()`.
-#' You can select samples on an ordination plot and view their composition with stacked barplots.
+#' A Shiny app used to create and explore an interactive version of `ord_plot()`.
+#' You can select samples on an ordination plot to view their composition with stacked barplots.
 #'
 #' The `ord_explore()` data argument takes either:
 #'
 #' - the output of `ord_calc()` (i.e. a ps_extra with an ordination)
 #' - a plain phyloseq object: `ord_explore()` will help you build an ordination
 #'
+#' Once the app is running (in your browser), you can:
 #'
-#' Once the app is running (in your browser):
+#' 1. Create/edit the ordination if required
+#'    - look at the R console error messages if your chosen options don't build
+#' 2. Style the ordination plot (e.g. choose dimensions; set colour and size; ...)
+#'    - Taxa loading arrows can be added only to PCA, RDA and CCA plots
+#'    - Convex hulls or ellipses can only be drawn if Colour is set to a variable
+#'    - To track individuals over time with the path plotter, your data MUST already be sorted by time (e.g. with ps_arrange)!
+#' 3. Click on or use the lasso tool to select 2 or more samples to view their compositions
+#'    - By default samples can be selected individually
+#'    - Set the "Select" option to another variable to select by level of that variable
+#' 4. Style the taxonomic compositions barplot
+#'    - The samples are ordered using the distance method
+#'    - The app may lag if you select 100s of samples and ungroup the "other" category
+#'    - To avoid this lag: either reduce the number of taxa or samples, or deselect "Interactive" barplot
+#' 5. Stop the app by clicking the red stop button in the R console
+#'    - Closing the web browser window doesn't stop the app,
+#'   (you can find the app again at the local http address shown in the R console)
+#'    - Don't forget to copy the ordination plot code before you close the app
 #'
-#' 1. edit the ordination if required
-#' 2. style the ordination plot (e.g. choose dimensions; set colour and size; ...)
-#' 3. click or use the lasso tool to select 2 or more samples to view their compositions
-#' 4. style the taxonomic compositions barplot
-#' 5. stop the app by clicking the red stop button in the R console
-#' (closing the web browser window doesn't stop the app)
+#'  See the Details section for some known limitations of the app.
+#'  Please report any other app problems on the microViz GitHub issues page.
 #'
 #' @details
-#' If you get an interactive error like the one below:
+#' Limitations:
 #'
-#' "ids don't have the same length than str (most often, it occurs because of clipping)"
-#'
-#' 1. make your points smaller
-#' 2. set point shape to fixed, or to a variable with fewer categories
-#'
-#' Limitation: When a selection grouping variable is NA for some samples,
-#' that grouping variable cannot be used to select those samples
+#' - If a "Select:" grouping variable is NA for some samples,
+#' then that grouping variable cannot be used to select those samples
+#' - "Shape:" can only be mapped to variables with a maximum of 5 distinct levels,
+#' not including NAs. NAs in the shape variable are shown as hollow circles.
 #'
 #' On some web browsers, e.g. firefox, the numeric inputs' buttons are sometimes
 #' hard to click.
@@ -39,8 +49,6 @@
 #' @param sample_id name of sample ID variable to use as default for selecting samples
 #' @param seriate_method
 #' seriation method to order phyloseq samples by similarity
-#' @param tax_transform_for_ordering
-#' transform taxa before ordering with ps_seriate
 #' @param app_options passed to shinyApp() options argument
 #' @param plot_widths
 #' widths of plots in inches, including any legends
@@ -132,8 +140,7 @@
 #' }
 ord_explore <- function(data,
                         sample_id = NULL, # id var name for data_id ggiraph
-                        seriate_method = "OLO_ward", # ordering samples
-                        tax_transform_for_ordering = "identity", # samples
+                        seriate_method = "Spectral", # ordering samples
                         app_options = list(launch.browser = TRUE), # shinyApp()
                         plot_widths = c(7, 9),
                         ...) {
@@ -452,7 +459,7 @@ ord_explore <- function(data,
             fill = input$ord_colour, # TODO make fill configurable
             shape = input$ord_shape, alpha = alpha(), size = size(),
             plot_taxa = plot_taxa(), ellipses = ellipses(),
-            chulls = chulls(), paths = paths()
+            chulls = chulls(), paths = paths(), shapeIsVar = shapeIsVar()
           )
         }),
         shiny::hr(),
@@ -719,6 +726,9 @@ ord_explore <- function(data,
     })
 
     ## arg helpers ------------------------------------------------------------
+    shapeIsVar <- shiny::reactive({
+      input$ord_shape %in% init$vars$all
+    })
     size <- shiny::reactive({
       if (isTRUE(input$sizeFixed)) {
         input$ord_size_num
@@ -1009,8 +1019,7 @@ ord_ggplot <- function(ord, x, y, shape, size, colour, alpha, id,
       data = ord, axes = c(x, y), shape = shape, size = size,
       colour = colour, fill = colour, alpha = alpha, plot_taxa = plot_taxa,
       interactive = TRUE, data_id = id, tooltip = id, ...
-    ) +
-      ggplot2::scale_shape_discrete(na.translate = TRUE, na.value = 1)
+    ) + scale_shape_girafe_filled()
     # optionally add group 95% ellipses
     if (ellipses) {
       p1 <- p1 + ggplot2::stat_ellipse(
@@ -1166,7 +1175,7 @@ trans_choices <- function(type) {
 # generate code-styled text for reproducing ordination plot
 ord_code <- function(rank, trans, dist, ord, const, conds, x, y,
                      colour, fill, shape, alpha, size,
-                     plot_taxa, ellipses, chulls, paths) {
+                     plot_taxa, ellipses, chulls, paths, shapeIsVar = FALSE) {
   # prepare dist_calc line if distance needed
   dist_calc_line <- ord_code_dist(dist)
 
@@ -1192,11 +1201,11 @@ ord_code <- function(rank, trans, dist, ord, const, conds, x, y,
 
   # prepare add_paths code for end if necessary
   if (!identical(NULL, paths)) {
-    end_lines <- ord_code_paths(paths)
+    end_lines <- ord_code_paths(paths, shapeIsVar = shapeIsVar)
   } else {
     # prepare extra stat_ellipse/chull lines for end of code if necessary
     end_lines <- ord_code_stat(
-      ellipses = ellipses, chulls = chulls, colour = colour
+      ellipses = ellipses, chulls = chulls, colour = colour, shapeIsVar
     )
   }
 
@@ -1231,20 +1240,23 @@ ord_code_dist <- function(dist) {
 }
 
 # prepare stat_ellipse lines for ord_code output if necessary
-ord_code_stat <- function(ellipses, chulls, colour) {
+ord_code_stat <- function(ellipses, chulls, colour, shapeIsVar = FALSE) {
+  shapeCode <- ord_shape_scale_code(shapeIsVar)
   if (ellipses || chulls) {
     if (ellipses) stat <- " ggplot2::stat_ellipse("
     if (chulls) stat <- " stat_chull("
     colourAes <- paste0("  ggplot2::aes(colour = ", colour, ")")
-    end_lines <- paste(sep = "\n", " ) +", stat, colourAes, " )")
+    end_lines <- paste(
+      sep = "\n", paste0(shapeCode, " +"), stat, colourAes, " )"
+    )
   } else {
-    end_lines <- " )"
+    end_lines <- shapeCode
   }
   return(end_lines)
 }
 
 # prepare add_paths code for end of ord_code if necessary
-ord_code_paths <- function(paths) {
+ord_code_paths <- function(paths, shapeIsVar = FALSE) {
   varArg <- paste0('  id_var = "', paths$id_var, '", ')
   valsVec <- paste0('c("', paste(paths$id_values, collapse = '", "'), '")')
   valsArg <- paste0("  id_values = ", valsVec, ",")
@@ -1253,10 +1265,21 @@ ord_code_paths <- function(paths) {
   } else {
     colour <- paste0('  colour = "', paths$colour, '"')
   }
+  shapeCode <- ord_shape_scale_code(shapeIsVar)
   end_lines <- paste(
-    sep = "\n", " ) %>%", " add_paths(", varArg, valsArg, colour, " )"
+    sep = "\n", paste0(shapeCode, " %>%"),
+    " add_paths(", varArg, valsArg, colour, " )"
   )
   return(end_lines)
+}
+
+# add
+ord_shape_scale_code <- function(shapeIsVar) {
+  if (shapeIsVar) {
+    " ) + \n scale_shape_girafe_filled()"
+  } else {
+    " )"
+  }
 }
 
 ## barplot helpers ------------------------------------------------------------
