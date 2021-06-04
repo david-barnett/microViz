@@ -1,6 +1,6 @@
-# microViz (development version)
+# microViz 0.7.7
 
-- `ord_explore` shapes palette limited to 5 shapes returned by new `scale_shape_girafe_filled` function
+- `ord_explore` shapes selection bug fixed by limiting to 5 shapes returned by new `scale_shape_girafe_filled` function
 
 # microViz 0.7.6
 
