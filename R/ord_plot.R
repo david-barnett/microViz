@@ -414,36 +414,11 @@ ord_plot <-
       constraint_lab_args[names(constraint_lab_style)] <- constraint_lab_style
       p <- p + do.call(what = ggplot2::geom_label, args = constraint_lab_args)
     }
-    # auto caption ------------------------------------------------------------
+
     # add automated caption if requested (default size = 8)
-    if (!identical(NA, auto_caption)) {
-      o <- info[["ordMethod"]]
-      if (o %in% c("RDA", "CCA", "CAP")) {
-        o <- paste0(o, " (scaling=", scaling, ")")
-      }
-      if (!is.na(info[["constraints"]])) {
-        o <- paste0(o, " constraints=", info[["constraints"]])
-      }
-      if (!is.na(info[["conditions"]])) {
-        o <- paste0(o, " conditions=", info[["conditions"]])
-      }
-
-      caption <- paste0(
-        nrow(p[["data"]]), " samples & ", phyloseq::ntaxa(ps),
-        " taxa (", info[["tax_agg"]], "). ", o
-      )
-
-      if (!is.na(info[["tax_transform"]])) {
-        caption <- paste0(caption, " tax_transform=", info[["tax_transform"]])
-      }
-
-      if (!is.na(info[["distMethod"]])) {
-        caption <- paste0(caption, " dist=", info[["distMethod"]])
-      }
-
-      p <- p + ggplot2::labs(caption = caption) +
-        ggplot2::theme(plot.caption = ggplot2::element_text(size = auto_caption))
-    }
+    p <- ord_caption(
+      p = p, ps = ps, cap_size = auto_caption, info = info, scaling = scaling
+    )
 
     # center the plot if requested using helper function
     if (isTRUE(center)) p <- center_plot(p, clip = clip, expand = expand)
@@ -451,7 +426,60 @@ ord_plot <-
     return(p)
   }
 
-# helper functions
+# helper functions ------------------------------------------------------------
+
+#' Add caption text to ordination ggplot
+#'
+#' @param p ggplot
+#' @param ps phyloseq object to assess dimensions
+#' @param cap_size caption font size (or NA for no caption addition)
+#' @param info ps_extra info list containing most info for caption
+#' @param scaling type of scaling used
+#'
+#' @return ggplot
+#' @noRd
+ord_caption <- function(p, ps, cap_size, info, scaling) {
+
+  if (identical(NA, cap_size)){
+    return(p) # return unchanged
+  } else {
+
+    o <- info[["ordMethod"]]
+
+    # constrained ordinations should have scaling type reported
+    if (o %in% c("RDA", "CCA", "CAP")) {
+      o <- paste0(o, " (scaling=", scaling, ")")
+    }
+    if (!is.na(info[["constraints"]])) {
+      o <- paste0(o, " constraints=", info[["constraints"]])
+    }
+    if (!is.na(info[["conditions"]])) {
+      o <- paste0(o, " conditions=", info[["conditions"]])
+    }
+
+    # caption gets n taxa and samples info
+    caption <- paste0(
+      nrow(p[["data"]]), " samples & ", phyloseq::ntaxa(ps),
+      " taxa (", info[["tax_agg"]], "). ", o
+    )
+
+    # any transformations and distances should be listed
+    if (!is.na(info[["tax_transform"]])) {
+      caption <- paste0(caption, " tax_transform=", info[["tax_transform"]])
+    }
+    if (!is.na(info[["distMethod"]])) {
+      caption <- paste0(caption, " dist=", info[["distMethod"]])
+    }
+
+    # add the caption
+    p <- p + ggplot2::labs(caption = caption) +
+      ggplot2::theme(plot.caption = ggplot2::element_text(size = cap_size))
+
+    return(p)
+  }
+
+}
+
 center_plot <- function(plot, clip = "off", expand = TRUE) {
   lims <- get_plot_limits(plot)
   plot + ggplot2::coord_cartesian(
