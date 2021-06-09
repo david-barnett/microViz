@@ -92,123 +92,54 @@ ord_calc <- function(data,
                      scale_cc = TRUE,
                      verbose = TRUE,
                      ...) {
-  stopifnot(method %in% c(
-    "auto", "PCoA", "PCA", "CCA", "RDA", "CAP", "NMDS", "MDS", "DCA", "DPCoA"
-  ))
   stopifnot(inherits(scale_cc, "logical"))
-  if (!isFALSE(verbose) && method %in% c("DCA", "DPCoA")) {
-    warning(
-      "Neither DCA nor DPCoA have been tested, so may not work as expected..."
-    )
-  }
 
   # identify if constrained or conditioned
-  if (identical(constraints, NULL) || identical(constraints, 1)) {
-    constraints <- 1
-    constrained <- FALSE
-  } else {
-    if (!inherits(constraints, "character")) {
-      stop("constraints must be NULL or a character vector")
-    }
-    constrained <- TRUE
-  }
-  conditioned <- !identical(conditions, NULL)
-  if (conditioned && !inherits(conditions, "character")) {
-    stop("conditions must be NULL or a character vector")
-  }
+  if (identical(constraints, NULL)) constraints <- 1
+  constrained <- ordCheckConstraints(constraints)
+  conditioned <- ordCheckConditions(conditions)
 
-  # if input is a phyloseq, convert to ps_extra
-  if (inherits(data, "phyloseq")) data <- new_ps_extra(ps = data)
-  # check class of data is (or at least now is) ps_extra
-  if (!inherits(data, "ps_extra")) {
-    stop(
-      "data should be ps_extra list output of dist_calc or tax_transform, ",
-      "or a phyloseq\n", "data is class: ", class(data)
-    )
-  }
+  # check class of data is ps_extra and if phyloseq, convert to ps_extra
+  data <- ordCheckData(data)
 
   # get data elements
   ps <- ps_get(data)
   distMat <- dist_get(data)
   info <- info_get(data)
 
-  # set method automatically if auto given
-  if (identical(method, "auto")) {
-    if (identical(distMat, NULL)) {
-      method <- if (!constrained) "PCA" else "RDA"
-    } else {
-      method <- if (!constrained) "PCoA" else "CAP"
-    }
-  }
-  # check compatibility of input
   if (!identical(ord_get(data), NULL) && !isFALSE(verbose)) {
     warning(
       "You already calculated an ordination (with ",
       info[["ordMethod"]], ") --> overwriting"
     )
   }
-  if (!identical(distMat, NULL) &&
-    method %in% c("PCA", "RDA", "CCA") &&
-    !isFALSE(verbose)) {
-    warning(
-      "Distance matrix is not used for ", method,
-      "! Removing distance matrix. ",
-      "Did you mean to use PCoA or CAP? (or use method = auto)"
-    )
-    distMat <- NULL # so output ps_extra will get NULL distance matrix
-  }
-  if (identical(distMat, NULL) && method %in% c("CAP", "PCoA", "MDS", "NMDS")) {
-    stop(
-      "Distance matrix missing! Use dist_calc() ",
-      "before using ord_calc() with this method: ", method
-    )
-  }
-  if (constrained && method %in% c("PCA", "PCoA", "NMDS", "MDS")) {
-    stop(
-      method, " cannot use constraints, did you mean RDA, CAP or CCA. ",
-      "Alternatively use method = auto (the default)"
-    )
-  }
+
+  # check method is valid option, and guess appropriate method if "auto"
+  method <- ordCheckMethod(
+    method = method, con = constrained, distMat = distMat, verbose = verbose
+  )
+  # check ordination method compatible with distance availability
+  distMat <- ordCheckDist(distMat, method = method, verbose = verbose)
 
   # constraint and condition handling in phyloseq object and distance matrix
-  # handle missings and scale conditions and constraints if given
-  # (for RDA or dbRDA/constrained PCoA)
   if (constrained || conditioned) {
-    # remove '1' in case conditions is set but constraints is still 1 (default)
-    VARS <- setdiff(c(constraints, conditions), 1)
-    # drop samples with missings
-    ps <- ps_drop_incomplete(ps, vars = VARS, verbose = verbose)
+
+    # handle missings and scale conditions and constraints (for RDA etc.)
+    ps <- ps_conScale(
+      ps = ps, constraints = constraints, conditions = conditions,
+      verbose = verbose, scale_cc = scale_cc
+    )
+
     # drop samples from distMat if no longer in ps
     if (!identical(distMat, NULL)) {
       keepers <- phyloseq::sample_names(ps)
       distMat <- stats::as.dist(as.matrix(distMat)[keepers, keepers])
     }
-    if (!isFALSE(verbose) && isTRUE(scale_cc)) {
-      message(
-        "\nCentering (mean) and scaling (sd) the constraints and conditions: "
-      )
-    }
-    for (v in VARS) {
-      if (!isFALSE(verbose) && isTRUE(scale_cc)) message("\t", v)
-      vec <- phyloseq::sample_data(ps)[[v]]
-      if (!class(vec) %in% c("logical", "numeric", "integer")) {
-        stop(
-          "Constraints and conditions must be numeric, logical, or integer: ",
-          v, " is ", paste(class(vec), collapse = " ")
-        )
-      }
-      if (isTRUE(scale_cc)) {
-        phyloseq::sample_data(ps)[, v] <- as.numeric(
-          scale(vec[!is.na(vec)], center = TRUE, scale = TRUE)
-        )
-      }
-    }
   }
 
-  # set ordMethod
-  # method is used to annotate plot,
-  # ordMethod is used to specify how to actually do the ordination
-  # deal with synonyms / equivalent unconstrained methods
+  # set ordMethod (dealing with synonyms / equivalent unconstrained methods)
+  # `method` is used to annotate plot,
+  # `ordMethod` is used to specify how to actually do the ordination
   if (identical(method, "PCA")) {
     # synonymous for this purpose (PCA is unconstrained RDA)
     ordMethod <- "RDA"
@@ -223,7 +154,7 @@ ord_calc <- function(data,
   if (ordMethod %in% c("RDA", "CAP", "CCA")) {
 
     # set formula to include any given constraints on RHS
-    # (by default the RHS = 1)
+    # (if unconstrained, the constraints = 1, and so RHS is = 1)
     f <- paste0("distMat ~ ", paste(constraints, collapse = " + "))
 
     # add any conditions specified in conditions arg
@@ -256,4 +187,163 @@ ord_calc <- function(data,
   data[["ord"]] <- ORD
 
   return(data)
+}
+
+#' Scale and center constraint and condition vars in phyloseq sample data
+#'
+#' Internal helper function for ord_calc
+#'
+#' @param ps phyloseq object with sample data
+#' @param constraints vector of constraint variables
+#' @param conditions vector of conditions variables
+#' @param verbose logical, send messages?
+#' @param scale_cc logical, scale and center constraints/conditions?
+#'
+#' @return phyloseq object
+#' @noRd
+ps_conScale <- function(ps, constraints, conditions, verbose, scale_cc) {
+  # remove '1' in case conditions is set but constraints is still 1 (default)
+  VARS <- setdiff(c(constraints, conditions), 1)
+  # drop samples with missings
+  ps <- ps_drop_incomplete(ps, vars = VARS, verbose = verbose)
+
+  if (!isFALSE(verbose) && isTRUE(scale_cc)) {
+    message(
+      "\nCentering (mean) and scaling (sd) the constraints and conditions: "
+    )
+  }
+  for (v in VARS) {
+    if (!isFALSE(verbose) && isTRUE(scale_cc)) message("\t", v)
+    vec <- phyloseq::sample_data(ps)[[v]]
+    if (!class(vec) %in% c("logical", "numeric", "integer")) {
+      stop(
+        "Constraints and conditions must be numeric, logical, or integer: ",
+        v, " is ", paste(class(vec), collapse = " ")
+      )
+    }
+    if (isTRUE(scale_cc)) {
+      phyloseq::sample_data(ps)[, v] <- as.numeric(
+        scale(vec[!is.na(vec)], center = TRUE, scale = TRUE)
+      )
+    }
+  }
+  return(ps)
+}
+
+# check class of data is ps_extra and if phyloseq, convert to ps_extra
+ordCheckData <- function(data) {
+  # if input is a phyloseq, convert to ps_extra
+  if (inherits(data, "phyloseq")) data <- new_ps_extra(ps = data)
+  # check class of data is (or at least now is) ps_extra
+  if (!inherits(data, "ps_extra")) {
+    stop(
+      "data should be ps_extra list output of dist_calc or tax_transform, ",
+      "(or a phyloseq)\n", "data is class: ", class(data)
+    )
+  }
+  return(data)
+}
+
+# check if constraints given are valid (or 1, meaning not constrained)
+# and return logical indicating if constrained
+ordCheckConstraints <- function(constraints) {
+  constrained <- !identical(constraints, 1)
+  if (constrained && !inherits(constraints, "character")) {
+    stop("constraints must be a character vector, or NULL")
+  }
+  return(constrained)
+}
+
+# check if conditions given are valid (or NULL, meaning not conditioned)
+# and return logical indicating if conditioned
+ordCheckConditions <- function(conditions) {
+  conditioned <- !identical(conditions, NULL)
+  if (conditioned && !inherits(conditions, "character")) {
+    stop("conditions must be a character vector, or NULL")
+  }
+  return(conditioned)
+}
+
+#' Check compatibility of distance matrix and ordination method
+#'
+#' Internal helper for ord_calc.
+#' Returns NULL if distance matrix not needed for chosen method.
+#'
+#' @param distMat distance matrix or NULL if none
+#' @param method ordination method name
+#' @param verbose logical, send messages?
+#'
+#' @return distance matrix as provided, or NULL
+#' @noRd
+ordCheckDist <- function(distMat, method, verbose) {
+  if (!identical(distMat, NULL) &&
+    method %in% c("PCA", "RDA", "CCA") &&
+    !isFALSE(verbose)) {
+    warning(
+      call. = FALSE,
+      "Distance matrix is not used for ", method,
+      "! Removing distance matrix. ",
+      "Did you mean to use PCoA or CAP? (or use method = auto)"
+    )
+    distMat <- NULL # so output ps_extra will get NULL distance matrix
+  }
+  if (identical(distMat, NULL) && method %in% c("CAP", "PCoA", "MDS", "NMDS")) {
+    stop(
+      call. = FALSE,
+      "Distance matrix missing! Use dist_calc() ",
+      "before using ord_calc() with this method: ", method
+    )
+  }
+  return(distMat)
+}
+
+#' method check/guess helper for ord_calc
+#'
+#' check method is valid and guess method from constraints/distance if "auto"
+#'
+#' @param method method name
+#' @param con logical, constrained?
+#' @param distMat distance matrix or NULL if none
+#' @param verbose logical, send messages?
+#'
+#' @return method string
+#' @noRd
+ordCheckMethod <- function(method, con, distMat, verbose) {
+  validMethods <- c(
+    "auto", "PCoA", "PCA", "CCA", "RDA", "CAP", "NMDS", "MDS", "DCA", "DPCoA"
+  )
+  # check if valid method
+  if (!method %in% validMethods) {
+    stop(
+      call. = FALSE,
+      method, " is not a valid method, must be one of:\n",
+      paste(validMethods, collapse = " / ")
+    )
+  }
+
+  # set method automatically if auto given
+  if (identical(method, "auto")) {
+    if (identical(distMat, NULL)) {
+      method <- if (!con) "PCA" else "RDA"
+    } else {
+      method <- if (!con) "PCoA" else "CAP"
+    }
+  }
+
+  # check if untested method
+  if (!isFALSE(verbose) && method %in% c("DCA", "DPCoA")) {
+    warning(
+      call. = FALSE,
+      "Neither DCA nor DPCoA have been tested, so may not work as expected..."
+    )
+  }
+  # fail if unconstrained method provided with constraints
+  if (con && !method %in% c("RDA", "CAP", "CCA")) {
+    stop(
+      call. = FALSE,
+      method, " cannot use constraints, did you mean RDA, CAP or CCA? ",
+      "\nAlternatively use method = auto (the default)"
+    )
+  }
+  return(method)
 }
