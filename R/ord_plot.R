@@ -273,7 +273,7 @@ ord_plot <-
 
 
     # build ggplot ------------------------------------------------------------
-
+    ## samples ----------------------------------------------------------------
     p <- ggplot2::ggplot(
       data = df,
       mapping = ggplot2::aes_string(x = axesNames[1], y = axesNames[2])
@@ -297,6 +297,7 @@ ord_plot <-
       }
     }
 
+    ## taxa -------------------------------------------------------------------
     # add loadings/ species-scores arrows for RDA/PCA methods
     if (info[["ordMethod"]] %in% c("RDA", "CCA", "PCA")) {
 
@@ -369,6 +370,7 @@ ord_plot <-
       }
     }
 
+    ## constraints -----------------------------------------------------------
     # if constrained ordination, plot constraints
     if (!identical(info[["constraints"]], NA_character_)) {
       # automatic constraint length setting
@@ -394,6 +396,7 @@ ord_plot <-
       p <- p + do.call(what = ggplot2::geom_label, args = constraint_lab_args)
     }
 
+    ## caption and center ----------------------------------------------------
     # add automated caption if requested (default size = 8)
     p <- ord_caption(
       p = p, ps = ps, cap_size = auto_caption, info = info, scaling = scaling
