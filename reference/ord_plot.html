@@ -82,7 +82,7 @@ For interpretation see the the relevant pages on PCA, PCoA, RDA, or CCA on the G
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.7.9002</span>
       </span>
     </div>
 
@@ -107,12 +107,8 @@ For interpretation see the the relevant pages on PCA, PCoA, RDA, or CCA on the G
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/articles/Interactive-Ordination.html">Interactive Ordination Plot</a>
-    </li>
-    <li>
-      <a href="../articles/articles/Visualising-compositions.html">Visualising compositions</a>
-    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Tutorials</li>
     <li>
       <a href="../articles/articles/phyloseq.html">Working with phyloseq objects</a>
     </li>
@@ -120,7 +116,16 @@ For interpretation see the the relevant pages on PCA, PCoA, RDA, or CCA on the G
       <a href="../articles/articles/tax-fixing.html">Fixing your tax_table</a>
     </li>
     <li>
-      <a href="../articles/ordination.html">Ordination plots</a>
+      <a href="../articles/articles/ordination.html">Ordination plots</a>
+    </li>
+    <li>
+      <a href="../articles/articles/interactive-ordination.html">Interactive Ordination Plot</a>
+    </li>
+    <li>
+      <a href="../articles/articles/compositions.html">Visualising compositions</a>
+    </li>
+    <li>
+      <a href="../articles/articles/videos.html">Videos</a>
     </li>
   </ul>
 </li>
@@ -172,13 +177,13 @@ For interpretation see the the relevant pages on PCA, PCoA, RDA, or CCA on the G
   axes <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>,
   plot_taxa <span class='op'>=</span> <span class='cn'>FALSE</span>,
   tax_vec_length <span class='op'>=</span> <span class='cn'>NA</span>,
-  tax_vec_style_all <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
-  tax_vec_style_sel <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  tax_vec_style_all <span class='op'>=</span> <span class='fu'><a href='vec_constraint.html'>vec_tax_all</a></span><span class='op'>(</span><span class='op'>)</span>,
+  tax_vec_style_sel <span class='op'>=</span> <span class='fu'><a href='vec_constraint.html'>vec_tax_sel</a></span><span class='op'>(</span><span class='op'>)</span>,
   tax_lab_length <span class='op'>=</span> <span class='va'>tax_vec_length</span> <span class='op'>*</span> <span class='fl'>1.1</span>,
   tax_lab_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
   taxon_renamer <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
   constraint_vec_length <span class='op'>=</span> <span class='cn'>NA</span>,
-  constraint_vec_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  constraint_vec_style <span class='op'>=</span> <span class='fu'><a href='vec_constraint.html'>vec_constraint</a></span><span class='op'>(</span><span class='op'>)</span>,
   constraint_lab_length <span class='op'>=</span> <span class='va'>constraint_vec_length</span> <span class='op'>*</span> <span class='fl'>1.1</span>,
   constraint_lab_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
   var_renamer <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
