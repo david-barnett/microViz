@@ -1,4 +1,4 @@
-# microViz (development version)
+# microViz 0.7.8
 
 - `ord_plot` gains `vec_*` helper functions for generating lists for styling taxa and constraint vectors/arrows (`vec_constraint`, `vec_tax_all` and `vec_tax_sel`)
 

@@ -78,7 +78,7 @@ if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocMana
 BiocManager::install(c("phyloseq", "microbiome"))
 
 # To install the latest "released" version of this package
-devtools::install_github("david-barnett/microViz@0.7.7") # check 0.7.7 is the latest release
+devtools::install_github("david-barnett/microViz@0.7.8") # check 0.7.8 is the latest release
 
 # To install the very latest version:
 devtools::install_github("david-barnett/microViz")
@@ -131,7 +131,7 @@ ord_explore(pseq) # gif generated with microViz version 0.7.4 (plays at 1.75x sp
 ``` r
 library(phyloseq)
 library(dplyr)
-#> Warning: package 'dplyr' was built under R version 4.0.4
+#> Warning: package 'dplyr' was built under R version 4.0.5
 #> 
 #> Attaching package: 'dplyr'
 #> The following objects are masked from 'package:stats':
@@ -265,8 +265,8 @@ aitchison_perm <- dist_permanova(
   variables = "bmi_group + female"
 )
 #> Dropping samples with missings: 2
-#> 2021-06-04 09:22:53 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2021-06-04 09:22:53 - Finished PERMANOVA
+#> 2021-06-21 21:10:24 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2021-06-21 21:10:24 - Finished PERMANOVA
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
 #>            Df   SumOfSqs         R2        F Pr(>F)
@@ -294,8 +294,8 @@ your permanova directly using the ord\_plot function with constraints.
 ``` r
 perm2 <- dist_permanova(data = aitchison_dists, variables = c("weight", "female"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2021-06-04 09:22:53 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2021-06-04 09:22:54 - Finished PERMANOVA
+#> 2021-06-21 21:10:24 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2021-06-21 21:10:26 - Finished PERMANOVA
 perm_get(perm2)
 #> Permutation test for adonis under reduced model
 #> Marginal effects of terms
@@ -381,53 +381,45 @@ and by participating in this project you agree to abide by its terms.
 ``` r
 sessionInfo()
 #> R version 4.0.3 (2020-10-10)
-#> Platform: x86_64-pc-linux-gnu (64-bit)
-#> Running under: Ubuntu 18.04.5 LTS
+#> Platform: x86_64-w64-mingw32/x64 (64-bit)
+#> Running under: Windows 10 x64 (build 19042)
 #> 
 #> Matrix products: default
-#> BLAS:   /usr/lib/x86_64-linux-gnu/openblas/libblas.so.3
-#> LAPACK: /usr/lib/x86_64-linux-gnu/libopenblasp-r0.2.20.so
 #> 
 #> locale:
-#>  [1] LC_CTYPE=en_GB.UTF-8       LC_NUMERIC=C               LC_TIME=en_GB.UTF-8       
-#>  [4] LC_COLLATE=en_GB.UTF-8     LC_MONETARY=en_GB.UTF-8    LC_MESSAGES=en_GB.UTF-8   
-#>  [7] LC_PAPER=en_GB.UTF-8       LC_NAME=C                  LC_ADDRESS=C              
-#> [10] LC_TELEPHONE=C             LC_MEASUREMENT=en_GB.UTF-8 LC_IDENTIFICATION=C       
+#> [1] LC_COLLATE=English_United States.1252  LC_CTYPE=English_United States.1252   
+#> [3] LC_MONETARY=English_United States.1252 LC_NUMERIC=C                          
+#> [5] LC_TIME=English_United States.1252    
 #> 
 #> attached base packages:
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] ggplot2_3.3.3       dplyr_1.0.6         phyloseq_1.34.0     microViz_0.7.6.9002
-#> [5] devtools_2.4.0      usethis_2.0.1       pkgdown_1.6.1      
+#> [1] ggplot2_3.3.3   dplyr_1.0.6     phyloseq_1.34.0 microViz_0.7.8 
 #> 
 #> loaded via a namespace (and not attached):
-#>   [1] nlme_3.1-149         matrixStats_0.58.0   fs_1.5.0             RColorBrewer_1.1-2  
-#>   [5] progress_1.2.2       rprojroot_2.0.2      tools_4.0.3          utf8_1.2.1          
-#>   [9] R6_2.5.0             vegan_2.5-7          DBI_1.1.1            BiocGenerics_0.36.1 
-#>  [13] mgcv_1.8-33          colorspace_2.0-1     GetoptLong_1.0.5     permute_0.9-5       
-#>  [17] rhdf5filters_1.2.1   ade4_1.7-16          withr_2.4.2          tidyselect_1.1.1    
-#>  [21] prettyunits_1.1.1    processx_3.5.1       compiler_4.0.3       microbiome_1.12.0   
-#>  [25] cli_2.5.0            Biobase_2.50.0       Cairo_1.5-12.2       TSP_1.1-10          
-#>  [29] desc_1.3.0           labeling_0.4.2       scales_1.1.1         callr_3.7.0         
-#>  [33] stringr_1.4.0        digest_0.6.27        rmarkdown_2.7        XVector_0.30.0      
-#>  [37] pkgconfig_2.0.3      htmltools_0.5.1.1    sessioninfo_1.1.1    highr_0.9           
-#>  [41] fastmap_1.1.0        GlobalOptions_0.1.2  rlang_0.4.11         shape_1.4.6         
-#>  [45] farver_2.1.0         generics_0.1.0       jsonlite_1.7.2       magrittr_2.0.1      
-#>  [49] biomformat_1.18.0    Matrix_1.3-2         Rcpp_1.0.6           munsell_0.5.0       
-#>  [53] S4Vectors_0.28.1     Rhdf5lib_1.12.1      fansi_0.5.0          ape_5.5             
-#>  [57] lifecycle_1.0.0      stringi_1.6.2        yaml_2.2.1           MASS_7.3-53         
-#>  [61] zlibbioc_1.36.0      rhdf5_2.34.0         pkgbuild_1.2.0       Rtsne_0.15          
-#>  [65] plyr_1.8.6           grid_4.0.3           parallel_4.0.3       crayon_1.4.1        
-#>  [69] lattice_0.20-41      Biostrings_2.58.0    splines_4.0.3        multtest_2.46.0     
-#>  [73] circlize_0.4.12      hms_1.1.0            magick_2.7.1         ComplexHeatmap_2.6.2
-#>  [77] knitr_1.32           ps_1.6.0             pillar_1.6.1         igraph_1.2.6        
-#>  [81] rjson_0.2.20         reshape2_1.4.4       codetools_0.2-18     stats4_4.0.3        
-#>  [85] pkgload_1.2.1        glue_1.4.2           corncob_0.2.0        evaluate_0.14       
-#>  [89] data.table_1.14.0    remotes_2.3.0        png_0.1-7            vctrs_0.3.8         
-#>  [93] foreach_1.5.1        testthat_3.0.2       gtable_0.3.0         purrr_0.3.4         
-#>  [97] tidyr_1.1.3          clue_0.3-59          assertthat_0.2.1     cachem_1.0.5        
-#> [101] xfun_0.22            survival_3.2-7       seriation_1.2-9      tibble_3.1.2        
-#> [105] iterators_1.0.13     registry_0.5-1       memoise_2.0.0        IRanges_2.24.1      
-#> [109] cluster_2.1.0        ellipsis_0.3.2
+#>  [1] nlme_3.1-152         matrixStats_0.58.0   RColorBrewer_1.1-2   progress_1.2.2      
+#>  [5] tools_4.0.3          utf8_1.2.1           R6_2.5.0             vegan_2.5-7         
+#>  [9] DBI_1.1.1            BiocGenerics_0.36.1  mgcv_1.8-34          colorspace_2.0-1    
+#> [13] permute_0.9-5        rhdf5filters_1.2.1   ade4_1.7-16          GetoptLong_1.0.5    
+#> [17] withr_2.4.2          tidyselect_1.1.1     prettyunits_1.1.1    compiler_4.0.3      
+#> [21] microbiome_1.12.0    Biobase_2.50.0       Cairo_1.5-12.2       TSP_1.1-10          
+#> [25] labeling_0.4.2       scales_1.1.1         stringr_1.4.0        digest_0.6.27       
+#> [29] rmarkdown_2.7        XVector_0.30.0       pkgconfig_2.0.3      htmltools_0.5.1.1   
+#> [33] highr_0.8            rlang_0.4.11         GlobalOptions_0.1.2  shape_1.4.6         
+#> [37] generics_0.1.0       farver_2.1.0         jsonlite_1.7.2       magrittr_2.0.1      
+#> [41] biomformat_1.18.0    Matrix_1.2-18        Rcpp_1.0.6           munsell_0.5.0       
+#> [45] S4Vectors_0.28.1     Rhdf5lib_1.12.1      fansi_0.5.0          ape_5.5             
+#> [49] lifecycle_1.0.0      stringi_1.5.3        yaml_2.2.1           MASS_7.3-53.1       
+#> [53] zlibbioc_1.36.0      rhdf5_2.34.0         Rtsne_0.15           plyr_1.8.6          
+#> [57] grid_4.0.3           parallel_4.0.3       crayon_1.4.1         lattice_0.20-41     
+#> [61] Biostrings_2.58.0    splines_4.0.3        multtest_2.46.0      circlize_0.4.12     
+#> [65] hms_1.1.0            knitr_1.31           ComplexHeatmap_2.6.2 pillar_1.6.1        
+#> [69] igraph_1.2.6         rjson_0.2.20         reshape2_1.4.4       codetools_0.2-18    
+#> [73] stats4_4.0.3         glue_1.4.2           corncob_0.2.0        evaluate_0.14       
+#> [77] data.table_1.14.0    vctrs_0.3.8          png_0.1-7            foreach_1.5.1       
+#> [81] gtable_0.3.0         purrr_0.3.4          tidyr_1.1.3          clue_0.3-59         
+#> [85] assertthat_0.2.1     xfun_0.21            survival_3.2-7       seriation_1.2-9     
+#> [89] tibble_3.1.1         iterators_1.0.13     registry_0.5-1       IRanges_2.24.1      
+#> [93] cluster_2.1.1        ellipsis_0.3.2
 ```
