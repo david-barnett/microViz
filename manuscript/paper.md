@@ -57,4 +57,8 @@ Finally, beyond the main visualization functionality, microViz provides a suite 
 
 ![Simple example of a microViz figure pairing an ordination plot of microbial samples (left) with an "iris plot" (right): a circular stacked barchart showing the microbial compositions of samples ordered in accordance with the ordination plot. This figure is created with a subset of the "dietswap" dataset available within the microbiome R package. The ordination plot is a PCA bi-plot created using centered-log-ratio transformed species-like HITChip microbial features. The dark grey filled points on both plots indicate samples where the participant's nationality is AFR. AFR = African; AAM = African American. \label{fig:one}](fig1.jpg)
 
+# Acknowledgements
+
+This work was completed as part of a project jointly funded by the Dutch Research Council (NWO), AVEBE, FrieslandCampina and NuScience, as coordinated by the Carbohydrate Competence Center (CCC-CarboBiotics; www.cccresearch.nl).
+
 # References
