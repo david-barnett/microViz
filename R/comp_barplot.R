@@ -347,8 +347,13 @@ comp_barplot <- function(ps,
         labels = LABELLER
       ) +
       ggplot2::scale_fill_manual(
-        values = palette,
-        labels = taxon_renamer,
+        values = palette, labels = taxon_renamer,
+        # limits = force is a fix (hopefully temporary) for new ggplot2 behaviour
+        # all named values appear in legend even if they don't exist in the data
+        # this is a known bug introduced in ggplot2 3.3.4
+        # this only matters if named values given for palette, e.g. in ord_explore
+        # see https://github.com/tidyverse/ggplot2/issues/4511#issuecomment-866185530
+        limits = force,
         guide = ggplot2::guide_legend(title = tax_level, reverse = TRUE)
       )
 
