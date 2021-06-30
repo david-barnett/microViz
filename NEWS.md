@@ -1,6 +1,8 @@
-# microViz (development version)
+# microViz 0.7.9
 
-- fix (hopefully temporary) for incorrect barplot legend in ord_explore caused by bug introduced by ggplot2 version 3.3.4 noted at https://github.com/tidyverse/ggplot2/issues/4511
+Release accompanying JOSS manuscript acceptance. 
+
+- Includes a fix (hopefully temporary) for incorrect barplot legend in ord_explore caused by bug introduced by ggplot2 version 3.3.4 noted at https://github.com/tidyverse/ggplot2/issues/4511
 
 # microViz 0.7.8
 

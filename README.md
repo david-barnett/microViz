@@ -78,7 +78,7 @@ if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocMana
 BiocManager::install(c("phyloseq", "microbiome"))
 
 # To install the latest "released" version of this package
-devtools::install_github("david-barnett/microViz@0.7.8") # check 0.7.8 is the latest release
+devtools::install_github("david-barnett/microViz@0.7.9") # check 0.7.9 is the latest release
 
 # To install the very latest version:
 devtools::install_github("david-barnett/microViz")
@@ -141,6 +141,7 @@ library(dplyr)
 #> 
 #>     intersect, setdiff, setequal, union
 library(ggplot2)
+#> Warning: package 'ggplot2' was built under R version 4.0.5
 ```
 
 ``` r
@@ -265,8 +266,8 @@ aitchison_perm <- dist_permanova(
   variables = "bmi_group + female"
 )
 #> Dropping samples with missings: 2
-#> 2021-06-21 21:10:24 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2021-06-21 21:10:24 - Finished PERMANOVA
+#> 2021-06-30 20:57:54 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2021-06-30 20:57:54 - Finished PERMANOVA
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
 #>            Df   SumOfSqs         R2        F Pr(>F)
@@ -294,8 +295,8 @@ your permanova directly using the ord\_plot function with constraints.
 ``` r
 perm2 <- dist_permanova(data = aitchison_dists, variables = c("weight", "female"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2021-06-21 21:10:24 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2021-06-21 21:10:26 - Finished PERMANOVA
+#> 2021-06-30 20:57:54 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2021-06-30 20:57:56 - Finished PERMANOVA
 perm_get(perm2)
 #> Permutation test for adonis under reduced model
 #> Marginal effects of terms
@@ -395,7 +396,7 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] ggplot2_3.3.3   dplyr_1.0.6     phyloseq_1.34.0 microViz_0.7.8 
+#> [1] ggplot2_3.3.5   dplyr_1.0.7     phyloseq_1.34.0 microViz_0.7.9 
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] nlme_3.1-152         matrixStats_0.58.0   RColorBrewer_1.1-2   progress_1.2.2      
