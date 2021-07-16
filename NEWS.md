@@ -1,3 +1,7 @@
+# microViz 0.7.10
+
+Updated citation information for JOSS publication. No other changes.
+
 # microViz 0.7.9
 
 Release accompanying JOSS manuscript acceptance. 
