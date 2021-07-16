@@ -15,7 +15,7 @@
 ## vector style helpers -------------------------------------------------------
 
 #' @export
-#' @rdname ord_plotArrows
+#' @rdname ord_arrows
 vec_constraint <- function(
   size = 1, alpha = 0.8, colour = "brown",
   arrow = grid::arrow(
@@ -31,7 +31,7 @@ vec_constraint <- function(
 }
 
 #' @export
-#' @rdname ord_plotArrows
+#' @rdname ord_arrows
 vec_tax_sel <- function(
   size = 0.5, alpha = 1, colour = "black",
   arrow = grid::arrow(
@@ -47,7 +47,7 @@ vec_tax_sel <- function(
 }
 
 #' @export
-#' @rdname ord_plotArrows
+#' @rdname ord_arrows
 vec_tax_all <- function(size = 0.5, alpha = 0.25, arrow = NULL, ...
 ){
   list(size = size, alpha = alpha, arrow = arrow, ...)
