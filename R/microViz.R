@@ -1,7 +1,7 @@
-#' microViz: microbiome data analysis and visualisation
+#' microViz: microbiome data analysis and visualization
 #'
 #' @description
-#' microViz provides functions for wrangling, statistics and visualization of microbiome sequencing data.
+#' microViz provides functions for statistics and visualization of microbiome sequencing data.
 #' microViz wraps, extends and complements popular microbial ecology packages like phyloseq, vegan, and microbiome.
 #'
 #' Check out the website for tutorials and illustrated help pages.

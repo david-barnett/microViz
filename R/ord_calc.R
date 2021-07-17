@@ -145,7 +145,7 @@ ord_calc <- function(data,
     ordMethod <- "RDA"
   } else if (method %in% c("PCoA", "MDS")) {
     # CAP causes phyloseq::ordinate to call vegan::capscale which,
-    # with formula DIST ~ 1, is PCoA (and gives scores!)
+    # with formula DIST ~ 1, is PCoA
     ordMethod <- "CAP"
   } else {
     ordMethod <- method
