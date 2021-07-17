@@ -13,24 +13,24 @@
 #' @param data ps_extra list object, output from ord_calc
 #' @param axes which axes to plot: numerical vector of length 2, e.g. 1:2 or c(3,5)
 #' @param plot_taxa if ord_calc method was "PCA/RDA" draw the taxa loading vectors (see details)
-#' @param tax_vec_length NA = auto-scaling for line segment drawn for any taxa.
-#' Alternatively provide a numeric length multiplier yourself.
+#' @param tax_vec_length taxon arrow vector scale multiplier.
+#' NA = auto-scaling, or provide a numeric multiplier yourself.
 #' @param tax_vec_style_all list of named aesthetic attributes for all (background) taxon vectors
 #' @param tax_vec_style_sel list of named aesthetic attributes for taxon vectors for the taxa selected by plot_taxa
-#' @param tax_lab_length multiplier for label distance/position for any selected taxa
+#' @param tax_lab_length scale multiplier for label distance/position for any selected taxa
 #' @param tax_lab_style list of fixed aesthetics (colour, size etc) for the taxon labels
 #' @param taxon_renamer function that takes any plotted taxon names and returns modified names for labels
 #' @param plot_samples if TRUE, plot sample points with geom_point
-#' @param constraint_vec_length NA = auto-scaling for line segment drawn for any constraints.
-#' Alternatively provide a numeric length multiplier yourself.
+#' @param constraint_vec_length constraint arrow vector scale multiplier.
+#' NA = auto-scaling, or provide a numeric multiplier yourself.
 #' @param constraint_vec_style list of aesthetics/arguments (colour, alpha etc) for the constraint vectors
-#' @param constraint_lab_length relative length of label drawn for any constraints
-#' (relative to default position which is defined by correlation with each drawn axis)
+#' @param constraint_lab_length label distance/position for any constraints
+#' (relative to default position which is proportional to correlations with each axis)
 #' @param constraint_lab_style list of aesthetics/arguments (colour, size etc) for the constraint labels
 #' @param var_renamer function to rename constraining variables for plotting their labels
 #' @param scaling
-#' Relevant for constrained ordinations: Type 2, or type 1 scaling. See \url{https://sites.google.com/site/mb3gustame/constrained-analyses/rda}
-#' Either "species" or "site" scores are scaled by eigenvalues, and the other set of scores is left unscaled (from ?vegan::scores.cca)
+#' Type 2, or type 1 scaling. For more info, see \url{https://sites.google.com/site/mb3gustame/constrained-analyses/rda}.
+#' Either "species" or "site" scores are scaled by (proportional) eigenvalues, and the other set of scores is left unscaled (from ?vegan::scores.cca)
 #' @param auto_caption size of caption with info about the ordination, NA for none
 #' @param center expand plot limits to center around origin point (0,0)
 #' @param clip clipping of labels that extend outside plot limits?
@@ -428,8 +428,8 @@ ord_caption <- function(p, ps, cap_size, info, scaling) {
 
     o <- info[["ordMethod"]]
 
-    # constrained ordinations should have scaling type reported
-    if (o %in% c("RDA", "CCA", "CAP")) {
+    # some ordinations should have scaling type reported, when not the default
+    if (o %in% c("PCA", "RDA", "CCA", "CAP") && scaling != 2) {
       o <- paste0(o, " (scaling=", scaling, ")")
     }
     if (!is.na(info[["constraints"]])) {

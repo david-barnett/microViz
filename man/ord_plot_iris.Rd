@@ -48,8 +48,8 @@ ord_plot_iris(
 
 \item{keep_all_vars}{slows down processing but is required for any post-hoc plot customisation options}
 
-\item{scaling}{Relevant for constrained ordinations: Type 2, or type 1 scaling. See \url{https://sites.google.com/site/mb3gustame/constrained-analyses/rda}
-Either "species" or "site" scores are scaled by eigenvalues, and the other set of scores is left unscaled (from ?vegan::scores.cca)}
+\item{scaling}{Type 2, or type 1 scaling. For more info, see \url{https://sites.google.com/site/mb3gustame/constrained-analyses/rda}.
+Either "species" or "site" scores are scaled by (proportional) eigenvalues, and the other set of scores is left unscaled (from ?vegan::scores.cca)}
 
 \item{count_warn}{warn if count data are not available? i.e. phyloseq otu_table is not positive integers and ps_extra counts slot is NULL}
 

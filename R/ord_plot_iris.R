@@ -25,9 +25,7 @@
 #' @param anno_binary name(s) of binary sample_data variable(s) (levels T/F or 1/0) to use for filtered geom_point annotation ring(s) (annotates at TRUE values)
 #' @param anno_binary_style list of further arguments passed to geom_point e.g. colour, size, y, etc.
 #' @param keep_all_vars slows down processing but is required for any post-hoc plot customisation options
-#' @param scaling
-#' Relevant for constrained ordinations: Type 2, or type 1 scaling. See \url{https://sites.google.com/site/mb3gustame/constrained-analyses/rda}
-#' Either "species" or "site" scores are scaled by eigenvalues, and the other set of scores is left unscaled (from ?vegan::scores.cca)
+#' @inheritParams ord_plot
 #' @param count_warn warn if count data are not available? i.e. phyloseq otu_table is not positive integers and ps_extra counts slot is NULL
 #' @param ... extra args passed to comp_barplot e.g. bar_width
 #'
@@ -297,8 +295,7 @@ ord_plot_iris <- function(data,
 #' @param ps phyloseq
 #' @param ord any vegan ordination made from ps
 #' @param axes e.g. 1:2
-#' @param scaling
-#' Relevant for constrained ordinations: Type 2, or type 1 scaling.
+#' @inheritParams ord_plot scaling
 #'
 #' @noRd
 ps_ord_sort <- function(ps, ord, axes, scaling) {

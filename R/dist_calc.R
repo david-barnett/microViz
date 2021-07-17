@@ -23,7 +23,7 @@
 #' 1. skip the dist_calc function and call ord_calc(method = "PCA") directly on an object with taxa transformed with tax_transform(transformation = "clr")
 #' 2. pass an object with untransformed (or 'identity' transformed) taxa to the data argument of dist_calc() and specify dist = "aitchison".
 #'
-#' If ordination plots with taxon loading distances are desired, users require option 1.
+#' If ordination plots with taxon loading vectors are desired, users require option 1.
 #' If the distance matrix is required for permanova, users require option 2.
 #'
 #'

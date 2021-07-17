@@ -36,26 +36,26 @@ ord_plot(
 
 \item{plot_taxa}{if ord_calc method was "PCA/RDA" draw the taxa loading vectors (see details)}
 
-\item{tax_vec_length}{NA = auto-scaling for line segment drawn for any taxa.
-Alternatively provide a numeric length multiplier yourself.}
+\item{tax_vec_length}{taxon arrow vector scale multiplier.
+NA = auto-scaling, or provide a numeric multiplier yourself.}
 
 \item{tax_vec_style_all}{list of named aesthetic attributes for all (background) taxon vectors}
 
 \item{tax_vec_style_sel}{list of named aesthetic attributes for taxon vectors for the taxa selected by plot_taxa}
 
-\item{tax_lab_length}{multiplier for label distance/position for any selected taxa}
+\item{tax_lab_length}{scale multiplier for label distance/position for any selected taxa}
 
 \item{tax_lab_style}{list of fixed aesthetics (colour, size etc) for the taxon labels}
 
 \item{taxon_renamer}{function that takes any plotted taxon names and returns modified names for labels}
 
-\item{constraint_vec_length}{NA = auto-scaling for line segment drawn for any constraints.
-Alternatively provide a numeric length multiplier yourself.}
+\item{constraint_vec_length}{constraint arrow vector scale multiplier.
+NA = auto-scaling, or provide a numeric multiplier yourself.}
 
 \item{constraint_vec_style}{list of aesthetics/arguments (colour, alpha etc) for the constraint vectors}
 
-\item{constraint_lab_length}{relative length of label drawn for any constraints
-(relative to default position which is defined by correlation with each drawn axis)}
+\item{constraint_lab_length}{label distance/position for any constraints
+(relative to default position which is proportional to correlations with each axis)}
 
 \item{constraint_lab_style}{list of aesthetics/arguments (colour, size etc) for the constraint labels}
 
@@ -63,8 +63,8 @@ Alternatively provide a numeric length multiplier yourself.}
 
 \item{plot_samples}{if TRUE, plot sample points with geom_point}
 
-\item{scaling}{Relevant for constrained ordinations: Type 2, or type 1 scaling. See \url{https://sites.google.com/site/mb3gustame/constrained-analyses/rda}
-Either "species" or "site" scores are scaled by eigenvalues, and the other set of scores is left unscaled (from ?vegan::scores.cca)}
+\item{scaling}{Type 2, or type 1 scaling. For more info, see \url{https://sites.google.com/site/mb3gustame/constrained-analyses/rda}.
+Either "species" or "site" scores are scaled by (proportional) eigenvalues, and the other set of scores is left unscaled (from ?vegan::scores.cca)}
 
 \item{auto_caption}{size of caption with info about the ordination, NA for none}
 
