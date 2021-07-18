@@ -182,7 +182,7 @@ ord_plot_iris <- function(data,
   ps <- ps_counts(data, warn = count_warn)
 
   # sort samples by ordination order
-  ps <- ps_ord_sort(ps, ord = ord_get(data), axes = axes, scaling = scaling)
+  ps <- ps_sort_ord(ps, ord = data, axes = axes, scaling = scaling)
 
   # drop to only annotation vars, if any given
   annos <- c(anno_binary, anno_colour)
@@ -198,7 +198,7 @@ ord_plot_iris <- function(data,
     palette = palette,
     n_taxa = n_taxa,
     keep_all_vars = TRUE, # this is already handle by ord_plot_iris
-    sample_order = "default" # uses ps order already set by ps_ord_sort!
+    sample_order = "default" # uses ps order already set by ps_sort_ord!
   )
 
   # default extra args to barplot still modifiable and extendible
@@ -287,37 +287,3 @@ ord_plot_iris <- function(data,
   }
 }
 
-
-#' ordination sorting helper for iris plot
-#'
-#' returns a phyloseq sorted by rotation around selected ordination axes
-#'
-#' @param ps phyloseq
-#' @param ord any vegan ordination made from ps
-#' @param axes e.g. 1:2
-#' @inheritParams ord_plot scaling
-#'
-#' @noRd
-ps_ord_sort <- function(ps, ord, axes, scaling) {
-  # get axes
-  df <- as.data.frame.matrix(
-    vegan::scores(
-      ord,
-      choices = axes, display = "sites", scaling = scaling
-    )
-  )
-
-  df[["ID"]] <- rownames(df)
-
-  # find anticlockwise angle from right x-axis
-  df[["angle"]] <- dplyr::if_else(
-    condition = df[[2]] > 0,
-    true = atan2(x = df[[1]], y = df[[2]]),
-    false = (2 * pi) + (atan2(x = df[[1]], y = df[[2]]))
-  )
-
-  df <- dplyr::arrange(df, .data$angle)
-  sorted_samples <- rownames(df)
-  ps <- ps_reorder(ps, sample_order = sorted_samples)
-  return(ps)
-}
