@@ -235,7 +235,7 @@ tax_reorder <- function(ps, tax_order, tree_warn = TRUE) {
   }
 
   otu <- unclass(otu_get(ps))
-  otu <- otu[, tax_order]
+  otu <- otu[, tax_order, drop = FALSE]
 
   # return otu_table oriented as found
   if (tax_as_rows) otu <- t(otu) # FROM taxa as columns TO taxa as rows!
