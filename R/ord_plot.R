@@ -341,7 +341,9 @@ ord_plot <-
       if (!identical(selectSpeciesScoresDf, NULL)) {
         # automatic taxa vector length setting
         if (identical(tax_vec_length, NA)) {
-          x <- max(siteScoresDf[[1]]) / max(speciesScoresDf[[1]])
+          x <-
+            max(apply(siteScoresDf[, 1:2], MARGIN = 1, FUN = vecNormEuclid)) /
+            max(apply(speciesScoresDf[, 1:2], MARGIN = 1, FUN = vecNormEuclid))
           tax_vec_length <- x * 0.85
         }
 
@@ -375,7 +377,9 @@ ord_plot <-
     if (!identical(info[["constraints"]], NA_character_)) {
       # automatic constraint length setting
       if (identical(constraint_vec_length, NA)) {
-        x <- max(abs(siteScoresDf[[1]])) / max(abs(constraintDf[[1]]))
+        x <-
+          max(apply(siteScoresDf[, 1:2], MARGIN = 1, FUN = vecNormEuclid)) /
+          max(apply(constraintDf[, 1:2], MARGIN = 1, FUN = vecNormEuclid))
         constraint_vec_length <- x * 0.45
       }
       # draw vector segments at length set by constraint_vec_length argument
@@ -497,5 +501,9 @@ ggplot2_shapes <- function() {
     paste("triangle down", c("open", "filled")),
     "plus", "cross", "asterisk"
   )
+}
+
+vecNormEuclid <- function(vec){
+  return(norm(vec, type = "2"))
 }
 
