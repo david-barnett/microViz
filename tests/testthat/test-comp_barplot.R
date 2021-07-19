@@ -31,6 +31,7 @@ top8bysum <- c(
 
 test_that("comp_barplot doesn't change", {
   local_edition(3)
+
   p <- dietswap %>%
     ps_filter(timepoint == 1) %>%
     comp_barplot(
@@ -39,6 +40,9 @@ test_that("comp_barplot doesn't change", {
       merge_other = FALSE,
       tax_order = sum,
     ) + coord_flip()
+
+  # vdiffr visual test
+  vdiffr::expect_doppelganger(title = "comp_barplot", fig = p)
 
   expect_snapshot_csv(
     name = "unique_taxa_order",
