@@ -82,7 +82,7 @@ Any cell numbers printed can be set to different values, and do not affect order
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9002</span>
       </span>
     </div>
 
@@ -290,24 +290,24 @@ so tax_transform_colors/numbers must be valid transform arguments for this funct
 <span class='va'>taxa</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'>microbiome</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/microbiome/man/top_taxa.html'>top_taxa</a></span><span class='op'>(</span><span class='fu'><a href='ps_extra-accessors.html'>ps_get</a></span><span class='op'>(</span><span class='va'>psq</span><span class='op'>)</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>50</span><span class='op'>]</span>, size <span class='op'>=</span> <span class='fl'>30</span><span class='op'>)</span>
 
 <span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'>comp_heatmap</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>psq</span>, taxa <span class='op'>=</span> <span class='va'>taxa</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Setting class(x) to "matrix" sets attribute to NULL; result will no longer be an S4 object</span></div><div class='input'><span class='va'>p</span>
+<span class='va'>p</span>
 </div><div class='img'><img src='comp_heatmap-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># set the colour range yourself</span>
 <span class='fu'>comp_heatmap</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>psq</span>, taxa <span class='op'>=</span> <span class='va'>taxa</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span>,
   colors <span class='op'>=</span> <span class='fu'><a href='heat_palette.html'>heat_palette</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Greens"</span>, rev <span class='op'>=</span> <span class='cn'>TRUE</span>, range <span class='op'>=</span> <span class='fl'>0</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Setting class(x) to "matrix" sets attribute to NULL; result will no longer be an S4 object</span></div><div class='img'><img src='comp_heatmap-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>comp_heatmap</span><span class='op'>(</span>
+</div><div class='img'><img src='comp_heatmap-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>comp_heatmap</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>psq</span>, taxa <span class='op'>=</span> <span class='va'>taxa</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span>,
   colors <span class='op'>=</span> <span class='fu'><a href='heat_palette.html'>heat_palette</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Green-Orange"</span>, range <span class='op'>=</span> <span class='fl'>0</span><span class='op'>:</span><span class='fl'>5</span>, sym <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Setting class(x) to "matrix" sets attribute to NULL; result will no longer be an S4 object</span></div><div class='img'><img src='comp_heatmap-3.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='img'><img src='comp_heatmap-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># you can place the legend at the bottom, but it is a little complicated</span>
 <span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'>comp_heatmap</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>psq</span>, taxa <span class='op'>=</span> <span class='va'>taxa</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span>,
   heatmap_legend_param <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>direction <span class='op'>=</span> <span class='st'>"horizontal"</span>, title_position <span class='op'>=</span> <span class='st'>"lefttop"</span><span class='op'>)</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Setting class(x) to "matrix" sets attribute to NULL; result will no longer be an S4 object</span></div><div class='input'><span class='fu'>ComplexHeatmap</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html'>draw</a></span><span class='op'>(</span><span class='va'>p</span>, heatmap_legend_side <span class='op'>=</span> <span class='st'>"bottom"</span>, adjust_annotation_extension <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='fu'>ComplexHeatmap</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html'>draw</a></span><span class='op'>(</span><span class='va'>p</span>, heatmap_legend_side <span class='op'>=</span> <span class='st'>"bottom"</span>, adjust_annotation_extension <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 </div><div class='img'><img src='comp_heatmap-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='va'>p2</span> <span class='op'>&lt;-</span> <span class='fu'>comp_heatmap</span><span class='op'>(</span>
   <span class='va'>psq</span>,
@@ -315,7 +315,7 @@ so tax_transform_colors/numbers must be valid transform arguments for this funct
   taxa_side <span class='op'>=</span> <span class='st'>"bottom"</span>,
   anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span>, which <span class='op'>=</span> <span class='st'>"column"</span><span class='op'>)</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Setting class(x) to "matrix" sets attribute to NULL; result will no longer be an S4 object</span></div><div class='input'><span class='va'>p2</span>
+<span class='va'>p2</span>
 </div><div class='img'><img src='comp_heatmap-5.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

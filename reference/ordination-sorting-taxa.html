@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Arrange samples in a phyloseq by microbiome similarity — ps_seriate • microViz</title>
+<title>Order taxa in phyloseq by their loading vectors — tax_sort_ord • microViz</title>
 
 
 <!-- jquery -->
@@ -45,8 +45,11 @@
 
 
 
-<meta property="og:title" content="Arrange samples in a phyloseq by microbiome similarity — ps_seriate" />
-<meta property="og:description" content="Uses seriation methods from seriation::seriate and often dist_calc (depending on if seriation method requires a distance matrix)" />
+<meta property="og:title" content="Order taxa in phyloseq by their loading vectors — tax_sort_ord" />
+<meta property="og:description" content="tax_sort_ord reorders taxa in a phyloseq object based on the relative
+length of their taxa scores / &quot;loading&quot; vector lengths on 1 or 2 ordination axes.
+ord_order_taxa gets the taxa names in order from the ordination
+contained in a ps_extra list. This is used internally by tax_sort_ord." />
 
 
 
@@ -155,107 +158,53 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Arrange samples in a phyloseq by microbiome similarity</h1>
-    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/ps_seriate.R'><code>R/ps_seriate.R</code></a></small>
-    <div class="hidden name"><code>ps_seriate.Rd</code></div>
+    <h1>Order taxa in phyloseq by their loading vectors</h1>
+    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/tax_sort_ord.R'><code>R/tax_sort_ord.R</code></a></small>
+    <div class="hidden name"><code>ordination-sorting-taxa.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Uses seriation methods from seriation::seriate and often dist_calc (depending on if seriation method requires a distance matrix)</p>
+    <p><code>tax_sort_ord</code> reorders taxa in a phyloseq object based on the relative
+length of their taxa scores / "loading" vector lengths on 1 or 2 ordination axes.</p>
+<p><code>ord_order_taxa</code> gets the taxa names in order from the ordination
+contained in a ps_extra list. This is used internally by <code>tax_sort_ord</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ps_seriate</span><span class='op'>(</span>
-  <span class='va'>ps</span>,
-  method <span class='op'>=</span> <span class='st'>"OLO_ward"</span>,
-  dist <span class='op'>=</span> <span class='st'>"bray"</span>,
-  tax_transform <span class='op'>=</span> <span class='st'>"identity"</span>,
-  add_variable <span class='op'>=</span> <span class='cn'>FALSE</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>tax_sort_ord</span><span class='op'>(</span><span class='va'>ps</span>, <span class='va'>ord</span>, axes <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, scaling <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
+
+<span class='fu'>ord_order_taxa</span><span class='op'>(</span><span class='va'>ord</span>, axes <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, scaling <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>ps</th>
-      <td><p>phyloseq object</p></td>
+      <td><p>phyloseq object to be sorted</p></td>
     </tr>
     <tr>
-      <th>method</th>
-      <td><p>seriation method for ordering samples, from seriation::seriate</p></td>
+      <th>ord</th>
+      <td><p>ps_extra with ordination object</p></td>
     </tr>
     <tr>
-      <th>dist</th>
-      <td><p>distance method for dist_calc (only used if required for particular seriation method!)</p></td>
+      <th>axes</th>
+      <td><p>which axes to use for sorting? numerical vector of length 1 or 2</p></td>
     </tr>
     <tr>
-      <th>tax_transform</th>
-      <td><p>transformation to apply before seriation or any distance calculation</p></td>
-    </tr>
-    <tr>
-      <th>add_variable</th>
-      <td><p>add a variable to the sample data indicating seriation order</p></td>
+      <th>scaling</th>
+      <td><p>Type 2, or type 1 scaling. For more info, see <a href='https://sites.google.com/site/mb3gustame/constrained-analyses/rda'>https://sites.google.com/site/mb3gustame/constrained-analyses/rda</a>.
+Either "species" or "site" scores are scaled by (proportional) eigenvalues, and the other set of scores is left unscaled (from ?vegan::scores.cca)</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>phyloseq</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='ps_arrange.html'>ps_arrange</a></code> <code><a href='ps_reorder.html'>ps_reorder</a></code></p></div>
+    <div class='dont-index'>
+<ul>
+<li><p>These functions were created to support ordering of taxa bars on <code>ord_plot_iris</code></p></li>
+<li><p><code>ps_sort_ord</code> for ordering samples in phyloseq by ordination</p></li>
+</ul>
+</div>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://dx.plos.org/10.1371/journal.pone.0061217'>phyloseq</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://microbiome.github.io/microbiome'>microbiome</a></span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span><span class='op'>)</span>
-
-<span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fl'>8</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Sample Data:        [8 samples by 8 sample variables]:
-#&gt;          subject    sex nationality group   sample timepoint
-#&gt; Sample-1     byn   male         AAM    DI Sample-1         4
-#&gt; Sample-2     nms   male         AFR    HE Sample-2         2
-#&gt; Sample-3     olt   male         AFR    HE Sample-3         2
-#&gt; Sample-4     pku female         AFR    HE Sample-4         2
-#&gt; Sample-5     qjy female         AFR    HE Sample-5         2
-#&gt; Sample-6     riv female         AFR    HE Sample-6         2
-#&gt; Sample-7     shj female         AFR    HE Sample-7         2
-#&gt; Sample-8     tgx   male         AFR    HE Sample-8         2
-#&gt;          timepoint.within.group  bmi_group
-#&gt; Sample-1                      1      obese
-#&gt; Sample-2                      1       lean
-#&gt; Sample-3                      1 overweight
-#&gt; Sample-4                      1      obese
-#&gt; Sample-5                      1 overweight
-#&gt; Sample-6                      1      obese
-#&gt; Sample-7                      1      obese
-#&gt; Sample-8                      1 overweight</div><div class='input'>
-<span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='va'>.</span><span class='op'>$</span><span class='va'>ps</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>ps_seriate</span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"OLO_ward"</span>, dist <span class='op'>=</span> <span class='st'>"bray"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fl'>8</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Sample Data:        [8 samples by 8 sample variables]:
-#&gt;            subject    sex nationality group     sample timepoint
-#&gt; Sample-125     nmz   male         AAM    HE Sample-125         3
-#&gt; Sample-200     jql female         AAM    DI Sample-200         4
-#&gt; Sample-207     nms   male         AFR    ED Sample-207         1
-#&gt; Sample-15      shj female         AFR    HE  Sample-15         3
-#&gt; Sample-81      fud female         AFR    DI  Sample-81         4
-#&gt; Sample-209     pku female         AFR    ED Sample-209         1
-#&gt; Sample-107     byu   male         AFR    HE Sample-107         3
-#&gt; Sample-210     qjy female         AFR    ED Sample-210         1
-#&gt;            timepoint.within.group  bmi_group
-#&gt; Sample-125                      2      obese
-#&gt; Sample-200                      1      obese
-#&gt; Sample-207                      1       lean
-#&gt; Sample-15                       2      obese
-#&gt; Sample-81                       1      obese
-#&gt; Sample-209                      1      obese
-#&gt; Sample-107                      2       lean
-#&gt; Sample-210                      1 overweight</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

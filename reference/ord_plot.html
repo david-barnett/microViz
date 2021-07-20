@@ -82,7 +82,7 @@ For interpretation see the the relevant pages on PCA, PCoA, RDA, or CCA on the G
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9002</span>
       </span>
     </div>
 
@@ -214,8 +214,8 @@ For interpretation see the the relevant pages on PCA, PCoA, RDA, or CCA on the G
     </tr>
     <tr>
       <th>tax_vec_length</th>
-      <td><p>NA = auto-scaling for line segment drawn for any taxa.
-Alternatively provide a numeric length multiplier yourself.</p></td>
+      <td><p>taxon arrow vector scale multiplier.
+NA = auto-scaling, or provide a numeric multiplier yourself.</p></td>
     </tr>
     <tr>
       <th>tax_vec_style_all</th>
@@ -227,7 +227,7 @@ Alternatively provide a numeric length multiplier yourself.</p></td>
     </tr>
     <tr>
       <th>tax_lab_length</th>
-      <td><p>multiplier for label distance/position for any selected taxa</p></td>
+      <td><p>scale multiplier for label distance/position for any selected taxa</p></td>
     </tr>
     <tr>
       <th>tax_lab_style</th>
@@ -239,8 +239,8 @@ Alternatively provide a numeric length multiplier yourself.</p></td>
     </tr>
     <tr>
       <th>constraint_vec_length</th>
-      <td><p>NA = auto-scaling for line segment drawn for any constraints.
-Alternatively provide a numeric length multiplier yourself.</p></td>
+      <td><p>constraint arrow vector scale multiplier.
+NA = auto-scaling, or provide a numeric multiplier yourself.</p></td>
     </tr>
     <tr>
       <th>constraint_vec_style</th>
@@ -248,8 +248,8 @@ Alternatively provide a numeric length multiplier yourself.</p></td>
     </tr>
     <tr>
       <th>constraint_lab_length</th>
-      <td><p>relative length of label drawn for any constraints
-(relative to default position which is defined by correlation with each drawn axis)</p></td>
+      <td><p>label distance/position for any constraints
+(relative to default position which is proportional to correlations with each axis)</p></td>
     </tr>
     <tr>
       <th>constraint_lab_style</th>
@@ -265,8 +265,8 @@ Alternatively provide a numeric length multiplier yourself.</p></td>
     </tr>
     <tr>
       <th>scaling</th>
-      <td><p>Relevant for constrained ordinations: Type 2, or type 1 scaling. See <a href='https://sites.google.com/site/mb3gustame/constrained-analyses/rda'>https://sites.google.com/site/mb3gustame/constrained-analyses/rda</a>
-Either "species" or "site" scores are scaled by eigenvalues, and the other set of scores is left unscaled (from ?vegan::scores.cca)</p></td>
+      <td><p>Type 2, or type 1 scaling. For more info, see <a href='https://sites.google.com/site/mb3gustame/constrained-analyses/rda'>https://sites.google.com/site/mb3gustame/constrained-analyses/rda</a>.
+Either "species" or "site" scores are scaled by (proportional) eigenvalues, and the other set of scores is left unscaled (from ?vegan::scores.cca)</p></td>
     </tr>
     <tr>
       <th>auto_caption</th>
