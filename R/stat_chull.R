@@ -8,7 +8,7 @@
 #' @details
 #' This is a ggplot2 extension - slightly modified from the original code found here:
 #'
-#' \url{https://cran.r-project.org/web/packages/ggplot2/vignettes/extending-ggplot2.html}
+#' \url{https://CRAN.r-project.org/package=ggplot2/vignettes/extending-ggplot2.html}
 #'
 #' @inheritParams ggplot2::layer
 #' @inheritParams ggplot2::stat_ellipse

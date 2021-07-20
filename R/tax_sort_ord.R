@@ -25,7 +25,7 @@ tax_sort_ord <- function(ps, ord, axes = 1:2, scaling = 2) {
   stopifnot(all(taxaInOrder %in% phyloseq::taxa_names(ps)))
 
   # sort taxa in phyloseq in this order
-  ps <- tax_reorder(ps = ps, order_taxa = taxaInOrder, tree_warn = TRUE)
+  ps <- tax_reorder(ps = ps, tax_order = taxaInOrder, tree_warn = TRUE)
 
   return(data)
 }
