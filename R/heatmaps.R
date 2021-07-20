@@ -323,14 +323,17 @@ comp_heatmap <- function(data,
   # handle otu_table data
   otu_mat <- otu_get(microbiome::transform(ps, transform = tax_transform_colors)) # used for colours and seriation
   otu_mat <- tax_scale(data = otu_mat, do = tax_scale_colors)
-  otu_mat <- unclass(otu_mat[samples, taxa, drop = FALSE])
+  otu_mat <- otu_mat[samples, taxa, drop = FALSE]
   if (identical(numbers, NULL)) {
     otu_numbers <- otu_mat # avoids computation if otu_numbers won't be shown anyway
   } else {
     otu_numbers <- otu_get(microbiome::transform(ps, transform = tax_transform_numbers)) # used for numbers only
     otu_numbers <- tax_scale(data = otu_numbers, do = tax_scale_numbers)
-    otu_numbers <- unclass(otu_numbers[samples, taxa, drop = FALSE])
+    otu_numbers <- otu_numbers[samples, taxa, drop = FALSE]
   }
+  # remove taxa_are_rows attr. (caused warning when Heatmap sets class(mat))
+  otu_mat <- methods::as(otu_mat, Class = "matrix")
+  otu_numbers <- methods::as(otu_numbers, Class = "matrix")
 
   args <- list(
     name = name,
