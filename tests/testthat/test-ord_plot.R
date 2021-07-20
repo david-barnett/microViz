@@ -24,6 +24,7 @@ p <- suppressMessages(
 
 
 test_that("constrained rda plot gives correct positions", {
+  vdiffr::expect_doppelganger("rda_triplot", fig = p)
   expect_snapshot(cat(p$data[1:50, 1, drop = TRUE]))
   expect_snapshot(cat(p$data[1:50, 2, drop = TRUE]))
   expect_snapshot(cat(p$layers[[2]]$data[, 1, drop = TRUE]))
