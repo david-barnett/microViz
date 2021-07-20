@@ -2,6 +2,7 @@
 
 ## Breaking changes
 - `ord_plot` "auto"matic loading/constraint vector length scalar adjustment improvement: now uses both axes
+- `comp_barplot` now uses bray-curtis by default for sample ordering (instead of aitchison) as this generally looks better
 
 # microViz 0.7.10
 
