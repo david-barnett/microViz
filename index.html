@@ -135,7 +135,7 @@
 <li><p><a href="https://david-barnett.github.io/microViz/articles/web-only/tax-fixing.html">Fixing your taxa table with tax_fix</a></p></li>
 <li><p><a href="https://david-barnett.github.io/microViz/articles/web-only/ordination.html">Creating ordination plots</a> (e.g. PCA or PCoA)</p></li>
 <li><p><a href="https://david-barnett.github.io/microViz/articles/web-only/ordination-interactive.html">Interactive ordination plots with ord_explore</a></p></li>
-<li><p><a href="https://david-barnett.github.io/microViz/articles/articles/compositions.html">Visualising taxonomic compositions with comp_barplot</a></p></li>
+<li><p><a href="https://david-barnett.github.io/microViz/articles/web-only/compositions.html">Visualising taxonomic compositions with comp_barplot</a></p></li>
 <li><p>More coming soon! Post on <a href="https://github.com/david-barnett/microViz/discussions">GitHub discussions</a> if you have questions/requests</p></li>
 </ul>
 </li>
@@ -300,8 +300,8 @@
   variables <span class="op">=</span> <span class="st">"bmi_group + female"</span>
 <span class="op">)</span>
 <span class="co">#&gt; Dropping samples with missings: 2</span>
-<span class="co">#&gt; 2021-08-19 15:06:51 - Starting PERMANOVA with 99 perms with 1 processes</span>
-<span class="co">#&gt; 2021-08-19 15:06:52 - Finished PERMANOVA</span>
+<span class="co">#&gt; 2021-08-19 15:23:24 - Starting PERMANOVA with 99 perms with 1 processes</span>
+<span class="co">#&gt; 2021-08-19 15:23:25 - Finished PERMANOVA</span>
 <span class="co"># view the permanova results</span>
 <span class="fu"><a href="reference/ps_extra-accessors.html">perm_get</a></span><span class="op">(</span><span class="va">aitchison_perm</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt;            Df   SumOfSqs         R2        F Pr(&gt;F)</span>
@@ -327,8 +327,8 @@
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">perm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/dist_permanova.html">dist_permanova</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">aitchison_dists</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"female"</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">321</span><span class="op">)</span>
 <span class="co">#&gt; Dropping samples with missings: 2</span>
-<span class="co">#&gt; 2021-08-19 15:06:52 - Starting PERMANOVA with 999 perms with 1 processes</span>
-<span class="co">#&gt; 2021-08-19 15:06:52 - Finished PERMANOVA</span>
+<span class="co">#&gt; 2021-08-19 15:23:25 - Starting PERMANOVA with 999 perms with 1 processes</span>
+<span class="co">#&gt; 2021-08-19 15:23:25 - Finished PERMANOVA</span>
 <span class="fu"><a href="reference/ps_extra-accessors.html">perm_get</a></span><span class="op">(</span><span class="va">perm2</span><span class="op">)</span>
 <span class="co">#&gt; Permutation test for adonis under reduced model</span>
 <span class="co">#&gt; Marginal effects of terms</span>
