@@ -58,7 +58,7 @@ examples: <https://david-barnett.github.io/microViz/>
         ord\_explore](https://david-barnett.github.io/microViz/articles/web-only/ordination-interactive.html)
 
     -   [Visualising taxonomic compositions with
-        comp\_barplot](https://david-barnett.github.io/microViz/articles/articles/compositions.html)
+        comp\_barplot](https://david-barnett.github.io/microViz/articles/web-only/compositions.html)
 
     -   More coming soon! Post on [GitHub
         discussions](https://github.com/david-barnett/microViz/discussions)
@@ -264,8 +264,8 @@ aitchison_perm <- dist_permanova(
   variables = "bmi_group + female"
 )
 #> Dropping samples with missings: 2
-#> 2021-08-19 15:06:51 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2021-08-19 15:06:52 - Finished PERMANOVA
+#> 2021-08-19 15:23:24 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2021-08-19 15:23:25 - Finished PERMANOVA
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
 #>            Df   SumOfSqs         R2        F Pr(>F)
@@ -293,8 +293,8 @@ your permanova directly using the ord\_plot function with constraints.
 ``` r
 perm2 <- dist_permanova(data = aitchison_dists, variables = c("weight", "female"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2021-08-19 15:06:52 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2021-08-19 15:06:52 - Finished PERMANOVA
+#> 2021-08-19 15:23:25 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2021-08-19 15:23:25 - Finished PERMANOVA
 perm_get(perm2)
 #> Permutation test for adonis under reduced model
 #> Marginal effects of terms
