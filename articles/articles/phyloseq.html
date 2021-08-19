@@ -208,19 +208,19 @@
 <span class="co">#&gt; tax_table()   Taxonomy Table:    [ 36349 taxa by 7 taxonomic ranks ]</span>
 <span class="co"># return sample data as a tibble for pretty printing</span>
 <span class="fu"><a href="../../reference/ps_extra-accessors.html">samdat_tbl</a></span><span class="op">(</span><span class="va">example_ps</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 91 x 16</span>
-<span class="co">#&gt;    .sample_name sample gender   age DiseaseState steroids imsp  abx   mesalamine</span>
-<span class="co">#&gt;    &lt;chr&gt;        &lt;chr&gt;  &lt;chr&gt;  &lt;int&gt; &lt;chr&gt;        &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;     </span>
-<span class="co">#&gt;  1 099A         099-AX female    17 UC           steroids imsp  noabx nomes     </span>
-<span class="co">#&gt;  2 199A         199-AX female     5 nonIBD       nostero… noim… noabx nomes     </span>
-<span class="co">#&gt;  3 062B         062-BZ male      16 CD           steroids imsp  noabx nomes     </span>
-<span class="co">#&gt;  4 194A         194-AZ male      15 UC           steroids noim… noabx nomes     </span>
-<span class="co">#&gt;  5 166A         166-AX female    20 UC           nostero… noim… abx   nomes     </span>
-<span class="co">#&gt;  6 219A         219-AX female    18 UC           nostero… imsp  abx   nomes     </span>
-<span class="co">#&gt;  7 132A         132-AX female    12 CD           steroids imsp  noabx nomes     </span>
-<span class="co">#&gt;  8 026A         026-AX male      10 UC           steroids imsp  abx   nomes     </span>
-<span class="co">#&gt;  9 102A         102-AZ male       3 nonIBD       nostero… noim… noabx nomes     </span>
-<span class="co">#&gt; 10 140A         140-AX female     5 nonIBD       nostero… noim… noabx nomes     </span>
+<span class="co">#&gt; # A tibble: 91 × 16</span>
+<span class="co">#&gt;    .sample_name sample gender   age DiseaseState steroids   imsp   abx   mesalamine</span>
+<span class="co">#&gt;    &lt;chr&gt;        &lt;chr&gt;  &lt;chr&gt;  &lt;int&gt; &lt;chr&gt;        &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;     </span>
+<span class="co">#&gt;  1 099A         099-AX female    17 UC           steroids   imsp   noabx nomes     </span>
+<span class="co">#&gt;  2 199A         199-AX female     5 nonIBD       nosteroids noimsp noabx nomes     </span>
+<span class="co">#&gt;  3 062B         062-BZ male      16 CD           steroids   imsp   noabx nomes     </span>
+<span class="co">#&gt;  4 194A         194-AZ male      15 UC           steroids   noimsp noabx nomes     </span>
+<span class="co">#&gt;  5 166A         166-AX female    20 UC           nosteroids noimsp abx   nomes     </span>
+<span class="co">#&gt;  6 219A         219-AX female    18 UC           nosteroids imsp   abx   nomes     </span>
+<span class="co">#&gt;  7 132A         132-AX female    12 CD           steroids   imsp   noabx nomes     </span>
+<span class="co">#&gt;  8 026A         026-AX male      10 UC           steroids   imsp   abx   nomes     </span>
+<span class="co">#&gt;  9 102A         102-AZ male       3 nonIBD       nosteroids noimsp noabx nomes     </span>
+<span class="co">#&gt; 10 140A         140-AX female     5 nonIBD       nosteroids noimsp noabx nomes     </span>
 <span class="co">#&gt; # … with 81 more rows, and 7 more variables: ibd &lt;chr&gt;, activity &lt;chr&gt;,</span>
 <span class="co">#&gt; #   active &lt;chr&gt;, race &lt;chr&gt;, fhx &lt;chr&gt;, imspLEVEL &lt;chr&gt;, SampleType &lt;chr&gt;</span></code></pre></div>
 <p>Maybe you want to only select participants who have IBD (not controls). You can do that by filtering samples based on the values of the sample data variable: ibd</p>
@@ -250,7 +250,7 @@
   <span class="fu"><a href="../../reference/ps_arrange.html">ps_arrange</a></span><span class="op">(</span><span class="va">DiseaseState</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">age</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="../../reference/ps_select.html">ps_select</a></span><span class="op">(</span><span class="va">DiseaseState</span>, <span class="va">age</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">matches</a></span><span class="op">(</span><span class="st">"activ"</span><span class="op">)</span>, <span class="va">abx</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># selection order is respected</span>
   <span class="fu"><a href="../../reference/ps_extra-accessors.html">samdat_tbl</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># this adds the .sample_name variable</span>
-<span class="co">#&gt; # A tibble: 9 x 6</span>
+<span class="co">#&gt; # A tibble: 9 × 6</span>
 <span class="co">#&gt;   .sample_name DiseaseState   age activity active abx  </span>
 <span class="co">#&gt;   &lt;chr&gt;        &lt;chr&gt;        &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;</span>
 <span class="co">#&gt; 1 195A         CD              13 mild     active noabx</span>
@@ -326,7 +326,7 @@ If you remove many samples from your dataset, often your phyloseq object will be
 <code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sessioninfo/man/session_info.html">session_info</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; ─ Session info ───────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt;  setting  value                       </span>
-<span class="co">#&gt;  version  R version 4.1.0 (2021-05-18)</span>
+<span class="co">#&gt;  version  R version 4.1.1 (2021-08-10)</span>
 <span class="co">#&gt;  os       macOS Catalina 10.15.7      </span>
 <span class="co">#&gt;  system   x86_64, darwin17.0          </span>
 <span class="co">#&gt;  ui       X11                         </span>
@@ -334,7 +334,7 @@ If you remove many samples from your dataset, often your phyloseq object will be
 <span class="co">#&gt;  collate  en_US.UTF-8                 </span>
 <span class="co">#&gt;  ctype    en_US.UTF-8                 </span>
 <span class="co">#&gt;  tz       UTC                         </span>
-<span class="co">#&gt;  date     2021-07-20                  </span>
+<span class="co">#&gt;  date     2021-08-19                  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ─ Packages ───────────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt;  package          * version     date       lib source        </span>
@@ -343,14 +343,14 @@ If you remove many samples from your dataset, often your phyloseq object will be
 <span class="co">#&gt;  Biobase            2.52.0      2021-05-19 [1] Bioconductor  </span>
 <span class="co">#&gt;  BiocGenerics       0.38.0      2021-05-19 [1] Bioconductor  </span>
 <span class="co">#&gt;  biomformat         1.20.0      2021-05-19 [1] Bioconductor  </span>
-<span class="co">#&gt;  Biostrings         2.60.1      2021-06-06 [1] Bioconductor  </span>
+<span class="co">#&gt;  Biostrings         2.60.2      2021-08-05 [1] Bioconductor  </span>
 <span class="co">#&gt;  bitops             1.0-7       2021-04-24 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  bslib              0.2.5.1     2021-05-18 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  cachem             1.0.5       2021-05-15 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  callr              3.7.0       2021-04-20 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  cli                3.0.1       2021-07-17 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  cluster            2.1.2       2021-04-17 [2] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  codetools          0.2-18      2020-11-04 [2] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  cluster            2.1.2       2021-04-17 [2] CRAN (R 4.1.1)</span>
+<span class="co">#&gt;  codetools          0.2-18      2020-11-04 [2] CRAN (R 4.1.1)</span>
 <span class="co">#&gt;  colorspace         2.0-2       2021-06-24 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  corncob            0.2.0       2021-03-11 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  crayon             1.4.1       2021-02-08 [1] CRAN (R 4.1.0)</span>
@@ -368,7 +368,7 @@ If you remove many samples from your dataset, often your phyloseq object will be
 <span class="co">#&gt;  fs                 1.5.0       2020-07-31 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  generics           0.1.0       2020-10-31 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  GenomeInfoDb       1.28.1      2021-07-01 [1] Bioconductor  </span>
-<span class="co">#&gt;  GenomeInfoDbData   1.2.6       2021-07-16 [1] Bioconductor  </span>
+<span class="co">#&gt;  GenomeInfoDbData   1.2.6       2021-08-19 [1] Bioconductor  </span>
 <span class="co">#&gt;  ggplot2            3.3.5       2021-06-25 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  glue               1.4.2       2020-08-27 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  gtable             0.3.0       2019-03-25 [1] CRAN (R 4.1.0)</span>
@@ -381,21 +381,21 @@ If you remove many samples from your dataset, often your phyloseq object will be
 <span class="co">#&gt;  jsonlite           1.7.2       2020-12-09 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  knitr              1.33        2021-04-24 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  labeling           0.4.2       2020-10-20 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  lattice            0.20-44     2021-05-02 [2] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  lattice            0.20-44     2021-05-02 [2] CRAN (R 4.1.1)</span>
 <span class="co">#&gt;  lifecycle          1.0.0       2021-02-15 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  magrittr           2.0.1       2020-11-17 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  MASS               7.3-54      2021-05-03 [2] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  Matrix             1.3-3       2021-05-04 [2] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  MASS               7.3-54      2021-05-03 [2] CRAN (R 4.1.1)</span>
+<span class="co">#&gt;  Matrix             1.3-4       2021-06-01 [2] CRAN (R 4.1.1)</span>
 <span class="co">#&gt;  memoise            2.0.0       2021-01-26 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  mgcv               1.8-35      2021-04-18 [2] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  mgcv               1.8-36      2021-06-01 [2] CRAN (R 4.1.1)</span>
 <span class="co">#&gt;  microbiome         1.14.0      2021-05-19 [1] Bioconductor  </span>
-<span class="co">#&gt;  microViz         * 0.7.10.9004 2021-07-20 [1] local         </span>
+<span class="co">#&gt;  microViz         * 0.7.10.9004 2021-08-19 [1] local         </span>
 <span class="co">#&gt;  multtest           2.48.0      2021-05-19 [1] Bioconductor  </span>
 <span class="co">#&gt;  munsell            0.5.0       2018-06-12 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  nlme               3.1-152     2021-02-04 [2] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  nlme               3.1-152     2021-02-04 [2] CRAN (R 4.1.1)</span>
 <span class="co">#&gt;  permute            0.9-5       2019-03-12 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  phyloseq         * 1.36.0      2021-05-19 [1] Bioconductor  </span>
-<span class="co">#&gt;  pillar             1.6.1       2021-05-16 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  pillar             1.6.2       2021-07-29 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  pkgbuild           1.2.0       2020-12-15 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  pkgconfig          2.0.3       2019-09-22 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  pkgdown            1.6.1       2020-09-12 [1] CRAN (R 4.1.0)</span>
@@ -408,7 +408,7 @@ If you remove many samples from your dataset, often your phyloseq object will be
 <span class="co">#&gt;  R6                 2.5.0       2020-10-28 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  ragg               1.1.3       2021-06-09 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  Rcpp               1.0.7       2021-07-07 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  RCurl              1.98-1.3    2021-03-16 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  RCurl              1.98-1.4    2021-08-17 [1] CRAN (R 4.1.1)</span>
 <span class="co">#&gt;  registry           0.5-1       2019-03-05 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  remotes            2.4.0       2021-06-02 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  reshape2           1.4.4       2020-04-09 [1] CRAN (R 4.1.0)</span>
@@ -416,7 +416,7 @@ If you remove many samples from your dataset, often your phyloseq object will be
 <span class="co">#&gt;  rhdf5filters       1.4.0       2021-05-19 [1] Bioconductor  </span>
 <span class="co">#&gt;  Rhdf5lib           1.14.2      2021-07-06 [1] Bioconductor  </span>
 <span class="co">#&gt;  rlang              0.4.11      2021-04-30 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  rmarkdown          2.9         2021-06-15 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  rmarkdown          2.10        2021-08-06 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  rprojroot          2.0.2       2020-11-15 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  Rtsne              0.15        2018-11-10 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  S4Vectors          0.30.0      2021-05-19 [1] Bioconductor  </span>
@@ -426,20 +426,20 @@ If you remove many samples from your dataset, often your phyloseq object will be
 <span class="co">#&gt;  sessioninfo        1.1.1       2018-11-05 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  stringi            1.7.3       2021-07-16 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  stringr            1.4.0       2019-02-10 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  survival           3.2-11      2021-04-26 [2] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  survival           3.2-11      2021-04-26 [2] CRAN (R 4.1.1)</span>
 <span class="co">#&gt;  systemfonts        1.0.2       2021-05-11 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  testthat           3.0.4       2021-07-01 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  textshaping        0.3.5       2021-06-09 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  tibble             3.1.2       2021-05-16 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  tibble             3.1.3       2021-07-23 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  tidyr              1.1.3       2021-03-03 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  tidyselect         1.1.1       2021-04-30 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  TSP                1.1-10      2020-04-17 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  usethis            2.0.1       2021-02-10 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  utf8               1.2.1       2021-03-12 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  utf8               1.2.2       2021-07-24 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  vctrs              0.3.8       2021-04-29 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  vegan              2.5-7       2020-11-28 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  withr              2.4.2       2021-04-18 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  xfun               0.24        2021-06-15 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  xfun               0.25        2021-08-06 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  XVector            0.32.0      2021-05-19 [1] Bioconductor  </span>
 <span class="co">#&gt;  yaml               2.2.1       2020-02-01 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  zlibbioc           1.38.0      2021-05-19 [1] Bioconductor  </span>
