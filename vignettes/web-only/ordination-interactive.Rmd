@@ -18,7 +18,7 @@ library(microViz)
 
 ## Example
 
-Example data loaded from the corncob package. All you need is a valid phyloseq object, and to run `tax_fix` to [ensure the tax_table doesn't contain problematic names](https://david-barnett.github.io/microViz/articles/articles/tax-fixing.html).
+Example data loaded from the corncob package. All you need is a valid phyloseq object, and to run `tax_fix` to [ensure the tax_table doesn't contain problematic names](https://david-barnett.github.io/microViz/articles/web-only/tax-fixing.html).
 
 ```{r example}
 pseq <- corncob::ibd_phylo %>% tax_fix() %>% phyloseq_validate()
@@ -51,7 +51,7 @@ ord1 <- ps %>%
   ord_calc() # automagically picks PCoA
 ```
 
-Start interactive Shiny App. Note that the gif animation shown is from an outdated version of microViz. More recent versions of `ord_explore` allow editing the ordination shown, and generating `ord_plot` code.
+Start interactive Shiny app. Note that the gif animation shown is from an outdated version of microViz. More recent versions of `ord_explore` allow editing the ordination shown, and generating `ord_plot` code.
 
 ``` {.r}
 ord_explore(data = ord1, auto_caption = NA)

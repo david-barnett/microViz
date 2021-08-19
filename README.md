@@ -31,7 +31,7 @@ ecology packages like `phyloseq`, `vegan`, & `microbiome`.
 examples: <https://david-barnett.github.io/microViz/>
 
 -   **The [“Get
-    started”](https://david-barnett.github.io/microViz/articles/articles/microViz.html)
+    started”](https://david-barnett.github.io/microViz/articles/web-only/microViz.html)
     page** shows a few example analyses (as does this ReadMe)
 
 -   **The
@@ -45,20 +45,20 @@ examples: <https://david-barnett.github.io/microViz/>
 -   **The Articles pages** give tutorials and further examples
 
     -   [Working with phyloseq
-        objects](https://david-barnett.github.io/microViz/articles/articles/phyloseq.html)
+        objects](https://david-barnett.github.io/microViz/articles/web-only/phyloseq.html)
 
     -   [Fixing your taxa table with
-        tax\_fix](https://david-barnett.github.io/microViz/articles/articles/tax-fixing.html)
+        tax\_fix](https://david-barnett.github.io/microViz/articles/web-only/tax-fixing.html)
 
     -   [Creating ordination
-        plots](https://david-barnett.github.io/microViz/articles/ordination.html)
+        plots](https://david-barnett.github.io/microViz/articles/web-only/ordination.html)
         (e.g. PCA or PCoA)
 
     -   [Interactive ordination plots with
-        ord\_explore](https://david-barnett.github.io/microViz/articles/articles/Interactive-Ordination.html)
+        ord\_explore](https://david-barnett.github.io/microViz/articles/web-only/ordination-interactive.html)
 
     -   [Visualising taxonomic compositions with
-        comp\_barplot](https://david-barnett.github.io/microViz/articles/articles/Visualising-compositions.html)
+        comp\_barplot](https://david-barnett.github.io/microViz/articles/articles/compositions.html)
 
     -   More coming soon! Post on [GitHub
         discussions](https://github.com/david-barnett/microViz/discussions)
@@ -124,14 +124,13 @@ pseq <- corncob::ibd_phylo %>% tax_fix() %>% phyloseq_validate()
 ord_explore(pseq) # gif generated with microViz version 0.7.4 (plays at 1.75x speed)
 ```
 
-![](vignettes/articles/images/20210429_ord_explore_x175.gif)
+![](vignettes/web-only/images/20210429_ord_explore_x175.gif)
 
 ## Example analyses
 
 ``` r
 library(phyloseq)
 library(dplyr)
-#> Warning: package 'dplyr' was built under R version 4.0.5
 #> 
 #> Attaching package: 'dplyr'
 #> The following objects are masked from 'package:stats':
@@ -141,7 +140,6 @@ library(dplyr)
 #> 
 #>     intersect, setdiff, setequal, union
 library(ggplot2)
-#> Warning: package 'ggplot2' was built under R version 4.0.5
 ```
 
 ``` r
@@ -266,8 +264,8 @@ aitchison_perm <- dist_permanova(
   variables = "bmi_group + female"
 )
 #> Dropping samples with missings: 2
-#> 2021-07-16 13:26:17 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2021-07-16 13:26:17 - Finished PERMANOVA
+#> 2021-08-19 15:06:51 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2021-08-19 15:06:52 - Finished PERMANOVA
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
 #>            Df   SumOfSqs         R2        F Pr(>F)
@@ -295,8 +293,8 @@ your permanova directly using the ord\_plot function with constraints.
 ``` r
 perm2 <- dist_permanova(data = aitchison_dists, variables = c("weight", "female"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2021-07-16 13:26:17 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2021-07-16 13:26:18 - Finished PERMANOVA
+#> 2021-08-19 15:06:52 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2021-08-19 15:06:52 - Finished PERMANOVA
 perm_get(perm2)
 #> Permutation test for adonis under reduced model
 #> Marginal effects of terms
@@ -381,7 +379,7 @@ and by participating in this project you agree to abide by its terms.
 
 ``` r
 sessionInfo()
-#> R version 4.0.3 (2020-10-10)
+#> R version 4.1.1 (2021-08-10)
 #> Platform: x86_64-pc-linux-gnu (64-bit)
 #> Running under: Ubuntu 18.04.5 LTS
 #> 
@@ -399,35 +397,37 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] ggplot2_3.3.5   dplyr_1.0.7     phyloseq_1.34.0 microViz_0.7.10 devtools_2.4.0  usethis_2.0.1  
-#> [7] pkgdown_1.6.1  
+#> [1] ggplot2_3.3.5        dplyr_1.0.7          phyloseq_1.36.0      microViz_0.7.10.9003
+#> [5] devtools_2.4.2       usethis_2.0.1        pkgdown_1.6.1       
 #> 
 #> loaded via a namespace (and not attached):
-#>   [1] nlme_3.1-149         matrixStats_0.59.0   fs_1.5.0             RColorBrewer_1.1-2  
-#>   [5] rprojroot_2.0.2      tools_4.0.3          utf8_1.2.1           R6_2.5.0            
-#>   [9] vegan_2.5-7          DBI_1.1.1            BiocGenerics_0.36.1  mgcv_1.8-33         
-#>  [13] colorspace_2.0-2     GetoptLong_1.0.5     permute_0.9-5        rhdf5filters_1.2.1  
-#>  [17] ade4_1.7-17          withr_2.4.2          tidyselect_1.1.1     prettyunits_1.1.1   
-#>  [21] processx_3.5.1       compiler_4.0.3       microbiome_1.12.0    cli_3.0.0           
-#>  [25] Biobase_2.50.0       Cairo_1.5-12.2       TSP_1.1-10           desc_1.3.0          
-#>  [29] labeling_0.4.2       scales_1.1.1         callr_3.7.0          stringr_1.4.0       
-#>  [33] digest_0.6.27        rmarkdown_2.7        XVector_0.30.0       pkgconfig_2.0.3     
-#>  [37] htmltools_0.5.1.1    sessioninfo_1.1.1    highr_0.9            fastmap_1.1.0       
-#>  [41] GlobalOptions_0.1.2  rlang_0.4.11         shape_1.4.6          farver_2.1.0        
-#>  [45] generics_0.1.0       jsonlite_1.7.2       magrittr_2.0.1       biomformat_1.18.0   
-#>  [49] Matrix_1.3-2         Rcpp_1.0.7           munsell_0.5.0        S4Vectors_0.28.1    
-#>  [53] Rhdf5lib_1.12.1      fansi_0.5.0          ape_5.5              lifecycle_1.0.0     
-#>  [57] stringi_1.7.2        yaml_2.2.1           MASS_7.3-53          zlibbioc_1.36.0     
-#>  [61] rhdf5_2.34.0         pkgbuild_1.2.0       Rtsne_0.15           plyr_1.8.6          
-#>  [65] grid_4.0.3           parallel_4.0.3       crayon_1.4.1         lattice_0.20-41     
-#>  [69] Biostrings_2.58.0    splines_4.0.3        multtest_2.46.0      circlize_0.4.13     
-#>  [73] magick_2.7.1         ComplexHeatmap_2.6.2 knitr_1.32           ps_1.6.0            
-#>  [77] pillar_1.6.1         igraph_1.2.6         rjson_0.2.20         reshape2_1.4.4      
-#>  [81] codetools_0.2-18     stats4_4.0.3         pkgload_1.2.1        glue_1.4.2          
-#>  [85] corncob_0.2.0        evaluate_0.14        data.table_1.14.0    remotes_2.3.0       
-#>  [89] png_0.1-7            vctrs_0.3.8          foreach_1.5.1        testthat_3.0.2      
-#>  [93] gtable_0.3.0         purrr_0.3.4          tidyr_1.1.3          clue_0.3-59         
-#>  [97] assertthat_0.2.1     cachem_1.0.5         xfun_0.22            survival_3.2-7      
-#> [101] seriation_1.3.0      tibble_3.1.2         iterators_1.0.13     registry_0.5-1      
-#> [105] memoise_2.0.0        IRanges_2.24.1       cluster_2.1.0        ellipsis_0.3.2
+#>   [1] Rtsne_0.15             colorspace_2.0-2       rjson_0.2.20           ellipsis_0.3.2        
+#>   [5] rprojroot_2.0.2        circlize_0.4.13        XVector_0.32.0         GlobalOptions_0.1.2   
+#>   [9] fs_1.5.0               clue_0.3-59            rstudioapi_0.13        farver_2.1.0          
+#>  [13] remotes_2.4.0          fansi_0.5.0            codetools_0.2-18       splines_4.1.1         
+#>  [17] doParallel_1.0.16      cachem_1.0.5           knitr_1.33             pkgload_1.2.1         
+#>  [21] ade4_1.7-17            jsonlite_1.7.2         Cairo_1.5-12.2         cluster_2.1.2         
+#>  [25] png_0.1-7              compiler_4.1.1         assertthat_0.2.1       Matrix_1.3-4          
+#>  [29] fastmap_1.1.0          cli_3.0.1              htmltools_0.5.1.1      prettyunits_1.1.1     
+#>  [33] tools_4.1.1            igraph_1.2.6           gtable_0.3.0           glue_1.4.2            
+#>  [37] GenomeInfoDbData_1.2.6 reshape2_1.4.4         Rcpp_1.0.7             Biobase_2.52.0        
+#>  [41] vctrs_0.3.8            Biostrings_2.60.1      rhdf5filters_1.4.0     multtest_2.48.0       
+#>  [45] ape_5.5                nlme_3.1-152           iterators_1.0.13       xfun_0.24             
+#>  [49] stringr_1.4.0          ps_1.6.0               testthat_3.0.4         lifecycle_1.0.0       
+#>  [53] zlibbioc_1.38.0        MASS_7.3-54            scales_1.1.1           TSP_1.1-10            
+#>  [57] parallel_4.1.1         biomformat_1.20.0      rhdf5_2.36.0           RColorBrewer_1.1-2    
+#>  [61] ComplexHeatmap_2.8.0   yaml_2.2.1             memoise_2.0.0          stringi_1.7.3         
+#>  [65] highr_0.9              S4Vectors_0.30.0       desc_1.3.0             foreach_1.5.1         
+#>  [69] permute_0.9-5          seriation_1.3.0        BiocGenerics_0.38.0    pkgbuild_1.2.0        
+#>  [73] shape_1.4.6            GenomeInfoDb_1.28.1    rlang_0.4.11           pkgconfig_2.0.3       
+#>  [77] bitops_1.0-7           matrixStats_0.59.0     evaluate_0.14          lattice_0.20-44       
+#>  [81] purrr_0.3.4            Rhdf5lib_1.14.2        labeling_0.4.2         processx_3.5.2        
+#>  [85] tidyselect_1.1.1       plyr_1.8.6             magrittr_2.0.1         R6_2.5.0              
+#>  [89] IRanges_2.26.0         generics_0.1.0         DBI_1.1.1              pillar_1.6.1          
+#>  [93] withr_2.4.2            mgcv_1.8-36            survival_3.2-11        RCurl_1.98-1.3        
+#>  [97] tibble_3.1.2           corncob_0.2.0          crayon_1.4.1           utf8_1.2.1            
+#> [101] microbiome_1.14.0      rmarkdown_2.9          GetoptLong_1.0.5       grid_4.1.1            
+#> [105] data.table_1.14.0      callr_3.7.0            vegan_2.5-7            digest_0.6.27         
+#> [109] tidyr_1.1.3            stats4_4.1.1           munsell_0.5.0          registry_0.5-1        
+#> [113] sessioninfo_1.1.1
 ```
