@@ -27,7 +27,7 @@ tax_sort_ord <- function(ps, ord, axes = 1:2, scaling = 2) {
   # sort taxa in phyloseq in this order
   ps <- tax_reorder(ps = ps, tax_order = taxaInOrder, tree_warn = TRUE)
 
-  return(data)
+  return(ps)
 }
 
 #' @rdname ordination-sorting-taxa
