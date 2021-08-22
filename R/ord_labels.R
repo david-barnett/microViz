@@ -101,6 +101,7 @@ ord_labels <- function(p,
 #' @return
 #' numeric vector representing either angles to rotate geom_text
 #' labels, or hjust values
+#' @export
 #' @keywords internal
 #' @describeIn
 #' ord_plot-label-helpers
@@ -182,6 +183,7 @@ textAngleCalc <- function(xvec, yvec,
   return(degs)
 }
 
+#' @export
 #' @keywords internal
 #' @describeIn
 #' ord_plot-label-helpers
