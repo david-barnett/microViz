@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Add rank prefixes to phyloseq tax_table values — tax_prepend_ranks • microViz</title>
+<title>Calculate dominant taxon in each phyloseq sample — ps_calc_dominant • microViz</title>
 
 
 <!-- jquery -->
@@ -45,9 +45,16 @@
 
 
 
-<meta property="og:title" content="Add rank prefixes to phyloseq tax_table values — tax_prepend_ranks" />
-<meta property="og:description" content="Prepend the start of rank names to each taxon at each rank
-(useful particularly in case of duplicated taxa names across ranks, e.g. dietswap dataset)" />
+<meta property="og:title" content="Calculate dominant taxon in each phyloseq sample — ps_calc_dominant" />
+<meta property="og:description" content="Which taxon is most abundant in each sample of your phyloseq object?
+This function adds this information as a new variable in your phyloseq
+sample_data.
+If the most abundant taxon is below the proportional abundance threshold,
+the dominant taxon will be &quot;none&quot; for that sample
+If there are more than n_max dominant taxa across all samples (not
+including &quot;none&quot;) the dominant taxon will be &quot;other&quot; for those samples
+
+" />
 
 
 
@@ -153,17 +160,30 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Add rank prefixes to phyloseq tax_table values</h1>
-    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/tax_prepend_ranks.R'><code>R/tax_prepend_ranks.R</code></a></small>
-    <div class="hidden name"><code>tax_prepend_ranks.Rd</code></div>
+    <h1>Calculate dominant taxon in each phyloseq sample</h1>
+    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/ps_calc_dominant.R'><code>R/ps_calc_dominant.R</code></a></small>
+    <div class="hidden name"><code>ps_calc_dominant.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Prepend the start of rank names to each taxon at each rank
-(useful particularly in case of duplicated taxa names across ranks, e.g. dietswap dataset)</p>
+    <p>Which taxon is most abundant in each sample of your phyloseq object?
+This function adds this information as a new variable in your phyloseq
+sample_data.</p><ul>
+<li><p>If the most abundant taxon is below the proportional abundance threshold,
+the dominant taxon will be "none" for that sample</p></li>
+<li><p>If there are more than n_max dominant taxa across all samples (not
+including "none") the dominant taxon will be "other" for those samples</p></li>
+</ul>
+
     </div>
 
-    <pre class="usage"><span class='fu'>tax_prepend_ranks</span><span class='op'>(</span><span class='va'>ps</span>, sep <span class='op'>=</span> <span class='st'>": "</span>, nchar <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>ps_calc_dominant</span><span class='op'>(</span>
+  <span class='va'>ps</span>,
+  rank <span class='op'>=</span> <span class='st'>"unique"</span>,
+  threshold <span class='op'>=</span> <span class='fl'>0.3</span>,
+  n_max <span class='op'>=</span> <span class='fl'>6</span>,
+  var <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='st'>"dominant"</span>, <span class='va'>rank</span>, sep <span class='op'>=</span> <span class='st'>"_"</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -173,60 +193,43 @@
       <td><p>phyloseq object</p></td>
     </tr>
     <tr>
-      <th>sep</th>
-      <td><p>characters to paste in between rank initial and taxon name</p></td>
+      <th>rank</th>
+      <td><p>taxonomic rank to calculate</p></td>
     </tr>
     <tr>
-      <th>nchar</th>
-      <td><p>number of characters to use from start of rank_names</p></td>
+      <th>threshold</th>
+      <td><p>minimum proportion at which to consider a sample dominated by a taxon</p></td>
+    </tr>
+    <tr>
+      <th>n_max</th>
+      <td><p>maximum number of taxa that can be listed as dominant taxa</p></td>
+    </tr>
+    <tr>
+      <th>var</th>
+      <td><p>name of variable to add to phyloseq object sample data</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>phyloseq</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <p>phyloseq object</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <div class='dont-index'><p><code><a href='tax_fix.html'>tax_fix</a></code> for fixing other tax_table problems</p></div>
+    <p>Thanks to Vitor Heidrich for the initial idea and draft implementation</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://microbiome.github.io/microbiome'>microbiome</a></span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>dietswap</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html'>tax_table</a></span><span class='op'>(</span><span class='va'>dietswap</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Taxonomy Table:     [6 taxa by 3 taxonomic ranks]:
-#&gt;                              Phylum            Family           
-#&gt; Actinomycetaceae             "Actinobacteria"  "Actinobacteria" 
-#&gt; Aerococcus                   "Firmicutes"      "Bacilli"        
-#&gt; Aeromonas                    "Proteobacteria"  "Proteobacteria" 
-#&gt; Akkermansia                  "Verrucomicrobia" "Verrucomicrobia"
-#&gt; Alcaligenes faecalis et rel. "Proteobacteria"  "Proteobacteria" 
-#&gt; Allistipes et rel.           "Bacteroidetes"   "Bacteroidetes"  
-#&gt;                              Genus                         
-#&gt; Actinomycetaceae             "Actinomycetaceae"            
-#&gt; Aerococcus                   "Aerococcus"                  
-#&gt; Aeromonas                    "Aeromonas"                   
-#&gt; Akkermansia                  "Akkermansia"                 
-#&gt; Alcaligenes faecalis et rel. "Alcaligenes faecalis et rel."
-#&gt; Allistipes et rel.           "Allistipes et rel."          </div><div class='input'><span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>tax_prepend_ranks</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html'>tax_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Taxonomy Table:     [6 taxa by 3 taxonomic ranks]:
-#&gt;                              Phylum               Family              
-#&gt; Actinomycetaceae             "P: Actinobacteria"  "F: Actinobacteria" 
-#&gt; Aerococcus                   "P: Firmicutes"      "F: Bacilli"        
-#&gt; Aeromonas                    "P: Proteobacteria"  "F: Proteobacteria" 
-#&gt; Akkermansia                  "P: Verrucomicrobia" "F: Verrucomicrobia"
-#&gt; Alcaligenes faecalis et rel. "P: Proteobacteria"  "F: Proteobacteria" 
-#&gt; Allistipes et rel.           "P: Bacteroidetes"   "F: Bacteroidetes"  
-#&gt;                              Genus                            
-#&gt; Actinomycetaceae             "G: Actinomycetaceae"            
-#&gt; Aerococcus                   "G: Aerococcus"                  
-#&gt; Aeromonas                    "G: Aeromonas"                   
-#&gt; Akkermansia                  "G: Akkermansia"                 
-#&gt; Alcaligenes faecalis et rel. "G: Alcaligenes faecalis et rel."
-#&gt; Allistipes et rel.           "G: Allistipes et rel."          </div></pre>
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>
+<span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='fu'>corncob</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/corncob/man/ibd_phylo.html'>ibd_phylo</a></span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='tax_filter.html'>tax_filter</a></span><span class='op'>(</span>min_prevalence <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='tax_fix.html'>tax_fix</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='phyloseq_validate.html'>phyloseq_validate</a></span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='va'>ps</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='ps_filter.html'>ps_filter</a></span><span class='op'>(</span><span class='va'>DiseaseState</span> <span class='op'>==</span> <span class='st'>"UC"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>ps_calc_dominant</span><span class='op'>(</span>rank <span class='op'>=</span> <span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='comp_barplot.html'>comp_barplot</a></span><span class='op'>(</span>tax_level <span class='op'>=</span> <span class='st'>"Genus"</span>, label <span class='op'>=</span> <span class='st'>"dominant_Genus"</span>, n_taxa <span class='op'>=</span> <span class='fl'>12</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_flip.html'>coord_flip</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='img'><img src='ps_calc_dominant-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
