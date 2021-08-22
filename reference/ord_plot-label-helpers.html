@@ -225,26 +225,26 @@ labels, or hjust values</p>
 <span class='va'>p</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_text.html'>geom_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>2.5</span>, mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>angle <span class='op'>=</span> <span class='fu'>textAngleCalc</span><span class='op'>(</span><span class='va'>mpg</span>, <span class='va'>hp</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span>ratio <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in textAngleCalc(mpg, hp): could not find function "textAngleCalc"</span></div><div class='input'>
+</div><div class='img'><img src='ord_plot-label-helpers-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># equivalent: calculate variable outside of aes by referring to dataframe again</span>
 <span class='va'>p</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_text.html'>geom_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>2.5</span>, angle <span class='op'>=</span> <span class='fu'>textAngleCalc</span><span class='op'>(</span><span class='va'>df</span><span class='op'>$</span><span class='va'>mpg</span>, <span class='va'>df</span><span class='op'>$</span><span class='va'>hp</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span>ratio <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in textAngleCalc(df$mpg, df$hp): could not find function "textAngleCalc"</span></div><div class='input'>
+</div><div class='img'><img src='ord_plot-label-helpers-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># fixing aspect ratio is important</span>
 <span class='co'># see how angles may be incorrect otherwise</span>
 <span class='va'>p</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_text.html'>geom_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>2.5</span>, mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>angle <span class='op'>=</span> <span class='fu'>textAngleCalc</span><span class='op'>(</span><span class='va'>mpg</span>, <span class='va'>hp</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in textAngleCalc(mpg, hp): could not find function "textAngleCalc"</span></div><div class='img'><img src='ord_plot-label-helpers-2.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='img'><img src='ord_plot-label-helpers-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># ratio argument allows matching angles with alternative aspect ratio choices</span>
 <span class='va'>p</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_text.html'>geom_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>2.5</span>, angle <span class='op'>=</span> <span class='fu'>textAngleCalc</span><span class='op'>(</span><span class='va'>df</span><span class='op'>$</span><span class='va'>mpg</span>, <span class='va'>df</span><span class='op'>$</span><span class='va'>hp</span>, ratio <span class='op'>=</span> <span class='fl'>.5</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span>ratio <span class='op'>=</span> <span class='fl'>.5</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in textAngleCalc(df$mpg, df$hp, ratio = 0.5): could not find function "textAngleCalc"</span></div><div class='input'>
+</div><div class='img'><img src='ord_plot-label-helpers-5.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='va'>p</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_text.html'>geom_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>2.5</span>, angle <span class='op'>=</span> <span class='fu'>textAngleCalc</span><span class='op'>(</span><span class='va'>df</span><span class='op'>$</span><span class='va'>mpg</span>, <span class='va'>df</span><span class='op'>$</span><span class='va'>hp</span>, ratio <span class='op'>=</span> <span class='fl'>1.5</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span>ratio <span class='op'>=</span> <span class='fl'>1.5</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in textAngleCalc(df$mpg, df$hp, ratio = 1.5): could not find function "textAngleCalc"</span></div><div class='input'>
+</div><div class='img'><img src='ord_plot-label-helpers-6.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># perpendicular argument makes text perpendicular instead of parallel</span>
 <span class='va'>p</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_text.html'>geom_text</a></span><span class='op'>(</span>
@@ -252,7 +252,7 @@ labels, or hjust values</p>
     angle <span class='op'>=</span> <span class='fu'>textAngleCalc</span><span class='op'>(</span><span class='va'>df</span><span class='op'>$</span><span class='va'>mpg</span>, <span class='va'>df</span><span class='op'>$</span><span class='va'>hp</span>, perpendicular <span class='op'>=</span> <span class='cn'>TRUE</span>, ratio <span class='op'>=</span> <span class='fl'>1.5</span><span class='op'>)</span>
   <span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span>ratio <span class='op'>=</span> <span class='fl'>1.5</span>, clip <span class='op'>=</span> <span class='st'>"off"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in textAngleCalc(df$mpg, df$hp, perpendicular = TRUE, ratio = 1.5): could not find function "textAngleCalc"</span></div><div class='input'>
+</div><div class='img'><img src='ord_plot-label-helpers-7.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># max angle limits extreme text angles</span>
 <span class='va'>p</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_text.html'>geom_text</a></span><span class='op'>(</span>
@@ -261,7 +261,7 @@ labels, or hjust values</p>
     hjust <span class='op'>=</span> <span class='fu'>textHjustCalc</span><span class='op'>(</span>xvec <span class='op'>=</span> <span class='va'>df</span><span class='op'>$</span><span class='va'>mpg</span>, adjust <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
   <span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span>ratio <span class='op'>=</span> <span class='fl'>2</span>, clip <span class='op'>=</span> <span class='st'>"off"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in textAngleCalc(df$mpg, df$hp, ratio = 2, max = 10): could not find function "textAngleCalc"</span></div></pre>
+</div><div class='img'><img src='ord_plot-label-helpers-8.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
