@@ -54,6 +54,7 @@ test_that("ord_labels/tax_vec_style help page example stays the same", {
 
 
 # visually check ordination vignette custom constrained plot stays the same
+# slightly different data than in the vignette as filtering applied here only
 p2 <- ibd %>%
   ps_mutate(
     IBD = as.numeric(ibd == "ibd"),
@@ -69,9 +70,11 @@ p2 <- ibd %>%
   ord_plot(
     colour = "DiseaseState", size = 2, alpha = 0.5, shape = "active",
     auto_caption = NA, plot_taxa = 1:8,
-    taxon_renamer = function(x) stringr::str_replace(
-      string = x, pattern = "_", replacement = " "
-    ),
+    taxon_renamer = function(x) {
+      stringr::str_replace(
+        string = x, pattern = "_", replacement = " "
+      )
+    },
     tax_vec_length = 4.5, tax_lab_length = 4.6,
     tax_lab_style = tax_lab_style(
       type = "text", max_angle = 90, fontface = "bold.italic"
@@ -83,10 +86,16 @@ p2 <- ibd %>%
     )
   ) +
   coord_fixed(ratio = 1, clip = "off", xlim = c(-6, 6)) +
+  scale_colour_manual(values = c(
+    CD = "red", UC = "orange", IBDundef = "purple", nonIBD = "green"
+  )) +
   scale_shape_manual(values = c(
     active = "circle", mild = "circle cross",
     inactive = "circle open", control = "square open"
-  ))
+  )) +
+  # needs manual specification of legend order and order of colour levels
+  # for maintaining uniformity across operating systems!
+  guides(colour = guide_legend(order = 1), shape = guide_legend(order = 2))
 
 
 test_that("ordination vignette custom constrained plot stays the same", {
