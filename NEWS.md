@@ -2,6 +2,7 @@
 
 ## Features 
 - `ord_plot` arrow labels can now be rotated with the help of `tax_lab_style()` and `constraint_lab_style()` 
+- `ps_calc_dominant` function for conveniently identifying the dominant taxon in each phyloseq sample
 
 ## Breaking changes
 - `ord_plot` default labels now have `alpha` = 1 for both taxa (previously and constraints (previously 0.8)
