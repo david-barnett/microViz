@@ -233,12 +233,19 @@ ps_conScale <- function(ps, constraints, conditions, verbose, scale_cc) {
 # check class of data is ps_extra and if phyloseq, convert to ps_extra
 ordCheckData <- function(data) {
   # if input is a phyloseq, convert to ps_extra
-  if (inherits(data, "phyloseq")) data <- new_ps_extra(ps = data)
+  if (inherits(data, "phyloseq")) {
+    warning(
+      call. = FALSE,
+      "* data provided to ord_calc is a phyloseq object, not a ps_extra.\n",
+      "* Consider using tax_agg and/or tax_transform before ordinating."
+    )
+    data <- new_ps_extra(ps = data)
+  }
   # check class of data is (or at least now is) ps_extra
   if (!inherits(data, "ps_extra")) {
     stop(
-      "data should be ps_extra list output of dist_calc or tax_transform, ",
-      "(or a phyloseq)\n", "data is class: ", class(data)
+      "* data should be ps_extra list output of dist_calc or tax_transform",
+      "\n* data is class: ", class(data)
     )
   }
   return(data)
@@ -316,7 +323,7 @@ ordCheckMethod <- function(method, con, distMat, verbose) {
   if (!method %in% validMethods) {
     stop(
       call. = FALSE,
-      method, " is not a valid method, must be one of:\n",
+      method, " is not a valid `ord_calc` method, must be one of:\n",
       paste(validMethods, collapse = " / ")
     )
   }
@@ -342,7 +349,7 @@ ordCheckMethod <- function(method, con, distMat, verbose) {
     stop(
       call. = FALSE,
       method, " cannot use constraints, did you mean RDA, CAP or CCA? ",
-      "\nAlternatively use method = auto (the default)"
+      "\nAlternatively use method = 'auto' (the default)"
     )
   }
   return(method)

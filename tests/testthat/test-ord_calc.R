@@ -39,7 +39,7 @@ test_that("constrained ordination gives correct warnings etc", {
   expect_error(
     object = ord_calc(data = tmpNoDist, method = "PCOA"),
     regexp =
-      "PCOA is not a valid method, must be one of"
+      "PCOA is not a valid `ord_calc` method, must be one of"
   )
   expect_warning(
     object = ord_calc(data = tmpNoDist, method = "DCA"),
