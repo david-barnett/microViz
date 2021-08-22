@@ -18,7 +18,7 @@
 #' @param tax_vec_style_all list of named aesthetic attributes for all (background) taxon vectors
 #' @param tax_vec_style_sel list of named aesthetic attributes for taxon vectors for the taxa selected by plot_taxa
 #' @param tax_lab_length scale multiplier for label distance/position for any selected taxa
-#' @param tax_lab_style list of fixed aesthetics (colour, size etc) for the taxon labels
+#' @param tax_lab_style list of style options for the taxon labels, see tax_lab_style() function.
 #' @param taxon_renamer function that takes any plotted taxon names and returns modified names for labels
 #' @param plot_samples if TRUE, plot sample points with geom_point
 #' @param constraint_vec_length constraint arrow vector scale multiplier.
@@ -42,6 +42,7 @@
 #'
 #' @return ggplot
 #' @export
+#' @seealso \code{\link{tax_lab_style}} / \code{\link{tax_lab_style}} for styling labels
 #' @seealso \code{\link{ord_explore}} for interactive ordination plots
 #' @seealso \code{\link{ord_calc}} for calculating an ordination to plot with ord_plot
 #'
@@ -361,14 +362,14 @@ ord_plot <-
           defaultStyles = vec_tax_sel()
         )
 
-        # selected taxa labels
-        tax_lab_args <- list(
-          label = taxon_renamer(rownames(selectSpeciesScoresDf)),
-          data = selectSpeciesScoresDf * tax_lab_length,
-          size = 2, alpha = 0.8
+        # add taxa labels
+        p <- ord_labels(
+          p = p, data = selectSpeciesScoresDf * tax_lab_length,
+          axesNames = axesNames, renamer = taxon_renamer,
+          styleList = tax_lab_style, defaultStyles = tax_lab_style()
         )
-        tax_lab_args[names(tax_lab_style)] <- tax_lab_style
-        p <- p + do.call(what = ggplot2::geom_label, args = tax_lab_args)
+
+
       }
     }
 
@@ -391,13 +392,12 @@ ord_plot <-
       )
 
       # draw vector tip labels at length set by constraint_lab_length argument
-      constraint_lab_args <- list(
-        label = var_renamer(rownames(constraintDf)),
-        data = constraintDf * constraint_lab_length,
-        size = 2.5, colour = "brown", alpha = 0.8
+      p <- ord_labels(
+        p = p, data = constraintDf * constraint_lab_length,
+        axesNames = axesNames, renamer = var_renamer,
+        styleList = constraint_lab_style,
+        defaultStyles = constraint_lab_style()
       )
-      constraint_lab_args[names(constraint_lab_style)] <- constraint_lab_style
-      p <- p + do.call(what = ggplot2::geom_label, args = constraint_lab_args)
     }
 
     ## caption and center ----------------------------------------------------
@@ -491,6 +491,7 @@ get_plot_limits <- function(plot) {
   )
 }
 
+# generates vector of ggplot2 shapes
 ggplot2_shapes <- function() {
   c(
     "circle", paste("circle", c("open", "filled", "cross", "plus", "small")),
@@ -503,6 +504,9 @@ ggplot2_shapes <- function() {
   )
 }
 
+# finds the euclidean norm (length) of the vector given
+# useful for adjusting the length of loading/constraint arrows
+# (when given x value and y value in vec)
 vecNormEuclid <- function(vec){
   return(norm(vec, type = "2"))
 }

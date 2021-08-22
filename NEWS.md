@@ -1,6 +1,10 @@
 # microViz (development version)
 
+## Features 
+- `ord_plot` arrow labels can now be rotated with the help of `tax_lab_style()` and `constraint_lab_style()` 
+
 ## Breaking changes
+- `ord_plot` default labels now have `alpha` = 1 for both taxa (previously and constraints (previously 0.8)
 - `ord_plot` "auto"matic loading/constraint vector length scalar adjustment improvement: now uses both axes
 - `comp_barplot` now uses bray-curtis by default for sample ordering (instead of aitchison) as this generally looks better
 

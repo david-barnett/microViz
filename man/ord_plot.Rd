@@ -45,7 +45,7 @@ NA = auto-scaling, or provide a numeric multiplier yourself.}
 
 \item{tax_lab_length}{scale multiplier for label distance/position for any selected taxa}
 
-\item{tax_lab_style}{list of fixed aesthetics (colour, size etc) for the taxon labels}
+\item{tax_lab_style}{list of style options for the taxon labels, see tax_lab_style() function.}
 
 \item{taxon_renamer}{function that takes any plotted taxon names and returns modified names for labels}
 
@@ -213,6 +213,8 @@ unconstrained_aitchison_pca \%>\%
   geom_point(size = 1, shape = 21, colour = "black", fill = "white")
 }
 \seealso{
+\code{\link{tax_lab_style}} / \code{\link{tax_lab_style}} for styling labels
+
 \code{\link{ord_explore}} for interactive ordination plots
 
 \code{\link{ord_calc}} for calculating an ordination to plot with ord_plot
