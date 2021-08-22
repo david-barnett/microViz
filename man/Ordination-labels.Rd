@@ -37,6 +37,8 @@ constraint_lab_style(
 \item{max_angle}{maximum angle of rotation to allow to match vector angle
 (requires ggtext package to rotate "label" type)}
 
+\item{perpendicular}{if TRUE, sets rotated labels perpendicular to desired angle, not parallel}
+
 \item{aspect_ratio}{aspect ratio of plot (y/x) must also be used in coord_fixed() ratio argument
 (must be set when rotated labels are used, to ensure match to arrow angles)}
 
@@ -151,9 +153,9 @@ ibd_ord \%>\%
 coord_fixed(ratio = 1, clip = "off", xlim = c(-3.5, 3.5))
 
 
-You can limit and/or attenuate the angle of rotation by:
- - setting a lower max_angle
- - decreasing the aspect_ratio in the tax_lab_style call
+# You can limit and/or attenuate the angle of rotation by:
+#  - setting a lower max_angle
+#  - decreasing the aspect_ratio in the tax_lab_style call
 ibd_ord \%>\%
   ord_plot(
     shape = "circle", color = "ibd", plot_taxa = 1:7,
@@ -170,8 +172,7 @@ ibd_ord \%>\%
     shape = "circle", color = "ibd", plot_taxa = 1:7,
     tax_vec_length = 1.3, tax_lab_length = 1.3,
     tax_lab_style = tax_lab_style(
-      max_angle = 90, size = 2, label.size = 0.1,
-      aspect_ratio = 0.5,
+      max_angle = 90, size = 2, label.size = 0.1, aspect_ratio = 0.5,
       label.padding = unit(0.1, "lines"), label.r = unit(0, "lines")
     )
   ) +
