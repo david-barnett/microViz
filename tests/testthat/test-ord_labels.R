@@ -83,7 +83,6 @@ p2 <- ibd %>%
     )
   ) +
   coord_fixed(ratio = 1, clip = "off", xlim = c(-6, 6)) +
-  scale_colour_brewer(palette = "Set1") +
   scale_shape_manual(values = c(
     active = "circle", mild = "circle cross",
     inactive = "circle open", control = "square open"
