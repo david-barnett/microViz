@@ -30,5 +30,6 @@ heat_numbers(
 list
 }
 \description{
-Works with comp_heatmap() and cor_heatmap(). See the help for those functions.
+Works with comp_heatmap() and cor_heatmap().
+See the help for those functions.
 }

@@ -6,53 +6,87 @@
 #'
 #' @return list with numeric vectors of row and column orders and trees if appropriate (or FALSEs)
 #' @noRd
-mat_seriate <- function(mat, method, dist, col_method = method, col_dist = dist) {
-  if (identical(method, col_method) && method %in% seriation::list_seriation_methods(kind = "matrix")) {
-    ser <- seriation::seriate(mat, method = method)
-    row_order <- seriation::get_order(ser, dim = 1)
-    col_order <- seriation::get_order(ser, dim = 2)
-    row_tree <- col_tree <- FALSE
-  } else if (method %in% seriation::list_seriation_methods(kind = "dist")) {
-    row_ser <- mat_ser_dist(mat, method = method, dist = dist)
-    col_ser <- mat_ser_dist(t(mat), method = method, dist = dist)
-    row_order <- seriation::get_order(row_ser)
-    col_order <- seriation::get_order(col_ser)
-    row_tree <- if (inherits(row_ser[[1]], "hclust")) {
-      stats::as.dendrogram(row_ser[[1]])
-    } else {
-      FALSE
-    }
-    col_tree <- if (inherits(col_ser[[1]], "hclust")) {
-      stats::as.dendrogram(col_ser[[1]])
-    } else {
-      FALSE
-    }
-  } else {
-    stop(
-      method, " is not a valid method in seriation::seriate! See seriation::list_seriation_methods()\n",
-      "Nearest match is: ",
-      agrep(method, seriation::list_seriation_methods(), value = TRUE, ignore.case = TRUE)[[1]]
-    )
-  }
+mat_seriate <- function(mat,
+                        method,
+                        dist,
+                        col_method = method,
+                        col_dist = dist) {
+  rowInfo <- rowSeriationInfo(mat, method = method, dist = dist)
+  colInfo <- rowSeriationInfo(t(mat), method = col_method, dist = col_dist)
 
-  return(list(row_order = row_order, row_tree = row_tree, col_order = col_order, col_tree = col_tree))
+  return(list(
+    row_order = rowInfo$order, row_tree = rowInfo$tree,
+    col_order = colInfo$order, col_tree = colInfo$tree
+  ))
 }
 
+# get list including seriation object, order from that object, and any tree
+rowSeriationInfo <- function(mat, method, dist) {
+
+  # get lists of possible methods
+  matrixMethods <- seriation::list_seriation_methods(kind = "matrix")
+  distanceMethods <- seriation::list_seriation_methods(kind = "dist")
+  allMethods <- union(x = matrixMethods, y = distanceMethods)
+
+  # assumes no hclust tree unless later overwritten
+  tree <- FALSE
+
+  if (method %in% matrixMethods) {
+    ser <- seriation::seriate(mat, method = method)
+    order <- seriation::get_order(ser, dim = 1)
+  } else if (method %in% distanceMethods) {
+    ser <- mat_seriate_dist(mat, method = method, dist = dist)
+    order <- seriation::get_order(ser)
+    # get hclust tree if present
+    if (inherits(ser[[1]], "hclust")) tree <- stats::as.dendrogram(ser[[1]])
+  } else {
+    stop(
+      call. = FALSE,
+      method, " method is not in `seriation::list_seriation_methods()`",
+      "\nNearest match is: ",
+      agrep(method, x = allMethods, value = TRUE, ignore.case = TRUE)[[1]]
+    )
+  }
+  return(list(ser = ser, order = order, tree = tree))
+}
+
+#' Distance-based method seriation of rows in a numeric matrix
+#'
 #' @param mat numeric matrix
 #' @param method method in seriation::list_seriation_methods(kind = "dist")
-#' @param dist distance method in stats dist or
+#' @param dist distance method in stats::dist or phyloseq::distance
 #' @param ... passed to stats::dist or phyloseq::distance
 #'
 #' @return seriation object
 #' @noRd
-mat_ser_dist <- function(mat, method, dist, ...) {
-  stopifnot(method %in% seriation::list_seriation_methods(kind = "dist"))
-
-  if (dist %in% c("euclidean", "maximum", "manhattan", "canberra", "binary", "minkowski")) {
+mat_seriate_dist <- function(mat, method, dist, ...) {
+  if (dist %in% c(
+    "euclidean", "maximum", "manhattan",
+    "canberra", "binary", "minkowski"
+  )) {
     dists <- stats::dist(mat, method = dist, ...)
-  } else if (inherits(mat, "otu_table") && dist %in% phyloseq::distanceMethodList) {
-    dists <- phyloseq::distance(physeq = mat, method = dist, type = "samples", ...)
+  } else if (dist %in% unlist(phyloseq::distanceMethodList)) {
+    if (inherits(mat, "otu_table")) {
+      dists <- phyloseq::distance(
+        physeq = mat, method = dist, type = "samples", ...
+      )
+    } else {
+      stop(
+        call. = FALSE,
+        "matrix must be an otu_table class object, because\n'",
+        dist, "' is a distance in phyloseq::distanceMethodList",
+        "\nmatrix is class: ", paste(class(mat), collapse = " ")
+      )
+    }
+  } else {
+    stop(
+      call. = FALSE,
+      "distance must be valid for stats::dist or phyloseq::distance",
+      "\n- distance you requested was: ", dist
+    )
   }
+
+  # seriate and return seriation object
   ser <- seriation::seriate(dists, method = method)
   return(ser)
 }

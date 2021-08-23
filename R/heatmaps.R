@@ -331,9 +331,6 @@ comp_heatmap <- function(data,
     otu_numbers <- tax_scale(data = otu_numbers, do = tax_scale_numbers)
     otu_numbers <- otu_numbers[samples, taxa, drop = FALSE]
   }
-  # remove taxa_are_rows attr. (caused warning when Heatmap sets class(mat))
-  otu_mat <- methods::as(otu_mat, Class = "matrix")
-  otu_numbers <- methods::as(otu_numbers, Class = "matrix")
 
   args <- list(
     name = name,
@@ -371,63 +368,98 @@ comp_heatmap <- function(data,
 
 #' @title Easy palettes for ComplexHeatmap
 #'
-#' @description Pass a named colorspace hcl palette to circlize::colorRamp2
+#' @description
+#' Pass a named colorspace hcl palette to circlize::colorRamp2.
 #'
-#' @param palette named palette from colorspace::hcl_palettes() diverging/sequential or a vector of colour names/hexcodes
-#' @param breaks integer number of breaks, or numeric vector of values for colour scale breaks (including ends)
-#' @param range NA to return palette generating function that takes range, or numeric vector indicating the range, to return a palette
+#'  - If you do not specify a range this function returns a function and
+#'   the heatmap color palette will use the range of the data automatically
+#'  - If you do specify a range, this returns a colour palette with that range
+#'
+#' @param palette
+#' named palette from colorspace::hcl_palettes() diverging/sequential
+#' or a vector of colour names/hexcodes
+#' @param breaks integer number of breaks
+#' @param range
+#' NA to return palette generating function that takes range
+#' or numeric vector indicating the range, to return a palette
 #' @param rev reverse the palette?
 #' @param sym makes palette range symmetrical around 0 if TRUE
 #'
-#' @return circlize::colorRamp2 palette if !is.na(limits), or function returning a palette when given limits
+#' @return
+#' circlize::colorRamp2 palette if range = NA,
+#' or function returning a palette when given a range
 #' @export
 #' @rdname heat_palette
 heat_palette <- function(palette = "Greens", breaks = 5, range = NA, rev = FALSE, sym = FALSE) {
   n_breaks <- if (length(breaks) > 1) length(breaks) else breaks
+
+  # palette arg of length 1 must be valid colorspace::hcl_palette()
+  validDiverging <- rownames(colorspace::hcl_palettes(type = "diverging"))
+  validSequential <- rownames(colorspace::hcl_palettes(type = "sequential"))
+  # convert this to a set of colours n_breaks long
   if (length(palette) == 1) {
-    palette <-
-      if (palette %in% rownames(colorspace::hcl_palettes(type = "diverging"))) {
-        colorspace::diverge_hcl(palette = palette, n = n_breaks)
-      } else if (palette %in% rownames(colorspace::hcl_palettes(type = "sequential"))) {
-        colorspace::sequential_hcl(palette = palette, n = n_breaks)
-      } else {
-        stop("Invalid palette, try `colorspace::hcl_palettes()` and pick a diverging/sequential palette name")
-      }
-  } else if (length(palette) == 1) {
-    stop("palette must be a vector of colours or a palette name from colorspace::hcl_palettes() diverging or sequential")
+    if (palette %in% validDiverging) {
+      palette <- colorspace::diverge_hcl(palette = palette, n = n_breaks)
+    } else if (palette %in% validSequential) {
+      palette <- colorspace::sequential_hcl(palette = palette, n = n_breaks)
+    } else {
+      stop(
+        call. = FALSE,
+        "\nheat_palette() palette argument must be either a:\n",
+        "- vector of colours, or\n",
+        "- palette name from colorspace::hcl_palettes(type = 'diverging')",
+        "- palette name from colorspace::hcl_palettes(type = 'sequential')"
+      )
+    }
   }
+  # reverse palette direction if requested
   if (isTRUE(rev)) palette <- base::rev(palette)
+
+  # set up colour function
   col_fun <- function(range) {
     if (isTRUE(sym)) range <- c(-max(abs(range)), max(abs(range)))
     breaks <- seq(from = range[[1]], to = range[[2]], length.out = n_breaks)
     pal <- circlize::colorRamp2(breaks = breaks, colors = palette)
     return(pal)
   }
+  # return or evaluate colour function, dependent on whether range given
   if (identical(range, NA)) {
     return(col_fun)
   } else if (inherits(range, "numeric") || inherits(range, "integer")) {
-    range <- base::range(range) # in case range set with e.g. -2:2 for convenience
+    # in case range set with e.g. -2:2 for convenience
+    range <- base::range(range)
     colorscale <- col_fun(range = range)
     return(colorscale)
   } else {
-    stop("range must be NA, numeric or integer, not: ", paste(class(range), collapse = " "))
+    stop(
+      "range argument must be NA, numeric or integer, not: ",
+      paste(class(range), collapse = " ")
+    )
   }
 }
 
 #' @title Aesthetic settings for drawing numbers on heatmap tiles
 #'
-#' @description Works with comp_heatmap() and cor_heatmap(). See the help for those functions.
+#' @description
+#' Works with comp_heatmap() and cor_heatmap().
+#' See the help for those functions.
 #'
 #' @param decimals number of decimal places to print
 #' @param fontsize fontsize specification,
 #' @param col colour of font
 #' @param fontface plain, bold, italic
-#' @param fmt NULL or number print format, see ?sprintf, overrides decimals arg if set
+#' @param fmt
+#' NULL or number print format, see ?sprintf, overrides decimals arg if set
 #' @param ... passed to grid::gpar() for grid.text
 #' @return list
 #' @export
 #' @rdname heat_numbers
-heat_numbers <- function(decimals = 1, fontsize = 7, col = "black", fontface = "plain", fmt = NULL, ...) {
+heat_numbers <- function(decimals = 1,
+                         fontsize = 7,
+                         col = "black",
+                         fontface = "plain",
+                         fmt = NULL,
+                         ...) {
   if (identical(fmt, NULL)) fmt <- paste0("%.", decimals, "f")
   gp <- grid::gpar(fontsize = fontsize, col = col, fontface = fontface, ...)
   list(fmt = fmt, gp = gp)
@@ -479,9 +511,9 @@ taxa_which_from_taxa_side <- function(taxa_side) {
 }
 
 # anno_tax input --> output possibilities:
-# NULL--> NULL,
-# list output of tax_anno() --> HeatmapAnnotation object,
-# HeatmapAnnotation object --> HeatmapAnnotation object (checked)
+# * NULL--> NULL,
+# * list output of tax_anno() --> HeatmapAnnotation object,
+# * HeatmapAnnotation object --> HeatmapAnnotation object (checked)
 #
 # ps is phyloseq extracted from heatmap data arg, if phyloseq or ps_extra
 # taxa_which inferred from taxa_side already in heatmap function
@@ -500,15 +532,24 @@ anno_tax_helper <- function(anno_tax, ps, taxa, taxa_which, taxa_side) {
   if (methods::is(anno_tax, "HeatmapAnnotation")) {
     if (!identical(taxa_which, anno_tax@which)) {
       stop(
-        "The `which` argument you have specified when creating the taxa annotation (anno_tax) is:\n\t'",
-        anno_tax@which, "'\nThis is not compatible with the taxa_side argument you specified:\n\t'",
-        taxa_side, "'\nwhich = 'row' matches side = 'left'/'right', and 'column' matches 'top'/'bottom'."
+        "\nYou specified the `which` argument to anno_tax() as:\n\t'",
+        anno_tax@which,
+        "'\nYou specified the taxa_side argument to the heatmap as:\n\t'",
+        taxa_side,
+        "'\nThese are incompatible options.",
+        "\n--> anno_tax which = 'row' matches taxa_side = 'left'/'right'",
+        "\n--> anno_tax which = 'column' matches taxa_side = 'top'/'bottom'."
       )
     }
   } else {
     stop(
-      "anno_tax must be NULL, list output of tax_anno, or class HeatmapAnnotation, but it is class:\n",
-      paste(class(tax_anno), collapse = " ")
+      call. = FALSE,
+      "heatmap anno_tax argument must be one of the following:\n",
+      "* NULL\n",
+      "* list output of tax_anno()\n",
+      "* class HeatmapAnnotation object\n\n",
+      "However, it is class:\n",
+      paste(class(anno_tax), collapse = " ")
     )
   }
   return(anno_tax)

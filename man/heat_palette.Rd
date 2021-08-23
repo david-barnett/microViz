@@ -13,19 +13,27 @@ heat_palette(
 )
 }
 \arguments{
-\item{palette}{named palette from colorspace::hcl_palettes() diverging/sequential or a vector of colour names/hexcodes}
+\item{palette}{named palette from colorspace::hcl_palettes() diverging/sequential
+or a vector of colour names/hexcodes}
 
-\item{breaks}{integer number of breaks, or numeric vector of values for colour scale breaks (including ends)}
+\item{breaks}{integer number of breaks}
 
-\item{range}{NA to return palette generating function that takes range, or numeric vector indicating the range, to return a palette}
+\item{range}{NA to return palette generating function that takes range
+or numeric vector indicating the range, to return a palette}
 
 \item{rev}{reverse the palette?}
 
 \item{sym}{makes palette range symmetrical around 0 if TRUE}
 }
 \value{
-circlize::colorRamp2 palette if !is.na(limits), or function returning a palette when given limits
+circlize::colorRamp2 palette if range = NA,
+or function returning a palette when given a range
 }
 \description{
-Pass a named colorspace hcl palette to circlize::colorRamp2
+Pass a named colorspace hcl palette to circlize::colorRamp2.
+\itemize{
+\item If you do not specify a range this function returns a function and
+the heatmap color palette will use the range of the data automatically
+\item If you do specify a range, this returns a colour palette with that range
+}
 }

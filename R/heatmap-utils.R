@@ -27,27 +27,42 @@ viz_heatmap <- function(mat, # used for seriation and colours
   stopifnot(inherits(numbers_mat, "matrix") && storage.mode(numbers_mat) %in% c("double", "integer"))
 
   dots <- list(...)
-  # order matrix
-  ser <- mat_seriate(mat = mat, method = seriation_method, dist = seriation_dist)
+  # compute order and any h clustering trees for matrix rows and columns
+  ser <- mat_seriate(
+    mat = mat, method = seriation_method, dist = seriation_dist,
+    col_method = seriation_method_col, col_dist = seriation_dist_col
+  )
 
-  # work in progress handling
+  # remove taxa_are_rows attr. which can remain from comp_heatmap otu_table mat
+  # (caused warning when Heatmap sets class(mat))
+  mat <- methods::as(mat, Class = "matrix")
+  numbers_mat <- methods::as(numbers_mat, Class = "matrix")
+
+  # cell_fun function for drawing numbers on heatmap cells
   if (identical(numbers, NULL)) {
     cell_fun <- NULL
   } else if (inherits(numbers, "function")) {
     cell_fun <- numbers
+    parent.env(environment(cell_fun)) <- environment()
     # set closure env's parent env to current env so cell_fun can find object mat!
     # ref https://bookdown.org/rdpeng/rprogdatascience/scoping-rules-of-r.html
     # ref https://adv-r.hadley.nz/function-factories.html
-    parent.env(environment(cell_fun)) <- environment()
   } else if (inherits(numbers, "list")) {
     cell_fun <- function(j, i, x, y, width, height, fill) {
       val <- numbers_mat[i, j]
-      if (!is.na(val)) grid::grid.text(label = sprintf(numbers[["fmt"]], val), x = x, y = y, gp = numbers[["gp"]])
+      if (!is.na(val)) {
+        grid::grid.text(
+          label = sprintf(numbers[["fmt"]], val),
+          x = x, y = y, gp = numbers[["gp"]]
+        )
+      }
     }
   }
 
   # getting colour range from data if necessary
-  if ("range" %in% methods::formalArgs(def = colors)) colors <- colors(range = range(mat, na.rm = TRUE, finite = TRUE))
+  if ("range" %in% methods::formalArgs(def = colors)) {
+    colors <- colors(range = range(mat, na.rm = TRUE, finite = TRUE))
+  }
 
   args <- list(
     matrix = mat,
