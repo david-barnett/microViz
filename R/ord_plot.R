@@ -194,24 +194,9 @@ ord_plot <-
       stop("data argument should be a ps_extra list, i.e. output of ord_calc")
     }
 
-    # get ellipses optional arguments (aesthetics for geom_point)
-    ellipses <- list(...)
-    # properly delete any ellipses arguments set to NULL
-    if (length(ellipses) > 0) ellipses[sapply(ellipses, is.null)] <- NULL
-
-    # check there are STILL ellipses args left after removing nulls
-    if (length(ellipses) > 0) {
-      # check aesthetics colour, shape, size and alpha are all in dataset (or numeric-esque)
-      variables <- phyloseq::sample_variables(ps)
-      for (v in ellipses) {
-        if (
-          !is.null(v) && !inherits(v, c("logical", "numeric", "integer")) &&
-            !(v %in% c(variables, grDevices::colors(), ggplot2_shapes()))
-        ) {
-          stop(v, " is not a variable in the sample metadata")
-        }
-      }
-    }
+    # return named list of arguments matching either phyloseq variable names or
+    # numbers/colors/ggplot2_shapes (throws error if any are invalid)
+    ellipses <- checkValidEllipsesOrdPlot(..., ps = ps)
 
     # get and transform aesthetic metadata ------------------------------------
     meta <- data.frame(phyloseq::sample_data(ps), check.names = FALSE)
@@ -302,50 +287,20 @@ ord_plot <-
     # add loadings/ species-scores arrows for RDA/PCA methods
     if (info[["ordMethod"]] %in% c("RDA", "CCA", "PCA")) {
 
-      # calculate line length for taxa vectors
-      speciesLineLength <-
-        sqrt(speciesScoresDf[, 1]^2 + speciesScoresDf[, 2]^2)
-
       # return subselection of taxa for which to draw labels on plot
-      selectSpeciesScoresDf <-
-        switch(class(plot_taxa[[1]]),
-          # default plot_taxa == TRUE --> line length > 1
-          "logical" = {
-            if (isTRUE(plot_taxa)) {
-              speciesScoresDf[speciesLineLength > 1, , drop = FALSE]
-            } else {
-              NULL
-            }
-          },
-          # integer e.g. 1:3 --> plot labels for top 3 taxa (by line length)
-          "integer" = {
-            speciesScoresDf[
-              rev(order(speciesLineLength)),
-            ][plot_taxa, , drop = FALSE]
-          },
-          # numeric e.g. 0.75 --> plot labels for taxa with line length > 0.75
-          "numeric" = {
-            speciesScoresDf[speciesLineLength > plot_taxa[[1]], , drop = FALSE]
-          },
-          # character e.g. c('g__Bacteroides', 'g__Veillonella')
-          # --> plot labels for exactly named taxa
-          "character" = {
-            speciesScoresDf[
-              rownames(speciesScoresDf) %in% plot_taxa, ,
-              drop = FALSE
-            ]
-          }
-        )
+      selectSpeciesScoresDf <- subsetTaxaDfLabel(
+        speciesScoresDf = speciesScoresDf, plot_taxa = plot_taxa
+      )
 
-      # if a selection of species scores was calculated,
-      # add lines and labels to plot
+      # if a selection of species scores (for labelling) was calculated,
+      # add taxa lines and labels to plot
       if (!identical(selectSpeciesScoresDf, NULL)) {
+
         # automatic taxa vector length setting
         if (identical(tax_vec_length, NA)) {
-          x <-
-            max(apply(siteScoresDf[, 1:2], MARGIN = 1, FUN = vecNormEuclid)) /
-              max(apply(speciesScoresDf[, 1:2], MARGIN = 1, FUN = vecNormEuclid))
-          tax_vec_length <- x * 0.85
+          tax_vec_length <- computeAutoVecLength(
+            vecDf = speciesScoresDf, pointsDf = siteScoresDf, prop = 0.85
+          )
         }
 
         # (semi-transparent) lines for all taxa
@@ -374,13 +329,14 @@ ord_plot <-
     ## constraints -----------------------------------------------------------
     # if constrained ordination, plot constraints
     if (!identical(info[["constraints"]], NA_character_)) {
+
       # automatic constraint length setting
       if (identical(constraint_vec_length, NA)) {
-        x <-
-          max(apply(siteScoresDf[, 1:2], MARGIN = 1, FUN = vecNormEuclid)) /
-            max(apply(constraintDf[, 1:2], MARGIN = 1, FUN = vecNormEuclid))
-        constraint_vec_length <- x * 0.45
+        constraint_vec_length <- computeAutoVecLength(
+          vecDf = constraintDf, pointsDf = siteScoresDf, prop = 0.45
+        )
       }
+
       # draw vector segments at length set by constraint_vec_length argument
       # (proportion of original length)
       p <- ord_arrows(
@@ -461,6 +417,7 @@ ord_caption <- function(p, ps, cap_size, info, scaling) {
   }
 }
 
+## centering plot ------------------------------------------------------------
 center_plot <- function(plot, clip = "off", expand = TRUE) {
   lims <- get_plot_limits(plot)
   plot + ggplot2::coord_cartesian(
@@ -486,6 +443,98 @@ get_plot_limits <- function(plot) {
   )
 }
 
+## arrow length helpers ------------------------------------------------------
+
+# rescale maximum length of vectors to be a proportion of maximum distance of
+# points from origin
+computeAutoVecLength <- function(vecDf, pointsDf, prop = 0.85) {
+  x <- max(rowVecNorms(pointsDf)) / max(rowVecNorms(vecDf))
+  tax_vec_length <- x * prop
+  return(tax_vec_length)
+}
+
+# calculate lengths of 2D vectors from rows of dataframe
+rowVecNorms <- function(df, cols = 1:2) {
+  x <- apply(X = df[, cols, drop = FALSE], MARGIN = 1, FUN = vecNormEuclid)
+  return(x)
+}
+
+# finds the euclidean norm (length) of the vector given
+# useful for adjusting the length of loading/constraint arrows
+# (when given x value and y value in vec)
+vecNormEuclid <- function(vec) norm(vec, type = "2")
+
+## other helpers -------------------------------------------------------------
+
+# Takes dataframe with rownames as taxa names, and data columns are ordination
+# dimensions, the first two being the ones to be plotted.
+# Returns subset of that dataframe with only taxa that will be labelled,
+# subset returned depends on the plot_taxa argument, which is user supplied.
+subsetTaxaDfLabel <- function(speciesScoresDf, plot_taxa) {
+
+  # calculate initial line length for taxa vectors
+  speciesLineLength <- rowVecNorms(df = speciesScoresDf, cols = 1:2)
+
+  # return subselection of taxa for which to draw labels on plot
+  selectSpeciesScoresDf <-
+    switch(class(plot_taxa[[1]]),
+      # default plot_taxa == TRUE --> line length > 1
+      "logical" = {
+        if (isTRUE(plot_taxa)) {
+          speciesScoresDf[speciesLineLength > 1, , drop = FALSE]
+        } else {
+          NULL
+        }
+      },
+      # integer e.g. 1:3 --> plot labels for top 3 taxa (by line length)
+      "integer" = {
+        speciesScoresDf[
+          rev(order(speciesLineLength)),
+        ][plot_taxa, , drop = FALSE]
+      },
+      # numeric e.g. 0.75 --> plot labels for taxa with line length > 0.75
+      "numeric" = {
+        speciesScoresDf[speciesLineLength > plot_taxa[[1]], , drop = FALSE]
+      },
+      # character e.g. c('g__Bacteroides', 'g__Veillonella')
+      # --> plot labels for exactly named taxa
+      "character" = {
+        speciesScoresDf[
+          rownames(speciesScoresDf) %in% plot_taxa, ,
+          drop = FALSE
+        ]
+      }
+    )
+
+  return(selectSpeciesScoresDf)
+}
+
+## helpers check aesthetic args ----------------------------------------------
+
+# return named list of arguments matching either phyloseq variable names or
+# numbers/colors/ggplot2_shapes (throws error if any are invalid)
+checkValidEllipsesOrdPlot <- function(..., ps) {
+  # get ellipses optional arguments (aesthetics for geom_point)
+  ellipses <- list(...)
+  # properly delete any ellipses arguments set to NULL
+  if (length(ellipses) > 0) ellipses[sapply(ellipses, is.null)] <- NULL
+
+  # check there are STILL ellipses args left after removing nulls
+  if (length(ellipses) > 0) {
+    # check aesthetics colour, shape, size and alpha are all in dataset (or numeric-esque)
+    variables <- phyloseq::sample_variables(ps)
+    for (v in ellipses) {
+      if (
+        !is.null(v) && !inherits(v, c("logical", "numeric", "integer")) &&
+        !(v %in% c(variables, grDevices::colors(), ggplot2_shapes()))
+      ) {
+        stop(v, " is not a variable in the sample metadata")
+      }
+    }
+  }
+  return(ellipses)
+}
+
 # generates vector of ggplot2 shapes
 ggplot2_shapes <- function() {
   c(
@@ -497,11 +546,4 @@ ggplot2_shapes <- function() {
     paste("triangle down", c("open", "filled")),
     "plus", "cross", "asterisk"
   )
-}
-
-# finds the euclidean norm (length) of the vector given
-# useful for adjusting the length of loading/constraint arrows
-# (when given x value and y value in vec)
-vecNormEuclid <- function(vec) {
-  return(norm(vec, type = "2"))
 }
