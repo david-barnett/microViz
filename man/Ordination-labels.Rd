@@ -98,7 +98,7 @@ ibd_ord \%>\%
     tax_vec_length = 1.3, tax_lab_length = 1.3,
     tax_lab_style = tax_lab_style(max_angle = 90)
   ) +
-coord_fixed(ratio = 1, clip = "off", xlim = c(-3.5, 3.5))
+  coord_fixed(ratio = 1, clip = "off", xlim = c(-3.5, 3.5))
 
 # You can use text instead of labels
 # - a bold fontface helps text to stand out
@@ -111,7 +111,7 @@ ibd_ord \%>\%
       type = "text", max_angle = 90, size = 2.5, fontface = "bold.italic"
     )
   ) +
-coord_fixed(ratio = 1, clip = "off", xlim = c(-3.5, 3.5))
+  coord_fixed(ratio = 1, clip = "off", xlim = c(-3.5, 3.5))
 
 # With text you can prevent overlaps with check_overlap = TRUE
 ibd_ord \%>\%
@@ -123,7 +123,7 @@ ibd_ord \%>\%
       check_overlap = TRUE
     )
   ) +
-coord_fixed(ratio = 1, clip = "off", xlim = c(-3.5, 3.5))
+  coord_fixed(ratio = 1, clip = "off", xlim = c(-3.5, 3.5))
 
 # With labels, you can reduce the padding and line weight to free space
 # but check_overlap is not available
@@ -139,7 +139,7 @@ ibd_ord \%>\%
       label.r = unit(0, "lines") # reduces rounding of corners to radius 0
     )
   ) +
-coord_fixed(ratio = 1, clip = "off", xlim = c(-3.5, 3.5))
+  coord_fixed(ratio = 1, clip = "off", xlim = c(-3.5, 3.5))
 
 # Perpendicular angled labels/text are possible
 ibd_ord \%>\%
@@ -150,7 +150,7 @@ ibd_ord \%>\%
       check_overlap = TRUE
     )
   ) +
-coord_fixed(ratio = 1, clip = "off", xlim = c(-3.5, 3.5))
+  coord_fixed(ratio = 1, clip = "off", xlim = c(-3.5, 3.5))
 
 
 # You can limit and/or attenuate the angle of rotation by:
@@ -165,7 +165,7 @@ ibd_ord \%>\%
       label.padding = unit(0.1, "lines"), label.r = unit(0, "lines")
     )
   ) +
-coord_fixed(ratio = 1, clip = "off", xlim = c(-3.5, 3.5))
+  coord_fixed(ratio = 1, clip = "off", xlim = c(-3.5, 3.5))
 
 ibd_ord \%>\%
   ord_plot(
@@ -176,7 +176,7 @@ ibd_ord \%>\%
       label.padding = unit(0.1, "lines"), label.r = unit(0, "lines")
     )
   ) +
-coord_fixed(ratio = 1, clip = "off", xlim = c(-3.5, 3.5))
+  coord_fixed(ratio = 1, clip = "off", xlim = c(-3.5, 3.5))
 
 # another example with some extras #
 ibd_ord \%>\%

@@ -48,7 +48,7 @@ ps <- corncob::ibd_phylo \%>\%
   phyloseq_validate()
 
 ps \%>\%
-  ps_filter(DiseaseState == "UC") \%>\%
+  ps_filter(DiseaseState == "CD") \%>\%
   ps_calc_dominant(rank = "Genus") \%>\%
   comp_barplot(tax_level = "Genus", label = "dominant_Genus", n_taxa = 12) +
   coord_flip()

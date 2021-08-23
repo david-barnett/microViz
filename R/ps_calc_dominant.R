@@ -43,8 +43,7 @@ ps_calc_dominant <- function(ps,
                              rank = "unique",
                              threshold = 0.3,
                              n_max = 6,
-                             var = paste("dominant", rank, sep = "_")
-) {
+                             var = paste("dominant", rank, sep = "_")) {
 
   # get count phyloseq if ps_extra
   ps <- ps_counts(data = ps)

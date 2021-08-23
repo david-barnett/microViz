@@ -20,7 +20,7 @@ ord_labels <- function(p,
                        renamer,
                        styleList,
                        axesNames,
-                       defaultStyles = tax_lab_style()){
+                       defaultStyles = tax_lab_style()) {
   # list of non-style arguments (not provided by user)
   args <- list(
     data = data,
@@ -117,7 +117,7 @@ ord_labels <- function(p,
 #'
 #' p <- ggplot(df, aes(mpg, hp, label = rownames(df))) +
 #'   geom_segment(xend = 0, yend = 0, color = "lightgrey") +
-#'   annotate(x = 0, y = 0, geom = 'point', size = 4) +
+#'   annotate(x = 0, y = 0, geom = "point", size = 4) +
 #'   theme_minimal()
 #'
 #' p
@@ -127,7 +127,7 @@ ord_labels <- function(p,
 #'   geom_text(size = 2.5, mapping = aes(angle = textAngleCalc(mpg, hp))) +
 #'   coord_fixed(ratio = 1)
 #'
-#' # equivalent: calculate variable outside of aes by referring to dataframe again
+#' # equivalent: calculate variable outside aes by referring to dataframe again
 #' p +
 #'   geom_text(size = 2.5, angle = textAngleCalc(df$mpg, df$hp)) +
 #'   coord_fixed(ratio = 1)
@@ -137,7 +137,7 @@ ord_labels <- function(p,
 #' p +
 #'   geom_text(size = 2.5, mapping = aes(angle = textAngleCalc(mpg, hp)))
 #'
-#' # ratio argument allows matching angles with alternative aspect ratio choices
+#' # ratio argument allows matching angles with alternative aspect ratio
 #' p +
 #'   geom_text(size = 2.5, angle = textAngleCalc(df$mpg, df$hp, ratio = .5)) +
 #'   coord_fixed(ratio = .5)
@@ -164,13 +164,13 @@ ord_labels <- function(p,
 #'   coord_fixed(ratio = 2, clip = "off")
 textAngleCalc <- function(xvec, yvec,
                           max = 90, ratio = 1,
-                          perpendicular = FALSE){
+                          perpendicular = FALSE) {
 
   # replace exact zeros
   xvec[xvec == 0] <- 1e-6
 
   # calculate angles of vectors and convert to degrees from radians
-  degs <- (180/pi) * atan(ratio*yvec/xvec)
+  degs <- (180 / pi) * atan(ratio * yvec / xvec)
 
   # make angles perpendicular if requested
   if (isTRUE(perpendicular)) {
@@ -178,7 +178,7 @@ textAngleCalc <- function(xvec, yvec,
   }
 
   # ensure maximum desired angle is not exceeded
-  degs <- dplyr::if_else(abs(degs) > max, true = sign(degs)*max, false = degs)
+  degs <- dplyr::if_else(abs(degs) > max, true = sign(degs) * max, false = degs)
 
   return(degs)
 }
@@ -188,9 +188,8 @@ textAngleCalc <- function(xvec, yvec,
 #' @describeIn
 #' ord_plot-label-helpers
 #' Calculate hjust of text labels for ordination plot
-textHjustCalc <- function(xvec, adjust = TRUE){
-
-  if (isTRUE(adjust)){
+textHjustCalc <- function(xvec, adjust = TRUE) {
+  if (isTRUE(adjust)) {
     hjust <- dplyr::if_else(xvec < 0, true = 1, false = 0)
   } else {
     hjust <- 0.5
@@ -268,7 +267,7 @@ textHjustCalc <- function(xvec, adjust = TRUE){
 #'     tax_vec_length = 1.3, tax_lab_length = 1.3,
 #'     tax_lab_style = tax_lab_style(max_angle = 90)
 #'   ) +
-#' coord_fixed(ratio = 1, clip = "off", xlim = c(-3.5, 3.5))
+#'   coord_fixed(ratio = 1, clip = "off", xlim = c(-3.5, 3.5))
 #'
 #' # You can use text instead of labels
 #' # - a bold fontface helps text to stand out
@@ -281,7 +280,7 @@ textHjustCalc <- function(xvec, adjust = TRUE){
 #'       type = "text", max_angle = 90, size = 2.5, fontface = "bold.italic"
 #'     )
 #'   ) +
-#' coord_fixed(ratio = 1, clip = "off", xlim = c(-3.5, 3.5))
+#'   coord_fixed(ratio = 1, clip = "off", xlim = c(-3.5, 3.5))
 #'
 #' # With text you can prevent overlaps with check_overlap = TRUE
 #' ibd_ord %>%
@@ -293,7 +292,7 @@ textHjustCalc <- function(xvec, adjust = TRUE){
 #'       check_overlap = TRUE
 #'     )
 #'   ) +
-#' coord_fixed(ratio = 1, clip = "off", xlim = c(-3.5, 3.5))
+#'   coord_fixed(ratio = 1, clip = "off", xlim = c(-3.5, 3.5))
 #'
 #' # With labels, you can reduce the padding and line weight to free space
 #' # but check_overlap is not available
@@ -309,7 +308,7 @@ textHjustCalc <- function(xvec, adjust = TRUE){
 #'       label.r = unit(0, "lines") # reduces rounding of corners to radius 0
 #'     )
 #'   ) +
-#' coord_fixed(ratio = 1, clip = "off", xlim = c(-3.5, 3.5))
+#'   coord_fixed(ratio = 1, clip = "off", xlim = c(-3.5, 3.5))
 #'
 #' # Perpendicular angled labels/text are possible
 #' ibd_ord %>%
@@ -320,7 +319,7 @@ textHjustCalc <- function(xvec, adjust = TRUE){
 #'       check_overlap = TRUE
 #'     )
 #'   ) +
-#' coord_fixed(ratio = 1, clip = "off", xlim = c(-3.5, 3.5))
+#'   coord_fixed(ratio = 1, clip = "off", xlim = c(-3.5, 3.5))
 #'
 #'
 #' # You can limit and/or attenuate the angle of rotation by:
@@ -335,7 +334,7 @@ textHjustCalc <- function(xvec, adjust = TRUE){
 #'       label.padding = unit(0.1, "lines"), label.r = unit(0, "lines")
 #'     )
 #'   ) +
-#' coord_fixed(ratio = 1, clip = "off", xlim = c(-3.5, 3.5))
+#'   coord_fixed(ratio = 1, clip = "off", xlim = c(-3.5, 3.5))
 #'
 #' ibd_ord %>%
 #'   ord_plot(
@@ -346,7 +345,7 @@ textHjustCalc <- function(xvec, adjust = TRUE){
 #'       label.padding = unit(0.1, "lines"), label.r = unit(0, "lines")
 #'     )
 #'   ) +
-#' coord_fixed(ratio = 1, clip = "off", xlim = c(-3.5, 3.5))
+#'   coord_fixed(ratio = 1, clip = "off", xlim = c(-3.5, 3.5))
 #'
 #' # another example with some extras #
 #' ibd_ord %>%
@@ -371,7 +370,7 @@ tax_lab_style <- function(type = "label",
                           size = 2,
                           alpha = 1,
                           colour = "black",
-                          ...){
+                          ...) {
   out <- lab_style(
     type = type,
     max_angle = max_angle,
@@ -389,14 +388,14 @@ tax_lab_style <- function(type = "label",
 #' @rdname Ordination-labels
 #' @export
 constraint_lab_style <- function(type = "label",
-                          max_angle = 0,
-                          perpendicular = FALSE,
-                          aspect_ratio = 1,
-                          justify = "auto",
-                          size = 2.5,
-                          alpha = 1,
-                          colour = "brown",
-                          ...){
+                                 max_angle = 0,
+                                 perpendicular = FALSE,
+                                 aspect_ratio = 1,
+                                 justify = "auto",
+                                 size = 2.5,
+                                 alpha = 1,
+                                 colour = "brown",
+                                 ...) {
   out <- lab_style(
     type = type,
     max_angle = max_angle,
@@ -415,7 +414,7 @@ constraint_lab_style <- function(type = "label",
 #' The exported tax and constraint functions merely differ in default values
 #' @noRd
 lab_style <- function(type, max_angle, aspect_ratio, justify, perpendicular,
-                      size, alpha, colour, ...){
+                      size, alpha, colour, ...) {
   # check all args named
   if (length(...names()) != ...length()) {
     stop(
@@ -424,7 +423,7 @@ lab_style <- function(type, max_angle, aspect_ratio, justify, perpendicular,
     )
   }
 
-  if (!is.numeric(max_angle) || max_angle < 0 || max_angle > 90){
+  if (!is.numeric(max_angle) || max_angle < 0 || max_angle > 90) {
     stop(
       call. = FALSE,
       "*lab_style max_angle must be a numeric value in degrees: min 0, max 90"

@@ -286,4 +286,3 @@ ord_plot_iris <- function(data,
     return(iris)
   }
 }
-

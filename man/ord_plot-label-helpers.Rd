@@ -48,7 +48,7 @@ df <- mtcars \%>\% mutate(across(everything(), scale))
 
 p <- ggplot(df, aes(mpg, hp, label = rownames(df))) +
   geom_segment(xend = 0, yend = 0, color = "lightgrey") +
-  annotate(x = 0, y = 0, geom = 'point', size = 4) +
+  annotate(x = 0, y = 0, geom = "point", size = 4) +
   theme_minimal()
 
 p
@@ -58,7 +58,7 @@ p +
   geom_text(size = 2.5, mapping = aes(angle = textAngleCalc(mpg, hp))) +
   coord_fixed(ratio = 1)
 
-# equivalent: calculate variable outside of aes by referring to dataframe again
+# equivalent: calculate variable outside aes by referring to dataframe again
 p +
   geom_text(size = 2.5, angle = textAngleCalc(df$mpg, df$hp)) +
   coord_fixed(ratio = 1)
@@ -68,7 +68,7 @@ p +
 p +
   geom_text(size = 2.5, mapping = aes(angle = textAngleCalc(mpg, hp)))
 
-# ratio argument allows matching angles with alternative aspect ratio choices
+# ratio argument allows matching angles with alternative aspect ratio
 p +
   geom_text(size = 2.5, angle = textAngleCalc(df$mpg, df$hp, ratio = .5)) +
   coord_fixed(ratio = .5)

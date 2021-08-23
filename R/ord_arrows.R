@@ -9,7 +9,7 @@
 #'
 #' @return ggplot
 #' @noRd
-ord_arrows <- function(p, data, styleList, axesNames, defaultStyles){
+ord_arrows <- function(p, data, styleList, axesNames, defaultStyles) {
   args <- list(
     data = data, mapping = ggplot2::aes_string(
       xend = axesNames[1], yend = axesNames[2], x = 0, y = 0
@@ -37,14 +37,13 @@ ord_arrows <- function(p, data, styleList, axesNames, defaultStyles){
 
 #' @export
 #' @rdname ord_arrows
-vec_constraint <- function(
-  size = 1, alpha = 0.8, colour = "brown",
-  arrow = grid::arrow(
-    length = grid::unit(0.005, units = "npc"), type = "closed", angle = 30
-  ),
-  lineend = "round", linejoin = "mitre",
-  ...
-){
+vec_constraint <- function(size = 1, alpha = 0.8, colour = "brown",
+                           arrow = grid::arrow(
+                             length = grid::unit(0.005, units = "npc"),
+                             type = "closed", angle = 30
+                           ),
+                           lineend = "round", linejoin = "mitre",
+                           ...) {
   list(
     size = size, alpha = alpha, arrow = arrow, colour = colour,
     lineend = lineend, linejoin = linejoin, ...
@@ -53,14 +52,13 @@ vec_constraint <- function(
 
 #' @export
 #' @rdname ord_arrows
-vec_tax_sel <- function(
-  size = 0.5, alpha = 1, colour = "black",
-  arrow = grid::arrow(
-    length = grid::unit(0.005, units = "npc"), type = "closed", angle = 30
-  ),
-  lineend = "round", linejoin = "mitre",
-  ...
-){
+vec_tax_sel <- function(size = 0.5, alpha = 1, colour = "black",
+                        arrow = grid::arrow(
+                          length = grid::unit(0.005, units = "npc"),
+                          type = "closed", angle = 30
+                        ),
+                        lineend = "round", linejoin = "mitre",
+                        ...) {
   list(
     size = size, alpha = alpha, arrow = arrow, colour = colour,
     lineend = lineend, linejoin = linejoin, ...
@@ -69,11 +67,6 @@ vec_tax_sel <- function(
 
 #' @export
 #' @rdname ord_arrows
-vec_tax_all <- function(size = 0.5, alpha = 0.25, arrow = NULL, ...
-){
+vec_tax_all <- function(size = 0.5, alpha = 0.25, arrow = NULL, ...) {
   list(size = size, alpha = alpha, arrow = arrow, ...)
 }
-
-
-
-

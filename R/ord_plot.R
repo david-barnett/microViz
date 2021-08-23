@@ -344,7 +344,7 @@ ord_plot <-
         if (identical(tax_vec_length, NA)) {
           x <-
             max(apply(siteScoresDf[, 1:2], MARGIN = 1, FUN = vecNormEuclid)) /
-            max(apply(speciesScoresDf[, 1:2], MARGIN = 1, FUN = vecNormEuclid))
+              max(apply(speciesScoresDf[, 1:2], MARGIN = 1, FUN = vecNormEuclid))
           tax_vec_length <- x * 0.85
         }
 
@@ -368,8 +368,6 @@ ord_plot <-
           axesNames = axesNames, renamer = taxon_renamer,
           styleList = tax_lab_style, defaultStyles = tax_lab_style()
         )
-
-
       }
     }
 
@@ -380,7 +378,7 @@ ord_plot <-
       if (identical(constraint_vec_length, NA)) {
         x <-
           max(apply(siteScoresDf[, 1:2], MARGIN = 1, FUN = vecNormEuclid)) /
-          max(apply(constraintDf[, 1:2], MARGIN = 1, FUN = vecNormEuclid))
+            max(apply(constraintDf[, 1:2], MARGIN = 1, FUN = vecNormEuclid))
         constraint_vec_length <- x * 0.45
       }
       # draw vector segments at length set by constraint_vec_length argument
@@ -425,11 +423,9 @@ ord_plot <-
 #' @return ggplot
 #' @noRd
 ord_caption <- function(p, ps, cap_size, info, scaling) {
-
-  if (identical(NA, cap_size)){
+  if (identical(NA, cap_size)) {
     return(p) # return unchanged
   } else {
-
     o <- info[["ordMethod"]]
 
     # some ordinations should have scaling type reported, when not the default
@@ -463,7 +459,6 @@ ord_caption <- function(p, ps, cap_size, info, scaling) {
 
     return(p)
   }
-
 }
 
 center_plot <- function(plot, clip = "off", expand = TRUE) {
@@ -507,7 +502,6 @@ ggplot2_shapes <- function() {
 # finds the euclidean norm (length) of the vector given
 # useful for adjusting the length of loading/constraint arrows
 # (when given x value and y value in vec)
-vecNormEuclid <- function(vec){
+vecNormEuclid <- function(vec) {
   return(norm(vec, type = "2"))
 }
-

@@ -51,6 +51,4 @@ test_that("constrained ordination gives correct warnings etc", {
     regexp =
       "PCA cannot use constraints, did you mean RDA, CAP or CCA"
   )
-
 })
-

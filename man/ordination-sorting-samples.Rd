@@ -93,7 +93,6 @@ cordi <- ibd \%>\%
   )
 
 cordi \%>\% ord_plot(plot_taxa = 1:6, axes = 2:1)
-
 }
 \seealso{
 \itemize{
