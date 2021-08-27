@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Arbitrary expansion of the "Paired" colorbrewer palette — distinct_palette • microViz</title>
+<title>Colour palettes suitable for 20+ categories — distinct_palette • microViz</title>
 
 
 <!-- jquery -->
@@ -45,9 +45,19 @@
 
 
 
-<meta property="og:title" content="Arbitrary expansion of the "Paired" colorbrewer palette — distinct_palette" />
-<meta property="og:description" content="Good for generating palettes for large sets of categories,
-e.g. in the comp_barplot function" />
+<meta property="og:title" content="Colour palettes suitable for 20+ categories — distinct_palette" />
+<meta property="og:description" content="Available palettes (max colors) are &quot;brewerPlus&quot; (41), &quot;kelly&quot; (20) and &quot;greenArmytage&quot; (25).
+&quot;brewerPlus&quot; is an arbitrary expansion of the &quot;Paired&quot; and &quot;Dark2&quot;
+colorbrewer palettes. The philosophy behind this expansion was to ensure
+that similar colours are far apart, and the earlier colours are attractive.
+&quot;kelly&quot; is based on the 22-colour palette developed by Kenneth Kelly but
+with white and black starting colours removed. This palette is ordered
+such that the first colours are most distinct.
+&quot;greenArmytage&quot; is based on a 26-colour palette proposed by Paul
+Green-Armytage, with black remove. This palette is not ordered by maximum
+contrast.
+
+" />
 
 
 
@@ -79,7 +89,7 @@ e.g. in the comp_barplot function" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9009</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9010</span>
       </span>
     </div>
 
@@ -153,17 +163,27 @@ e.g. in the comp_barplot function" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Arbitrary expansion of the "Paired" colorbrewer palette</h1>
+    <h1>Colour palettes suitable for 20+ categories</h1>
     <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/distinct_palette.R'><code>R/distinct_palette.R</code></a></small>
     <div class="hidden name"><code>distinct_palette.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Good for generating palettes for large sets of categories,
-e.g. in the comp_barplot function</p>
+    <p>Available palettes (max colors) are "brewerPlus" (41), "kelly" (20) and "greenArmytage" (25).</p><ul>
+<li><p>"brewerPlus" is an arbitrary expansion of the "Paired" and "Dark2"
+colorbrewer palettes. The philosophy behind this expansion was to ensure
+that similar colours are far apart, and the earlier colours are attractive.</p></li>
+<li><p>"kelly" is based on the 22-colour palette developed by Kenneth Kelly but
+with white and black starting colours removed. This palette is ordered
+such that the first colours are most distinct.</p></li>
+<li><p>"greenArmytage" is based on a 26-colour palette proposed by Paul
+Green-Armytage, with black remove. This palette is not ordered by maximum
+contrast.</p></li>
+</ul>
+
     </div>
 
-    <pre class="usage"><span class='fu'>distinct_palette</span><span class='op'>(</span>n <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>distinct_palette</span><span class='op'>(</span>n <span class='op'>=</span> <span class='cn'>NA</span>, pal <span class='op'>=</span> <span class='st'>"brewerPlus"</span>, add <span class='op'>=</span> <span class='st'>"lightgrey"</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -172,16 +192,43 @@ e.g. in the comp_barplot function</p>
       <th>n</th>
       <td><p>number of colours to return</p></td>
     </tr>
+    <tr>
+      <th>pal</th>
+      <td><p>palette name, one of "brewerPlus", "kelly", "greenArmytage"</p></td>
+    </tr>
+    <tr>
+      <th>add</th>
+      <td><p>colour to append to end of palette, as colour n+1,
+lightgrey by default for the use as "other" taxa in comp_barplot,
+or NA for no additional colour.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>vector of colours</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Hex color codes for 'kelly' and 'greenArmytage' palettes are copied and
+slightly modified from the Polychrome R package:
+i.e. Polychrome::kelly.colors() and Polychrome::green.armytage.colors()</p>
+<p>Please consider also citing Coombes 2019
+<a href='http://dx.doi.org/10.18637/jss.v090.c01'>http://dx.doi.org/10.18637/jss.v090.c01</a>
+if you use either of these palettes.</p>
+<p>See the Polychrome reference manual for more information:
+<a href='https://CRAN.R-project.org/package=Polychrome'>https://CRAN.R-project.org/package=Polychrome</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>pal</span> <span class='op'>&lt;-</span> <span class='fu'>distinct_palette</span><span class='op'>(</span><span class='op'>)</span>
 <span class='fu'>scales</span><span class='fu'>::</span><span class='fu'><a href='https://scales.r-lib.org/reference/show_col.html'>show_col</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>pal</span>, <span class='st'>"lightgrey"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='img'><img src='distinct_palette-1.png' alt='' width='700' height='433' /></div></pre>
+</div><div class='img'><img src='distinct_palette-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='va'>pal2</span> <span class='op'>&lt;-</span> <span class='fu'>distinct_palette</span><span class='op'>(</span>pal <span class='op'>=</span> <span class='st'>"kelly"</span><span class='op'>)</span>
+<span class='fu'>scales</span><span class='fu'>::</span><span class='fu'><a href='https://scales.r-lib.org/reference/show_col.html'>show_col</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>pal2</span>, <span class='st'>"lightgrey"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='img'><img src='distinct_palette-2.png' alt='' width='700' height='433' /></div><div class='input'>
+
+
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
