@@ -274,13 +274,13 @@ Please report any other app problems on the microViz GitHub issues page.</p>
     <p>Limitations:</p><ul>
 <li><p>If a "Select:" grouping variable is NA for some samples,
 then that grouping variable cannot be used to select those samples</p></li>
-<li><p>"Shape:" can only be mapped to variables with a maximum of 5 distinct levels,
+<li><p>"Shape:" can only be mapped to variables with maximum 5 distinct levels,
 not including NAs. NAs in the shape variable are shown as hollow circles.</p></li>
 </ul>
 
-<p>On some web browsers, e.g. firefox, the numeric inputs' buttons are sometimes
-hard to click.
-As a workaround, you can click the box and type a number or use the arrow keys.
+<p>On some web browsers, e.g. older versions of firefox, the numeric inputs'
+buttons are sometimes hard to click.
+As a workaround, click the box and type a number or use the arrow keys.
 This problem occurs in all Shiny apps, not just microViz.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -291,6 +291,7 @@ This problem occurs in all Shiny apps, not just microViz.</p>
 
   <span class='co'># example of quickstart approach with interactive ordination calculation #</span>
   <span class='fu'>corncob</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/corncob/man/ibd_phylo.html'>ibd_phylo</a></span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='tax_filter.html'>tax_filter</a></span><span class='op'>(</span>min_prevalence <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='co'># makes calculations faster</span>
     <span class='fu'><a href='tax_fix.html'>tax_fix</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'>ord_explore</span><span class='op'>(</span><span class='op'>)</span>
 
