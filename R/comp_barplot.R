@@ -181,8 +181,7 @@ comp_barplot <- function(ps,
                          bar_width = 1,
                          bar_outline_colour = "grey5",
                          bar_outline_width = 0.1,
-                         palette =
-                           c("lightgrey", rev(distinct_palette(n_taxa))),
+                         palette = distinct_palette(n_taxa),
                          tax_transform_for_ordering = "identity",
                          tax_transform_for_plot = "compositional",
                          seriate_method = "OLO_ward",
@@ -233,10 +232,10 @@ comp_barplot <- function(ps,
   if (isFALSE(order_with_all_taxa)) ps_for_order <- ps
 
   # set taxa order
-  ordered_taxa <- rev(unique(unclass(phyloseq::tax_table(ps))[, "unique"]))
+  ordered_taxa <- unique(unclass(phyloseq::tax_table(ps))[, "unique"])
 
   # fix taxa colour scheme (colours only applied to top taxa)
-  ordered_top_taxa <- rev(unique(unclass(phyloseq::tax_table(ps))[, "top"]))
+  ordered_top_taxa <- unique(unclass(phyloseq::tax_table(ps))[, "top"])
   if (identical(names(palette), NULL)) names(palette) <- ordered_top_taxa
 
   # determine sample ordering option
@@ -303,10 +302,10 @@ comp_barplot <- function(ps,
 
     # set fixed order of stacked taxa bars by creating ordered factor
     df[["unique"]] <-
-      factor(df[["unique"]], levels = ordered_taxa, ordered = TRUE)
+      factor(df[["unique"]], levels = rev(ordered_taxa), ordered = TRUE)
     # set fixed order of fill colours (for LEGEND ordering!)
     df[["top"]] <-
-      factor(df[["top"]], levels = ordered_top_taxa, ordered = TRUE)
+      factor(df[["top"]], levels = rev(ordered_top_taxa), ordered = TRUE)
 
     # set sample order
     df[["SAMPLE"]] <-

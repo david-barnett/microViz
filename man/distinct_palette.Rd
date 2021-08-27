@@ -2,21 +2,56 @@
 % Please edit documentation in R/distinct_palette.R
 \name{distinct_palette}
 \alias{distinct_palette}
-\title{Arbitrary expansion of the "Paired" colorbrewer palette}
+\title{Colour palettes suitable for 20+ categories}
 \usage{
-distinct_palette(n = NA)
+distinct_palette(n = NA, pal = "brewerPlus", add = "lightgrey")
 }
 \arguments{
 \item{n}{number of colours to return}
+
+\item{pal}{palette name, one of "brewerPlus", "kelly", "greenArmytage"}
+
+\item{add}{colour to append to end of palette, as colour n+1,
+lightgrey by default for the use as "other" taxa in comp_barplot,
+or NA for no additional colour.}
 }
 \value{
 vector of colours
 }
 \description{
-Good for generating palettes for large sets of categories,
-e.g. in the comp_barplot function
+Available palettes (max colors) are "brewerPlus" (41), "kelly" (20) and "greenArmytage" (25).
+\itemize{
+\item "brewerPlus" is an arbitrary expansion of the "Paired" and "Dark2"
+colorbrewer palettes. The philosophy behind this expansion was to ensure
+that similar colours are far apart, and the earlier colours are attractive.
+\item "kelly" is based on the 22-colour palette developed by Kenneth Kelly but
+with white and black starting colours removed. This palette is ordered
+such that the first colours are most distinct.
+\item "greenArmytage" is based on a 26-colour palette proposed by Paul
+Green-Armytage, with black remove. This palette is not ordered by maximum
+contrast.
+}
+}
+\details{
+Hex color codes for 'kelly' and 'greenArmytage' palettes are copied and
+slightly modified from the Polychrome R package:
+i.e. Polychrome::kelly.colors() and Polychrome::green.armytage.colors()
+
+Please consider also citing Coombes 2019
+\url{http://dx.doi.org/10.18637/jss.v090.c01}
+if you use either of these palettes.
+
+See the Polychrome reference manual for more information:
+\url{https://CRAN.R-project.org/package=Polychrome}
 }
 \examples{
 pal <- distinct_palette()
 scales::show_col(c(pal, "lightgrey"))
+
+pal2 <- distinct_palette(pal = "kelly")
+scales::show_col(c(pal2, "lightgrey"))
+
+
+
+
 }

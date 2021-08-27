@@ -3,11 +3,14 @@
 ## Features 
 - `ord_plot` arrow labels can now be rotated with the help of `tax_lab_style()` and `constraint_lab_style()` 
 - `ps_calc_dominant` function for conveniently identifying the dominant taxon in each phyloseq sample
+- `distinct_palette` gains "kelly" and "greenArmytage" palettes and helpfully adds "lightgrey" to the end by default for convenient use as the palette argument to `comp_barplot`
 
 ## Breaking changes
 - `ord_plot` default labels now have `alpha` = 1 for both taxa (previously and constraints (previously 0.8)
 - `ord_plot` "auto"matic loading/constraint vector length scalar adjustment improvement: now uses both axes
 - `comp_barplot` now uses bray-curtis by default for sample ordering (instead of aitchison) as this generally looks better
+- `comp_barplot` now expects palette argument colours in first-to-last order, which is more intuitive than the previous reverse order
+- `distinct_palette` now adds "lightgrey" to end by default
 
 ## Fixes
 - `cor_heatmap` and `comp_heatmap` now respect column seriation arguments when different to row seriation

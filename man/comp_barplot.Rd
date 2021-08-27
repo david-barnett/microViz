@@ -19,7 +19,7 @@ comp_barplot(
   bar_width = 1,
   bar_outline_colour = "grey5",
   bar_outline_width = 0.1,
-  palette = c("lightgrey", rev(distinct_palette(n_taxa))),
+  palette = distinct_palette(n_taxa),
   tax_transform_for_ordering = "identity",
   tax_transform_for_plot = "compositional",
   seriate_method = "OLO_ward",
