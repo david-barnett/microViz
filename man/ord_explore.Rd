@@ -79,13 +79,13 @@ Limitations:
 \itemize{
 \item If a "Select:" grouping variable is NA for some samples,
 then that grouping variable cannot be used to select those samples
-\item "Shape:" can only be mapped to variables with a maximum of 5 distinct levels,
+\item "Shape:" can only be mapped to variables with maximum 5 distinct levels,
 not including NAs. NAs in the shape variable are shown as hollow circles.
 }
 
-On some web browsers, e.g. firefox, the numeric inputs' buttons are sometimes
-hard to click.
-As a workaround, you can click the box and type a number or use the arrow keys.
+On some web browsers, e.g. older versions of firefox, the numeric inputs'
+buttons are sometimes hard to click.
+As a workaround, click the box and type a number or use the arrow keys.
 This problem occurs in all Shiny apps, not just microViz.
 }
 \examples{
@@ -96,6 +96,7 @@ if (interactive()) {
 
   # example of quickstart approach with interactive ordination calculation #
   corncob::ibd_phylo \%>\%
+    tax_filter(min_prevalence = 2) \%>\% # makes calculations faster
     tax_fix() \%>\%
     ord_explore()
 
