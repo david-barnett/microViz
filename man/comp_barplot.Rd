@@ -130,6 +130,19 @@ dietswap \%>\%
     taxon_renamer = toupper
   ) + coord_flip()
 
+# change colour palette with the distinct_palette() function
+# remember to set the number of colours to the same as n_taxa argument!
+dietswap \%>\%
+ps_filter(timepoint == 1) \%>\%
+  comp_barplot(
+    tax_level = "Family", n_taxa = 8,
+    bar_outline_colour = NA,
+    sample_order = "bray",
+    bar_width = 0.7,
+    palette = distinct_palette(8, pal = "kelly"),
+    taxon_renamer = toupper
+  ) + coord_flip()
+
 # Order samples by the value of one of more sample_data variables.
 # Use ps_arrange and set sample_order = "default" in comp_barplot.
 # ps_mutate is also used here to create an informative variable for axis labelling
