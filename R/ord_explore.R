@@ -1390,7 +1390,7 @@ ord_explore_palet_fun <- function(ps,
                                   top_by = sum,
                                   other = "grey90") {
   # set up colour palette and link to common taxa names and "other"
-  palet <- distinct_palette(n = NA)
+  palet <- distinct_palette(n = NA, add = NA)
   top_tax <- tax_top(ps, n = NA, by = top_by, rank = tax_level)
   numberOfColors <- min(length(top_tax), length(palet))
   palet <- palet[seq_len(numberOfColors)]
