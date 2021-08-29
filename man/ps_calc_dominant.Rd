@@ -6,22 +6,28 @@
 \usage{
 ps_calc_dominant(
   ps,
-  rank = "unique",
+  rank,
   threshold = 0.3,
   n_max = 6,
-  var = paste("dominant", rank, sep = "_")
+  var = paste("dominant", rank, sep = "_"),
+  none = "none",
+  other = "other"
 )
 }
 \arguments{
 \item{ps}{phyloseq object}
 
-\item{rank}{taxonomic rank to calculate}
+\item{rank}{taxonomic rank to calculate dominance at}
 
 \item{threshold}{minimum proportion at which to consider a sample dominated by a taxon}
 
 \item{n_max}{maximum number of taxa that can be listed as dominant taxa}
 
 \item{var}{name of variable to add to phyloseq object sample data}
+
+\item{none}{character value to use when no taxon reaches threshold}
+
+\item{other}{character value to use when another taxon (>n_max) dominates}
 }
 \value{
 phyloseq object
@@ -38,7 +44,7 @@ including "none") the dominant taxon will be "other" for those samples
 }
 }
 \details{
-Thanks to Vitor Heidrich for the initial idea and draft implementation
+Thanks to Vitor Heidrich for the idea and a draft implementation
 }
 \examples{
 library(ggplot2)
@@ -52,4 +58,25 @@ ps \%>\%
   ps_calc_dominant(rank = "Genus") \%>\%
   comp_barplot(tax_level = "Genus", label = "dominant_Genus", n_taxa = 12) +
   coord_flip()
+
+ps \%>\%
+  ps_calc_dominant(rank = "Genus") \%>\%
+  tax_transform(rank = "Genus", transformation = "clr") \%>\%
+  ord_calc("PCA") \%>\%
+  ord_plot(colour = "dominant_Genus", size = 3, alpha = 0.6) +
+  scale_colour_brewer(palette = "Dark2")
+
+# customise function options
+ps \%>\%
+  ps_calc_dominant(
+    rank = "Family", other = "Other", none = "Not dominated",
+    threshold = 0.4, n_max = 3
+  ) \%>\%
+  tax_transform(rank = "Genus", transformation = "clr") \%>\%
+  ord_calc("PCA") \%>\%
+  ord_plot(colour = "dominant_Family", size = 3, alpha = 0.6) +
+  scale_colour_manual(values = c(
+    Bacteroidaceae = "forestgreen", Lachnospiraceae = "darkblue",
+    Ruminococcaceae = "darkorange", Other = "red", "Not dominated" = "grey"
+  ))
 }

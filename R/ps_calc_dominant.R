@@ -15,13 +15,15 @@
 #'
 #'
 #' @param ps phyloseq object
-#' @param rank taxonomic rank to calculate
+#' @param rank taxonomic rank to calculate dominance at
 #' @param threshold
 #' minimum proportion at which to consider a sample dominated by a taxon
 #' @param n_max
 #' maximum number of taxa that can be listed as dominant taxa
 #' @param var
 #' name of variable to add to phyloseq object sample data
+#' @param none character value to use when no taxon reaches threshold
+#' @param other character value to use when another taxon (>n_max) dominates
 #'
 #' @return phyloseq object
 #' @export
@@ -46,11 +48,27 @@
 #'   ord_calc("PCA") %>%
 #'   ord_plot(colour = "dominant_Genus", size = 3, alpha = 0.6) +
 #'   scale_colour_brewer(palette = "Dark2")
+#'
+#' # customise function options
+#' ps %>%
+#'   ps_calc_dominant(
+#'     rank = "Family", other = "Other", none = "Not dominated",
+#'     threshold = 0.4, n_max = 3
+#'   ) %>%
+#'   tax_transform(rank = "Genus", transformation = "clr") %>%
+#'   ord_calc("PCA") %>%
+#'   ord_plot(colour = "dominant_Family", size = 3, alpha = 0.6) +
+#'   scale_colour_manual(values = c(
+#'     Bacteroidaceae = "forestgreen", Lachnospiraceae = "darkblue",
+#'     Ruminococcaceae = "darkorange", Other = "red", "Not dominated" = "grey"
+#'   ))
 ps_calc_dominant <- function(ps,
-                             rank = "unique",
+                             rank,
                              threshold = 0.3,
                              n_max = 6,
-                             var = paste("dominant", rank, sep = "_")) {
+                             var = paste("dominant", rank, sep = "_"),
+                             none = "none",
+                             other = "other") {
 
   # get count phyloseq if ps_extra
   ps <- ps_counts(data = ps)
@@ -69,11 +87,14 @@ ps_calc_dominant <- function(ps,
   dominated <- isDominated(data = otu, threshold = threshold)
 
   # if sample not dominated by most abundant taxon, replace with "none"
-  topTaxonName[!dominated] <- "none"
+  topTaxonName[!dominated] <- none
 
   # replace least frequently dominant taxa names with "other",
   # if there are more than n_max different dominant taxa (not including "none")
-  topTaxonName <- aggregateExcessAsOther(topTaxonName, n_max = n_max)
+  topTaxonName <- aggregateExcessAsOther(
+    topTaxonName,
+    n_max = n_max, none = none, other = other
+  )
 
   # Add new variable to original phyloseq and return
   if (var %in% phyloseq::sample_variables(ps)) {
@@ -123,11 +144,11 @@ getTopTaxon <- function(data) {
 
 # replace least frequently dominant taxa names with "other",
 # if there are more than n_max different dominant taxa (not including "none")
-aggregateExcessAsOther <- function(topTaxonName, n_max) {
+aggregateExcessAsOther <- function(topTaxonName, n_max, none, other) {
 
   # table of dominant taxa, sorted by number of times they are dominant
   dominantTaxaTable <- sort(
-    x = table(topTaxonName[topTaxonName != "none"]), decreasing = TRUE
+    x = table(topTaxonName[topTaxonName != none]), decreasing = TRUE
   )
 
   # ensure more taxa are not requested than exist in dominant taxa list
@@ -137,12 +158,12 @@ aggregateExcessAsOther <- function(topTaxonName, n_max) {
   validDominantTaxa <- names(dominantTaxaTable[seq_len(nMax)])
 
   # add "none" to list, if appropriate
-  if (any(topTaxonName == "none")) {
-    validDominantTaxa <- union(validDominantTaxa, "none")
+  if (any(topTaxonName == none)) {
+    validDominantTaxa <- union(validDominantTaxa, none)
   }
 
   # remove excess names, replacing with "other"
-  topTaxonName[!topTaxonName %in% validDominantTaxa] <- "other"
+  topTaxonName[!topTaxonName %in% validDominantTaxa] <- other
 
   return(topTaxonName)
 }
