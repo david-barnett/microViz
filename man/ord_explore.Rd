@@ -96,7 +96,8 @@ if (interactive()) {
 
   # example of quickstart approach with interactive ordination calculation #
   corncob::ibd_phylo \%>\%
-    tax_filter(min_prevalence = 2) \%>\% # makes calculations faster
+    # filtering makes subsequent calculations faster
+    tax_filter(min_prevalence = 2) \%>\%
     tax_fix() \%>\%
     ord_explore()
 

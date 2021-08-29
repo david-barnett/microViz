@@ -45,13 +45,12 @@ See the Polychrome reference manual for more information:
 \url{https://CRAN.R-project.org/package=Polychrome}
 }
 \examples{
-pal <- distinct_palette()
-scales::show_col(c(pal, "lightgrey"))
+brewerPlus <- distinct_palette()
+scales::show_col(brewerPlus)
 
-pal2 <- distinct_palette(pal = "kelly")
-scales::show_col(c(pal2, "lightgrey"))
+kelly <- distinct_palette(pal = "kelly")
+scales::show_col(kelly)
 
-
-
-
+greenArmytage <- distinct_palette(pal = "greenArmytage")
+scales::show_col(greenArmytage)
 }
