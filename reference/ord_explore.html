@@ -111,7 +111,7 @@ Please report any other app problems on the microViz GitHub issues page." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9011</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9012</span>
       </span>
     </div>
 
@@ -291,7 +291,8 @@ This problem occurs in all Shiny apps, not just microViz.</p>
 
   <span class='co'># example of quickstart approach with interactive ordination calculation #</span>
   <span class='fu'>corncob</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/corncob/man/ibd_phylo.html'>ibd_phylo</a></span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='tax_filter.html'>tax_filter</a></span><span class='op'>(</span>min_prevalence <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='co'># makes calculations faster</span>
+    <span class='co'># filtering makes subsequent calculations faster</span>
+    <span class='fu'><a href='tax_filter.html'>tax_filter</a></span><span class='op'>(</span>min_prevalence <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='tax_fix.html'>tax_fix</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'>ord_explore</span><span class='op'>(</span><span class='op'>)</span>
 
