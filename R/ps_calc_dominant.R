@@ -11,7 +11,7 @@
 #' including "none") the dominant taxon will be "other" for those samples
 #'
 #' @details
-#' Thanks to Vitor Heidrich for the initial idea and draft implementation
+#' Thanks to Vitor Heidrich for the idea and a draft implementation
 #'
 #'
 #' @param ps phyloseq object
@@ -39,6 +39,13 @@
 #'   ps_calc_dominant(rank = "Genus") %>%
 #'   comp_barplot(tax_level = "Genus", label = "dominant_Genus", n_taxa = 12) +
 #'   coord_flip()
+#'
+#' ps %>%
+#'   ps_calc_dominant(rank = "Genus") %>%
+#'   tax_transform(rank = "Genus", transformation = "clr") %>%
+#'   ord_calc("PCA") %>%
+#'   ord_plot(colour = "dominant_Genus", size = 3, alpha = 0.6) +
+#'   scale_colour_brewer(palette = "Dark2")
 ps_calc_dominant <- function(ps,
                              rank = "unique",
                              threshold = 0.3,
