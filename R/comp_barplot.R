@@ -90,7 +90,7 @@
 #' # change colour palette with the distinct_palette() function
 #' # remember to set the number of colours to the same as n_taxa argument!
 #' dietswap %>%
-#' ps_filter(timepoint == 1) %>%
+#'   ps_filter(timepoint == 1) %>%
 #'   comp_barplot(
 #'     tax_level = "Family", n_taxa = 8,
 #'     bar_outline_colour = NA,

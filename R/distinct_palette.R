@@ -45,10 +45,6 @@
 #'
 #' pal2 <- distinct_palette(pal = "kelly")
 #' scales::show_col(c(pal2, "lightgrey"))
-#'
-#'
-#'
-#'
 distinct_palette <- function(n = NA, pal = "brewerPlus", add = "lightgrey") {
 
   # define valid palettes matched to retrieval functions
@@ -58,7 +54,7 @@ distinct_palette <- function(n = NA, pal = "brewerPlus", add = "lightgrey") {
     greenArmytage = palGreenArmytage
   )
   if (!pal %in% names(palList)) {
-    stop ("pal must be one of: ", paste(names(palList), collapse = "/"))
+    stop("pal must be one of: ", paste(names(palList), collapse = "/"))
   }
 
   # get full palette
@@ -129,31 +125,10 @@ palKelly <- function() {
 
 palGreenArmytage <- function() {
   c(
-    "#F0A3FF",
-    "#0075DC",
-    "#993F00",
-    "#4C005C",
-    # "#191919", # black removed
-    "#005C31",
-    "#2BCE48",
-    "#FFCC99",
-    "#808080",
-    "#94FFB5",
-    "#8F7C00",
-    "#9DCC00",
-    "#C20088",
-    "#003380",
-    "#19A405",
-    "#FFA8BB",
-    "#426600",
-    "#FF0010",
-    "#5EF1F2",
-    "#00998F",
-    "#E0FF66",
-    "#100AFF",
-    "#990000",
-    "#FFFF80",
-    "#FFE100",
-    "#FF5000"
+    "#F0A3FF", "#0075DC", "#993F00", "#4C005C", # "#191919", # black removed
+    "#005C31", "#2BCE48", "#FFCC99", "#808080", "#94FFB5", "#8F7C00",
+    "#9DCC00", "#C20088", "#003380", "#19A405", "#FFA8BB", "#426600",
+    "#FF0010", "#5EF1F2", "#00998F", "#E0FF66", "#100AFF", "#990000",
+    "#FFFF80", "#FFE100", "#FF5000"
   )
 }
