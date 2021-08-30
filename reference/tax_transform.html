@@ -80,7 +80,7 @@ or equivalently set the rank argument in tax_transform." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9014</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9015</span>
       </span>
     </div>
 
@@ -204,7 +204,9 @@ i.e. multiple transformations can be chained with multiple tax_transform calls</
     </tr>
     <tr>
       <th>zero_replace</th>
-      <td><p>Replace any zeros with this value before transforming.
+      <td><p>Replace any zeros with this value before transforming. Either a numeric, or
+"halfmin" which replaces zeros with half of the smallest value across the
+entire dataset.
 Beware: the choice of zero replacement is not tracked in the ps_extra output.</p></td>
     </tr>
     <tr>
@@ -344,7 +346,22 @@ All abundances above 10 would be converted to 1s.</p>
 #&gt; ps_extra info:
 #&gt; tax_agg = Family tax_transform = log2
 #&gt; 
-#&gt; $counts OTU Table: [ 22 taxa and 222 samples ]</div></pre>
+#&gt; $counts OTU Table: [ 22 taxa and 222 samples ]</div><div class='input'>
+<span class='co'># log2 transformation after replacing all zeros with a pseudocount of half</span>
+<span class='co'># the minimum non-zero count value in the aggregated dataset</span>
+<span class='fu'>tax_transform</span><span class='op'>(</span><span class='va'>dietswap</span>, trans <span class='op'>=</span> <span class='st'>"log2"</span>, rank <span class='op'>=</span> <span class='st'>"Family"</span>, zero_replace <span class='op'>=</span> <span class='st'>"halfmin"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; ps_extra object - a list with phyloseq and extras:
+#&gt; 
+#&gt; phyloseq-class experiment-level object
+#&gt; otu_table()   OTU Table:         [ 22 taxa and 222 samples ]
+#&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
+#&gt; tax_table()   Taxonomy Table:    [ 22 taxa by 2 taxonomic ranks ]
+#&gt; 
+#&gt; ps_extra info:
+#&gt; tax_agg = Family tax_transform = log2
+#&gt; 
+#&gt; $counts OTU Table: [ 22 taxa and 222 samples ]</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
