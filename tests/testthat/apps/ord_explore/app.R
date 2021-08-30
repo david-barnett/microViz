@@ -7,7 +7,7 @@ ps <- dietswap %>%
   tax_fix()
 
 ord1 <- ps %>%
-  tax_transform(rank = "unique", transformation = "identity") %>%
+  tax_transform(rank = "unique", trans = "identity") %>%
   dist_calc("bray") %>%
   ord_calc("PCoA")
 

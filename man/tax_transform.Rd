@@ -4,12 +4,21 @@
 \alias{tax_transform}
 \title{Transform taxa in phyloseq object and record transformation}
 \usage{
-tax_transform(data, transformation, rank = NA, keep_counts = TRUE, ...)
+tax_transform(
+  data,
+  trans,
+  rank = NA,
+  keep_counts = TRUE,
+  chain = FALSE,
+  zero_replace = 0,
+  transformation = NULL,
+  ...
+)
 }
 \arguments{
-\item{data}{\code{ps_extra} list output from \code{tax_agg}, or a phyloseq object}
+\item{data}{a phyloseq object or \code{ps_extra} list output from \code{tax_agg}}
 
-\item{transformation}{any valid taxa transformation (e.g. from \code{microbiome::transform})}
+\item{trans}{any valid taxa transformation (e.g. from \code{microbiome::transform})}
 
 \item{rank}{If data is phyloseq: data are aggregated at this rank before transforming.
 If NA, runs tax_agg(data, rank = NA).
@@ -17,7 +26,16 @@ If rank is NA and data is already ps_extra, any preceding aggregation is left as
 
 \item{keep_counts}{if TRUE, store the pre-transformation count data in ps_extra counts slot}
 
-\item{...}{any extra arguments passed to \code{microbiome::transform} or pass undetected = a number when using transformation = "binary"}
+\item{chain}{if TRUE, transforming again is possible when data are already transformed
+i.e. multiple transformations can be chained with multiple tax_transform calls}
+
+\item{zero_replace}{Replace any zeros with this value before transforming.
+Beware: the choice of zero replacement is not tracked in the ps_extra output.}
+
+\item{transformation}{deprecated, use \code{trans} instead!}
+
+\item{...}{any extra arguments passed to \code{microbiome::transform} or pass
+undetected = \verb{a number} when using trans = "binary"}
 }
 \value{
 \code{ps_extra} list including phyloseq object and info
@@ -41,37 +59,56 @@ extra info (used for annotating \code{ord_plot} ordinations):
 
 A few commonly used transformations:
 \itemize{
-\item "clr" performs the centered log ratio transformation using \code{microbiome::transform},
-which adds a small pseudocount of min(relative abundance)/2.
+\item "clr" performs the centered log ratio transformation using \code{microbiome::transform}
 \item "compositional" converts the data into proportions, from 0 to 1.
 \item "identity" does not transform the data, and records this choice for \code{ord_plot}
 \item "binary" can be used to transform tax abundances into presence/abundance data.
+\item "log2" which performs a log base 2 transformation
+(don't forget to set zero_replace if there are any zeros in your data)
+}
+}
+\section{clr transformation note}{
+
+
+If any values are zero, the clr transform routine first adds a small
+pseudocount of min(relative abundance)/2 to all values. To avoid this, you
+can replace any zeros in advance by setting zero_replace to a number > 0.
 }
 
-Binary transform notes:
+\section{Binary transformation notes}{
 
-By default, otu_table values of 0 are kept as 0, and all positive values are converted to 1 (like \code{decostand(method = "pa")}).
-You can set a different threshold, by passing e.g. undetected = 10, for example, in which case all abundances of 10 or below would be converted to 0s.
-All abundances above 10 would be converted to 1s. Use any numeric value.
+
+By default, otu_table values of 0 are kept as 0, and all positive values
+are converted to 1 (like \code{decostand(method = "pa")}).
+You can set a different threshold, by passing e.g. undetected = 10, for
+example, in which case all abundances of 10 or below would be converted to 0.
+All abundances above 10 would be converted to 1s.
+
+Beware that the choice of detection threshold is not tracked in the ps_extra.
 }
+
 \examples{
 library(microbiome)
 data("dietswap", package = "microbiome")
 
-# aggregate taxa at Phylum level and perform the center log ratio transform on the phyla counts
-tax_transform(dietswap, transformation = "clr", rank = "Phylum")
-# equivalent to old, two-step method
+# aggregate taxa at Phylum level and center log ratio transform the phyla counts
+tax_transform(dietswap, trans = "clr", rank = "Phylum")
+
+# this is equivalent to the two-step method (agg then transform)
 tax_agg(dietswap, rank = "Phylum") \%>\% tax_transform("clr")
 
-# do nothing except record tax_agg as "unique" and tax_transform as "identity" in ps_extra info
+# does nothing except record tax_agg as "unique" and tax_transform as "identity" in ps_extra info
 dietswap \%>\% tax_transform("identity", rank = NA)
 
 # binary transformation (convert abundances to presence/absence or detected/undetected)
-tax_transform(dietswap, transformation = "binary")
+tax_transform(dietswap, trans = "binary", rank = "Genus")
 # change detection threshold by setting undetected argument (default is 0)
-tax_transform(dietswap, transformation = "binary", undetected = 50) \%>\%
+tax_transform(dietswap, trans = "binary", rank = "Genus", undetected = 50) \%>\%
   otu_get() \%>\%
   .[1:6, 1:4]
+
+# log2 transformation after replacing all zeros with a pseudocount of 1
+tax_transform(dietswap, trans = "log2", rank = "Family", zero_replace = 1)
 }
 \seealso{
 \code{microbiome::\link[microbiome]{transform}} for some more info on available transformations

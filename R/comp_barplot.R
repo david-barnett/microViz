@@ -309,7 +309,7 @@ comp_barplot <- function(ps,
       )
       ordered_samples <- phyloseq::sample_names(ps_ordered)
     }
-    ps <- tax_transform(ps, transformation = tax_transform_for_plot)[["ps"]]
+    ps <- tax_transform(ps, trans = tax_transform_for_plot)[["ps"]]
     # create long dataframe from compositional phyloseq
     df <- ps_melt(ps)
 

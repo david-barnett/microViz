@@ -344,7 +344,7 @@
         size = 1, plot_taxa = p, ellipses = FALSE, chulls = FALSE, paths = NULL)
     Output
       your_phyloseq %>%
-       tax_transform(rank = "Genus", transformation = "identity") %>%
+       tax_transform(rank = "Genus", trans = "identity") %>%
        ord_calc(
         method = "RDA"
        ) %>% 
@@ -367,7 +367,7 @@
         size = 1, plot_taxa = p, ellipses = FALSE, chulls = FALSE, paths = NULL)
     Output
       your_phyloseq %>%
-       tax_transform(rank = "Genus", transformation = "identity") %>%
+       tax_transform(rank = "Genus", trans = "identity") %>%
        ord_calc(
         constraints = c("test1", "test2"),
         method = "RDA"
@@ -391,7 +391,7 @@
         size = 1, plot_taxa = p, ellipses = FALSE, chulls = FALSE, paths = NULL)
     Output
       your_phyloseq %>%
-       tax_transform(rank = "Genus", transformation = "identity") %>%
+       tax_transform(rank = "Genus", trans = "identity") %>%
        ord_calc(
         method = "RDA"
        ) %>% 
@@ -414,7 +414,7 @@
         size = 1, plot_taxa = p, ellipses = FALSE, chulls = FALSE, paths = NULL)
     Output
       your_phyloseq %>%
-       tax_transform(rank = "Genus", transformation = "identity") %>%
+       tax_transform(rank = "Genus", trans = "identity") %>%
        ord_calc(
         constraints = c("test1", "test2"),
         method = "RDA"
@@ -438,7 +438,7 @@
         size = 1, plot_taxa = p, ellipses = FALSE, chulls = FALSE, paths = NULL)
     Output
       your_phyloseq %>%
-       tax_transform(rank = "Genus", transformation = "identity") %>%
+       tax_transform(rank = "Genus", trans = "identity") %>%
        ord_calc(
         method = "RDA"
        ) %>% 
@@ -462,7 +462,7 @@
         size = 1, plot_taxa = p, ellipses = FALSE, chulls = FALSE, paths = NULL)
     Output
       your_phyloseq %>%
-       tax_transform(rank = "Genus", transformation = "identity") %>%
+       tax_transform(rank = "Genus", trans = "identity") %>%
        ord_calc(
         constraints = c("test1", "test2"),
         method = "RDA"
@@ -487,7 +487,7 @@
         size = 1, plot_taxa = p, ellipses = FALSE, chulls = FALSE, paths = NULL)
     Output
       your_phyloseq %>%
-       tax_transform(rank = "Genus", transformation = "identity") %>%
+       tax_transform(rank = "Genus", trans = "identity") %>%
        ord_calc(
         method = "RDA"
        ) %>% 
@@ -511,7 +511,7 @@
         size = 1, plot_taxa = p, ellipses = FALSE, chulls = FALSE, paths = NULL)
     Output
       your_phyloseq %>%
-       tax_transform(rank = "Genus", transformation = "identity") %>%
+       tax_transform(rank = "Genus", trans = "identity") %>%
        ord_calc(
         constraints = c("test1", "test2"),
         method = "RDA"

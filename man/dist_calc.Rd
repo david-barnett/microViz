@@ -48,7 +48,7 @@ Alternatively you can directly access the distance matrix with dist_get().
 \details{
 Aitchison distance note: You should EITHER:
 \enumerate{
-\item skip the dist_calc function and call ord_calc(method = "PCA") directly on an object with taxa transformed with tax_transform(transformation = "clr")
+\item skip the dist_calc function and call ord_calc(method = "PCA") directly on an object with taxa transformed with tax_transform(trans = "clr")
 \item pass an object with untransformed (or 'identity' transformed) taxa to the data argument of dist_calc() and specify dist = "aitchison".
 }
 

@@ -59,14 +59,14 @@ When creating an ordination plot, you first need to prepare the microbiota varia
 
 ```{r clr}
 ibd %>% 
-  tax_transform(transformation = "clr", rank = "Genus")
+  tax_transform(trans = "clr", rank = "Genus")
 ```
 
 -   Some methods, such as [PCoA](#pcoa), require a matrix of pairwise distances between samples, which you can easily calculate with `dist_calc()`. Normally you should NOT transform your data when using a distance-based method, but it is useful to record an "identity" transformation anyway, to make it clear you have not transformed your data.
 
 ```{r identity}
 ibd %>% 
-  tax_transform(transformation = "identity", rank = "Genus") %>% 
+  tax_transform(trans = "identity", rank = "Genus") %>% 
   dist_calc("bray") # bray curtis distance
 ```
 

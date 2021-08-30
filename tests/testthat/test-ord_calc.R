@@ -12,11 +12,11 @@ phyloseq::sample_data(dietswap)$female[c(3, 4)] <- NA
 
 # compute distances
 tmpDist <- dietswap %>%
-  tax_transform(rank = "Genus", transformation = "identity") %>%
+  tax_transform(rank = "Genus", trans = "identity") %>%
   dist_calc("bray")
 
 tmpNoDist <- dietswap %>%
-  tax_transform(rank = "Genus", transformation = "identity")
+  tax_transform(rank = "Genus", trans = "identity")
 
 test_that("constrained ordination gives correct warnings etc", {
   expect_message(

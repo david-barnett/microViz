@@ -992,7 +992,7 @@ ord_build <- function(data,
                       conditions = NULL) {
   dat <- ps_counts(data, warn = TRUE)
   dat <- tax_agg(ps = dat, rank = rank)
-  dat <- tax_transform(data = dat, transformation = trans)
+  dat <- tax_transform(data = dat, trans = trans)
   if (!identical(dist, NA)) {
     dat <- dist_calc(data = dat, dist = dist)
   }
@@ -1214,7 +1214,7 @@ ord_code <- function(rank, trans, dist, ord, const, conds, x, y,
   cat(
     "your_phyloseq %>%",
     paste0(
-      ' tax_transform(rank = "', rank, '", transformation = "', trans, '") %>%'
+      ' tax_transform(rank = "', rank, '", trans = "', trans, '") %>%'
     ),
     dist_calc_line,
     " ord_calc(",

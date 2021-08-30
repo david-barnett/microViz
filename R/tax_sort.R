@@ -170,7 +170,7 @@ tax_sort <- function(data, by = "name", at = "names", ..., tree_warn = TRUE, ver
 # or if ps was not aggregated, just use this on original otu_table
 tax_sort_by_otu <- function(ps, by, err, ...) {
   if (identical(by, "prev") || identical(by, "prevalence")) {
-    ps <- tax_transform(ps, transformation = "binary", ...)
+    ps <- tax_transform(ps, trans = "binary", ...)
     by <- base::sum # sum of binary transformed otu_table is prevalence!
   }
   # otu_get --> taxa as columns! (unclass leaves as a matrix)

@@ -20,7 +20,7 @@
 #' corncob::ibd_phylo %>%
 #'   tax_fix() %>%
 #'   phyloseq_validate() %>%
-#'   tax_transform(rank = "Genus", transformation = "clr") %>%
+#'   tax_transform(rank = "Genus", trans = "clr") %>%
 #'   ord_calc(
 #'     method = "PCA"
 #'   ) %>%

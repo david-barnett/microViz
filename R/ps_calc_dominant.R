@@ -44,7 +44,7 @@
 #'
 #' ps %>%
 #'   ps_calc_dominant(rank = "Genus") %>%
-#'   tax_transform(rank = "Genus", transformation = "clr") %>%
+#'   tax_transform(rank = "Genus", trans = "clr") %>%
 #'   ord_calc("PCA") %>%
 #'   ord_plot(colour = "dominant_Genus", size = 3, alpha = 0.6) +
 #'   scale_colour_brewer(palette = "Dark2")
@@ -55,7 +55,7 @@
 #'     rank = "Family", other = "Other", none = "Not dominated",
 #'     threshold = 0.4, n_max = 3
 #'   ) %>%
-#'   tax_transform(rank = "Genus", transformation = "clr") %>%
+#'   tax_transform(rank = "Genus", trans = "clr") %>%
 #'   ord_calc("PCA") %>%
 #'   ord_plot(colour = "dominant_Family", size = 3, alpha = 0.6) +
 #'   scale_colour_manual(values = c(

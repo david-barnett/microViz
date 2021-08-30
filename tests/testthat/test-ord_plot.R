@@ -52,13 +52,13 @@ test_that("partialed bray CAP plot gives correct positions", {
 # aitchison and clr PCA equivalence ----------------------------------------
 
 p3 <- ps %>%
-  tax_transform(transformation = "identity", rank = "Genus") %>%
+  tax_transform(trans = "identity", rank = "Genus") %>%
   dist_calc("aitchison") %>%
   ord_calc(method = "PCoA") %>%
   ord_plot(colour = "bmi_group")
 
 p4 <- ps %>%
-  tax_transform(transformation = "clr", rank = "Genus") %>%
+  tax_transform(trans = "clr", rank = "Genus") %>%
   ord_calc(method = "PCA") %>%
   ord_plot(colour = "bmi_group")
 

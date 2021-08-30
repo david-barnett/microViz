@@ -9,7 +9,7 @@
 #' Instead of tax_agg, consider using `tax_transform()` with a rank argument instead, to both aggregate and transform the taxa.
 #' This is also useful when you want to aggregate but not transform the taxa,
 #' and yet still log the "identity" transformation in ps_extra for captioning your ordination plots.
-#' e.g. `tax_transform(rank = "Genus", transformation = "identity")`
+#' e.g. `tax_transform(rank = "Genus", trans = "identity")`
 #'
 #' tax_agg allows you to pass NA or "unique" to the rank argument which will NOT aggregate the taxa.
 #' If you use rank = "unique" or add_unique = TRUE, it will add a new rank called unique, identical to the taxa_names (after any aggregation)

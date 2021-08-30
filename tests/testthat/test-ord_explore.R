@@ -11,7 +11,7 @@ test_that("ord_explore_init stays the same", {
       weight = dplyr::recode(bmi_group, obese = 3, overweight = 2, lean = 1),
       female = dplyr::if_else(sex == "female", true = 1, false = 0)
     ) %>%
-    tax_transform(transformation = "clr", rank = "Genus") %>%
+    tax_transform(trans = "clr", rank = "Genus") %>%
     ord_calc(constraints = c("weight", "female"))
 
   expect_snapshot(ord_explore_init(dietswap))
