@@ -58,7 +58,9 @@
 #' if TRUE, transforming again is possible when data are already transformed
 #' i.e. multiple transformations can be chained with multiple tax_transform calls
 #' @param zero_replace
-#' Replace any zeros with this value before transforming.
+#' Replace any zeros with this value before transforming. Either a numeric, or
+#' "halfmin" which replaces zeros with half of the smallest value across the
+#' entire dataset.
 #' Beware: the choice of zero replacement is not tracked in the ps_extra output.
 #'
 #' @return `ps_extra` list including phyloseq object and info
@@ -89,6 +91,11 @@
 #'
 #' # log2 transformation after replacing all zeros with a pseudocount of 1
 #' tax_transform(dietswap, trans = "log2", rank = "Family", zero_replace = 1)
+#'
+#' # log2 transformation after replacing all zeros with a pseudocount of half
+#' # the minimum non-zero count value in the aggregated dataset
+#' tax_transform(dietswap, trans = "log2", rank = "Family", zero_replace = "halfmin")
+#'
 tax_transform <- function(data,
                           trans,
                           rank = NA,
@@ -220,6 +227,7 @@ otuZeroReplace <- function(otu, zero_replace) {
         when some otu_table values are negative"
       )
     }
+    otu <- methods::as(otu, "matrix")
     zero_replace <- min(otu[otu > 0], na.rm = TRUE) / 2
   }
   # replace zeros with zero_replace number

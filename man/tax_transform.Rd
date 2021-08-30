@@ -29,7 +29,9 @@ If rank is NA and data is already ps_extra, any preceding aggregation is left as
 \item{chain}{if TRUE, transforming again is possible when data are already transformed
 i.e. multiple transformations can be chained with multiple tax_transform calls}
 
-\item{zero_replace}{Replace any zeros with this value before transforming.
+\item{zero_replace}{Replace any zeros with this value before transforming. Either a numeric, or
+"halfmin" which replaces zeros with half of the smallest value across the
+entire dataset.
 Beware: the choice of zero replacement is not tracked in the ps_extra output.}
 
 \item{transformation}{deprecated, use \code{trans} instead!}
@@ -109,6 +111,11 @@ tax_transform(dietswap, trans = "binary", rank = "Genus", undetected = 50) \%>\%
 
 # log2 transformation after replacing all zeros with a pseudocount of 1
 tax_transform(dietswap, trans = "log2", rank = "Family", zero_replace = 1)
+
+# log2 transformation after replacing all zeros with a pseudocount of half
+# the minimum non-zero count value in the aggregated dataset
+tax_transform(dietswap, trans = "log2", rank = "Family", zero_replace = "halfmin")
+
 }
 \seealso{
 \code{microbiome::\link[microbiome]{transform}} for some more info on available transformations
