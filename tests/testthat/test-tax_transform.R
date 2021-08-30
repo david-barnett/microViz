@@ -29,5 +29,4 @@ test_that("tax_transform doesn't change", {
   expect_error(object = {
     tax_transform(ps, rank = "Family", trans = "log2", zero_replace = 0)
   }, regexp = "711 zeros detected in otu_table")
-
 })

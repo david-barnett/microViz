@@ -115,7 +115,6 @@ tax_transform(dietswap, trans = "log2", rank = "Family", zero_replace = 1)
 # log2 transformation after replacing all zeros with a pseudocount of half
 # the minimum non-zero count value in the aggregated dataset
 tax_transform(dietswap, trans = "log2", rank = "Family", zero_replace = "halfmin")
-
 }
 \seealso{
 \code{microbiome::\link[microbiome]{transform}} for some more info on available transformations
