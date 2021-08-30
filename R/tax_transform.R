@@ -177,9 +177,13 @@ tax_transformInfoUpdate <- function(info, trans, chain, rank) {
   if (!is.na(info[["tax_transform"]])) {
     if (!isTRUE(chain)) {
       # disallow further transformation by default
-      stop("data were already transformed by: ", info[["tax_transform"]])
+      stop(
+        call. = FALSE,
+        "data were already transformed by: ", info[["tax_transform"]], "\n",
+        "--> set argument chain = TRUE if you want to chain another transform"
+        )
     } else if (isTRUE(chain)) {
-      if (!identical(rank, "unique")) {
+      if (!identical(rank, NA) && !identical(rank, "unique")) {
         stop("rank must be NA/'unique' if chaining another transformation!")
       }
       # append name of this transformation onto ps_extra info

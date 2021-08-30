@@ -30,3 +30,24 @@ test_that("tax_transform doesn't change", {
     tax_transform(ps, rank = "Family", trans = "log2", zero_replace = 0)
   }, regexp = "711 zeros detected in otu_table")
 })
+
+test_that("tax_transform 'maaslin2-default' chaining works", {
+  ps <- dietswap
+  trans1 <- tax_transform(ps, trans = "compositional", rank = "Genus")
+  # error as no zero replacement
+  expect_error(
+    object = tax_transform(trans1, "log2", chain = TRUE),
+    regexp = "5935 zeros detected in otu_table"
+  )
+  # error as chain = FALSE
+  expect_error(
+    object = tax_transform(trans1, "log2", chain = FALSE),
+    regexp = "data were already transformed by: compositional"
+  )
+  ord <- trans1 %>%
+    tax_transform("log2", zero_replace = "halfmin", chain = TRUE) %>%
+    ord_calc("PCA")
+  expect_snapshot(ord)
+  p <- ord_plot(ord) + ggplot2::theme_test()
+  vdiffr::expect_doppelganger("trans-chaining", fig = p)
+})
