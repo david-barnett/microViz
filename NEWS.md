@@ -7,7 +7,7 @@
 - `tax_transform` can now chain multiple transformations together and records these transformations in the ps_extra output
 
 ## Breaking changes
-- `ord_plot` default labels now have `alpha` = 1 for both taxa (previously and constraints (previously 0.8)
+- `ord_plot` default labels now have `alpha` = 1 for both taxa and constraints (previously 0.8)
 - `ord_plot` "auto"matic loading/constraint vector length scalar adjustment improvement: now uses both axes
 - `comp_barplot` now uses bray-curtis by default for sample ordering (instead of aitchison) as this generally looks better
 - `comp_barplot` now expects palette argument colours in first-to-last order, which is more intuitive than the previous reverse order
