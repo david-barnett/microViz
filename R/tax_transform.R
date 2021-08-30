@@ -93,22 +93,7 @@ tax_transform <- function(data,
 
   # perform special binary transformation if requested
   if (identical(transformation, "binary")) {
-    dots <- list(...)
-    if ("undetected" %in% names(dots)) {
-      undetected <- dots[["undetected"]]
-    } else {
-      undetected <- 0
-    }
-    otu <- unclass(otu_get(ps))
-    otu <- otu > undetected
-    # cast from logical to double
-    storage.mode(otu) <- "double"
-    # return otu table in original orientation
-    tax_rows <- phyloseq::taxa_are_rows(ps)
-    if (tax_rows) otu <- t(otu)
-    phyloseq::otu_table(ps) <- phyloseq::otu_table(
-      object = otu, taxa_are_rows = tax_rows
-    )
+    ps <- tax_transformBinary(ps, ...)
   } else {
     # transformations other than the "binary" transform
     # transform phyloseq with microbiome::transform
@@ -122,3 +107,27 @@ tax_transform <- function(data,
   }
   return(data)
 }
+
+# binary transformation helper
+tax_transformBinary <- function(ps, ...){
+  # retrieve or create "undetected" argument
+  dots <- list(...)
+  if ("undetected" %in% names(dots)) {
+    undetected <- dots[["undetected"]]
+  } else {
+    undetected <- 0
+  }
+  # get and transform otu_table
+  otu <- unclass(otu_get(ps))
+  otu <- otu > undetected
+  # cast from logical to double
+  storage.mode(otu) <- "double"
+  # return otu table in original orientation
+  tax_rows <- phyloseq::taxa_are_rows(ps)
+  if (tax_rows) otu <- t(otu)
+  phyloseq::otu_table(ps) <- phyloseq::otu_table(
+    object = otu, taxa_are_rows = tax_rows
+  )
+  return(ps)
+}
+
