@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9012</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9014</span>
       </span>
     </div>
 
@@ -127,7 +127,7 @@
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://david-barnett.github.io/microViz">microViz</a></span><span class="op">)</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; microViz version 0.7.10.9012 - Copyright (C) 2021 David Barnett</span>
+<span class="co">#&gt; microViz version 0.7.10.9014 - Copyright (C) 2021 David Barnett</span>
 <span class="co">#&gt; * Website: https://david-barnett.github.io/microViz/</span>
 <span class="co">#&gt; * Useful? For citation info, run: citation('microViz')</span>
 <span class="co">#&gt; * Silence: suppressPackageStartupMessages(library(microViz))</span>
@@ -162,7 +162,7 @@
 </ul>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ibd</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span>transformation <span class="op">=</span> <span class="st">"clr"</span>, rank <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span>
+  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span>trans <span class="op">=</span> <span class="st">"clr"</span>, rank <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span>
 <span class="co">#&gt; ps_extra object - a list with phyloseq and extras:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; phyloseq-class experiment-level object</span>
@@ -179,7 +179,7 @@
 </ul>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ibd</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span>transformation <span class="op">=</span> <span class="st">"identity"</span>, rank <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span>trans <span class="op">=</span> <span class="st">"identity"</span>, rank <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="../../reference/dist_calc.html">dist_calc</a></span><span class="op">(</span><span class="st">"bray"</span><span class="op">)</span> <span class="co"># bray curtis distance</span>
 <span class="co">#&gt; ps_extra object - a list with phyloseq and extras:</span>
 <span class="co">#&gt; </span>
@@ -466,7 +466,7 @@
 <span class="co">#&gt;  collate  en_US.UTF-8                 </span>
 <span class="co">#&gt;  ctype    en_US.UTF-8                 </span>
 <span class="co">#&gt;  tz       UTC                         </span>
-<span class="co">#&gt;  date     2021-08-29                  </span>
+<span class="co">#&gt;  date     2021-08-30                  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ─ Packages ───────────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt;  package          * version     date       lib source        </span>
@@ -526,7 +526,7 @@
 <span class="co">#&gt;  memoise            2.0.0       2021-01-26 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  mgcv               1.8-36      2021-06-01 [2] CRAN (R 4.1.1)</span>
 <span class="co">#&gt;  microbiome         1.14.0      2021-05-19 [1] Bioconductor  </span>
-<span class="co">#&gt;  microViz         * 0.7.10.9012 2021-08-29 [1] local         </span>
+<span class="co">#&gt;  microViz         * 0.7.10.9014 2021-08-30 [1] local         </span>
 <span class="co">#&gt;  multtest           2.48.0      2021-05-19 [1] Bioconductor  </span>
 <span class="co">#&gt;  munsell            0.5.0       2018-06-12 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  nlme               3.1-152     2021-02-04 [2] CRAN (R 4.1.1)</span>

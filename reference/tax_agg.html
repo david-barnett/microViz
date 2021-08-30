@@ -53,7 +53,7 @@ to help you keep track of what you have done with your phyloseq object and autom
 Instead of tax_agg, consider using tax_transform() with a rank argument instead, to both aggregate and transform the taxa.
 This is also useful when you want to aggregate but not transform the taxa,
 and yet still log the &quot;identity&quot; transformation in ps_extra for captioning your ordination plots.
-e.g. tax_transform(rank = &quot;Genus&quot;, transformation = &quot;identity&quot;)
+e.g. tax_transform(rank = &quot;Genus&quot;, trans = &quot;identity&quot;)
 tax_agg allows you to pass NA or &quot;unique&quot; to the rank argument which will NOT aggregate the taxa.
 If you use rank = &quot;unique&quot; or add_unique = TRUE, it will add a new rank called unique, identical to the taxa_names (after any aggregation)
 Be aware: you should not use the top_N argument yourself without good reason.
@@ -92,7 +92,7 @@ The tax_table produced when using top_N is otherwise INVALID FOR MOST OTHER ANAL
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9012</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9014</span>
       </span>
     </div>
 
@@ -179,7 +179,7 @@ to help you keep track of what you have done with your phyloseq object and autom
 <p>Instead of tax_agg, consider using <code><a href='tax_transform.html'>tax_transform()</a></code> with a rank argument instead, to both aggregate and transform the taxa.
 This is also useful when you want to aggregate but not transform the taxa,
 and yet still log the "identity" transformation in ps_extra for captioning your ordination plots.
-e.g. <code><a href='tax_transform.html'>tax_transform(rank = "Genus", transformation = "identity")</a></code></p>
+e.g. <code><a href='tax_transform.html'>tax_transform(rank = "Genus", trans = "identity")</a></code></p>
 <p>tax_agg allows you to pass NA or "unique" to the rank argument which will NOT aggregate the taxa.
 If you use rank = "unique" or add_unique = TRUE, it will add a new rank called unique, identical to the taxa_names (after any aggregation)</p>
 <p>Be aware: you should not use the top_N argument yourself without good reason.

@@ -80,7 +80,7 @@ or equivalently set the rank argument in tax_transform." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9012</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9014</span>
       </span>
     </div>
 
@@ -165,17 +165,26 @@ You can pipe the results of <code>tax_agg</code> into <code>tax_transform</code>
 or equivalently set the rank argument in <code>tax_transform</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>tax_transform</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>transformation</span>, rank <span class='op'>=</span> <span class='cn'>NA</span>, keep_counts <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>tax_transform</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  <span class='va'>trans</span>,
+  rank <span class='op'>=</span> <span class='cn'>NA</span>,
+  keep_counts <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  chain <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  zero_replace <span class='op'>=</span> <span class='fl'>0</span>,
+  transformation <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p><code>ps_extra</code> list output from <code>tax_agg</code>, or a phyloseq object</p></td>
+      <td><p>a phyloseq object or <code>ps_extra</code> list output from <code>tax_agg</code></p></td>
     </tr>
     <tr>
-      <th>transformation</th>
+      <th>trans</th>
       <td><p>any valid taxa transformation (e.g. from <code><a href='https://rdrr.io/pkg/microbiome/man/transform.html'>microbiome::transform</a></code>)</p></td>
     </tr>
     <tr>
@@ -189,8 +198,23 @@ If rank is NA and data is already ps_extra, any preceding aggregation is left as
       <td><p>if TRUE, store the pre-transformation count data in ps_extra counts slot</p></td>
     </tr>
     <tr>
+      <th>chain</th>
+      <td><p>if TRUE, transforming again is possible when data are already transformed
+i.e. multiple transformations can be chained with multiple tax_transform calls</p></td>
+    </tr>
+    <tr>
+      <th>zero_replace</th>
+      <td><p>Replace any zeros with this value before transforming.
+Beware: the choice of zero replacement is not tracked in the ps_extra output.</p></td>
+    </tr>
+    <tr>
+      <th>transformation</th>
+      <td><p>deprecated, use <code>trans</code> instead!</p></td>
+    </tr>
+    <tr>
       <th>...</th>
-      <td><p>any extra arguments passed to <code><a href='https://rdrr.io/pkg/microbiome/man/transform.html'>microbiome::transform</a></code> or pass undetected = a number when using transformation = "binary"</p></td>
+      <td><p>any extra arguments passed to <code><a href='https://rdrr.io/pkg/microbiome/man/transform.html'>microbiome::transform</a></code> or pass
+undetected = <code>a number</code> when using trans = "binary"</p></td>
     </tr>
     </table>
 
@@ -209,17 +233,33 @@ extra info (used for annotating <code>ord_plot</code> ordinations):</p><ul>
 </ul>
 
 <p>A few commonly used transformations:</p><ul>
-<li><p>"clr" performs the centered log ratio transformation using <code><a href='https://rdrr.io/pkg/microbiome/man/transform.html'>microbiome::transform</a></code>,
-which adds a small pseudocount of min(relative abundance)/2.</p></li>
+<li><p>"clr" performs the centered log ratio transformation using <code><a href='https://rdrr.io/pkg/microbiome/man/transform.html'>microbiome::transform</a></code></p></li>
 <li><p>"compositional" converts the data into proportions, from 0 to 1.</p></li>
 <li><p>"identity" does not transform the data, and records this choice for <code>ord_plot</code></p></li>
 <li><p>"binary" can be used to transform tax abundances into presence/abundance data.</p></li>
+<li><p>"log2" which performs a log base 2 transformation
+(don't forget to set zero_replace if there are any zeros in your data)</p></li>
 </ul>
 
-<p>Binary transform notes:</p>
-<p>By default, otu_table values of 0 are kept as 0, and all positive values are converted to 1 (like <code><a href='https://rdrr.io/pkg/vegan/man/decostand.html'>decostand(method = "pa")</a></code>).
-You can set a different threshold, by passing e.g. undetected = 10, for example, in which case all abundances of 10 or below would be converted to 0s.
-All abundances above 10 would be converted to 1s. Use any numeric value.</p>
+    <h2 class="hasAnchor" id="clr-transformation-note"><a class="anchor" href="#clr-transformation-note"></a>clr transformation note</h2>
+
+    
+
+
+<p>If any values are zero, the clr transform routine first adds a small
+pseudocount of min(relative abundance)/2 to all values. To avoid this, you
+can replace any zeros in advance by setting zero_replace to a number &gt; 0.</p>
+    <h2 class="hasAnchor" id="binary-transformation-notes"><a class="anchor" href="#binary-transformation-notes"></a>Binary transformation notes</h2>
+
+    
+
+
+<p>By default, otu_table values of 0 are kept as 0, and all positive values
+are converted to 1 (like <code><a href='https://rdrr.io/pkg/vegan/man/decostand.html'>decostand(method = "pa")</a></code>).
+You can set a different threshold, by passing e.g. undetected = 10, for
+example, in which case all abundances of 10 or below would be converted to 0.
+All abundances above 10 would be converted to 1s.</p>
+<p>Beware that the choice of detection threshold is not tracked in the ps_extra.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code>microbiome::<a href='https://rdrr.io/pkg/microbiome/man/transform.html'>transform</a></code> for some more info on available transformations</p>
@@ -230,8 +270,8 @@ All abundances above 10 would be converted to 1s. Use any numeric value.</p>
     <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://microbiome.github.io/microbiome'>microbiome</a></span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span>
 
-<span class='co'># aggregate taxa at Phylum level and perform the center log ratio transform on the phyla counts</span>
-<span class='fu'>tax_transform</span><span class='op'>(</span><span class='va'>dietswap</span>, transformation <span class='op'>=</span> <span class='st'>"clr"</span>, rank <span class='op'>=</span> <span class='st'>"Phylum"</span><span class='op'>)</span>
+<span class='co'># aggregate taxa at Phylum level and center log ratio transform the phyla counts</span>
+<span class='fu'>tax_transform</span><span class='op'>(</span><span class='va'>dietswap</span>, trans <span class='op'>=</span> <span class='st'>"clr"</span>, rank <span class='op'>=</span> <span class='st'>"Phylum"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; ps_extra object - a list with phyloseq and extras:
 #&gt; 
 #&gt; phyloseq-class experiment-level object
@@ -242,7 +282,8 @@ All abundances above 10 would be converted to 1s. Use any numeric value.</p>
 #&gt; ps_extra info:
 #&gt; tax_agg = Phylum tax_transform = clr
 #&gt; 
-#&gt; $counts OTU Table: [ 8 taxa and 222 samples ]</div><div class='input'><span class='co'># equivalent to old, two-step method</span>
+#&gt; $counts OTU Table: [ 8 taxa and 222 samples ]</div><div class='input'>
+<span class='co'># this is equivalent to the two-step method (agg then transform)</span>
 <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='va'>dietswap</span>, rank <span class='op'>=</span> <span class='st'>"Phylum"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'>tax_transform</span><span class='op'>(</span><span class='st'>"clr"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; ps_extra object - a list with phyloseq and extras:
 #&gt; 
@@ -255,7 +296,7 @@ All abundances above 10 would be converted to 1s. Use any numeric value.</p>
 #&gt; tax_agg = Phylum tax_transform = clr
 #&gt; 
 #&gt; $counts OTU Table: [ 8 taxa and 222 samples ]</div><div class='input'>
-<span class='co'># do nothing except record tax_agg as "unique" and tax_transform as "identity" in ps_extra info</span>
+<span class='co'># does nothing except record tax_agg as "unique" and tax_transform as "identity" in ps_extra info</span>
 <span class='va'>dietswap</span> <span class='op'>%&gt;%</span> <span class='fu'>tax_transform</span><span class='op'>(</span><span class='st'>"identity"</span>, rank <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; ps_extra object - a list with phyloseq and extras:
 #&gt; 
@@ -267,19 +308,19 @@ All abundances above 10 would be converted to 1s. Use any numeric value.</p>
 #&gt; ps_extra info:
 #&gt; tax_agg = unique tax_transform = identity</div><div class='input'>
 <span class='co'># binary transformation (convert abundances to presence/absence or detected/undetected)</span>
-<span class='fu'>tax_transform</span><span class='op'>(</span><span class='va'>dietswap</span>, transformation <span class='op'>=</span> <span class='st'>"binary"</span><span class='op'>)</span>
+<span class='fu'>tax_transform</span><span class='op'>(</span><span class='va'>dietswap</span>, trans <span class='op'>=</span> <span class='st'>"binary"</span>, rank <span class='op'>=</span> <span class='st'>"Genus"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; ps_extra object - a list with phyloseq and extras:
 #&gt; 
 #&gt; phyloseq-class experiment-level object
 #&gt; otu_table()   OTU Table:         [ 130 taxa and 222 samples ]
 #&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 130 taxa by 4 taxonomic ranks ]
+#&gt; tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]
 #&gt; 
 #&gt; ps_extra info:
-#&gt; tax_agg = unique tax_transform = binary
+#&gt; tax_agg = Genus tax_transform = binary
 #&gt; 
 #&gt; $counts OTU Table: [ 130 taxa and 222 samples ]</div><div class='input'><span class='co'># change detection threshold by setting undetected argument (default is 0)</span>
-<span class='fu'>tax_transform</span><span class='op'>(</span><span class='va'>dietswap</span>, transformation <span class='op'>=</span> <span class='st'>"binary"</span>, undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<span class='fu'>tax_transform</span><span class='op'>(</span><span class='va'>dietswap</span>, trans <span class='op'>=</span> <span class='st'>"binary"</span>, rank <span class='op'>=</span> <span class='st'>"Genus"</span>, undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='ps_extra-accessors.html'>otu_get</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='va'>.</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span>
 </div><div class='output co'>#&gt; OTU Table:          [4 taxa and 6 samples]
@@ -290,7 +331,20 @@ All abundances above 10 would be converted to 1s. Use any numeric value.</p>
 #&gt; Sample-3                0          0         0           1
 #&gt; Sample-4                0          0         0           1
 #&gt; Sample-5                0          0         0           0
-#&gt; Sample-6                0          0         0           0</div></pre>
+#&gt; Sample-6                0          0         0           0</div><div class='input'>
+<span class='co'># log2 transformation after replacing all zeros with a pseudocount of 1</span>
+<span class='fu'>tax_transform</span><span class='op'>(</span><span class='va'>dietswap</span>, trans <span class='op'>=</span> <span class='st'>"log2"</span>, rank <span class='op'>=</span> <span class='st'>"Family"</span>, zero_replace <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; ps_extra object - a list with phyloseq and extras:
+#&gt; 
+#&gt; phyloseq-class experiment-level object
+#&gt; otu_table()   OTU Table:         [ 22 taxa and 222 samples ]
+#&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
+#&gt; tax_table()   Taxonomy Table:    [ 22 taxa by 2 taxonomic ranks ]
+#&gt; 
+#&gt; ps_extra info:
+#&gt; tax_agg = Family tax_transform = log2
+#&gt; 
+#&gt; $counts OTU Table: [ 22 taxa and 222 samples ]</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

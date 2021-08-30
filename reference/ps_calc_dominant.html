@@ -86,7 +86,7 @@ including &quot;none&quot;) the dominant taxon will be &quot;other&quot; for tho
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9012</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9014</span>
       </span>
     </div>
 
@@ -242,7 +242,7 @@ including "none") the dominant taxon will be "other" for those samples</p></li>
 </div><div class='img'><img src='ps_calc_dominant-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='va'>ps</span> <span class='op'>%&gt;%</span>
   <span class='fu'>ps_calc_dominant</span><span class='op'>(</span>rank <span class='op'>=</span> <span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span>rank <span class='op'>=</span> <span class='st'>"Genus"</span>, transformation <span class='op'>=</span> <span class='st'>"clr"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span>rank <span class='op'>=</span> <span class='st'>"Genus"</span>, trans <span class='op'>=</span> <span class='st'>"clr"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span><span class='st'>"PCA"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span>colour <span class='op'>=</span> <span class='st'>"dominant_Genus"</span>, size <span class='op'>=</span> <span class='fl'>3</span>, alpha <span class='op'>=</span> <span class='fl'>0.6</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_brewer.html'>scale_colour_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Dark2"</span><span class='op'>)</span>
@@ -253,7 +253,7 @@ including "none") the dominant taxon will be "other" for those samples</p></li>
     rank <span class='op'>=</span> <span class='st'>"Family"</span>, other <span class='op'>=</span> <span class='st'>"Other"</span>, none <span class='op'>=</span> <span class='st'>"Not dominated"</span>,
     threshold <span class='op'>=</span> <span class='fl'>0.4</span>, n_max <span class='op'>=</span> <span class='fl'>3</span>
   <span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span>rank <span class='op'>=</span> <span class='st'>"Genus"</span>, transformation <span class='op'>=</span> <span class='st'>"clr"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span>rank <span class='op'>=</span> <span class='st'>"Genus"</span>, trans <span class='op'>=</span> <span class='st'>"clr"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span><span class='st'>"PCA"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span>colour <span class='op'>=</span> <span class='st'>"dominant_Family"</span>, size <span class='op'>=</span> <span class='fl'>3</span>, alpha <span class='op'>=</span> <span class='fl'>0.6</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_colour_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
