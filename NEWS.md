@@ -4,6 +4,7 @@
 - `ord_plot` arrow labels can now be rotated with the help of `tax_lab_style()` and `constraint_lab_style()` 
 - `ps_calc_dominant` function for conveniently identifying the dominant taxon in each phyloseq sample
 - `distinct_palette` gains "kelly" and "greenArmytage" palettes and helpfully adds "lightgrey" to the end by default for convenient use as the palette argument to `comp_barplot`
+- `tax_transform` can now chain multiple transformations together and records these transformations in the ps_extra output
 
 ## Breaking changes
 - `ord_plot` default labels now have `alpha` = 1 for both taxa (previously and constraints (previously 0.8)

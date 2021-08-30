@@ -50,4 +50,11 @@ test_that("tax_transform 'maaslin2-default' chaining works", {
   expect_snapshot(ord)
   p <- ord_plot(ord) + ggplot2::theme_test()
   vdiffr::expect_doppelganger("trans-chaining", fig = p)
+
+  # ensure preserved counts aren't changing
+  counts1 <- microViz:::ps_counts(trans1)
+  counts2 <- microViz:::ps_counts(ord)
+  expect_equal(counts1, counts2)
 })
+
+
