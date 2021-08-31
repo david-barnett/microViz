@@ -84,33 +84,48 @@ p <- psq \%>\%
 p
 
 # set the colour range yourself
-comp_heatmap(
-  data = psq, taxa = taxa, anno_tax = tax_anno(undetected = 50),
-  colors = heat_palette(palette = "Greens", rev = TRUE, range = 0:10)
-)
-comp_heatmap(
-  data = psq, taxa = taxa, anno_tax = tax_anno(undetected = 50),
-  colors = heat_palette(palette = "Green-Orange", range = 0:5, sym = TRUE)
-)
+psq \%>\%
+  tax_transform("clr") \%>\%
+  comp_heatmap(
+    taxa = taxa, anno_tax = tax_anno(undetected = 50),
+    colors = heat_palette(palette = "Greens", rev = TRUE, range = 0:10)
+  )
+psq \%>\%
+  tax_transform("clr") \%>\%
+  comp_heatmap(
+    taxa = taxa, anno_tax = tax_anno(undetected = 50),
+    colors = heat_palette(palette = "Green-Orange", range = 0:5, sym = TRUE)
+  )
+
+# supply a different colour palette to heat_palette (match breaks to length)
+psq \%>\%
+  tax_transform("clr") \%>\%
+  comp_heatmap(
+    taxa = taxa, anno_tax = tax_anno(undetected = 50),
+    colors = heat_palette(palette = viridis::turbo(12), breaks = 12)
+  )
 
 # you can place the legend at the bottom, but it is a little complicated
-p <- comp_heatmap(
-  data = psq, taxa = taxa, anno_tax = tax_anno(undetected = 50),
-  heatmap_legend_param = list(direction = "horizontal", title_position = "lefttop")
-)
+p <- psq \%>\%
+  tax_transform("clr") \%>\%
+  comp_heatmap(
+    taxa = taxa, anno_tax = tax_anno(undetected = 50), name = "auto",
+    heatmap_legend_param = list(direction = "horizontal", title_position = "lefttop")
+  )
 ComplexHeatmap::draw(p,
   heatmap_legend_side = "bottom", adjust_annotation_extension = FALSE
 )
 
 # rotate plot to have taxa as columns, annotated at the bottom
-p2 <- comp_heatmap(
-  psq,
-  taxa = taxa, taxa_side = "bottom", anno_tax = tax_anno(undetected = 50)
-)
+p2 <- psq \%>\%
+  tax_transform("clr") \%>\%
+  comp_heatmap(
+    taxa = taxa, taxa_side = "bottom", anno_tax = tax_anno(undetected = 50)
+  )
 p2
 
-# transform data before plotting
+# log2 transform data before plotting and automatic naming of scale
 psq \%>\%
   tax_transform("log2", zero_replace = 1) \%>\%
-  comp_heatmap(taxa = taxa, anno_tax = tax_anno(undetected = 50), name = "auto")
+  comp_heatmap(taxa, anno_tax = tax_anno(undetected = 50), name = "auto")
 }
