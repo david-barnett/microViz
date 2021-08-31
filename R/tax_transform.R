@@ -137,25 +137,7 @@ tax_transform <- function(data,
   otu <- otuZeroReplace(otu, zero_replace = zero_replace)
 
   # perform one of several transformations #
-  if (identical(trans, "binary")) {
-    # perform special binary transformation
-    otu <- otuTransformBinary(otu, dots = list(...))
-  } else if (identical(trans, "log2")) {
-    if (any(otu == 0)) {
-      stop(
-        "\n- ", sum(otu == 0, na.rm = TRUE), " zeros detected in otu_table",
-        "\n- log2 transformation cannot handle zeros\n",
-        "- set zero_replace to > 0, to replace zeros before transformation"
-      )
-    }
-    otu <- log2(otu)
-  } else {
-    # transform phyloseq with microbiome::transform
-    otu <- microbiome::transform(
-      x = phyloseq::t(otu), transform = trans, target = "OTU", ...
-    )
-    otu <- phyloseq::t(otu) # microbiome::transform uses/returns taxa as rows
-  }
+  otu <- otuTransform(otu = otu, trans = trans, ...)
 
   # return otu table in original orientation
   if (phyloseq::taxa_are_rows(ps)) otu <- phyloseq::t(otu)
@@ -181,7 +163,7 @@ tax_transformInfoUpdate <- function(info, trans, chain, rank) {
         call. = FALSE,
         "data were already transformed by: ", info[["tax_transform"]], "\n",
         "--> set argument chain = TRUE if you want to chain another transform"
-        )
+      )
     } else if (isTRUE(chain)) {
       if (!identical(rank, NA) && !identical(rank, "unique")) {
         stop("rank must be NA/'unique' if chaining another transformation!")
@@ -196,6 +178,34 @@ tax_transformInfoUpdate <- function(info, trans, chain, rank) {
   }
   return(info)
 }
+
+# internal helper actually performs transformations on otu table as
+# returned by otu_get() (taxa as columns)
+# trans is same as tax_transform trans
+otuTransform <- function(otu, trans, ...) {
+  # perform one of several transformations #
+  if (identical(trans, "binary")) {
+    # perform special binary transformation
+    otu <- otuTransformBinary(otu, dots = list(...))
+  } else if (identical(trans, "log2")) {
+    if (any(otu == 0)) {
+      stop(
+        "\n- ", sum(otu == 0, na.rm = TRUE), " zeros detected in otu_table",
+        "\n- log2 transformation cannot handle zeros\n",
+        "- set zero_replace to > 0, to replace zeros before transformation"
+      )
+    }
+    otu <- log2(otu)
+  } else {
+    # transform phyloseq with microbiome::transform
+    otu <- microbiome::transform(
+      x = phyloseq::t(otu), transform = trans, target = "OTU", ...
+    )
+    otu <- phyloseq::t(otu) # microbiome::transform uses/returns taxa as rows
+  }
+  return(otu)
+}
+
 
 # binary transformation helper
 # otu is from otu_get(ps)
