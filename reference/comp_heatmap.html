@@ -46,10 +46,12 @@
 
 
 <meta property="og:title" content="Heatmap of taxonomic composition across samples — comp_heatmap" />
-<meta property="og:description" content="By default this performs centered-log-ratio transformation on taxa for colouring and ordering heatmap.
-tax_transform_colors = &quot;clr&quot;. You can change this, by setting tax_transform_colors to &quot;identity&quot;, &quot;compositional&quot;, &quot;log1p&quot; etc.
-Heatmap made with ComplexHeatmap, with optional (but default) annotation of taxa prevalence and abundance.
-If seriated, always sorts by the values of the colours shown.
+<meta property="og:description" content="Heatmap made with ComplexHeatmap, with optional (but default) annotation of taxa prevalence and abundance.
+Transform your data with tax_transform prior to plotting (and/or scale with tax_scale).
+Plotting &quot;compositional&quot; data can give an idea of the dominant taxa in each sample.
+Plotting some form of log or clr transformed (or scaled) microbial features can highlight
+other patterns.
+The transformed data will be ordered via your selected seriation methods and distances.
 Any cell numbers printed can be set to different values, and do not affect ordering." />
 
 
@@ -162,10 +164,12 @@ Any cell numbers printed can be set to different values, and do not affect order
     </div>
 
     <div class="ref-description">
-    <p>By default this performs centered-log-ratio transformation on taxa for colouring and ordering heatmap.
-tax_transform_colors = "clr". You can change this, by setting tax_transform_colors to "identity", "compositional", "log1p" etc.
-Heatmap made with ComplexHeatmap, with optional (but default) annotation of taxa prevalence and abundance.
-If seriated, always sorts by the values of the colours shown.
+    <p>Heatmap made with ComplexHeatmap, with optional (but default) annotation of taxa prevalence and abundance.</p>
+<p>Transform your data with tax_transform prior to plotting (and/or scale with tax_scale).
+Plotting "compositional" data can give an idea of the dominant taxa in each sample.
+Plotting some form of log or clr transformed (or scaled) microbial features can highlight
+other patterns.
+The transformed data will be ordered via your selected seriation methods and distances.
 Any cell numbers printed can be set to different values, and do not affect ordering.</p>
     </div>
 
@@ -194,7 +198,7 @@ Any cell numbers printed can be set to different values, and do not affect order
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>phyloseq or phyloseq extra</p></td>
+      <td><p>phyloseq extra output of tax_transform or tax_agg</p></td>
     </tr>
     <tr>
       <th>taxa</th>
@@ -262,10 +266,6 @@ Any cell numbers printed can be set to different values, and do not affect order
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>Transformations are performed with microbiome::transform(),
-so tax_transform_colors/numbers must be valid transform arguments for this function.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span>
