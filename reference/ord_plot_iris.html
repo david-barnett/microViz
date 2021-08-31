@@ -80,7 +80,7 @@ Best paired with ordination plot made from same ord_calc output." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9018</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9019</span>
       </span>
     </div>
 
@@ -172,7 +172,7 @@ Best paired with ordination plot made from same <code>ord_calc</code> output.</p
   n_taxa <span class='op'>=</span> <span class='fl'>10</span>,
   ord_plot <span class='op'>=</span> <span class='st'>"none"</span>,
   taxon_renamer <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
-  palette <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"grey90"</span>, <span class='fu'><a href='https://rdrr.io/r/base/rev.html'>rev</a></span><span class='op'>(</span><span class='fu'><a href='distinct_palette.html'>distinct_palette</a></span><span class='op'>(</span><span class='va'>n_taxa</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>,
+  palette <span class='op'>=</span> <span class='fu'><a href='distinct_palette.html'>distinct_palette</a></span><span class='op'>(</span><span class='va'>n_taxa</span><span class='op'>)</span>,
   anno_colour <span class='op'>=</span> <span class='cn'>NULL</span>,
   anno_colour_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
   anno_binary <span class='op'>=</span> <span class='cn'>NULL</span>,
@@ -307,21 +307,23 @@ as the fill is used for the taxonomic composition bars</p>
 <span class='co'># like bar_width and bar_outline_colour, and to make interactive iris plots</span>
 <span class='co'># using ggiraph:</span>
 
-<span class='va'>hover_over_me</span> <span class='op'>&lt;-</span> <span class='fu'>ord_plot_iris</span><span class='op'>(</span>
-  data <span class='op'>=</span> <span class='va'>ord</span>,
-  tax_level <span class='op'>=</span> <span class='st'>"Genus"</span>,
-  n_taxa <span class='op'>=</span> <span class='fl'>10</span>,
-  anno_colour <span class='op'>=</span> <span class='st'>"nationality"</span>,
-  anno_colour_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>,
-  anno_binary <span class='op'>=</span> <span class='st'>"female"</span>,
-  anno_binary_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>shape <span class='op'>=</span> <span class='st'>"F"</span>, size <span class='op'>=</span> <span class='fl'>2.5</span><span class='op'>)</span>,
-  taxon_renamer <span class='op'>=</span> <span class='va'>tax_renamer</span>,
-  interactive <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  bar_width <span class='op'>=</span> <span class='fl'>0.8</span>, bar_outline_colour <span class='op'>=</span> <span class='st'>"black"</span>
-<span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_brewer.html'>scale_colour_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Dark2"</span><span class='op'>)</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>hover_over_me</span> <span class='op'>&lt;-</span> <span class='fu'>ord_plot_iris</span><span class='op'>(</span>
+    data <span class='op'>=</span> <span class='va'>ord</span>,
+    tax_level <span class='op'>=</span> <span class='st'>"Genus"</span>,
+    n_taxa <span class='op'>=</span> <span class='fl'>10</span>,
+    anno_colour <span class='op'>=</span> <span class='st'>"nationality"</span>,
+    anno_colour_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>,
+    anno_binary <span class='op'>=</span> <span class='st'>"female"</span>,
+    anno_binary_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>shape <span class='op'>=</span> <span class='st'>"F"</span>, size <span class='op'>=</span> <span class='fl'>2.5</span><span class='op'>)</span>,
+    taxon_renamer <span class='op'>=</span> <span class='va'>tax_renamer</span>,
+    interactive <span class='op'>=</span> <span class='cn'>TRUE</span>,
+    bar_width <span class='op'>=</span> <span class='fl'>0.8</span>, bar_outline_colour <span class='op'>=</span> <span class='st'>"black"</span>
+  <span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_brewer.html'>scale_colour_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Dark2"</span><span class='op'>)</span>
 
-<span class='fu'>ggiraph</span><span class='fu'>::</span><span class='fu'><a href='https://davidgohel.github.io/ggiraph/reference/girafe.html'>girafe</a></span><span class='op'>(</span>ggobj <span class='op'>=</span> <span class='va'>hover_over_me</span><span class='op'>)</span>
+  <span class='fu'>ggiraph</span><span class='fu'>::</span><span class='fu'><a href='https://davidgohel.github.io/ggiraph/reference/girafe.html'>girafe</a></span><span class='op'>(</span>ggobj <span class='op'>=</span> <span class='va'>hover_over_me</span><span class='op'>)</span>
+<span class='op'>}</span>
 
 <span class='co'># Using PCA for ordination after transformations (e.g. clr) means the untransformed taxonomic</span>
 <span class='co'># data are only available for plotting as compositions if you transformed with</span>
