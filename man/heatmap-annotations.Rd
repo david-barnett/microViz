@@ -12,7 +12,7 @@
 \usage{
 tax_anno(
   undetected = 0,
-  which = "row",
+  which = NA,
   prev = 1,
   abund = 2,
   size = 30,
@@ -65,9 +65,9 @@ anno_var_box(data, vars = NA, which = "column", size = 15, ...)
 
 \item{which}{"row" or "column" annnotation}
 
-\item{prev}{order in which prevalence annotation shown (number, or NA)}
+\item{prev}{order in which prevalence annotation shown (number, or NA to not show)}
 
-\item{abund}{order in which abundance annotation shown (number, or NA)}
+\item{abund}{order in which abundance annotation shown (number, or NA to not show)}
 
 \item{size}{total size in mm of annotations (width or height depending on which)}
 
@@ -105,7 +105,4 @@ Functions to easily define ComplexHeatmap annotations for taxa and/or variables
 \item tax_anno creates list describing taxa annotation (for cor_heatmap or comp_heatmap)
 \item var_anno creates list describing variable annotation (for cor_heatmap)
 }
-}
-\examples{
-library(phyloseq)
 }

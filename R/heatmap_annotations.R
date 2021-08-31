@@ -8,21 +8,31 @@
 #' - var_anno creates list describing variable annotation (for cor_heatmap)
 #'
 #' @param undetected value above which taxa are considered present/detected in a sample
-#' @param which "row" or "column" annotation?
-#' @param prev order in which prevalence annotation shown (number, or NA)
-#' @param abund order in which abundance annotation shown (number, or NA)
+#' @param which "row" or "column" annotation, the default, NA, leaves this to be inferred by the *_heatmap function
+#' @param prev order in which prevalence annotation shown (number, or NA to not show)
+#' @param abund order in which abundance annotation shown (number, or NA to not show)
 #' @param size total size of all annotations in mm, excluding gaps (used as width or height, depending on value of which)
 #' @param gap size of gap between annotations (in mm)
 #' @param rel_sizes relative sizes of non-NA annotations (in given order) or NA (for all equal sizes)
 #' @param args extra args passed to each annotation, give as list of lists (one inner list per arg, named, e.g. list(prev = list(whatever = whatever))
-#' @param ... further args passed HeatmapAnnotation
+#' @param ... further args are passed ComplexHeatmap::HeatmapAnnotation()
 #'
 #' @export
 #' @rdname heatmap-annotations
-tax_anno <- function(undetected = 0, which = "row", prev = 1, abund = 2, size = 30, gap = 2, rel_sizes = NA, args = NULL, ...) {
+tax_anno <- function(undetected = 0,
+                     which = NA,
+                     prev = 1,
+                     abund = 2,
+                     size = 30,
+                     gap = 2,
+                     rel_sizes = NA,
+                     args = NULL,
+                     ...) {
   annos <- c(prev = prev, abund = abund) # written to support further annos in future
   annos <- sort(annos[!is.na(annos)])
   if (identical(rel_sizes, NA)) rel_sizes <- rep_len(1, length.out = length(annos))
+
+  # check options and stop if invalid
   if (!identical(args, NULL)) {
     if (!inherits(args, "list") || inherits(args, "list") && length(args) != length(annos) || !names(args) %in% names(annos)) {
       stop("args must be list of annotation-named lists, the same length as number of non-NA annotations, or NULL")
@@ -30,7 +40,6 @@ tax_anno <- function(undetected = 0, which = "row", prev = 1, abund = 2, size = 
     is_list <- sapply(args, function(x) inherits(x, "list"))
     if (any(!is_list)) stop("some args entries are not lists: ", paste(names(args)[!is_list], collapse = " "))
   }
-
   if (length(unique(annos)) < length(annos) || max(c(annos, 1) > length(annos))) {
     stop("prev and abund must not be the same number, and neither should have a value greater than the number of non-NA entries")
     # TODO ensure that the order of values is used instead of the values (and remove the last part of this error)
@@ -38,14 +47,18 @@ tax_anno <- function(undetected = 0, which = "row", prev = 1, abund = 2, size = 
   if (length(rel_sizes) != length(annos)) {
     stop("length of rel_sizes must be equal to the number of non-NA annotations")
   }
+  # get absolute sizes from relative sizes and total
   sizes <- size * rel_sizes / sum(rel_sizes, na.rm = TRUE)
+  # return partial list of instructions for taxAnnotation
   out_list <- list(what = names(annos), undetected = undetected, which = which, sizes = sizes, gap = gap, args = args, ...)
   return(out_list)
 }
 
 
 #' @title taxAnnotation for ComplexHeatmap
-#' @description taxAnnotation is used for cor_heatmap, comp_heatmap & tax_model_heatmap (will be)
+#' @description
+#' taxAnnotation is used in cor_heatmap & comp_heatmap
+#' (& will be used in tax_model_heatmap?)
 #'
 #' @param data phyloseq or ps-extra
 #' @param taxa names of taxa
@@ -56,6 +69,7 @@ tax_anno <- function(undetected = 0, which = "row", prev = 1, abund = 2, size = 
 #' @param gap size of gap between annotations in mm
 #' @param ... additional args passed to ComplexHeatmap::HeatmapAnnotation
 #'
+#' @return HeatmapAnnotation object
 #' @noRd
 taxAnnotation <- function(data, taxa, undetected = 0, which = "row", what = c("prev", "abund"), sizes = c(15, 15), gap = 2, args = NULL, ...) {
   ps <- ps_get(data)
@@ -77,7 +91,8 @@ taxAnnotation <- function(data, taxa, undetected = 0, which = "row", what = c("p
   }
   # use dots args (overwrite defaults or add more)
   ha_args[names(dots)] <- dots
-  do.call(ComplexHeatmap::HeatmapAnnotation, args = ha_args)
+  ha <- do.call(ComplexHeatmap::HeatmapAnnotation, args = ha_args)
+  return(ha)
 }
 
 # @param ... args passed to anno_barplot
@@ -140,8 +155,6 @@ anno_abund <- function(data, taxa, undetected = 0, which = "row", size = 15, poi
 #'
 #' @export
 #' @rdname heatmap-annotations
-#' @examples
-#' library(phyloseq)
 var_anno <- function(annos = "var_box",
                      funs = "identity",
                      names = NA,

@@ -5,6 +5,7 @@
 - `ps_calc_dominant` function for conveniently identifying the dominant taxon in each phyloseq sample
 - `distinct_palette` gains "kelly" and "greenArmytage" palettes and helpfully adds "lightgrey" to the end by default for convenient use as the palette argument to `comp_barplot`
 - `tax_transform` can now chain multiple transformations together and records these transformations in the ps_extra output
+- heatmap annotation helper `tax_anno` no longer requires 'column' or 'row' to be specified in advance
 
 ## Breaking changes
 - `ord_plot` default labels now have `alpha` = 1 for both taxa and constraints (previously 0.8)

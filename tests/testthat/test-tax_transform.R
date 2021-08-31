@@ -56,5 +56,3 @@ test_that("tax_transform 'maaslin2-default' chaining works", {
   counts2 <- microViz:::ps_counts(ord)
   expect_equal(counts1, counts2)
 })
-
-

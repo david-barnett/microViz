@@ -95,17 +95,16 @@
 #' p2
 #'
 #' # make the same correlation heatmap, but rotated
-#' column_tax_anno <- tax_anno(undetected = 50, which = "column")
-#' p3 <- cor_heatmap(psq, taxa, taxa_side = "top", anno_tax = column_tax_anno)
+#' p3 <- cor_heatmap(psq, taxa,
+#'   taxa_side = "top", anno_tax = tax_anno(undetected = 50)
+#' )
 #' p3
 #'
 #' # or rotated with taxa annotations at bottom
-#' cor_heatmap(psq, taxa, taxa_side = "bottom", anno_tax = column_tax_anno)
-#'
-#' # note you must ensure tax_anno which and taxa_side are compatible.
-#' # You must set taxa_side argument to top or bottom if you want taxa to be columns
-#' # The line below is an ERROR because by default taxa_side = "right"
-#' # cor_heatmap(psq, taxa, anno_tax = column_tax_anno) # ERROR
+#' p4 <- cor_heatmap(psq, taxa,
+#'   taxa_side = "bottom", anno_tax = tax_anno(undetected = 50)
+#' )
+#' p4
 #'
 #' # customising annotation styles is possible using the args argument in tax_anno or var_anno
 #' # but it is tricky: pass a list of lists, the inner lists are named to match the annotation type
@@ -157,7 +156,7 @@ cor_heatmap <- function(data,
 
       taxa_which <- taxa_which_from_taxa_side(taxa_side)
       # create taxa annotation object if "instructions" given
-      anno_tax <- anno_tax_helper(anno_tax, ps = ps, taxa = taxa, taxa_which = taxa_which, taxa_side = taxa_side)
+      anno_tax <- anno_tax_helper(anno_tax, ps = ps, taxa = taxa, side = taxa_side)
     }
     # handle sample metadata
     samdat <- phyloseq::sample_data(ps)
@@ -318,7 +317,7 @@ comp_heatmap <- function(data,
   ps <- ps_get(data)
   taxa_which <- taxa_which_from_taxa_side(taxa_side)
   # create taxa annotation object if "instructions" given
-  anno_tax <- anno_tax_helper(anno_tax, ps = ps, taxa = taxa, taxa_which = taxa_which, taxa_side = taxa_side)
+  anno_tax <- anno_tax_helper(anno_tax, ps = ps, taxa = taxa, side = taxa_side)
 
   # handle otu_table data
   otu_mat <- otu_get(microbiome::transform(ps, transform = tax_transform_colors)) # used for colours and seriation
@@ -516,26 +515,31 @@ taxa_which_from_taxa_side <- function(taxa_side) {
 # * HeatmapAnnotation object --> HeatmapAnnotation object (checked)
 #
 # ps is phyloseq extracted from heatmap data arg, if phyloseq or ps_extra
-# taxa_which inferred from taxa_side already in heatmap function
+# side takes taxa_side argument as passed to heatmap function
 #
 # used inside cor_heatmap (when given phyloseq as data) and comp_heatmap (always)
-anno_tax_helper <- function(anno_tax, ps, taxa, taxa_which, taxa_side) {
+anno_tax_helper <- function(anno_tax, ps, taxa, side) {
   if (identical(anno_tax, NULL)) {
     return(anno_tax)
   }
+  # infer row or column from side specification
+  taxa_which <- taxa_which_from_taxa_side(side)
+
   # create taxa annotation object if "instructions" list given
   if (inherits(anno_tax, "list")) {
+    if (identical(anno_tax$which, NA)) anno_tax$which <- taxa_which
     anno_args <- c(anno_tax, list(data = ps, taxa = taxa))
     anno_tax <- do.call(what = taxAnnotation, args = anno_args)
   }
-  # anno_tax suitable for taxa_which?
+
+  # check anno_tax suitable for taxa_which?
   if (methods::is(anno_tax, "HeatmapAnnotation")) {
     if (!identical(taxa_which, anno_tax@which)) {
       stop(
         "\nYou specified the `which` argument to anno_tax() as:\n\t'",
         anno_tax@which,
         "'\nYou specified the taxa_side argument to the heatmap as:\n\t'",
-        taxa_side,
+        side,
         "'\nThese are incompatible options.",
         "\n--> anno_tax which = 'row' matches taxa_side = 'left'/'right'",
         "\n--> anno_tax which = 'column' matches taxa_side = 'top'/'bottom'."
