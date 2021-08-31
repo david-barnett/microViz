@@ -25,7 +25,7 @@ comp_heatmap(
 )
 }
 \arguments{
-\item{data}{phyloseq or phyloseq extra}
+\item{data}{phyloseq extra output of tax_transform or tax_agg}
 
 \item{taxa}{list of taxa to include (selection occurs AFTER any tax_transform and scaling)}
 
@@ -60,15 +60,14 @@ comp_heatmap(
 \item{...}{extra args, passed to viz_heatmap internal function}
 }
 \description{
-By default this performs centered-log-ratio transformation on taxa for colouring and ordering heatmap.
-tax_transform_colors = "clr". You can change this, by setting tax_transform_colors to "identity", "compositional", "log1p" etc.
 Heatmap made with ComplexHeatmap, with optional (but default) annotation of taxa prevalence and abundance.
-If seriated, always sorts by the values of the colours shown.
+
+Transform your data with tax_transform prior to plotting (and/or scale with tax_scale).
+Plotting "compositional" data can give an idea of the dominant taxa in each sample.
+Plotting some form of log or clr transformed (or scaled) microbial features can highlight
+other patterns.
+The transformed data will be ordered via your selected seriation methods and distances.
 Any cell numbers printed can be set to different values, and do not affect ordering.
-}
-\details{
-Transformations are performed with microbiome::transform(),
-so tax_transform_colors/numbers must be valid transform arguments for this function.
 }
 \examples{
 data("dietswap", package = "microbiome")
