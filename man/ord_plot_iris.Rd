@@ -11,7 +11,7 @@ ord_plot_iris(
   n_taxa = 10,
   ord_plot = "none",
   taxon_renamer = function(x) identity(x),
-  palette = c("grey90", rev(distinct_palette(n_taxa))),
+  palette = distinct_palette(n_taxa),
   anno_colour = NULL,
   anno_colour_style = list(),
   anno_binary = NULL,
@@ -117,21 +117,23 @@ ord_plot_iris(
 # like bar_width and bar_outline_colour, and to make interactive iris plots
 # using ggiraph:
 
-hover_over_me <- ord_plot_iris(
-  data = ord,
-  tax_level = "Genus",
-  n_taxa = 10,
-  anno_colour = "nationality",
-  anno_colour_style = list(size = 3),
-  anno_binary = "female",
-  anno_binary_style = list(shape = "F", size = 2.5),
-  taxon_renamer = tax_renamer,
-  interactive = TRUE,
-  bar_width = 0.8, bar_outline_colour = "black"
-) +
-  scale_colour_brewer(palette = "Dark2")
+if (interactive()) {
+  hover_over_me <- ord_plot_iris(
+    data = ord,
+    tax_level = "Genus",
+    n_taxa = 10,
+    anno_colour = "nationality",
+    anno_colour_style = list(size = 3),
+    anno_binary = "female",
+    anno_binary_style = list(shape = "F", size = 2.5),
+    taxon_renamer = tax_renamer,
+    interactive = TRUE,
+    bar_width = 0.8, bar_outline_colour = "black"
+  ) +
+    scale_colour_brewer(palette = "Dark2")
 
-ggiraph::girafe(ggobj = hover_over_me)
+  ggiraph::girafe(ggobj = hover_over_me)
+}
 
 # Using PCA for ordination after transformations (e.g. clr) means the untransformed taxonomic
 # data are only available for plotting as compositions if you transformed with
