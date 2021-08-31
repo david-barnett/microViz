@@ -8,6 +8,7 @@
 - heatmap annotation helper `tax_anno` no longer requires 'column' or 'row' to be specified in advance
 
 ## Breaking changes
+- `comp_heatmap` can no longer transform data internally, but accepts data already transformed with `tax_transform` and uses stored count data for any annotations
 - `ord_plot` default labels now have `alpha` = 1 for both taxa and constraints (previously 0.8)
 - `ord_plot` "auto"matic loading/constraint vector length scalar adjustment improvement: now uses both axes
 - `comp_barplot` now uses bray-curtis by default for sample ordering (instead of aitchison) as this generally looks better

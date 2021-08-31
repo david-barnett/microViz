@@ -85,9 +85,9 @@ test_that("cor_heatmap with var_anno doesn't change: ", {
 test_that("comp_heatmap doesn't change: ", {
   local_edition(3)
 
-  p <- comp_heatmap(
-    data = psq, taxa = taxa, anno_tax = tax_anno(undetected = 50)
-  )
+  p <- psq %>%
+    tax_transform("clr") %>%
+    comp_heatmap(taxa = taxa, anno_tax = tax_anno(undetected = 50))
 
   expect_snapshot_csv(
     name = "comp_heatmap_dietswap",
@@ -104,11 +104,15 @@ test_that("comp_heatmap doesn't change: ", {
 
 test_that("comp_heatmap allows different ordering method for rows and cols", {
   local_edition(3)
-  p2 <- suppressWarnings(comp_heatmap(
-    data = psq, taxa = taxa, anno_tax = tax_anno(undetected = 50),
-    seriation_method_col = "OLO_ward", seriation_dist_col = "bray",
-    seriation_method = "Identity"
-  ))
+  p2 <- suppressWarnings( # warnings from using bray with clr data
+    psq %>%
+      tax_transform("clr") %>%
+      comp_heatmap(
+        taxa = taxa, anno_tax = tax_anno(undetected = 50),
+        seriation_method_col = "OLO_ward", seriation_dist_col = "bray",
+        seriation_method = "Identity"
+      )
+  )
 
   expect_snapshot_csv(
     name = "comp_heatmap_alternate_identity_rows",

@@ -12,15 +12,13 @@ comp_heatmap(
   anno_samples = NULL,
   colors = heat_palette(palette = "Greens", rev = TRUE),
   numbers = NULL,
-  tax_transform_colors = "clr",
-  tax_scale_colors = "neither",
   taxa_side = "right",
   seriation_method = "OLO_ward",
   seriation_dist = "euclidean",
   seriation_method_col = seriation_method,
   seriation_dist_col = seriation_dist,
-  tax_transform_numbers = tax_transform_colors,
-  tax_scale_numbers = tax_scale_colors,
+  tax_transform_numbers = "identity",
+  tax_scale_numbers = "neither",
   gridlines = heat_grid(lwd = 0.1, col = "black"),
   name = "mat",
   ...
@@ -40,10 +38,6 @@ comp_heatmap(
 \item{colors}{output of heat_palette() to set heatmap fill color scheme}
 
 \item{numbers}{NULL or output of heat_numbers() to draw numbers on heatmap cells}
-
-\item{tax_transform_colors}{transformation applied to otu_table used for colours and sorting}
-
-\item{tax_scale_colors}{scaling applied to otu_table after transformation}
 
 \item{taxa_side}{controls heatmap orientation and where any anno_tax annotations are placed (top/bottom/left/right)}
 
@@ -77,7 +71,6 @@ Transformations are performed with microbiome::transform(),
 so tax_transform_colors/numbers must be valid transform arguments for this function.
 }
 \examples{
-library(dplyr)
 data("dietswap", package = "microbiome")
 psq <- tax_filter(dietswap, min_prevalence = 1 / 10, min_sample_abundance = 1 / 10)
 psq <- tax_agg(psq, "Genus")
@@ -85,7 +78,9 @@ psq <- tax_agg(psq, "Genus")
 set.seed(123)
 taxa <- sample(microbiome::top_taxa(ps_get(psq))[1:50], size = 30)
 
-p <- comp_heatmap(data = psq, taxa = taxa, anno_tax = tax_anno(undetected = 50))
+p <- psq \%>\%
+  tax_transform("clr") \%>\%
+  comp_heatmap(taxa = taxa, anno_tax = tax_anno(undetected = 50))
 p
 
 # set the colour range yourself
@@ -103,13 +98,19 @@ p <- comp_heatmap(
   data = psq, taxa = taxa, anno_tax = tax_anno(undetected = 50),
   heatmap_legend_param = list(direction = "horizontal", title_position = "lefttop")
 )
-ComplexHeatmap::draw(p, heatmap_legend_side = "bottom", adjust_annotation_extension = FALSE)
+ComplexHeatmap::draw(p,
+  heatmap_legend_side = "bottom", adjust_annotation_extension = FALSE
+)
 
+# rotate plot to have taxa as columns, annotated at the bottom
 p2 <- comp_heatmap(
   psq,
-  taxa = taxa,
-  taxa_side = "bottom",
-  anno_tax = tax_anno(undetected = 50, which = "column")
+  taxa = taxa, taxa_side = "bottom", anno_tax = tax_anno(undetected = 50)
 )
 p2
+
+# transform data before plotting
+psq \%>\%
+  tax_transform("log2", zero_replace = 1) \%>\%
+  comp_heatmap(taxa = taxa, anno_tax = tax_anno(undetected = 50), name = "auto")
 }

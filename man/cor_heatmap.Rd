@@ -138,17 +138,16 @@ p2 <- cor_heatmap(psq, taxa,
 p2
 
 # make the same correlation heatmap, but rotated
-column_tax_anno <- tax_anno(undetected = 50, which = "column")
-p3 <- cor_heatmap(psq, taxa, taxa_side = "top", anno_tax = column_tax_anno)
+p3 <- cor_heatmap(psq, taxa,
+  taxa_side = "top", anno_tax = tax_anno(undetected = 50)
+)
 p3
 
 # or rotated with taxa annotations at bottom
-cor_heatmap(psq, taxa, taxa_side = "bottom", anno_tax = column_tax_anno)
-
-# note you must ensure tax_anno which and taxa_side are compatible.
-# You must set taxa_side argument to top or bottom if you want taxa to be columns
-# The line below is an ERROR because by default taxa_side = "right"
-# cor_heatmap(psq, taxa, anno_tax = column_tax_anno) # ERROR
+p4 <- cor_heatmap(psq, taxa,
+  taxa_side = "bottom", anno_tax = tax_anno(undetected = 50)
+)
+p4
 
 # customising annotation styles is possible using the args argument in tax_anno or var_anno
 # but it is tricky: pass a list of lists, the inner lists are named to match the annotation type

@@ -247,8 +247,6 @@ cor_heatmap <- function(data,
 #' @param seriation_dist distance to use in seriation_method (if needed)
 #' @param seriation_method_col method to order the columns (in seriation::seriate)
 #' @param seriation_dist_col distance to use in seriation_method_col (if needed)
-#' @param tax_transform_colors transformation applied to otu_table used for colours and sorting
-#' @param tax_scale_colors scaling applied to otu_table after transformation
 #' @param tax_transform_numbers transformation applied to otu_table used only for any numbers printed
 #' @param tax_scale_numbers scaling applied to numbers otu_table after transformation
 #' @param gridlines list output of heat_grid() for setting gridline style
@@ -257,7 +255,6 @@ cor_heatmap <- function(data,
 #'
 #' @export
 #' @examples
-#' library(dplyr)
 #' data("dietswap", package = "microbiome")
 #' psq <- tax_filter(dietswap, min_prevalence = 1 / 10, min_sample_abundance = 1 / 10)
 #' psq <- tax_agg(psq, "Genus")
@@ -265,33 +262,56 @@ cor_heatmap <- function(data,
 #' set.seed(123)
 #' taxa <- sample(microbiome::top_taxa(ps_get(psq))[1:50], size = 30)
 #'
-#' p <- comp_heatmap(data = psq, taxa = taxa, anno_tax = tax_anno(undetected = 50))
+#' p <- psq %>%
+#'   tax_transform("clr") %>%
+#'   comp_heatmap(taxa = taxa, anno_tax = tax_anno(undetected = 50))
 #' p
 #'
 #' # set the colour range yourself
-#' comp_heatmap(
-#'   data = psq, taxa = taxa, anno_tax = tax_anno(undetected = 50),
-#'   colors = heat_palette(palette = "Greens", rev = TRUE, range = 0:10)
-#' )
-#' comp_heatmap(
-#'   data = psq, taxa = taxa, anno_tax = tax_anno(undetected = 50),
-#'   colors = heat_palette(palette = "Green-Orange", range = 0:5, sym = TRUE)
-#' )
+#' psq %>%
+#'   tax_transform("clr") %>%
+#'   comp_heatmap(
+#'     taxa = taxa, anno_tax = tax_anno(undetected = 50),
+#'     colors = heat_palette(palette = "Greens", rev = TRUE, range = 0:10)
+#'   )
+#' psq %>%
+#'   tax_transform("clr") %>%
+#'   comp_heatmap(
+#'     taxa = taxa, anno_tax = tax_anno(undetected = 50),
+#'     colors = heat_palette(palette = "Green-Orange", range = 0:5, sym = TRUE)
+#'   )
+#'
+#' # supply a different colour palette to heat_palette (match breaks to length)
+#' psq %>%
+#'   tax_transform("clr") %>%
+#'   comp_heatmap(
+#'     taxa = taxa, anno_tax = tax_anno(undetected = 50),
+#'     colors = heat_palette(palette = viridis::turbo(12), breaks = 12)
+#'   )
 #'
 #' # you can place the legend at the bottom, but it is a little complicated
-#' p <- comp_heatmap(
-#'   data = psq, taxa = taxa, anno_tax = tax_anno(undetected = 50),
-#'   heatmap_legend_param = list(direction = "horizontal", title_position = "lefttop")
+#' p <- psq %>%
+#'   tax_transform("clr") %>%
+#'   comp_heatmap(
+#'     taxa = taxa, anno_tax = tax_anno(undetected = 50), name = "auto",
+#'     heatmap_legend_param = list(direction = "horizontal", title_position = "lefttop")
+#'   )
+#' ComplexHeatmap::draw(p,
+#'   heatmap_legend_side = "bottom", adjust_annotation_extension = FALSE
 #' )
-#' ComplexHeatmap::draw(p, heatmap_legend_side = "bottom", adjust_annotation_extension = FALSE)
 #'
-#' p2 <- comp_heatmap(
-#'   psq,
-#'   taxa = taxa,
-#'   taxa_side = "bottom",
-#'   anno_tax = tax_anno(undetected = 50, which = "column")
-#' )
+#' # rotate plot to have taxa as columns, annotated at the bottom
+#' p2 <- psq %>%
+#'   tax_transform("clr") %>%
+#'   comp_heatmap(
+#'     taxa = taxa, taxa_side = "bottom", anno_tax = tax_anno(undetected = 50)
+#'   )
 #' p2
+#'
+#' # log2 transform data before plotting and automatic naming of scale
+#' psq %>%
+#'   tax_transform("log2", zero_replace = 1) %>%
+#'   comp_heatmap(taxa, anno_tax = tax_anno(undetected = 50), name = "auto")
 comp_heatmap <- function(data,
                          taxa = phyloseq::taxa_names(ps_get(data)),
                          samples = phyloseq::sample_names(ps_get(data)),
@@ -299,8 +319,6 @@ comp_heatmap <- function(data,
                          anno_samples = NULL,
                          colors = heat_palette(palette = "Greens", rev = TRUE),
                          numbers = NULL, # or list made by heat_numbers() or a function in format of a ComplexHeatmap cell_fun
-                         tax_transform_colors = "clr",
-                         tax_scale_colors = "neither",
                          taxa_side = "right",
                          # stuff just passed to viz_heatmap
                          seriation_method = "OLO_ward",
@@ -308,25 +326,38 @@ comp_heatmap <- function(data,
                          seriation_method_col = seriation_method,
                          seriation_dist_col = seriation_dist,
                          # numbers
-                         tax_transform_numbers = tax_transform_colors,
-                         tax_scale_numbers = tax_scale_colors,
+                         tax_transform_numbers = "identity",
+                         tax_scale_numbers = "neither",
                          gridlines = heat_grid(lwd = 0.1, col = "black"),
                          name = "mat",
                          ... # passed to viz_heatmap
 ) {
-  ps <- ps_get(data)
-  taxa_which <- taxa_which_from_taxa_side(taxa_side)
-  # create taxa annotation object if "instructions" given
-  anno_tax <- anno_tax_helper(anno_tax, ps = ps, taxa = taxa, side = taxa_side)
-
-  # handle otu_table data
-  otu_mat <- otu_get(microbiome::transform(ps, transform = tax_transform_colors)) # used for colours and seriation
-  otu_mat <- tax_scale(data = otu_mat, do = tax_scale_colors)
+  # get otu_table data (used for colours and seriation)
+  # any transformation must be done in advance
+  otu_mat <- otu_get(data)
   otu_mat <- otu_mat[samples, taxa, drop = FALSE]
+
+  # get automatic name for colourbar legend
+  if (identical(name, "auto")) name <- info_get(data)[["tax_transform"]]
+
+  # get phyloseq with stored counts if needed for annotation or numbers
+  if (!identical(numbers, NULL) || !identical(anno_tax, NULL)) {
+    psCounts <- ps_counts(data, warn = TRUE)
+  }
+
+  # create heatmap annotation object for taxa if "instructions" given
+  if (!identical(anno_tax, NULL)) {
+    anno_tax <- anno_tax_helper(
+      anno_tax = anno_tax, ps = psCounts, taxa = taxa, side = taxa_side
+    )
+  }
+
   if (identical(numbers, NULL)) {
-    otu_numbers <- otu_mat # avoids computation if otu_numbers won't be shown anyway
+    # avoid computation if otu_numbers won't be shown anyway
+    otu_numbers <- otu_mat
   } else {
-    otu_numbers <- otu_get(microbiome::transform(ps, transform = tax_transform_numbers)) # used for numbers only
+    # used for numbers only
+    otu_numbers <- otu_get(tax_transform(psCounts, trans = tax_transform_numbers))
     otu_numbers <- tax_scale(data = otu_numbers, do = tax_scale_numbers)
     otu_numbers <- otu_numbers[samples, taxa, drop = FALSE]
   }
@@ -346,6 +377,7 @@ comp_heatmap <- function(data,
     heatmap_legend_param = list(labels_gp = grid::gpar(fontsize = 8))
   )
 
+  taxa_which <- taxa_which_from_taxa_side(taxa_side)
   args[["mat"]] <- otu_mat
   args[["numbers_mat"]] <- otu_numbers
   args[[paste0(taxa_side, "_annotation")]] <- anno_tax
@@ -519,9 +551,6 @@ taxa_which_from_taxa_side <- function(taxa_side) {
 #
 # used inside cor_heatmap (when given phyloseq as data) and comp_heatmap (always)
 anno_tax_helper <- function(anno_tax, ps, taxa, side) {
-  if (identical(anno_tax, NULL)) {
-    return(anno_tax)
-  }
   # infer row or column from side specification
   taxa_which <- taxa_which_from_taxa_side(side)
 
