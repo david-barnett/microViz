@@ -101,7 +101,7 @@ psq \%>\%
   tax_transform("clr") \%>\%
   comp_heatmap(
     taxa = taxa, anno_tax = tax_anno(undetected = 50),
-    colors = heat_palette(palette = viridis::turbo(12), breaks = 12)
+    colors = heat_palette(palette = viridisLite::turbo(12), breaks = 12)
   )
 
 # you can place the legend at the bottom, but it is a little complicated
