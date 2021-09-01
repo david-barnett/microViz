@@ -223,7 +223,7 @@ var_anno <- function(annos = "var_box",
   names <- names[seq_along(annos)]
   names(annos) <- names
 
-  anno_checkExtraArgsLists(args = args, annos = annos)
+  anno_checkExtraArgsLists(args = args, annos = annos, names = names)
 
   # get absolute sizes from relative sizes (and check right number for annos)
   sizes <- annoSizesCalc(size = size, rel_sizes = rel_sizes, annos = annos)
@@ -240,6 +240,7 @@ varAnnotation <- function(data, # from heatmap fun # converted to df
                           vars, # from heatmap fun # passed along to var_anno_*
                           annos, # from var_anno / anno_var
                           funs, # from var_anno / anno_var
+                          names, # from var_anno / anno_var
                           which, # from var_anno / anno_var
                           sizes, # from var_anno / anno_var
                           gap, # from var_anno / anno_var
@@ -262,7 +263,7 @@ varAnnotation <- function(data, # from heatmap fun # converted to df
   dat <- list() # list to store (transformed) data
 
   for (i in seq_along(annos)) {
-    name <- names(annos)[[i]]
+    name <- names[[i]]
     # replace length 1 funs, otherwise subsetting function/closure --> error
     if (length(funs) == 1) funs <- list(funs)
     if (inherits(funs[[i]], "function")) {
@@ -376,11 +377,12 @@ anno_var_box <- function(data, vars = NA, which = "column", size = 15, ...) {
 
 # user can supply extra arguments to args argument for each anno, but these
 # must be supplied as a list of named lists (named by each annotation)
-anno_checkExtraArgsLists <- function(args, annos){
+anno_checkExtraArgsLists <- function(args, annos, names = NULL){
+  if (identical(names, NULL)) names <- names(annos)
   if (!identical(args, NULL)) {
     if (!inherits(args, "list") ||
         inherits(args, "list") && length(args) != length(annos) ||
-        any(!names(args) %in% names(annos))) {
+        any(!names(args) %in% names)) {
       stop(
         "\n- args can be NULL or list of named lists (named by annotation)",
         "\n- args must be the same length as number of non-NA annotations"
