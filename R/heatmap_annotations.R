@@ -47,9 +47,6 @@ tax_anno <- function(undetected = 0,
   # sort annos as their names are used in order later
   annos <- sort(annos)
 
-  # set default relative sizes vector as all equal
-  if (identical(rel_sizes, NA)) rel_sizes <- rep_len(1, length(annos))
-
   # check options and stop if invalid
   anno_checkExtraArgsLists(args = args, annos = annos)
 
@@ -57,12 +54,9 @@ tax_anno <- function(undetected = 0,
     stop("prev and abund must not be the same number")
   }
 
-  if (length(rel_sizes) != length(annos)) {
-    stop("length of rel_sizes must equal the number of non-NA annotations")
-  }
+  # get absolute sizes from relative sizes (and check right number for annos)
+  sizes <- annoSizesCalc(size = size, rel_sizes = rel_sizes, annos = annos)
 
-  # get absolute sizes from relative sizes and total
-  sizes <- size * rel_sizes / sum(rel_sizes, na.rm = TRUE)
   # return partial list of instructions for taxAnnotation
   out_list <- list(
     what = names(annos), undetected = undetected,
@@ -219,23 +213,21 @@ var_anno <- function(annos = "var_box",
                      ...) {
   # fill empty names and sizes
   if (identical(names, NA)) names <- annos
-  if (identical(rel_sizes, NA)) rel_sizes <- rep_len(1, length(annos))
 
   # check matching lengths
   if (length(funs) < length(annos)) funs <- rep_len(funs, length(annos))
-  if (length(annos) != length(rel_sizes)) {
-    stop("length of rel_sizes must be NA or equal to the length of annos")
-  }
   if (length(annos) > length(names)) {
     stop("names must be same length as annos, or NA")
   }
   # shorten names vector if more names given than annos
   names <- names[seq_along(annos)]
+  names(annos) <- names
 
   anno_checkExtraArgsLists(args = args, annos = annos)
 
-  # calculate absolute sizes
-  sizes <- size * rel_sizes / sum(rel_sizes, na.rm = TRUE)
+  # get absolute sizes from relative sizes (and check right number for annos)
+  sizes <- annoSizesCalc(size = size, rel_sizes = rel_sizes, annos = annos)
+
   # return list
   list(
     annos = annos, funs = funs, names = names, which = which,
@@ -248,7 +240,6 @@ varAnnotation <- function(data, # from heatmap fun # converted to df
                           vars, # from heatmap fun # passed along to var_anno_*
                           annos, # from var_anno / anno_var
                           funs, # from var_anno / anno_var
-                          names, # from var_anno / anno_var
                           which, # from var_anno / anno_var
                           sizes, # from var_anno / anno_var
                           gap, # from var_anno / anno_var
@@ -271,7 +262,7 @@ varAnnotation <- function(data, # from heatmap fun # converted to df
   dat <- list() # list to store (transformed) data
 
   for (i in seq_along(annos)) {
-    name <- names[[i]]
+    name <- names(annos)[[i]]
     # replace length 1 funs, otherwise subsetting function/closure --> error
     if (length(funs) == 1) funs <- list(funs)
     if (inherits(funs[[i]], "function")) {
@@ -389,7 +380,7 @@ anno_checkExtraArgsLists <- function(args, annos){
   if (!identical(args, NULL)) {
     if (!inherits(args, "list") ||
         inherits(args, "list") && length(args) != length(annos) ||
-        any(!names(args) %in% names)) {
+        any(!names(args) %in% names(annos))) {
       stop(
         "\n- args can be NULL or list of named lists (named by annotation)",
         "\n- args must be the same length as number of non-NA annotations"
@@ -405,3 +396,19 @@ anno_checkExtraArgsLists <- function(args, annos){
   }
   return(NULL)
 }
+
+# for all annotations:
+# user provides a vector of relative sizes of length equal to number of annos
+# and a `size` specifying the total width or height (in mm)
+annoSizesCalc <- function(size, rel_sizes, annos){
+  # equal sizing if NA given for rel_sizes
+  if (identical(rel_sizes, NA)) rel_sizes <- rep_len(1, length(annos))
+  # check rel_size given for each annotation in annos
+  if (length(annos) != length(rel_sizes)) {
+    stop("length of rel_sizes must be NA or equal to the length of annos")
+  }
+  # calculate absolute sizes
+  sizes <- size * rel_sizes / sum(rel_sizes, na.rm = TRUE)
+  return(sizes)
+}
+
