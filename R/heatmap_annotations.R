@@ -51,7 +51,7 @@ tax_anno <- function(undetected = 0,
   if (identical(rel_sizes, NA)) rel_sizes <- rep_len(1, length(annos))
 
   # check options and stop if invalid
-  anno_checkExtraArgsLists(args, annos)
+  anno_checkExtraArgsLists(args = args, annos = annos)
 
   if (length(unique(annos)) < length(annos)) {
     stop("prev and abund must not be the same number")
@@ -232,7 +232,7 @@ var_anno <- function(annos = "var_box",
   # shorten names vector if more names given than annos
   names <- names[seq_along(annos)]
 
-  anno_checkExtraArgsLists(args, annos)
+  anno_checkExtraArgsLists(args = args, annos = annos)
 
   # calculate absolute sizes
   sizes <- size * rel_sizes / sum(rel_sizes, na.rm = TRUE)
