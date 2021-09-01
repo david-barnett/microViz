@@ -69,7 +69,7 @@ anno_var_box(data, vars = NA, which = "column", size = 15, ...)
 
 \item{abund}{order in which abundance annotation shown (number, or NA to not show)}
 
-\item{size}{total size in mm of annotations (width or height depending on which)}
+\item{size}{total size (mm) of annotations (width/height depending on which)}
 
 \item{gap}{gap in mm between annotations}
 
@@ -79,7 +79,7 @@ anno_var_box(data, vars = NA, which = "column", size = 15, ...)
 
 \item{...}{further named args to be passed on (to list)}
 
-\item{data}{phyloseq or ps-extra (or even a data.frame or matrix for anno_var_* functions)}
+\item{data}{phyloseq or ps-extra (or a data.frame or matrix for anno_var_* functions)}
 
 \item{taxa}{names of taxa to plot}
 
@@ -93,7 +93,8 @@ anno_var_box(data, vars = NA, which = "column", size = 15, ...)
 
 \item{annos}{name(s) of annotation(s) to show, in order (e.g. 'var_box', 'var_hist')}
 
-\item{funs}{function(s) to transform matrix of variable values before plotting (length must be 1 or same length as annos)}
+\item{funs}{function(s) to transform matrix of variable values before plotting
+(length must be 1 or same length as annos)}
 
 \item{names}{names to use for each annotation in annos}
 
