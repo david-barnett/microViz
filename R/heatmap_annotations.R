@@ -407,7 +407,7 @@ annoSizesCalc <- function(size, rel_sizes, annos){
   if (identical(rel_sizes, NA)) rel_sizes <- rep_len(1, length(annos))
   # check rel_size given for each annotation in annos
   if (length(annos) != length(rel_sizes)) {
-    stop("length of rel_sizes must be NA or equal to the length of annos")
+    stop("length of rel_sizes must be NA or equal the number of annotations")
   }
   # calculate absolute sizes
   sizes <- size * rel_sizes / sum(rel_sizes, na.rm = TRUE)

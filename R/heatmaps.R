@@ -534,14 +534,25 @@ heat_grid <- function(col = "white",
 # taxa_which is used for rotating heatmap matrix and checking clashes with other annotations
 # taxa_side actually specifies the side taxa annotations are drawn on
 taxa_which_from_taxa_side <- function(taxa_side) {
-  taxa_side_options <- c("top", "bottom", "left", "right")
-  if (!inherits(taxa_side, "character") || length(taxa_side) != 1 || !taxa_side %in% taxa_side_options) {
-    stop("taxa_side must be one of: '", paste(taxa_side_options, collapse = "' / '"), "'\nnot: ", paste(taxa_side, collapse = " "))
-  }
-  if (taxa_side %in% c("top", "bottom")) taxa_which <- "column"
-  if (taxa_side %in% c("left", "right")) taxa_which <- "row"
+  taxa_which <- annoWhichFromAnnoSide(side = taxa_side, argName = "taxa_side")
   return(taxa_which)
 }
+
+# more general internal helper for taxa_which_from_taxa_side
+# used directly in anno_sample
+annoWhichFromAnnoSide <- function(side, argName = "side") {
+  opts <- c("top", "bottom", "left", "right")
+  if (!inherits(side, "character") || length(side) != 1 || !side %in% opts) {
+    stop(
+      argName, " must be one of: '", paste(opts, collapse = "' / '"),
+      "'\nnot: ", paste(side, collapse = " ")
+    )
+  }
+  if (side %in% c("top", "bottom")) Which <- "column"
+  if (side %in% c("left", "right")) Which <- "row"
+  return(Which)
+}
+
 
 # anno_tax input --> output possibilities:
 # * NULL--> NULL,
