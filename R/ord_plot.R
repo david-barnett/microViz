@@ -1,7 +1,7 @@
 #' Customisable ggplot2 ordination plot
 #'
 #' Draw ordination plot. Utilises results of \code{\link{ord_calc}}.
-#' - For an extensive tutorial see the ordination vignette: \url{https://david-barnett.github.io/microViz/articles/ordination.html}
+#' - For an extensive tutorial see \href{https://david-barnett.github.io/microViz/articles/web-only/ordination.html}{the ordination vignette}.
 #' - For interpretation see the the relevant pages on PCA, PCoA, RDA, or CCA on the GUide to STatistical Analysis in Microbial Ecology (GUSTA ME) website: \url{https://sites.google.com/site/mb3gustame/}
 #'
 #' How to specify the plot_taxa argument (when using PCA, CCA or RDA):
