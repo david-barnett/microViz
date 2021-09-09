@@ -8,26 +8,34 @@ template:
 
 reference:
 
-- title: "Manipulating sample_data"
+- title: "Subsetting or sorting phyloseq samples"
   desc: >
-    Functions for modifying and augmenting the sample data within phyloseq objects: readable and pipe-able.
+    Functions for filtering or reording samples in a phyloseq object.
+    These typically start with "ps_", which is short for phyloseq.
 - contents:
-  - ps_select
   - ps_filter
-  - ps_mutate
-  - ps_join
   - ps_arrange
   - ps_seriate
   - ps_sort_ord
   - ps_reorder
   - ps_dedupe
   - ps_drop_incomplete
+
+- title: "Manipulating phyloseq sample_data"
+  desc: >
+    Functions for modifying and augmenting the sample data within phyloseq objects.
+    These also typically start with "ps_", which is short for phyloseq.
+- contents:
+  - ps_select
+  - ps_mutate
+  - ps_join
   - ps_otu2samdat
   - ps_melt
 
 - title: "Manipulating taxa"
   desc: >
-    Functions for editing or working with the taxonomic information contained within phyloseq objects.
+    Functions for modifying the taxonomic information contained within phyloseq objects.
+    These typically start with "tax_", which is short for taxa.
 - contents:
   - tax_fix
   - tax_fix_interactive
@@ -47,6 +55,8 @@ reference:
 - title: "Ordination and related methods"
   desc: >
     Functions for assessing and visualising overall microbiota composition and its associations with phyloseq sample data variables.
+    dist_* functions calculate or use sample-sample distances/dissimilarities.
+    ord_* functions calculate or use sample ordinations.
 - contents:
   - dist_calc
   - dist_permanova
