@@ -259,6 +259,22 @@ comp_barplot <- function(ps,
   } else if (length(sample_order) == 1) {
     samples_ordered_by_similarity <- TRUE
   } else if (length(sample_order) > 1) {
+    # check sample_order argument values are all in phyloseq sample names
+    if (!all(sample_order %in% phyloseq::sample_names(ps))) {
+      notFound <- sample_order[!sample_order %in% phyloseq::sample_names(ps)]
+      stop(
+        "1 or more of the sample_order values are not phyloseq sample_names:",
+        "\n-> '", paste(notFound, collapse = "', '"), "'"
+      )
+    }
+    # check sample_order same length as nsamples
+    if (length(sample_order) != phyloseq::nsamples(ps)) {
+      stop(
+        "Length of sample_order must be 1 or same as number of samples!",
+        "\n- phyloseq::nsamples(ps) is: ", phyloseq::nsamples(ps),
+        "\n- length(sample_order) is: ", length(sample_order)
+      )
+    }
     ordered_samples <- sample_order
   }
 

@@ -1,6 +1,4 @@
-library(phyloseq)
-library(microbiome)
-data("dietswap")
+data("dietswap", package = "microbiome")
 
 fixed_order <- c(
   "Fusobacteria", "Cyanobacteria", "Verrucomicrobia", "Spirochaetes",
@@ -14,7 +12,7 @@ test_that("fixing tax order of comp_barplot works", {
       tax_level = "Phylum", n_taxa = 8,
       sample_order = "bray",
       tax_order = fixed_order
-    ) + coord_flip()
+    ) + ggplot2::coord_flip()
 
   expect_equal(
     object = levels(p$data$unique),
@@ -39,7 +37,7 @@ test_that("comp_barplot doesn't change", {
       sample_order = "aitchison",
       merge_other = FALSE,
       tax_order = sum,
-    ) + coord_flip()
+    ) + ggplot2::coord_flip()
 
   # vdiffr visual test
   vdiffr::expect_doppelganger(title = "comp_barplot", fig = p)
@@ -93,3 +91,28 @@ test_that("tt_add_topN_var helper works as expected", {
     print(head(x = tt, 6), width = 80)
   )
 })
+
+
+# manual sample ordering ----------------------------------------------------
+
+test_that("sample_order arg errors nicely when invalid names provided", {
+  # invalid names (not in sample_names)
+  expect_error(
+    object =
+      comp_barplot(dietswap, tax_level = "Genus", sample_order = letters),
+    regexp =
+      "1 or more of the sample_order values are not phyloseq sample_names"
+  )
+
+  # incorrect number of otherwise valid sample names
+  expect_error(
+    object = comp_barplot(
+      dietswap, tax_level = "Genus",
+      sample_order = phyloseq::sample_names(dietswap)[1:10]
+    ),
+    regexp = "Length of sample_order must be 1 or same as number of samples!"
+  )
+})
+
+
+
