@@ -107,12 +107,9 @@ test_that("sample_order arg errors nicely when invalid names provided", {
   # incorrect number of otherwise valid sample names
   expect_error(
     object = comp_barplot(
-      dietswap, tax_level = "Genus",
+      ps = dietswap, tax_level = "Genus",
       sample_order = phyloseq::sample_names(dietswap)[1:10]
     ),
     regexp = "Length of sample_order must be 1 or same as number of samples!"
   )
 })
-
-
-

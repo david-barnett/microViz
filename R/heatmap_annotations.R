@@ -377,12 +377,12 @@ anno_var_box <- function(data, vars = NA, which = "column", size = 15, ...) {
 
 # user can supply extra arguments to args argument for each anno, but these
 # must be supplied as a list of named lists (named by each annotation)
-anno_checkExtraArgsLists <- function(args, annos, names = NULL){
+anno_checkExtraArgsLists <- function(args, annos, names = NULL) {
   if (identical(names, NULL)) names <- names(annos)
   if (!identical(args, NULL)) {
     if (!inherits(args, "list") ||
-        inherits(args, "list") && length(args) != length(annos) ||
-        any(!names(args) %in% names)) {
+      inherits(args, "list") && length(args) != length(annos) ||
+      any(!names(args) %in% names)) {
       stop(
         "\n- args can be NULL or list of named lists (named by annotation)",
         "\n- args must be the same length as number of non-NA annotations"
@@ -402,7 +402,7 @@ anno_checkExtraArgsLists <- function(args, annos, names = NULL){
 # for all annotations:
 # user provides a vector of relative sizes of length equal to number of annos
 # and a `size` specifying the total width or height (in mm)
-annoSizesCalc <- function(size, rel_sizes, annos){
+annoSizesCalc <- function(size, rel_sizes, annos) {
   # equal sizing if NA given for rel_sizes
   if (identical(rel_sizes, NA)) rel_sizes <- rep_len(1, length(annos))
   # check rel_size given for each annotation in annos
@@ -413,4 +413,3 @@ annoSizesCalc <- function(size, rel_sizes, annos){
   sizes <- size * rel_sizes / sum(rel_sizes, na.rm = TRUE)
   return(sizes)
 }
-

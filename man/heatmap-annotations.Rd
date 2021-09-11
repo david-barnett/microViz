@@ -75,7 +75,8 @@ anno_var_box(data, vars = NA, which = "column", size = 15, ...)
 
 \item{rel_sizes}{relative sizes of annotations (NA for equal sizes, or same length as annos)}
 
-\item{args}{extra args passed to each annotation, give as list of lists (one inner list per arg, named, e.g. list(prev = list(whatever = whatever))}
+\item{args}{extra args passed to each annotation: give as list of lists
+(one inner list per arg, named, e.g. list(prev = list(whatever = whatever))}
 
 \item{...}{further named args to be passed on (to list)}
 
