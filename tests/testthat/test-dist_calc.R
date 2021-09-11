@@ -13,3 +13,17 @@ test_that("gunifrac alpha = 1 is wunifrac", {
     dist_get(dist_calc(esophagus, dist = "gunifrac", gunifrac_alpha = 1))
   )
 })
+
+
+test_that("dist_calc throws errors", {
+
+  expect_error(
+    object = dist_calc(
+      data = tax_transform(corncob::soil_phylum_small, trans = "clr"),
+      dist = "aitchison"
+    ),
+    regexp = "dist_calc 'aitchison' distance requires count data"
+  )
+
+  expect_error(dist_calc(data = 2), regexp = "data is class: numeric")
+})

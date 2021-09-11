@@ -29,8 +29,10 @@
 #'
 #' @param data ps_extra object output from tax_transform()
 #' @param dist name of distance to calculate between pairs of samples
-#' @param gunifrac_alpha setting alpha value only relevant if gunifrac distance used
-#' @param ... optional distance-specific named arguments passed to phyloseq::distance()
+#' @param gunifrac_alpha
+#' setting alpha value only relevant if gunifrac distance used
+#' @param ...
+#' optional distance-specific named arguments passed to phyloseq::distance()
 #'
 #' @return list with distance matrix, phyloseq object, and name of distance used
 #' @export
@@ -60,46 +62,31 @@ dist_calc <- function(data,
                       dist = c("bray", "gunifrac", "unifrac", "wunifrac", "va-wunifrac", "aitchison", "euclidean")[1],
                       gunifrac_alpha = 0.5,
                       ...) {
-  ps <- ps_get(data)
 
   # check input data object class
-  if (inherits(data, "ps_extra")) {
-    info <- info_get(data)
-  } else if (methods::is(data, "phyloseq")) {
-    info <- new_ps_extra_info()
-    data <- new_ps_extra(ps = ps, info = info)
-  } else {
+  if (!inherits(data, "ps_extra") && !methods::is(data, "phyloseq")) {
     stop(
-      "data is wrong class, should be ps_extra e.g. output of tax_agg or tax_transform, or a phyloseq\n",
-      "data is class: ", class(data)
+      "data for dist_calc must be of class 'ps_extra'\n",
+      " - e.g. output of tax_agg or tax_transform\n",
+      " - data is class: ", paste(class(data), collapse = " ")
     )
   }
 
-  # aitchison distance
+  # get components
+  ps <- ps_get(data)
+  info <- info_get(data)
+
+  # create ps_extra from phyloseq if phyloseq given
+  if (methods::is(data, "phyloseq")) data <- new_ps_extra(ps = ps, info = info)
+
+  # calculate distance matrix #
   if (identical(dist, "aitchison")) {
-    if (identical(info[["tax_transform"]], "clr")) {
-      stop("aitchison distance requested on data that are already clr-transformed, see the ?dist_calc details section!")
-    }
-    distMat <- t(microbiome::abundances(x = ps, transform = "clr")) %>%
-      stats::dist(method = "euclidean")
-
-    # unifrac distances using GUniFrac package
+    # aitchison distance
+    distMat <- distMatAitchison(ps = ps, info = info)
   } else if (grepl(pattern = "unifrac", dist)) {
-    if (identical(ps@phy_tree, NULL)) {
-      warning("unifrac distances require un-aggregated taxa and a phylogenetic tree.")
-    }
-    if (!requireNamespace("GUniFrac", quietly = TRUE)) {
-      stop("You need to install package 'GUniFrac' to use unifrac distances.")
-    }
-
-    # much faster than phyloseq version of unifrac measures and results are the same (to floating point precision)
-    distMats <- GUniFrac::GUniFrac(
-      otu.tab = otu_get(ps),
-      tree = phyloseq::phy_tree(ps),
-      alpha = c(0, gunifrac_alpha, 1)
-    )[["unifracs"]]
-
-    gunifrac_alpha <- switch(
+    # unifrac distances using GUniFrac package
+    # define unifrac result ID required by GUniFrac package
+    uniID <- switch(
       EXPR = dist,
       "unifrac" = "UW",
       "wunifrac" = 1,
@@ -107,11 +94,14 @@ dist_calc <- function(data,
       "vawunifrac" = "VAW",
       "gunifrac" = gunifrac_alpha
     )
-    distMat <- stats::as.dist(distMats[, , paste0("d_", gunifrac_alpha)])
-    if (identical(dist, "gunifrac")) dist <- paste(dist, gunifrac_alpha, sep = "_")
+    # update distance name
+    if (identical(dist, "gunifrac")) dist <- paste0(dist, "_", uniID)
 
-    # calculate distance matrix if distance is supported in phyloseq
+    distMat <- distMatUnifrac(
+      ps = ps, gunifrac_alpha = gunifrac_alpha, uniID = uniID
+    )
   } else if (dist %in% unlist(phyloseq::distanceMethodList)) {
+    # calculate distance matrix if distance is supported in phyloseq
     distMat <- phyloseq::distance(ps, method = dist, type = "samples", ...)
   } else {
     stop(paste("Invalid distance measure named in dist argument:", dist))
@@ -123,4 +113,49 @@ dist_calc <- function(data,
   data[["info"]] <- info
 
   return(data)
+
+}
+
+
+
+# calculates aitchison distance matrix from phyloseq: ps
+# (ps_extra info required for transformation check)
+distMatAitchison <- function(ps, info) {
+  if (identical(info[["tax_transform"]], "clr")) {
+    stop(
+      "dist_calc 'aitchison' distance requires count data\n",
+      " - your data are clr-transformed (according to the ps_extra info)",
+      "\n - see the ?dist_calc details section for more info"
+    )
+  }
+  distMat <- t(microbiome::abundances(x = ps, transform = "clr")) %>%
+    stats::dist(method = "euclidean")
+  return(distMat)
+}
+
+
+
+# calculates any unifrac distance matrix from phyloseq: ps
+# gunifrac_alpha
+distMatUnifrac <- function(ps, gunifrac_alpha, uniID) {
+  if (identical(ps@phy_tree, NULL)) {
+    warning(
+      "unifrac distances require un-aggregated taxa and a phylogenetic tree."
+    )
+  }
+  if (!requireNamespace("GUniFrac", quietly = TRUE)) {
+    stop("You need to install package 'GUniFrac' to use unifrac distances.")
+  }
+
+  # GUniFrac is much faster than phyloseq version of unifrac measures
+  # and results are the same (to floating point precision)
+  distMats <- GUniFrac::GUniFrac(
+    otu.tab = otu_get(ps),
+    tree = phyloseq::phy_tree(ps),
+    alpha = c(0, gunifrac_alpha, 1)
+  )[["unifracs"]]
+
+  distMat <- stats::as.dist(distMats[, , paste0("d_", uniID)])
+
+  return(distMat)
 }
