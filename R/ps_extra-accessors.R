@@ -28,8 +28,8 @@ ps_get <- function(ps_extra) {
     return(ps_extra)
   } else {
     stop(
-      'class of argument should be "ps_extra" or "phyloseq", not: ',
-      class(ps_extra)
+      'class of argument should be "ps_extra" or "phyloseq"',
+      "\nargument is class: ", paste(class(ps_extra), collapse = " ")
     )
   }
 }
@@ -48,8 +48,16 @@ ord_get <- function(ps_extra) {
 #' @rdname ps_extra-accessors
 #' @export
 info_get <- function(ps_extra) {
-  stopifnot(inherits(ps_extra, "ps_extra"))
-  ps_extra[["info"]]
+  if (inherits(ps_extra, "ps_extra")) {
+    return(ps_extra[["info"]])
+  } else if (methods::is(ps_extra, "phyloseq")) {
+    return(new_ps_extra_info())
+  } else {
+    stop(
+      "info_get can only get info from a 'ps_extra' class object.",
+      "\nargument is class: ", paste(class(ps_extra), collapse = " ")
+    )
+  }
 }
 #' @rdname ps_extra-accessors
 #' @export
