@@ -28,6 +28,7 @@
 #'
 #' @examples
 #' library(ggplot2)
+#' library(dplyr)
 #' data("dietswap", package = "microbiome")
 #'
 #' pseq <- dietswap %>%
@@ -53,7 +54,6 @@
 #'   scale_y_discrete(limits = rev(levels(samdat_tbl(pseq)$subject)))
 #'
 #' # ComplexHeatmap plotting with clustering #
-#' library(dplyr)
 #' library(tidyr)
 #' library(ComplexHeatmap)
 #'

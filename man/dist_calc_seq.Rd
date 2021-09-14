@@ -46,6 +46,7 @@ Calculate distances between sequential samples in ps_extra/phyloseq object
 }
 \examples{
 library(ggplot2)
+library(dplyr)
 data("dietswap", package = "microbiome")
 
 pseq <- dietswap \%>\%
@@ -71,7 +72,6 @@ pseq \%>\%
   scale_y_discrete(limits = rev(levels(samdat_tbl(pseq)$subject)))
 
 # ComplexHeatmap plotting with clustering #
-library(dplyr)
 library(tidyr)
 library(ComplexHeatmap)
 
@@ -113,8 +113,8 @@ pca <- pseq \%>\%
       "pku" # starts high
     )
   ) +
-  scale_alpha_continuous(range = c(0.3, 1), breaks = c(2,4,6)) +
-  scale_size_continuous(range = c(1, 2), breaks = c(2,4,6))
+  scale_alpha_continuous(range = c(0.3, 1), breaks = c(2, 4, 6)) +
+  scale_size_continuous(range = c(1, 2), breaks = c(2, 4, 6))
 
 heatmap
 pca
