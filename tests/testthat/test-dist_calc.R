@@ -16,7 +16,6 @@ test_that("gunifrac alpha = 1 is wunifrac", {
 
 
 test_that("dist_calc throws errors", {
-
   expect_error(
     object = dist_calc(
       data = tax_transform(corncob::soil_phylum_small, trans = "clr"),

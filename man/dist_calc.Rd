@@ -13,7 +13,7 @@ dist_calc(
 )
 }
 \arguments{
-\item{data}{ps_extra object output from tax_transform()}
+\item{data}{ps_extra object, e.g. output from tax_transform()}
 
 \item{dist}{name of distance to calculate between pairs of samples}
 

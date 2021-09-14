@@ -27,7 +27,7 @@
 #' If the distance matrix is required for permanova, users require option 2.
 #'
 #'
-#' @param data ps_extra object output from tax_transform()
+#' @param data ps_extra object, e.g. output from tax_transform()
 #' @param dist name of distance to calculate between pairs of samples
 #' @param gunifrac_alpha
 #' setting alpha value only relevant if gunifrac distance used
@@ -64,20 +64,16 @@ dist_calc <- function(data,
                       ...) {
 
   # check input data object class
-  if (!inherits(data, "ps_extra") && !methods::is(data, "phyloseq")) {
-    stop(
-      "data for dist_calc must be of class 'ps_extra'\n",
-      " - e.g. output of tax_agg or tax_transform\n",
-      " - data is class: ", paste(class(data), collapse = " ")
-    )
+  distCalcDataValidate(data)
+
+  # create ps_extra from phyloseq if phyloseq given
+  if (methods::is(data, "phyloseq")) {
+    data <- new_ps_extra(ps = data, info = new_ps_extra_info())
   }
 
   # get components
   ps <- ps_get(data)
   info <- info_get(data)
-
-  # create ps_extra from phyloseq if phyloseq given
-  if (methods::is(data, "phyloseq")) data <- new_ps_extra(ps = ps, info = info)
 
   # calculate distance matrix #
   if (identical(dist, "aitchison")) {
@@ -113,7 +109,6 @@ dist_calc <- function(data,
   data[["info"]] <- info
 
   return(data)
-
 }
 
 
@@ -158,4 +153,15 @@ distMatUnifrac <- function(ps, gunifrac_alpha, uniID) {
   distMat <- stats::as.dist(distMats[, , paste0("d_", uniID)])
 
   return(distMat)
+}
+
+# data class checker, also used in dist_calc_seq()
+distCalcDataValidate <- function(data) {
+  if (!inherits(data, "ps_extra") && !methods::is(data, "phyloseq")) {
+    stop(
+      "data for dist_calc must be of class 'ps_extra'\n",
+      " - e.g. output of tax_agg or tax_transform\n",
+      " - data is class: ", paste(class(data), collapse = " ")
+    )
+  }
 }
