@@ -416,7 +416,7 @@ constraint_lab_style <- function(type = "label",
 lab_style <- function(type, max_angle, aspect_ratio, justify, perpendicular,
                       size, alpha, colour, ...) {
   # check all args named
-  if (length(...names()) != ...length()) {
+  if (length(names(list(...))) != ...length()) {
     stop(
       call. = FALSE,
       "All arguments to *_lab_style() must be named."
