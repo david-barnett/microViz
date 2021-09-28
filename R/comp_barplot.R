@@ -376,7 +376,6 @@ comp_barplotFixed <- function(
   # set fixed order of stacked taxa bars by creating ordered factor
   df[["unique"]] <- factor(df[["unique"]], levels = rev(uniqueTaxaOrdered))
 
-  # IS THIS NECESSARY? shouldn't scale_fill_manual handle this?
   # # set fixed order of fill colours (for LEGEND ordering!)
   df[["top"]] <- factor(df[["top"]], levels = rev(topTaxaOrdered))
 
