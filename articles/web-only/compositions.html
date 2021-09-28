@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9030</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9031</span>
       </span>
     </div>
 
@@ -137,9 +137,9 @@
   <span class="fu"><a href="../../reference/tax_fix.html">tax_fix</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="../../reference/phyloseq_validate.html">phyloseq_validate</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>The <code>comp_barplot</code> function allows you to visualise the taxonomic compositions of your microbiome samples in a flexible, scalable, group-able, and visually appealing way.</p>
-<div id="quick-example-barplot-" class="section level2">
+<div id="quick-example-barplot" class="section level2">
 <h2 class="hasAnchor">
-<a href="#quick-example-barplot-" class="anchor"></a>Quick example barplot.</h2>
+<a href="#quick-example-barplot" class="anchor"></a>Quick example barplot</h2>
 <p>Visualise the top Genera across all the female samples from this inflammatory bowel disease study dataset. The order of the samples is automatically set by their “bray”-curtis dissimilarity.</p>
 <p>By default, the top 8 taxa are shown. These taxa are chosen by their total count abundance across all plotted samples.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -203,14 +203,18 @@
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pseq</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">DiseaseState</span> <span class="op">!=</span> <span class="st">"IBDundef"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># only one sample in this group</span>
+  <span class="co"># convert DiseaseState into ordered factor to control order of facets</span>
+  <span class="fu"><a href="../../reference/ps_mutate.html">ps_mutate</a></span><span class="op">(</span>
+    DiseaseState <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span>
+      <span class="va">DiseaseState</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"UC"</span>, <span class="st">"nonIBD"</span>, <span class="st">"CD"</span><span class="op">)</span>, ordered <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+  <span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span>
-    tax_level <span class="op">=</span> <span class="st">"Genus"</span>, n_taxa <span class="op">=</span> <span class="fl">12</span>, facet_by <span class="op">=</span> <span class="st">"DiseaseState"</span>,
-    sample_order <span class="op">=</span> <span class="st">"bray"</span>, bar_outline_colour <span class="op">=</span> <span class="cn">NA</span>, label <span class="op">=</span> <span class="cn">NULL</span>
+    tax_level <span class="op">=</span> <span class="st">"Genus"</span>, n_taxa <span class="op">=</span> <span class="fl">15</span>,
+    bar_outline_colour <span class="op">=</span> <span class="cn">NA</span>, facet_by <span class="op">=</span> <span class="st">"DiseaseState"</span>
   <span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>axis.ticks.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="co"># remove sample ticks</span></code></pre></div>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span> </code></pre></div>
 <p><img src="compositions_files/figure-html/unnamed-chunk-4-1.png" width="864"></p>
-<p>Instead of using the <code>facet_by</code> argument in <code>comp_barplot</code> you can have more control over faceting by doing it yourself afterwards.</p>
+<p>Instead of using the <code>facet_by</code> argument in <code>comp_barplot</code> you can have more control over faceting by doing it yourself afterwards. You can use facet_grid to create row facets.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pseq</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">DiseaseState</span> <span class="op">!=</span> <span class="st">"IBDundef"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># only one sample in this group</span>
@@ -220,7 +224,7 @@
       <span class="va">DiseaseState</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"UC"</span>, <span class="st">"CD"</span>, <span class="st">"nonIBD"</span><span class="op">)</span>, ordered <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
   <span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span>
-    tax_level <span class="op">=</span> <span class="st">"Genus"</span>, n_taxa <span class="op">=</span> <span class="fl">12</span>,
+    tax_level <span class="op">=</span> <span class="st">"Genus"</span>, n_taxa <span class="op">=</span> <span class="fl">15</span>,
     sample_order <span class="op">=</span> <span class="st">"bray"</span>, bar_outline_colour <span class="op">=</span> <span class="cn">NA</span>,
   <span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html">facet_grid</a></span><span class="op">(</span>
@@ -232,7 +236,7 @@
     axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>,
     axis.ticks.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>
   <span class="op">)</span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-5-1.png" width="864"></p>
+<p><img src="compositions_files/figure-html/unnamed-chunk-5-1.png" width="576"></p>
 </div>
 <div id="grouping" class="section level3">
 <h3 class="hasAnchor">
@@ -271,17 +275,44 @@
 <div id="sorting-the-barplot" class="section level2">
 <h2 class="hasAnchor">
 <a href="#sorting-the-barplot" class="anchor"></a>Sorting the barplot</h2>
-<div id="sorting-is-important" class="section level3">
+<div id="sorting-by-similarity" class="section level3">
 <h3 class="hasAnchor">
-<a href="#sorting-is-important" class="anchor"></a>Sorting is important</h3>
+<a href="#sorting-by-similarity" class="anchor"></a>Sorting by similarity</h3>
 <p>Sorting the samples on compositional barplots by similarity can make patterns in the data much easier to see. Check out this unsorted version of the first barplot in this article.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pseq</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"female"</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span>tax_level <span class="op">=</span> <span class="st">"Genus"</span>, sample_order <span class="op">=</span> <span class="st">"default"</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span> </code></pre></div>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Unsorted barcharts are hard to read!"</span><span class="op">)</span></code></pre></div>
 <p><img src="compositions_files/figure-html/unnamed-chunk-8-1.png" width="864"></p>
 <p>You can play with the dissimilarity measure (set in <code>sample_order</code> argument) and <code>seriate_method</code> if you like, but the defaults (Bray Curtis and OLO Ward) seem to work pretty well most of the time.</p>
+<p>When sorting samples by similarity, the default is to treat the “other” taxa as one group, i.e. when <code>merge_other = TRUE</code> and <code>order_with_all_taxa = FALSE</code>.</p>
+<p>If you set <code>order_with_all_taxa = TRUE</code>, samples are sorted BEFORE merging taxa. The resulting sample order is then the same as when <code>merge_other = FALSE</code>.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">pseq</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"female"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span>tax_level <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Samples sorted AFTER merging 'other' taxa"</span><span class="op">)</span></code></pre></div>
+<p><img src="compositions_files/figure-html/unnamed-chunk-9-1.png" width="864"></p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
+<span class="va">pseq</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"female"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span>tax_level <span class="op">=</span> <span class="st">"Genus"</span>, order_with_all_taxa <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Samples sorted BEFORE merging 'other' taxa"</span><span class="op">)</span></code></pre></div>
+<p><img src="compositions_files/figure-html/unnamed-chunk-9-2.png" width="864"></p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
+
+<span class="va">pseq</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"female"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span>tax_level <span class="op">=</span> <span class="st">"Genus"</span>, merge_other <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"'other' taxa not merged"</span><span class="op">)</span></code></pre></div>
+<p><img src="compositions_files/figure-html/unnamed-chunk-9-3.png" width="864"></p>
 </div>
 <div id="sort-by-ordination" class="section level3">
 <h3 class="hasAnchor">
@@ -292,7 +323,7 @@
 <h3 class="hasAnchor">
 <a href="#sort-by-1-taxon" class="anchor"></a>Sort by 1 taxon</h3>
 <p>To study the distribution of a single taxonomic group across your samples, you can use <code>ps_arrange</code> (with the <code>.target</code> argument set to “otu_table”) and the ‘default’ sample_order setting in <code>comp_barplot</code>.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pseq</span> <span class="op">%&gt;%</span> 
    <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Phylum"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
    <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"compositional"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
@@ -301,13 +332,13 @@
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; Warning in ps_counts(data = data): otu_table of counts is NOT available!</span>
 <span class="co">#&gt; Available otu_table contains non-zero values that are less than 1</span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-9-1.png" width="864"></p>
+<p><img src="compositions_files/figure-html/unnamed-chunk-10-1.png" width="864"></p>
 </div>
 <div id="sorting-by-metadata" class="section level3">
 <h3 class="hasAnchor">
 <a href="#sorting-by-metadata" class="anchor"></a>Sorting by metadata</h3>
 <p>Sorting across timepoint groups in another dataset, dietswap.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"dietswap"</span>, package <span class="op">=</span> <span class="st">"microbiome"</span><span class="op">)</span>
 <span class="va">ps</span> <span class="op">&lt;-</span> <span class="va">dietswap</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">group</span> <span class="op">==</span> <span class="st">"DI"</span><span class="op">)</span>
 
@@ -323,7 +354,7 @@
   plot_groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/interaction.html">interaction</a></span><span class="op">(</span><span class="va">nationality</span>, <span class="va">timepoint.within.group</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
 <p>Grouped by both timepoint and another grouping factor, nationality in this example.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">times_list</span> <span class="op">&lt;-</span> <span class="va">ps</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../../reference/ps_arrange.html">ps_arrange</a></span><span class="op">(</span><span class="va">timepoint.within.group</span>, <span class="va">nationality</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">subject</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span>
@@ -342,9 +373,9 @@
   <span class="op">)</span>
 
 <span class="va">times</span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-10-1.png" width="960"></p>
+<p><img src="compositions_files/figure-html/unnamed-chunk-11-1.png" width="960"></p>
 <p>Same grouping, now showing diversity of taxa within other, with <code>merge_other = FALSE</code></p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">times_list</span> <span class="op">&lt;-</span> <span class="va">ps</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../../reference/ps_arrange.html">ps_arrange</a></span><span class="op">(</span><span class="va">timepoint.within.group</span>, <span class="va">nationality</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">subject</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span>
@@ -364,8 +395,8 @@
   <span class="op">)</span>
 
 <span class="va">times</span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-11-1.png" width="960"></p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<p><img src="compositions_files/figure-html/unnamed-chunk-12-1.png" width="960"></p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sessioninfo/man/session_info.html">session_info</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; ─ Session info ───────────────────────────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt;  setting  value                       </span>
@@ -377,18 +408,18 @@
 <span class="co">#&gt;  collate  en_US.UTF-8                 </span>
 <span class="co">#&gt;  ctype    en_US.UTF-8                 </span>
 <span class="co">#&gt;  tz       UTC                         </span>
-<span class="co">#&gt;  date     2021-09-15                  </span>
+<span class="co">#&gt;  date     2021-09-28                  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ─ Packages ───────────────────────────────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt;  package          * version     date       lib source        </span>
-<span class="co">#&gt;  ade4               1.7-17      2021-06-17 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  ade4               1.7-18      2021-09-16 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  ape                5.5         2021-04-25 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  Biobase            2.52.0      2021-05-19 [1] Bioconductor  </span>
 <span class="co">#&gt;  BiocGenerics       0.38.0      2021-05-19 [1] Bioconductor  </span>
 <span class="co">#&gt;  biomformat         1.20.0      2021-05-19 [1] Bioconductor  </span>
 <span class="co">#&gt;  Biostrings         2.60.2      2021-08-05 [1] Bioconductor  </span>
 <span class="co">#&gt;  bitops             1.0-7       2021-04-24 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  bslib              0.3.0       2021-09-02 [1] CRAN (R 4.1.1)</span>
+<span class="co">#&gt;  bslib              0.3.0       2021-09-02 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  cachem             1.0.6       2021-08-19 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  callr              3.7.0       2021-04-20 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  cli                3.0.1       2021-07-17 [1] CRAN (R 4.1.0)</span>
@@ -397,10 +428,10 @@
 <span class="co">#&gt;  colorspace         2.0-2       2021-06-24 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  corncob            0.2.0       2021-03-11 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  crayon             1.4.1       2021-02-08 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  data.table         1.14.0      2021-02-21 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  desc               1.3.0       2021-03-05 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  data.table         1.14.2      2021-09-27 [1] CRAN (R 4.1.1)</span>
+<span class="co">#&gt;  desc               1.4.0       2021-09-28 [1] CRAN (R 4.1.1)</span>
 <span class="co">#&gt;  devtools           2.4.2       2021-06-07 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  digest             0.6.27      2020-10-24 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  digest             0.6.28      2021-09-23 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  dplyr              1.0.7       2021-06-18 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  ellipsis           0.3.2       2021-04-29 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  evaluate           0.14        2019-05-28 [1] CRAN (R 4.1.0)</span>
@@ -410,36 +441,36 @@
 <span class="co">#&gt;  foreach            1.5.1       2020-10-15 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  fs                 1.5.0       2020-07-31 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  generics           0.1.0       2020-10-31 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  GenomeInfoDb       1.28.4      2021-09-05 [1] Bioconductor  </span>
-<span class="co">#&gt;  GenomeInfoDbData   1.2.6       2021-08-19 [1] Bioconductor  </span>
+<span class="co">#&gt;  GenomeInfoDb       1.28.4      2021-09-09 [1] Bioconductor  </span>
+<span class="co">#&gt;  GenomeInfoDbData   1.2.6       2021-09-23 [1] Bioconductor  </span>
 <span class="co">#&gt;  ggplot2          * 3.3.5       2021-06-25 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  glue               1.4.2       2020-08-27 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  gtable             0.3.0       2019-03-25 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  highr              0.9         2021-04-16 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  htmltools          0.5.2       2021-08-25 [1] CRAN (R 4.1.1)</span>
+<span class="co">#&gt;  htmltools          0.5.2       2021-08-25 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  igraph             1.2.6       2020-10-06 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  IRanges            2.26.0      2021-05-19 [1] Bioconductor  </span>
 <span class="co">#&gt;  iterators          1.0.13      2020-10-15 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  jquerylib          0.1.4       2021-04-26 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  jsonlite           1.7.2       2020-12-09 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  knitr              1.34        2021-09-09 [1] CRAN (R 4.1.1)</span>
+<span class="co">#&gt;  knitr              1.35        2021-09-28 [1] CRAN (R 4.1.1)</span>
 <span class="co">#&gt;  labeling           0.4.2       2020-10-20 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  lattice            0.20-44     2021-05-02 [2] CRAN (R 4.1.1)</span>
-<span class="co">#&gt;  lifecycle          1.0.0       2021-02-15 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  lifecycle          1.0.1       2021-09-24 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  magrittr           2.0.1       2020-11-17 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  MASS               7.3-54      2021-05-03 [2] CRAN (R 4.1.1)</span>
 <span class="co">#&gt;  Matrix             1.3-4       2021-06-01 [2] CRAN (R 4.1.1)</span>
 <span class="co">#&gt;  memoise            2.0.0       2021-01-26 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  mgcv               1.8-36      2021-06-01 [2] CRAN (R 4.1.1)</span>
 <span class="co">#&gt;  microbiome         1.14.0      2021-05-19 [1] Bioconductor  </span>
-<span class="co">#&gt;  microViz         * 0.7.10.9030 2021-09-15 [1] local         </span>
+<span class="co">#&gt;  microViz         * 0.7.10.9031 2021-09-28 [1] local         </span>
 <span class="co">#&gt;  multtest           2.48.0      2021-05-19 [1] Bioconductor  </span>
 <span class="co">#&gt;  munsell            0.5.0       2018-06-12 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  nlme               3.1-152     2021-02-04 [2] CRAN (R 4.1.1)</span>
 <span class="co">#&gt;  patchwork        * 1.1.1       2020-12-17 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  permute            0.9-5       2019-03-12 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  phyloseq         * 1.36.0      2021-05-19 [1] Bioconductor  </span>
-<span class="co">#&gt;  pillar             1.6.2       2021-07-29 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  pillar             1.6.3       2021-09-26 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  pkgbuild           1.2.0       2020-12-15 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  pkgconfig          2.0.3       2019-09-22 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  pkgdown            1.6.1       2020-09-12 [1] CRAN (R 4.1.0)</span>
@@ -452,7 +483,7 @@
 <span class="co">#&gt;  R6                 2.5.1       2021-08-19 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  ragg               1.1.3       2021-06-09 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  Rcpp               1.0.7       2021-07-07 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  RCurl              1.98-1.4    2021-08-17 [1] CRAN (R 4.1.1)</span>
+<span class="co">#&gt;  RCurl              1.98-1.5    2021-09-17 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  registry           0.5-1       2019-03-05 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  remotes            2.4.0       2021-06-02 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  reshape2           1.4.4       2020-04-09 [1] CRAN (R 4.1.0)</span>
@@ -460,22 +491,22 @@
 <span class="co">#&gt;  rhdf5filters       1.4.0       2021-05-19 [1] Bioconductor  </span>
 <span class="co">#&gt;  Rhdf5lib           1.14.2      2021-07-06 [1] Bioconductor  </span>
 <span class="co">#&gt;  rlang              0.4.11      2021-04-30 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  rmarkdown          2.11        2021-09-14 [1] CRAN (R 4.1.1)</span>
+<span class="co">#&gt;  rmarkdown          2.11        2021-09-14 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  rprojroot          2.0.2       2020-11-15 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  Rtsne              0.15        2018-11-10 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  S4Vectors          0.30.0      2021-05-19 [1] Bioconductor  </span>
+<span class="co">#&gt;  S4Vectors          0.30.1      2021-09-26 [1] Bioconductor  </span>
 <span class="co">#&gt;  sass               0.4.0       2021-05-12 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  scales             1.1.1       2020-05-11 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  seriation          1.3.0       2021-06-30 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  sessioninfo        1.1.1       2018-11-05 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  stringi            1.7.4       2021-08-25 [1] CRAN (R 4.1.1)</span>
+<span class="co">#&gt;  stringi            1.7.4       2021-08-25 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  stringr            1.4.0       2019-02-10 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  survival           3.2-11      2021-04-26 [2] CRAN (R 4.1.1)</span>
 <span class="co">#&gt;  systemfonts        1.0.2       2021-05-11 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  testthat           3.0.4       2021-07-01 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  textshaping        0.3.5       2021-06-09 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  tibble             3.1.4       2021-08-25 [1] CRAN (R 4.1.1)</span>
-<span class="co">#&gt;  tidyr              1.1.3       2021-03-03 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  tibble             3.1.4       2021-08-25 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  tidyr              1.1.4       2021-09-27 [1] CRAN (R 4.1.1)</span>
 <span class="co">#&gt;  tidyselect         1.1.1       2021-04-30 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  TSP                1.1-10      2020-04-17 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  usethis            2.0.1       2021-02-10 [1] CRAN (R 4.1.0)</span>
@@ -483,7 +514,7 @@
 <span class="co">#&gt;  vctrs              0.3.8       2021-04-29 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  vegan              2.5-7       2020-11-28 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  withr              2.4.2       2021-04-18 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  xfun               0.26        2021-09-14 [1] CRAN (R 4.1.1)</span>
+<span class="co">#&gt;  xfun               0.26        2021-09-14 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  XVector            0.32.0      2021-05-19 [1] Bioconductor  </span>
 <span class="co">#&gt;  yaml               2.2.1       2020-02-01 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  zlibbioc           1.38.0      2021-05-19 [1] Bioconductor  </span>
