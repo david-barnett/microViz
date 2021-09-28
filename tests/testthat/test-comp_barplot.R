@@ -18,7 +18,7 @@ test_that("fixing tax order of comp_barplot works", {
 
   expect_equal(
     object = levels(p$data$unique),
-    expected = rev(fixed_order)
+    expected = c("other", rev(fixed_order))
   )
 })
 

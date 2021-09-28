@@ -17,6 +17,7 @@
 
 ## Fixes
 - `cor_heatmap` and `comp_heatmap` now respect column seriation arguments when different to row seriation
+- `comp_barplot` now actually orders grouped samples by similarity AFTER splitting into groups, as documented
 
 # microViz 0.7.10
 

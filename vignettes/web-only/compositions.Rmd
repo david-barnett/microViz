@@ -3,8 +3,11 @@ title: "Visualising compositions"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Visualising compositions}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
 ```{r, include = FALSE}
@@ -38,7 +41,7 @@ The `comp_barplot` function allows you to visualise the taxonomic
 compositions of your microbiome samples in a flexible, scalable,
 group-able, and visually appealing way.
 
-## Quick example barplot.
+## Quick example barplot
 
 Visualise the top Genera across all the female samples from this
 inflammatory bowel disease study dataset. The order of the samples is
@@ -119,18 +122,23 @@ increased abundances of these taxa.
 ```{r}
 pseq %>%
   ps_filter(DiseaseState != "IBDundef") %>% # only one sample in this group
+  # convert DiseaseState into ordered factor to control order of facets
+  ps_mutate(
+    DiseaseState = factor(
+      DiseaseState, levels = c("UC", "nonIBD", "CD"), ordered = TRUE)
+  ) %>% 
   comp_barplot(
-    tax_level = "Genus", n_taxa = 12, facet_by = "DiseaseState",
-    sample_order = "bray", bar_outline_colour = NA, label = NULL
+    tax_level = "Genus", n_taxa = 15,
+    bar_outline_colour = NA, facet_by = "DiseaseState"
   ) +
-  coord_flip() + 
-  theme(axis.ticks.y = element_blank()) # remove sample ticks
+  coord_flip() 
 ```
 
 Instead of using the `facet_by` argument in `comp_barplot` you can have
-more control over faceting by doing it yourself afterwards.
+more control over faceting by doing it yourself afterwards. You can use
+facet_grid to create row facets.
 
-```{r}
+```{r, fig.height=8, fig.width=6}
 pseq %>%
   ps_filter(DiseaseState != "IBDundef") %>% # only one sample in this group
   # convert DiseaseState into ordered factor to control order of facets
@@ -139,7 +147,7 @@ pseq %>%
       DiseaseState, levels = c("UC", "CD", "nonIBD"), ordered = TRUE)
   ) %>% 
   comp_barplot(
-    tax_level = "Genus", n_taxa = 12,
+    tax_level = "Genus", n_taxa = 15,
     sample_order = "bray", bar_outline_colour = NA,
   ) +
   facet_grid(
@@ -201,7 +209,7 @@ patch &
 
 ## Sorting the barplot
 
-### Sorting is important
+### Sorting by similarity
 
 Sorting the samples on compositional barplots by similarity can make
 patterns in the data much easier to see. Check out this unsorted version
@@ -211,12 +219,43 @@ of the first barplot in this article.
 pseq %>%
   ps_filter(gender == "female") %>%
   comp_barplot(tax_level = "Genus", sample_order = "default") + 
-  coord_flip() 
+  coord_flip() +
+  ggtitle("Unsorted barcharts are hard to read!")
 ```
 
 You can play with the dissimilarity measure (set in `sample_order`
 argument) and `seriate_method` if you like, but the defaults (Bray
 Curtis and OLO Ward) seem to work pretty well most of the time.
+
+When sorting samples by similarity, the default is to treat the "other"
+taxa as one group, i.e. when `merge_other = TRUE` and
+`order_with_all_taxa = FALSE`.
+
+If you set `order_with_all_taxa = TRUE`, samples are sorted BEFORE
+merging taxa. The resulting sample order is then the same as when
+`merge_other = FALSE`.
+
+```{r}
+pseq %>%
+  ps_filter(gender == "female") %>%
+  comp_barplot(tax_level = "Genus") + 
+  coord_flip() +
+  ggtitle("Samples sorted AFTER merging 'other' taxa")
+
+pseq %>%
+  ps_filter(gender == "female") %>%
+  comp_barplot(tax_level = "Genus", order_with_all_taxa = TRUE) + 
+  coord_flip() +
+  ggtitle("Samples sorted BEFORE merging 'other' taxa")
+
+
+pseq %>%
+  ps_filter(gender == "female") %>%
+  comp_barplot(tax_level = "Genus", merge_other = FALSE) + 
+  coord_flip() +
+  ggtitle("'other' taxa not merged")
+
+```
 
 ### Sort by ordination
 
