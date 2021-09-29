@@ -15,7 +15,7 @@
 #'  with white and black starting colours removed. This palette is ordered
 #'  such that the first colours are most distinct.
 #' - "greenArmytage" is based on a 26-colour palette proposed by Paul
-#' Green-Armytage, with black remove. This palette is not ordered by maximum
+#' Green-Armytage, with black removed. This palette is not ordered by maximum
 #' contrast.
 #'
 #' @details
