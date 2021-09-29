@@ -67,6 +67,7 @@
 #' @param max_taxa maximum distinct taxa groups to show
 #' (only really useful for limiting complexity of interactive plots
 #' e.g. within ord_explore)
+#' @param other_name name for other taxa after N
 #' @param ... extra arguments passed to facet_wrap() (if facet_by is not NA)
 #'
 #' @return ggplot or list of harmonised ggplots

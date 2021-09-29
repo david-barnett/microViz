@@ -91,6 +91,8 @@ but TRUE is required for some post-hoc plot customisation}
 (only really useful for limiting complexity of interactive plots
 e.g. within ord_explore)}
 
+\item{other_name}{name for other taxa after N}
+
 \item{...}{extra arguments passed to facet_wrap() (if facet_by is not NA)}
 }
 \value{
