@@ -38,7 +38,7 @@ slightly modified from the Polychrome R package:
 i.e. Polychrome::kelly.colors() and Polychrome::green.armytage.colors()
 
 Please consider also citing Coombes 2019
-\url{http://dx.doi.org/10.18637/jss.v090.c01}
+\doi{10.18637/jss.v090.c01}
 if you use either of these palettes.
 
 See the Polychrome reference manual for more information:
