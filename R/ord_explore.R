@@ -905,7 +905,11 @@ ord_explore_init <- function(data) {
 
   # create a SAMPLE id variable
   data$ps <- ps_mutate(data$ps, SAMPLE = phyloseq::sample_names(data$ps))
-  data <- tax_names2tt(data, colname = "unique")
+
+  # create unique rank if not already present
+  if (!"unique" %in% phyloseq::rank_names(data$ps)) {
+    data <- tax_names2rank(data, colname = "unique")
+  }
 
   # ordination info -----------------------------------------------------------
   # get info about input data to initialise settings modal choices

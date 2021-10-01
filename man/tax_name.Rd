@@ -47,7 +47,7 @@ library(phyloseq)
 # get example data
 data("enterotype")
 ps <- enterotype
-head(taxa_names(ps)) # these are most fine (except the -1), but imagine you wanted new names
+head(taxa_names(ps)) # these are mostly fine (except the -1), but imagine you wanted new names
 
 # consider storing the original names for reference (e.g. if they are DNA sequences)
 old_taxa_names <- taxa_names(ps)
