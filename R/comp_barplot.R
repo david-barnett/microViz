@@ -209,6 +209,11 @@ comp_barplot <- function(ps,
   # check phyloseq for common problems (and fix or message about this)
   ps <- phyloseq_validate(ps, remove_undetected = FALSE, verbose = TRUE)
 
+  # create a sample names variable if this will be used for labelling
+  if (identical(label, "SAMPLE")) {
+    phyloseq::sample_data(ps)[["SAMPLE"]] <- phyloseq::sample_names(ps)
+  }
+
   # taxa: aggregate and order for bar ordering and plotting ------------------
 
   # include "unique" rank when aggregating
@@ -257,9 +262,8 @@ comp_barplot <- function(ps,
   if (identical(keep_all_vars, FALSE)) {
     keptVars <- c(label, group_by, facet_by)
     keptVars <- unique(keptVars[!is.na(keptVars)])
-    ps <- ps_select(ps, -dplyr::any_of(keptVars))
+    ps <- ps_select(ps, dplyr::all_of(keptVars))
   }
-
 
   # group_by / splitting entire phyloseq by the group_by variable
   group_by_var <- phyloseq::sample_data(ps)[[group_by]]
@@ -313,7 +317,6 @@ comp_barplot <- function(ps,
   }
 }
 
-
 # function to actually create one barplot with fixed taxa levels and palette
 # possibly fixed sample order
 comp_barplotFixed <- function(
@@ -355,11 +358,6 @@ comp_barplotFixed <- function(
   }
 
   # setup labelling samples -------------------------------------------------
-  # create a sample names variable if this will be used for labelling
-  if (identical(label, "SAMPLE")) {
-    phyloseq::sample_data(ps)[["SAMPLE"]] <- phyloseq::sample_names(ps)
-  }
-
   # establish a labelling function (for the samples)
   meta <- data.frame(phyloseq::sample_data(ps), check.names = FALSE)
   LABELLER <- function(SAMPLES) {
