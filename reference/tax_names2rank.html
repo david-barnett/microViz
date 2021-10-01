@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Add paths connecting points on a ggplot scatterplot — add_paths • microViz</title>
+<title>Add taxa_names as last column in phyloseq tax_table — tax_names2rank • microViz</title>
 
 
 <!-- jquery -->
@@ -45,10 +45,10 @@
 
 
 
-<meta property="og:title" content="Add paths connecting points on a ggplot scatterplot — add_paths" />
-<meta property="og:description" content="Useful for tracing a few select individuals over time on an ordination plot.
-Samples in phyloseq must be arranged in order of timepoint for the path connections to be drawn in the correct order!
-You can arrange the samples in timepoint order with ps_arrange." />
+<meta property="og:title" content="Add taxa_names as last column in phyloseq tax_table — tax_names2rank" />
+<meta property="og:description" content="The taxa names in your phyloseq may specify a further unique classification
+of your taxa, e.g. ASVs, that is not otherwise represented in the tax_table itself.
+This function fixes that, and allows you to include this level in taxatree_plots for example." />
 
 
 
@@ -157,87 +157,36 @@ You can arrange the samples in timepoint order with ps_arrange." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Add paths connecting points on a ggplot scatterplot</h1>
-    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/add_paths.R'><code>R/add_paths.R</code></a></small>
-    <div class="hidden name"><code>add_paths.Rd</code></div>
+    <h1>Add taxa_names as last column in phyloseq tax_table</h1>
+    <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/tax_names2rank.R'><code>R/tax_names2rank.R</code></a></small>
+    <div class="hidden name"><code>tax_names2rank.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Useful for tracing a few select individuals over time on an ordination plot.
-Samples in phyloseq must be arranged in order of timepoint for the path connections to be drawn in the correct order!
-You can arrange the samples in timepoint order with ps_arrange.</p>
+    <p>The taxa names in your phyloseq may specify a further unique classification
+of your taxa, e.g. ASVs, that is not otherwise represented in the tax_table itself.
+This function fixes that, and allows you to include this level in taxatree_plots for example.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>add_paths</span><span class='op'>(</span>
-  <span class='va'>ggplot</span>,
-  <span class='va'>id_var</span>,
-  <span class='va'>id_values</span>,
-  mapping <span class='op'>=</span> <span class='cn'>NULL</span>,
-  arrow <span class='op'>=</span> <span class='fu'>grid</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/grid/arrow.html'>arrow</a></span><span class='op'>(</span>length <span class='op'>=</span> <span class='fu'>grid</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>2</span>, units <span class='op'>=</span> <span class='st'>"mm"</span><span class='op'>)</span><span class='op'>)</span>,
-  <span class='va'>...</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>tax_names2rank</span><span class='op'>(</span><span class='va'>data</span>, colname <span class='op'>=</span> <span class='st'>"unique"</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>ggplot</th>
-      <td><p>ggplot scatterplot such as the output of ord_plot</p></td>
+      <th>data</th>
+      <td><p>phyloseq object, or ps_extra or tax_table (taxonomyTable)</p></td>
     </tr>
     <tr>
-      <th>id_var</th>
-      <td><p>name of variable used to identify grouping of points</p></td>
-    </tr>
-    <tr>
-      <th>id_values</th>
-      <td><p>values of id_var variable used to identify groups of points to draw</p></td>
-    </tr>
-    <tr>
-      <th>mapping</th>
-      <td><p>ggplot aesthetics created by aes(), e.g. aes(colour = ?) - group is already set to id_var internally!</p></td>
-    </tr>
-    <tr>
-      <th>arrow</th>
-      <td><p>arrowhead to add to path, NULL for none</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>additional arguments passed to geom_path</p></td>
+      <th>colname</th>
+      <td><p>name of new rank to add at right side of tax_table</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>ggplot with added layer with geom_path</p>
+    <p>same class object as passed in to data</p>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span>
-
-<span class='co'># arrange by timepoint first (or whatever your own time variable is)</span>
-<span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ps_arrange.html'>ps_arrange</a></span><span class='op'>(</span><span class='va'>timepoint</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_fix.html'>tax_fix</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span>, rank <span class='op'>=</span> <span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"PCA"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span>colour <span class='op'>=</span> <span class='st'>"timepoint"</span>, alpha <span class='op'>=</span> <span class='fl'>0.5</span>, size <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>add_paths</span><span class='op'>(</span>
-    id_var <span class='op'>=</span> <span class='st'>"subject"</span>, id_values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"azl"</span>, <span class='st'>"byn"</span><span class='op'>)</span>,
-    mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>colour <span class='op'>=</span> <span class='va'>timepoint</span><span class='op'>)</span>, size <span class='op'>=</span> <span class='fl'>1.5</span>
-  <span class='op'>)</span>
-</div><div class='img'><img src='add_paths-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># paths do NOT connect points in the correct order without arranging first</span>
-<span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_fix.html'>tax_fix</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span>, rank <span class='op'>=</span> <span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"PCA"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span>colour <span class='op'>=</span> <span class='st'>"timepoint"</span>, alpha <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>add_paths</span><span class='op'>(</span>
-    id_var <span class='op'>=</span> <span class='st'>"subject"</span>, id_values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"azl"</span>, <span class='st'>"byn"</span><span class='op'>)</span>,
-    mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>colour <span class='op'>=</span> <span class='va'>timepoint</span><span class='op'>)</span>, size <span class='op'>=</span> <span class='fl'>1.5</span>
-  <span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>ggtitle</a></span><span class='op'>(</span><span class='st'>"WRONG PATH ORDER"</span>, <span class='st'>"use ps_arrange first!"</span><span class='op'>)</span>
-</div><div class='img'><img src='add_paths-2.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
