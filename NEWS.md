@@ -14,6 +14,7 @@
 - `comp_barplot` now uses bray-curtis by default for sample ordering (instead of aitchison) as this generally looks better
 - `comp_barplot` now expects palette argument colours in first-to-last order, which is more intuitive than the previous reverse order
 - `distinct_palette` now adds "lightgrey" to end by default
+- `tax_names2rank` replaces deprecated `tax_names2tt`
 
 ## Fixes
 - `cor_heatmap` and `comp_heatmap` now respect column seriation arguments when different to row seriation
