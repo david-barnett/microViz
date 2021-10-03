@@ -5,6 +5,7 @@
 - `ps_calc_dominant` function for conveniently identifying the dominant taxon in each phyloseq sample
 - `distinct_palette` gains "kelly" and "greenArmytage" palettes and helpfully adds "lightgrey" to the end by default for convenient use as the palette argument to `comp_barplot`
 - `tax_transform` can now chain multiple transformations together and records these transformations in the ps_extra output
+- `tax_mutate` function added, for modifying the tax_table rank variables with `dplyr` `mutate` syntax
 - heatmap annotation helper `tax_anno` no longer requires 'column' or 'row' to be specified in advance
 
 ## Breaking changes
