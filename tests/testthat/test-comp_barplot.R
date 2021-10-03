@@ -133,4 +133,3 @@ test_that("sample_order arg errors nicely when invalid names provided", {
     regexp = "Length of sample_order must be 1 or same as number of samples!"
   )
 })
-

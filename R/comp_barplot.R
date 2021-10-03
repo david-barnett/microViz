@@ -230,9 +230,6 @@ comp_barplot <- function(ps,
     )
   }
 
-#   # save full (but rank-aggregated) phyloseq for ordering samples
-#   if (isTRUE(order_with_all_taxa)) ps_for_order <- ps
-
   ## unique taxa levels for ordering taxa group factor ------------------------
   uniqueTaxaOrdered <- c(
     unique(unclass(phyloseq::tax_table(ps))[, "unique"]), other_name
@@ -319,20 +316,18 @@ comp_barplot <- function(ps,
 
 # function to actually create one barplot with fixed taxa levels and palette
 # possibly fixed sample order
-comp_barplotFixed <- function(
-  ps, interactive,
-  # ordering samples stuff
-  sample_order, seriate_method, order_with_all_taxa,
-  tax_transform_for_ordering,
-  # taxa stuff
-  tax_transform_for_plot,
-  uniqueTaxaOrdered, topTaxaOrdered,
-  palette, taxon_renamer,
-  max_taxa, merge_other, other_name,
-  # plot aesthetic stuff
-  bar_width, bar_outline_colour, bar_outline_width,
-  label, facet_by, tax_level, ...
-) {
+comp_barplotFixed <- function(ps, interactive,
+                              # ordering samples stuff
+                              sample_order, seriate_method, order_with_all_taxa,
+                              tax_transform_for_ordering,
+                              # taxa stuff
+                              tax_transform_for_plot,
+                              uniqueTaxaOrdered, topTaxaOrdered,
+                              palette, taxon_renamer,
+                              max_taxa, merge_other, other_name,
+                              # plot aesthetic stuff
+                              bar_width, bar_outline_colour, bar_outline_width,
+                              label, facet_by, tax_level, ...) {
 
   # possibly calculate sample_order before any merging of "other" category
   if (isTRUE(order_with_all_taxa) && length(sample_order) == 1) {
@@ -473,7 +468,7 @@ tt_add_topN_var <- function(tt, N, other = "other", varname = "top") {
 
 # if sample_order is given as vector of names,
 # check they all exist as sample names in phyloseq
-checkFixedSampleOrder <- function(ps, sample_order){
+checkFixedSampleOrder <- function(ps, sample_order) {
   # check sample_order argument values are all in phyloseq sample names
   if (!all(sample_order %in% phyloseq::sample_names(ps))) {
     notFound <- sample_order[!sample_order %in% phyloseq::sample_names(ps)]
@@ -511,10 +506,9 @@ taxMaxEnforce <- function(ps, maxTaxa, otherName) {
 # internal helper to finish sorting samples for barplot
 # for when a distance is named in sample_order
 compBarSampleSeriate <- function(ps, dist, method, tax_trans) {
-    ps_ordered <- ps_seriate(
-      ps = ps, method = method, dist = dist, tax_transform = tax_trans
-    )
-    sample_order <- phyloseq::sample_names(ps_ordered)
+  ps_ordered <- ps_seriate(
+    ps = ps, method = method, dist = dist, tax_transform = tax_trans
+  )
+  sample_order <- phyloseq::sample_names(ps_ordered)
   return(sample_order)
 }
-
