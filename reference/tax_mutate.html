@@ -89,7 +89,7 @@ Use dplyr::mutate() syntax." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9034</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9035</span>
       </span>
     </div>
 
@@ -205,24 +205,87 @@ Use dplyr::mutate() syntax.</p>
 
 <span class='co'># compute new rank</span>
 <span class='fu'>tax_mutate</span><span class='op'>(</span><span class='va'>dietswap</span>, loud_genus <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/chartr.html'>toupper</a></span><span class='op'>(</span><span class='va'>Genus</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>tt_get</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='ps_extra-accessors.html'>tt_get</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in tt_get(.): could not find function "tt_get"</span></div><div class='input'>
+</div><div class='output co'>#&gt; Taxonomy Table:     [6 taxa by 4 taxonomic ranks]:
+#&gt;                              Phylum            Family           
+#&gt; Actinomycetaceae             "Actinobacteria"  "Actinobacteria" 
+#&gt; Aerococcus                   "Firmicutes"      "Bacilli"        
+#&gt; Aeromonas                    "Proteobacteria"  "Proteobacteria" 
+#&gt; Akkermansia                  "Verrucomicrobia" "Verrucomicrobia"
+#&gt; Alcaligenes faecalis et rel. "Proteobacteria"  "Proteobacteria" 
+#&gt; Allistipes et rel.           "Bacteroidetes"   "Bacteroidetes"  
+#&gt;                              Genus                         
+#&gt; Actinomycetaceae             "Actinomycetaceae"            
+#&gt; Aerococcus                   "Aerococcus"                  
+#&gt; Aeromonas                    "Aeromonas"                   
+#&gt; Akkermansia                  "Akkermansia"                 
+#&gt; Alcaligenes faecalis et rel. "Alcaligenes faecalis et rel."
+#&gt; Allistipes et rel.           "Allistipes et rel."          
+#&gt;                              loud_genus                    
+#&gt; Actinomycetaceae             "ACTINOMYCETACEAE"            
+#&gt; Aerococcus                   "AEROCOCCUS"                  
+#&gt; Aeromonas                    "AEROMONAS"                   
+#&gt; Akkermansia                  "AKKERMANSIA"                 
+#&gt; Alcaligenes faecalis et rel. "ALCALIGENES FAECALIS ET REL."
+#&gt; Allistipes et rel.           "ALLISTIPES ET REL."          </div><div class='input'>
 <span class='co'># overwrite a current rank</span>
 <span class='fu'>tax_mutate</span><span class='op'>(</span><span class='va'>dietswap</span>, Genus <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/chartr.html'>toupper</a></span><span class='op'>(</span><span class='va'>Genus</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>tt_get</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='ps_extra-accessors.html'>tt_get</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in tt_get(.): could not find function "tt_get"</span></div><div class='input'>
+</div><div class='output co'>#&gt; Taxonomy Table:     [6 taxa by 3 taxonomic ranks]:
+#&gt;                              Phylum            Family           
+#&gt; Actinomycetaceae             "Actinobacteria"  "Actinobacteria" 
+#&gt; Aerococcus                   "Firmicutes"      "Bacilli"        
+#&gt; Aeromonas                    "Proteobacteria"  "Proteobacteria" 
+#&gt; Akkermansia                  "Verrucomicrobia" "Verrucomicrobia"
+#&gt; Alcaligenes faecalis et rel. "Proteobacteria"  "Proteobacteria" 
+#&gt; Allistipes et rel.           "Bacteroidetes"   "Bacteroidetes"  
+#&gt;                              Genus                         
+#&gt; Actinomycetaceae             "ACTINOMYCETACEAE"            
+#&gt; Aerococcus                   "AEROCOCCUS"                  
+#&gt; Aeromonas                    "AEROMONAS"                   
+#&gt; Akkermansia                  "AKKERMANSIA"                 
+#&gt; Alcaligenes faecalis et rel. "ALCALIGENES FAECALIS ET REL."
+#&gt; Allistipes et rel.           "ALLISTIPES ET REL."          </div><div class='input'>
 <span class='co'># overwrite all ranks</span>
 <span class='fu'>tax_mutate</span><span class='op'>(</span><span class='va'>dietswap</span>, <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/across.html'>across</a></span><span class='op'>(</span>.fns <span class='op'>=</span> <span class='va'>toupper</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>tt_get</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='ps_extra-accessors.html'>tt_get</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in tt_get(.): could not find function "tt_get"</span></div><div class='input'>
+</div><div class='output co'>#&gt; Taxonomy Table:     [6 taxa by 3 taxonomic ranks]:
+#&gt;                              Phylum            Family           
+#&gt; Actinomycetaceae             "ACTINOBACTERIA"  "ACTINOBACTERIA" 
+#&gt; Aerococcus                   "FIRMICUTES"      "BACILLI"        
+#&gt; Aeromonas                    "PROTEOBACTERIA"  "PROTEOBACTERIA" 
+#&gt; Akkermansia                  "VERRUCOMICROBIA" "VERRUCOMICROBIA"
+#&gt; Alcaligenes faecalis et rel. "PROTEOBACTERIA"  "PROTEOBACTERIA" 
+#&gt; Allistipes et rel.           "BACTEROIDETES"   "BACTEROIDETES"  
+#&gt;                              Genus                         
+#&gt; Actinomycetaceae             "ACTINOMYCETACEAE"            
+#&gt; Aerococcus                   "AEROCOCCUS"                  
+#&gt; Aeromonas                    "AEROMONAS"                   
+#&gt; Akkermansia                  "AKKERMANSIA"                 
+#&gt; Alcaligenes faecalis et rel. "ALCALIGENES FAECALIS ET REL."
+#&gt; Allistipes et rel.           "ALLISTIPES ET REL."          </div><div class='input'>
 <span class='co'># add a new rank at the beginning</span>
 <span class='fu'>tax_mutate</span><span class='op'>(</span><span class='va'>dietswap</span>, Root <span class='op'>=</span> <span class='st'>"Bacteria"</span>, .before <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>tt_get</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='ps_extra-accessors.html'>tt_get</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in tt_get(.): could not find function "tt_get"</span></div><div class='input'>
+</div><div class='output co'>#&gt; Taxonomy Table:     [6 taxa by 4 taxonomic ranks]:
+#&gt;                              Root       Phylum            Family           
+#&gt; Actinomycetaceae             "Bacteria" "Actinobacteria"  "Actinobacteria" 
+#&gt; Aerococcus                   "Bacteria" "Firmicutes"      "Bacilli"        
+#&gt; Aeromonas                    "Bacteria" "Proteobacteria"  "Proteobacteria" 
+#&gt; Akkermansia                  "Bacteria" "Verrucomicrobia" "Verrucomicrobia"
+#&gt; Alcaligenes faecalis et rel. "Bacteria" "Proteobacteria"  "Proteobacteria" 
+#&gt; Allistipes et rel.           "Bacteria" "Bacteroidetes"   "Bacteroidetes"  
+#&gt;                              Genus                         
+#&gt; Actinomycetaceae             "Actinomycetaceae"            
+#&gt; Aerococcus                   "Aerococcus"                  
+#&gt; Aeromonas                    "Aeromonas"                   
+#&gt; Akkermansia                  "Akkermansia"                 
+#&gt; Alcaligenes faecalis et rel. "Alcaligenes faecalis et rel."
+#&gt; Allistipes et rel.           "Allistipes et rel."          </div><div class='input'>
 <span class='co'># this is an error as ranks can't be any other class than character</span>
 <span class='co'># tax_mutate(dietswap, Genus = 1:ntaxa(dietswap))</span>
 </div></pre>

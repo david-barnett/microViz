@@ -55,6 +55,7 @@ ord_get    returns ordination object (or NULL)
 perm_get   returns adonis2() permanova model (or NULL)
 bdisp_get  returns results of betadisper() (or NULL)
 otu_get    returns phyloseq otu_table matrix with taxa as columns
+tt_get     returns phyloseq tax_table
 samdat_tbl returns phyloseq sample_data as a tibble, with sample_names as new first column called .sample_name
 
 " />
@@ -99,7 +100,7 @@ samdat_tbl returns phyloseq sample_data as a tibble, with sample_names as new fi
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9034</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9035</span>
       </span>
     </div>
 
@@ -191,6 +192,7 @@ samdat_tbl returns phyloseq sample_data as a tibble, with sample_names as new fi
 <li><p><code>perm_get</code>   returns adonis2() permanova model (or NULL)</p></li>
 <li><p><code>bdisp_get</code>  returns results of betadisper() (or NULL)</p></li>
 <li><p><code>otu_get</code>    returns phyloseq otu_table matrix with taxa as columns</p></li>
+<li><p><code>tt_get</code>     returns phyloseq tax_table</p></li>
 <li><p><code>samdat_tbl</code> returns phyloseq sample_data as a tibble, with sample_names as new first column called .sample_name</p></li>
 </ul>
 
@@ -209,6 +211,8 @@ samdat_tbl returns phyloseq sample_data as a tibble, with sample_names as new fi
 <span class='fu'>bdisp_get</span><span class='op'>(</span><span class='va'>ps_extra</span><span class='op'>)</span>
 
 <span class='fu'>otu_get</span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span>
+
+<span class='fu'>tt_get</span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span>
 
 <span class='fu'>samdat_tbl</span><span class='op'>(</span><span class='va'>data</span>, sample_names_col <span class='op'>=</span> <span class='st'>".sample_name"</span><span class='op'>)</span></pre>
 
