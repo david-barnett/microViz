@@ -9,6 +9,7 @@
 #' - `perm_get`   returns adonis2() permanova model (or NULL)
 #' - `bdisp_get`  returns results of betadisper() (or NULL)
 #' - `otu_get`    returns phyloseq otu_table matrix with taxa as columns
+#' - `tt_get`     returns phyloseq tax_table
 #' - `samdat_tbl` returns phyloseq sample_data as a tibble, with sample_names as new first column called .sample_name
 #'
 #' @param ps_extra ps_extra class object
@@ -88,7 +89,8 @@ otu_get <- function(data) {
   return(otu)
 }
 
-# get tax_table, currently just an internal helper
+#' @rdname ps_extra-accessors
+#' @export
 tt_get <- function(data) {
   if (!methods::is(data, "taxonomyTable")) {
     ps <- ps_get(data)

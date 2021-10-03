@@ -9,6 +9,7 @@
 \alias{perm_get}
 \alias{bdisp_get}
 \alias{otu_get}
+\alias{tt_get}
 \alias{samdat_tbl}
 \title{Extract elements from ps_extra class}
 \usage{
@@ -25,6 +26,8 @@ perm_get(ps_extra)
 bdisp_get(ps_extra)
 
 otu_get(data)
+
+tt_get(data)
 
 samdat_tbl(data, sample_names_col = ".sample_name")
 }
@@ -48,6 +51,7 @@ element of ps_extra class object (or NULL)
 \item \code{perm_get}   returns adonis2() permanova model (or NULL)
 \item \code{bdisp_get}  returns results of betadisper() (or NULL)
 \item \code{otu_get}    returns phyloseq otu_table matrix with taxa as columns
+\item \code{tt_get}     returns phyloseq tax_table
 \item \code{samdat_tbl} returns phyloseq sample_data as a tibble, with sample_names as new first column called .sample_name
 }
 }
