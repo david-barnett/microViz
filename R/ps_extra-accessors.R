@@ -18,8 +18,22 @@
 #' @export
 #'
 #' @examples
-#' library(phyloseq)
-#' data("esophagus")
+#' data("dietswap", package = "microbiome")
+#' psx <- tax_transform(dietswap, "identity", rank = "Genus")
+#' psx
+#'
+#' ps_get(psx)
+#' info_get(psx)
+#'
+#' dist_get(psx) # this ps_extra has no dist_calc result
+#' ord_get(psx) # this ps_extra has no ord_calc result
+#' perm_get(psx) # this ps_extra has no dist_permanova result
+#' bdisp_get(psx) # this ps_extra has no dist_bdisp result
+#'
+#' # these can be returned from phyloseq objects too
+#' otu_get(psx)[1:6, 1:4]
+#' tt_get(psx) %>% head()
+#' samdat_tbl(psx) %>% head()
 #' @export
 #' @rdname ps_extra-accessors
 ps_get <- function(ps_extra) {
@@ -130,7 +144,7 @@ samdat_tbl <- function(data, sample_names_col = ".sample_name") {
 # internal helper that get phyloseq sample_data as plain dataframe
 # without changing invalid colnames (like microbiome::meta does)
 # or losing rownames / sample_names (like data.frame() with defaults does)
-samdatAsDataframe <- function(ps){
+samdatAsDataframe <- function(ps) {
   samdat <- phyloseq::sample_data(ps)
   df <- data.frame(samdat, check.names = FALSE)
   return(df)

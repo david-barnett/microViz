@@ -16,5 +16,3 @@ test_that("sample data returned without mangling names", {
     expected = phyloseq::sample_names(dietswap)
   )
 })
-
-

@@ -56,6 +56,21 @@ element of ps_extra class object (or NULL)
 }
 }
 \examples{
-library(phyloseq)
-data("esophagus")
+data("dietswap", package = "microbiome")
+psx <- tax_transform(dietswap, "identity", rank = "Genus")
+psx
+
+ps_get(psx)
+info_get(psx)
+
+dist_get(psx) # this ps_extra has no dist_calc result
+ord_get(psx) # this ps_extra has no ord_calc result
+perm_get(psx) # this ps_extra has no dist_permanova result
+bdisp_get(psx) # this ps_extra has no dist_bdisp result
+
+# these can be returned from phyloseq objects too
+otu_get(psx)[1:6, 1:4]
+tt_get(psx) \%>\% head()
+samdat_tbl(psx) \%>\% head()
+
 }

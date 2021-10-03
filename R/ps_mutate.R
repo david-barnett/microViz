@@ -40,7 +40,7 @@
 #'
 #' head(sample_data(ps))
 ps_mutate <- function(ps, ..., .target) {
-  if (!missing(.target)){
+  if (!missing(.target)) {
     if (!identical(.target, "sample_data")) {
       stop("Use of .target argument is deprecated.")
     } else {
