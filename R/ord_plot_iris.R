@@ -49,7 +49,7 @@
 #'   ps_mutate(
 #'     female = sex == "female",
 #'     african = nationality == "AFR",
-#'     log_P.melaninogenica = log10(Prevotella.melaninogenica.et.rel. + 1)
+#'     log_P.melaninogenica = log10(`Prevotella melaninogenica et rel.` + 1)
 #'   )
 #'
 #' # define a function for taking the end off the long genus names in this dataset
