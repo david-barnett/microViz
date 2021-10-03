@@ -10,7 +10,7 @@ test_that("tax_mutate errors on creation of non-character ranks", {
 
 test_that("tax_mutate returns phyloseq with new ranks", {
   ps <- tax_mutate(
-    data = dietswap,
+    ps = dietswap,
     genius = paste(Phylum, Genus, "!"),
     Family = NULL
   )
@@ -27,7 +27,7 @@ test_that("tax_mutate warns when ps is ps_extra", {
   ps2 <- dietswap %>% tax_agg("Genus")
   expect_warning(
     object = tax_mutate(ps2, new = "abc"),
-    regexp = "ps argument is ps_extra but only a phyloseq will be returned"
+    regexp = "ps argument is a ps_extra, but only a phyloseq will be returned"
   )
   expect_s4_class(suppressWarnings(tax_mutate(ps2, new = "abc")), "phyloseq")
 })
