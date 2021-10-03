@@ -47,7 +47,7 @@
 
 <meta property="og:title" content="Modify or compute new sample_data in phyloseq object — ps_mutate" />
 <meta property="og:description" content="Add or compute new phyloseq sample_data variables.
-Use dplyr::mutate() syntax." />
+Uses dplyr::mutate() syntax." />
 
 
 
@@ -89,7 +89,7 @@ Use dplyr::mutate() syntax." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9033</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9034</span>
       </span>
     </div>
 
@@ -173,10 +173,10 @@ Use dplyr::mutate() syntax." />
 
     <div class="ref-description">
     <p>Add or compute new phyloseq sample_data variables.
-Use dplyr::mutate() syntax.</p>
+Uses <code><a href='https://dplyr.tidyverse.org/reference/mutate.html'>dplyr::mutate()</a></code> syntax.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ps_mutate</span><span class='op'>(</span><span class='va'>ps</span>, <span class='va'>...</span>, .target <span class='op'>=</span> <span class='st'>"sample_data"</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>ps_mutate</span><span class='op'>(</span><span class='va'>ps</span>, <span class='va'>...</span>, <span class='va'>.target</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -191,7 +191,7 @@ Use dplyr::mutate() syntax.</p>
     </tr>
     <tr>
       <th>.target</th>
-      <td><p>which slot to mutate, currently only "sample_data" supported</p></td>
+      <td><p>DEPRECATED. See tax_mutate for manipulation of tax_table</p></td>
     </tr>
     </table>
 
@@ -200,7 +200,8 @@ Use dplyr::mutate() syntax.</p>
     <p>phyloseq object with modified sample_data</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></code></p></div>
+    <div class='dont-index'><p><code><a href='tax_mutate.html'>tax_mutate</a></code> for manipulation of tax_table variables</p>
+<p><code><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://dx.plos.org/10.1371/journal.pone.0061217'>phyloseq</a></span><span class='op'>)</span>
@@ -267,33 +268,26 @@ Use dplyr::mutate() syntax.</p>
 <span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>ps</span> <span class='op'>%&gt;%</span>
   <span class='fu'>ps_mutate</span><span class='op'>(</span>
     <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/across.html'>across</a></span><span class='op'>(</span><span class='fu'>where</span><span class='op'>(</span><span class='va'>is.factor</span><span class='op'>)</span>, <span class='va'>toupper</span><span class='op'>)</span>,
-    another_var <span class='op'>=</span> <span class='cn'>TRUE</span>
+    another_var <span class='op'>=</span> <span class='cn'>TRUE</span>,
+    SeqTech <span class='op'>=</span> <span class='cn'>NULL</span> <span class='co'># deletes SeqTech variable</span>
   <span class='op'>)</span>
 
-<span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='op'>]</span>
-</div><div class='output co'>#&gt; Sample Data:        [10 samples by 13 sample variables]:
-#&gt;           Enterotype Sample_ID SeqTech  SampleID     Project Nationality Gender
-#&gt; AM.AD.1         &lt;NA&gt;   AM.AD.1  SANGER   AM.AD.1      GILL06    AMERICAN      F
-#&gt; AM.AD.2         &lt;NA&gt;   AM.AD.2  SANGER   AM.AD.2      GILL06    AMERICAN      M
-#&gt; AM.F10.T1       &lt;NA&gt; AM.F10.T1  SANGER AM.F10.T1 TURNBAUGH09    AMERICAN      F
-#&gt; AM.F10.T2          3 AM.F10.T2  SANGER AM.F10.T2 TURNBAUGH09    AMERICAN      F
-#&gt; DA.AD.1            2   DA.AD.1  SANGER   DA.AD.1     METAHIT      DANISH      F
-#&gt; DA.AD.1T        &lt;NA&gt;  DA.AD.1T  SANGER      &lt;NA&gt;        &lt;NA&gt;        &lt;NA&gt;   &lt;NA&gt;
-#&gt; DA.AD.2            3   DA.AD.2  SANGER   DA.AD.2     METAHIT      DANISH      M
-#&gt; DA.AD.3            3   DA.AD.3  SANGER   DA.AD.3     METAHIT      DANISH      F
-#&gt; DA.AD.3T        &lt;NA&gt;  DA.AD.3T  SANGER      &lt;NA&gt;        &lt;NA&gt;        &lt;NA&gt;   &lt;NA&gt;
-#&gt; DA.AD.4            2   DA.AD.4  SANGER   DA.AD.4     METAHIT      DANISH      M
-#&gt;           Age ClinicalStatus age_months IDs_match placeholder another_var
-#&gt; AM.AD.1    28        HEALTHY        336      TRUE        Word        TRUE
-#&gt; AM.AD.2    37        HEALTHY        444      TRUE        Word        TRUE
-#&gt; AM.F10.T1  NA          OBESE         NA      TRUE        Word        TRUE
-#&gt; AM.F10.T2  NA          OBESE         NA      TRUE        Word        TRUE
-#&gt; DA.AD.1    59        HEALTHY        708      TRUE        Word        TRUE
-#&gt; DA.AD.1T   NA           &lt;NA&gt;         NA        NA        Word        TRUE
-#&gt; DA.AD.2    54        HEALTHY        648      TRUE        Word        TRUE
-#&gt; DA.AD.3    49          OBESE        588      TRUE        Word        TRUE
-#&gt; DA.AD.3T   NA           &lt;NA&gt;         NA        NA        Word        TRUE
-#&gt; DA.AD.4    59          OBESE        708      TRUE        Word        TRUE</div></pre>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Sample Data:        [6 samples by 12 sample variables]:
+#&gt;           Enterotype Sample_ID  SampleID     Project Nationality Gender Age
+#&gt; AM.AD.1         &lt;NA&gt;   AM.AD.1   AM.AD.1      GILL06    AMERICAN      F  28
+#&gt; AM.AD.2         &lt;NA&gt;   AM.AD.2   AM.AD.2      GILL06    AMERICAN      M  37
+#&gt; AM.F10.T1       &lt;NA&gt; AM.F10.T1 AM.F10.T1 TURNBAUGH09    AMERICAN      F  NA
+#&gt; AM.F10.T2          3 AM.F10.T2 AM.F10.T2 TURNBAUGH09    AMERICAN      F  NA
+#&gt; DA.AD.1            2   DA.AD.1   DA.AD.1     METAHIT      DANISH      F  59
+#&gt; DA.AD.1T        &lt;NA&gt;  DA.AD.1T      &lt;NA&gt;        &lt;NA&gt;        &lt;NA&gt;   &lt;NA&gt;  NA
+#&gt;           ClinicalStatus age_months IDs_match placeholder another_var
+#&gt; AM.AD.1          HEALTHY        336      TRUE        Word        TRUE
+#&gt; AM.AD.2          HEALTHY        444      TRUE        Word        TRUE
+#&gt; AM.F10.T1          OBESE         NA      TRUE        Word        TRUE
+#&gt; AM.F10.T2          OBESE         NA      TRUE        Word        TRUE
+#&gt; DA.AD.1          HEALTHY        708      TRUE        Word        TRUE
+#&gt; DA.AD.1T            &lt;NA&gt;         NA        NA        Word        TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

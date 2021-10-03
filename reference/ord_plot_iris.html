@@ -90,7 +90,7 @@ Best paired with ordination plot made from same ord_calc output." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9033</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9034</span>
       </span>
     </div>
 
@@ -290,7 +290,9 @@ as the fill is used for the taxonomic composition bars</p>
     african <span class='op'>=</span> <span class='va'>nationality</span> <span class='op'>==</span> <span class='st'>"AFR"</span>,
     log_P.melaninogenica <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log10</a></span><span class='op'>(</span><span class='va'>Prevotella.melaninogenica.et.rel.</span> <span class='op'>+</span> <span class='fl'>1</span><span class='op'>)</span>
   <span class='op'>)</span>
-
+</div><div class='output co'>#&gt; <span class='error'>Error: Problem with `mutate()` column `log_P.melaninogenica`.</span>
+#&gt; <span class='error'><span style='color: #0000BB;'>ℹ</span> `log_P.melaninogenica = log10(Prevotella.melaninogenica.et.rel. + 1)`.</span>
+#&gt; <span class='error'><span style='color: #BB0000;'>✖</span> object 'Prevotella.melaninogenica.et.rel.' not found</span></div><div class='input'>
 <span class='co'># define a function for taking the end off the long genus names in this dataset</span>
 <span class='va'>tax_renamer</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>tax</span><span class='op'>)</span> <span class='op'>{</span>
   <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_remove.html'>str_remove</a></span><span class='op'>(</span><span class='va'>tax</span>, <span class='st'>" [ae]t rel."</span><span class='op'>)</span>
@@ -300,10 +302,10 @@ as the fill is used for the taxonomic composition bars</p>
   <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='dist_calc.html'>dist_calc</a></span><span class='op'>(</span><span class='st'>"aitchison"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"PCoA"</span><span class='op'>)</span>
-
+</div><div class='output co'>#&gt; <span class='error'>Error in tax_agg(., "Genus"): object 'ps' not found</span></div><div class='input'>
 <span class='co'># ordination plot for comparison</span>
 <span class='va'>ord</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"log_P.melaninogenica"</span>, size <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
-</div><div class='img'><img src='ord_plot_iris-1.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='error'>Error in ps_get(data): object 'ord' not found</span></div><div class='input'>
 <span class='fu'>ord_plot_iris</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>ord</span>,
   tax_level <span class='op'>=</span> <span class='st'>"Genus"</span>,
@@ -315,7 +317,7 @@ as the fill is used for the taxonomic composition bars</p>
   taxon_renamer <span class='op'>=</span> <span class='va'>tax_renamer</span>
 <span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_brewer.html'>scale_colour_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Dark2"</span><span class='op'>)</span>
-</div><div class='img'><img src='ord_plot_iris-2.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='error'>Error in ps_get(data): object 'ord' not found</span></div><div class='input'>
 <span class='co'># It is also possible to use comp_barplot customisation arguments</span>
 <span class='co'># like bar_width and bar_outline_colour, and to make interactive iris plots</span>
 <span class='co'># using ggiraph:</span>
@@ -347,7 +349,7 @@ as the fill is used for the taxonomic composition bars</p>
   <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"PCA"</span><span class='op'>)</span>
-
+</div><div class='output co'>#&gt; <span class='error'>Error in tax_agg(., "Genus"): object 'ps' not found</span></div><div class='input'>
 <span class='co'># you can generate a simple paired layout of ord_plot and iris plot</span>
 <span class='co'># or separately create and pair the plots yourself, for more control</span>
 
@@ -363,7 +365,7 @@ as the fill is used for the taxonomic composition bars</p>
     y <span class='op'>=</span> <span class='fl'>1.08</span>, colour <span class='op'>=</span> <span class='st'>"gray50"</span>, shape <span class='op'>=</span> <span class='st'>"circle open"</span>, size <span class='op'>=</span> <span class='fl'>1</span>, stroke <span class='op'>=</span> <span class='fl'>1.5</span>
   <span class='op'>)</span>
 <span class='op'>)</span>
-</div><div class='img'><img src='ord_plot_iris-3.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='error'>Error in ps_get(data): object 'clr_pca' not found</span></div><div class='input'>
 <span class='co'># manual pairing</span>
 <span class='va'>plot1</span> <span class='op'>&lt;-</span> <span class='va'>clr_pca</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span>
   plot_taxa <span class='op'>=</span> <span class='fl'>6</span><span class='op'>:</span><span class='fl'>1</span>, tax_vec_length <span class='op'>=</span> <span class='fl'>0.6</span>,
@@ -372,7 +374,7 @@ as the fill is used for the taxonomic composition bars</p>
   auto_caption <span class='op'>=</span> <span class='cn'>NA</span>, center <span class='op'>=</span> <span class='cn'>TRUE</span>,
 <span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_shape_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>AFR <span class='op'>=</span> <span class='st'>"circle"</span>, AAM <span class='op'>=</span> <span class='st'>"circle open"</span><span class='op'>)</span><span class='op'>)</span>
-
+</div><div class='output co'>#&gt; <span class='error'>Error in ps_get(data): object 'clr_pca' not found</span></div><div class='input'>
 <span class='va'>iris</span> <span class='op'>&lt;-</span> <span class='fu'>ord_plot_iris</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>clr_pca</span>, n_taxa <span class='op'>=</span> <span class='fl'>15</span>,
   tax_level <span class='op'>=</span> <span class='st'>"Genus"</span>,
@@ -382,9 +384,9 @@ as the fill is used for the taxonomic composition bars</p>
 <span class='op'>)</span> <span class='op'>+</span>
   <span class='co'># shrink legend text size</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>legend.text <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>7</span><span class='op'>)</span><span class='op'>)</span>
-
+</div><div class='output co'>#&gt; <span class='error'>Error in ps_get(data): object 'clr_pca' not found</span></div><div class='input'>
 <span class='fu'>cowplot</span><span class='fu'>::</span><span class='fu'><a href='https://wilkelab.org/cowplot/reference/plot_grid.html'>plot_grid</a></span><span class='op'>(</span><span class='va'>plot1</span>, <span class='va'>iris</span>, nrow <span class='op'>=</span> <span class='fl'>1</span>, align <span class='op'>=</span> <span class='st'>"h"</span>, axis <span class='op'>=</span> <span class='st'>"b"</span>, rel_widths <span class='op'>=</span> <span class='fl'>3</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>)</span>
-</div><div class='img'><img src='ord_plot_iris-4.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='error'>Error in cowplot::plot_grid(plot1, iris, nrow = 1, align = "h", axis = "b",     rel_widths = 3:4): object 'plot1' not found</span></div><div class='input'>
 <span class='co'># you can add multiple rings of binary annotations</span>
 <span class='fu'>ord_plot_iris</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>clr_pca</span>, n_taxa <span class='op'>=</span> <span class='fl'>15</span>,
@@ -397,7 +399,7 @@ as the fill is used for the taxonomic composition bars</p>
   <span class='op'>)</span>
 <span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>legend.text <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>7</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='img'><img src='ord_plot_iris-5.png' alt='' width='700' height='433' /></div></pre>
+</div><div class='output co'>#&gt; <span class='error'>Error in ps_get(data): object 'clr_pca' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
