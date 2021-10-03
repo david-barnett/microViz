@@ -64,7 +64,7 @@ ps_filter <- function(ps,
   # TODO: see if it is useful to facilitate
   # filtering by variables in other phyloseq slots
 
-  df <- data.frame(phyloseq::sample_data(ps))
+  df <- samdatAsDataframe(ps)
   df <- dplyr::filter(df, ...)
   phyloseq::sample_data(ps) <- df
 

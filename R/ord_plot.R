@@ -199,7 +199,7 @@ ord_plot <-
     ellipses <- checkValidEllipsesOrdPlot(..., ps = ps)
 
     # get and transform aesthetic metadata ------------------------------------
-    meta <- data.frame(phyloseq::sample_data(ps), check.names = FALSE)
+    meta <- samdatAsDataframe(ps)
 
     # set variable and fixed ggplot aesthetics based on metadata names check
     aestheticArgs <- ellipses[ellipses %in% colnames(meta)]

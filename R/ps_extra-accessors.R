@@ -109,9 +109,8 @@ tt_get <- function(data) {
 #' @export
 samdat_tbl <- function(data, sample_names_col = ".sample_name") {
   if (inherits(data, "ps_extra")) data <- ps_get(data)
-  if (methods::is(data, "phyloseq")) data <- phyloseq::sample_data(data)
-  if (methods::is(data, "sample_data")) {
-    df <- base::data.frame(data, check.names = FALSE, stringsAsFactors = FALSE)
+  if (methods::is(data, "phyloseq") || methods::is(data, "sample_data")) {
+    df <- samdatAsDataframe(data)
   } else {
     stop(
       "data must be of class 'phyloseq', 'ps_extra', or 'sample_data', not: ",
@@ -124,6 +123,15 @@ samdat_tbl <- function(data, sample_names_col = ".sample_name") {
     df <- tibble::rownames_to_column(df, var = sample_names_col)
     return(tibble::as_tibble(df))
   }
+}
+
+# internal helper that get phyloseq sample_data as plain dataframe
+# without changing invalid colnames (like microbiome::meta does)
+# or losing rownames / sample_names (like data.frame() with defaults does)
+samdatAsDataframe <- function(ps){
+  samdat <- phyloseq::sample_data(ps)
+  df <- data.frame(samdat, check.names = FALSE)
+  return(df)
 }
 
 # get phyloseq with counts if available

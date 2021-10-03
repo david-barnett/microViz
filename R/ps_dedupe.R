@@ -49,7 +49,7 @@ ps_dedupe <- function(ps,
                       vars,
                       method = "readcount",
                       verbose = TRUE) {
-  ps_df <- methods::as(phyloseq::sample_data(ps), Class = "data.frame")
+  ps_df <- samdatAsDataframe(ps)
 
   ps_df[[".temp_grouping_var"]] <- interaction(ps_df[, vars])
 

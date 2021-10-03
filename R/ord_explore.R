@@ -955,7 +955,7 @@ ord_explore_init <- function(data) {
   # get list of certain types of variables for populating selectize lists
   ps <- ps_get(data)
   ranks <- phyloseq::rank_names(ps)
-  samdat <- methods::as(phyloseq::sample_data(ps), "data.frame")
+  samdat <- samdatAsDataframe(ps)
 
   is_num <- function(x) !is.character(x) & !is.factor(x)
   is_cat <- function(x) !is.numeric(x)

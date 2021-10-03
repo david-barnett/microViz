@@ -30,7 +30,7 @@
 #' ps_drop_incomplete(enterotype, vars = c("Enterotype", "Sample_ID"))
 #' ps_drop_incomplete(enterotype, verbose = "max")
 ps_drop_incomplete <- function(ps, vars = NA, verbose = FALSE) {
-  df <- data.frame(phyloseq::sample_data(ps))
+  df <- samdatAsDataframe(ps)
   if (identical(vars, NA)) vars <- phyloseq::sample_variables(ps)
   df_sub <- df[, vars, drop = FALSE]
   df_sub <- df_sub[stats::complete.cases(df_sub), , drop = FALSE]

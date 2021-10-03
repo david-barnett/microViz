@@ -169,8 +169,7 @@ tax_model <- function(ps,
         }
       } else {
         ps <- ps_otu2samdat(ps = ps, taxa = taxon)
-        args[["data"]] <-
-          data.frame(phyloseq::sample_data(ps), check.names = FALSE)
+        args[["data"]] <- samdatAsDataframe(ps)
       }
       res <- do.call(type, args = args)
       # replace junk call slot with something informative

@@ -54,7 +54,7 @@ ps_mutate <- function(ps, ..., .target) {
   }
 
 
-  df <- data.frame(phyloseq::sample_data(ps), check.names = FALSE)
+  df <- samdatAsDataframe(ps)
   saved_rownames <- rownames(df)
   df <- dplyr::mutate(df, ...)
   rownames(df) <- saved_rownames

@@ -39,7 +39,7 @@ ps_arrange <- function(ps, ..., .target = "sample_data") {
   ps <- ps_get(ps)
   sample_order <- switch(.target,
     "sample_data" = {
-      df <- data.frame(phyloseq::sample_data(ps))
+      df <- samdatAsDataframe(ps)
       df <- tibble::rownames_to_column(df, var = ".temp_sample_name_var")
       df <- dplyr::arrange(df, ...)
       df[[".temp_sample_name_var"]]

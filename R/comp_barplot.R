@@ -354,7 +354,7 @@ comp_barplotFixed <- function(ps, interactive,
 
   # setup labelling samples -------------------------------------------------
   # establish a labelling function (for the samples)
-  meta <- data.frame(phyloseq::sample_data(ps), check.names = FALSE)
+  meta <- samdatAsDataframe(ps)
   LABELLER <- function(SAMPLES) {
     lapply(SAMPLES, function(SAMPLE) {
       meta[rownames(meta) == SAMPLE, label]

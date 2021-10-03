@@ -79,15 +79,19 @@ dist_bdisp <- function(data,
   }
 
   # extract sample metadata from phyloseq object
-  metadata <- data.frame(phyloseq::sample_data(ps))[, variables, drop = FALSE]
+  meta <- samdatAsDataframe(ps)[, variables, drop = FALSE]
 
   # calculate bdisp and anova and tukeyHSD confidence/significance for all variables
   bdisp <- lapply(variables, function(V) {
-    if (!class(metadata[[V]]) %in% c("logical", "character", "factor", "integer")) {
-      warning("Variable ", V, " is skipped as it cannot be used for grouping (class = ", class(metadata[[V]]), ")")
+    if (!class(meta[[V]]) %in% c("logical", "character", "factor", "integer")) {
+      warning(
+        "Variable '", V,
+        "' is skipped as it cannot be used for grouping (class = '",
+        class(meta[[V]]), "')"
+      )
       return(NULL)
     } else {
-      model <- vegan::betadisper(d = distMat, group = metadata[[V]], type = method)
+      model <- vegan::betadisper(d = distMat, group = meta[[V]], type = method)
       Anova <- stats::anova(object = model)
       tukeyHSD <- stats::TukeyHSD(model)
       return(list(model = model, anova = Anova, tukeyHSD = tukeyHSD))

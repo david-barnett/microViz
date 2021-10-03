@@ -38,7 +38,7 @@ ps_otu2samdat <- function(ps, taxa = NULL) {
     message(paste(taxa[!taxa %in% phyloseq::taxa_names(ps)], collapse = "; "))
   }
 
-  ps_df <- data.frame(phyloseq::sample_data(ps))
+  ps_df <- samdatAsDataframe(ps)
   otu <- phyloseq::otu_table(ps)
 
   if (phyloseq::taxa_are_rows(ps)) otu <- phyloseq::t(otu)

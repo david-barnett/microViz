@@ -138,11 +138,11 @@ ps_join <- function(x,
   # handle phyloseq - whether in x or y
   if (inherits(x, "phyloseq")) {
     ps <- x
-    x <- data.frame(phyloseq::sample_data(x), check.names = FALSE)
+    x <- samdatAsDataframe(x)
     x <- tibble::rownames_to_column(x, var = rownames_col)
   } else if (inherits(y, "phyloseq")) {
     ps <- y
-    y <- data.frame(phyloseq::sample_data(y), check.names = FALSE)
+    y <- samdatAsDataframe(y)
     y <- tibble::rownames_to_column(y, var = rownames_col)
   }
 

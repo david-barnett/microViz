@@ -149,8 +149,7 @@ dist_permanova <- function(data,
   distMat <- stats::as.dist(as.matrix(distMat)[keepers, keepers])
 
   # extract sample metadata from phyloseq object
-  metadata <-
-    data.frame(phyloseq::sample_data(ps))[, split_vars, drop = FALSE]
+  metadata <- samdatAsDataframe(ps)[, split_vars, drop = FALSE]
 
   # set seed for reproducibility
   if (!identical(seed, NULL)) set.seed(seed)
