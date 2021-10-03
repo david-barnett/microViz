@@ -3,7 +3,7 @@
 #' Add or overwrite tax_table ranks.
 #' Use dplyr::mutate() syntax.
 #'
-#' @param data phyloseq object with a tax_table, or just a tax_table
+#' @param ps phyloseq object with a tax_table, or just a tax_table
 #' @param ... passed straight to dplyr::mutate (see examples and dplyr::mutate help)
 #'
 #' @return phyloseq object with modified tax_table
@@ -38,13 +38,13 @@
 #'
 #' # this is an error as ranks can't be any other class than character
 #' # tax_mutate(dietswap, Genus = 1:ntaxa(dietswap))
-tax_mutate <- function(data, ...) {
-  if (inherits(data, "ps_extra")) {
-    warning("data is ps_extra but only a phyloseq will be returned")
-    data <- ps_get(data)
+tax_mutate <- function(ps, ...) {
+  if (inherits(ps, "ps_extra")) {
+    warning("ps argument is a ps_extra, but only a phyloseq will be returned")
+    ps <- ps_get(ps)
   }
   # get tt
-  tt <- tt_get(data)
+  tt <- tt_get(ps)
 
   # convert to dataframe
   tt <- as.data.frame(tt)
@@ -61,12 +61,12 @@ tax_mutate <- function(data, ...) {
   tt <- as.matrix.data.frame(tt)
   tt <- phyloseq::tax_table(tt)
 
-  if (methods::is(data, "taxonomyTable")) {
+  if (methods::is(ps, "taxonomyTable")) {
     return(tt)
   }
-  if (methods::is(data, "phyloseq")) {
-    phyloseq::tax_table(data) <- tt
-    return(data)
+  if (methods::is(ps, "phyloseq")) {
+    phyloseq::tax_table(ps) <- tt
+    return(ps)
   }
 }
 

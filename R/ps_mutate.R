@@ -1,15 +1,16 @@
 #' Modify or compute new sample_data in phyloseq object
 #'
 #' Add or compute new phyloseq sample_data variables.
-#' Use dplyr::mutate() syntax.
+#' Uses `dplyr::mutate()` syntax.
 #'
 #' @param ps phyloseq object with sample data
 #' @param ... passed straight to dplyr::mutate (see examples and dplyr::mutate help)
-#' @param .target which slot to mutate, currently only "sample_data" supported
+#' @param .target DEPRECATED. See tax_mutate for manipulation of tax_table
 #'
 #' @return phyloseq object with modified sample_data
 #' @export
 #'
+#' @seealso \code{\link{tax_mutate}} for manipulation of tax_table variables
 #' @seealso \code{\link[dplyr]{mutate}}
 #'
 #' @examples
@@ -33,19 +34,27 @@
 #' ps <- ps %>%
 #'   ps_mutate(
 #'     dplyr::across(where(is.factor), toupper),
-#'     another_var = TRUE
+#'     another_var = TRUE,
+#'     SeqTech = NULL # deletes SeqTech variable
 #'   )
 #'
-#' sample_data(ps)[1:10, ]
-ps_mutate <- function(ps, ..., .target = "sample_data") {
-  ps <- ps_get(ps)
-
-  if (!identical(.target, "sample_data")) {
-    stop("Only .target = 'sample_data', has been implemented so far.")
+#' head(sample_data(ps))
+ps_mutate <- function(ps, ..., .target) {
+  if (!missing(.target)){
+    if (!identical(.target, "sample_data")) {
+      stop("Use of .target argument is deprecated.")
+    } else {
+      warning("Use of .target argument is deprecated.")
+    }
   }
-  # TODO: see if it is useful to facilitate mutating variables in other phyloseq slots
 
-  df <- data.frame(phyloseq::sample_data(ps))
+  if (inherits(ps, "ps_extra")) {
+    warning("ps argument is a ps_extra, but only a phyloseq will be returned")
+    ps <- ps_get(ps)
+  }
+
+
+  df <- data.frame(phyloseq::sample_data(ps), check.names = FALSE)
   saved_rownames <- rownames(df)
   df <- dplyr::mutate(df, ...)
   rownames(df) <- saved_rownames

@@ -4,21 +4,21 @@
 \alias{ps_mutate}
 \title{Modify or compute new sample_data in phyloseq object}
 \usage{
-ps_mutate(ps, ..., .target = "sample_data")
+ps_mutate(ps, ..., .target)
 }
 \arguments{
 \item{ps}{phyloseq object with sample data}
 
 \item{...}{passed straight to dplyr::mutate (see examples and dplyr::mutate help)}
 
-\item{.target}{which slot to mutate, currently only "sample_data" supported}
+\item{.target}{DEPRECATED. See tax_mutate for manipulation of tax_table}
 }
 \value{
 phyloseq object with modified sample_data
 }
 \description{
 Add or compute new phyloseq sample_data variables.
-Use dplyr::mutate() syntax.
+Uses \code{dplyr::mutate()} syntax.
 }
 \examples{
 library(phyloseq)
@@ -41,11 +41,14 @@ sample_data(ps)[1:10, ]
 ps <- ps \%>\%
   ps_mutate(
     dplyr::across(where(is.factor), toupper),
-    another_var = TRUE
+    another_var = TRUE,
+    SeqTech = NULL # deletes SeqTech variable
   )
 
-sample_data(ps)[1:10, ]
+head(sample_data(ps))
 }
 \seealso{
+\code{\link{tax_mutate}} for manipulation of tax_table variables
+
 \code{\link[dplyr]{mutate}}
 }

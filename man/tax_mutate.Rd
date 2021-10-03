@@ -4,10 +4,10 @@
 \alias{tax_mutate}
 \title{Modify or compute new taxonomic ranks in phyloseq}
 \usage{
-tax_mutate(data, ...)
+tax_mutate(ps, ...)
 }
 \arguments{
-\item{data}{phyloseq object with a tax_table, or just a tax_table}
+\item{ps}{phyloseq object with a tax_table, or just a tax_table}
 
 \item{...}{passed straight to dplyr::mutate (see examples and dplyr::mutate help)}
 }
