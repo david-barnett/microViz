@@ -58,9 +58,10 @@ Or this NPMANOVA page on GUSTA ME:
 \details{
 The variables argument will be collapsed into one string (if length > 1) by pasting together, separated by "+".
 Any interaction terms described in the interactions argument will be pasted onto the end of the pasted variables argument.
-Alternatively, you can supply the complete right hand side of the formula yourself e.g variables = "varA + varB + varC\emph{varD"
+Alternatively, you can supply the complete right hand side of the formula yourself e.g variables = "varA + varB + varC\*varD"
+
 Watch out, if any of your variable names contain characters that would normally separate variables in a formula then
-you should rename the offending variable (e.g. avoid any of "+" "}" "|" or ":" ) otherwise permanova will split that variable into pieces.
+you should rename the offending variable (e.g. avoid any of "+" "\*" "|" or ":" ) otherwise permanova will split that variable into pieces.
 }
 \examples{
 data("dietswap", package = "microbiome")

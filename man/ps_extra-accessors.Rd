@@ -72,5 +72,4 @@ bdisp_get(psx) # this ps_extra has no dist_bdisp result
 otu_get(psx)[1:6, 1:4]
 tt_get(psx) \%>\% head()
 samdat_tbl(psx) \%>\% head()
-
 }
