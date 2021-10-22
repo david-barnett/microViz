@@ -33,10 +33,13 @@ data("atlas1006", package = "microbiome")
 # create a couple of numerical variables (often more useful than character strings)
 ps <- atlas1006 %>%
   ps_mutate(
-    weight = recode(bmi_group, morbidobese = 5, severeobese = 4, obese = 3, overweight = 2, lean = 1, underweight = 0),
+    weight = recode(
+      .x = bmi_group, morbidobese = 5, severeobese = 4, 
+      obese = 3, overweight = 2, lean = 1, underweight = 0
+    ),
     lean = if_else(weight < 2, true = 1, false = 0, missing = 0),
-    extract_P = if_else(DNA_extraction_method == "p", true = 1, false = 0),
-    female = if_else(sex == "female", true = 1, false = 0)
+    female = if_else(sex == "female", true = 1, false = 0),
+    extract_P = if_else(DNA_extraction_method == "p", true = 1, false = 0)
   ) %>%
   # only look at the baseline time point if multiple samples available
   # and drop samples with no DNA extraction method info
@@ -123,22 +126,30 @@ composition as represented on axes PC1 and PC2.
 pca <- clr_pca %>%
   ord_plot(
     colour = "weight", shape = "DNA_extraction_method", alpha = 0.7, size = 1,
-    plot_taxa = 12:1, tax_vec_length = 0.45, center = TRUE
+    plot_taxa = 12:1, tax_vec_length = 0.3, 
+    taxon_renamer = function(x) stringr::str_remove_all(x, "^G: | [ae]t rel."),
+    center = TRUE,
+    tax_lab_style = tax_lab_style(
+      type = "label", max_angle = 90, fontface = "bold", 
+      alpha = 0.8, size = 2
+    )
   ) +
   scale_colour_viridis_c(option = "inferno", direction = -1, end = 0.8) +
   scale_shape_manual(
     values = c(o = "square open", r = "triangle open", p = "circle"),
     name = "DNA\nextraction\nmethod"
-  )
+  ) +
+  # essential for correct label angles
+  coord_fixed(clip = "off", xlim = c(-1.5, 1.5), ylim = c(-1.5, 1.5))
 ```
 
-```{r plot clr pca with tax loading}
+```{r plot clr pca with tax loading, fig.height=6, fig.width=8}
 pca
 ```
 
 What about the actual compositions of these 800 samples?
 
-```{r iris plot}
+```{r iris plot, fig.width=8, dpi=120}
 iris <- clr_pca %>%
   ord_plot_iris(
     tax_level = "Genus", n_taxa = 15,
@@ -152,7 +163,7 @@ iris
 
 You can arrange both plots together with patchwork package.
 
-```{r paired plots, fig.height=10, fig.width=8, dpi=300}
+```{r paired plots, fig.height=10, fig.width=8, dpi=120}
 pca / iris 
 ```
 
