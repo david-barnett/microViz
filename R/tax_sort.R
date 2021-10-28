@@ -27,6 +27,7 @@
 #' @param verbose
 #' passed to phyloseq_validate verbose
 #' (if TRUE: message about suspicious values in tax_table, and how to fix)
+#' @param use_counts use count data if available, instead of transformed data
 #'
 #' @return sorted phyloseq or ps_extra
 #' @export
@@ -95,7 +96,13 @@
 #'   tax_sort(by = "rev") %>%
 #'   tax_table() %>%
 #'   head()
-tax_sort <- function(data, by = "name", at = "names", ..., tree_warn = TRUE, verbose = TRUE) {
+tax_sort <- function(data,
+                     by = "name",
+                     at = "names",
+                     ...,
+                     tree_warn = TRUE,
+                     verbose = TRUE,
+                     use_counts = TRUE) {
   if (!inherits(at, "character")) stop("`at` must be 'names' or a tax rank")
   by_is_invalid_error <- paste0(
     "`by` argument must be one of:\n",
@@ -113,7 +120,11 @@ tax_sort <- function(data, by = "name", at = "names", ..., tree_warn = TRUE, ver
     # TODO allow numeric or character vector sorting by subsetting?
   }
   # get components that are always required
-  ps <- ps_get(data)
+  if (isTRUE(use_counts)) {
+    ps <- ps_counts(data = data, warn = TRUE)
+  } else {
+    ps <- ps_get(data)
+  }
   ps <- phyloseq_validate(
     ps = ps, remove_undetected = FALSE, verbose = verbose
   )
@@ -136,8 +147,7 @@ tax_sort <- function(data, by = "name", at = "names", ..., tree_warn = TRUE, ver
   } else {
     if (identical(at, "names")) {
       # sort phyloseq, return reordered taxa (character vector)
-      taxSorted <-
-        tax_sort_by_otu(ps = ps, by = by, err = by_is_invalid_error, ...)
+      taxSorted <- tax_sort_by_otu(ps, by = by, err = by_is_invalid_error, ...)
     } else if (at %in% phyloseq::rank_names(ps)) {
       psAgg <- tax_agg(ps = ps, rank = at)[["ps"]]
       psAgg <- tax_sort(data = psAgg, by = by, at = "names", ...)
@@ -153,11 +163,16 @@ tax_sort <- function(data, by = "name", at = "names", ..., tree_warn = TRUE, ver
   }
 
   # reorder taxa in phyloseq with taxSorted vector
-  ps <- tax_reorder(ps = ps, tax_order = taxSorted, tree_warn = tree_warn)
+  ps <- tax_reorder(
+    ps = ps_get(data), tax_order = taxSorted, tree_warn = tree_warn
+  )
 
   # return ps_extra if given one
   if (inherits(data, "ps_extra")) {
     data$ps <- ps
+    if (!identical(data$counts, NULL)) {
+      data$counts <- tax_reorder_otu(data$counts, tax_order = taxSorted)
+    }
     return(data)
   } else {
     return(ps)
@@ -234,14 +249,24 @@ tax_reorder <- function(ps, tax_order, tree_warn = TRUE) {
     ps@phy_tree <- NULL
   }
 
-  otu <- unclass(otu_get(ps))
-  otu <- otu[, tax_order, drop = FALSE]
-
-  # return otu_table oriented as found
-  if (tax_as_rows) otu <- t(otu) # FROM taxa as columns TO taxa as rows!
-  phyloseq::otu_table(ps) <- phyloseq::otu_table(
-    object = otu, taxa_are_rows = tax_as_rows
+  # reorder otu_table
+  phyloseq::otu_table(ps) <- tax_reorder_otu(
+    otu = otu_get(ps), tax_order = tax_order
   )
 
   return(ps)
+}
+
+# internal helper for tax_reorder, reorders otu_table without
+# changing orientation
+tax_reorder_otu <- function(otu, tax_order) {
+  taxaWereRows <- phyloseq::taxa_are_rows(otu)
+  otu <- unclass(otu)
+  if (taxaWereRows) otu <- t(otu)
+  otu <- otu[, tax_order, drop = FALSE]
+  if (taxaWereRows) otu <- t(otu)
+  otu <- phyloseq::otu_table(
+    object = otu, taxa_are_rows = taxaWereRows
+  )
+  return(otu)
 }

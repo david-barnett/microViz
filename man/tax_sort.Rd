@@ -10,7 +10,8 @@ tax_sort(
   at = "names",
   ...,
   tree_warn = TRUE,
-  verbose = TRUE
+  verbose = TRUE,
+  use_counts = TRUE
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ tree_warn = FALSE will suppress the warning message, but still remove the tree!}
 
 \item{verbose}{passed to phyloseq_validate verbose
 (if TRUE: message about suspicious values in tax_table, and how to fix)}
+
+\item{use_counts}{use count data if available, instead of transformed data}
 }
 \value{
 sorted phyloseq or ps_extra
