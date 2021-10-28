@@ -5,17 +5,33 @@
 #' it is treated as an absolute minimum number of samples/reads. If <1, it is treated as proportion of all samples/reads.
 #' This function is designed to work with counts. otu_table must contain counts particularly if you want to set a non-zero value for min_total_abundance.
 #'
-#' @param ps phyloseq object (ideally with COUNTS in otu_table)
-#' @param min_prevalence number or proportion of samples that a taxon must be present in (alternatively see undetected)
-#' @param prev_detection_threshold min required counts (or value) for a taxon to be considered present in that sample (or set undetected arg)
-#' @param min_total_abundance minimum total readcount of a taxon, summed across all samples (can be proportion of all counts)
-#' @param min_sample_abundance taxa must have at least this many reads in one or more samples (or proportion of that sample's reads)
-#' @param tax_level if given, aggregates data at named taxonomic rank before filtering, but returns phyloseq at the ORIGINAL level of aggregation!
-#' @param names_only if names_only is true return only names of taxa, not the phyloseq
-#' @param is_counts expect count data in phyloseq otu_table? default is TRUE
-#' @param undetected e.g. 0, value at (or below) which a taxon is considered not present in that sample. If set, this overrides prev_detection_threshold.
+#' @param ps phyloseq or ps_extra (ideally with count data available)
+#' @param min_prevalence
+#' number or proportion of samples that a taxon must be present in
+#' @param prev_detection_threshold
+#' min required counts (or value) for a taxon to be considered present
+#' in that sample (or set undetected arg)
+#' @param min_total_abundance
+#' minimum total readcount of a taxon, summed across all samples
+#'  (can be proportion of all counts)
+#' @param min_sample_abundance
+#' taxa must have at least this many reads in one or more samples
+#' (or proportion of that sample's reads)
+#' @param tax_level
+#' if given, aggregates data at named taxonomic rank before filtering,
+#' but returns phyloseq at the ORIGINAL level of aggregation!
+#' @param names_only
+#' if names_only is true return only names of taxa, not the phyloseq
+#' @param use_counts
+#' expect count data in phyloseq otu_table? default is TRUE
+#' @param undetected
+#' e.g. 0, value at (or below) which a taxon is considered not present in that sample.
+#' If set, this overrides prev_detection_threshold.
+#' @param verbose message about proportional prevalence calculations?
 #'
-#' @return filtered phyloseq object AT ORIGINAL LEVEL OF AGGREGATION (not at the level in tax_level)
+#' @return
+#' filtered phyloseq object AT ORIGINAL LEVEL OF AGGREGATION
+#' (not at the level in tax_level)
 #' @export
 #' @importFrom rlang .data
 #'
@@ -33,7 +49,10 @@
 #' # keep only families that have at least 1000 counts present in 90% of samples
 #' # then aggregate the remaining taxa at 'Genus' level
 #' dietswap %>%
-#'   tax_filter(tax_level = "Family", min_prevalence = 0.90, prev_detection_threshold = 1000) %>%
+#'   tax_filter(
+#'     tax_level = "Family", min_prevalence = 0.90,
+#'     prev_detection_threshold = 1000
+#'   ) %>%
 #'   tax_agg("Genus")
 tax_filter <- function(ps,
                        min_prevalence = 1,
@@ -42,30 +61,48 @@ tax_filter <- function(ps,
                        min_sample_abundance = 0,
                        tax_level = NA,
                        names_only = FALSE,
-                       is_counts = TRUE,
-                       undetected = NULL) {
-  # alternative way of specifying prev_detection_threshold.
-  if (!identical(undetected, NULL)) prev_detection_threshold <- undetected + 1e-300
+                       use_counts = TRUE,
+                       undetected = NULL,
+                       verbose = TRUE) {
+  # save original data
+  input <- ps
 
-  # preserve original phyloseq
-  ps1 <- ps
+  # get counts, check for proportional data
+  if (isTRUE(use_counts)) {
+    ps <- ps_counts(input, warn = "error")
+  } else {
+    ps <- ps_get(input)
+  }
+
   # preserve original tax table
-  original_taxtab <- data.frame(phyloseq::tax_table(ps), check.names = FALSE)
+  original_taxtab <- data.frame(tt_get(input), check.names = FALSE)
 
-  # check for proportional arguments
-  # convert min prevalence to an absolute number (if given as a proportion i.e. <1)
+  # convert min prevalence to an absolute number
+  # (if given as a proportion i.e. <1)
   if (min_prevalence < 1) {
     nsamp <- phyloseq::nsamples(ps)
     mp_prop <- min_prevalence
     min_prevalence <- base::ceiling(min_prevalence * nsamp)
-    message("Proportional min_prevalence given: ", mp_prop, " --> min ", min_prevalence, "/", nsamp, " samples.")
+    if (!isFALSE(verbose)) {
+      message(
+        "Proportional min_prevalence given: ", mp_prop,
+        " --> min ", min_prevalence, "/", nsamp, " samples."
+      )
+    }
   }
-  # convert min total abundance to an absolute number (if given as a proportion of total reads i.e. <1)
+
+  # convert min total abundance to an absolute number
+  # (if given as a proportion of total reads i.e. <1)
   if (min_total_abundance < 1 && min_total_abundance > 0) {
     counts <- sum(phyloseq::sample_sums(ps))
     mtotAb_prop <- min_total_abundance
     min_total_abundance <- ceiling(min_total_abundance * counts)
-    message("Proportional min_total_abundance given: ", mtotAb_prop, " --> min ", min_total_abundance, "/", counts, " reads.")
+    if (!isFALSE(verbose)) {
+      message(
+        "Proportional min_total_abundance given: ", mtotAb_prop,
+        " --> min ", min_total_abundance, "/", counts, " reads."
+      )
+    }
   }
 
   # aggregate ps object for computation if requested at given taxonomic level
@@ -83,20 +120,21 @@ tax_filter <- function(ps,
   otu <- unclass(phyloseq::otu_table(ps))
   if (!phyloseq::taxa_are_rows(ps)) otu <- t(otu)
 
-  # check for proportional data
-  if (isTRUE(is_counts) && any(otu < 1 & otu != 0)) {
-    stop(
-      "otu_table(ps) contains proportions or transformed values which might lead to unexpected behaviour",
-      "\n(use counts or avoid this error with is_counts = FALSE and setting an appropriate prev_detection_threshold, e.g. 1e-5)."
-    )
-  }
   # tax ranks table
   taxtab <- data.frame(phyloseq::tax_table(ps), check.names = FALSE)
+
+  # alternative way of specifying prev_detection_threshold.
+  if (!identical(undetected, NULL)) {
+    prev_detection_threshold <- undetected + 1e-300
+  }
 
   # calculate taxonwise stats
   tax_info <- data.frame(
     taxon = phyloseq::taxa_names(ps),
-    prevalence = microbiome::prevalence(ps, count = TRUE, include.lowest = TRUE, detection = prev_detection_threshold),
+    prevalence = microbiome::prevalence(
+      x = ps, count = TRUE, include.lowest = TRUE,
+      detection = prev_detection_threshold
+    ),
     total_counts = phyloseq::taxa_sums(ps),
     max_abundance = apply(otu, MARGIN = 1, FUN = max)
   )
@@ -110,12 +148,13 @@ tax_filter <- function(ps,
     .data$max_abundance >= min_sample_abundance
   )[[tax_level]]
 
-  # throw warning and return NA if no taxa are selected
+  # stop if no taxa are selected
   if (length(taxaMeetingThreshold) == 0) {
     stop("All taxa filtered out!")
   }
 
-  # filter original input taxonomic table (hence not discarding lower rank classifications)
+  # filter original input taxonomic table
+  # (hence not discarding lower rank classifications)
   if (identical(tax_level, "taxon")) {
     tax_selection_vec <- rownames(original_taxtab) %in% taxaMeetingThreshold
   } else {
@@ -124,9 +163,19 @@ tax_filter <- function(ps,
 
   # if names_only is true (default = false) return only (row)names of taxa
   if (names_only) {
-    return(rownames(original_taxtab)[tax_selection_vec])
+    out <- rownames(original_taxtab)[tax_selection_vec]
   } else {
-    # subset taxa in phyloseq object: ps1 is original un-aggregated phyloseq object
-    return(phyloseq::prune_taxa(tax_selection_vec, x = ps1))
+    psOut <- ps_get(input)
+    psOut <- phyloseq::prune_taxa(tax_selection_vec, x = psOut)
+    if (inherits(input, "ps_extra")) {
+      out <- input
+      out$ps <- psOut
+      if (isTRUE(use_counts)) {
+        out$counts <- phyloseq::prune_taxa(tax_selection_vec, x = out$counts)
+      }
+    } else {
+      out <- psOut
+    }
   }
+  return(out)
 }

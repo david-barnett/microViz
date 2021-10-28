@@ -39,7 +39,7 @@
 #' # ps2 is equivalent to dropping samples with incomplete sample_variables and tax_filtering 0s
 #' ps3 <- enterotype %>%
 #'   ps_drop_incomplete() %>%
-#'   tax_filter(prev_detection_threshold = 1e-20, is_counts = FALSE)
+#'   tax_filter(prev_detection_threshold = 1e-20, use_counts = FALSE)
 #' # we needed to set a low detection threshold because this example data is proportions
 #' identical(ps2, ps3) # TRUE
 #'

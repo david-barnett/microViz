@@ -12,31 +12,40 @@ tax_filter(
   min_sample_abundance = 0,
   tax_level = NA,
   names_only = FALSE,
-  is_counts = TRUE,
-  undetected = NULL
+  use_counts = TRUE,
+  undetected = NULL,
+  verbose = TRUE
 )
 }
 \arguments{
-\item{ps}{phyloseq object (ideally with COUNTS in otu_table)}
+\item{ps}{phyloseq or ps_extra (ideally with count data available)}
 
-\item{min_prevalence}{number or proportion of samples that a taxon must be present in (alternatively see undetected)}
+\item{min_prevalence}{number or proportion of samples that a taxon must be present in}
 
-\item{prev_detection_threshold}{min required counts (or value) for a taxon to be considered present in that sample (or set undetected arg)}
+\item{prev_detection_threshold}{min required counts (or value) for a taxon to be considered present
+in that sample (or set undetected arg)}
 
-\item{min_total_abundance}{minimum total readcount of a taxon, summed across all samples (can be proportion of all counts)}
+\item{min_total_abundance}{minimum total readcount of a taxon, summed across all samples
+(can be proportion of all counts)}
 
-\item{min_sample_abundance}{taxa must have at least this many reads in one or more samples (or proportion of that sample's reads)}
+\item{min_sample_abundance}{taxa must have at least this many reads in one or more samples
+(or proportion of that sample's reads)}
 
-\item{tax_level}{if given, aggregates data at named taxonomic rank before filtering, but returns phyloseq at the ORIGINAL level of aggregation!}
+\item{tax_level}{if given, aggregates data at named taxonomic rank before filtering,
+but returns phyloseq at the ORIGINAL level of aggregation!}
 
 \item{names_only}{if names_only is true return only names of taxa, not the phyloseq}
 
-\item{is_counts}{expect count data in phyloseq otu_table? default is TRUE}
+\item{use_counts}{expect count data in phyloseq otu_table? default is TRUE}
 
-\item{undetected}{e.g. 0, value at (or below) which a taxon is considered not present in that sample. If set, this overrides prev_detection_threshold.}
+\item{undetected}{e.g. 0, value at (or below) which a taxon is considered not present in that sample.
+If set, this overrides prev_detection_threshold.}
+
+\item{verbose}{message about proportional prevalence calculations?}
 }
 \value{
-filtered phyloseq object AT ORIGINAL LEVEL OF AGGREGATION (not at the level in tax_level)
+filtered phyloseq object AT ORIGINAL LEVEL OF AGGREGATION
+(not at the level in tax_level)
 }
 \description{
 Removes taxa (from all samples) that do not meet a given criterion or combination of criteria.
@@ -58,6 +67,9 @@ dietswap \%>\%
 # keep only families that have at least 1000 counts present in 90\% of samples
 # then aggregate the remaining taxa at 'Genus' level
 dietswap \%>\%
-  tax_filter(tax_level = "Family", min_prevalence = 0.90, prev_detection_threshold = 1000) \%>\%
+  tax_filter(
+    tax_level = "Family", min_prevalence = 0.90,
+    prev_detection_threshold = 1000
+  ) \%>\%
   tax_agg("Genus")
 }
