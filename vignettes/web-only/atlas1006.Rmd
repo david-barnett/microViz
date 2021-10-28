@@ -242,38 +242,42 @@ ps %>%
 What are the effects of these factors on individual taxa? Let's use beta
 binomial regression models to find out. We will skip fitting models for
 genera here, only for speed of generating this example. You should
-include all tax_levels (which is the default) for the best use of
+include all ranks (which is the default) for the best use of
 taxatree_plots.
+
+See the taxon modelling article for a more comprehensive look at the 
+taxatree_* family of functions.
 
 ```{r taxon modelling}
 library(corncob)
 tt_models <- ps %>%
   tax_filter(min_prevalence = 5 / 100, tax_level = "Genus") %>%
   taxatree_models(
-    tax_levels = c("Phylum", "Family"), 
-    variables = c("female", "wt_scaled", "P", "R"), type = "bbdml", verbose = "max"
+    ranks = c("Phylum", "Family"), 
+    variables = c("female", "wt_scaled", "P", "R"),
+    type = "bbdml", verbose = "max"
   )
+tt_stats <- taxatree_models2stats(tt_models, param = "mu")
 ```
 
 Visualize the results compactly on a microViz taxonomic association
 tree.
 
 ```{r taxa tree key, fig.height=6}
-ps %>%
-  tax_filter(min_prevalence = 5 / 100, tax_level = "Genus") %>%
+tt_stats %>% 
   taxatree_plotkey(
-    max_node_size = 8, tax_levels = c("Phylum", "Family"),
+    node_size_range = c(2, 8), size_stat = list(mean = mean),
+    rank == "Phylum", label_fun_args = list(size = 4),
     taxon_renamer = function(x) stringr::str_remove_all(x, "^.: | [ae]t rel.")
   )
 ```
 
 ```{r taxatree plots, fig.height=7}
-ps %>%
-  tax_filter(min_prevalence = 5 / 100, tax_level = "Genus") %>%
+tt_stats %>% 
   taxatree_plots(
-    models_list = tt_models, var_selection = c("P", "R", "female", "wt_scaled"),
-    max_node_size = 4,
+    node_size_range = c(1, 5), size_stat = list(mean = mean)
   ) %>%
+    .[c("P", "R", "female", "wt_scaled")] %>% 
   wrap_plots(., ncol = 2, guides = "collect")
 ```
 
