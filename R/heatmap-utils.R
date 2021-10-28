@@ -94,8 +94,25 @@ prev_calc <- function(data, taxa, undetected = 0) {
   ps <- ps_get(data)
   otu <- otu_get(data)
   otu <- otu[, taxa, drop = FALSE]
-  prevalence <- apply(otu, MARGIN = 2, function(x) sum(x > undetected, na.rm = TRUE)) / phyloseq::nsamples(ps)
+  prevalence <- apply(X = otu, MARGIN = 2, FUN = prev, undetected = undetected)
   return(prevalence)
+}
+#
+#' Calculate prevalence from numeric vector
+#'
+#' Useful as helper for taxon prevalence calculation
+#'
+#' @param x numeric vector (of taxon counts or proportions)
+#' @param undetected value above which a taxon is considered present or detected
+#'
+#' @return numeric value
+#' @export
+#'
+#' @examples
+#' prev(c(0, 0, 1, 2, 4))
+#' prev(c(0, 0, 1, 2, 4), undetected = 1.5)
+prev <- function(x, undetected = 0) {
+  sum(x > undetected) / length(x)
 }
 
 #' @param data phyloseq or ps_Extra
