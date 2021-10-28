@@ -34,10 +34,15 @@
 #'   scale_shape_girafe_filled()
 scale_shape_girafe_filled <- function() {
   ggplot2::scale_shape_manual(
-    values = c(
-      "circle filled", "triangle filled", "square filled",
-      "diamond filled", "triangle down filled"
-    ),
+    values = filled_shapes(),
     na.translate = TRUE, na.value = "circle open"
+  )
+}
+
+# helper for scale_shape_girafe_filled and also taxatree_plot_sig()
+filled_shapes <- function() {
+  c(
+    "circle filled", "triangle filled", "square filled",
+    "diamond filled", "triangle down filled"
   )
 }
