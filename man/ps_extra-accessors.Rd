@@ -52,7 +52,8 @@ element of ps_extra class object (or NULL)
 \item \code{bdisp_get}  returns results of betadisper() (or NULL)
 \item \code{otu_get}    returns phyloseq otu_table matrix with taxa as columns
 \item \code{tt_get}     returns phyloseq tax_table
-\item \code{samdat_tbl} returns phyloseq sample_data as a tibble, with sample_names as new first column called .sample_name
+\item \code{samdat_tbl} returns phyloseq sample_data as a tibble,
+with sample_names as new first column called .sample_name
 }
 }
 \examples{

@@ -1,0 +1,366 @@
+---
+title: "Statistical modelling of individual taxa"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This article will give an example of statistical modelling of the
+abundances of individual taxa, and visual presentation of the results
+using microViz *taxonomic association tree* plots.
+
+## Setup
+
+```{r setup}
+library(microViz)
+library(corncob)
+library(dplyr)
+library(ggplot2)
+```
+
+First we'll get some OTU abundance data from inflammatory bowel disease
+patients and controls from the corncob package.
+
+```{r}
+data("ibd_phylo")
+ibd_phylo
+```
+
+We'll keep only the Ulcerative Colitis and Healthy Control samples, to
+simplify the analyses for this example. We'll also remove the Species
+rank information, as most OTUs in this dataset are not assigned to a
+species. We'll also use `tax_fix` to fill any gaps where the Genus is
+unknown, with the family name or whatever higher rank classification is
+known.
+
+```{r}
+phylo <- ibd_phylo %>% 
+  ps_filter(DiseaseState %in% c("UC", "nonIBD")) %>% 
+  tax_mutate(Species = NULL) %>% 
+  tax_fix()
+phylo 
+```
+
+Let's have a quick look at the sample data using the `skimr` package.
+
+```{r}
+phylo %>% 
+  samdat_tbl() %>% 
+  dplyr::mutate(across(where(is.character), as.factor)) %>% 
+  skimr::skim()
+```
+
+Let's make some sample data variables that are easier to use and compare
+in the statistical modelling ahead. We will convert dichotomous
+categorical variables into similar binary variables (values: 1 for true,
+or 0 for false). We will also scale and center the numeric variable for
+age.
+
+```{r}
+phylo <- phylo %>% 
+  ps_mutate(
+    UC = ifelse(DiseaseState == "UC", yes = 1, no = 0),
+    female = ifelse(gender == "female", yes = 1, no = 0),
+    antibiotics = ifelse(abx == "abx", yes = 1, no = 0),
+    steroids = ifelse(steroids == "steroids", yes = 1, no = 0),
+    age_scaled = scale(age, center = TRUE, scale = TRUE)
+  )
+```
+
+## Modelling one taxon at a time
+
+### TSS log2 linear regression
+
+We will start by creating a linear regression model for one genus,
+*Bacteroides*. We will transform the count data by first making it
+proportions, and then taking the logarithm, with base 2. This is what
+MaAsLin2 does by default (except they call the compositional
+transformation "Total Sum Scaling (TSS)"). We will replace the zeros
+with half the minimum observed abundance proportion (of any taxon)
+before log2 transformation.
+
+```{r}
+parabacteroides_lm <- phylo %>% 
+  tax_fix() %>% 
+  tax_transform("compositional", rank = "Genus") %>% 
+  tax_transform("log2", zero_replace = "halfmin", chain = TRUE) %>% 
+  tax_model(
+    type = "lm", rank = "Genus", taxa = "Parabacteroides", 
+    variables = c("UC", "female", "antibiotics", "steroids", "age_scaled")
+  ) 
+parabacteroides_lm$Parabacteroides
+```
+
+```{r}
+summary(parabacteroides_lm$Parabacteroides)
+```
+
+This model suggests *Parabacteroides* abundances are significantly lower
+in Ulcerative Colitis patients than controls, on average.
+
+### Plotting TSS log2 data
+
+Let's boxplot the transformed data to see what this *Parabacteroides*
+association looks like as a crude group difference.
+
+```{r, fig.width=4, dpi=120}
+plot_data <- phylo %>% 
+  tax_fix() %>% 
+  tax_transform("compositional", rank = "Genus") %>% 
+  tax_transform("log2", zero_replace = "halfmin", chain = TRUE) %>% 
+  ps_get() %>% 
+  ps_otu2samdat("Parabacteroides") %>% # adds Parabacteroides as sample data!
+  samdat_tbl()
+
+ggplot(plot_data, aes(x = DiseaseState, y = Parabacteroides)) + 
+  geom_boxplot(width = 0.5, colour = "grey35") +
+  geom_jitter(width = 0.2, alpha = 0.5) + 
+  scale_y_continuous(
+    breaks = log2(1/2^(0:13)), 
+    labels = function(x) paste0(100 * round(2^x, digits = 5), "%"), 
+    limits = c(log2(0.00005), log2(0.25))
+  ) + 
+  theme_bw()
+```
+
+### Beta binomial regression
+
+You can also use other regression modelling functions that take a
+formula. For example the beta binomial modelling provided in the corncob
+package. This approach models both abundance and dispersion, and
+directly uses untransformed counts. By default, microViz's `tax_model()`
+will use the same formula for both abundance and dispersion modelling,
+but you can override this by setting the `phi.formula` argument
+yourself. See `vignette("corncob-intro", package = "corncob")` for more
+info on these models.
+
+```{r}
+parabacteroides_bb <- phylo %>% 
+  tax_fix() %>% 
+  tax_model(
+    type = corncob::bbdml, rank = "Genus", taxa = "Parabacteroides", 
+    variables = c("UC", "female", "antibiotics", "steroids", "age_scaled")
+  ) 
+parabacteroides_bb$Parabacteroides
+```
+
+## Model all the taxa!
+
+Now we will fit a similar model for almost every taxon at every rank. The code
+for `taxatree_models` is quite similar to `tax_model`. However, you
+might need to run `tax_prepend_ranks` to ensure that each taxon at each
+rank is always unique. As an example of the problem, Actinobacteria is
+the name of both a Phylum and a Class!
+
+```{r}
+lm_models <- phylo %>% 
+  tax_fix() %>% 
+  tax_prepend_ranks() %>% 
+  # it makes sense to perform the compositional transformation BEFORE filtering
+  tax_transform("compositional", rank = "Genus", keep_counts = TRUE) %>% 
+  tax_filter(min_prevalence = 0.1, undetected = 0, use_counts = TRUE) %>% 
+  tax_transform(
+    trans = "log2", chain = TRUE, zero_replace = "halfmin"
+  ) %>% 
+  taxatree_models(
+    type = lm, 
+    ranks = NULL, # uses every rank available except the first
+    variables = c("UC", "female", "antibiotics", "steroids", "age_scaled")
+  )
+```
+
+Why filter the taxa? 
+*It's less likely that we are interested in rare taxa, and models of
+rare taxon abundances are more likely to be unreliable. Reducing the the
+number of taxa modelled also makes visualising the results easier!*
+
+```{r}
+lm_models
+```
+
+### Getting stats from the models
+
+Next we will get a data.frame containing the regression coefficient
+estimates, test statistics and corresponding p values from all these
+regression models. The function `taxatree_models2stats()` can do this
+for any type of model that has a `broom::tidy()` method, as well as for
+beta binomial regression models calculated with the `corncob` package
+`bbdml()` function.
+
+```{r}
+lm_stats <- taxatree_models2stats(lm_models)
+lm_stats
+```
+
+```{r}
+lm_stats$taxatree_stats
+```
+
+### Adjusting p values
+
+Using the `taxatree_stats_p_adjust()` function, you can correct for
+multiple testing / control the false discovery rate or family-wise error
+rate.
+
+Instead of applying these adjustment methods across all 88 taxa models
+at all ranks, the default behaviour is to control the family-wise error
+rate per rank.
+
+```{r}
+lm_stats <- taxatree_stats_p_adjust(
+  data = lm_stats, method = "BH", grouping = "rank"
+)
+# notice the new variable
+lm_stats$taxatree_stats
+```
+
+### Plot all the taxatree_stats!
+
+`taxatree_plots()` allows you to plot statistics (e.g. point estimates
+and significance) from all of the taxa models onto a tree layout. The
+taxon models are organised by rank, radiating out from the central root
+node from e.g. Phyla around the center to Genera in the outermost ring.
+
+`taxatree_plots()` itself returns a list of plots, which you can arrange
+into one figure with the
+[`patchwork`](https://patchwork.data-imaginist.com/) package for example
+(and/or
+[`cowplot`](https://wilkelab.org/cowplot/articles/plot_grid.html)).
+
+```{r, fig.width=7, fig.height=10}
+lm_stats %>% taxatree_plots(
+  node_size_range = c(1, 3), var_renamer = toupper
+) %>% 
+  patchwork::wrap_plots(
+    ncol = 2, guides = "collect"
+  )
+```
+
+#### Sorting taxa nodes
+
+If you like, you can sort the nodes by sorting the taxa in the ps_extra
+object.
+
+```{r, fig.width=5, fig.height=4}
+lm_stats %>% 
+  tax_sort(by = "prev", at = "Genus") %>%
+  taxatree_plots(size_guide = "legend") %>% 
+  .[[1]] # show only the first plot
+```
+
+You can chain multiple `tax_sort()` calls together to fine-tune the
+order of the nodes on the tree to your own preference.
+
+```{r, fig.width=5, fig.height=4}
+lm_stats %>% 
+  tax_sort(by = "prev", at = "Family") %>%
+  tax_sort(by = "name", at = "Phylum") %>%
+  tax_sort(by = "rev") %>%
+  taxatree_plots(size_guide = "legend") %>% 
+  .[[1]] # show only the first plot
+```
+
+#### Plotting adjusted p values
+
+Remember we made adjusted p values earlier? Let's plot those instead.
+Just to show how it's done, we'll also change the symbol used to
+identify the significant sites to a cross, and we'll also relax the
+significance threshold to 0.1.
+
+It looks like only the disease state (having ulcerative colitis) shows
+any significant associations after this FDR correction.
+
+```{r, fig.width=7, fig.height=6}
+lm_stats %>% 
+  taxatree_plots(
+    size_guide = "legend",
+    sig_stat = "p.adj.BH.rank", sig_threshold = 0.1, 
+    sig_shape = 4, sig_size = 1.5,
+    node_size_range = c(1, 3), var_renamer = toupper
+) %>% 
+  .[1:4] %>% # keep only first 4 plots
+  patchwork::wrap_plots(
+    ncol = 2, guides = "collect"
+  )
+```
+
+## Beta binomial regression example
+
+We will filter the taxa more strictly (by a higher prevalence threshold)
+before this type of modelling. We do not need to transform the data as
+this approach uses counts.
+
+```{r}
+bb_models <- phylo %>% 
+  tax_fix() %>% 
+  tax_prepend_ranks() %>% 
+  tax_filter(min_prevalence = 0.3) %>% 
+  taxatree_models(
+    type = corncob::bbdml, 
+    ranks = c("Phylum", "Class", "Order", "Family"),
+    variables = c("UC", "female", "antibiotics", "steroids", "age_scaled")
+  )
+bb_models
+```
+
+```{r}
+bb_stats <- taxatree_models2stats(bb_models, param = "mu")
+bb_stats
+bb_stats$taxatree_stats
+```
+
+```{r, fig.width=5, fig.height=5}
+bb_stats %>% taxatree_plots(
+  node_size_range = c(1, 4), colour_trans = "identity"
+) %>% 
+  # keep only first 4 plots
+  .[1:4] %>% 
+  patchwork::wrap_plots(
+    ncol = 2, guides = "collect"
+  ) 
+```
+
+#### Alternative layouts
+
+You do not need to make circular tree plots if you don't want to!
+
+```{r, fig.width=5, fig.height=5}
+bb_stats %>% taxatree_plots(
+  node_size_range = c(1, 4), circular = FALSE, colour_trans = "identity"
+) %>% 
+  # keep only first 4 plots
+  .[1:4] %>% 
+  patchwork::wrap_plots(
+    ncol = 2, guides = "collect"
+  ) & 
+  coord_flip() & 
+  scale_y_reverse()
+```
+
+You don't even have to use a regular tree!
+
+Alternative layouts from the igraph package are possible, such as the
+Kamada and Kawai spring algorithm ("kk") or Fruchterman and Reingold
+force-directed algorithm ("fr"). You must set a layout_seed number for
+these layouts to ensure they are always the same.
+
+```{r, fig.width=5, fig.height=5}
+bb_stats %>% taxatree_plots(
+  node_size_range = c(1, 4), 
+  colour_trans = "identity", layout = "kk", layout_seed = 321
+) %>% 
+  # keep only first 4 plots
+  .[1:4] %>% 
+  patchwork::wrap_plots(
+    ncol = 2, guides = "collect"
+  )
+```
+
+```{r}
+
+```
+

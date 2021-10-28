@@ -1,88 +1,146 @@
 #' @name taxatree_funs
 #'
-#' @title Create node and edge dataframes for taxonomic tree graphs in taxatree_plots
+#' @title
+#' Create node and edge dataframes for taxatree_plots
 #'
 #' @description
+#'  Mostly you will not have to use these functions directly:
+#'  instead call `taxatree_plots` with the output of `taxatree_stats`
 #'
-#'  Mostly you will not have to use these functions directly (see details):
-#'  instead call `taxatree_plots` with the output of `taxatree_models`
+#' - `taxatree_nodes` creates taxon nodes and calculates a summary statistic
+#'  about each taxon (given by `fun`). Takes a ps_extra or phyloseq object.
 #'
-#' - `taxatree_nodes` creates taxon nodes and calculates basic info about each taxon. From a phyloseq object.
-#'
-#' - `taxatree_edges` uses the output of `taxatree_nodes` to create a dataframe of edges.
+#' - `taxatree_edges` uses the output of `taxatree_nodes` to create a
+#' dataframe of edges.
 #'
 #' @details
-#' `taxatree_nodes` makes nodes for taxa at all ranks or for a list of consecutive ranks (plus a root rank if tree not rooted).
-#' You can also join a data.frame of additional taxon level information to the output of `taxatree_nodes` before calling `taxatree_edges`.
+#' `taxatree_nodes` makes nodes for taxa at all ranks or for a list of
+#' consecutive ranks (plus a root rank if tree is not rooted).
 #'
 #' @param ps phyloseq object or ps_extra
-#' @param ranks selection of taxonomic ranks to make nodes for (all, names or numbers)
-#' @param nodes_df the dataframe output of `taxatree_nodes` (possibly with extra info/stats joined to it)
+#' @param ranks
+#' selection of taxonomic ranks to make nodes for ("all", or names)
+#' @param fun function to calculate for each taxon/node
+#' @param .sort
+#' sort nodes by "ascending" or "descending" values of fun function result
+#' @param .use_counts use count data if available (instead of transformed data)
 #'
 #' @rdname taxatree_funs
 #' @export
-taxatree_nodes <- function(ps, ranks = "all") {
-  ps <- ps_get(ps)
+taxatree_nodes <- function(ps,
+                           fun = list(sum = sum),
+                           ranks = "all",
+                           .sort = NULL,
+                           .use_counts = TRUE) {
+  if (isTRUE(.use_counts)) {
+    ps <- ps_counts(ps)
+  } else {
+    ps <- ps_get(ps)
+  }
+
+  # check fun format
+  if (!is.list(fun) || !inherits(fun[[1]], "function") || any(is.null(names(fun)))) {
+    stop("fun must be a length 1 named list holding a function for a vector")
+  }
+
+
+  # check if there is more than one value in top level: if so, add a root level
+  if (length(unique(unclass(phyloseq::tax_table(ps))[, 1])) > 1) {
+    phyloseq::tax_table(ps) <- cbind(root = "root", phyloseq::tax_table(ps))
+  }
+
   # identify numerical selection of ranks (all, names or numbers)
-  available_rank_names <- phyloseq::rank_names(ps)
+  phyloseq_ranks <- phyloseq::rank_names(ps)
+  rank_nums <- taxatree_nodes_ranksAsNumeric(ps = ps, ranks = ranks)
+
+  # iterate over ranks, calculating stats for all taxa
+  nodes_info <- lapply(X = rank_nums, FUN = function(r) {
+    ps <- ps_get(tax_agg(ps, rank = phyloseq_ranks[[r]]))
+
+    # get basic taxon info
+    tt <- phyloseq::tax_table(ps)
+    taxon <- as.vector(tt[, phyloseq_ranks[[r]]])
+    parent <- as.vector(tt[, phyloseq_ranks[[max(r - 1, 1)]]])
+    rank <- phyloseq_ranks[[r]]
+
+    # calculate stat with fun function
+    otu <- otu_get(ps)
+    stat <- apply(otu, MARGIN = 2, FUN = fun[[1]])
+
+    # create dataframe
+    df <- data.frame(taxon = taxon, parent = parent, rank = rank)
+    df[[names(fun)[[1]]]] <- stat
+
+    return(df)
+  })
+  nodes_df <- purrr::reduce(nodes_info, rbind.data.frame)
+  taxatree_nodes_checkLoops(nodes_df)
+
+  # sort if requested
+  if (identical(.sort, "ascending") | identical(.sort, "increasing")) {
+    nodes_df[order(nodes_df[[fun]], decreasing = FALSE), ]
+  }
+  if (identical(.sort, "descending") | identical(.sort, "decreasing")) {
+    nodes_df[order(nodes_df[[fun]], decreasing = TRUE), ]
+  }
+  return(nodes_df)
+}
+
+# internal helper for taxatree_nodes
+taxatree_nodes_ranksAsNumeric <- function(ps, ranks) {
+  phyloseq_ranks <- phyloseq::rank_names(ps)
   if (identical(ranks, "all")) {
-    rank_nums <- seq_along(available_rank_names)
+    rank_nums <- seq_along(phyloseq_ranks)
   } else if (class(ranks) %in% c("numeric", "integer")) {
     rank_nums <- ranks
-  } else if (!all(ranks %in% available_rank_names)) {
-    stop(paste(ranks, collapse = ", "), " are not all available in phyloseq object")
+  } else if (!all(ranks %in% phyloseq_ranks)) {
+    stop(
+      paste(ranks, collapse = ", "),
+      " are not all available in phyloseq object"
+    )
   } else {
-    rank_nums <- match(x = ranks, table = available_rank_names)
+    rank_nums <- match(x = ranks, table = phyloseq_ranks)
   }
   # ensure rank number are in increasing order
   rank_nums <- sort(rank_nums)
 
-  # get number of samples for calculations at all ranks
-  n_samples <- phyloseq::nsamples(ps)
+  # ensure first (root) rank always included
+  rank_nums <- union(1, rank_nums)
 
-  # iterate over ranks, calculating stats for all taxa
-  node_info <- lapply(X = rank_nums, FUN = function(r) {
-    ps <- microbiome::aggregate_taxa(ps, level = available_rank_names[[r]])
-    out <-
-      data.frame(
-        taxon_to = as.vector(phyloseq::tax_table(ps)[, available_rank_names[[r]]]),
-        taxon_from = as.vector(phyloseq::tax_table(ps)[, available_rank_names[[max(r - 1, 1)]]]),
-        taxon_level = available_rank_names[[r]],
-        taxon_count = phyloseq::taxa_sums(ps)
-      )
-    out$taxon_mean <- out$taxon_count / n_samples
-
-    # check if any nodes connect to themselves (would happen if tax_table entries duplicated across ranks)
-    if (r != 1 && any(out[, "taxon_to"] == out[, "taxon_from"])) {
-      problem_rows <- out[which(out[, "taxon_to"] == out[, "taxon_from"]), , drop = FALSE]
-      level <- problem_rows[, "taxon_level"]
-      to <- problem_rows[, "taxon_to"]
-      from <- problem_rows[, "taxon_from"]
-      for (i in seq_along(level)) warning("the child of the ", level[i], " named ", from[i], " is also named ", to[i])
-      stop(
-        "tax_table(ps) values are duplicated across ranks, e.g. the child of the ",
-        level[1], " named ", from[1], " is also named ", to[1],
-        "\nFix duplicated tax_table values manually or consider editing all values with `tax_prepend_ranks(ps)`"
-      )
-    }
-    return(out)
-  })
-  node_df <- purrr::reduce(node_info, rbind.data.frame)
-
-
-
-  return(node_df)
+  return(rank_nums)
 }
 
+taxatree_nodes_checkLoops <- function(df) {
+  # check if any nodes connect to themselves
+  # (would happen if tax_table entries duplicated across ranks)
+  df <- df[-1, ]
+  if (any(df[["taxon"]] == df[["parent"]])) {
+    df <- dplyr::filter(df, taxon == parent)
+    rank <- df[["rank"]]
+    taxon <- df[["taxon"]]
+    parent <- df[["parent"]]
+    stop(
+      call. = FALSE,
+      "tax_table values must not be duplicated across ranks, but some are:",
+      "\n - e.g. the parent of the ", rank[1], " named '", taxon[1],
+      "' is also named '", parent[1], "'\n",
+      " - Fix duplicated names with `tax_prepend_ranks()` or fix them manually"
+    )
+  }
+  # TODO a more comprehensive error message?
+}
+
+#' @param nodes_df dataframe output from taxatree_nodes
+#'
 #' @rdname taxatree_funs
 #' @export
 taxatree_edges <- function(nodes_df) {
   edge_list <- lapply(
-    X = nodes_df[["taxon_to"]],
+    X = nodes_df[["taxon"]],
     FUN = function(unique_name) {
-      taxon_row_index <- nodes_df[["taxon_to"]] == unique_name
+      taxon_row_index <- nodes_df[["taxon"]] == unique_name
       data.frame(
-        from = nodes_df[taxon_row_index, "taxon_from"],
+        from = nodes_df[taxon_row_index, "parent"],
         to = unique_name
       )
     }
@@ -91,9 +149,9 @@ taxatree_edges <- function(nodes_df) {
   # remove any duplicate edges
   edge_df <- dplyr::distinct(edge_df, dplyr::across(dplyr::everything()))
   # remove nodes that point to themselves (root level always will)
-  edge_df <- edge_df[edge_df[["from"]] != edge_df[["to"]], ]
+  edge_df <- dplyr::filter(edge_df, .data$from != .data$to)
   # edge_df gets all attributes from the "to" node
-  edge_df <- dplyr::left_join(x = edge_df, y = nodes_df, by = c("to" = "taxon_to"))
+  edge_df <- dplyr::left_join(x = edge_df, y = nodes_df, by = c("to" = "taxon"))
 
   return(edge_df)
 }

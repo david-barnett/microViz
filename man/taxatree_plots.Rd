@@ -2,99 +2,120 @@
 % Please edit documentation in R/taxatree_plots.R
 \name{taxatree_plots}
 \alias{taxatree_plots}
-\alias{taxatree_plotkey}
 \title{Plot taxonomic stats on a ggraph tree (and draw key)}
 \usage{
 taxatree_plots(
-  ps,
-  models_list,
-  var_selection = NULL,
-  var_renamer = function(x) identity(x),
-  size_stat = "taxon_mean",
-  colour_stat = NULL,
-  max_node_size = 5,
-  max_edge_width = round(max_node_size * 3/4),
-  sig_var = TRUE,
-  sig_threshold = 0.05,
-  sig_stroke_width = 1.5,
-  colour_palette = "Green-Brown",
-  reverse_colours = FALSE,
-  luminance_l2 = 80,
+  data,
+  colour_stat = "estimate",
+  palette = "Green-Brown",
+  reverse_palette = FALSE,
   colour_lims = NULL,
+  lum_range = c(10, 85),
+  colour_oob = scales::oob_squish,
+  colour_trans = "abs_sqrt",
+  size_stat = list(prevalence = prev),
+  node_size_range = c(1, 4),
+  edge_width_range = node_size_range * 0.8,
+  size_guide = "none",
+  size_trans = "identity",
+  sig_stat = "p.value",
+  sig_threshold = 0.05,
+  sig_shape = "circle filled",
+  sig_size = 0.75,
+  sig_colour = "white",
+  edge_alpha = 0.7,
+  vars = "term",
+  var_renamer = identity,
   layout = "tree",
-  drop_tax_levels = TRUE,
-  add_circles = TRUE
-)
-
-taxatree_plotkey(
-  ps,
-  size_stat = "taxon_mean",
-  colour = "grey",
-  max_node_size = 8,
-  max_edge_width = round(max_node_size * 3/4),
-  layout = "tree",
-  label = utils::tail(phyloseq::rank_names(ps), 2)[1],
-  label_style = list(size = 2.5, alpha = 0.8),
-  taxon_renamer = function(x) identity(x),
-  tax_levels = phyloseq::rank_names(ps),
-  add_circles = TRUE
+  layout_seed = NA,
+  circular = identical(layout, "tree"),
+  node_sort = NULL,
+  add_circles = isTRUE(circular),
+  drop_ranks = TRUE,
+  colour_na = "grey35",
+  label = FALSE,
+  taxon_renamer = identity
 )
 }
 \arguments{
-\item{ps}{phyloseq object}
+\item{data}{ps_extra with taxatree_stats, e.g. output of \code{taxatree_models2stats()}}
 
-\item{models_list}{list of lists of models, as output by taxatree_models}
+\item{colour_stat}{name of variable to scale colour/fill of nodes and edges}
 
-\item{var_selection}{optionally only plot trees for this selection of predictor variables}
+\item{palette}{diverging hcl colour palette name from \code{colorspace::hcl_palettes("diverging")}}
 
-\item{var_renamer}{function to rename variables (called AFTER any var selection)}
+\item{reverse_palette}{reverse direction of colour palette?}
 
-\item{size_stat}{name of variable to scale size of nodes and edges (natural log scale)}
+\item{colour_lims}{limits of colour and fill scale, NULL will infer lims from range of all data}
 
-\item{colour_stat}{name of variable to scale colour/fill of nodes and edges (natural log scale)}
+\item{lum_range}{colour palette luminance range, higher is brighter.
+1st value is for both ends of colour scale, 2nd is for the midpoint}
 
-\item{max_node_size}{set this to avoid overlapping nodes at different scales}
+\item{colour_oob}{scales function to handle colour_stat values outside of colour_lims
+(default simply squishes "out of bounds" values into the given range)}
 
-\item{max_edge_width}{max edge width (optionally relative to max node size)}
+\item{colour_trans}{name of transformation for colour scale:
+default is "abs_sqrt", the square-root of absolute values,
+but you can use the name of any transformer from the \code{scales} package,
+such as "identity" or "exp"}
 
-\item{sig_var}{optional name of variable used to define statistical significance (outlines significant nodes) - NULL for no outlines}
+\item{size_stat}{named list of length 1, giving function calculated for each taxon,
+to determine the size of nodes (and edges). Name used as size legend title.}
 
-\item{sig_threshold}{value of sig_var below which statistical significance outlines are drawn}
+\item{node_size_range}{min and max node sizes, decrease to avoid node overlap}
 
-\item{sig_stroke_width}{fixed width of statistical significance node outlines}
+\item{edge_width_range}{min and max edge widths}
 
-\item{colour_palette}{any diverging hcl colour palette name see: \code{colorspace::hcl_palettes("diverging", n = 7, plot = TRUE)}}
+\item{size_guide}{guide for node sizes, try "none", "legend" or ggplot2::guide_legend()}
 
-\item{reverse_colours}{reverse direction of colour scale?}
+\item{size_trans}{transformation for size scale
+you can use (the name of) any transformer from the scales package,
+such as "identity", "log1p", or "sqrt"}
 
-\item{luminance_l2}{luminance of colourscale midpoint (higher is lighter)}
+\item{sig_stat}{name of variable indicating statistical significance}
 
-\item{colour_lims}{limits of colour and fill scale, used to harmonise across several plots (values squished to fit this range!)}
+\item{sig_threshold}{value of sig_stat variable indicating statistical significance (below this)}
 
-\item{layout}{name of ggraph layout or manually specified layout with data.frame of x and y coordinates}
+\item{sig_shape}{fixed shape for significance marker}
 
-\item{drop_tax_levels}{remove taxonomic levels from tree plots if stats are not available for them from models list}
+\item{sig_size}{fixed size for significance marker}
 
-\item{add_circles}{draw grey background circles, 1 circle per taxonomic rank plotted}
+\item{sig_colour}{fixed colour for significance marker}
 
-\item{colour}{fixed colour of points and edges}
+\item{edge_alpha}{fixed alpha value for edges}
 
-\item{label}{names of taxonomic ranks at which to label taxa}
+\item{vars}{name of column indicating terms in models (one plot made per term)}
 
-\item{label_style}{list to style labels: passed as arguments to geom_label_repel()}
+\item{var_renamer}{function to rename variables for plot titles}
 
-\item{taxon_renamer}{function to rename taxa when labelling (e.g. removing g__ etc.)}
+\item{layout}{any ggraph layout, default is "tree"}
 
-\item{tax_levels}{names of tax ranks to include in plot}
+\item{layout_seed}{any numeric, required if a stochastic igraph layout is named}
+
+\item{circular}{should the layout be circular?}
+
+\item{node_sort}{sort nodes by "increasing" or "decreasing" size? NULL for no sorting.
+Use \code{tax_sort()} before \code{taxatree_plots()} for finer control.}
+
+\item{add_circles}{add faint concentric circles to plot, behind each rank?}
+
+\item{drop_ranks}{drop ranks from tree if not included in stats dataframe}
+
+\item{colour_na}{colour for NA values in tree.
+(if unused ranks are not dropped, they will have NA values for colour_stat)}
+
+\item{label}{should the taxatree_stats label column be used to identify taxa for labelling.
+(requires running \code{taxatree_label} before \code{taxatree_plots} to work).}
+
+\item{taxon_renamer}{function to rename taxa in labels (only relevant if label is TRUE)}
 }
 \value{
-ggraph ggplot (or list of)
+list of ggraph ggplots
 }
 \description{
 \itemize{
 \item Uses a phyloseq object to make a tree graph structure from the taxonomic table.
-\item Then adds statistical results, i.e. the output out taxatree_models (from the same phyloseq).
-\item Arguments \code{colour_stat} and (optionally) \code{sig_var} must be variables that can be extracted from the model objects in \code{models_list}.
+\item Then adds statistical results stored in "taxatree_stats"
 \item \code{taxatree_plotkey} plots same layout as \code{taxatree_plots}, but in a fixed colour
 }
 }
@@ -102,54 +123,71 @@ ggraph ggplot (or list of)
 Uses ggraph (see help for main underlying graphing function with ?ggraph::ggraph)
 }
 \examples{
-# corncob stats testing
-library(dplyr)
-library(microbiome)
-library(corncob)
-library(patchwork) # for arranging grid of plots
+# Limited examples, see website article for more
 
-data(dietswap)
+library(dplyr)
+library(ggplot2)
+library(patchwork)
+
+data(dietswap, package = "microbiome")
 ps <- dietswap
 
 # create some binary variables for easy visualisation
 ps <- ps \%>\% ps_mutate(
   female = if_else(sex == "female", 1, 0, NaN),
-  african = if_else(nationality == "AFR", 1, 0, NaN),
-  overweight = if_else(bmi_group == "overweight", 1, 0, NaN),
-  obese = if_else(bmi_group == "obese", 1, 0, NaN)
+  african = if_else(nationality == "AFR", 1, 0, NaN)
 )
 
 # This example dataset has some taxa with the same name for phylum and family...
 # We can fix problems like this with the tax_prepend_ranks function
+# (This will always happen with Actinobacteria!)
 ps <- tax_prepend_ranks(ps)
 
 # filter out rare taxa
-ps <- ps \%>\% tax_filter(min_prevalence = 0.1, min_total_abundance = 10000)
+ps <- ps \%>\% tax_filter(
+  min_prevalence = 0.5, prev_detection_threshold = 100
+)
+
+# delete the Family rank as we will not use it for this small example
+# this is necessary as taxatree_plots can only plot consecutive ranks
+ps <- ps \%>\% tax_mutate(Family = NULL)
 
 # specify variables used for modelling
 models <- taxatree_models(
-  ps = ps, type = "bbdml", tax_levels = 1:3,
-  formula = ~ female + african, verbose = FALSE
+  ps = ps, type = corncob::bbdml, ranks = c("Phylum", "Genus"),
+  formula = ~ female + african, verbose = TRUE
 )
-plots <- taxatree_plots(ps, models_list = models, max_node_size = 4)
-patchwork::wrap_plots(plots, guides = "collect")
-key <- taxatree_plotkey(ps, taxon_renamer = function(x) stringr::str_remove(x, "^F: "))
-key
+# models list stored as attachment in ps_extra
+models
 
-# cowplot is easiest for arranging trees and key and colourbar legend
-colourbar <- cowplot::get_legend(plots[[1]])
-keyrow <- cowplot::plot_grid(key, colourbar, rel_widths = c(9, 1))
+# get stats from models
+stats <- taxatree_models2stats(models, param = "mu")
+stats
+
+plots <- taxatree_plots(
+  data = stats, colour_trans = "identity",
+  size_stat = list(mean = mean),
+  size_guide = "legend", node_size_range = c(1, 6)
+)
+
+# if you change the size_stat for the plots, do the same for the key!!
+key <- taxatree_plotkey(
+  data = stats,
+  rank == "Phylum" | p.value < 0.05, # labelling criteria
+  .combine_label = all, # label only taxa where criteria met for both plots
+  size_stat = list(mean = mean),
+  node_size_range = c(2, 7), size_guide = "none",
+  taxon_renamer = function(x) {
+    stringr::str_remove_all(x, "[PG]: | [ae]t rel.")
+  }
+)
+
+# cowplot is powerful for arranging trees and key and colourbar legend
+legend <- cowplot::get_legend(plots[[1]])
 plot_col <- cowplot::plot_grid(
   plots[[1]] + theme(legend.position = "none"),
   plots[[2]] + theme(legend.position = "none"),
   ncol = 1
 )
-cowplot::plot_grid(keyrow, plot_col, nrow = 1, rel_widths = c(2, 1))
-
-models_lm <- ps \%>\%
-  microbiome::transform("compositional") \%>\%
-  taxatree_models(type = "lm", tax_levels = 1:3, formula = ~ female + african, verbose = FALSE)
-plots_lm <- taxatree_plots(ps, models_lm, max_node_size = 5)
-patchwork::wrap_plots(plots_lm, nrow = 1, guides = "collect")
-key
+cowplot::plot_grid(key, plot_col, legend, nrow = 1, rel_widths = c(4, 2, 1))
 }

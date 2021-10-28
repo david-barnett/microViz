@@ -1,4 +1,3 @@
-#' @name Taxon-modelling
 #' @title Statistical modelling for individual taxa in a phyloseq
 #'
 #' @description
@@ -11,10 +10,9 @@
 #' as specified in `variables` or `formula` argument (latter takes precedence).
 #'
 #' `taxatree_models` runs `tax_model` on every taxon at multiple taxonomic ranks
-#' (you choose which ranks with the plural `tax_levels` argument),
+#' (you choose which ranks with the plural `ranks` argument),
 #' and returns the results as a named nested list designed for use with `taxatree_plots`.
 #' One list per rank, one model per taxon at each rank.
-#'
 #'
 #' `type = "bbdml"` will run beta binomial regression model(s) using the `corncob` package.
 #' For bbdml the same formula/variables is/are used for modelling both the
@@ -26,8 +24,7 @@
 #' Run a line like this beforehand: `future::plan(future::multisession, workers = 3)`
 #'
 #' @param ps phyloseq object
-#' @param tax_level name of taxonomic rank to aggregate to and model taxa at
-#' @param tax_levels names of ranks to model taxa at (or their index) or defaults to all ranks except the first
+#' @param rank name of taxonomic rank to aggregate to and model taxa at
 #' @param type name of modelling function to use
 #' @param variables vector of variable names to use in statistical model as right hand side (ignored if formula given)
 #' @param formula (alternative to variables arg) right hand side of a formula, as a formula object or character value
@@ -64,28 +61,27 @@
 #' VARS <- c("female", "overweight", "obese")
 #'
 #' # Model first 3 genera using all VARS as predictors (just for a quick test)
-#' models <- tax_model(ps, tax_level = "Genus", taxa = 1:3, variables = VARS)
+#' models <- tax_model(ps, rank = "Genus", taxa = 1:3, variables = VARS)
 #' # Alternative method using formula arg instead of variables to produce identical results
 #' models2 <-
-#'   tax_model(ps, tax_level = "Genus", taxa = 1:3, formula = ~ female + overweight + obese)
+#'   tax_model(ps, rank = "Genus", taxa = 1:3, formula = ~ female + overweight + obese)
 #' all.equal(models, models2) # should be TRUE
 #' # Model only one genus, NOTE the modified name,
 #' # which was returned by tax_prepend_ranks defaults
 #' models3 <- ps %>%
-#'   tax_model(tax_level = "Genus", taxa = "G: Bacteroides fragilis et rel.", variables = VARS)
+#'   tax_model(rank = "Genus", taxa = "G: Bacteroides fragilis et rel.", variables = VARS)
 #' # Model all taxa at multiple taxonomic ranks (ranks 1 and 2)
 #' # using only female variable as predictor
-#' models4 <- taxatree_models(ps, tax_levels = 1:2, formula = ~female, verbose = FALSE)
+#' models4 <- taxatree_models(ps, ranks = 1:2, formula = ~female, verbose = FALSE)
 #'
 #' # modelling proportion with simple linear regression is also possible via type = lm
 #' # and transforming the taxa to compositional first
 #' models_lm <- ps %>%
 #'   microbiome::transform("compositional") %>%
-#'   tax_model(tax_level = "Genus", taxa = 1:3, variables = VARS, type = "lm")
-#' @rdname Taxon-modelling
+#'   tax_model(rank = "Genus", taxa = 1:3, variables = VARS, type = "lm")
 #' @export
 tax_model <- function(ps,
-                      tax_level,
+                      rank,
                       type = "bbdml",
                       variables = NULL,
                       formula = NULL,
@@ -97,13 +93,13 @@ tax_model <- function(ps,
   ps <- phyloseq_validate(ps, remove_undetected = TRUE, verbose = TRUE)
 
   # aggregate phyloseq at chosen rank level
-  ps <- tax_agg(ps, rank = tax_level)[["ps"]]
+  ps <- tax_agg(ps, rank = rank)[["ps"]]
 
   # default to modelling all taxa
   if (identical(taxa, NULL)) taxa <- TRUE
 
   # get taxon names "at this level"
-  possible_taxa <- unclass(phyloseq::tax_table(ps))[, tax_level, drop = TRUE]
+  possible_taxa <- unclass(phyloseq::tax_table(ps))[, rank, drop = TRUE]
 
   # define which taxa to model
   if (class(taxa) %in% c("numeric", "integer", "logical")) {
@@ -128,7 +124,7 @@ tax_model <- function(ps,
     if (!isFALSE(verbose)) {
       message(
         "Changing ", sum(not_matching),
-        " taxa_names that don't match taxa found at level of ", tax_level
+        " taxa_names that don't match taxa found at level of ", rank
       )
       for (non_match in which(not_matching)) {
         message(tt_names[non_match], " --> ", taxons[non_match])
@@ -155,7 +151,7 @@ tax_model <- function(ps,
     future.seed = TRUE,
     X = taxons,
     FUN = function(taxon) {
-      if (!isFALSE(verbose)) message("Modelling: ", taxon)
+      if (isTRUE(verbose)) message("Modelling: ", taxon)
       # combine lhs and rhs formula
       f <- stats::update.formula(
         rhs, stats::as.formula(paste0("`", taxon, "`", " ~ ."))
@@ -180,111 +176,4 @@ tax_model <- function(ps,
   )
   names(taxon_models) <- taxons
   return(taxon_models)
-}
-
-#'
-#' @rdname Taxon-modelling
-#' @export
-taxatree_models <- function(ps,
-                            tax_levels = NULL,
-                            type = "bbdml",
-                            variables = NULL,
-                            formula = NULL,
-                            verbose = TRUE,
-                            ...) {
-  ps <- ps_get(ps)
-  ranknames <- phyloseq::rank_names(ps)
-
-  if (identical(tax_levels, NULL)) {
-    tax_levels <- ranknames[-1]
-  } else if (class(tax_levels) %in% c("numeric", "integer", "logical")) {
-    tax_levels <- ranknames[tax_levels]
-  } else if (any(!tax_levels %in% ranknames)) {
-    stop(
-      "One of more of these tax_levels are not in rank_names(ps): ",
-      paste(tax_levels, collapse = " ")
-    )
-  }
-
-  # check for entries duplicated across ranks
-  tt <- phyloseq::tax_table(ps)[, tax_levels]
-  uniques <- apply(tt, MARGIN = 2, unique)
-  if (anyDuplicated(unlist(uniques))) {
-    stop(
-      "Some elements in tax_table(ps) are in >1 of the selected ranks.",
-      "\nConsider using tax_prepend_ranks(ps) first, to fix this problem.",
-      "\nOr run `taxatree_nodes(ps)` for a more informative error."
-    )
-  }
-
-  tax_models_list <- lapply(
-    X = tax_levels,
-    function(r) {
-      message(Sys.time(), " - modelling at level: ", r)
-      models <- tax_model(
-        ps = ps, tax_level = r, type = type, variables = variables,
-        formula = formula, verbose = verbose, ...
-      )
-      return(models)
-    }
-  )
-  names(tax_models_list) <- tax_levels
-  return(tax_models_list)
-}
-
-# `models2stats`extracts stats from taxon model list
-#
-# models2stats is used inside taxatree_plots, with the output of `tax_model()`.
-# It can extract the statistical results from various models and labels
-# them by the independent variable name that they refer to.
-#
-# Rows for one model_var from this df can then be joined to the output of
-# taxatree_nodes to prepare for taxonomic heat tree graph visualisation of
-# taxon-variable associations.
-#
-# Use `split.data.frame(taxon_stats_df, taxon_stats_df[["model_var"]])`
-# to split into variable-specific dataframes
-#
-# @param taxon_models named list output of `tax_model`
-# @return list of dataframes, one df per independent variable
-models2stats <- function(taxon_models) {
-  if (inherits(taxon_models[[1]], "bbdml")) {
-    # get stats from models
-    taxon_stats <- lapply(taxon_models, corncob::waldt)
-    taxon_stats <- lapply(names(taxon_stats), function(name) {
-      df <- as.data.frame(taxon_stats[[name]])
-      df[["taxon_to"]] <- name
-      df <- tibble::rownames_to_column(df, var = "stat")
-      df <- dplyr::rename(
-        df,
-        p = "Pr(>|t|)", t = "t value", se = "Std. Error", b = "Estimate"
-      )
-      df <- dplyr::filter(df, !grepl("(Intercept)", .data$stat))
-    })
-    taxon_stats_df <- purrr::reduce(taxon_stats, rbind.data.frame)
-    taxon_stats_df <- tidyr::separate(
-      data = taxon_stats_df,
-      col = "stat", into = c("param", "model_var"),
-      extra = "merge", sep = "[.]", remove = TRUE
-    )
-    taxon_stats_df <- tidyr::pivot_wider(
-      data = taxon_stats_df,
-      names_from = .data[["param"]],
-      values_from = dplyr::all_of(c("b", "se", "t", "p"))
-    )
-  } else {
-    # for other models, assume broom::tidy has an appropriate method
-    taxon_stats <- lapply(
-      X = names(taxon_models),
-      FUN = function(name) {
-        df <- broom::tidy(taxon_models[[name]])
-        df[["taxon_to"]] <- name
-        df <- dplyr::rename(df, model_var = "term")
-        df <- dplyr::relocate(df, dplyr::all_of(c("model_var", "taxon_to")))
-        df <- dplyr::filter(df, !grepl("(Intercept)", .data[["model_var"]]))
-      }
-    )
-    taxon_stats_df <- purrr::reduce(taxon_stats, rbind.data.frame)
-  }
-  return(taxon_stats_df)
 }

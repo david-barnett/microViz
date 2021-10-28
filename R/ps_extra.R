@@ -60,7 +60,26 @@ print.ps_extra <- function(x, ...) {
     cat("\n\nbetadisper:\n")
     cat(names(b))
   }
+  # print info about taxatree_models list if present
+  if (!identical(x[["taxatree_models"]], NULL)) {
+    cat("\n\n$taxatree_models list:\n")
+    cat("Ranks:", paste(names(x[["taxatree_models"]]), collapse = "/"))
+  }
+  # print info about taxatree_models list if present
+  if (!identical(x[["taxatree_stats"]], NULL)) {
+    cat("\n\n$taxatree_stats dataframe:\n")
+    taxatree_stats_summary(x[["taxatree_stats"]])
+  }
   cat("\n")
+}
+
+# helper for summarising taxatree_stats objects
+taxatree_stats_summary <- function(df) {
+  n <- length(unique(df[["taxon"]]))
+  r <- unique(df[["rank"]])
+  t <- levels(df[["term"]])
+  cat(n, "taxa at", length(r), "ranks:", paste(r, collapse = ", "), "\n")
+  cat(length(t), "terms:", paste(t, collapse = ", "))
 }
 
 #' @export
@@ -126,4 +145,18 @@ new_ps_extra_info <- function(tax_agg = NA_character_,
 
   psxi <- structure(.Data = info, class = "ps_extra_info")
   return(psxi)
+}
+
+# internal helper to convert plain phyloseq to ps_extra or leave ps_extra as is
+as_ps_extra <- function(ps) {
+  if (methods::is(ps, "phyloseq")) {
+    return(new_ps_extra(ps = ps))
+  } else if (inherits(ps, "ps_extra")) {
+    return(ps)
+  } else {
+    stop(
+      "Cannot coerce object of class '", paste(class(ps), collapse = "' '"),
+      "' into a ps_extra. \nObject must be a phyloseq or already a ps_extra!"
+    )
+  }
 }

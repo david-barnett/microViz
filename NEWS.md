@@ -1,21 +1,37 @@
 # microViz (development version)
 
-## Features 
-- `ord_plot` arrow labels can now be rotated with the help of `tax_lab_style()` and `constraint_lab_style()` 
-- `ps_calc_dominant` function for conveniently identifying the dominant taxon in each phyloseq sample
-- `distinct_palette` gains "kelly" and "greenArmytage" palettes and helpfully adds "lightgrey" to the end by default for convenient use as the palette argument to `comp_barplot`
-- `tax_transform` can now chain multiple transformations together and records these transformations in the ps_extra output
-- `tax_mutate` function added, for modifying the tax_table rank variables with `dplyr` `mutate` syntax
-- heatmap annotation helper `tax_anno` no longer requires 'column' or 'row' to be specified in advance
-
 ## Breaking changes
-- `comp_heatmap` can no longer transform data internally, but accepts data already transformed with `tax_transform` and uses stored count data for any annotations
+
+### Trees
+The taxatree_* family of functions are largely rewritten. See the new (in development) website article on taxon modelling for guidance.
+
+- `taxatree_models` now attaches resulting list to ps_extra
+- `taxatree_models2stats` must be run on the output of `taxatree_models` before using `taxatree_plots`
+
+
+### Ordination
 - `ord_plot` default labels now have `alpha` = 1 for both taxa and constraints (previously 0.8)
 - `ord_plot` "auto"matic loading/constraint vector length scalar adjustment improvement: now uses both axes
+
+### Barplots
 - `comp_barplot` now uses bray-curtis by default for sample ordering (instead of aitchison) as this generally looks better
 - `comp_barplot` now expects palette argument colours in first-to-last order, which is more intuitive than the previous reverse order
 - `distinct_palette` now adds "lightgrey" to end by default
+
+### Other
+- `tax_filter`'s `is_counts` argument replaced by `use_counts`, allowing it to filter ps_extra objects using stored count data (i.e. after `tax_transform`).
+- `comp_heatmap` can no longer transform data internally, but accepts data already transformed with `tax_transform` and uses stored count data in the ps_extra for any taxa annotations
 - `tax_names2rank` replaces deprecated `tax_names2tt`
+
+## Features 
+- `ord_plot` arrow labels can now be rotated with the help of `tax_lab_style()` and `constraint_lab_style()` 
+- `ps_calc_dominant` function added, for conveniently identifying the dominant taxon in each phyloseq sample
+- `distinct_palette` gains "kelly" and "greenArmytage" palettes and helpfully adds "lightgrey" to the end by default for convenient use as the palette argument to `comp_barplot`
+- `tax_transform` can now chain multiple transformations together and records these transformations in the ps_extra output
+- `tax_mutate` function added, for modifying the tax_table rank variables with `dplyr` `mutate` syntax
+- `tax_sort` can now sort ps_extra objects
+- heatmap annotation helper `tax_anno` no longer requires 'column' or 'row' to be specified in advance
+- `prev`, a low level helper function for calculating taxon prevalence now exported
 
 ## Fixes
 - `cor_heatmap` and `comp_heatmap` now respect column seriation arguments when different to row seriation

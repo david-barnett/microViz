@@ -27,12 +27,12 @@ VARS <- c("female", "overweight", "obese")
 
 models <- tax_model(
   ps,
-  type = "bbdml", tax_level = "Genus", taxa = 1:5, variables = VARS
+  type = "bbdml", rank = "Genus", taxa = 1:5, variables = VARS
 )
 # Alternative method using formula arg instead of variables to produce identical results
 models2 <- tax_model(
   ps,
-  type = "bbdml", tax_level = "Genus", taxa = 1:5,
+  type = "bbdml", rank = "Genus", taxa = 1:5,
   formula = ~ female + overweight + obese
 )
 all.equal(models, models2) # should be TRUE
