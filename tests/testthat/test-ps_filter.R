@@ -23,6 +23,6 @@ test_that(desc = "ps_filter can do equivalent to dropping samples with incomplet
   ps2 <- enterotype %>% ps_filter(dplyr::across(dplyr::everything(), ~ !is.na(.)))
   ps3 <- enterotype %>%
     ps_drop_incomplete() %>%
-    tax_filter(prev_detection_threshold = 1e-20, is_counts = FALSE)
+    tax_filter(prev_detection_threshold = 1e-20, use_counts = FALSE)
   expect_identical(object = ps2, expected = ps3)
 })
