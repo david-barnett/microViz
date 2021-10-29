@@ -529,11 +529,11 @@
     variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"UC"</span>, <span class="st">"female"</span>, <span class="st">"antibiotics"</span>, <span class="st">"steroids"</span>, <span class="st">"age_scaled"</span><span class="op">)</span>
   <span class="op">)</span>
 <span class="co">#&gt; Proportional min_prevalence given: 0.1 --&gt; min 7/67 samples.</span>
-<span class="co">#&gt; 2021-10-29 19:55:09 - modelling at rank: Phylum</span>
-<span class="co">#&gt; 2021-10-29 19:55:09 - modelling at rank: Class</span>
-<span class="co">#&gt; 2021-10-29 19:55:09 - modelling at rank: Order</span>
-<span class="co">#&gt; 2021-10-29 19:55:10 - modelling at rank: Family</span>
-<span class="co">#&gt; 2021-10-29 19:55:11 - modelling at rank: Genus</span></code></pre></div>
+<span class="co">#&gt; 2021-10-29 20:12:33 - modelling at rank: Phylum</span>
+<span class="co">#&gt; 2021-10-29 20:12:33 - modelling at rank: Class</span>
+<span class="co">#&gt; 2021-10-29 20:12:33 - modelling at rank: Order</span>
+<span class="co">#&gt; 2021-10-29 20:12:34 - modelling at rank: Family</span>
+<span class="co">#&gt; 2021-10-29 20:12:35 - modelling at rank: Genus</span></code></pre></div>
 <p>Why filter the taxa? <em>It’s less likely that we are interested in rare taxa, and models of rare taxon abundances are more likely to be unreliable. Reducing the the number of taxa modelled also makes visualising the results easier!</em></p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lm_models</span>
@@ -617,9 +617,10 @@
 <span class="co">#&gt; 10 age_scaled  P: Bact… Phyl…   -0.937      1.67    -0.563 0.576          0.776 </span>
 <span class="co">#&gt; # … with 660 more rows</span></code></pre></div>
 </div>
-<div id="plot-all-the-taxatree_stats" class="section level3">
-<h3 class="hasAnchor">
-<a href="#plot-all-the-taxatree_stats" class="anchor"></a>Plot all the taxatree_stats!</h3>
+</div>
+<div id="plot-all-the-taxatree_stats" class="section level2">
+<h2 class="hasAnchor">
+<a href="#plot-all-the-taxatree_stats" class="anchor"></a>Plot all the taxatree_stats!</h2>
 <p><code><a href="../../reference/taxatree_plots.html">taxatree_plots()</a></code> allows you to plot statistics (e.g. point estimates and significance) from all of the taxa models onto a tree layout. The taxon models are organised by rank, radiating out from the central root node from e.g. Phyla around the center to Genera in the outermost ring.</p>
 <p><code><a href="../../reference/taxatree_plots.html">taxatree_plots()</a></code> itself returns a list of plots, which you can arrange into one figure with the <a href="https://patchwork.data-imaginist.com/"><code>patchwork</code></a> package for example (and/or <a href="https://wilkelab.org/cowplot/articles/plot_grid.html"><code>cowplot</code></a>).</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
@@ -630,9 +631,9 @@
     ncol <span class="op">=</span> <span class="fl">2</span>, guides <span class="op">=</span> <span class="st">"collect"</span>
   <span class="op">)</span></code></pre></div>
 <p><img src="modelling-taxa_files/figure-html/unnamed-chunk-15-1.png" width="672"></p>
-<div id="taxatree-key" class="section level4">
-<h4 class="hasAnchor">
-<a href="#taxatree-key" class="anchor"></a>Taxatree Key</h4>
+<div id="taxatree-key" class="section level3">
+<h3 class="hasAnchor">
+<a href="#taxatree-key" class="anchor"></a>Taxatree Key</h3>
 <p>But how do we know which taxa are which nodes? We can create a labelled grey tree with <code>taxatree_plotkey</code>. This labels taxa based on certain conditions.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span> <span class="co"># label position </span>
@@ -650,9 +651,9 @@
 <span class="co"># (i.e. an unclassified taxon)</span>
 <span class="va">key</span></code></pre></div>
 <p><img src="modelling-taxa_files/figure-html/unnamed-chunk-16-1.png" width="576"></p>
-<div id="key-trees" class="section level5">
-<h5 class="hasAnchor">
-<a href="#key-trees" class="anchor"></a>Key + Trees</h5>
+<div id="key-trees" class="section level4">
+<h4 class="hasAnchor">
+<a href="#key-trees" class="anchor"></a>Key + Trees</h4>
 <p>Let’s put the key and some of the trees together in one <code>patchwork</code> figure. Getting the sizing right on these combined plots can be very tricky! Pay attention to the absolute height and width of the plot output.</p>
 <p><code><a href="https://rdrr.io/pkg/gridExtra/man/arrangeGrob.html">gridExtra::grid.arrange()</a></code> or <code><a href="https://wilkelab.org/cowplot/reference/plot_grid.html">cowplot::plot_grid()</a></code> are alternatives you can also try. <code><a href="https://wilkelab.org/cowplot/reference/get_legend.html">cowplot::get_legend()</a></code> can be particularly useful.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
@@ -672,9 +673,9 @@
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">111</span><span class="op">)</span>
 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html">ggsave</a></span><span class="op">(</span><span class="st">"test.png"</span>, <span class="va">panel</span>, width <span class="op">=</span> <span class="fl">13</span>, height <span class="op">=</span> <span class="fl">5.5</span>, dpi <span class="op">=</span> <span class="fl">120</span>, device <span class="op">=</span> <span class="st">"png"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="alternative-label-styling" class="section level5">
-<h5 class="hasAnchor">
-<a href="#alternative-label-styling" class="anchor"></a>Alternative label styling</h5>
+<div id="alternative-label-styling" class="section level4">
+<h4 class="hasAnchor">
+<a href="#alternative-label-styling" class="anchor"></a>Alternative label styling</h4>
 <p>You can change the default styling of the labels by first suppressing the automatic drawing of labels with <code>.draw_label = FALSE</code> in <code><a href="../../reference/taxatree_plotkey.html">taxatree_plotkey()</a></code> and then adding your own custom-style labels with <code><a href="../../reference/taxatree_plot_labels.html">taxatree_plot_labels()</a></code>. Here we will draw some yellow labels.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../reference/taxatree_plotkey.html">taxatree_plotkey</a></span><span class="op">(</span>
@@ -697,9 +698,9 @@
 <p><img src="modelling-taxa_files/figure-html/unnamed-chunk-19-1.png" width="672"></p>
 </div>
 </div>
-<div id="directly-labelling-taxa" class="section level4">
-<h4 class="hasAnchor">
-<a href="#directly-labelling-taxa" class="anchor"></a>Directly labelling taxa</h4>
+<div id="directly-labelling-taxa" class="section level3">
+<h3 class="hasAnchor">
+<a href="#directly-labelling-taxa" class="anchor"></a>Directly labelling taxa</h3>
 <p>You can directly label taxatree_plots too, but it is better to only do this for a few taxa. You must run <code><a href="../../reference/taxatree_label.html">taxatree_label()</a></code> first to create a “label” indicator variable.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lm_stats</span> <span class="op">%&gt;%</span> 
@@ -717,9 +718,9 @@
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expansion.html">expansion</a></span><span class="op">(</span>mult <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.15</span>, <span class="fl">0.25</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="modelling-taxa_files/figure-html/unnamed-chunk-20-1.png" width="624"></p>
 </div>
-<div id="sorting-taxa-nodes" class="section level4">
-<h4 class="hasAnchor">
-<a href="#sorting-taxa-nodes" class="anchor"></a>Sorting taxa nodes</h4>
+<div id="sorting-taxa-nodes" class="section level3">
+<h3 class="hasAnchor">
+<a href="#sorting-taxa-nodes" class="anchor"></a>Sorting taxa nodes</h3>
 <p>If you like, you can sort the nodes by sorting the taxa in the ps_extra object.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lm_stats</span> <span class="op">%&gt;%</span> 
@@ -737,9 +738,9 @@
   <span class="va">.</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="co"># show only the first plot</span></code></pre></div>
 <p><img src="modelling-taxa_files/figure-html/unnamed-chunk-22-1.png" width="480"></p>
 </div>
-<div id="plotting-adjusted-p-values" class="section level4">
-<h4 class="hasAnchor">
-<a href="#plotting-adjusted-p-values" class="anchor"></a>Plotting adjusted p values</h4>
+<div id="plotting-adjusted-p-values" class="section level3">
+<h3 class="hasAnchor">
+<a href="#plotting-adjusted-p-values" class="anchor"></a>Plotting adjusted p values</h3>
 <p>Remember we made adjusted p values earlier? Let’s plot those instead. Just to show how it’s done, we’ll also change the symbol used to identify the significant sites to a cross, and we’ll also relax the significance threshold to 0.1.</p>
 <p>It looks like only the disease state (having ulcerative colitis) shows any significant associations after this FDR correction.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
@@ -754,7 +755,6 @@
     ncol <span class="op">=</span> <span class="fl">2</span>, guides <span class="op">=</span> <span class="st">"collect"</span>
   <span class="op">)</span></code></pre></div>
 <p><img src="modelling-taxa_files/figure-html/unnamed-chunk-23-1.png" width="672"></p>
-</div>
 </div>
 </div>
 <div id="beta-binomial-regression-example" class="section level2">
@@ -773,10 +773,10 @@
     variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"UC"</span>, <span class="st">"female"</span>, <span class="st">"antibiotics"</span>, <span class="st">"steroids"</span>, <span class="st">"age_scaled"</span><span class="op">)</span>
   <span class="op">)</span>
 <span class="co">#&gt; Proportional min_prevalence given: 0.3 --&gt; min 21/67 samples.</span>
-<span class="co">#&gt; 2021-10-29 19:55:41 - modelling at rank: Phylum</span>
-<span class="co">#&gt; 2021-10-29 19:55:41 - modelling at rank: Class</span>
-<span class="co">#&gt; 2021-10-29 19:55:42 - modelling at rank: Order</span>
-<span class="co">#&gt; 2021-10-29 19:55:42 - modelling at rank: Family</span>
+<span class="co">#&gt; 2021-10-29 20:13:08 - modelling at rank: Phylum</span>
+<span class="co">#&gt; 2021-10-29 20:13:09 - modelling at rank: Class</span>
+<span class="co">#&gt; 2021-10-29 20:13:09 - modelling at rank: Order</span>
+<span class="co">#&gt; 2021-10-29 20:13:10 - modelling at rank: Family</span>
 <span class="va">bb_models</span>
 <span class="co">#&gt; ps_extra object - a list with phyloseq and extras:</span>
 <span class="co">#&gt; </span>
