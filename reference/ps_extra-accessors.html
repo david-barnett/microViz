@@ -56,7 +56,8 @@ perm_get   returns adonis2() permanova model (or NULL)
 bdisp_get  returns results of betadisper() (or NULL)
 otu_get    returns phyloseq otu_table matrix with taxa as columns
 tt_get     returns phyloseq tax_table
-samdat_tbl returns phyloseq sample_data as a tibble, with sample_names as new first column called .sample_name
+samdat_tbl returns phyloseq sample_data as a tibble,
+with sample_names as new first column called .sample_name
 
 " />
 
@@ -100,7 +101,7 @@ samdat_tbl returns phyloseq sample_data as a tibble, with sample_names as new fi
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9035</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9037</span>
       </span>
     </div>
 
@@ -193,7 +194,8 @@ samdat_tbl returns phyloseq sample_data as a tibble, with sample_names as new fi
 <li><p><code>bdisp_get</code>  returns results of betadisper() (or NULL)</p></li>
 <li><p><code>otu_get</code>    returns phyloseq otu_table matrix with taxa as columns</p></li>
 <li><p><code>tt_get</code>     returns phyloseq tax_table</p></li>
-<li><p><code>samdat_tbl</code> returns phyloseq sample_data as a tibble, with sample_names as new first column called .sample_name</p></li>
+<li><p><code>samdat_tbl</code> returns phyloseq sample_data as a tibble,
+with sample_names as new first column called .sample_name</p></li>
 </ul>
 
     </div>
@@ -296,14 +298,14 @@ if NA, return data.frame with rownames (sample_names)</p></td>
 #&gt; Alcaligenes faecalis et rel. "Alcaligenes faecalis et rel."
 #&gt; Allistipes et rel.           "Allistipes et rel."          </div><div class='input'><span class='fu'>samdat_tbl</span><span class='op'>(</span><span class='va'>psx</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 × 9</span>
-#&gt;   .sample_name subject sex    nationality group sample   timepoint timepoint.withi…
-#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span> Sample-1     byn     male   AAM         DI    Sample-1         4                1
-#&gt; <span style='color: #BCBCBC;'>2</span> Sample-2     nms     male   AFR         HE    Sample-2         2                1
-#&gt; <span style='color: #BCBCBC;'>3</span> Sample-3     olt     male   AFR         HE    Sample-3         2                1
-#&gt; <span style='color: #BCBCBC;'>4</span> Sample-4     pku     female AFR         HE    Sample-4         2                1
-#&gt; <span style='color: #BCBCBC;'>5</span> Sample-5     qjy     female AFR         HE    Sample-5         2                1
-#&gt; <span style='color: #BCBCBC;'>6</span> Sample-6     riv     female AFR         HE    Sample-6         2                1
+#&gt;   .sample_name subject sex   nationality group sample timepoint timepoint.withi…
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> Sample-1     byn     male  AAM         DI    Sampl…         4                1
+#&gt; <span style='color: #BCBCBC;'>2</span> Sample-2     nms     male  AFR         HE    Sampl…         2                1
+#&gt; <span style='color: #BCBCBC;'>3</span> Sample-3     olt     male  AFR         HE    Sampl…         2                1
+#&gt; <span style='color: #BCBCBC;'>4</span> Sample-4     pku     fema… AFR         HE    Sampl…         2                1
+#&gt; <span style='color: #BCBCBC;'>5</span> Sample-5     qjy     fema… AFR         HE    Sampl…         2                1
+#&gt; <span style='color: #BCBCBC;'>6</span> Sample-6     riv     fema… AFR         HE    Sampl…         2                1
 #&gt; <span style='color: #949494;'># … with 1 more variable: bmi_group &lt;fct&gt;</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

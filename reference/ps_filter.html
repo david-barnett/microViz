@@ -89,7 +89,7 @@ Use this function as you would use use dplyr::filter(), but with a phyloseq obje
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9035</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9037</span>
       </span>
     </div>
 
@@ -271,7 +271,7 @@ remove taxa which are no longer present in the dataset after filtering</p></td>
 <span class='co'># ps2 is equivalent to dropping samples with incomplete sample_variables and tax_filtering 0s</span>
 <span class='va'>ps3</span> <span class='op'>&lt;-</span> <span class='va'>enterotype</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='ps_drop_incomplete.html'>ps_drop_incomplete</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_filter.html'>tax_filter</a></span><span class='op'>(</span>prev_detection_threshold <span class='op'>=</span> <span class='fl'>1e-20</span>, is_counts <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+  <span class='fu'><a href='tax_filter.html'>tax_filter</a></span><span class='op'>(</span>prev_detection_threshold <span class='op'>=</span> <span class='fl'>1e-20</span>, use_counts <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 <span class='co'># we needed to set a low detection threshold because this example data is proportions</span>
 <span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span><span class='op'>(</span><span class='va'>ps2</span>, <span class='va'>ps3</span><span class='op'>)</span> <span class='co'># TRUE</span>
 </div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>

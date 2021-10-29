@@ -98,7 +98,7 @@ at is ignored when by is &quot;rev&quot;." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9035</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9037</span>
       </span>
     </div>
 
@@ -200,7 +200,8 @@ or a rank name, for sorting at that rank.
   at <span class='op'>=</span> <span class='st'>"names"</span>,
   <span class='va'>...</span>,
   tree_warn <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  verbose <span class='op'>=</span> <span class='cn'>TRUE</span>
+  verbose <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  use_counts <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -232,6 +233,10 @@ tree_warn = FALSE will suppress the warning message, but still remove the tree!<
       <th>verbose</th>
       <td><p>passed to phyloseq_validate verbose
 (if TRUE: message about suspicious values in tax_table, and how to fix)</p></td>
+    </tr>
+    <tr>
+      <th>use_counts</th>
+      <td><p>use count data if available, instead of transformed data</p></td>
     </tr>
     </table>
 
@@ -489,17 +494,26 @@ if using a summary stat function in <code>by</code></p>
   <span class='fu'>tax_sort</span><span class='op'>(</span>by <span class='op'>=</span> <span class='st'>"Sample-1"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/otu_table-methods.html'>otu_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='va'>.</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; OTU Table:          [8 taxa and 4 samples]
-#&gt;                      taxa are rows
-#&gt;                                      Sample-1 Sample-2 Sample-3 Sample-4
-#&gt; Bacteroides vulgatus et rel.             2774       48      455      469
-#&gt; Oscillospira guillermondii et rel.        861     4697     2915     4279
-#&gt; Bacteroides fragilis et rel.              443       21       73       29
-#&gt; Bacteroides ovatus et rel.                427       15       31       46
-#&gt; Allistipes et rel.                        336       63       36       96
-#&gt; Faecalibacterium prausnitzii et rel.      321      766     1466      365
-#&gt; Bacteroides uniformis et rel.             310        3       37        6
-#&gt; Anaerostipes caccae et rel.               244      137       27       36</div><div class='input'>
+</div><div class='output co'>#&gt; OTU Table:          [4 taxa and 8 samples]
+#&gt;                      taxa are columns
+#&gt;          Bacteroides vulgatus et rel. Oscillospira guillermondii et rel.
+#&gt; Sample-1                         2774                                861
+#&gt; Sample-2                           48                               4697
+#&gt; Sample-3                          455                               2915
+#&gt; Sample-4                          469                               4279
+#&gt; Sample-5                          167                                392
+#&gt; Sample-6                           75                                200
+#&gt; Sample-7                           33                               2201
+#&gt; Sample-8                           85                               1123
+#&gt;          Bacteroides fragilis et rel. Bacteroides ovatus et rel.
+#&gt; Sample-1                          443                        427
+#&gt; Sample-2                           21                         15
+#&gt; Sample-3                           73                         31
+#&gt; Sample-4                           29                         46
+#&gt; Sample-5                           33                         29
+#&gt; Sample-6                           14                         13
+#&gt; Sample-7                           22                         15
+#&gt; Sample-8                          560                         19</div><div class='input'>
 
 <span class='co'># sum order should always equal mean order if non-negative abundances</span>
 <span class='co'># don't forget to add na.rm = TRUE if you expect NAs in otu_table somehow</span>

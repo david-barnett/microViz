@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9035</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9037</span>
       </span>
     </div>
 
@@ -148,10 +148,13 @@
 <span class="co"># create a couple of numerical variables (often more useful than character strings)</span>
 <span class="va">ps</span> <span class="op">&lt;-</span> <span class="va">atlas1006</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../../reference/ps_mutate.html">ps_mutate</a></span><span class="op">(</span>
-    weight <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/recode.html">recode</a></span><span class="op">(</span><span class="va">bmi_group</span>, morbidobese <span class="op">=</span> <span class="fl">5</span>, severeobese <span class="op">=</span> <span class="fl">4</span>, obese <span class="op">=</span> <span class="fl">3</span>, overweight <span class="op">=</span> <span class="fl">2</span>, lean <span class="op">=</span> <span class="fl">1</span>, underweight <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>,
+    weight <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/recode.html">recode</a></span><span class="op">(</span>
+      .x <span class="op">=</span> <span class="va">bmi_group</span>, morbidobese <span class="op">=</span> <span class="fl">5</span>, severeobese <span class="op">=</span> <span class="fl">4</span>, 
+      obese <span class="op">=</span> <span class="fl">3</span>, overweight <span class="op">=</span> <span class="fl">2</span>, lean <span class="op">=</span> <span class="fl">1</span>, underweight <span class="op">=</span> <span class="fl">0</span>
+    <span class="op">)</span>,
     lean <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="va">weight</span> <span class="op">&lt;</span> <span class="fl">2</span>, true <span class="op">=</span> <span class="fl">1</span>, false <span class="op">=</span> <span class="fl">0</span>, missing <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>,
-    extract_P <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="va">DNA_extraction_method</span> <span class="op">==</span> <span class="st">"p"</span>, true <span class="op">=</span> <span class="fl">1</span>, false <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>,
-    female <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="va">sex</span> <span class="op">==</span> <span class="st">"female"</span>, true <span class="op">=</span> <span class="fl">1</span>, false <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
+    female <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="va">sex</span> <span class="op">==</span> <span class="st">"female"</span>, true <span class="op">=</span> <span class="fl">1</span>, false <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>,
+    extract_P <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="va">DNA_extraction_method</span> <span class="op">==</span> <span class="st">"p"</span>, true <span class="op">=</span> <span class="fl">1</span>, false <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
   <span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="co"># only look at the baseline time point if multiple samples available</span>
   <span class="co"># and drop samples with no DNA extraction method info</span>
@@ -261,16 +264,24 @@
 <code class="sourceCode R"><span class="va">pca</span> <span class="op">&lt;-</span> <span class="va">clr_pca</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../../reference/ord_plot.html">ord_plot</a></span><span class="op">(</span>
     colour <span class="op">=</span> <span class="st">"weight"</span>, shape <span class="op">=</span> <span class="st">"DNA_extraction_method"</span>, alpha <span class="op">=</span> <span class="fl">0.7</span>, size <span class="op">=</span> <span class="fl">1</span>,
-    plot_taxa <span class="op">=</span> <span class="fl">12</span><span class="op">:</span><span class="fl">1</span>, tax_vec_length <span class="op">=</span> <span class="fl">0.45</span>, center <span class="op">=</span> <span class="cn">TRUE</span>
+    plot_taxa <span class="op">=</span> <span class="fl">12</span><span class="op">:</span><span class="fl">1</span>, tax_vec_length <span class="op">=</span> <span class="fl">0.3</span>, 
+    taxon_renamer <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove_all</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"^G: | [ae]t rel."</span><span class="op">)</span>,
+    center <span class="op">=</span> <span class="cn">TRUE</span>,
+    tax_lab_style <span class="op">=</span> <span class="fu"><a href="../../reference/Ordination-labels.html">tax_lab_style</a></span><span class="op">(</span>
+      type <span class="op">=</span> <span class="st">"label"</span>, max_angle <span class="op">=</span> <span class="fl">90</span>, fontface <span class="op">=</span> <span class="st">"bold"</span>, 
+      alpha <span class="op">=</span> <span class="fl">0.8</span>, size <span class="op">=</span> <span class="fl">2</span>
+    <span class="op">)</span>
   <span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html">scale_colour_viridis_c</a></span><span class="op">(</span>option <span class="op">=</span> <span class="st">"inferno"</span>, direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, end <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_shape_manual</a></span><span class="op">(</span>
     values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>o <span class="op">=</span> <span class="st">"square open"</span>, r <span class="op">=</span> <span class="st">"triangle open"</span>, p <span class="op">=</span> <span class="st">"circle"</span><span class="op">)</span>,
     name <span class="op">=</span> <span class="st">"DNA\nextraction\nmethod"</span>
-  <span class="op">)</span></code></pre></div>
+  <span class="op">)</span> <span class="op">+</span>
+  <span class="co"># essential for correct label angles</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_fixed.html">coord_fixed</a></span><span class="op">(</span>clip <span class="op">=</span> <span class="st">"off"</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1.5</span>, <span class="fl">1.5</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1.5</span>, <span class="fl">1.5</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pca</span></code></pre></div>
-<p><img src="atlas1006_files/figure-html/plot%20clr%20pca%20with%20tax%20loading-1.png" width="700"></p>
+<p><img src="atlas1006_files/figure-html/plot%20clr%20pca%20with%20tax%20loading-1.png" width="768"></p>
 <p>What about the actual compositions of these 800 samples?</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">iris</span> <span class="op">&lt;-</span> <span class="va">clr_pca</span> <span class="op">%&gt;%</span>
@@ -282,11 +293,11 @@
   <span class="op">)</span>
 
 <span class="va">iris</span></code></pre></div>
-<p><img src="atlas1006_files/figure-html/iris%20plot-1.png" width="700"></p>
+<p><img src="atlas1006_files/figure-html/iris%20plot-1.png" width="960"></p>
 <p>You can arrange both plots together with patchwork package.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pca</span> <span class="op">/</span> <span class="va">iris</span> </code></pre></div>
-<p><img src="atlas1006_files/figure-html/paired%20plots-1.png" width="2400"></p>
+<p><img src="atlas1006_files/figure-html/paired%20plots-1.png" width="960"></p>
 </div>
 </div>
 <div id="testing-hypotheses" class="section level2">
@@ -310,8 +321,8 @@
 <span class="co">#&gt; Dropping samples with missings: 17</span>
 <span class="co">#&gt; weight has NAs: 15</span>
 <span class="co">#&gt; female has NAs: 2</span>
-<span class="co">#&gt; 2021-10-04 09:19:03 - Starting PERMANOVA with 99 perms with 1 processes</span>
-<span class="co">#&gt; 2021-10-04 09:19:17 - Finished PERMANOVA</span>
+<span class="co">#&gt; 2021-10-29 19:53:16 - Starting PERMANOVA with 99 perms with 1 processes</span>
+<span class="co">#&gt; 2021-10-29 19:53:29 - Finished PERMANOVA</span>
 <span class="co">#&gt; ps_extra object - a list with phyloseq and extras:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; phyloseq-class experiment-level object</span>
@@ -360,7 +371,9 @@
   <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">5</span> <span class="op">/</span> <span class="fl">100</span>, tax_level <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Genus"</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"clr"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../../reference/ord_calc.html">ord_calc</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"RDA"</span>, constraints <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"female"</span>, <span class="st">"wt_scaled"</span>, <span class="st">"P"</span>, <span class="st">"R"</span>, <span class="st">"O"</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="../../reference/ord_calc.html">ord_calc</a></span><span class="op">(</span>
+    method <span class="op">=</span> <span class="st">"RDA"</span>, constraints <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"female"</span>, <span class="st">"wt_scaled"</span>, <span class="st">"P"</span>, <span class="st">"R"</span>, <span class="st">"O"</span><span class="op">)</span>
+  <span class="op">)</span>
 <span class="co">#&gt; Proportional min_prevalence given: 0.05 --&gt; min 41/801 samples.</span>
 <span class="co">#&gt; Dropping samples with missings: 17</span>
 <span class="co">#&gt; </span>
@@ -417,66 +430,37 @@
 <div id="taxon-models" class="section level3">
 <h3 class="hasAnchor">
 <a href="#taxon-models" class="anchor"></a>Taxon models</h3>
-<p>What are the effects of these factors on individual taxa? Let’s use beta binomial regression models to find out. We will skip fitting models for genera here, only for speed of generating this example. You should include all tax_levels (which is the default) for the best use of taxatree_plots.</p>
+<p>What are the effects of these factors on individual taxa? Let’s use beta binomial regression models to find out. We will skip fitting models for genera here, only for speed of generating this example. You should include all ranks (which is the default) for the best use of taxatree_plots.</p>
+<p>See the taxon modelling article for a more comprehensive look at the taxatree_* family of functions.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bryandmartin/corncob">corncob</a></span><span class="op">)</span>
 <span class="va">tt_models</span> <span class="op">&lt;-</span> <span class="va">ps</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">5</span> <span class="op">/</span> <span class="fl">100</span>, tax_level <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../../reference/Taxon-modelling.html">taxatree_models</a></span><span class="op">(</span>
-    tax_levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Phylum"</span>, <span class="st">"Family"</span><span class="op">)</span>, 
-    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"female"</span>, <span class="st">"wt_scaled"</span>, <span class="st">"P"</span>, <span class="st">"R"</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"bbdml"</span>, verbose <span class="op">=</span> <span class="st">"max"</span>
+  <span class="fu"><a href="../../reference/taxatree_models.html">taxatree_models</a></span><span class="op">(</span>
+    ranks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Phylum"</span>, <span class="st">"Family"</span><span class="op">)</span>, 
+    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"female"</span>, <span class="st">"wt_scaled"</span>, <span class="st">"P"</span>, <span class="st">"R"</span><span class="op">)</span>,
+    type <span class="op">=</span> <span class="st">"bbdml"</span>, verbose <span class="op">=</span> <span class="st">"max"</span>
   <span class="op">)</span>
 <span class="co">#&gt; Proportional min_prevalence given: 0.05 --&gt; min 41/801 samples.</span>
-<span class="co">#&gt; 2021-10-04 09:19:26 - modelling at level: Phylum</span>
-<span class="co">#&gt; Modelling: P: Actinobacteria</span>
-<span class="co">#&gt; Modelling: P: Verrucomicrobia</span>
-<span class="co">#&gt; Modelling: P: Proteobacteria</span>
-<span class="co">#&gt; Modelling: P: Bacteroidetes</span>
-<span class="co">#&gt; Modelling: P: Firmicutes</span>
-<span class="co">#&gt; Modelling: P: Spirochaetes</span>
-<span class="co">#&gt; Modelling: P: Fusobacteria</span>
-<span class="co">#&gt; Modelling: P: Cyanobacteria</span>
-<span class="co">#&gt; 2021-10-04 09:19:35 - modelling at level: Family</span>
-<span class="co">#&gt; Modelling: F: Actinobacteria</span>
-<span class="co">#&gt; Modelling: F: Verrucomicrobia</span>
-<span class="co">#&gt; Modelling: F: Proteobacteria</span>
-<span class="co">#&gt; Modelling: F: Bacteroidetes</span>
-<span class="co">#&gt; Modelling: F: Clostridium cluster XV</span>
-<span class="co">#&gt; Modelling: F: Clostridium cluster XIVa</span>
-<span class="co">#&gt; Modelling: F: Clostridium cluster IV</span>
-<span class="co">#&gt; Modelling: F: Clostridium cluster XI</span>
-<span class="co">#&gt; Modelling: F: Bacilli</span>
-<span class="co">#&gt; Modelling: F: Spirochaetes</span>
-<span class="co">#&gt; Modelling: F: Clostridium cluster XVI</span>
-<span class="co">#&gt; Modelling: F: Clostridium cluster XVII</span>
-<span class="co">#&gt; Modelling: F: Clostridium cluster I</span>
-<span class="co">#&gt; Modelling: F: Clostridium cluster XVIII</span>
-<span class="co">#&gt; Modelling: F: Clostridium cluster III</span>
-<span class="co">#&gt; Modelling: F: Clostridium cluster IX</span>
-<span class="co">#&gt; Modelling: F: Fusobacteria</span>
-<span class="co">#&gt; Modelling: F: Clostridium cluster XIII</span>
-<span class="co">#&gt; Modelling: F: Cyanobacteria</span>
-<span class="co">#&gt; Modelling: F: Uncultured Clostridiales</span>
-<span class="co">#&gt; Modelling: F: Uncultured Mollicutes</span></code></pre></div>
+<span class="co">#&gt; 2021-10-29 19:53:37 - modelling at rank: Phylum</span>
+<span class="co">#&gt; 2021-10-29 19:53:46 - modelling at rank: Family</span>
+<span class="va">tt_stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/taxatree_models2stats.html">taxatree_models2stats</a></span><span class="op">(</span><span class="va">tt_models</span>, param <span class="op">=</span> <span class="st">"mu"</span><span class="op">)</span></code></pre></div>
 <p>Visualize the results compactly on a microViz taxonomic association tree.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ps</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">5</span> <span class="op">/</span> <span class="fl">100</span>, tax_level <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../../reference/taxatree_plots.html">taxatree_plotkey</a></span><span class="op">(</span>
-    max_node_size <span class="op">=</span> <span class="fl">8</span>, tax_levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Phylum"</span>, <span class="st">"Family"</span><span class="op">)</span>,
+<code class="sourceCode R"><span class="va">tt_stats</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../../reference/taxatree_plotkey.html">taxatree_plotkey</a></span><span class="op">(</span>
+    node_size_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">8</span><span class="op">)</span>, size_stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="va">mean</span><span class="op">)</span>,
+    <span class="va">rank</span> <span class="op">==</span> <span class="st">"Phylum"</span>, 
     taxon_renamer <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove_all</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"^.: | [ae]t rel."</span><span class="op">)</span>
-  <span class="op">)</span>
-<span class="co">#&gt; Proportional min_prevalence given: 0.05 --&gt; min 41/801 samples.</span></code></pre></div>
+  <span class="op">)</span></code></pre></div>
 <p><img src="atlas1006_files/figure-html/taxa%20tree%20key-1.png" width="700"></p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ps</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">5</span> <span class="op">/</span> <span class="fl">100</span>, tax_level <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">tt_stats</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="../../reference/taxatree_plots.html">taxatree_plots</a></span><span class="op">(</span>
-    models_list <span class="op">=</span> <span class="va">tt_models</span>, var_selection <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"P"</span>, <span class="st">"R"</span>, <span class="st">"female"</span>, <span class="st">"wt_scaled"</span><span class="op">)</span>,
-    max_node_size <span class="op">=</span> <span class="fl">4</span>,
+    node_size_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span>, size_stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="va">mean</span><span class="op">)</span>
   <span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html">wrap_plots</a></span><span class="op">(</span><span class="va">.</span>, ncol <span class="op">=</span> <span class="fl">2</span>, guides <span class="op">=</span> <span class="st">"collect"</span><span class="op">)</span>
-<span class="co">#&gt; Proportional min_prevalence given: 0.05 --&gt; min 41/801 samples.</span></code></pre></div>
+    <span class="va">.</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"P"</span>, <span class="st">"R"</span>, <span class="st">"female"</span>, <span class="st">"wt_scaled"</span><span class="op">)</span><span class="op">]</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html">wrap_plots</a></span><span class="op">(</span><span class="va">.</span>, ncol <span class="op">=</span> <span class="fl">2</span>, guides <span class="op">=</span> <span class="st">"collect"</span><span class="op">)</span></code></pre></div>
 <p><img src="atlas1006_files/figure-html/taxatree%20plots-1.png" width="700"></p>
 <div id="example-interpretation-illustrative-only" class="section level4">
 <h4 class="hasAnchor">
@@ -508,7 +492,7 @@
 <span class="co">#&gt;  collate  en_US.UTF-8                 </span>
 <span class="co">#&gt;  ctype    en_US.UTF-8                 </span>
 <span class="co">#&gt;  tz       UTC                         </span>
-<span class="co">#&gt;  date     2021-10-04                  </span>
+<span class="co">#&gt;  date     2021-10-29                  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ─ Packages ───────────────────────────────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt;  package            * version      date       lib source        </span>
@@ -519,17 +503,17 @@
 <span class="co">#&gt;  biomformat           1.20.0       2021-05-19 [1] Bioconductor  </span>
 <span class="co">#&gt;  Biostrings           2.60.2       2021-08-05 [1] Bioconductor  </span>
 <span class="co">#&gt;  bitops               1.0-7        2021-04-24 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  bslib                0.3.0        2021-09-02 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  bslib                0.3.1        2021-10-06 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  cachem               1.0.6        2021-08-19 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  callr                3.7.0        2021-04-20 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  cli                  3.0.1        2021-07-17 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  cli                  3.1.0        2021-10-27 [1] CRAN (R 4.1.1)</span>
 <span class="co">#&gt;  cluster              2.1.2        2021-04-17 [2] CRAN (R 4.1.1)</span>
 <span class="co">#&gt;  codetools            0.2-18       2020-11-04 [2] CRAN (R 4.1.1)</span>
 <span class="co">#&gt;  colorspace           2.0-2        2021-06-24 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  corncob            * 0.2.0        2021-03-11 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  crayon               1.4.1        2021-02-08 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  data.table           1.14.2       2021-09-27 [1] CRAN (R 4.1.1)</span>
-<span class="co">#&gt;  desc                 1.4.0        2021-09-28 [1] CRAN (R 4.1.1)</span>
+<span class="co">#&gt;  data.table           1.14.2       2021-09-27 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  desc                 1.4.0        2021-09-28 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  detectseparation     0.2          2021-04-22 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  devtools             2.4.2        2021-06-07 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  digest               0.6.28       2021-09-23 [1] CRAN (R 4.1.0)</span>
@@ -543,38 +527,41 @@
 <span class="co">#&gt;  fs                   1.5.0        2020-07-31 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  future               1.22.1       2021-08-25 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  future.apply         1.8.1        2021-08-10 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  generics             0.1.0        2020-10-31 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  generics             0.1.1        2021-10-25 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  GenomeInfoDb         1.28.4       2021-09-09 [1] Bioconductor  </span>
-<span class="co">#&gt;  GenomeInfoDbData     1.2.6        2021-09-23 [1] Bioconductor  </span>
+<span class="co">#&gt;  GenomeInfoDbData     1.2.6        2021-10-25 [1] Bioconductor  </span>
 <span class="co">#&gt;  ggforce              0.3.3        2021-03-05 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  ggplot2            * 3.3.5        2021-06-25 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  ggraph               2.0.5        2021-02-23 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  ggrepel              0.9.1        2021-01-15 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  ggtext               0.1.1        2020-12-17 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  globals              0.14.0       2020-11-22 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  glue                 1.4.2        2020-08-27 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  graphlayouts         0.7.1        2020-10-26 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  gridExtra            2.3          2017-09-09 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  gridtext             0.1.4        2020-12-10 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  gtable               0.3.0        2019-03-25 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  highr                0.9          2021-04-16 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  htmltools            0.5.2        2021-08-25 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  igraph               1.2.6        2020-10-06 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  igraph               1.2.7        2021-10-15 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  IRanges              2.26.0       2021-05-19 [1] Bioconductor  </span>
 <span class="co">#&gt;  iterators            1.0.13       2020-10-15 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  jquerylib            0.1.4        2021-04-26 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  jsonlite             1.7.2        2020-12-09 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  knitr                1.36         2021-09-29 [1] CRAN (R 4.1.1)</span>
+<span class="co">#&gt;  knitr                1.36         2021-09-29 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  labeling             0.4.2        2020-10-20 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  lattice              0.20-44      2021-05-02 [2] CRAN (R 4.1.1)</span>
 <span class="co">#&gt;  lifecycle            1.0.1        2021-09-24 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  listenv              0.8.0        2019-12-05 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  lpSolveAPI           5.5.2.0-17.7 2020-06-14 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  magrittr             2.0.1        2020-11-17 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  markdown             1.1          2019-08-07 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  MASS                 7.3-54       2021-05-03 [2] CRAN (R 4.1.1)</span>
 <span class="co">#&gt;  Matrix               1.3-4        2021-06-01 [2] CRAN (R 4.1.1)</span>
 <span class="co">#&gt;  memoise              2.0.0        2021-01-26 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  mgcv                 1.8-36       2021-06-01 [2] CRAN (R 4.1.1)</span>
 <span class="co">#&gt;  microbiome         * 1.14.0       2021-05-19 [1] Bioconductor  </span>
-<span class="co">#&gt;  microViz           * 0.7.10.9035  2021-10-04 [1] local         </span>
+<span class="co">#&gt;  microViz           * 0.7.10.9037  2021-10-29 [1] local         </span>
 <span class="co">#&gt;  multtest             2.48.0       2021-05-19 [1] Bioconductor  </span>
 <span class="co">#&gt;  munsell              0.5.0        2018-06-12 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  nlme                 3.1-152      2021-02-04 [2] CRAN (R 4.1.1)</span>
@@ -583,11 +570,11 @@
 <span class="co">#&gt;  patchwork          * 1.1.1        2020-12-17 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  permute              0.9-5        2019-03-12 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  phyloseq           * 1.36.0       2021-05-19 [1] Bioconductor  </span>
-<span class="co">#&gt;  pillar               1.6.3        2021-09-26 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  pillar               1.6.4        2021-10-18 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  pkgbuild             1.2.0        2020-12-15 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  pkgconfig            2.0.3        2019-09-22 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  pkgdown              1.6.1        2020-09-12 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  pkgload              1.2.2        2021-09-11 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  pkgload              1.2.3        2021-10-13 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  plyr                 1.8.6        2020-03-03 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  polyclip             1.10-0       2019-03-14 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  prettyunits          1.1.1        2020-01-24 [1] CRAN (R 4.1.0)</span>
@@ -600,43 +587,44 @@
 <span class="co">#&gt;  Rcpp                 1.0.7        2021-07-07 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  RCurl                1.98-1.5     2021-09-17 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  registry             0.5-1        2019-03-05 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  remotes              2.4.1        2021-09-29 [1] CRAN (R 4.1.1)</span>
+<span class="co">#&gt;  remotes              2.4.1        2021-09-29 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  reshape2             1.4.4        2020-04-09 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  rhdf5                2.36.0       2021-05-19 [1] Bioconductor  </span>
 <span class="co">#&gt;  rhdf5filters         1.4.0        2021-05-19 [1] Bioconductor  </span>
 <span class="co">#&gt;  Rhdf5lib             1.14.2       2021-07-06 [1] Bioconductor  </span>
-<span class="co">#&gt;  rlang                0.4.11       2021-04-30 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  rlang                0.4.12       2021-10-18 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  rmarkdown            2.11         2021-09-14 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  ROI                  1.0-0        2020-08-31 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  ROI.plugin.lpsolve   1.0-1        2021-06-15 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  rprojroot            2.0.2        2020-11-15 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  Rtsne                0.15         2018-11-10 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  S4Vectors            0.30.1       2021-09-26 [1] Bioconductor  </span>
+<span class="co">#&gt;  S4Vectors            0.30.2       2021-10-03 [1] Bioconductor  </span>
 <span class="co">#&gt;  sass                 0.4.0        2021-05-12 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  scales               1.1.1        2020-05-11 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  sessioninfo          1.1.1        2018-11-05 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  slam                 0.1-48       2020-12-03 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  stringi              1.7.4        2021-08-25 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  stringi              1.7.5        2021-10-04 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  stringr              1.4.0        2019-02-10 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  survival             3.2-11       2021-04-26 [2] CRAN (R 4.1.1)</span>
-<span class="co">#&gt;  systemfonts          1.0.2        2021-05-11 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  testthat             3.0.4        2021-07-01 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  textshaping          0.3.5        2021-06-09 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  tibble               3.1.5        2021-09-30 [1] CRAN (R 4.1.1)</span>
+<span class="co">#&gt;  systemfonts          1.0.3        2021-10-13 [1] CRAN (R 4.1.1)</span>
+<span class="co">#&gt;  testthat             3.1.0        2021-10-04 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  textshaping          0.3.6        2021-10-13 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  tibble               3.1.5        2021-09-30 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  tidygraph            1.2.0        2020-05-12 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  tidyr                1.1.4        2021-09-27 [1] CRAN (R 4.1.1)</span>
+<span class="co">#&gt;  tidyr                1.1.4        2021-09-27 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  tidyselect           1.1.1        2021-04-30 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  trust                0.1-8        2020-01-10 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  tweenr               1.0.2        2021-03-23 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  usethis              2.0.1        2021-02-10 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  usethis              2.1.3        2021-10-27 [1] CRAN (R 4.1.1)</span>
 <span class="co">#&gt;  utf8                 1.2.2        2021-07-24 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  vctrs                0.3.8        2021-04-29 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  vegan                2.5-7        2020-11-28 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  VGAM                 1.1-5        2021-01-14 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  viridis              0.6.1        2021-05-11 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  viridis              0.6.2        2021-10-13 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  viridisLite          0.4.0        2021-04-13 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  withr                2.4.2        2021-04-18 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  xfun                 0.26         2021-09-14 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  xfun                 0.27         2021-10-18 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  xml2                 1.3.2        2020-04-23 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  XVector              0.32.0       2021-05-19 [1] Bioconductor  </span>
 <span class="co">#&gt;  yaml                 2.2.1        2020-02-01 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  zlibbioc             1.38.0       2021-05-19 [1] Bioconductor  </span>

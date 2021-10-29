@@ -49,8 +49,7 @@
 <meta property="og:description" content="
 
 Uses a phyloseq object to make a tree graph structure from the taxonomic table.
-Then adds statistical results, i.e. the output out taxatree_models (from the same phyloseq).
-Arguments colour_stat and (optionally) sig_var must be variables that can be extracted from the model objects in models_list.
+Then adds statistical results stored in &quot;taxatree_stats&quot;
 taxatree_plotkey plots same layout as taxatree_plots, but in a fixed colour
 
 " />
@@ -95,7 +94,7 @@ taxatree_plotkey plots same layout as taxatree_plots, but in a fixed colour
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9035</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9037</span>
       </span>
     </div>
 
@@ -181,204 +180,274 @@ taxatree_plotkey plots same layout as taxatree_plots, but in a fixed colour
     
 <ul>
 <li><p>Uses a phyloseq object to make a tree graph structure from the taxonomic table.</p></li>
-<li><p>Then adds statistical results, i.e. the output out taxatree_models (from the same phyloseq).</p></li>
-<li><p>Arguments <code>colour_stat</code> and (optionally) <code>sig_var</code> must be variables that can be extracted from the model objects in <code>models_list</code>.</p></li>
+<li><p>Then adds statistical results stored in "taxatree_stats"</p></li>
 <li><p><code>taxatree_plotkey</code> plots same layout as <code>taxatree_plots</code>, but in a fixed colour</p></li>
 </ul>
 
     </div>
 
     <pre class="usage"><span class='fu'>taxatree_plots</span><span class='op'>(</span>
-  <span class='va'>ps</span>,
-  <span class='va'>models_list</span>,
-  var_selection <span class='op'>=</span> <span class='cn'>NULL</span>,
-  var_renamer <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
-  size_stat <span class='op'>=</span> <span class='st'>"taxon_mean"</span>,
-  colour_stat <span class='op'>=</span> <span class='cn'>NULL</span>,
-  max_node_size <span class='op'>=</span> <span class='fl'>5</span>,
-  max_edge_width <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='va'>max_node_size</span> <span class='op'>*</span> <span class='fl'>3</span><span class='op'>/</span><span class='fl'>4</span><span class='op'>)</span>,
-  sig_var <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  sig_threshold <span class='op'>=</span> <span class='fl'>0.05</span>,
-  sig_stroke_width <span class='op'>=</span> <span class='fl'>1.5</span>,
-  colour_palette <span class='op'>=</span> <span class='st'>"Green-Brown"</span>,
-  reverse_colours <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  luminance_l2 <span class='op'>=</span> <span class='fl'>80</span>,
+  <span class='va'>data</span>,
+  colour_stat <span class='op'>=</span> <span class='st'>"estimate"</span>,
+  palette <span class='op'>=</span> <span class='st'>"Green-Brown"</span>,
+  reverse_palette <span class='op'>=</span> <span class='cn'>FALSE</span>,
   colour_lims <span class='op'>=</span> <span class='cn'>NULL</span>,
+  lum_range <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>10</span>, <span class='fl'>85</span><span class='op'>)</span>,
+  colour_oob <span class='op'>=</span> <span class='fu'>scales</span><span class='fu'>::</span><span class='va'><a href='https://scales.r-lib.org/reference/oob.html'>oob_squish</a></span>,
+  colour_trans <span class='op'>=</span> <span class='st'>"abs_sqrt"</span>,
+  size_stat <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>prevalence <span class='op'>=</span> <span class='va'>prev</span><span class='op'>)</span>,
+  node_size_range <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>4</span><span class='op'>)</span>,
+  edge_width_range <span class='op'>=</span> <span class='va'>node_size_range</span> <span class='op'>*</span> <span class='fl'>0.8</span>,
+  size_guide <span class='op'>=</span> <span class='st'>"legend"</span>,
+  size_trans <span class='op'>=</span> <span class='st'>"identity"</span>,
+  sig_stat <span class='op'>=</span> <span class='st'>"p.value"</span>,
+  sig_threshold <span class='op'>=</span> <span class='fl'>0.05</span>,
+  sig_shape <span class='op'>=</span> <span class='st'>"circle filled"</span>,
+  sig_size <span class='op'>=</span> <span class='fl'>0.75</span>,
+  sig_colour <span class='op'>=</span> <span class='st'>"white"</span>,
+  edge_alpha <span class='op'>=</span> <span class='fl'>0.7</span>,
+  vars <span class='op'>=</span> <span class='st'>"term"</span>,
+  var_renamer <span class='op'>=</span> <span class='va'>identity</span>,
+  title_size <span class='op'>=</span> <span class='fl'>10</span>,
   layout <span class='op'>=</span> <span class='st'>"tree"</span>,
-  drop_tax_levels <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  add_circles <span class='op'>=</span> <span class='cn'>TRUE</span>
-<span class='op'>)</span>
-
-<span class='fu'>taxatree_plotkey</span><span class='op'>(</span>
-  <span class='va'>ps</span>,
-  size_stat <span class='op'>=</span> <span class='st'>"taxon_mean"</span>,
-  colour <span class='op'>=</span> <span class='st'>"grey"</span>,
-  max_node_size <span class='op'>=</span> <span class='fl'>8</span>,
-  max_edge_width <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='va'>max_node_size</span> <span class='op'>*</span> <span class='fl'>3</span><span class='op'>/</span><span class='fl'>4</span><span class='op'>)</span>,
-  layout <span class='op'>=</span> <span class='st'>"tree"</span>,
-  label <span class='op'>=</span> <span class='fu'>utils</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='fu'>phyloseq</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/rank_names.html'>rank_names</a></span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>,
-  label_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>2.5</span>, alpha <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span>,
-  taxon_renamer <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
-  tax_levels <span class='op'>=</span> <span class='fu'>phyloseq</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/rank_names.html'>rank_names</a></span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span>,
-  add_circles <span class='op'>=</span> <span class='cn'>TRUE</span>
+  layout_seed <span class='op'>=</span> <span class='cn'>NA</span>,
+  circular <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span><span class='op'>(</span><span class='va'>layout</span>, <span class='st'>"tree"</span><span class='op'>)</span>,
+  node_sort <span class='op'>=</span> <span class='cn'>NULL</span>,
+  add_circles <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Logic.html'>isTRUE</a></span><span class='op'>(</span><span class='va'>circular</span><span class='op'>)</span>,
+  drop_ranks <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  colour_na <span class='op'>=</span> <span class='st'>"grey35"</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>ps</th>
-      <td><p>phyloseq object</p></td>
-    </tr>
-    <tr>
-      <th>models_list</th>
-      <td><p>list of lists of models, as output by taxatree_models</p></td>
-    </tr>
-    <tr>
-      <th>var_selection</th>
-      <td><p>optionally only plot trees for this selection of predictor variables</p></td>
-    </tr>
-    <tr>
-      <th>var_renamer</th>
-      <td><p>function to rename variables (called AFTER any var selection)</p></td>
-    </tr>
-    <tr>
-      <th>size_stat</th>
-      <td><p>name of variable to scale size of nodes and edges (natural log scale)</p></td>
+      <th>data</th>
+      <td><p>ps_extra with taxatree_stats, e.g. output of <code><a href='taxatree_models2stats.html'>taxatree_models2stats()</a></code></p></td>
     </tr>
     <tr>
       <th>colour_stat</th>
-      <td><p>name of variable to scale colour/fill of nodes and edges (natural log scale)</p></td>
+      <td><p>name of variable to scale colour/fill of nodes and edges</p></td>
     </tr>
     <tr>
-      <th>max_node_size</th>
-      <td><p>set this to avoid overlapping nodes at different scales</p></td>
+      <th>palette</th>
+      <td><p>diverging hcl colour palette name from <code><a href='https://colorspace.R-Forge.R-project.org//reference/hcl_palettes.html'>colorspace::hcl_palettes("diverging")</a></code></p></td>
     </tr>
     <tr>
-      <th>max_edge_width</th>
-      <td><p>max edge width (optionally relative to max node size)</p></td>
-    </tr>
-    <tr>
-      <th>sig_var</th>
-      <td><p>optional name of variable used to define statistical significance (outlines significant nodes) - NULL for no outlines</p></td>
-    </tr>
-    <tr>
-      <th>sig_threshold</th>
-      <td><p>value of sig_var below which statistical significance outlines are drawn</p></td>
-    </tr>
-    <tr>
-      <th>sig_stroke_width</th>
-      <td><p>fixed width of statistical significance node outlines</p></td>
-    </tr>
-    <tr>
-      <th>colour_palette</th>
-      <td><p>any diverging hcl colour palette name see: <code><a href='https://colorspace.R-Forge.R-project.org//reference/hcl_palettes.html'>colorspace::hcl_palettes("diverging", n = 7, plot = TRUE)</a></code></p></td>
-    </tr>
-    <tr>
-      <th>reverse_colours</th>
-      <td><p>reverse direction of colour scale?</p></td>
-    </tr>
-    <tr>
-      <th>luminance_l2</th>
-      <td><p>luminance of colourscale midpoint (higher is lighter)</p></td>
+      <th>reverse_palette</th>
+      <td><p>reverse direction of colour palette?</p></td>
     </tr>
     <tr>
       <th>colour_lims</th>
-      <td><p>limits of colour and fill scale, used to harmonise across several plots (values squished to fit this range!)</p></td>
+      <td><p>limits of colour and fill scale, NULL will infer lims from range of all data</p></td>
+    </tr>
+    <tr>
+      <th>lum_range</th>
+      <td><p>colour palette luminance range, higher is brighter.
+1st value is for both ends of colour scale, 2nd is for the midpoint</p></td>
+    </tr>
+    <tr>
+      <th>colour_oob</th>
+      <td><p>scales function to handle colour_stat values outside of colour_lims
+(default simply squishes "out of bounds" values into the given range)</p></td>
+    </tr>
+    <tr>
+      <th>colour_trans</th>
+      <td><p>name of transformation for colour scale:
+default is "abs_sqrt", the square-root of absolute values,
+but you can use the name of any transformer from the <code>scales</code> package,
+such as "identity" or "exp"</p></td>
+    </tr>
+    <tr>
+      <th>size_stat</th>
+      <td><p>named list of length 1, giving function calculated for each taxon,
+to determine the size of nodes (and edges). Name used as size legend title.</p></td>
+    </tr>
+    <tr>
+      <th>node_size_range</th>
+      <td><p>min and max node sizes, decrease to avoid node overlap</p></td>
+    </tr>
+    <tr>
+      <th>edge_width_range</th>
+      <td><p>min and max edge widths</p></td>
+    </tr>
+    <tr>
+      <th>size_guide</th>
+      <td><p>guide for node sizes, try "none", "legend" or ggplot2::guide_legend()</p></td>
+    </tr>
+    <tr>
+      <th>size_trans</th>
+      <td><p>transformation for size scale
+you can use (the name of) any transformer from the scales package,
+such as "identity", "log1p", or "sqrt"</p></td>
+    </tr>
+    <tr>
+      <th>sig_stat</th>
+      <td><p>name of variable indicating statistical significance</p></td>
+    </tr>
+    <tr>
+      <th>sig_threshold</th>
+      <td><p>value of sig_stat variable indicating statistical significance (below this)</p></td>
+    </tr>
+    <tr>
+      <th>sig_shape</th>
+      <td><p>fixed shape for significance marker</p></td>
+    </tr>
+    <tr>
+      <th>sig_size</th>
+      <td><p>fixed size for significance marker</p></td>
+    </tr>
+    <tr>
+      <th>sig_colour</th>
+      <td><p>fixed colour for significance marker</p></td>
+    </tr>
+    <tr>
+      <th>edge_alpha</th>
+      <td><p>fixed alpha value for edges</p></td>
+    </tr>
+    <tr>
+      <th>vars</th>
+      <td><p>name of column indicating terms in models (one plot made per term)</p></td>
+    </tr>
+    <tr>
+      <th>var_renamer</th>
+      <td><p>function to rename variables for plot titles</p></td>
+    </tr>
+    <tr>
+      <th>title_size</th>
+      <td><p>font size of title</p></td>
     </tr>
     <tr>
       <th>layout</th>
-      <td><p>name of ggraph layout or manually specified layout with data.frame of x and y coordinates</p></td>
+      <td><p>any ggraph layout, default is "tree"</p></td>
     </tr>
     <tr>
-      <th>drop_tax_levels</th>
-      <td><p>remove taxonomic levels from tree plots if stats are not available for them from models list</p></td>
+      <th>layout_seed</th>
+      <td><p>any numeric, required if a stochastic igraph layout is named</p></td>
+    </tr>
+    <tr>
+      <th>circular</th>
+      <td><p>should the layout be circular?</p></td>
+    </tr>
+    <tr>
+      <th>node_sort</th>
+      <td><p>sort nodes by "increasing" or "decreasing" size? NULL for no sorting.
+Use <code><a href='tax_sort.html'>tax_sort()</a></code> before <code>taxatree_plots()</code> for finer control.</p></td>
     </tr>
     <tr>
       <th>add_circles</th>
-      <td><p>draw grey background circles, 1 circle per taxonomic rank plotted</p></td>
+      <td><p>add faint concentric circles to plot, behind each rank?</p></td>
     </tr>
     <tr>
-      <th>colour</th>
-      <td><p>fixed colour of points and edges</p></td>
+      <th>drop_ranks</th>
+      <td><p>drop ranks from tree if not included in stats dataframe</p></td>
     </tr>
     <tr>
-      <th>label</th>
-      <td><p>names of taxonomic ranks at which to label taxa</p></td>
-    </tr>
-    <tr>
-      <th>label_style</th>
-      <td><p>list to style labels: passed as arguments to geom_label_repel()</p></td>
-    </tr>
-    <tr>
-      <th>taxon_renamer</th>
-      <td><p>function to rename taxa when labelling (e.g. removing g__ etc.)</p></td>
-    </tr>
-    <tr>
-      <th>tax_levels</th>
-      <td><p>names of tax ranks to include in plot</p></td>
+      <th>colour_na</th>
+      <td><p>colour for NA values in tree.
+(if unused ranks are not dropped, they will have NA values for colour_stat)</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>ggraph ggplot (or list of)</p>
+    <p>list of ggraph ggplots</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Uses ggraph (see help for main underlying graphing function with ?ggraph::ggraph)</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># corncob stats testing</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://microbiome.github.io/microbiome'>microbiome</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/bryandmartin/corncob'>corncob</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://patchwork.data-imaginist.com'>patchwork</a></span><span class='op'>)</span> <span class='co'># for arranging grid of plots</span>
+    <pre class="examples"><div class='input'><span class='co'># Limited examples, see website article for more</span>
 
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>dietswap</span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://patchwork.data-imaginist.com'>patchwork</a></span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>dietswap</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span>
 <span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span>
 
 <span class='co'># create some binary variables for easy visualisation</span>
 <span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>ps</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='ps_mutate.html'>ps_mutate</a></span><span class='op'>(</span>
   female <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>sex</span> <span class='op'>==</span> <span class='st'>"female"</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='cn'>NaN</span><span class='op'>)</span>,
-  african <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>nationality</span> <span class='op'>==</span> <span class='st'>"AFR"</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='cn'>NaN</span><span class='op'>)</span>,
-  overweight <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>bmi_group</span> <span class='op'>==</span> <span class='st'>"overweight"</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='cn'>NaN</span><span class='op'>)</span>,
-  obese <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>bmi_group</span> <span class='op'>==</span> <span class='st'>"obese"</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='cn'>NaN</span><span class='op'>)</span>
+  african <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>nationality</span> <span class='op'>==</span> <span class='st'>"AFR"</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='cn'>NaN</span><span class='op'>)</span>
 <span class='op'>)</span>
 
 <span class='co'># This example dataset has some taxa with the same name for phylum and family...</span>
 <span class='co'># We can fix problems like this with the tax_prepend_ranks function</span>
+<span class='co'># (This will always happen with Actinobacteria!)</span>
 <span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tax_prepend_ranks.html'>tax_prepend_ranks</a></span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span>
 
 <span class='co'># filter out rare taxa</span>
-<span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>ps</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='tax_filter.html'>tax_filter</a></span><span class='op'>(</span>min_prevalence <span class='op'>=</span> <span class='fl'>0.1</span>, min_total_abundance <span class='op'>=</span> <span class='fl'>10000</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Proportional min_prevalence given: 0.1 --&gt; min 23/222 samples.</span></div><div class='input'>
-<span class='co'># specify variables used for modelling</span>
-<span class='va'>models</span> <span class='op'>&lt;-</span> <span class='fu'><a href='Taxon-modelling.html'>taxatree_models</a></span><span class='op'>(</span>
-  ps <span class='op'>=</span> <span class='va'>ps</span>, type <span class='op'>=</span> <span class='st'>"bbdml"</span>, tax_levels <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>,
-  formula <span class='op'>=</span> <span class='op'>~</span> <span class='va'>female</span> <span class='op'>+</span> <span class='va'>african</span>, verbose <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>ps</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='tax_filter.html'>tax_filter</a></span><span class='op'>(</span>
+  min_prevalence <span class='op'>=</span> <span class='fl'>0.5</span>, prev_detection_threshold <span class='op'>=</span> <span class='fl'>100</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>2021-10-04 09:15:18 - modelling at level: Phylum</span></div><div class='output co'>#&gt; <span class='message'>2021-10-04 09:15:19 - modelling at level: Family</span></div><div class='output co'>#&gt; <span class='message'>2021-10-04 09:15:20 - modelling at level: Genus</span></div><div class='input'><span class='va'>plots</span> <span class='op'>&lt;-</span> <span class='fu'>taxatree_plots</span><span class='op'>(</span><span class='va'>ps</span>, models_list <span class='op'>=</span> <span class='va'>models</span>, max_node_size <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span>
-<span class='fu'>patchwork</span><span class='fu'>::</span><span class='fu'><a href='https://patchwork.data-imaginist.com/reference/wrap_plots.html'>wrap_plots</a></span><span class='op'>(</span><span class='va'>plots</span>, guides <span class='op'>=</span> <span class='st'>"collect"</span><span class='op'>)</span>
-</div><div class='img'><img src='taxatree_plots-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>key</span> <span class='op'>&lt;-</span> <span class='fu'>taxatree_plotkey</span><span class='op'>(</span><span class='va'>ps</span>, taxon_renamer <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_remove.html'>str_remove</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"^F: "</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>key</span>
-</div><div class='img'><img src='taxatree_plots-2.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># cowplot is easiest for arranging trees and key and colourbar legend</span>
-<span class='va'>colourbar</span> <span class='op'>&lt;-</span> <span class='fu'>cowplot</span><span class='fu'>::</span><span class='fu'><a href='https://wilkelab.org/cowplot/reference/get_legend.html'>get_legend</a></span><span class='op'>(</span><span class='va'>plots</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
-<span class='va'>keyrow</span> <span class='op'>&lt;-</span> <span class='fu'>cowplot</span><span class='fu'>::</span><span class='fu'><a href='https://wilkelab.org/cowplot/reference/plot_grid.html'>plot_grid</a></span><span class='op'>(</span><span class='va'>key</span>, <span class='va'>colourbar</span>, rel_widths <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>9</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Proportional min_prevalence given: 0.5 --&gt; min 111/222 samples.</span></div><div class='input'>
+<span class='co'># delete the Family rank as we will not use it for this small example</span>
+<span class='co'># this is necessary as taxatree_plots can only plot consecutive ranks</span>
+<span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>ps</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='tax_mutate.html'>tax_mutate</a></span><span class='op'>(</span>Family <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+
+<span class='co'># specify variables used for modelling</span>
+<span class='va'>models</span> <span class='op'>&lt;-</span> <span class='fu'><a href='taxatree_models.html'>taxatree_models</a></span><span class='op'>(</span>
+  ps <span class='op'>=</span> <span class='va'>ps</span>, type <span class='op'>=</span> <span class='fu'>corncob</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/corncob/man/bbdml.html'>bbdml</a></span>, ranks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Phylum"</span>, <span class='st'>"Genus"</span><span class='op'>)</span>,
+  formula <span class='op'>=</span> <span class='op'>~</span> <span class='va'>female</span> <span class='op'>+</span> <span class='va'>african</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>2021-10-29 19:51:12 - modelling at rank: Phylum</span></div><div class='output co'>#&gt; <span class='message'>Modelling: P: Bacteroidetes</span></div><div class='output co'>#&gt; <span class='message'>Modelling: P: Firmicutes</span></div><div class='output co'>#&gt; <span class='message'>2021-10-29 19:51:13 - modelling at rank: Genus</span></div><div class='output co'>#&gt; <span class='message'>Modelling: G: Allistipes et rel.</span></div><div class='output co'>#&gt; <span class='message'>Modelling: G: Bacteroides vulgatus et rel.</span></div><div class='output co'>#&gt; <span class='message'>Modelling: G: Butyrivibrio crossotus et rel.</span></div><div class='output co'>#&gt; <span class='message'>Modelling: G: Clostridium cellulosi et rel.</span></div><div class='output co'>#&gt; <span class='message'>Modelling: G: Clostridium orbiscindens et rel.</span></div><div class='output co'>#&gt; <span class='message'>Modelling: G: Clostridium symbiosum et rel.</span></div><div class='output co'>#&gt; <span class='message'>Modelling: G: Faecalibacterium prausnitzii et rel.</span></div><div class='output co'>#&gt; <span class='message'>Modelling: G: Oscillospira guillermondii et rel.</span></div><div class='output co'>#&gt; <span class='message'>Modelling: G: Prevotella melaninogenica et rel.</span></div><div class='output co'>#&gt; <span class='message'>Modelling: G: Prevotella oralis et rel.</span></div><div class='output co'>#&gt; <span class='message'>Modelling: G: Ruminococcus obeum et rel.</span></div><div class='output co'>#&gt; <span class='message'>Modelling: G: Sporobacter termitidis et rel.</span></div><div class='output co'>#&gt; <span class='message'>Modelling: G: Subdoligranulum variable at rel.</span></div><div class='input'><span class='co'># models list stored as attachment in ps_extra</span>
+<span class='va'>models</span>
+</div><div class='output co'>#&gt; ps_extra object - a list with phyloseq and extras:
+#&gt; 
+#&gt; phyloseq-class experiment-level object
+#&gt; otu_table()   OTU Table:         [ 13 taxa and 222 samples ]
+#&gt; sample_data() Sample Data:       [ 222 samples by 10 sample variables ]
+#&gt; tax_table()   Taxonomy Table:    [ 13 taxa by 2 taxonomic ranks ]
+#&gt; 
+#&gt; ps_extra info:
+#&gt; tax_agg = NA tax_transform = NA
+#&gt; 
+#&gt; $taxatree_models list:
+#&gt; Ranks: Phylum/Genus</div><div class='input'>
+<span class='co'># get stats from models</span>
+<span class='va'>stats</span> <span class='op'>&lt;-</span> <span class='fu'><a href='taxatree_models2stats.html'>taxatree_models2stats</a></span><span class='op'>(</span><span class='va'>models</span>, param <span class='op'>=</span> <span class='st'>"mu"</span><span class='op'>)</span>
+<span class='va'>stats</span>
+</div><div class='output co'>#&gt; ps_extra object - a list with phyloseq and extras:
+#&gt; 
+#&gt; phyloseq-class experiment-level object
+#&gt; otu_table()   OTU Table:         [ 13 taxa and 222 samples ]
+#&gt; sample_data() Sample Data:       [ 222 samples by 10 sample variables ]
+#&gt; tax_table()   Taxonomy Table:    [ 13 taxa by 2 taxonomic ranks ]
+#&gt; 
+#&gt; ps_extra info:
+#&gt; tax_agg = NA tax_transform = NA
+#&gt; 
+#&gt; $taxatree_stats dataframe:
+#&gt; 15 taxa at 2 ranks: Phylum, Genus 
+#&gt; 2 terms: female, african</div><div class='input'>
+<span class='va'>plots</span> <span class='op'>&lt;-</span> <span class='fu'>taxatree_plots</span><span class='op'>(</span>
+  data <span class='op'>=</span> <span class='va'>stats</span>, colour_trans <span class='op'>=</span> <span class='st'>"identity"</span>,
+  size_stat <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>mean <span class='op'>=</span> <span class='va'>mean</span><span class='op'>)</span>,
+  size_guide <span class='op'>=</span> <span class='st'>"legend"</span>, node_size_range <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>6</span><span class='op'>)</span>
+<span class='op'>)</span>
+
+<span class='co'># if you change the size_stat for the plots, do the same for the key!!</span>
+<span class='va'>key</span> <span class='op'>&lt;-</span> <span class='fu'><a href='taxatree_plotkey.html'>taxatree_plotkey</a></span><span class='op'>(</span>
+  data <span class='op'>=</span> <span class='va'>stats</span>,
+  <span class='va'>rank</span> <span class='op'>==</span> <span class='st'>"Phylum"</span> <span class='op'>|</span> <span class='va'>p.value</span> <span class='op'>&lt;</span> <span class='fl'>0.05</span>, <span class='co'># labelling criteria</span>
+  .combine_label <span class='op'>=</span> <span class='va'>all</span>, <span class='co'># label only taxa where criteria met for both plots</span>
+  size_stat <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>mean <span class='op'>=</span> <span class='va'>mean</span><span class='op'>)</span>,
+  node_size_range <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>7</span><span class='op'>)</span>, size_guide <span class='op'>=</span> <span class='st'>"none"</span>,
+  taxon_renamer <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>{</span>
+    <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_remove.html'>str_remove_all</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"[PG]: | [ae]t rel."</span><span class='op'>)</span>
+  <span class='op'>}</span>
+<span class='op'>)</span>
+
+<span class='co'># cowplot is powerful for arranging trees and key and colourbar legend</span>
+<span class='va'>legend</span> <span class='op'>&lt;-</span> <span class='fu'>cowplot</span><span class='fu'>::</span><span class='fu'><a href='https://wilkelab.org/cowplot/reference/get_legend.html'>get_legend</a></span><span class='op'>(</span><span class='va'>plots</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
 <span class='va'>plot_col</span> <span class='op'>&lt;-</span> <span class='fu'>cowplot</span><span class='fu'>::</span><span class='fu'><a href='https://wilkelab.org/cowplot/reference/plot_grid.html'>plot_grid</a></span><span class='op'>(</span>
   <span class='va'>plots</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>legend.position <span class='op'>=</span> <span class='st'>"none"</span><span class='op'>)</span>,
   <span class='va'>plots</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>legend.position <span class='op'>=</span> <span class='st'>"none"</span><span class='op'>)</span>,
   ncol <span class='op'>=</span> <span class='fl'>1</span>
 <span class='op'>)</span>
-<span class='fu'>cowplot</span><span class='fu'>::</span><span class='fu'><a href='https://wilkelab.org/cowplot/reference/plot_grid.html'>plot_grid</a></span><span class='op'>(</span><span class='va'>keyrow</span>, <span class='va'>plot_col</span>, nrow <span class='op'>=</span> <span class='fl'>1</span>, rel_widths <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='img'><img src='taxatree_plots-3.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='va'>models_lm</span> <span class='op'>&lt;-</span> <span class='va'>ps</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>microbiome</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/microbiome/man/transform.html'>transform</a></span><span class='op'>(</span><span class='st'>"compositional"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='Taxon-modelling.html'>taxatree_models</a></span><span class='op'>(</span>type <span class='op'>=</span> <span class='st'>"lm"</span>, tax_levels <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, formula <span class='op'>=</span> <span class='op'>~</span> <span class='va'>female</span> <span class='op'>+</span> <span class='va'>african</span>, verbose <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>2021-10-04 09:15:33 - modelling at level: Phylum</span></div><div class='output co'>#&gt; <span class='message'>2021-10-04 09:15:33 - modelling at level: Family</span></div><div class='output co'>#&gt; <span class='message'>2021-10-04 09:15:34 - modelling at level: Genus</span></div><div class='input'><span class='va'>plots_lm</span> <span class='op'>&lt;-</span> <span class='fu'>taxatree_plots</span><span class='op'>(</span><span class='va'>ps</span>, <span class='va'>models_lm</span>, max_node_size <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
-<span class='fu'>patchwork</span><span class='fu'>::</span><span class='fu'><a href='https://patchwork.data-imaginist.com/reference/wrap_plots.html'>wrap_plots</a></span><span class='op'>(</span><span class='va'>plots_lm</span>, nrow <span class='op'>=</span> <span class='fl'>1</span>, guides <span class='op'>=</span> <span class='st'>"collect"</span><span class='op'>)</span>
-</div><div class='img'><img src='taxatree_plots-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>key</span>
-</div><div class='img'><img src='taxatree_plots-5.png' alt='' width='700' height='433' /></div></pre>
+<span class='fu'>cowplot</span><span class='fu'>::</span><span class='fu'><a href='https://wilkelab.org/cowplot/reference/plot_grid.html'>plot_grid</a></span><span class='op'>(</span><span class='va'>key</span>, <span class='va'>plot_col</span>, <span class='va'>legend</span>, nrow <span class='op'>=</span> <span class='fl'>1</span>, rel_widths <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>4</span>, <span class='fl'>2</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='img'><img src='taxatree_plots-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9035</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9037</span>
       </span>
     </div>
 
@@ -171,6 +171,63 @@
     <div id="microviz-development-version" class="section level1">
 <h1 class="page-header" data-toc-text="development version">
 <a href="#microviz-development-version" class="anchor"></a>microViz (development version)</h1>
+<div id="breaking-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#breaking-changes" class="anchor"></a>Breaking changes</h2>
+<div id="trees" class="section level3">
+<h3 class="hasAnchor">
+<a href="#trees" class="anchor"></a>Trees</h3>
+<p><strong>The taxatree_* family of functions are largely rewritten.</strong> See the new website article on taxon modelling for guidance.</p>
+<ul>
+<li>
+<code>taxatree_models</code> now attaches resulting list to ps_extra</li>
+<li>
+<code>taxatree_models2stats</code> must be run on the output of <code>taxatree_models</code> before using <code>taxatree_plots</code>
+</li>
+<li>
+<code>taxatree_plots</code> has different arguments and can now be directly labelled with <code>taxatree_plot_labels</code> when <code>taxatree_label</code> is run first to identify which taxa to label.</li>
+<li>
+<code>taxatree_plotkey</code> has different arguments, with more flexible labelling conditions and a smarter label positioning approach.</li>
+<li>
+<code>tax_model</code> and <code>taxatree_models</code> now use “lm” type by default, instead of “bbdml”, as <code>corncob</code> is only a suggested dependency.</li>
+</ul>
+</div>
+<div id="ordination" class="section level3">
+<h3 class="hasAnchor">
+<a href="#ordination" class="anchor"></a>Ordination</h3>
+<ul>
+<li>
+<code>ord_plot</code> default labels now have <code>alpha</code> = 1 for both taxa and constraints (previously 0.8)</li>
+<li>
+<code>ord_plot</code> “auto”matic loading/constraint vector length scalar adjustment improvement: now uses both axes</li>
+</ul>
+</div>
+<div id="barplots" class="section level3">
+<h3 class="hasAnchor">
+<a href="#barplots" class="anchor"></a>Barplots</h3>
+<ul>
+<li>
+<code>comp_barplot</code> now uses bray-curtis by default for sample ordering (instead of aitchison) as this generally looks better</li>
+<li>
+<code>comp_barplot</code> now expects palette argument colours in first-to-last order, which is more intuitive than the previous reverse order</li>
+<li>
+<code>distinct_palette</code> now adds “lightgrey” to end by default</li>
+</ul>
+</div>
+<div id="other" class="section level3">
+<h3 class="hasAnchor">
+<a href="#other" class="anchor"></a>Other</h3>
+<ul>
+<li>
+<code>tax_filter</code>’s <code>is_counts</code> argument replaced by <code>use_counts</code>, allowing it to filter ps_extra objects using stored count data (i.e. after <code>tax_transform</code>).</li>
+<li>
+<code>comp_heatmap</code> can no longer transform data internally, but accepts data already transformed with <code>tax_transform</code> and uses stored count data in the ps_extra for any taxa annotations</li>
+<li>
+<code>tax_names2rank</code> replaces deprecated <code>tax_names2tt</code>
+</li>
+</ul>
+</div>
+</div>
 <div id="features" class="section level2">
 <h2 class="hasAnchor">
 <a href="#features" class="anchor"></a>Features</h2>
@@ -179,7 +236,7 @@
 <code>ord_plot</code> arrow labels can now be rotated with the help of <code><a href="../reference/Ordination-labels.html">tax_lab_style()</a></code> and <code><a href="../reference/Ordination-labels.html">constraint_lab_style()</a></code>
 </li>
 <li>
-<code>ps_calc_dominant</code> function for conveniently identifying the dominant taxon in each phyloseq sample</li>
+<code>ps_calc_dominant</code> function added, for conveniently identifying the dominant taxon in each phyloseq sample</li>
 <li>
 <code>distinct_palette</code> gains “kelly” and “greenArmytage” palettes and helpfully adds “lightgrey” to the end by default for convenient use as the palette argument to <code>comp_barplot</code>
 </li>
@@ -187,28 +244,11 @@
 <code>tax_transform</code> can now chain multiple transformations together and records these transformations in the ps_extra output</li>
 <li>
 <code>tax_mutate</code> function added, for modifying the tax_table rank variables with <code>dplyr</code> <code>mutate</code> syntax</li>
+<li>
+<code>tax_sort</code> can now sort ps_extra objects</li>
 <li>heatmap annotation helper <code>tax_anno</code> no longer requires ‘column’ or ‘row’ to be specified in advance</li>
-</ul>
-</div>
-<div id="breaking-changes" class="section level2">
-<h2 class="hasAnchor">
-<a href="#breaking-changes" class="anchor"></a>Breaking changes</h2>
-<ul>
 <li>
-<code>comp_heatmap</code> can no longer transform data internally, but accepts data already transformed with <code>tax_transform</code> and uses stored count data for any annotations</li>
-<li>
-<code>ord_plot</code> default labels now have <code>alpha</code> = 1 for both taxa and constraints (previously 0.8)</li>
-<li>
-<code>ord_plot</code> “auto”matic loading/constraint vector length scalar adjustment improvement: now uses both axes</li>
-<li>
-<code>comp_barplot</code> now uses bray-curtis by default for sample ordering (instead of aitchison) as this generally looks better</li>
-<li>
-<code>comp_barplot</code> now expects palette argument colours in first-to-last order, which is more intuitive than the previous reverse order</li>
-<li>
-<code>distinct_palette</code> now adds “lightgrey” to end by default</li>
-<li>
-<code>tax_names2rank</code> replaces deprecated <code>tax_names2tt</code>
-</li>
+<code>prev</code>, a low level helper function for calculating taxon prevalence now exported</li>
 </ul>
 </div>
 <div id="fixes" class="section level2">
@@ -436,9 +476,9 @@
 <code>heat_palette</code> can set range arg manually now without errors</li>
 </ul>
 </div>
-<div id="other" class="section level2">
+<div id="other-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#other" class="anchor"></a>Other</h2>
+<a href="#other-1" class="anchor"></a>Other</h2>
 <ul>
 <li>minor versions from 0.5 will now get a memorable name, probably referring to features added since the last minor version</li>
 </ul>
@@ -760,9 +800,9 @@
 <code>plot_ordin8</code> default styling of taxon and constraint vectors and labels is changed: background vectors are now semi-transparent and dashed lines are not used any more by default (but can be set)</li>
 </ul>
 </div>
-<div id="other-1" class="section level2">
+<div id="other-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#other-1" class="anchor"></a>Other</h2>
+<a href="#other-2" class="anchor"></a>Other</h2>
 <ul>
 <li>
 <code>ordin8</code> and <code>plot_ordin8</code> get basic support for CCA and NMDS methods finally</li>
@@ -802,9 +842,9 @@
 </li>
 </ul>
 </div>
-<div id="other-2" class="section level2">
+<div id="other-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#other-2" class="anchor"></a>Other</h2>
+<a href="#other-3" class="anchor"></a>Other</h2>
 <ul>
 <li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
 </ul>
