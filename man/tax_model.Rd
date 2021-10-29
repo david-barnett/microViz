@@ -7,7 +7,7 @@
 tax_model(
   ps,
   rank,
-  type = "bbdml",
+  type = "lm",
   variables = NULL,
   formula = NULL,
   taxa = NULL,
@@ -20,7 +20,7 @@ tax_model(
 
 \item{rank}{name of taxonomic rank to aggregate to and model taxa at}
 
-\item{type}{name of modelling function to use}
+\item{type}{name of modelling function to use, or the function itself}
 
 \item{variables}{vector of variable names to use in statistical model as right hand side (ignored if formula given)}
 
@@ -59,7 +59,6 @@ This can speed up analysis if you have many taxa to model.
 Run a line like this beforehand: \code{future::plan(future::multisession, workers = 3)}
 }
 \examples{
-# corncob stats
 library(corncob)
 library(dplyr)
 
@@ -84,23 +83,33 @@ ps <- ps \%>\% tax_filter(min_prevalence = 0.1, min_total_abundance = 10000)
 VARS <- c("female", "overweight", "obese")
 
 # Model first 3 genera using all VARS as predictors (just for a quick test)
-models <- tax_model(ps, rank = "Genus", taxa = 1:3, variables = VARS)
+models <- tax_model(ps, type = "bbdml", rank = "Genus", taxa = 1:3, variables = VARS)
+
 # Alternative method using formula arg instead of variables to produce identical results
-models2 <-
-  tax_model(ps, rank = "Genus", taxa = 1:3, formula = ~ female + overweight + obese)
+models2 <- tax_model(
+  ps = ps, rank = "Genus", type = "bbdml",
+  taxa = 1:3, formula = ~ female + overweight + obese
+)
 all.equal(models, models2) # should be TRUE
+
 # Model only one genus, NOTE the modified name,
 # which was returned by tax_prepend_ranks defaults
 models3 <- ps \%>\%
-  tax_model(rank = "Genus", taxa = "G: Bacteroides fragilis et rel.", variables = VARS)
+  tax_model(
+    rank = "Genus", type = "bbdml",
+    taxa = "G: Bacteroides fragilis et rel.", variables = VARS
+  )
+
 # Model all taxa at multiple taxonomic ranks (ranks 1 and 2)
 # using only female variable as predictor
-models4 <- taxatree_models(ps, ranks = 1:2, formula = ~female, verbose = FALSE)
+models4 <- taxatree_models(
+  ps = ps, type = "bbdml", ranks = 1:2, formula = ~female, verbose = FALSE
+)
 
-# modelling proportion with simple linear regression is also possible via type = lm
+# modelling proportions with simple linear regression is also possible via type = lm
 # and transforming the taxa to compositional first
 models_lm <- ps \%>\%
-  microbiome::transform("compositional") \%>\%
+  tax_transform("compositional") \%>\%
   tax_model(rank = "Genus", taxa = 1:3, variables = VARS, type = "lm")
 }
 \seealso{

@@ -45,6 +45,7 @@
 #' @param vars
 #' name of column indicating terms in models (one plot made per term)
 #' @param var_renamer function to rename variables for plot titles
+#' @param title_size font size of title
 #' @param layout any ggraph layout, default is "tree"
 #' @param layout_seed
 #' any numeric, required if a stochastic igraph layout is named
@@ -58,11 +59,6 @@
 #' @param colour_na
 #' colour for NA values in tree.
 #' (if unused ranks are not dropped, they will have NA values for colour_stat)
-#' @param label
-#' should the taxatree_stats label column be used to identify taxa for labelling.
-#' (requires running `taxatree_label` before `taxatree_plots` to work).
-#' @param taxon_renamer
-#' function to rename taxa in labels (only relevant if label is TRUE)
 #'
 #' @return list of ggraph ggplots
 #' @export
@@ -146,7 +142,7 @@ taxatree_plots <- function(data,
                            size_stat = list(prevalence = prev),
                            node_size_range = c(1, 4),
                            edge_width_range = node_size_range * 0.8,
-                           size_guide = "none",
+                           size_guide = "legend",
                            size_trans = "identity",
                            sig_stat = "p.value",
                            sig_threshold = 0.05,
@@ -156,15 +152,14 @@ taxatree_plots <- function(data,
                            edge_alpha = 0.7,
                            vars = "term",
                            var_renamer = identity,
+                           title_size = 10,
                            layout = "tree",
                            layout_seed = NA,
                            circular = identical(layout, "tree"),
                            node_sort = NULL,
                            add_circles = isTRUE(circular),
                            drop_ranks = TRUE,
-                           colour_na = "grey35",
-                           label = FALSE,
-                           taxon_renamer = identity) {
+                           colour_na = "grey35") {
   # get variable-specific stats for joining to node data
   stats <- data[["taxatree_stats"]]
   taxatree_plots_statsCheck(
@@ -241,7 +236,9 @@ taxatree_plots <- function(data,
         colour_trans = colour_trans, colour_na = colour_na,
         lum_range = lum_range
       )
-      p <- taxatree_plot_styling(p = p, circular = circular)
+      p <- taxatree_plot_styling(
+        p = p, circular = circular, title_size = title_size
+      )
       return(p)
     }
   )
@@ -471,18 +468,21 @@ taxatree_plotColourScaling <- function(p,
 }
 
 # helper, to set theme and coordinates of tree_plots
-taxatree_plot_styling <- function(p, circular) {
+taxatree_plot_styling <- function(p,
+                                  circular,
+                                  expand = FALSE,
+                                  title_size = 10) {
   p <- p +
     ggraph::theme_graph(
       base_family = "sans",
-      title_size = 10,
+      title_size = title_size,
       plot_margin = grid::unit(x = rep(0.03, 4), "npc")
     )
 
   if (isTRUE(circular)) {
     # trick to set new coordinates as "default"
     # see: https://github.com/tidyverse/ggplot2/issues/2799
-    cf <- ggplot2::coord_fixed(expand = FALSE, clip = "off")
+    cf <- ggplot2::coord_fixed(expand = expand, clip = "off")
     cf$default <- TRUE
     p <- p + cf
   } else {

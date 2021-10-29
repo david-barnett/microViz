@@ -10,15 +10,15 @@ taxatree_plotkey(
   size_stat = list(prevalence = prev),
   node_size_range = c(1.5, 5),
   edge_width_range = node_size_range * 0.8,
-  size_guide = "legend",
+  size_guide = "none",
   size_trans = "identity",
   colour = "lightgrey",
   edge_alpha = 0.7,
   title = "Key",
+  title_size = 14,
   taxon_renamer = identity,
-  label_fun = ggrepel::geom_label_repel,
-  label_fun_args = list(min.segment.length = 0, box.padding = 0, label.padding = 0.15),
   .combine_label = any,
+  .draw_label = TRUE,
   .calc_label = TRUE,
   layout = "tree",
   layout_seed = NA,
@@ -53,16 +53,19 @@ such as "identity", "log1p", or "sqrt"}
 
 \item{title}{title of plot (NULL for none)}
 
-\item{taxon_renamer}{function to rename taxa in labels (only relevant if label is TRUE)}
+\item{title_size}{font size of title}
 
-\item{label_fun}{function used to draw labels}
-
-\item{label_fun_args}{arguments passed to label fun (for styling)}
+\item{taxon_renamer}{function that takes taxon names and returns modified names for labels}
 
 \item{.combine_label}{all or any: function to combine multiple logical "label" values for a taxon
 (relevant if taxatree_stats already present in data)}
 
-\item{.calc_label}{if you already set labels with taxatree_label, set this to FALSE to use those}
+\item{.draw_label}{should labels be drawn, or just the bare tree, set this to FALSE if you want
+to draw customised labels with taxatree_plot_labels afterwards}
+
+\item{.calc_label}{if you already set labels with taxatree_label:
+set this to FALSE to use / avoid overwriting that data
+(ignores \code{...} if FALSE)}
 
 \item{layout}{any ggraph layout, default is "tree"}
 

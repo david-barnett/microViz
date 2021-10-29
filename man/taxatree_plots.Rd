@@ -16,7 +16,7 @@ taxatree_plots(
   size_stat = list(prevalence = prev),
   node_size_range = c(1, 4),
   edge_width_range = node_size_range * 0.8,
-  size_guide = "none",
+  size_guide = "legend",
   size_trans = "identity",
   sig_stat = "p.value",
   sig_threshold = 0.05,
@@ -26,15 +26,14 @@ taxatree_plots(
   edge_alpha = 0.7,
   vars = "term",
   var_renamer = identity,
+  title_size = 10,
   layout = "tree",
   layout_seed = NA,
   circular = identical(layout, "tree"),
   node_sort = NULL,
   add_circles = isTRUE(circular),
   drop_ranks = TRUE,
-  colour_na = "grey35",
-  label = FALSE,
-  taxon_renamer = identity
+  colour_na = "grey35"
 )
 }
 \arguments{
@@ -88,6 +87,8 @@ such as "identity", "log1p", or "sqrt"}
 
 \item{var_renamer}{function to rename variables for plot titles}
 
+\item{title_size}{font size of title}
+
 \item{layout}{any ggraph layout, default is "tree"}
 
 \item{layout_seed}{any numeric, required if a stochastic igraph layout is named}
@@ -103,11 +104,6 @@ Use \code{tax_sort()} before \code{taxatree_plots()} for finer control.}
 
 \item{colour_na}{colour for NA values in tree.
 (if unused ranks are not dropped, they will have NA values for colour_stat)}
-
-\item{label}{should the taxatree_stats label column be used to identify taxa for labelling.
-(requires running \code{taxatree_label} before \code{taxatree_plots} to work).}
-
-\item{taxon_renamer}{function to rename taxa in labels (only relevant if label is TRUE)}
 }
 \value{
 list of ggraph ggplots

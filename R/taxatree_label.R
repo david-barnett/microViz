@@ -19,9 +19,12 @@
 #' @param ...
 #' REQUIRED logical conditions for labelling
 #' e.g. rank == "Phylum", p.value < 0.1 | taxon %in% listOfTaxa
-#' @param node_fun
+#' @param .node_fun
 #' named list of length 1 providing `taxatree_nodes` `fun` arg.
 #' (name of list iterm is available for use in ...)
+#' @param .label_var name of label indicator variable to be created.
+#' If you change this, beware that taxatree_plotkey will not work, you will
+#' need to called taxatree_plot_label with
 #'
 #' @return ps_extra with (modified) taxatree_stats dataframe
 #' @export
@@ -44,13 +47,14 @@
 #' labelled$taxatree_stats
 taxatree_label <- function(data,
                            ...,
-                           node_fun = list(prevalence = prev)) {
+                           .label_var = "label",
+                           .node_fun = list(prevalence = prev)) {
 
   # get node data or use node data if already provided
-  if (inherits(node_fun, "data.frame")) {
-    treeNodes <- node_fun
+  if (inherits(.node_fun, "data.frame")) {
+    treeNodes <- .node_fun
   } else {
-    treeNodes <- taxatree_nodes(data, fun = node_fun, .use_counts = TRUE)
+    treeNodes <- taxatree_nodes(data, fun = .node_fun, .use_counts = TRUE)
   }
 
   # get taxatree_stats if present
@@ -63,8 +67,8 @@ taxatree_label <- function(data,
 
   # filter stats dataframe to label taxa
   stats[["..ROW.ID.."]] <- rownames(stats)
-  labelled <- dplyr::filter(stats, ...)
-  stats[["label"]] <- stats[["..ROW.ID.."]] %in% labelled[["..ROW.ID.."]]
+  labelled <- dplyr::filter(.data = stats, ...)
+  stats[[.label_var]] <- stats[["..ROW.ID.."]] %in% labelled[["..ROW.ID.."]]
   stats[["..ROW.ID.."]] <- NULL
   stats <- dplyr::as_tibble(stats)
 

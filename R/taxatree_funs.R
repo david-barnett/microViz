@@ -78,10 +78,10 @@ taxatree_nodes <- function(ps,
 
   # sort if requested
   if (identical(.sort, "ascending") | identical(.sort, "increasing")) {
-    nodes_df[order(nodes_df[[fun]], decreasing = FALSE), ]
+    nodes_df[order(nodes_df[[names(fun)[[1]]]], decreasing = FALSE), ]
   }
   if (identical(.sort, "descending") | identical(.sort, "decreasing")) {
-    nodes_df[order(nodes_df[[fun]], decreasing = TRUE), ]
+    nodes_df[order(nodes_df[[names(fun)[[1]]]], decreasing = TRUE), ]
   }
   return(nodes_df)
 }

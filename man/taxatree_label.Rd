@@ -4,7 +4,12 @@
 \alias{taxatree_label}
 \title{Add logical label column to taxatree_stats dataframe}
 \usage{
-taxatree_label(data, ..., node_fun = list(prevalence = prev))
+taxatree_label(
+  data,
+  ...,
+  .label_var = "label",
+  .node_fun = list(prevalence = prev)
+)
 }
 \arguments{
 \item{data}{ps_extra (or phyloseq)}
@@ -12,7 +17,11 @@ taxatree_label(data, ..., node_fun = list(prevalence = prev))
 \item{...}{REQUIRED logical conditions for labelling
 e.g. rank == "Phylum", p.value < 0.1 | taxon \%in\% listOfTaxa}
 
-\item{node_fun}{named list of length 1 providing \code{taxatree_nodes} \code{fun} arg.
+\item{.label_var}{name of label indicator variable to be created.
+If you change this, beware that taxatree_plotkey will not work, you will
+need to called taxatree_plot_label with}
+
+\item{.node_fun}{named list of length 1 providing \code{taxatree_nodes} \code{fun} arg.
 (name of list iterm is available for use in ...)}
 }
 \value{

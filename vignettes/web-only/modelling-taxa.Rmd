@@ -150,11 +150,11 @@ parabacteroides_bb$Parabacteroides
 
 ## Model all the taxa!
 
-Now we will fit a similar model for almost every taxon at every rank. The code
-for `taxatree_models` is quite similar to `tax_model`. However, you
-might need to run `tax_prepend_ranks` to ensure that each taxon at each
-rank is always unique. As an example of the problem, Actinobacteria is
-the name of both a Phylum and a Class!
+Now we will fit a similar model for almost every taxon at every rank.
+The code for `taxatree_models` is quite similar to `tax_model`. However,
+you might need to run `tax_prepend_ranks` to ensure that each taxon at
+each rank is always unique. As an example of the problem, Actinobacteria
+is the name of both a Phylum and a Class!
 
 ```{r}
 lm_models <- phylo %>% 
@@ -173,10 +173,10 @@ lm_models <- phylo %>%
   )
 ```
 
-Why filter the taxa? 
-*It's less likely that we are interested in rare taxa, and models of
-rare taxon abundances are more likely to be unreliable. Reducing the the
-number of taxa modelled also makes visualising the results easier!*
+Why filter the taxa? *It's less likely that we are interested in rare
+taxa, and models of rare taxon abundances are more likely to be
+unreliable. Reducing the the number of taxa modelled also makes
+visualising the results easier!*
 
 ```{r}
 lm_models
@@ -240,6 +240,108 @@ lm_stats %>% taxatree_plots(
   )
 ```
 
+#### Taxatree Key
+
+But how do we know which taxa are which nodes? We can create a labelled
+grey tree with `taxatree_plotkey`. This labels taxa based on certain
+conditions.
+
+```{r, fig.height=5, fig.width=6}
+set.seed(123) # label position 
+key <- taxatree_plotkey(
+  data = lm_stats, 
+  taxon_renamer = function(x) stringr::str_remove(x, "[PFG]: "),
+  # 2 lines of conditions below, for filtering taxa to be labelled
+  rank == "Phylum" | rank == "Genus" & prevalence > 0.25, 
+  !grepl("Kingdom", taxon)
+) + 
+  # add a bit more space for the longer labels by expanding the x axis
+  scale_x_continuous(expand = expansion(mult = 0.2))
+# all phyla are labelled, and all genera with a prevalence of over 0.2
+# except for any taxa whose names (partly) match "Kingdom" 
+# (i.e. an unclassified taxon)
+key
+```
+
+##### Key + Trees
+
+Let's put the key and some of the trees together in one `patchwork`
+figure. Getting the sizing right on these combined plots can be very
+tricky! Pay attention to the absolute height and width of the plot
+output.
+
+`gridExtra::grid.arrange()` or `cowplot::plot_grid()` are alternatives
+you can also try. `cowplot::get_legend()` can be particularly useful.
+
+```{r, fig.width=13, fig.height=5.5, dpi=120}
+trees <- lm_stats %>% 
+  taxatree_plots(node_size_range = c(1, 2.25)) %>%
+  .[1:4] %>% 
+  patchwork::wrap_plots(
+    ncol = 2, guides = "collect"
+  )
+
+panel <- patchwork::wrap_plots(key, trees, nrow = 1, widths = 8:7)
+set.seed(111)
+panel
+```
+
+You could save the plot with `ggsave()` like this.
+
+```{r eval=FALSE}
+set.seed(111)
+ggsave("test.png", panel, width = 13, height = 5.5, dpi = 120, device = "png")
+```
+
+##### Alternative label styling
+
+You can change the default styling of the labels by first suppressing
+the automatic drawing of labels with `.draw_label = FALSE` in
+`taxatree_plotkey()` and then adding your own custom-style labels with
+`taxatree_plot_labels()`. Here we will draw some yellow labels.
+
+```{r, fig.height=5, fig.width=7}
+taxatree_plotkey(
+  data = lm_stats, .draw_label = FALSE,
+  rank %in% c("Phylum", "Family") & !grepl("Bacteria", taxon),
+  prevalence > 0.2 | rank == "Phylum"
+) %>% 
+  taxatree_plot_labels(
+    taxon_renamer = function(x) stringr::str_remove(x, "[PFGO]: "),
+    # default fun is ggrepel::geom_text_repel
+    fun = ggrepel::geom_label_repel, 
+    # arguments modifying label style
+    size = 2.5, alpha = 0.5, colour = "black", fill = "gold1", 
+    label.size = 0.05, label.r = unit(0.05, "lines"), 
+    label.padding = unit(0.15, "lines"), segment.size = 0.5,
+    # arguments affecting label positioning
+    box.padding = 0.05, x_nudge = 0.4, y_nudge = 0.05,
+    hjust = 0.5, seed = 123
+  )
+```
+
+#### Directly labelling taxa
+
+You can directly label taxatree_plots too, but it is better to only do
+this for a few taxa. You must run `taxatree_label()` first to create a
+"label" indicator variable.
+
+```{r, fig.width=6.5, fig.height=4}
+lm_stats %>% 
+  taxatree_label(
+    rank == "Genus", p.value < 0.05 | prevalence > 0.5, estimate > 0
+  ) %>% 
+  taxatree_plots() %>% 
+  .[[1]] %>% # show only the first plot
+  taxatree_plot_labels(
+    taxon_renamer = function(x) stringr::str_remove(x, "G: "),
+    fun = ggrepel::geom_label_repel, x_nudge = 0.7, hjust = 0.5, size = 2
+  ) +
+  # the lines below allow expansion and make some space for labels
+  coord_fixed(clip = "off", expand = TRUE) +
+  scale_x_continuous(expand = expansion(mult = c(0.15, 0.25)))
+```
+
 #### Sorting taxa nodes
 
 If you like, you can sort the nodes by sorting the taxa in the ps_extra
@@ -248,7 +350,7 @@ object.
 ```{r, fig.width=5, fig.height=4}
 lm_stats %>% 
   tax_sort(by = "prev", at = "Genus") %>%
-  taxatree_plots(size_guide = "legend") %>% 
+  taxatree_plots() %>% 
   .[[1]] # show only the first plot
 ```
 
@@ -260,7 +362,7 @@ lm_stats %>%
   tax_sort(by = "prev", at = "Family") %>%
   tax_sort(by = "name", at = "Phylum") %>%
   tax_sort(by = "rev") %>%
-  taxatree_plots(size_guide = "legend") %>% 
+  taxatree_plots() %>% 
   .[[1]] # show only the first plot
 ```
 
@@ -277,9 +379,8 @@ any significant associations after this FDR correction.
 ```{r, fig.width=7, fig.height=6}
 lm_stats %>% 
   taxatree_plots(
-    size_guide = "legend",
     sig_stat = "p.adj.BH.rank", sig_threshold = 0.1, 
-    sig_shape = 4, sig_size = 1.5,
+    sig_shape = "cross", sig_size = 1.5,
     node_size_range = c(1, 3), var_renamer = toupper
 ) %>% 
   .[1:4] %>% # keep only first 4 plots
@@ -288,10 +389,15 @@ lm_stats %>%
   )
 ```
 
-## Beta binomial regression example
+## Beta-binomial regression example
+
+The corncob package provides beta-binomial regression models. See the
+paper [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7514055/), and
+the helpful package vignette:
+`vignette("corncob-intro", package = "corncob")`.
 
 We will filter the taxa more strictly (by a higher prevalence threshold)
-before this type of modelling. We do not need to transform the data as
+before this type of modelling. We do not need to transform the data, as
 this approach uses counts.
 
 ```{r}
@@ -306,6 +412,10 @@ bb_models <- phylo %>%
   )
 bb_models
 ```
+
+When extracting stats from corncob beta-binomial models, you need to
+specify which parameter estimate you want, "mu" for differential
+abundance, or "phi" for differential variability or overdispersion.
 
 ```{r}
 bb_stats <- taxatree_models2stats(bb_models, param = "mu")
@@ -324,24 +434,47 @@ bb_stats %>% taxatree_plots(
   ) 
 ```
 
-#### Alternative layouts
+### Alternative layouts
 
 You do not need to make circular tree plots if you don't want to!
 
 ```{r, fig.width=5, fig.height=5}
-bb_stats %>% taxatree_plots(
-  node_size_range = c(1, 4), circular = FALSE, colour_trans = "identity"
-) %>% 
+alt_trees <- bb_stats %>% 
+  taxatree_plots(
+    node_size_range = c(1, 4), circular = FALSE, colour_trans = "identity"
+  ) %>% 
   # keep only first 4 plots
   .[1:4] %>% 
   patchwork::wrap_plots(
     ncol = 2, guides = "collect"
-  ) & 
+  ) & # & is used by patchwork to modify multiple ggplots (instead of +)
   coord_flip() & 
   scale_y_reverse()
+
+alt_trees
 ```
 
-You don't even have to use a regular tree!
+Let's add the key for this layout and label it manually with
+`taxatree_plot_labels()`.
+
+```{r, fig.width=5, fig.height=8}
+alt_tree_key <- taxatree_plotkey(
+  data = bb_stats, circular = FALSE, .draw_label = FALSE,
+  rank == "Family"
+) %>% 
+  taxatree_plot_labels(
+    circular = FALSE, 
+    taxon_renamer = function(x) stringr::str_remove(x, "[PFG]: "),
+    hjust = 0.5, force = 0, nudge_y = 2, size = 3
+  )  + 
+  coord_flip() + 
+  scale_y_reverse(expand = expansion(mult = c(0.1, 1))) +
+  theme(plot.title = element_text(size = 14))
+
+patchwork::wrap_plots(alt_tree_key, alt_trees, nrow = 2, heights = 1:2)
+```
+
+You don't have to use a regular tree!
 
 Alternative layouts from the igraph package are possible, such as the
 Kamada and Kawai spring algorithm ("kk") or Fruchterman and Reingold
@@ -360,7 +493,8 @@ bb_stats %>% taxatree_plots(
   )
 ```
 
+# Session info
+
 ```{r}
-
+devtools::session_info()
 ```
-

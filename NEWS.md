@@ -3,11 +3,13 @@
 ## Breaking changes
 
 ### Trees
-The taxatree_* family of functions are largely rewritten. See the new (in development) website article on taxon modelling for guidance.
+**The taxatree_* family of functions are largely rewritten.** See the new website article on taxon modelling for guidance.
 
 - `taxatree_models` now attaches resulting list to ps_extra
 - `taxatree_models2stats` must be run on the output of `taxatree_models` before using `taxatree_plots`
-
+- `taxatree_plots` has different arguments and can now be directly labelled with `taxatree_plot_labels` when `taxatree_label` is run first to identify which taxa to label.
+- `taxatree_plotkey` has different arguments, with more flexible labelling conditions and a smarter label positioning approach.
+- `tax_model` and `taxatree_models` now use "lm" type by default, instead of "bbdml", as `corncob` is only a suggested dependency.
 
 ### Ordination
 - `ord_plot` default labels now have `alpha` = 1 for both taxa and constraints (previously 0.8)
