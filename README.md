@@ -30,8 +30,8 @@ ecology packages like `phyloseq`, `vegan`, & `microbiome`.
 :paperclip: This website is the best place for documentation and
 examples: <https://david-barnett.github.io/microViz/>
 
--   **[“This ReadMe”](https://david-barnett.github.io/microViz/) **
-    shows a few example analyses
+-   **[This ReadMe](https://david-barnett.github.io/microViz/)** shows a
+    few example analyses
 
 -   **The
     [Reference](https://david-barnett.github.io/microViz/reference/index.html)
@@ -267,8 +267,8 @@ aitchison_perm <- dist_permanova(
   variables = "bmi_group + female"
 )
 #> Dropping samples with missings: 2
-#> 2021-10-29 21:21:05 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2021-10-29 21:21:05 - Finished PERMANOVA
+#> 2021-10-29 22:26:37 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2021-10-29 22:26:38 - Finished PERMANOVA
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
 #>            Df   SumOfSqs         R2        F Pr(>F)
@@ -298,8 +298,8 @@ perm2 <- dist_permanova(
   data = aitchison_dists, variables = c("weight", "female"), seed = 321
 )
 #> Dropping samples with missings: 2
-#> 2021-10-29 21:21:05 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2021-10-29 21:21:06 - Finished PERMANOVA
+#> 2021-10-29 22:26:38 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2021-10-29 22:26:38 - Finished PERMANOVA
 perm_get(perm2)
 #> Permutation test for adonis under reduced model
 #> Marginal effects of terms
