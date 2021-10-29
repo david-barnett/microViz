@@ -218,7 +218,7 @@ lm_stats <- taxatree_stats_p_adjust(
 lm_stats$taxatree_stats
 ```
 
-### Plot all the taxatree_stats!
+## Plot all the taxatree_stats!
 
 `taxatree_plots()` allows you to plot statistics (e.g. point estimates
 and significance) from all of the taxa models onto a tree layout. The
@@ -240,7 +240,7 @@ lm_stats %>% taxatree_plots(
   )
 ```
 
-#### Taxatree Key
+### Taxatree Key
 
 But how do we know which taxa are which nodes? We can create a labelled
 grey tree with `taxatree_plotkey`. This labels taxa based on certain
@@ -263,7 +263,7 @@ key <- taxatree_plotkey(
 key
 ```
 
-##### Key + Trees
+#### Key + Trees
 
 Let's put the key and some of the trees together in one `patchwork`
 figure. Getting the sizing right on these combined plots can be very
@@ -293,7 +293,7 @@ set.seed(111)
 ggsave("test.png", panel, width = 13, height = 5.5, dpi = 120, device = "png")
 ```
 
-##### Alternative label styling
+#### Alternative label styling
 
 You can change the default styling of the labels by first suppressing
 the automatic drawing of labels with `.draw_label = FALSE` in
@@ -320,7 +320,7 @@ taxatree_plotkey(
   )
 ```
 
-#### Directly labelling taxa
+### Directly labelling taxa
 
 You can directly label taxatree_plots too, but it is better to only do
 this for a few taxa. You must run `taxatree_label()` first to create a
@@ -342,7 +342,7 @@ lm_stats %>%
   scale_x_continuous(expand = expansion(mult = c(0.15, 0.25)))
 ```
 
-#### Sorting taxa nodes
+### Sorting taxa nodes
 
 If you like, you can sort the nodes by sorting the taxa in the ps_extra
 object.
@@ -366,7 +366,7 @@ lm_stats %>%
   .[[1]] # show only the first plot
 ```
 
-#### Plotting adjusted p values
+### Plotting adjusted p values
 
 Remember we made adjusted p values earlier? Let's plot those instead.
 Just to show how it's done, we'll also change the symbol used to
