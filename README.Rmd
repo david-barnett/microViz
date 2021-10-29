@@ -37,7 +37,7 @@ options(width = 100)
 
 :paperclip: This website is the best place for documentation and examples: <https://david-barnett.github.io/microViz/>
 
--   **The ["Get started"](https://david-barnett.github.io/microViz/articles/web-only/microViz.html) page** shows a few example analyses (as does this ReadMe)
+-   **["This ReadMe"](https://david-barnett.github.io/microViz/) ** shows a few example analyses
 
 -   **The [Reference](https://david-barnett.github.io/microViz/reference/index.html) page** lists all functions and links to help pages and examples
 
@@ -54,8 +54,10 @@ options(width = 100)
     -   [Interactive ordination plots with ord_explore](https://david-barnett.github.io/microViz/articles/web-only/ordination-interactive.html)
 
     -   [Visualising taxonomic compositions with comp_barplot](https://david-barnett.github.io/microViz/articles/web-only/compositions.html)
+    
+    - [Modelling and plotting individual taxon associations with taxatrees](https://david-barnett.github.io/microViz/articles/web-only/modelling-taxa.html)
 
-    -   More coming soon!
+    -   More coming soon(ish)!
         Post on [GitHub discussions](https://github.com/david-barnett/microViz/discussions) if you have questions/requests
 
 ## Installation
@@ -135,7 +137,7 @@ sample_data(dietswap)$female[c(3, 4)] <- NA
 You have quite a few samples in your phyloseq object, and would like to visualise their compositions.
 Perhaps these example data differ across BMI groups?
 
-```{r fig.height=8, fig.width=10, dpi=300}
+```{r fig.height=8, fig.width=10, dpi=120}
 dietswap %>%
   tax_filter(min_prevalence = 1) %>%
   comp_barplot(
@@ -166,7 +168,7 @@ Here is one option as an example:
 5.  Plot the first 2 axes of this PCA ordination, colouring samples by group and adding taxon loading arrows to visualise which taxa generally differ across your samples - use `ord_plot()`
 6.  Customise the theme of the ggplot as you like and/or add features like ellipses or annotations
 
-```{r ordination-plot, dpi=300}
+```{r ordination-plot, dpi=120}
 # perform ordination
 unconstrained_aitchison_pca <-
   dietswap %>%
@@ -180,16 +182,18 @@ unconstrained_aitchison_pca <-
 # create plot
 pca_plot <- unconstrained_aitchison_pca %>%
   ord_plot(
-    plot_taxa = 1:6, colour = "bmi_group", size = 2,
-    tax_vec_length = 0.5,
-    auto_caption = TRUE
+    plot_taxa = 1:6, colour = "bmi_group", size = 1.5,
+    tax_vec_length = 0.325, 
+    tax_lab_style = tax_lab_style(max_angle = 90, aspect_ratio = 0.5),
+    auto_caption = 8
   )
 
 # customise plot
 customised_plot <- pca_plot +
-  stat_ellipse(aes(linetype = bmi_group, colour = bmi_group)) +
+  stat_ellipse(aes(linetype = bmi_group, colour = bmi_group), size = 0.3) +
   scale_colour_brewer(palette = "Set1") +
-  theme(legend.position = "bottom")
+  theme(legend.position = "bottom") +
+  coord_fixed(ratio = 0.5, clip = "off") # makes rotated labels align correctly
 
 # show plot
 customised_plot
@@ -229,17 +233,27 @@ info_get(aitchison_perm)
 
 You could visualise the effect of the (numeric/logical) variables in your permanova directly using the ord_plot function with constraints.
 
-```{r constrained-ord, fig.height=5, fig.width=7, dpi=300}
-perm2 <- dist_permanova(data = aitchison_dists, variables = c("weight", "female"), seed = 321)
+```{r constrained-ord}
+perm2 <- dist_permanova(
+  data = aitchison_dists, variables = c("weight", "female"), seed = 321
+)
 perm_get(perm2)
+```
 
+
+```{r constrained-ord-plot, fig.height=5, fig.width=7, dpi=120}
 ord_calc(perm2, constraints = c("weight", "female")) %>%
   ord_plot(
-    colour = "sex", size = 2,
-    constraint_vec_style = list(colour = "black", size = 1.15),
-    constraint_lab_style = list(colour = "black")
+    colour = "sex", size = 1.5,
+    constraint_vec_length = 1,
+    constraint_vec_style = vec_constraint(size = 1.15, colour = "black"),
+    constraint_lab_style = constraint_lab_style(
+      max_angle = 90, size = 3, aspect_ratio = 0.75, colour = "black"
+      )
   ) +
-  stat_ellipse(aes(colour = sex)) + scale_color_brewer(palette = "Dark2")
+  stat_ellipse(aes(colour = sex), size = 0.3) + 
+  scale_color_brewer(palette = "Dark2") +
+  coord_fixed(ratio = 0.75)
 ```
 
 ### Heatmaps

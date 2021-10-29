@@ -208,7 +208,9 @@ constr_ord <- ps %>%
   tax_filter(min_prevalence = 5 / 100, tax_level = "Genus") %>%
   tax_agg("Genus") %>%
   tax_transform("clr") %>%
-  ord_calc(method = "RDA", constraints = c("female", "wt_scaled", "P", "R", "O"))
+  ord_calc(
+    method = "RDA", constraints = c("female", "wt_scaled", "P", "R", "O")
+  )
 ```
 
 ```{r print constrained ord}
@@ -267,7 +269,7 @@ tree.
 tt_stats %>% 
   taxatree_plotkey(
     node_size_range = c(2, 8), size_stat = list(mean = mean),
-    rank == "Phylum", label_fun_args = list(size = 4),
+    rank == "Phylum", 
     taxon_renamer = function(x) stringr::str_remove_all(x, "^.: | [ae]t rel.")
   )
 ```
