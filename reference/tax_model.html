@@ -101,7 +101,7 @@ abundance and dispersion parameters." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9037</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9038</span>
       </span>
     </div>
 
@@ -255,65 +255,77 @@ abundance and dispersion parameters.</p>
 
     <p><code>tax_model</code> and <code>taxatree_models</code> can use parallel processing with the <code>future</code> package.
 This can speed up analysis if you have many taxa to model.
-Run a line like this beforehand: <code><a href='https://future.futureverse.org/reference/plan.html'>future::plan(future::multisession, workers = 3)</a></code></p>
+Run a line like this beforehand: <code>future::plan(future::multisession, workers = 3)</code></p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='taxatree_plots.html'>taxatree_plots</a></code> for how to plot the output of <code>taxatree_models</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/bryandmartin/corncob'>corncob</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>dietswap</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span>
-<span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span>
-
-<span class='co'># create some binary variables for easy visualisation</span>
-<span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>ps</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='ps_mutate.html'>ps_mutate</a></span><span class='op'>(</span>
-  female <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>sex</span> <span class='op'>==</span> <span class='st'>"female"</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='cn'>NaN</span><span class='op'>)</span>,
-  overweight <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>bmi_group</span> <span class='op'>==</span> <span class='st'>"overweight"</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='cn'>NaN</span><span class='op'>)</span>,
-  obese <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>bmi_group</span> <span class='op'>==</span> <span class='st'>"obese"</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='cn'>NaN</span><span class='op'>)</span>
-<span class='op'>)</span>
-
-<span class='co'># This example HITChip dataset has some taxa with the same name for phylum and family...</span>
-<span class='co'># We can fix problems like this with the tax_prepend_ranks function</span>
-<span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tax_prepend_ranks.html'>tax_prepend_ranks</a></span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span>
-
-<span class='co'># filter out rare taxa (it is often difficult to fit multivariable models to rare taxa)</span>
-<span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>ps</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='tax_filter.html'>tax_filter</a></span><span class='op'>(</span>min_prevalence <span class='op'>=</span> <span class='fl'>0.1</span>, min_total_abundance <span class='op'>=</span> <span class='fl'>10000</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Proportional min_prevalence given: 0.1 --&gt; min 23/222 samples.</span></div><div class='input'>
-<span class='co'># specify variables used for modelling</span>
-<span class='va'>VARS</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"female"</span>, <span class='st'>"overweight"</span>, <span class='st'>"obese"</span><span class='op'>)</span>
-
-<span class='co'># Model first 3 genera using all VARS as predictors (just for a quick test)</span>
-<span class='va'>models</span> <span class='op'>&lt;-</span> <span class='fu'>tax_model</span><span class='op'>(</span><span class='va'>ps</span>, type <span class='op'>=</span> <span class='st'>"bbdml"</span>, rank <span class='op'>=</span> <span class='st'>"Genus"</span>, taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, variables <span class='op'>=</span> <span class='va'>VARS</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Modelling: G: Akkermansia</span></div><div class='output co'>#&gt; <span class='message'>Modelling: G: Allistipes et rel.</span></div><div class='output co'>#&gt; <span class='message'>Modelling: G: Anaerostipes caccae et rel.</span></div><div class='input'>
-<span class='co'># Alternative method using formula arg instead of variables to produce identical results</span>
-<span class='va'>models2</span> <span class='op'>&lt;-</span> <span class='fu'>tax_model</span><span class='op'>(</span>
-  ps <span class='op'>=</span> <span class='va'>ps</span>, rank <span class='op'>=</span> <span class='st'>"Genus"</span>, type <span class='op'>=</span> <span class='st'>"bbdml"</span>,
-  taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, formula <span class='op'>=</span> <span class='op'>~</span> <span class='va'>female</span> <span class='op'>+</span> <span class='va'>overweight</span> <span class='op'>+</span> <span class='va'>obese</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Modelling: G: Akkermansia</span></div><div class='output co'>#&gt; <span class='message'>Modelling: G: Allistipes et rel.</span></div><div class='output co'>#&gt; <span class='message'>Modelling: G: Anaerostipes caccae et rel.</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span><span class='op'>(</span><span class='va'>models</span>, <span class='va'>models2</span><span class='op'>)</span> <span class='co'># should be TRUE</span>
-</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='co'># Model only one genus, NOTE the modified name,</span>
-<span class='co'># which was returned by tax_prepend_ranks defaults</span>
-<span class='va'>models3</span> <span class='op'>&lt;-</span> <span class='va'>ps</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>tax_model</span><span class='op'>(</span>
-    rank <span class='op'>=</span> <span class='st'>"Genus"</span>, type <span class='op'>=</span> <span class='st'>"bbdml"</span>,
-    taxa <span class='op'>=</span> <span class='st'>"G: Bacteroides fragilis et rel."</span>, variables <span class='op'>=</span> <span class='va'>VARS</span>
-  <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Modelling: G: Bacteroides fragilis et rel.</span></div><div class='input'>
-<span class='co'># Model all taxa at multiple taxonomic ranks (ranks 1 and 2)</span>
-<span class='co'># using only female variable as predictor</span>
-<span class='va'>models4</span> <span class='op'>&lt;-</span> <span class='fu'><a href='taxatree_models.html'>taxatree_models</a></span><span class='op'>(</span>
-  ps <span class='op'>=</span> <span class='va'>ps</span>, type <span class='op'>=</span> <span class='st'>"bbdml"</span>, ranks <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, formula <span class='op'>=</span> <span class='op'>~</span><span class='va'>female</span>, verbose <span class='op'>=</span> <span class='cn'>FALSE</span>
-<span class='op'>)</span>
-
-<span class='co'># modelling proportions with simple linear regression is also possible via type = lm</span>
-<span class='co'># and transforming the taxa to compositional first</span>
-<span class='va'>models_lm</span> <span class='op'>&lt;-</span> <span class='va'>ps</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"compositional"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>tax_model</span><span class='op'>(</span>rank <span class='op'>=</span> <span class='st'>"Genus"</span>, taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, variables <span class='op'>=</span> <span class='va'>VARS</span>, type <span class='op'>=</span> <span class='st'>"lm"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Modelling: G: Akkermansia</span></div><div class='output co'>#&gt; <span class='message'>Modelling: G: Allistipes et rel.</span></div><div class='output co'>#&gt; <span class='message'>Modelling: G: Anaerostipes caccae et rel.</span></div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/bryandmartin/corncob'>corncob</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>dietswap</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># create some binary variables for easy visualisation</span></span>
+<span class='r-in'><span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>ps</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span> <span class='fu'><a href='ps_mutate.html'>ps_mutate</a></span><span class='op'>(</span></span>
+<span class='r-in'>  female <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>sex</span> <span class='op'>==</span> <span class='st'>"female"</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='cn'>NaN</span><span class='op'>)</span>,</span>
+<span class='r-in'>  overweight <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>bmi_group</span> <span class='op'>==</span> <span class='st'>"overweight"</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='cn'>NaN</span><span class='op'>)</span>,</span>
+<span class='r-in'>  obese <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>bmi_group</span> <span class='op'>==</span> <span class='st'>"obese"</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='cn'>NaN</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># This example HITChip dataset has some taxa with the same name for phylum and family...</span></span>
+<span class='r-in'><span class='co'># We can fix problems like this with the tax_prepend_ranks function</span></span>
+<span class='r-in'><span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tax_prepend_ranks.html'>tax_prepend_ranks</a></span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># filter out rare taxa (it is often difficult to fit multivariable models to rare taxa)</span></span>
+<span class='r-in'><span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>ps</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span> <span class='fu'><a href='tax_filter.html'>tax_filter</a></span><span class='op'>(</span>min_prevalence <span class='op'>=</span> <span class='fl'>0.1</span>, min_total_abundance <span class='op'>=</span> <span class='fl'>10000</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Proportional min_prevalence given: 0.1 --&gt; min 23/222 samples.</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># specify variables used for modelling</span></span>
+<span class='r-in'><span class='va'>VARS</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"female"</span>, <span class='st'>"overweight"</span>, <span class='st'>"obese"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Model first 3 genera using all VARS as predictors (just for a quick test)</span></span>
+<span class='r-in'><span class='va'>models</span> <span class='op'>&lt;-</span> <span class='fu'>tax_model</span><span class='op'>(</span><span class='va'>ps</span>, type <span class='op'>=</span> <span class='st'>"bbdml"</span>, rank <span class='op'>=</span> <span class='st'>"Genus"</span>, taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, variables <span class='op'>=</span> <span class='va'>VARS</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Modelling: G: Akkermansia</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Modelling: G: Allistipes et rel.</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Modelling: G: Anaerostipes caccae et rel.</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Alternative method using formula arg instead of variables to produce identical results</span></span>
+<span class='r-in'><span class='va'>models2</span> <span class='op'>&lt;-</span> <span class='fu'>tax_model</span><span class='op'>(</span></span>
+<span class='r-in'>  ps <span class='op'>=</span> <span class='va'>ps</span>, rank <span class='op'>=</span> <span class='st'>"Genus"</span>, type <span class='op'>=</span> <span class='st'>"bbdml"</span>,</span>
+<span class='r-in'>  taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, formula <span class='op'>=</span> <span class='op'>~</span> <span class='va'>female</span> <span class='op'>+</span> <span class='va'>overweight</span> <span class='op'>+</span> <span class='va'>obese</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Modelling: G: Akkermansia</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Modelling: G: Allistipes et rel.</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Modelling: G: Anaerostipes caccae et rel.</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span><span class='op'>(</span><span class='va'>models</span>, <span class='va'>models2</span><span class='op'>)</span> <span class='co'># should be TRUE</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Model only one genus, NOTE the modified name,</span></span>
+<span class='r-in'><span class='co'># which was returned by tax_prepend_ranks defaults</span></span>
+<span class='r-in'><span class='va'>models3</span> <span class='op'>&lt;-</span> <span class='va'>ps</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>tax_model</span><span class='op'>(</span></span>
+<span class='r-in'>    rank <span class='op'>=</span> <span class='st'>"Genus"</span>, type <span class='op'>=</span> <span class='st'>"bbdml"</span>,</span>
+<span class='r-in'>    taxa <span class='op'>=</span> <span class='st'>"G: Bacteroides fragilis et rel."</span>, variables <span class='op'>=</span> <span class='va'>VARS</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Modelling: G: Bacteroides fragilis et rel.</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Model all taxa at multiple taxonomic ranks (ranks 1 and 2)</span></span>
+<span class='r-in'><span class='co'># using only female variable as predictor</span></span>
+<span class='r-in'><span class='va'>models4</span> <span class='op'>&lt;-</span> <span class='fu'><a href='taxatree_models.html'>taxatree_models</a></span><span class='op'>(</span></span>
+<span class='r-in'>  ps <span class='op'>=</span> <span class='va'>ps</span>, type <span class='op'>=</span> <span class='st'>"bbdml"</span>, ranks <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, formula <span class='op'>=</span> <span class='op'>~</span><span class='va'>female</span>, verbose <span class='op'>=</span> <span class='cn'>FALSE</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># modelling proportions with simple linear regression is also possible via type = lm</span></span>
+<span class='r-in'><span class='co'># and transforming the taxa to compositional first</span></span>
+<span class='r-in'><span class='va'>models_lm</span> <span class='op'>&lt;-</span> <span class='va'>ps</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"compositional"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>tax_model</span><span class='op'>(</span>rank <span class='op'>=</span> <span class='st'>"Genus"</span>, taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, variables <span class='op'>=</span> <span class='va'>VARS</span>, type <span class='op'>=</span> <span class='st'>"lm"</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Modelling: G: Akkermansia</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Modelling: G: Allistipes et rel.</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Modelling: G: Anaerostipes caccae et rel.</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

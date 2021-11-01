@@ -108,7 +108,7 @@ and dplyr packages. The name in microViz is changed to ps_melt for consistency w
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9037</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9038</span>
       </span>
     </div>
 
@@ -198,13 +198,13 @@ The naming conventions used in downstream phyloseq graphics functions
 have reserved the following variable names that should not be used
 as the names of <code><a href='https://rdrr.io/pkg/phyloseq/man/sample_variables.html'>sample_variables</a></code>
 or taxonomic <code><a href='https://rdrr.io/pkg/phyloseq/man/rank_names.html'>rank_names</a></code>.
-These reserved names are <code><a href='https://rdrr.io/r/base/c.html'>c("Sample", "Abundance", "OTU")</a></code>.
+These reserved names are <code>c("Sample", "Abundance", "OTU")</code>.
 Also, you should not have identical names for
 sample variables and taxonomic ranks.
 That is, the intersection of the output of the following two functions
 <code><a href='https://rdrr.io/pkg/phyloseq/man/sample_variables.html'>sample_variables</a></code>, <code><a href='https://rdrr.io/pkg/phyloseq/man/rank_names.html'>rank_names</a></code>
 should be an empty vector
-(e.g. <code><a href='https://generics.r-lib.org/reference/setops.html'>intersect(sample_variables(ps), rank_names(ps))</a></code>).
+(e.g. <code>intersect(sample_variables(ps), rank_names(ps))</code>).
 All of these potential name collisions are checked-for
 and renamed automatically with a warning.
 However, if you (re)name your variables accordingly ahead of time,
@@ -246,32 +246,38 @@ extensively by plot functions in phyloseq.</p>
     <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/phyloseq/man/psmelt.html'>psmelt</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://dx.plos.org/10.1371/journal.pone.0061217'>phyloseq</a></span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"GlobalPatterns"</span><span class='op'>)</span>
-<span class='va'>gp_ch</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/subset_taxa-methods.html'>subset_taxa</a></span><span class='op'>(</span><span class='va'>GlobalPatterns</span>, <span class='va'>Phylum</span> <span class='op'>==</span> <span class='st'>"Chlamydiae"</span><span class='op'>)</span>
-<span class='va'>mdf</span> <span class='op'>&lt;-</span> <span class='fu'>ps_melt</span><span class='op'>(</span><span class='va'>gp_ch</span><span class='op'>)</span>
-<span class='va'>mdf2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/psmelt.html'>psmelt</a></span><span class='op'>(</span><span class='va'>gp_ch</span><span class='op'>)</span> <span class='co'># slower</span>
-<span class='co'># same dataframe, except with somewhat different row orders</span>
-<span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/all_equal.html'>all_equal</a></span><span class='op'>(</span><span class='fu'>tibble</span><span class='fu'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/as_tibble.html'>as_tibble</a></span><span class='op'>(</span><span class='va'>mdf</span><span class='op'>)</span>, <span class='va'>mdf2</span>, convert <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='co'># TRUE</span>
-</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>mdf2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 546</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span><span class='op'>(</span><span class='va'>mdf</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 17</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>mdf</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;  [1] "OTU"                      "Sample"                  
-#&gt;  [3] "Abundance"                "X.SampleID"              
-#&gt;  [5] "Primer"                   "Final_Barcode"           
-#&gt;  [7] "Barcode_truncated_plus_T" "Barcode_full_length"     
-#&gt;  [9] "SampleType"               "Description"             
-#&gt; [11] "Kingdom"                  "Phylum"                  
-#&gt; [13] "Class"                    "Order"                   
-#&gt; [15] "Family"                   "Genus"                   
-#&gt; [17] "Species"                 </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span><span class='op'>(</span><span class='va'>mdf</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "1" "2" "3" "4" "5" "6"</div><div class='input'><span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>mdf</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>SampleType</span>, y <span class='op'>=</span> <span class='va'>Abundance</span>, fill <span class='op'>=</span> <span class='va'>Genus</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>p</span> <span class='op'>&lt;-</span> <span class='va'>p</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"black"</span>, stat <span class='op'>=</span> <span class='st'>"identity"</span>, position <span class='op'>=</span> <span class='st'>"stack"</span><span class='op'>)</span>
-<span class='co'># This example plot doesn't make any sense</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>p</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_flip.html'>coord_flip</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='img'><img src='ps_melt-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># TODO replace this...</span>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://dx.plos.org/10.1371/journal.pone.0061217'>phyloseq</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"GlobalPatterns"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>gp_ch</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/subset_taxa-methods.html'>subset_taxa</a></span><span class='op'>(</span><span class='va'>GlobalPatterns</span>, <span class='va'>Phylum</span> <span class='op'>==</span> <span class='st'>"Chlamydiae"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>mdf</span> <span class='op'>&lt;-</span> <span class='fu'>ps_melt</span><span class='op'>(</span><span class='va'>gp_ch</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>mdf2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/psmelt.html'>psmelt</a></span><span class='op'>(</span><span class='va'>gp_ch</span><span class='op'>)</span> <span class='co'># slower</span></span>
+<span class='r-in'><span class='co'># same dataframe, except with somewhat different row orders</span></span>
+<span class='r-in'><span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/all_equal.html'>all_equal</a></span><span class='op'>(</span><span class='fu'>tibble</span><span class='fu'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/as_tibble.html'>as_tibble</a></span><span class='op'>(</span><span class='va'>mdf</span><span class='op'>)</span>, <span class='va'>mdf2</span>, convert <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='co'># TRUE</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>mdf2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 546</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span><span class='op'>(</span><span class='va'>mdf</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 17</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>mdf</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "OTU"                      "Sample"                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [3] "Abundance"                "X.SampleID"              </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [5] "Primer"                   "Final_Barcode"           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [7] "Barcode_truncated_plus_T" "Barcode_full_length"     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [9] "SampleType"               "Description"             </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [11] "Kingdom"                  "Phylum"                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [13] "Class"                    "Order"                   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [15] "Family"                   "Genus"                   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [17] "Species"                 </span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span><span class='op'>(</span><span class='va'>mdf</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "1" "2" "3" "4" "5" "6"</span>
+<span class='r-in'><span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>mdf</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>SampleType</span>, y <span class='op'>=</span> <span class='va'>Abundance</span>, fill <span class='op'>=</span> <span class='va'>Genus</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>p</span> <span class='op'>&lt;-</span> <span class='va'>p</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"black"</span>, stat <span class='op'>=</span> <span class='st'>"identity"</span>, position <span class='op'>=</span> <span class='st'>"stack"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'># This example plot doesn't make any sense</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>p</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_flip.html'>coord_flip</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='ps_melt-1.png' alt='' width='700' height='433' /></span>
+<span class='r-in'><span class='co'># TODO replace this...</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

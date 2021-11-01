@@ -89,7 +89,7 @@ See functions section." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9037</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9038</span>
       </span>
     </div>
 
@@ -220,61 +220,69 @@ labels, or hjust values</p>
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-
-<span class='co'># create basic ggplot for labelling</span>
-
-<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='va'>mtcars</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/across.html'>across</a></span><span class='op'>(</span><span class='fu'><a href='https://tidyselect.r-lib.org/reference/everything.html'>everything</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>scale</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>df</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span><span class='va'>mpg</span>, <span class='va'>hp</span>, label <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_segment.html'>geom_segment</a></span><span class='op'>(</span>xend <span class='op'>=</span> <span class='fl'>0</span>, yend <span class='op'>=</span> <span class='fl'>0</span>, color <span class='op'>=</span> <span class='st'>"lightgrey"</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/annotate.html'>annotate</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>0</span>, y <span class='op'>=</span> <span class='fl'>0</span>, geom <span class='op'>=</span> <span class='st'>"point"</span>, size <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_minimal</a></span><span class='op'>(</span><span class='op'>)</span>
-
-<span class='va'>p</span>
-</div><div class='img'><img src='ord_plot-label-helpers-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># calculate new variable within aes mapping non-standard evaluation</span>
-<span class='va'>p</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_text.html'>geom_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>2.5</span>, mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>angle <span class='op'>=</span> <span class='fu'>textAngleCalc</span><span class='op'>(</span><span class='va'>mpg</span>, <span class='va'>hp</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span>ratio <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
-</div><div class='img'><img src='ord_plot-label-helpers-2.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># equivalent: calculate variable outside aes by referring to dataframe again</span>
-<span class='va'>p</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_text.html'>geom_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>2.5</span>, angle <span class='op'>=</span> <span class='fu'>textAngleCalc</span><span class='op'>(</span><span class='va'>df</span><span class='op'>$</span><span class='va'>mpg</span>, <span class='va'>df</span><span class='op'>$</span><span class='va'>hp</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span>ratio <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
-</div><div class='img'><img src='ord_plot-label-helpers-3.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># fixing aspect ratio is important</span>
-<span class='co'># see how angles may be incorrect otherwise</span>
-<span class='va'>p</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_text.html'>geom_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>2.5</span>, mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>angle <span class='op'>=</span> <span class='fu'>textAngleCalc</span><span class='op'>(</span><span class='va'>mpg</span>, <span class='va'>hp</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='img'><img src='ord_plot-label-helpers-4.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># ratio argument allows matching angles with alternative aspect ratio</span>
-<span class='va'>p</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_text.html'>geom_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>2.5</span>, angle <span class='op'>=</span> <span class='fu'>textAngleCalc</span><span class='op'>(</span><span class='va'>df</span><span class='op'>$</span><span class='va'>mpg</span>, <span class='va'>df</span><span class='op'>$</span><span class='va'>hp</span>, ratio <span class='op'>=</span> <span class='fl'>.5</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span>ratio <span class='op'>=</span> <span class='fl'>.5</span><span class='op'>)</span>
-</div><div class='img'><img src='ord_plot-label-helpers-5.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='va'>p</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_text.html'>geom_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>2.5</span>, angle <span class='op'>=</span> <span class='fu'>textAngleCalc</span><span class='op'>(</span><span class='va'>df</span><span class='op'>$</span><span class='va'>mpg</span>, <span class='va'>df</span><span class='op'>$</span><span class='va'>hp</span>, ratio <span class='op'>=</span> <span class='fl'>1.5</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span>ratio <span class='op'>=</span> <span class='fl'>1.5</span><span class='op'>)</span>
-</div><div class='img'><img src='ord_plot-label-helpers-6.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># perpendicular argument makes text perpendicular instead of parallel</span>
-<span class='va'>p</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_text.html'>geom_text</a></span><span class='op'>(</span>
-    check_overlap <span class='op'>=</span> <span class='cn'>TRUE</span>, size <span class='op'>=</span> <span class='fl'>2.5</span>,
-    angle <span class='op'>=</span> <span class='fu'>textAngleCalc</span><span class='op'>(</span><span class='va'>df</span><span class='op'>$</span><span class='va'>mpg</span>, <span class='va'>df</span><span class='op'>$</span><span class='va'>hp</span>, perpendicular <span class='op'>=</span> <span class='cn'>TRUE</span>, ratio <span class='op'>=</span> <span class='fl'>1.5</span><span class='op'>)</span>
-  <span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span>ratio <span class='op'>=</span> <span class='fl'>1.5</span>, clip <span class='op'>=</span> <span class='st'>"off"</span><span class='op'>)</span>
-</div><div class='img'><img src='ord_plot-label-helpers-7.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># max angle limits extreme text angles</span>
-<span class='va'>p</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_text.html'>geom_text</a></span><span class='op'>(</span>
-    size <span class='op'>=</span> <span class='fl'>2.5</span>, check_overlap <span class='op'>=</span> <span class='cn'>TRUE</span>,
-    angle <span class='op'>=</span> <span class='fu'>textAngleCalc</span><span class='op'>(</span><span class='va'>df</span><span class='op'>$</span><span class='va'>mpg</span>, <span class='va'>df</span><span class='op'>$</span><span class='va'>hp</span>, ratio <span class='op'>=</span> <span class='fl'>2</span>, max <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>,
-    hjust <span class='op'>=</span> <span class='fu'>textHjustCalc</span><span class='op'>(</span>xvec <span class='op'>=</span> <span class='va'>df</span><span class='op'>$</span><span class='va'>mpg</span>, adjust <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-  <span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span>ratio <span class='op'>=</span> <span class='fl'>2</span>, clip <span class='op'>=</span> <span class='st'>"off"</span><span class='op'>)</span>
-</div><div class='img'><img src='ord_plot-label-helpers-8.png' alt='' width='700' height='433' /></div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># create basic ggplot for labelling</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='va'>mtcars</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/across.html'>across</a></span><span class='op'>(</span><span class='fu'><a href='https://tidyselect.r-lib.org/reference/everything.html'>everything</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>scale</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>df</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span><span class='va'>mpg</span>, <span class='va'>hp</span>, label <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_segment.html'>geom_segment</a></span><span class='op'>(</span>xend <span class='op'>=</span> <span class='fl'>0</span>, yend <span class='op'>=</span> <span class='fl'>0</span>, color <span class='op'>=</span> <span class='st'>"lightgrey"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/annotate.html'>annotate</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>0</span>, y <span class='op'>=</span> <span class='fl'>0</span>, geom <span class='op'>=</span> <span class='st'>"point"</span>, size <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_minimal</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>p</span></span>
+<span class='r-plt img'><img src='ord_plot-label-helpers-1.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># calculate new variable within aes mapping non-standard evaluation</span></span>
+<span class='r-in'><span class='va'>p</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_text.html'>geom_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>2.5</span>, mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>angle <span class='op'>=</span> <span class='fu'>textAngleCalc</span><span class='op'>(</span><span class='va'>mpg</span>, <span class='va'>hp</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span>ratio <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='ord_plot-label-helpers-2.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># equivalent: calculate variable outside aes by referring to dataframe again</span></span>
+<span class='r-in'><span class='va'>p</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_text.html'>geom_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>2.5</span>, angle <span class='op'>=</span> <span class='fu'>textAngleCalc</span><span class='op'>(</span><span class='va'>df</span><span class='op'>$</span><span class='va'>mpg</span>, <span class='va'>df</span><span class='op'>$</span><span class='va'>hp</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span>ratio <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='ord_plot-label-helpers-3.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># fixing aspect ratio is important</span></span>
+<span class='r-in'><span class='co'># see how angles may be incorrect otherwise</span></span>
+<span class='r-in'><span class='va'>p</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_text.html'>geom_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>2.5</span>, mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>angle <span class='op'>=</span> <span class='fu'>textAngleCalc</span><span class='op'>(</span><span class='va'>mpg</span>, <span class='va'>hp</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='ord_plot-label-helpers-4.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># ratio argument allows matching angles with alternative aspect ratio</span></span>
+<span class='r-in'><span class='va'>p</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_text.html'>geom_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>2.5</span>, angle <span class='op'>=</span> <span class='fu'>textAngleCalc</span><span class='op'>(</span><span class='va'>df</span><span class='op'>$</span><span class='va'>mpg</span>, <span class='va'>df</span><span class='op'>$</span><span class='va'>hp</span>, ratio <span class='op'>=</span> <span class='fl'>.5</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span>ratio <span class='op'>=</span> <span class='fl'>.5</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='ord_plot-label-helpers-5.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>p</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_text.html'>geom_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>2.5</span>, angle <span class='op'>=</span> <span class='fu'>textAngleCalc</span><span class='op'>(</span><span class='va'>df</span><span class='op'>$</span><span class='va'>mpg</span>, <span class='va'>df</span><span class='op'>$</span><span class='va'>hp</span>, ratio <span class='op'>=</span> <span class='fl'>1.5</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span>ratio <span class='op'>=</span> <span class='fl'>1.5</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='ord_plot-label-helpers-6.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># perpendicular argument makes text perpendicular instead of parallel</span></span>
+<span class='r-in'><span class='va'>p</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_text.html'>geom_text</a></span><span class='op'>(</span></span>
+<span class='r-in'>    check_overlap <span class='op'>=</span> <span class='cn'>TRUE</span>, size <span class='op'>=</span> <span class='fl'>2.5</span>,</span>
+<span class='r-in'>    angle <span class='op'>=</span> <span class='fu'>textAngleCalc</span><span class='op'>(</span><span class='va'>df</span><span class='op'>$</span><span class='va'>mpg</span>, <span class='va'>df</span><span class='op'>$</span><span class='va'>hp</span>, perpendicular <span class='op'>=</span> <span class='cn'>TRUE</span>, ratio <span class='op'>=</span> <span class='fl'>1.5</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span>ratio <span class='op'>=</span> <span class='fl'>1.5</span>, clip <span class='op'>=</span> <span class='st'>"off"</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='ord_plot-label-helpers-7.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># max angle limits extreme text angles</span></span>
+<span class='r-in'><span class='va'>p</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_text.html'>geom_text</a></span><span class='op'>(</span></span>
+<span class='r-in'>    size <span class='op'>=</span> <span class='fl'>2.5</span>, check_overlap <span class='op'>=</span> <span class='cn'>TRUE</span>,</span>
+<span class='r-in'>    angle <span class='op'>=</span> <span class='fu'>textAngleCalc</span><span class='op'>(</span><span class='va'>df</span><span class='op'>$</span><span class='va'>mpg</span>, <span class='va'>df</span><span class='op'>$</span><span class='va'>hp</span>, ratio <span class='op'>=</span> <span class='fl'>2</span>, max <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>,</span>
+<span class='r-in'>    hjust <span class='op'>=</span> <span class='fu'>textHjustCalc</span><span class='op'>(</span>xvec <span class='op'>=</span> <span class='va'>df</span><span class='op'>$</span><span class='va'>mpg</span>, adjust <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span>ratio <span class='op'>=</span> <span class='fl'>2</span>, clip <span class='op'>=</span> <span class='st'>"off"</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='ord_plot-label-helpers-8.png' alt='' width='700' height='433' /></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

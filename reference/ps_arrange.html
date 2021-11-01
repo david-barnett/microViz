@@ -91,7 +91,7 @@ Give this function arguments in the same way you would use dplyr::arrange()" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9037</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9038</span>
       </span>
     </div>
 
@@ -207,129 +207,139 @@ to set the order of the samples
     <div class='dont-index'><p><code><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://dx.plos.org/10.1371/journal.pone.0061217'>phyloseq</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://microbiome.github.io/microbiome'>microbiome</a></span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>microbiome R package (microbiome.github.com)</span>
-#&gt; <span class='message'>    </span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'> Copyright (C) 2011-2020 Leo Lahti, </span>
-#&gt; <span class='message'>    Sudarshan Shetty et al. &lt;microbiome.github.io&gt;</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘microbiome’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:vegan’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    diversity</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:ggplot2’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    alpha</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:base’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    transform</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span><span class='op'>)</span>
-
-<span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>ps_arrange</span><span class='op'>(</span><span class='va'>subject</span>, <span class='va'>timepoint</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fl'>8</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Sample Data:        [8 samples by 8 sample variables]:
-#&gt;            subject    sex nationality group     sample timepoint
-#&gt; Sample-32      azh female         AAM    ED  Sample-32         1
-#&gt; Sample-109     azh female         AAM    HE Sample-109         2
-#&gt; Sample-119     azh female         AAM    HE Sample-119         3
-#&gt; Sample-130     azh female         AAM    DI Sample-130         4
-#&gt; Sample-140     azh female         AAM    DI Sample-140         5
-#&gt; Sample-41      azh female         AAM    ED  Sample-41         6
-#&gt; Sample-61      azl female         AFR    ED  Sample-61         1
-#&gt; Sample-93      azl female         AFR    HE  Sample-93         2
-#&gt;            timepoint.within.group  bmi_group
-#&gt; Sample-32                       1 overweight
-#&gt; Sample-109                      1 overweight
-#&gt; Sample-119                      2 overweight
-#&gt; Sample-130                      1 overweight
-#&gt; Sample-140                      2 overweight
-#&gt; Sample-41                       2 overweight
-#&gt; Sample-61                       1      obese
-#&gt; Sample-93                       1      obese</div><div class='input'>
-<span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span> <span class='op'>%&gt;%</span> <span class='fu'>ps_arrange</span><span class='op'>(</span><span class='va'>subject</span>, <span class='fu'><a href='https://dplyr.tidyverse.org/reference/desc.html'>desc</a></span><span class='op'>(</span><span class='va'>timepoint</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fl'>8</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Sample Data:        [8 samples by 8 sample variables]:
-#&gt;            subject    sex nationality group     sample timepoint
-#&gt; Sample-41      azh female         AAM    ED  Sample-41         6
-#&gt; Sample-140     azh female         AAM    DI Sample-140         5
-#&gt; Sample-130     azh female         AAM    DI Sample-130         4
-#&gt; Sample-119     azh female         AAM    HE Sample-119         3
-#&gt; Sample-109     azh female         AAM    HE Sample-109         2
-#&gt; Sample-32      azh female         AAM    ED  Sample-32         1
-#&gt; Sample-67      azl female         AFR    ED  Sample-67         6
-#&gt; Sample-86      azl female         AFR    DI  Sample-86         5
-#&gt;            timepoint.within.group  bmi_group
-#&gt; Sample-41                       2 overweight
-#&gt; Sample-140                      2 overweight
-#&gt; Sample-130                      1 overweight
-#&gt; Sample-119                      2 overweight
-#&gt; Sample-109                      1 overweight
-#&gt; Sample-32                       1 overweight
-#&gt; Sample-67                       2      obese
-#&gt; Sample-86                       2      obese</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/otu_table-methods.html'>otu_table</a></span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; OTU Table:          [8 taxa and 8 samples]
-#&gt;                      taxa are rows
-#&gt;                              Sample-41 Sample-140 Sample-130 Sample-119
-#&gt; Actinomycetaceae                     0          0          0          0
-#&gt; Aerococcus                           0          0          0          0
-#&gt; Aeromonas                            0          0          0          0
-#&gt; Akkermansia                        787       2627       2506       1068
-#&gt; Alcaligenes faecalis et rel.         2          2          2          2
-#&gt; Allistipes et rel.                 564        224        919        209
-#&gt; Anaerobiospirillum                   0          0          0          0
-#&gt; Anaerofustis                         0          0          0          0
-#&gt;                              Sample-109 Sample-32 Sample-67 Sample-86
-#&gt; Actinomycetaceae                      0         0         0         0
-#&gt; Aerococcus                            0         0         0         0
-#&gt; Aeromonas                             0         0         0         0
-#&gt; Akkermansia                          52       200        35        93
-#&gt; Alcaligenes faecalis et rel.          2         2         2         2
-#&gt; Allistipes et rel.                  756       737        39        29
-#&gt; Anaerobiospirillum                    0         0         0         0
-#&gt; Anaerofustis                          1         0         0         0</div><div class='input'>
-<span class='co'># you can also arrange samples by the abundances of taxa in the otu tables</span>
-<span class='va'>pst</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span> <span class='op'>%&gt;%</span> <span class='fu'>ps_arrange</span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/desc.html'>desc</a></span><span class='op'>(</span><span class='va'>Akkermansia</span><span class='op'>)</span>, .target <span class='op'>=</span> <span class='st'>"otu_table"</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/otu_table-methods.html'>otu_table</a></span><span class='op'>(</span><span class='va'>pst</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; OTU Table:          [8 taxa and 8 samples]
-#&gt;                      taxa are rows
-#&gt;                              Sample-140 Sample-130 Sample-167 Sample-119
-#&gt; Actinomycetaceae                      0          0          0          0
-#&gt; Aerococcus                            0          0          0          0
-#&gt; Aeromonas                             0          0          0          0
-#&gt; Akkermansia                        2627       2506       1214       1068
-#&gt; Alcaligenes faecalis et rel.          2          2          4          2
-#&gt; Allistipes et rel.                  224        919        923        209
-#&gt; Anaerobiospirillum                    0          0          0          0
-#&gt; Anaerofustis                          0          0          0          0
-#&gt;                              Sample-100 Sample-121 Sample-41 Sample-35
-#&gt; Actinomycetaceae                      0          0         0         0
-#&gt; Aerococcus                            0          0         0         0
-#&gt; Aeromonas                             0          0         0         0
-#&gt; Akkermansia                         974        909       787       774
-#&gt; Alcaligenes faecalis et rel.          3          2         2         2
-#&gt; Allistipes et rel.                   64         50       564       112
-#&gt; Anaerobiospirillum                    0          0         0         0
-#&gt; Anaerofustis                          0          0         0         0</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='va'>pst</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fl'>8</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Sample Data:        [8 samples by 8 sample variables]:
-#&gt;            subject    sex nationality group     sample timepoint
-#&gt; Sample-140     azh female         AAM    DI Sample-140         5
-#&gt; Sample-130     azh female         AAM    DI Sample-130         4
-#&gt; Sample-167     kpb   male         AAM    HE Sample-167         3
-#&gt; Sample-119     azh female         AAM    HE Sample-119         3
-#&gt; Sample-100     wdf   male         AFR    DI Sample-100         4
-#&gt; Sample-121     gty   male         AAM    HE Sample-121         3
-#&gt; Sample-41      azh female         AAM    ED  Sample-41         6
-#&gt; Sample-35      kpp   male         AAM    ED  Sample-35         1
-#&gt;            timepoint.within.group  bmi_group
-#&gt; Sample-140                      2 overweight
-#&gt; Sample-130                      1 overweight
-#&gt; Sample-167                      2      obese
-#&gt; Sample-119                      2 overweight
-#&gt; Sample-100                      1       lean
-#&gt; Sample-121                      2 overweight
-#&gt; Sample-41                       2 overweight
-#&gt; Sample-35                       1       lean</div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://dx.plos.org/10.1371/journal.pone.0061217'>phyloseq</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://microbiome.github.io/microbiome'>microbiome</a></span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> microbiome R package (microbiome.github.com)</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>  Copyright (C) 2011-2020 Leo Lahti, </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     Sudarshan Shetty et al. &lt;microbiome.github.io&gt;</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Attaching package: ‘microbiome’</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> The following object is masked from ‘package:vegan’:</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     diversity</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> The following object is masked from ‘package:ggplot2’:</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     alpha</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> The following object is masked from ‘package:base’:</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     transform</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>dietswap</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>ps_arrange</span><span class='op'>(</span><span class='va'>subject</span>, <span class='va'>timepoint</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fl'>8</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample Data:        [8 samples by 8 sample variables]:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            subject    sex nationality group     sample timepoint</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-32      azh female         AAM    ED  Sample-32         1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-109     azh female         AAM    HE Sample-109         2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-119     azh female         AAM    HE Sample-119         3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-130     azh female         AAM    DI Sample-130         4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-140     azh female         AAM    DI Sample-140         5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-41      azh female         AAM    ED  Sample-41         6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-61      azl female         AFR    ED  Sample-61         1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-93      azl female         AFR    HE  Sample-93         2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            timepoint.within.group  bmi_group</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-32                       1 overweight</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-109                      1 overweight</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-119                      2 overweight</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-130                      1 overweight</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-140                      2 overweight</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-41                       2 overweight</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-61                       1      obese</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-93                       1      obese</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span> <span class='fu'>ps_arrange</span><span class='op'>(</span><span class='va'>subject</span>, <span class='fu'><a href='https://dplyr.tidyverse.org/reference/desc.html'>desc</a></span><span class='op'>(</span><span class='va'>timepoint</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fl'>8</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample Data:        [8 samples by 8 sample variables]:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            subject    sex nationality group     sample timepoint</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-41      azh female         AAM    ED  Sample-41         6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-140     azh female         AAM    DI Sample-140         5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-130     azh female         AAM    DI Sample-130         4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-119     azh female         AAM    HE Sample-119         3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-109     azh female         AAM    HE Sample-109         2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-32      azh female         AAM    ED  Sample-32         1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-67      azl female         AFR    ED  Sample-67         6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-86      azl female         AFR    DI  Sample-86         5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            timepoint.within.group  bmi_group</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-41                       2 overweight</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-140                      2 overweight</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-130                      1 overweight</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-119                      2 overweight</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-109                      1 overweight</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-32                       1 overweight</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-67                       2      obese</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-86                       2      obese</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/otu_table-methods.html'>otu_table</a></span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span><span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> OTU Table:          [8 taxa and 8 samples]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                      taxa are rows</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                              Sample-41 Sample-140 Sample-130 Sample-119</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Actinomycetaceae                     0          0          0          0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Aerococcus                           0          0          0          0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Aeromonas                            0          0          0          0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Akkermansia                        787       2627       2506       1068</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Alcaligenes faecalis et rel.         2          2          2          2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Allistipes et rel.                 564        224        919        209</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Anaerobiospirillum                   0          0          0          0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Anaerofustis                         0          0          0          0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                              Sample-109 Sample-32 Sample-67 Sample-86</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Actinomycetaceae                      0         0         0         0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Aerococcus                            0         0         0         0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Aeromonas                             0         0         0         0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Akkermansia                          52       200        35        93</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Alcaligenes faecalis et rel.          2         2         2         2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Allistipes et rel.                  756       737        39        29</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Anaerobiospirillum                    0         0         0         0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Anaerofustis                          1         0         0         0</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># you can also arrange samples by the abundances of taxa in the otu tables</span></span>
+<span class='r-in'><span class='va'>pst</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span> <span class='fu'>ps_arrange</span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/desc.html'>desc</a></span><span class='op'>(</span><span class='va'>Akkermansia</span><span class='op'>)</span>, .target <span class='op'>=</span> <span class='st'>"otu_table"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/otu_table-methods.html'>otu_table</a></span><span class='op'>(</span><span class='va'>pst</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span><span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> OTU Table:          [8 taxa and 8 samples]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                      taxa are rows</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                              Sample-140 Sample-130 Sample-167 Sample-119</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Actinomycetaceae                      0          0          0          0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Aerococcus                            0          0          0          0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Aeromonas                             0          0          0          0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Akkermansia                        2627       2506       1214       1068</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Alcaligenes faecalis et rel.          2          2          4          2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Allistipes et rel.                  224        919        923        209</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Anaerobiospirillum                    0          0          0          0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Anaerofustis                          0          0          0          0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                              Sample-100 Sample-121 Sample-41 Sample-35</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Actinomycetaceae                      0          0         0         0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Aerococcus                            0          0         0         0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Aeromonas                             0          0         0         0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Akkermansia                         974        909       787       774</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Alcaligenes faecalis et rel.          3          2         2         2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Allistipes et rel.                   64         50       564       112</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Anaerobiospirillum                    0          0         0         0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Anaerofustis                          0          0         0         0</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='va'>pst</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fl'>8</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample Data:        [8 samples by 8 sample variables]:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            subject    sex nationality group     sample timepoint</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-140     azh female         AAM    DI Sample-140         5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-130     azh female         AAM    DI Sample-130         4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-167     kpb   male         AAM    HE Sample-167         3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-119     azh female         AAM    HE Sample-119         3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-100     wdf   male         AFR    DI Sample-100         4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-121     gty   male         AAM    HE Sample-121         3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-41      azh female         AAM    ED  Sample-41         6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-35      kpp   male         AAM    ED  Sample-35         1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            timepoint.within.group  bmi_group</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-140                      2 overweight</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-130                      1 overweight</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-167                      2      obese</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-119                      2 overweight</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-100                      1       lean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-121                      2 overweight</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-41                       2 overweight</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-35                       1       lean</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

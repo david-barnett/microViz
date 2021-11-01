@@ -94,7 +94,7 @@ Any cell numbers printed can be set to different values, and do not affect order
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9037</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9038</span>
       </span>
     </div>
 
@@ -281,64 +281,72 @@ Any cell numbers printed can be set to different values, and do not affect order
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span>
-<span class='va'>psq</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tax_filter.html'>tax_filter</a></span><span class='op'>(</span><span class='va'>dietswap</span>, min_prevalence <span class='op'>=</span> <span class='fl'>1</span> <span class='op'>/</span> <span class='fl'>10</span>, min_sample_abundance <span class='op'>=</span> <span class='fl'>1</span> <span class='op'>/</span> <span class='fl'>10</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Proportional min_prevalence given: 0.1 --&gt; min 23/222 samples.</span></div><div class='input'><span class='va'>psq</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='va'>psq</span>, <span class='st'>"Genus"</span><span class='op'>)</span>
-
-<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>123</span><span class='op'>)</span>
-<span class='va'>taxa</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'>microbiome</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/microbiome/man/top_taxa.html'>top_taxa</a></span><span class='op'>(</span><span class='fu'><a href='ps_extra-accessors.html'>ps_get</a></span><span class='op'>(</span><span class='va'>psq</span><span class='op'>)</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>50</span><span class='op'>]</span>, size <span class='op'>=</span> <span class='fl'>30</span><span class='op'>)</span>
-
-<span class='va'>p</span> <span class='op'>&lt;-</span> <span class='va'>psq</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>comp_heatmap</span><span class='op'>(</span>taxa <span class='op'>=</span> <span class='va'>taxa</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>p</span>
-</div><div class='img'><img src='comp_heatmap-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># set the colour range yourself</span>
-<span class='va'>psq</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>comp_heatmap</span><span class='op'>(</span>
-    taxa <span class='op'>=</span> <span class='va'>taxa</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span>,
-    colors <span class='op'>=</span> <span class='fu'><a href='heat_palette.html'>heat_palette</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Greens"</span>, rev <span class='op'>=</span> <span class='cn'>TRUE</span>, range <span class='op'>=</span> <span class='fl'>0</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span>
-  <span class='op'>)</span>
-</div><div class='img'><img src='comp_heatmap-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>psq</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>comp_heatmap</span><span class='op'>(</span>
-    taxa <span class='op'>=</span> <span class='va'>taxa</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span>,
-    colors <span class='op'>=</span> <span class='fu'><a href='heat_palette.html'>heat_palette</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Green-Orange"</span>, range <span class='op'>=</span> <span class='fl'>0</span><span class='op'>:</span><span class='fl'>5</span>, sym <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-  <span class='op'>)</span>
-</div><div class='img'><img src='comp_heatmap-3.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># supply a different colour palette to heat_palette (match breaks to length)</span>
-<span class='va'>psq</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>comp_heatmap</span><span class='op'>(</span>
-    taxa <span class='op'>=</span> <span class='va'>taxa</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span>,
-    colors <span class='op'>=</span> <span class='fu'><a href='heat_palette.html'>heat_palette</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='fu'>viridisLite</span><span class='fu'>::</span><span class='fu'><a href='https://sjmgarnier.github.io/viridisLite/reference/viridis.html'>turbo</a></span><span class='op'>(</span><span class='fl'>12</span><span class='op'>)</span>, breaks <span class='op'>=</span> <span class='fl'>12</span><span class='op'>)</span>
-  <span class='op'>)</span>
-</div><div class='img'><img src='comp_heatmap-4.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># you can place the legend at the bottom, but it is a little complicated</span>
-<span class='va'>p</span> <span class='op'>&lt;-</span> <span class='va'>psq</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>comp_heatmap</span><span class='op'>(</span>
-    taxa <span class='op'>=</span> <span class='va'>taxa</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span>, name <span class='op'>=</span> <span class='st'>"auto"</span>,
-    heatmap_legend_param <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>direction <span class='op'>=</span> <span class='st'>"horizontal"</span>, title_position <span class='op'>=</span> <span class='st'>"lefttop"</span><span class='op'>)</span>
-  <span class='op'>)</span>
-<span class='fu'>ComplexHeatmap</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html'>draw</a></span><span class='op'>(</span><span class='va'>p</span>,
-  heatmap_legend_side <span class='op'>=</span> <span class='st'>"bottom"</span>, adjust_annotation_extension <span class='op'>=</span> <span class='cn'>FALSE</span>
-<span class='op'>)</span>
-</div><div class='img'><img src='comp_heatmap-5.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># rotate plot to have taxa as columns, annotated at the bottom</span>
-<span class='va'>p2</span> <span class='op'>&lt;-</span> <span class='va'>psq</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>comp_heatmap</span><span class='op'>(</span>
-    taxa <span class='op'>=</span> <span class='va'>taxa</span>, taxa_side <span class='op'>=</span> <span class='st'>"bottom"</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span>
-  <span class='op'>)</span>
-<span class='va'>p2</span>
-</div><div class='img'><img src='comp_heatmap-6.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># log2 transform data before plotting and automatic naming of scale</span>
-<span class='va'>psq</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"log2"</span>, zero_replace <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>comp_heatmap</span><span class='op'>(</span><span class='va'>taxa</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span>, name <span class='op'>=</span> <span class='st'>"auto"</span><span class='op'>)</span>
-</div><div class='img'><img src='comp_heatmap-7.png' alt='' width='700' height='433' /></div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>psq</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tax_filter.html'>tax_filter</a></span><span class='op'>(</span><span class='va'>dietswap</span>, min_prevalence <span class='op'>=</span> <span class='fl'>1</span> <span class='op'>/</span> <span class='fl'>10</span>, min_sample_abundance <span class='op'>=</span> <span class='fl'>1</span> <span class='op'>/</span> <span class='fl'>10</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Proportional min_prevalence given: 0.1 --&gt; min 23/222 samples.</span>
+<span class='r-in'><span class='va'>psq</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='va'>psq</span>, <span class='st'>"Genus"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>123</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>taxa</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'>microbiome</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/microbiome/man/top_taxa.html'>top_taxa</a></span><span class='op'>(</span><span class='fu'><a href='ps_extra-accessors.html'>ps_get</a></span><span class='op'>(</span><span class='va'>psq</span><span class='op'>)</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>50</span><span class='op'>]</span>, size <span class='op'>=</span> <span class='fl'>30</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>p</span> <span class='op'>&lt;-</span> <span class='va'>psq</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>comp_heatmap</span><span class='op'>(</span>taxa <span class='op'>=</span> <span class='va'>taxa</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>p</span></span>
+<span class='r-plt img'><img src='comp_heatmap-1.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># set the colour range yourself</span></span>
+<span class='r-in'><span class='va'>psq</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>comp_heatmap</span><span class='op'>(</span></span>
+<span class='r-in'>    taxa <span class='op'>=</span> <span class='va'>taxa</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span>,</span>
+<span class='r-in'>    colors <span class='op'>=</span> <span class='fu'><a href='heat_palette.html'>heat_palette</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Greens"</span>, rev <span class='op'>=</span> <span class='cn'>TRUE</span>, range <span class='op'>=</span> <span class='fl'>0</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-plt img'><img src='comp_heatmap-2.png' alt='' width='700' height='433' /></span>
+<span class='r-in'><span class='va'>psq</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>comp_heatmap</span><span class='op'>(</span></span>
+<span class='r-in'>    taxa <span class='op'>=</span> <span class='va'>taxa</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span>,</span>
+<span class='r-in'>    colors <span class='op'>=</span> <span class='fu'><a href='heat_palette.html'>heat_palette</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Green-Orange"</span>, range <span class='op'>=</span> <span class='fl'>0</span><span class='op'>:</span><span class='fl'>5</span>, sym <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-plt img'><img src='comp_heatmap-3.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># supply a different colour palette to heat_palette (match breaks to length)</span></span>
+<span class='r-in'><span class='va'>psq</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>comp_heatmap</span><span class='op'>(</span></span>
+<span class='r-in'>    taxa <span class='op'>=</span> <span class='va'>taxa</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span>,</span>
+<span class='r-in'>    colors <span class='op'>=</span> <span class='fu'><a href='heat_palette.html'>heat_palette</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='fu'>viridisLite</span><span class='fu'>::</span><span class='fu'><a href='https://sjmgarnier.github.io/viridisLite/reference/viridis.html'>turbo</a></span><span class='op'>(</span><span class='fl'>12</span><span class='op'>)</span>, breaks <span class='op'>=</span> <span class='fl'>12</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-plt img'><img src='comp_heatmap-4.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># you can place the legend at the bottom, but it is a little complicated</span></span>
+<span class='r-in'><span class='va'>p</span> <span class='op'>&lt;-</span> <span class='va'>psq</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>comp_heatmap</span><span class='op'>(</span></span>
+<span class='r-in'>    taxa <span class='op'>=</span> <span class='va'>taxa</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span>, name <span class='op'>=</span> <span class='st'>"auto"</span>,</span>
+<span class='r-in'>    heatmap_legend_param <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>direction <span class='op'>=</span> <span class='st'>"horizontal"</span>, title_position <span class='op'>=</span> <span class='st'>"lefttop"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>ComplexHeatmap</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html'>draw</a></span><span class='op'>(</span><span class='va'>p</span>,</span>
+<span class='r-in'>  heatmap_legend_side <span class='op'>=</span> <span class='st'>"bottom"</span>, adjust_annotation_extension <span class='op'>=</span> <span class='cn'>FALSE</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-plt img'><img src='comp_heatmap-5.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># rotate plot to have taxa as columns, annotated at the bottom</span></span>
+<span class='r-in'><span class='va'>p2</span> <span class='op'>&lt;-</span> <span class='va'>psq</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>comp_heatmap</span><span class='op'>(</span></span>
+<span class='r-in'>    taxa <span class='op'>=</span> <span class='va'>taxa</span>, taxa_side <span class='op'>=</span> <span class='st'>"bottom"</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'><span class='va'>p2</span></span>
+<span class='r-plt img'><img src='comp_heatmap-6.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># log2 transform data before plotting and automatic naming of scale</span></span>
+<span class='r-in'><span class='va'>psq</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"log2"</span>, zero_replace <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>comp_heatmap</span><span class='op'>(</span><span class='va'>taxa</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span>, name <span class='op'>=</span> <span class='st'>"auto"</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='comp_heatmap-7.png' alt='' width='700' height='433' /></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

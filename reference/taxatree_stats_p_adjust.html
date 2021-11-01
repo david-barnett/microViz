@@ -90,7 +90,7 @@ or more conservative family-wise error rate controlling methods such as &quot;ho
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9037</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9038</span>
       </span>
     </div>
 
@@ -228,110 +228,118 @@ Or even group by a combination of rank and term with c("rank", "term")</p>
 <p><code>stats::<a href='https://rdrr.io/r/stats/p.adjust.html'>p.adjust</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># This example is an abbreviated excerpt from article on taxon modelling on</span>
-<span class='co'># the microViz documentation website</span>
-
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/bryandmartin/corncob'>corncob</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"ibd_phylo"</span>, package <span class='op'>=</span> <span class='st'>"corncob"</span><span class='op'>)</span>
-
-<span class='co'># We'll keep only the Ulcerative Colitis and Healthy Control samples, to</span>
-<span class='co'># simplify the analyses for this example. We'll also remove the Species</span>
-<span class='co'># rank information, as most OTUs in this dataset are not assigned to a</span>
-<span class='co'># species. We'll also use `tax_fix` to fill any gaps where the Genus is</span>
-<span class='co'># unknown, with the family name or whatever higher rank classification is</span>
-<span class='co'># known.</span>
-
-<span class='va'>phylo</span> <span class='op'>&lt;-</span> <span class='va'>ibd_phylo</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ps_filter.html'>ps_filter</a></span><span class='op'>(</span><span class='va'>DiseaseState</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"UC"</span>, <span class='st'>"nonIBD"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_mutate.html'>tax_mutate</a></span><span class='op'>(</span>Species <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_fix.html'>tax_fix</a></span><span class='op'>(</span><span class='op'>)</span>
-
-<span class='co'># Let's make some sample data variables that are easier to use and compare</span>
-<span class='co'># in the statistical modelling ahead. We will convert dichotomous</span>
-<span class='co'># categorical variables into similar binary variables (values: 1 for true,</span>
-<span class='co'># or 0 for false). We will also scale and center the numeric variable for</span>
-<span class='co'># age.</span>
-
-<span class='va'>phylo</span> <span class='op'>&lt;-</span> <span class='va'>phylo</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ps_mutate.html'>ps_mutate</a></span><span class='op'>(</span>
-    UC <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>DiseaseState</span> <span class='op'>==</span> <span class='st'>"UC"</span>, yes <span class='op'>=</span> <span class='fl'>1</span>, no <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>,
-    female <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>gender</span> <span class='op'>==</span> <span class='st'>"female"</span>, yes <span class='op'>=</span> <span class='fl'>1</span>, no <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>,
-    antibiotics <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>abx</span> <span class='op'>==</span> <span class='st'>"abx"</span>, yes <span class='op'>=</span> <span class='fl'>1</span>, no <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>,
-    steroids <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>steroids</span> <span class='op'>==</span> <span class='st'>"steroids"</span>, yes <span class='op'>=</span> <span class='fl'>1</span>, no <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>,
-    age_scaled <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/scale.html'>scale</a></span><span class='op'>(</span><span class='va'>age</span>, center <span class='op'>=</span> <span class='cn'>TRUE</span>, scale <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-  <span class='op'>)</span>
-
-<span class='va'>bb_models</span> <span class='op'>&lt;-</span> <span class='va'>phylo</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_fix.html'>tax_fix</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_prepend_ranks.html'>tax_prepend_ranks</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_filter.html'>tax_filter</a></span><span class='op'>(</span>min_prevalence <span class='op'>=</span> <span class='fl'>0.3</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='taxatree_models.html'>taxatree_models</a></span><span class='op'>(</span>
-    type <span class='op'>=</span> <span class='fu'>corncob</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/corncob/man/bbdml.html'>bbdml</a></span>,
-    ranks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Phylum"</span>, <span class='st'>"Class"</span>, <span class='st'>"Order"</span><span class='op'>)</span>,
-    variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"UC"</span>, <span class='st'>"female"</span>, <span class='st'>"antibiotics"</span>, <span class='st'>"steroids"</span>, <span class='st'>"age_scaled"</span><span class='op'>)</span>
-  <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Proportional min_prevalence given: 0.3 --&gt; min 21/67 samples.</span></div><div class='output co'>#&gt; <span class='message'>2021-10-29 21:06:39 - modelling at rank: Phylum</span></div><div class='output co'>#&gt; <span class='message'>2021-10-29 21:06:40 - modelling at rank: Class</span></div><div class='output co'>#&gt; <span class='message'>2021-10-29 21:06:40 - modelling at rank: Order</span></div><div class='input'>
-<span class='va'>bb_stats</span> <span class='op'>&lt;-</span> <span class='va'>bb_models</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='taxatree_models2stats.html'>taxatree_models2stats</a></span><span class='op'>(</span>param <span class='op'>=</span> <span class='st'>"mu"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>taxatree_stats_p_adjust</span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"BH"</span>, grouping <span class='op'>=</span> <span class='st'>"rank"</span><span class='op'>)</span>
-
-<span class='va'>bb_stats</span>
-</div><div class='output co'>#&gt; ps_extra object - a list with phyloseq and extras:
-#&gt; 
-#&gt; phyloseq-class experiment-level object
-#&gt; otu_table()   OTU Table:         [ 105 taxa and 67 samples ]
-#&gt; sample_data() Sample Data:       [ 67 samples by 19 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 105 taxa by 6 taxonomic ranks ]
-#&gt; 
-#&gt; ps_extra info:
-#&gt; tax_agg = NA tax_transform = NA
-#&gt; 
-#&gt; $taxatree_stats dataframe:
-#&gt; 19 taxa at 3 ranks: Phylum, Class, Order 
-#&gt; 5 terms: UC, female, antibiotics, steroids, age_scaled</div><div class='input'>
-<span class='va'>bb_stats</span><span class='op'>$</span><span class='va'>taxatree_stats</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 95 × 9</span>
-#&gt; <span style='color: #949494;'># Groups:   rank [3]</span>
-#&gt;    term        taxon      rank  parameter estimate std.error t.statistic p.value
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span> UC          P: Firmic… Phyl… mu         -<span style='color: #BB0000;'>0.375</span>      0.434     -<span style='color: #BB0000;'>0.864</span>    0.392
-#&gt; <span style='color: #BCBCBC;'> 2</span> female      P: Firmic… Phyl… mu          0.022<span style='text-decoration: underline;'>7</span>     0.309      0.073<span style='text-decoration: underline;'>4</span>   0.942
-#&gt; <span style='color: #BCBCBC;'> 3</span> antibiotics P: Firmic… Phyl… mu         -<span style='color: #BB0000;'>0.781</span>      0.478     -<span style='color: #BB0000;'>1.63</span>     0.108
-#&gt; <span style='color: #BCBCBC;'> 4</span> steroids    P: Firmic… Phyl… mu         -<span style='color: #BB0000;'>0.162</span>      0.426     -<span style='color: #BB0000;'>0.380</span>    0.705
-#&gt; <span style='color: #BCBCBC;'> 5</span> age_scaled  P: Firmic… Phyl… mu          0.294      0.188      1.56     0.124
-#&gt; <span style='color: #BCBCBC;'> 6</span> UC          P: Bacter… Phyl… mu         -<span style='color: #BB0000;'>0.814</span>      0.558     -<span style='color: #BB0000;'>1.46</span>     0.150
-#&gt; <span style='color: #BCBCBC;'> 7</span> female      P: Bacter… Phyl… mu         -<span style='color: #BB0000;'>0.559</span>      0.349     -<span style='color: #BB0000;'>1.60</span>     0.115
-#&gt; <span style='color: #BCBCBC;'> 8</span> antibiotics P: Bacter… Phyl… mu         -<span style='color: #BB0000;'>0.116</span>      0.706     -<span style='color: #BB0000;'>0.164</span>    0.871
-#&gt; <span style='color: #BCBCBC;'> 9</span> steroids    P: Bacter… Phyl… mu         -<span style='color: #BB0000;'>0.130</span>      0.656     -<span style='color: #BB0000;'>0.197</span>    0.844
-#&gt; <span style='color: #BCBCBC;'>10</span> age_scaled  P: Bacter… Phyl… mu         -<span style='color: #BB0000;'>0.096</span><span style='color: #BB0000; text-decoration: underline;'>7</span>     0.264     -<span style='color: #BB0000;'>0.366</span>    0.716
-#&gt; <span style='color: #949494;'># … with 85 more rows, and 1 more variable: p.adj.BH.rank &lt;dbl&gt;</span></div><div class='input'>
-<span class='co'># you can also directly modify the dataframe,</span>
-<span class='co'># and choose a different variable name</span>
-<span class='va'>bb_stats</span><span class='op'>$</span><span class='va'>taxatree_stats</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>taxatree_stats_p_adjust</span><span class='op'>(</span>
-    method <span class='op'>=</span> <span class='st'>"holm"</span>, grouping <span class='op'>=</span> <span class='st'>"taxon"</span>, new_var <span class='op'>=</span> <span class='st'>"p_adj_holm"</span>
-  <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 95 × 10</span>
-#&gt; <span style='color: #949494;'># Groups:   taxon [19]</span>
-#&gt;    term        taxon      rank  parameter estimate std.error t.statistic p.value
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span> UC          P: Firmic… Phyl… mu         -<span style='color: #BB0000;'>0.375</span>      0.434     -<span style='color: #BB0000;'>0.864</span>    0.392
-#&gt; <span style='color: #BCBCBC;'> 2</span> female      P: Firmic… Phyl… mu          0.022<span style='text-decoration: underline;'>7</span>     0.309      0.073<span style='text-decoration: underline;'>4</span>   0.942
-#&gt; <span style='color: #BCBCBC;'> 3</span> antibiotics P: Firmic… Phyl… mu         -<span style='color: #BB0000;'>0.781</span>      0.478     -<span style='color: #BB0000;'>1.63</span>     0.108
-#&gt; <span style='color: #BCBCBC;'> 4</span> steroids    P: Firmic… Phyl… mu         -<span style='color: #BB0000;'>0.162</span>      0.426     -<span style='color: #BB0000;'>0.380</span>    0.705
-#&gt; <span style='color: #BCBCBC;'> 5</span> age_scaled  P: Firmic… Phyl… mu          0.294      0.188      1.56     0.124
-#&gt; <span style='color: #BCBCBC;'> 6</span> UC          P: Bacter… Phyl… mu         -<span style='color: #BB0000;'>0.814</span>      0.558     -<span style='color: #BB0000;'>1.46</span>     0.150
-#&gt; <span style='color: #BCBCBC;'> 7</span> female      P: Bacter… Phyl… mu         -<span style='color: #BB0000;'>0.559</span>      0.349     -<span style='color: #BB0000;'>1.60</span>     0.115
-#&gt; <span style='color: #BCBCBC;'> 8</span> antibiotics P: Bacter… Phyl… mu         -<span style='color: #BB0000;'>0.116</span>      0.706     -<span style='color: #BB0000;'>0.164</span>    0.871
-#&gt; <span style='color: #BCBCBC;'> 9</span> steroids    P: Bacter… Phyl… mu         -<span style='color: #BB0000;'>0.130</span>      0.656     -<span style='color: #BB0000;'>0.197</span>    0.844
-#&gt; <span style='color: #BCBCBC;'>10</span> age_scaled  P: Bacter… Phyl… mu         -<span style='color: #BB0000;'>0.096</span><span style='color: #BB0000; text-decoration: underline;'>7</span>     0.264     -<span style='color: #BB0000;'>0.366</span>    0.716
-#&gt; <span style='color: #949494;'># … with 85 more rows, and 2 more variables: p.adj.BH.rank &lt;dbl&gt;,</span>
-#&gt; <span style='color: #949494;'>#   p_adj_holm &lt;dbl&gt;</span></div><div class='input'>
-<span class='co'># see all available adjustment methods</span>
-<span class='fu'>stats</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/r/stats/p.adjust.html'>p.adjust.methods</a></span>
-</div><div class='output co'>#&gt; [1] "holm"       "hochberg"   "hommel"     "bonferroni" "BH"        
-#&gt; [6] "BY"         "fdr"        "none"      </div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># This example is an abbreviated excerpt from article on taxon modelling on</span></span>
+<span class='r-in'><span class='co'># the microViz documentation website</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/bryandmartin/corncob'>corncob</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"ibd_phylo"</span>, package <span class='op'>=</span> <span class='st'>"corncob"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># We'll keep only the Ulcerative Colitis and Healthy Control samples, to</span></span>
+<span class='r-in'><span class='co'># simplify the analyses for this example. We'll also remove the Species</span></span>
+<span class='r-in'><span class='co'># rank information, as most OTUs in this dataset are not assigned to a</span></span>
+<span class='r-in'><span class='co'># species. We'll also use `tax_fix` to fill any gaps where the Genus is</span></span>
+<span class='r-in'><span class='co'># unknown, with the family name or whatever higher rank classification is</span></span>
+<span class='r-in'><span class='co'># known.</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>phylo</span> <span class='op'>&lt;-</span> <span class='va'>ibd_phylo</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='ps_filter.html'>ps_filter</a></span><span class='op'>(</span><span class='va'>DiseaseState</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"UC"</span>, <span class='st'>"nonIBD"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='tax_mutate.html'>tax_mutate</a></span><span class='op'>(</span>Species <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='tax_fix.html'>tax_fix</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Let's make some sample data variables that are easier to use and compare</span></span>
+<span class='r-in'><span class='co'># in the statistical modelling ahead. We will convert dichotomous</span></span>
+<span class='r-in'><span class='co'># categorical variables into similar binary variables (values: 1 for true,</span></span>
+<span class='r-in'><span class='co'># or 0 for false). We will also scale and center the numeric variable for</span></span>
+<span class='r-in'><span class='co'># age.</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>phylo</span> <span class='op'>&lt;-</span> <span class='va'>phylo</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='ps_mutate.html'>ps_mutate</a></span><span class='op'>(</span></span>
+<span class='r-in'>    UC <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>DiseaseState</span> <span class='op'>==</span> <span class='st'>"UC"</span>, yes <span class='op'>=</span> <span class='fl'>1</span>, no <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>,</span>
+<span class='r-in'>    female <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>gender</span> <span class='op'>==</span> <span class='st'>"female"</span>, yes <span class='op'>=</span> <span class='fl'>1</span>, no <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>,</span>
+<span class='r-in'>    antibiotics <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>abx</span> <span class='op'>==</span> <span class='st'>"abx"</span>, yes <span class='op'>=</span> <span class='fl'>1</span>, no <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>,</span>
+<span class='r-in'>    steroids <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>steroids</span> <span class='op'>==</span> <span class='st'>"steroids"</span>, yes <span class='op'>=</span> <span class='fl'>1</span>, no <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>,</span>
+<span class='r-in'>    age_scaled <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/scale.html'>scale</a></span><span class='op'>(</span><span class='va'>age</span>, center <span class='op'>=</span> <span class='cn'>TRUE</span>, scale <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>bb_models</span> <span class='op'>&lt;-</span> <span class='va'>phylo</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='tax_fix.html'>tax_fix</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='tax_prepend_ranks.html'>tax_prepend_ranks</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='tax_filter.html'>tax_filter</a></span><span class='op'>(</span>min_prevalence <span class='op'>=</span> <span class='fl'>0.3</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='taxatree_models.html'>taxatree_models</a></span><span class='op'>(</span></span>
+<span class='r-in'>    type <span class='op'>=</span> <span class='fu'>corncob</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/corncob/man/bbdml.html'>bbdml</a></span>,</span>
+<span class='r-in'>    ranks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Phylum"</span>, <span class='st'>"Class"</span>, <span class='st'>"Order"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"UC"</span>, <span class='st'>"female"</span>, <span class='st'>"antibiotics"</span>, <span class='st'>"steroids"</span>, <span class='st'>"age_scaled"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Proportional min_prevalence given: 0.3 --&gt; min 21/67 samples.</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> 2021-11-01 09:34:26 - modelling at rank: Phylum</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> 2021-11-01 09:34:26 - modelling at rank: Class</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> 2021-11-01 09:34:28 - modelling at rank: Order</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>bb_stats</span> <span class='op'>&lt;-</span> <span class='va'>bb_models</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='taxatree_models2stats.html'>taxatree_models2stats</a></span><span class='op'>(</span>param <span class='op'>=</span> <span class='st'>"mu"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>taxatree_stats_p_adjust</span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"BH"</span>, grouping <span class='op'>=</span> <span class='st'>"rank"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>bb_stats</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ps_extra object - a list with phyloseq and extras:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> phyloseq-class experiment-level object</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> otu_table()   OTU Table:         [ 105 taxa and 67 samples ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sample_data() Sample Data:       [ 67 samples by 19 sample variables ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tax_table()   Taxonomy Table:    [ 105 taxa by 6 taxonomic ranks ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ps_extra info:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tax_agg = NA tax_transform = NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $taxatree_stats dataframe:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 19 taxa at 3 ranks: Phylum, Class, Order </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5 terms: UC, female, antibiotics, steroids, age_scaled</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>bb_stats</span><span class='op'>$</span><span class='va'>taxatree_stats</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 95 × 9</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Groups:   rank [3]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    term        taxon      rank  parameter estimate std.error t.statistic p.value</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> UC          P: Firmic… Phyl… mu         -<span style='color: #BB0000;'>0.375</span>      0.434     -<span style='color: #BB0000;'>0.864</span>    0.392</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> female      P: Firmic… Phyl… mu          0.022<span style='text-decoration: underline;'>7</span>     0.309      0.073<span style='text-decoration: underline;'>4</span>   0.942</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span> antibiotics P: Firmic… Phyl… mu         -<span style='color: #BB0000;'>0.781</span>      0.478     -<span style='color: #BB0000;'>1.63</span>     0.108</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span> steroids    P: Firmic… Phyl… mu         -<span style='color: #BB0000;'>0.162</span>      0.426     -<span style='color: #BB0000;'>0.380</span>    0.705</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span> age_scaled  P: Firmic… Phyl… mu          0.294      0.188      1.56     0.124</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span> UC          P: Bacter… Phyl… mu         -<span style='color: #BB0000;'>0.814</span>      0.558     -<span style='color: #BB0000;'>1.46</span>     0.150</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span> female      P: Bacter… Phyl… mu         -<span style='color: #BB0000;'>0.559</span>      0.349     -<span style='color: #BB0000;'>1.60</span>     0.115</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> antibiotics P: Bacter… Phyl… mu         -<span style='color: #BB0000;'>0.116</span>      0.706     -<span style='color: #BB0000;'>0.164</span>    0.871</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> steroids    P: Bacter… Phyl… mu         -<span style='color: #BB0000;'>0.130</span>      0.656     -<span style='color: #BB0000;'>0.197</span>    0.844</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> age_scaled  P: Bacter… Phyl… mu         -<span style='color: #BB0000;'>0.096</span><span style='color: #BB0000; text-decoration: underline;'>7</span>     0.264     -<span style='color: #BB0000;'>0.366</span>    0.716</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 85 more rows, and 1 more variable: p.adj.BH.rank &lt;dbl&gt;</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># you can also directly modify the dataframe,</span></span>
+<span class='r-in'><span class='co'># and choose a different variable name</span></span>
+<span class='r-in'><span class='va'>bb_stats</span><span class='op'>$</span><span class='va'>taxatree_stats</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>taxatree_stats_p_adjust</span><span class='op'>(</span></span>
+<span class='r-in'>    method <span class='op'>=</span> <span class='st'>"holm"</span>, grouping <span class='op'>=</span> <span class='st'>"taxon"</span>, new_var <span class='op'>=</span> <span class='st'>"p_adj_holm"</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 95 × 10</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Groups:   taxon [19]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    term        taxon      rank  parameter estimate std.error t.statistic p.value</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> UC          P: Firmic… Phyl… mu         -<span style='color: #BB0000;'>0.375</span>      0.434     -<span style='color: #BB0000;'>0.864</span>    0.392</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> female      P: Firmic… Phyl… mu          0.022<span style='text-decoration: underline;'>7</span>     0.309      0.073<span style='text-decoration: underline;'>4</span>   0.942</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span> antibiotics P: Firmic… Phyl… mu         -<span style='color: #BB0000;'>0.781</span>      0.478     -<span style='color: #BB0000;'>1.63</span>     0.108</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span> steroids    P: Firmic… Phyl… mu         -<span style='color: #BB0000;'>0.162</span>      0.426     -<span style='color: #BB0000;'>0.380</span>    0.705</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span> age_scaled  P: Firmic… Phyl… mu          0.294      0.188      1.56     0.124</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span> UC          P: Bacter… Phyl… mu         -<span style='color: #BB0000;'>0.814</span>      0.558     -<span style='color: #BB0000;'>1.46</span>     0.150</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span> female      P: Bacter… Phyl… mu         -<span style='color: #BB0000;'>0.559</span>      0.349     -<span style='color: #BB0000;'>1.60</span>     0.115</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> antibiotics P: Bacter… Phyl… mu         -<span style='color: #BB0000;'>0.116</span>      0.706     -<span style='color: #BB0000;'>0.164</span>    0.871</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> steroids    P: Bacter… Phyl… mu         -<span style='color: #BB0000;'>0.130</span>      0.656     -<span style='color: #BB0000;'>0.197</span>    0.844</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> age_scaled  P: Bacter… Phyl… mu         -<span style='color: #BB0000;'>0.096</span><span style='color: #BB0000; text-decoration: underline;'>7</span>     0.264     -<span style='color: #BB0000;'>0.366</span>    0.716</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 85 more rows, and 2 more variables: p.adj.BH.rank &lt;dbl&gt;,</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   p_adj_holm &lt;dbl&gt;</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># see all available adjustment methods</span></span>
+<span class='r-in'><span class='fu'>stats</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/r/stats/p.adjust.html'>p.adjust.methods</a></span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "holm"       "hochberg"   "hommel"     "bonferroni" "BH"        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [6] "BY"         "fdr"        "none"      </span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

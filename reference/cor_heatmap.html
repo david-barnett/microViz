@@ -88,7 +88,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9037</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9038</span>
       </span>
     </div>
 
@@ -208,7 +208,8 @@
     </tr>
     <tr>
       <th>anno_tax</th>
-      <td><p>optional annotation of taxa distributions: tax_anno() list output, or a pre-made ComplexHeatmap HeatmapAnnotation</p></td>
+      <td><p>optional annotation of taxa distributions: tax_anno() list output,
+or a pre-made ComplexHeatmap HeatmapAnnotation</p></td>
     </tr>
     <tr>
       <th>vars</th>
@@ -216,11 +217,13 @@
     </tr>
     <tr>
       <th>anno_vars</th>
-      <td><p>optional annotation of variable distributions: var_anno() list output, or a pre-made ComplexHeatmap HeatmapAnnotation</p></td>
+      <td><p>optional annotation of variable distributions:
+var_anno() list output, or a pre-made ComplexHeatmap HeatmapAnnotation</p></td>
     </tr>
     <tr>
       <th>cor</th>
-      <td><p>correlation coefficient. pearson/kendall/spearman, can be abbreviated (used as legend title)</p></td>
+      <td><p>correlation coefficient. pearson/kendall/spearman,
+can be abbreviated (used as legend title)</p></td>
     </tr>
     <tr>
       <th>cor_use</th>
@@ -236,7 +239,8 @@
     </tr>
     <tr>
       <th>taxa_side</th>
-      <td><p>controls heatmap orientation and where any anno_tax annotations are placed (top/bottom/left/right)</p></td>
+      <td><p>controls heatmap orientation and where any
+anno_tax annotations are placed (top/bottom/left/right)</p></td>
     </tr>
     <tr>
       <th>seriation_method</th>
@@ -256,11 +260,13 @@
     </tr>
     <tr>
       <th>tax_transform</th>
-      <td><p>transformation applied to otu_table before correlating (and BEFORE selection of taxa)</p></td>
+      <td><p>transformation applied to otu_table before correlating
+(and BEFORE selection of taxa)</p></td>
     </tr>
     <tr>
       <th>var_fun</th>
-      <td><p>character: name of a function to be applied (columns) to a matrix of vars before correlating (but not used in any variable annotations)</p></td>
+      <td><p>character: name of a function to be applied (columns) to a matrix of vars
+before correlating (but not used in any variable annotations)</p></td>
     </tr>
     <tr>
       <th>gridlines</th>
@@ -268,7 +274,7 @@
     </tr>
     <tr>
       <th>...</th>
-      <td><p>extra args, for cor_heatmap passed to internal function viz_heatmap (for heat_numbers() dots are passed to grid::gpar for grid::grid.text)</p></td>
+      <td><p>extra args, for cor_heatmap passed to internal function viz_heatmap</p></td>
     </tr>
     </table>
 
@@ -278,106 +284,122 @@
 and all arguments relating to taxa will be ignored.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span>
-<span class='co'># create a couple of numerical variables to use</span>
-<span class='va'>psq</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ps_mutate.html'>ps_mutate</a></span><span class='op'>(</span>
-    weight <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/recode.html'>recode</a></span><span class='op'>(</span><span class='va'>bmi_group</span>, obese <span class='op'>=</span> <span class='fl'>3</span>, overweight <span class='op'>=</span> <span class='fl'>2</span>, lean <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>,
-    female <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>sex</span> <span class='op'>==</span> <span class='st'>"female"</span>, true <span class='op'>=</span> <span class='fl'>1</span>, false <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>,
-    african <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>nationality</span> <span class='op'>==</span> <span class='st'>"AFR"</span>, true <span class='op'>=</span> <span class='fl'>1</span>, false <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
-  <span class='op'>)</span>
-<span class='va'>psq</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tax_filter.html'>tax_filter</a></span><span class='op'>(</span>ps <span class='op'>=</span> <span class='va'>psq</span>, min_prevalence <span class='op'>=</span> <span class='fl'>1</span> <span class='op'>/</span> <span class='fl'>10</span>, min_sample_abundance <span class='op'>=</span> <span class='fl'>1</span> <span class='op'>/</span> <span class='fl'>10</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Proportional min_prevalence given: 0.1 --&gt; min 23/222 samples.</span></div><div class='input'><span class='va'>psq</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='va'>psq</span>, <span class='st'>"Genus"</span><span class='op'>)</span>
-
-<span class='co'># randomly select 30 taxa from the 50 most abundant taxa</span>
-<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>123</span><span class='op'>)</span>
-<span class='va'>taxa</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'>microbiome</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/microbiome/man/top_taxa.html'>top_taxa</a></span><span class='op'>(</span><span class='fu'><a href='ps_extra-accessors.html'>ps_get</a></span><span class='op'>(</span><span class='va'>psq</span><span class='op'>)</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>50</span><span class='op'>]</span>, size <span class='op'>=</span> <span class='fl'>30</span><span class='op'>)</span>
-
-<span class='co'># make simple correlation heatmap with all numeric-like variables</span>
-<span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'>cor_heatmap</span><span class='op'>(</span><span class='va'>psq</span>, <span class='va'>taxa</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span>
-<span class='co'># NOTE: detection threshold set to 50 as HITchip example data seems to have background noise</span>
-<span class='va'>p</span>
-</div><div class='img'><img src='cor_heatmap-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># or with a selection of numeric-like variables</span>
-<span class='fu'>cor_heatmap</span><span class='op'>(</span>
-  <span class='va'>psq</span>, <span class='va'>taxa</span>,
-  vars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"african"</span>, <span class='st'>"female"</span>, <span class='st'>"weight"</span><span class='op'>)</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='img'><img src='cor_heatmap-2.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># also with alternative correlation measures</span>
-<span class='fu'>cor_heatmap</span><span class='op'>(</span><span class='va'>psq</span>, <span class='va'>taxa</span>, cor <span class='op'>=</span> <span class='st'>"spearman"</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='img'><img src='cor_heatmap-3.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># annotating variables is possible, and easy with var_anno() which defaults to a boxplot</span>
-<span class='fu'>cor_heatmap</span><span class='op'>(</span><span class='va'>psq</span>, <span class='va'>taxa</span>, anno_vars <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>var_anno</a></span><span class='op'>(</span><span class='op'>)</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='img'><img src='cor_heatmap-4.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># you can transform the variables before correlating by giving var_fun a function name</span>
-<span class='co'># this does not affect the data used for annotations</span>
-<span class='fu'>cor_heatmap</span><span class='op'>(</span>
-  <span class='va'>psq</span>, <span class='va'>taxa</span>,
-  anno_vars <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>var_anno</a></span><span class='op'>(</span><span class='op'>)</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span>,
-  var_fun <span class='op'>=</span> <span class='st'>"exp"</span>
-<span class='op'>)</span>
-</div><div class='img'><img src='cor_heatmap-5.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># other and multiple annotations</span>
-<span class='fu'>cor_heatmap</span><span class='op'>(</span>
-  <span class='va'>psq</span>, <span class='va'>taxa</span>,
-  anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span>,
-  anno_vars <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>var_anno</a></span><span class='op'>(</span>
-    annos <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"var_hist"</span>, <span class='st'>"var_box"</span><span class='op'>)</span>,
-    funs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"identity"</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log10</a></span><span class='op'>(</span><span class='va'>x</span> <span class='op'>+</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>,
-    names <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"x"</span>, <span class='st'>"log10(x+1)"</span><span class='op'>)</span>, rel_sizes <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>
-  <span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='img'><img src='cor_heatmap-6.png' alt='' width='700' height='433' /></div><div class='input'>
-
-<span class='co'># optionally you can set the absolute width and height of the heatmap body manually</span>
-<span class='va'>p1</span> <span class='op'>&lt;-</span> <span class='fu'>cor_heatmap</span><span class='op'>(</span><span class='va'>psq</span>, <span class='va'>taxa</span>,
-  anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span>,
-  width <span class='op'>=</span> <span class='fu'>grid</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>5</span>, <span class='st'>"cm"</span><span class='op'>)</span>, height <span class='op'>=</span> <span class='fu'>grid</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>15</span>, <span class='st'>"cm"</span><span class='op'>)</span>
-<span class='op'>)</span>
-<span class='va'>p1</span>
-</div><div class='img'><img src='cor_heatmap-7.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># you can also change the annotation sizes</span>
-<span class='va'>p2</span> <span class='op'>&lt;-</span> <span class='fu'>cor_heatmap</span><span class='op'>(</span><span class='va'>psq</span>, <span class='va'>taxa</span>,
-  anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span>, size <span class='op'>=</span> <span class='fl'>45</span>, rel_sizes <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>,
-  width <span class='op'>=</span> <span class='fu'>grid</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>5</span>, <span class='st'>"cm"</span><span class='op'>)</span>, height <span class='op'>=</span> <span class='fu'>grid</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>15</span>, <span class='st'>"cm"</span><span class='op'>)</span>
-<span class='op'>)</span>
-<span class='va'>p2</span>
-</div><div class='img'><img src='cor_heatmap-8.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># make the same correlation heatmap, but rotated</span>
-<span class='va'>p3</span> <span class='op'>&lt;-</span> <span class='fu'>cor_heatmap</span><span class='op'>(</span><span class='va'>psq</span>, <span class='va'>taxa</span>,
-  taxa_side <span class='op'>=</span> <span class='st'>"top"</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span>
-<span class='op'>)</span>
-<span class='va'>p3</span>
-</div><div class='img'><img src='cor_heatmap-9.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># or rotated with taxa annotations at bottom</span>
-<span class='va'>p4</span> <span class='op'>&lt;-</span> <span class='fu'>cor_heatmap</span><span class='op'>(</span><span class='va'>psq</span>, <span class='va'>taxa</span>,
-  taxa_side <span class='op'>=</span> <span class='st'>"bottom"</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span>
-<span class='op'>)</span>
-<span class='va'>p4</span>
-</div><div class='img'><img src='cor_heatmap-10.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># customising annotation styles is possible using the args argument in tax_anno or var_anno</span>
-<span class='co'># but it is tricky: pass a list of lists, the inner lists are named to match the annotation type</span>
-<span class='co'># this approach might be simplified/changed in future versions</span>
-<span class='va'>extra_args</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>prev <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>gp <span class='op'>=</span> <span class='fu'>grid</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/grid/gpar.html'>gpar</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"white"</span>, lwd <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>, bar_width <span class='op'>=</span> <span class='fl'>0.3</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>cor_heatmap</span><span class='op'>(</span>
-  <span class='va'>psq</span>, <span class='va'>taxa</span>,
-  anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span>, prev <span class='op'>=</span> <span class='fl'>1</span>, abund <span class='op'>=</span> <span class='cn'>NA</span>, args <span class='op'>=</span> <span class='va'>extra_args</span><span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='img'><img src='cor_heatmap-11.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='va'>extra_args2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-  var_hist <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>gp <span class='op'>=</span> <span class='fu'>grid</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/grid/gpar.html'>gpar</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"black"</span>, lwd <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>,
-  var_box <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>point_size <span class='op'>=</span> <span class='fl'>3</span>, box_width <span class='op'>=</span> <span class='fl'>0.9</span><span class='op'>)</span>
-<span class='op'>)</span>
-<span class='va'>var_annotations</span> <span class='op'>&lt;-</span> <span class='fu'><a href='heatmap-annotations.html'>var_anno</a></span><span class='op'>(</span>annos <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"var_hist"</span>, <span class='st'>"var_box"</span><span class='op'>)</span>, args <span class='op'>=</span> <span class='va'>extra_args2</span><span class='op'>)</span>
-<span class='fu'>cor_heatmap</span><span class='op'>(</span><span class='va'>psq</span>, <span class='va'>taxa</span>, anno_vars <span class='op'>=</span> <span class='va'>var_annotations</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='img'><img src='cor_heatmap-12.png' alt='' width='700' height='433' /></div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Attaching package: ‘dplyr’</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> The following objects are masked from ‘package:stats’:</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     filter, lag</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> The following objects are masked from ‘package:base’:</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     intersect, setdiff, setequal, union</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'># create a couple of numerical variables to use</span></span>
+<span class='r-in'><span class='va'>psq</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='ps_mutate.html'>ps_mutate</a></span><span class='op'>(</span></span>
+<span class='r-in'>    weight <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/recode.html'>recode</a></span><span class='op'>(</span><span class='va'>bmi_group</span>, obese <span class='op'>=</span> <span class='fl'>3</span>, overweight <span class='op'>=</span> <span class='fl'>2</span>, lean <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>,</span>
+<span class='r-in'>    female <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>sex</span> <span class='op'>==</span> <span class='st'>"female"</span>, true <span class='op'>=</span> <span class='fl'>1</span>, false <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>,</span>
+<span class='r-in'>    african <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>nationality</span> <span class='op'>==</span> <span class='st'>"AFR"</span>, true <span class='op'>=</span> <span class='fl'>1</span>, false <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'><span class='va'>psq</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tax_filter.html'>tax_filter</a></span><span class='op'>(</span>ps <span class='op'>=</span> <span class='va'>psq</span>, min_prevalence <span class='op'>=</span> <span class='fl'>1</span> <span class='op'>/</span> <span class='fl'>10</span>, min_sample_abundance <span class='op'>=</span> <span class='fl'>1</span> <span class='op'>/</span> <span class='fl'>10</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Proportional min_prevalence given: 0.1 --&gt; min 23/222 samples.</span>
+<span class='r-in'><span class='va'>psq</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='va'>psq</span>, <span class='st'>"Genus"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># randomly select 30 taxa from the 50 most abundant taxa</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>123</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>taxa</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'>microbiome</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/microbiome/man/top_taxa.html'>top_taxa</a></span><span class='op'>(</span><span class='fu'><a href='ps_extra-accessors.html'>ps_get</a></span><span class='op'>(</span><span class='va'>psq</span><span class='op'>)</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>50</span><span class='op'>]</span>, size <span class='op'>=</span> <span class='fl'>30</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># make simple correlation heatmap with all numeric-like variables</span></span>
+<span class='r-in'><span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'>cor_heatmap</span><span class='op'>(</span><span class='va'>psq</span>, <span class='va'>taxa</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'># NOTE: detection threshold set to 50 as HITchip example data seems to have background noise</span></span>
+<span class='r-in'><span class='va'>p</span></span>
+<span class='r-plt img'><img src='cor_heatmap-1.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># or with a selection of numeric-like variables</span></span>
+<span class='r-in'><span class='fu'>cor_heatmap</span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='va'>psq</span>, <span class='va'>taxa</span>,</span>
+<span class='r-in'>  vars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"african"</span>, <span class='st'>"female"</span>, <span class='st'>"weight"</span><span class='op'>)</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-plt img'><img src='cor_heatmap-2.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># also with alternative correlation measures</span></span>
+<span class='r-in'><span class='fu'>cor_heatmap</span><span class='op'>(</span><span class='va'>psq</span>, <span class='va'>taxa</span>, cor <span class='op'>=</span> <span class='st'>"spearman"</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='cor_heatmap-3.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># annotating variables is possible, and easy with var_anno() which defaults to a boxplot</span></span>
+<span class='r-in'><span class='fu'>cor_heatmap</span><span class='op'>(</span><span class='va'>psq</span>, <span class='va'>taxa</span>, anno_vars <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>var_anno</a></span><span class='op'>(</span><span class='op'>)</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='cor_heatmap-4.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># you can transform the variables before correlating by giving var_fun a function name</span></span>
+<span class='r-in'><span class='co'># this does not affect the data used for annotations</span></span>
+<span class='r-in'><span class='fu'>cor_heatmap</span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='va'>psq</span>, <span class='va'>taxa</span>,</span>
+<span class='r-in'>  anno_vars <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>var_anno</a></span><span class='op'>(</span><span class='op'>)</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span>,</span>
+<span class='r-in'>  var_fun <span class='op'>=</span> <span class='st'>"exp"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-plt img'><img src='cor_heatmap-5.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># other and multiple annotations</span></span>
+<span class='r-in'><span class='fu'>cor_heatmap</span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='va'>psq</span>, <span class='va'>taxa</span>,</span>
+<span class='r-in'>  anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span>,</span>
+<span class='r-in'>  anno_vars <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>var_anno</a></span><span class='op'>(</span></span>
+<span class='r-in'>    annos <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"var_hist"</span>, <span class='st'>"var_box"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    funs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"identity"</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log10</a></span><span class='op'>(</span><span class='va'>x</span> <span class='op'>+</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>    names <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"x"</span>, <span class='st'>"log10(x+1)"</span><span class='op'>)</span>, rel_sizes <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-plt img'><img src='cor_heatmap-6.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># optionally you can set the absolute width and height of the heatmap body manually</span></span>
+<span class='r-in'><span class='va'>p1</span> <span class='op'>&lt;-</span> <span class='fu'>cor_heatmap</span><span class='op'>(</span><span class='va'>psq</span>, <span class='va'>taxa</span>,</span>
+<span class='r-in'>  anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span>,</span>
+<span class='r-in'>  width <span class='op'>=</span> <span class='fu'>grid</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>5</span>, <span class='st'>"cm"</span><span class='op'>)</span>, height <span class='op'>=</span> <span class='fu'>grid</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>15</span>, <span class='st'>"cm"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>p1</span></span>
+<span class='r-plt img'><img src='cor_heatmap-7.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># you can also change the annotation sizes</span></span>
+<span class='r-in'><span class='va'>p2</span> <span class='op'>&lt;-</span> <span class='fu'>cor_heatmap</span><span class='op'>(</span><span class='va'>psq</span>, <span class='va'>taxa</span>,</span>
+<span class='r-in'>  anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span>, size <span class='op'>=</span> <span class='fl'>45</span>, rel_sizes <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>  width <span class='op'>=</span> <span class='fu'>grid</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>5</span>, <span class='st'>"cm"</span><span class='op'>)</span>, height <span class='op'>=</span> <span class='fu'>grid</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>15</span>, <span class='st'>"cm"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>p2</span></span>
+<span class='r-plt img'><img src='cor_heatmap-8.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># make the same correlation heatmap, but rotated</span></span>
+<span class='r-in'><span class='va'>p3</span> <span class='op'>&lt;-</span> <span class='fu'>cor_heatmap</span><span class='op'>(</span><span class='va'>psq</span>, <span class='va'>taxa</span>,</span>
+<span class='r-in'>  taxa_side <span class='op'>=</span> <span class='st'>"top"</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>p3</span></span>
+<span class='r-plt img'><img src='cor_heatmap-9.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># or rotated with taxa annotations at bottom</span></span>
+<span class='r-in'><span class='va'>p4</span> <span class='op'>&lt;-</span> <span class='fu'>cor_heatmap</span><span class='op'>(</span><span class='va'>psq</span>, <span class='va'>taxa</span>,</span>
+<span class='r-in'>  taxa_side <span class='op'>=</span> <span class='st'>"bottom"</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>p4</span></span>
+<span class='r-plt img'><img src='cor_heatmap-10.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># customising annotation styles is possible using the args argument in tax_anno or var_anno</span></span>
+<span class='r-in'><span class='co'># but it is tricky: pass a list of lists, the inner lists are named to match the annotation type</span></span>
+<span class='r-in'><span class='co'># this approach might be simplified/changed in future versions</span></span>
+<span class='r-in'><span class='va'>extra_args</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>prev <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>gp <span class='op'>=</span> <span class='fu'>grid</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/grid/gpar.html'>gpar</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"white"</span>, lwd <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>, bar_width <span class='op'>=</span> <span class='fl'>0.3</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>cor_heatmap</span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='va'>psq</span>, <span class='va'>taxa</span>,</span>
+<span class='r-in'>  anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span>, prev <span class='op'>=</span> <span class='fl'>1</span>, abund <span class='op'>=</span> <span class='cn'>NA</span>, args <span class='op'>=</span> <span class='va'>extra_args</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-plt img'><img src='cor_heatmap-11.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>extra_args2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>  var_hist <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>gp <span class='op'>=</span> <span class='fu'>grid</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/grid/gpar.html'>gpar</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"black"</span>, lwd <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>  var_box <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>point_size <span class='op'>=</span> <span class='fl'>3</span>, box_width <span class='op'>=</span> <span class='fl'>0.9</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>var_annotations</span> <span class='op'>&lt;-</span> <span class='fu'><a href='heatmap-annotations.html'>var_anno</a></span><span class='op'>(</span>annos <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"var_hist"</span>, <span class='st'>"var_box"</span><span class='op'>)</span>, args <span class='op'>=</span> <span class='va'>extra_args2</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>cor_heatmap</span><span class='op'>(</span><span class='va'>psq</span>, <span class='va'>taxa</span>, anno_vars <span class='op'>=</span> <span class='va'>var_annotations</span>, anno_tax <span class='op'>=</span> <span class='fu'><a href='heatmap-annotations.html'>tax_anno</a></span><span class='op'>(</span>undetected <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='cor_heatmap-12.png' alt='' width='700' height='433' /></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

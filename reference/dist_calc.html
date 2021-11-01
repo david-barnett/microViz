@@ -104,7 +104,7 @@ Alternatively you can directly access the distance matrix with dist_get()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9037</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9038</span>
       </span>
     </div>
 
@@ -256,34 +256,38 @@ If the distance matrix is required for permanova, users require option 2.</p>
 <p><code>phyloseq::<a href='https://rdrr.io/pkg/phyloseq/man/distance.html'>distance</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># bray curtis distance on genera-level features</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span>
-<span class='va'>bc</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>dist_calc</span><span class='op'>(</span><span class='st'>"bray"</span><span class='op'>)</span>
-<span class='va'>bc</span>
-</div><div class='output co'>#&gt; ps_extra object - a list with phyloseq and extras:
-#&gt; 
-#&gt; phyloseq-class experiment-level object
-#&gt; otu_table()   OTU Table:         [ 130 taxa and 222 samples ]
-#&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]
-#&gt; 
-#&gt; ps_extra info:
-#&gt; tax_agg = Genus tax_transform = NA
-#&gt; 
-#&gt; bray distance matrix of size 222 
-#&gt; 0.7639533 0.7851213 0.6680796 0.7699252 0.80507 ...</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='va'>bc</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "ps_extra" "list"    </div><div class='input'>
-<span class='co'># gunifrac distance using phyloseq input</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"esophagus"</span>, package <span class='op'>=</span> <span class='st'>"phyloseq"</span><span class='op'>)</span>
-<span class='va'>gunifrac</span> <span class='op'>&lt;-</span> <span class='va'>esophagus</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>dist_calc</span><span class='op'>(</span><span class='st'>"gunifrac"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ps_extra-accessors.html'>dist_get</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'rmutil':</span>
-#&gt; <span class='message'>  method         from</span>
-#&gt; <span class='message'>  print.response httr</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='va'>gunifrac</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "dist"</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># bray curtis distance on genera-level features</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>bc</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>dist_calc</span><span class='op'>(</span><span class='st'>"bray"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>bc</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ps_extra object - a list with phyloseq and extras:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> phyloseq-class experiment-level object</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> otu_table()   OTU Table:         [ 130 taxa and 222 samples ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sample_data() Sample Data:       [ 222 samples by 8 sample variables ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ps_extra info:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tax_agg = Genus tax_transform = NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> bray distance matrix of size 222 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 0.7639533 0.7851213 0.6680796 0.7699252 0.80507 ...</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='va'>bc</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "ps_extra" "list"    </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># gunifrac distance using phyloseq input</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"esophagus"</span>, package <span class='op'>=</span> <span class='st'>"phyloseq"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>gunifrac</span> <span class='op'>&lt;-</span> <span class='va'>esophagus</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>dist_calc</span><span class='op'>(</span><span class='st'>"gunifrac"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='ps_extra-accessors.html'>dist_get</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Registered S3 method overwritten by 'rmutil':</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   method         from</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   print.response httr</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='va'>gunifrac</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "dist"</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

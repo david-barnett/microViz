@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9037</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9038</span>
       </span>
     </div>
 
@@ -183,7 +183,7 @@
 <p>microViz provides a Shiny app for an easy way to start exploring your microbiome data: all you need is a phyloseq object.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># example data from corncob package</span>
-<span class="va">pseq</span> <span class="op">&lt;-</span> <span class="fu">corncob</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/corncob/man/ibd_phylo.html">ibd_phylo</a></span> <span class="op">%&gt;%</span> <span class="fu"><a href="reference/tax_fix.html">tax_fix</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="reference/phyloseq_validate.html">phyloseq_validate</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<span class="va">pseq</span> <span class="op">&lt;-</span> <span class="fu">corncob</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/corncob/man/ibd_phylo.html">ibd_phylo</a></span> <span class="op"><a href="reference/%&gt;%.html">%&gt;%</a></span> <span class="fu"><a href="reference/tax_fix.html">tax_fix</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="reference/%&gt;%.html">%&gt;%</a></span> <span class="fu"><a href="reference/phyloseq_validate.html">phyloseq_validate</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/ord_explore.html">ord_explore</a></span><span class="op">(</span><span class="va">pseq</span><span class="op">)</span> <span class="co"># gif generated with microViz version 0.7.4 (plays at 1.75x speed)</span></code></pre></div>
 <p><img src="articles/web-only/images/20210429_ord_explore_x175.gif"></p>
@@ -208,7 +208,7 @@
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"dietswap"</span>, package <span class="op">=</span> <span class="st">"microbiome"</span><span class="op">)</span>
 
 <span class="co"># create a couple of numerical variables to use as constraints or conditions</span>
-<span class="va">dietswap</span> <span class="op">&lt;-</span> <span class="va">dietswap</span> <span class="op">%&gt;%</span>
+<span class="va">dietswap</span> <span class="op">&lt;-</span> <span class="va">dietswap</span> <span class="op"><a href="reference/%&gt;%.html">%&gt;%</a></span>
   <span class="fu"><a href="reference/ps_mutate.html">ps_mutate</a></span><span class="op">(</span>
     weight <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/recode.html">recode</a></span><span class="op">(</span><span class="va">bmi_group</span>, obese <span class="op">=</span> <span class="fl">3</span>, overweight <span class="op">=</span> <span class="fl">2</span>, lean <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,
     female <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="va">sex</span> <span class="op">==</span> <span class="st">"female"</span>, true <span class="op">=</span> <span class="fl">1</span>, false <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
@@ -220,8 +220,8 @@
 <a href="#looking-at-your-data" class="anchor"></a>Looking at your data</h3>
 <p>You have quite a few samples in your phyloseq object, and would like to visualise their compositions. Perhaps these example data differ across BMI groups?</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dietswap</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">dietswap</span> <span class="op"><a href="reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu"><a href="reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="reference/%&gt;%.html">%&gt;%</a></span>
   <span class="fu"><a href="reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span>
     tax_level <span class="op">=</span> <span class="st">"Genus"</span>,  n_taxa <span class="op">=</span> <span class="fl">12</span>, 
     merge_other <span class="op">=</span> <span class="cn">FALSE</span> 
@@ -259,17 +259,17 @@
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># perform ordination</span>
 <span class="va">unconstrained_aitchison_pca</span> <span class="op">&lt;-</span>
-  <span class="va">dietswap</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">0.1</span>, tax_level <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Family"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"clr"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="va">dietswap</span> <span class="op"><a href="reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu"><a href="reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">0.1</span>, tax_level <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu"><a href="reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu"><a href="reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"clr"</span><span class="op">)</span> <span class="op"><a href="reference/%&gt;%.html">%&gt;%</a></span>
   <span class="fu"><a href="reference/ord_calc.html">ord_calc</a></span><span class="op">(</span><span class="op">)</span> 
 <span class="co">#&gt; Proportional min_prevalence given: 0.1 --&gt; min 23/222 samples.</span>
 <span class="co"># ord_calc will automatically infer you want a "PCA" here</span>
 <span class="co"># specify explicitly with method = "PCA", or you can pick another method</span>
 
 <span class="co"># create plot</span>
-<span class="va">pca_plot</span> <span class="op">&lt;-</span> <span class="va">unconstrained_aitchison_pca</span> <span class="op">%&gt;%</span>
+<span class="va">pca_plot</span> <span class="op">&lt;-</span> <span class="va">unconstrained_aitchison_pca</span> <span class="op"><a href="reference/%&gt;%.html">%&gt;%</a></span>
   <span class="fu"><a href="reference/ord_plot.html">ord_plot</a></span><span class="op">(</span>
     plot_taxa <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, colour <span class="op">=</span> <span class="st">"bmi_group"</span>, size <span class="op">=</span> <span class="fl">1.5</span>,
     tax_vec_length <span class="op">=</span> <span class="fl">0.325</span>, 
@@ -295,10 +295,10 @@
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># calculate distances</span>
 <span class="va">aitchison_dists</span> <span class="op">&lt;-</span>
-  <span class="va">dietswap</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">0.1</span>, tax_level <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Family"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"identity"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="va">dietswap</span> <span class="op"><a href="reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu"><a href="reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">0.1</span>, tax_level <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu"><a href="reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu"><a href="reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"identity"</span><span class="op">)</span> <span class="op"><a href="reference/%&gt;%.html">%&gt;%</a></span> 
   <span class="fu"><a href="reference/dist_calc.html">dist_calc</a></span><span class="op">(</span><span class="st">"aitchison"</span><span class="op">)</span>
 <span class="co">#&gt; Proportional min_prevalence given: 0.1 --&gt; min 23/222 samples.</span>
 <span class="co"># the more permutations you request, the longer it takes</span>
@@ -311,10 +311,10 @@
   variables <span class="op">=</span> <span class="st">"bmi_group + female"</span>
 <span class="op">)</span>
 <span class="co">#&gt; Dropping samples with missings: 2</span>
-<span class="co">#&gt; 2021-10-29 22:26:37 - Starting PERMANOVA with 99 perms with 1 processes</span>
-<span class="co">#&gt; 2021-10-29 22:26:38 - Finished PERMANOVA</span>
+<span class="co">#&gt; 2021-10-31 21:13:31 - Starting PERMANOVA with 99 perms with 1 processes</span>
+<span class="co">#&gt; 2021-10-31 21:13:31 - Finished PERMANOVA</span>
 <span class="co"># view the permanova results</span>
-<span class="fu"><a href="reference/ps_extra-accessors.html">perm_get</a></span><span class="op">(</span><span class="va">aitchison_perm</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="reference/ps_extra-accessors.html">perm_get</a></span><span class="op">(</span><span class="va">aitchison_perm</span><span class="op">)</span> <span class="op"><a href="reference/%&gt;%.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt;            Df   SumOfSqs         R2        F Pr(&gt;F)</span>
 <span class="co">#&gt; bmi_group   2  106.32182 0.04332620 5.008911   0.01</span>
 <span class="co">#&gt; female      1   53.22231 0.02168812 5.014697   0.01</span>
@@ -340,8 +340,8 @@
   data <span class="op">=</span> <span class="va">aitchison_dists</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"female"</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">321</span>
 <span class="op">)</span>
 <span class="co">#&gt; Dropping samples with missings: 2</span>
-<span class="co">#&gt; 2021-10-29 22:26:38 - Starting PERMANOVA with 999 perms with 1 processes</span>
-<span class="co">#&gt; 2021-10-29 22:26:38 - Finished PERMANOVA</span>
+<span class="co">#&gt; 2021-10-31 21:13:31 - Starting PERMANOVA with 999 perms with 1 processes</span>
+<span class="co">#&gt; 2021-10-31 21:13:31 - Finished PERMANOVA</span>
 <span class="fu"><a href="reference/ps_extra-accessors.html">perm_get</a></span><span class="op">(</span><span class="va">perm2</span><span class="op">)</span>
 <span class="co">#&gt; Permutation test for adonis under reduced model</span>
 <span class="co">#&gt; Marginal effects of terms</span>
@@ -357,7 +357,7 @@
 <span class="co">#&gt; ---</span>
 <span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/ord_calc.html">ord_calc</a></span><span class="op">(</span><span class="va">perm2</span>, constraints <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"female"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="fu"><a href="reference/ord_calc.html">ord_calc</a></span><span class="op">(</span><span class="va">perm2</span>, constraints <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"female"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="reference/%&gt;%.html">%&gt;%</a></span>
   <span class="fu"><a href="reference/ord_plot.html">ord_plot</a></span><span class="op">(</span>
     colour <span class="op">=</span> <span class="st">"sex"</span>, size <span class="op">=</span> <span class="fl">1.5</span>,
     constraint_vec_length <span class="op">=</span> <span class="fl">1</span>,
@@ -381,22 +381,22 @@
 <p>microViz heatmaps are powered by <code>ComplexHeatmap</code> and annotated with taxa prevalence and/or abundance.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># set up the data with numerical variables and filter to top taxa</span>
-<span class="va">psq</span> <span class="op">&lt;-</span> <span class="va">dietswap</span> <span class="op">%&gt;%</span>
+<span class="va">psq</span> <span class="op">&lt;-</span> <span class="va">dietswap</span> <span class="op"><a href="reference/%&gt;%.html">%&gt;%</a></span>
  <span class="fu"><a href="reference/ps_mutate.html">ps_mutate</a></span><span class="op">(</span>
    weight <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/recode.html">recode</a></span><span class="op">(</span><span class="va">bmi_group</span>, obese <span class="op">=</span> <span class="fl">3</span>, overweight <span class="op">=</span> <span class="fl">2</span>, lean <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,
    female <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="va">sex</span> <span class="op">==</span> <span class="st">"female"</span>, true <span class="op">=</span> <span class="fl">1</span>, false <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>,
    african <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="va">nationality</span> <span class="op">==</span> <span class="st">"AFR"</span>, true <span class="op">=</span> <span class="fl">1</span>, false <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
- <span class="op">)</span> <span class="op">%&gt;%</span> 
+ <span class="op">)</span> <span class="op"><a href="reference/%&gt;%.html">%&gt;%</a></span> 
   <span class="fu"><a href="reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>
     tax_level <span class="op">=</span> <span class="st">"Genus"</span>, min_prevalence <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">10</span>, min_sample_abundance <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">10</span>
-  <span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="op">)</span> <span class="op"><a href="reference/%&gt;%.html">%&gt;%</a></span> 
   <span class="fu"><a href="reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"identity"</span>, rank <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span>
 <span class="co">#&gt; Proportional min_prevalence given: 0.1 --&gt; min 23/222 samples.</span>
 <span class="co"># randomly select 30 taxa from the 50 most abundant taxa (just for an example)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span>
 <span class="va">taxa</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fu">microbiome</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/microbiome/man/top_taxa.html">top_taxa</a></span><span class="op">(</span><span class="fu"><a href="reference/ps_extra-accessors.html">ps_get</a></span><span class="op">(</span><span class="va">psq</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span><span class="op">]</span>, size <span class="op">=</span> <span class="fl">30</span><span class="op">)</span>
 <span class="co"># actually draw the heatmap</span>
-<span class="fu"><a href="reference/cor_heatmap.html">cor_heatmap</a></span><span class="op">(</span><span class="va">psq</span>, <span class="va">taxa</span>, anno_tax <span class="op">=</span> <span class="fu"><a href="reference/heatmap-annotations.html">tax_anno</a></span><span class="op">(</span>undetected <span class="op">=</span> <span class="fl">50</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="reference/cor_heatmap.html">cor_heatmap</a></span><span class="op">(</span><span class="va">psq</span>, <span class="va">taxa</span>, anno_tax <span class="op">=</span> <span class="fu"><a href="reference/heatmap-annotations.html">tax_anno</a></span><span class="op">(</span>undetected <span class="op">=</span> <span class="fl">50</span>, size <span class="op">=</span> <span class="fl">50</span>, rel_sizes <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-heatmap-1.png" width="100%"></p>
 </div>
 </div>
@@ -435,7 +435,7 @@
 <span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; other attached packages:</span>
-<span class="co">#&gt; [1] ggplot2_3.3.5        dplyr_1.0.7          phyloseq_1.36.0      microViz_0.7.10.9037</span>
+<span class="co">#&gt; [1] ggplot2_3.3.5        dplyr_1.0.7          phyloseq_1.36.0      microViz_0.7.10.9038</span>
 <span class="co">#&gt; [5] devtools_2.4.2       usethis_2.0.1        pkgdown_1.6.1       </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; loaded via a namespace (and not attached):</span>
@@ -448,7 +448,7 @@
 <span class="co">#&gt;  [25] ade4_1.7-18            jsonlite_1.7.2         Cairo_1.5-12.2         cluster_2.1.2         </span>
 <span class="co">#&gt;  [29] png_0.1-7              compiler_4.1.1         assertthat_0.2.1       Matrix_1.3-4          </span>
 <span class="co">#&gt;  [33] fastmap_1.1.0          cli_3.0.1              htmltools_0.5.2        prettyunits_1.1.1     </span>
-<span class="co">#&gt;  [37] tools_4.1.1            igraph_1.2.6           gtable_0.3.0           glue_1.4.2            </span>
+<span class="co">#&gt;  [37] tools_4.1.1            igraph_1.2.7           gtable_0.3.0           glue_1.4.2            </span>
 <span class="co">#&gt;  [41] GenomeInfoDbData_1.2.6 reshape2_1.4.4         Rcpp_1.0.7             Biobase_2.52.0        </span>
 <span class="co">#&gt;  [45] vctrs_0.3.8            Biostrings_2.60.2      rhdf5filters_1.4.0     multtest_2.48.0       </span>
 <span class="co">#&gt;  [49] ape_5.5                nlme_3.1-152           iterators_1.0.13       xfun_0.26             </span>
@@ -463,7 +463,7 @@
 <span class="co">#&gt;  [85] purrr_0.3.4            Rhdf5lib_1.14.2        labeling_0.4.2         processx_3.5.2        </span>
 <span class="co">#&gt;  [89] tidyselect_1.1.1       plyr_1.8.6             magrittr_2.0.1         R6_2.5.1              </span>
 <span class="co">#&gt;  [93] IRanges_2.26.0         generics_0.1.0         DBI_1.1.1              pillar_1.6.3          </span>
-<span class="co">#&gt;  [97] withr_2.4.2            mgcv_1.8-37            survival_3.2-13        RCurl_1.98-1.5        </span>
+<span class="co">#&gt;  [97] withr_2.4.2            mgcv_1.8-38            survival_3.2-13        RCurl_1.98-1.5        </span>
 <span class="co">#&gt; [101] tibble_3.1.5           corncob_0.2.0          crayon_1.4.1           utf8_1.2.2            </span>
 <span class="co">#&gt; [105] microbiome_1.14.0      rmarkdown_2.11         GetoptLong_1.0.5       grid_4.1.1            </span>
 <span class="co">#&gt; [109] data.table_1.14.2      callr_3.7.0            vegan_2.5-7            digest_0.6.28         </span>

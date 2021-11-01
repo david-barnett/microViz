@@ -98,7 +98,7 @@ at is ignored when by is &quot;rev&quot;." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9037</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9038</span>
       </span>
     </div>
 
@@ -249,344 +249,353 @@ tree_warn = FALSE will suppress the warning message, but still remove the tree!<
 if using a summary stat function in <code>by</code></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://microbiome.github.io/microbiome'>microbiome</a></span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span><span class='op'>)</span>
-<span class='va'>dietswap</span>
-</div><div class='output co'>#&gt; phyloseq-class experiment-level object
-#&gt; otu_table()   OTU Table:         [ 130 taxa and 222 samples ]
-#&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]</div><div class='input'>
-<span class='co'># reverse current order</span>
-<span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>tax_sort</span><span class='op'>(</span><span class='st'>"rev"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html'>tax_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fl'>30</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Taxonomy Table:     [30 taxa by 3 taxonomic ranks]:
-#&gt;                                   Phylum           Family                    
-#&gt; Yersinia et rel.                  "Proteobacteria" "Proteobacteria"          
-#&gt; Xanthomonadaceae                  "Proteobacteria" "Proteobacteria"          
-#&gt; Wissella et rel.                  "Firmicutes"     "Bacilli"                 
-#&gt; Weissella et rel.                 "Firmicutes"     "Bacilli"                 
-#&gt; Vibrio                            "Proteobacteria" "Proteobacteria"          
-#&gt; Veillonella                       "Firmicutes"     "Clostridium cluster IX"  
-#&gt; Uncultured Selenomonadaceae       "Firmicutes"     "Clostridium cluster IX"  
-#&gt; Uncultured Mollicutes             "Firmicutes"     "Uncultured Mollicutes"   
-#&gt; Uncultured Clostridiales II       "Firmicutes"     "Uncultured Clostridiales"
-#&gt; Uncultured Clostridiales I        "Firmicutes"     "Uncultured Clostridiales"
-#&gt; Uncultured Chroococcales          "Cyanobacteria"  "Cyanobacteria"           
-#&gt; Uncultured Bacteroidetes          "Bacteroidetes"  "Bacteroidetes"           
-#&gt; Tannerella et rel.                "Bacteroidetes"  "Bacteroidetes"           
-#&gt; Sutterella wadsworthia et rel.    "Proteobacteria" "Proteobacteria"          
-#&gt; Subdoligranulum variable at rel.  "Firmicutes"     "Clostridium cluster IV"  
-#&gt; Streptococcus mitis et rel.       "Firmicutes"     "Bacilli"                 
-#&gt; Streptococcus intermedius et rel. "Firmicutes"     "Bacilli"                 
-#&gt; Streptococcus bovis et rel.       "Firmicutes"     "Bacilli"                 
-#&gt; Staphylococcus                    "Firmicutes"     "Bacilli"                 
-#&gt; Sporobacter termitidis et rel.    "Firmicutes"     "Clostridium cluster IV"  
-#&gt; Serratia                          "Proteobacteria" "Proteobacteria"          
-#&gt; Ruminococcus obeum et rel.        "Firmicutes"     "Clostridium cluster XIVa"
-#&gt; Ruminococcus lactaris et rel.     "Firmicutes"     "Clostridium cluster XIVa"
-#&gt; Ruminococcus gnavus et rel.       "Firmicutes"     "Clostridium cluster XIVa"
-#&gt; Ruminococcus callidus et rel.     "Firmicutes"     "Clostridium cluster IV"  
-#&gt; Ruminococcus bromii et rel.       "Firmicutes"     "Clostridium cluster IV"  
-#&gt; Roseburia intestinalis et rel.    "Firmicutes"     "Clostridium cluster XIVa"
-#&gt; Pseudomonas                       "Proteobacteria" "Proteobacteria"          
-#&gt; Proteus et rel.                   "Proteobacteria" "Proteobacteria"          
-#&gt; Propionibacterium                 "Actinobacteria" "Actinobacteria"          
-#&gt;                                   Genus                              
-#&gt; Yersinia et rel.                  "Yersinia et rel."                 
-#&gt; Xanthomonadaceae                  "Xanthomonadaceae"                 
-#&gt; Wissella et rel.                  "Wissella et rel."                 
-#&gt; Weissella et rel.                 "Weissella et rel."                
-#&gt; Vibrio                            "Vibrio"                           
-#&gt; Veillonella                       "Veillonella"                      
-#&gt; Uncultured Selenomonadaceae       "Uncultured Selenomonadaceae"      
-#&gt; Uncultured Mollicutes             "Uncultured Mollicutes"            
-#&gt; Uncultured Clostridiales II       "Uncultured Clostridiales II"      
-#&gt; Uncultured Clostridiales I        "Uncultured Clostridiales I"       
-#&gt; Uncultured Chroococcales          "Uncultured Chroococcales"         
-#&gt; Uncultured Bacteroidetes          "Uncultured Bacteroidetes"         
-#&gt; Tannerella et rel.                "Tannerella et rel."               
-#&gt; Sutterella wadsworthia et rel.    "Sutterella wadsworthia et rel."   
-#&gt; Subdoligranulum variable at rel.  "Subdoligranulum variable at rel." 
-#&gt; Streptococcus mitis et rel.       "Streptococcus mitis et rel."      
-#&gt; Streptococcus intermedius et rel. "Streptococcus intermedius et rel."
-#&gt; Streptococcus bovis et rel.       "Streptococcus bovis et rel."      
-#&gt; Staphylococcus                    "Staphylococcus"                   
-#&gt; Sporobacter termitidis et rel.    "Sporobacter termitidis et rel."   
-#&gt; Serratia                          "Serratia"                         
-#&gt; Ruminococcus obeum et rel.        "Ruminococcus obeum et rel."       
-#&gt; Ruminococcus lactaris et rel.     "Ruminococcus lactaris et rel."    
-#&gt; Ruminococcus gnavus et rel.       "Ruminococcus gnavus et rel."      
-#&gt; Ruminococcus callidus et rel.     "Ruminococcus callidus et rel."    
-#&gt; Ruminococcus bromii et rel.       "Ruminococcus bromii et rel."      
-#&gt; Roseburia intestinalis et rel.    "Roseburia intestinalis et rel."   
-#&gt; Pseudomonas                       "Pseudomonas"                      
-#&gt; Proteus et rel.                   "Proteus et rel."                  
-#&gt; Propionibacterium                 "Propionibacterium"                </div><div class='input'>
-<span class='co'># sort alphabetically by a taxonomic rank (or "names" for taxa_names)</span>
-<span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>tax_sort</span><span class='op'>(</span>by <span class='op'>=</span> <span class='st'>"name"</span>, at <span class='op'>=</span> <span class='st'>"Phylum"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html'>tax_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fl'>30</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Taxonomy Table:     [30 taxa by 3 taxonomic ranks]:
-#&gt;                                    Phylum           Family                    
-#&gt; Actinomycetaceae                   "Actinobacteria" "Actinobacteria"          
-#&gt; Atopobium                          "Actinobacteria" "Actinobacteria"          
-#&gt; Bifidobacterium                    "Actinobacteria" "Actinobacteria"          
-#&gt; Collinsella                        "Actinobacteria" "Actinobacteria"          
-#&gt; Corynebacterium                    "Actinobacteria" "Actinobacteria"          
-#&gt; Eggerthella lenta et rel.          "Actinobacteria" "Actinobacteria"          
-#&gt; Micrococcaceae                     "Actinobacteria" "Actinobacteria"          
-#&gt; Propionibacterium                  "Actinobacteria" "Actinobacteria"          
-#&gt; Allistipes et rel.                 "Bacteroidetes"  "Bacteroidetes"           
-#&gt; Bacteroides fragilis et rel.       "Bacteroidetes"  "Bacteroidetes"           
-#&gt; Bacteroides intestinalis et rel.   "Bacteroidetes"  "Bacteroidetes"           
-#&gt; Bacteroides ovatus et rel.         "Bacteroidetes"  "Bacteroidetes"           
-#&gt; Bacteroides plebeius et rel.       "Bacteroidetes"  "Bacteroidetes"           
-#&gt; Bacteroides splachnicus et rel.    "Bacteroidetes"  "Bacteroidetes"           
-#&gt; Bacteroides stercoris et rel.      "Bacteroidetes"  "Bacteroidetes"           
-#&gt; Bacteroides uniformis et rel.      "Bacteroidetes"  "Bacteroidetes"           
-#&gt; Bacteroides vulgatus et rel.       "Bacteroidetes"  "Bacteroidetes"           
-#&gt; Parabacteroides distasonis et rel. "Bacteroidetes"  "Bacteroidetes"           
-#&gt; Prevotella melaninogenica et rel.  "Bacteroidetes"  "Bacteroidetes"           
-#&gt; Prevotella oralis et rel.          "Bacteroidetes"  "Bacteroidetes"           
-#&gt; Prevotella ruminicola et rel.      "Bacteroidetes"  "Bacteroidetes"           
-#&gt; Prevotella tannerae et rel.        "Bacteroidetes"  "Bacteroidetes"           
-#&gt; Tannerella et rel.                 "Bacteroidetes"  "Bacteroidetes"           
-#&gt; Uncultured Bacteroidetes           "Bacteroidetes"  "Bacteroidetes"           
-#&gt; Uncultured Chroococcales           "Cyanobacteria"  "Cyanobacteria"           
-#&gt; Aerococcus                         "Firmicutes"     "Bacilli"                 
-#&gt; Anaerofustis                       "Firmicutes"     "Clostridium cluster XV"  
-#&gt; Anaerostipes caccae et rel.        "Firmicutes"     "Clostridium cluster XIVa"
-#&gt; Anaerotruncus colihominis et rel.  "Firmicutes"     "Clostridium cluster IV"  
-#&gt; Anaerovorax odorimutans et rel.    "Firmicutes"     "Clostridium cluster XI"  
-#&gt;                                    Genus                               
-#&gt; Actinomycetaceae                   "Actinomycetaceae"                  
-#&gt; Atopobium                          "Atopobium"                         
-#&gt; Bifidobacterium                    "Bifidobacterium"                   
-#&gt; Collinsella                        "Collinsella"                       
-#&gt; Corynebacterium                    "Corynebacterium"                   
-#&gt; Eggerthella lenta et rel.          "Eggerthella lenta et rel."         
-#&gt; Micrococcaceae                     "Micrococcaceae"                    
-#&gt; Propionibacterium                  "Propionibacterium"                 
-#&gt; Allistipes et rel.                 "Allistipes et rel."                
-#&gt; Bacteroides fragilis et rel.       "Bacteroides fragilis et rel."      
-#&gt; Bacteroides intestinalis et rel.   "Bacteroides intestinalis et rel."  
-#&gt; Bacteroides ovatus et rel.         "Bacteroides ovatus et rel."        
-#&gt; Bacteroides plebeius et rel.       "Bacteroides plebeius et rel."      
-#&gt; Bacteroides splachnicus et rel.    "Bacteroides splachnicus et rel."   
-#&gt; Bacteroides stercoris et rel.      "Bacteroides stercoris et rel."     
-#&gt; Bacteroides uniformis et rel.      "Bacteroides uniformis et rel."     
-#&gt; Bacteroides vulgatus et rel.       "Bacteroides vulgatus et rel."      
-#&gt; Parabacteroides distasonis et rel. "Parabacteroides distasonis et rel."
-#&gt; Prevotella melaninogenica et rel.  "Prevotella melaninogenica et rel." 
-#&gt; Prevotella oralis et rel.          "Prevotella oralis et rel."         
-#&gt; Prevotella ruminicola et rel.      "Prevotella ruminicola et rel."     
-#&gt; Prevotella tannerae et rel.        "Prevotella tannerae et rel."       
-#&gt; Tannerella et rel.                 "Tannerella et rel."                
-#&gt; Uncultured Bacteroidetes           "Uncultured Bacteroidetes"          
-#&gt; Uncultured Chroococcales           "Uncultured Chroococcales"          
-#&gt; Aerococcus                         "Aerococcus"                        
-#&gt; Anaerofustis                       "Anaerofustis"                      
-#&gt; Anaerostipes caccae et rel.        "Anaerostipes caccae et rel."       
-#&gt; Anaerotruncus colihominis et rel.  "Anaerotruncus colihominis et rel." 
-#&gt; Anaerovorax odorimutans et rel.    "Anaerovorax odorimutans et rel."   </div><div class='input'>
-<span class='co'># sequentially sorting by higher ranks</span>
-<span class='co'># sets tax_table in nested alphabetical order</span>
-<span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>tax_sort</span><span class='op'>(</span>at <span class='op'>=</span> <span class='st'>"names"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>tax_sort</span><span class='op'>(</span>at <span class='op'>=</span> <span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>tax_sort</span><span class='op'>(</span>at <span class='op'>=</span> <span class='st'>"Family"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>tax_sort</span><span class='op'>(</span>at <span class='op'>=</span> <span class='st'>"Phylum"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html'>tax_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fl'>30</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Taxonomy Table:     [30 taxa by 3 taxonomic ranks]:
-#&gt;                                    Phylum           Family          
-#&gt; Actinomycetaceae                   "Actinobacteria" "Actinobacteria"
-#&gt; Atopobium                          "Actinobacteria" "Actinobacteria"
-#&gt; Bifidobacterium                    "Actinobacteria" "Actinobacteria"
-#&gt; Collinsella                        "Actinobacteria" "Actinobacteria"
-#&gt; Corynebacterium                    "Actinobacteria" "Actinobacteria"
-#&gt; Eggerthella lenta et rel.          "Actinobacteria" "Actinobacteria"
-#&gt; Micrococcaceae                     "Actinobacteria" "Actinobacteria"
-#&gt; Propionibacterium                  "Actinobacteria" "Actinobacteria"
-#&gt; Allistipes et rel.                 "Bacteroidetes"  "Bacteroidetes" 
-#&gt; Bacteroides fragilis et rel.       "Bacteroidetes"  "Bacteroidetes" 
-#&gt; Bacteroides intestinalis et rel.   "Bacteroidetes"  "Bacteroidetes" 
-#&gt; Bacteroides ovatus et rel.         "Bacteroidetes"  "Bacteroidetes" 
-#&gt; Bacteroides plebeius et rel.       "Bacteroidetes"  "Bacteroidetes" 
-#&gt; Bacteroides splachnicus et rel.    "Bacteroidetes"  "Bacteroidetes" 
-#&gt; Bacteroides stercoris et rel.      "Bacteroidetes"  "Bacteroidetes" 
-#&gt; Bacteroides uniformis et rel.      "Bacteroidetes"  "Bacteroidetes" 
-#&gt; Bacteroides vulgatus et rel.       "Bacteroidetes"  "Bacteroidetes" 
-#&gt; Parabacteroides distasonis et rel. "Bacteroidetes"  "Bacteroidetes" 
-#&gt; Prevotella melaninogenica et rel.  "Bacteroidetes"  "Bacteroidetes" 
-#&gt; Prevotella oralis et rel.          "Bacteroidetes"  "Bacteroidetes" 
-#&gt; Prevotella ruminicola et rel.      "Bacteroidetes"  "Bacteroidetes" 
-#&gt; Prevotella tannerae et rel.        "Bacteroidetes"  "Bacteroidetes" 
-#&gt; Tannerella et rel.                 "Bacteroidetes"  "Bacteroidetes" 
-#&gt; Uncultured Bacteroidetes           "Bacteroidetes"  "Bacteroidetes" 
-#&gt; Uncultured Chroococcales           "Cyanobacteria"  "Cyanobacteria" 
-#&gt; Asteroleplasma et rel.             "Firmicutes"     "Asteroleplasma"
-#&gt; Aerococcus                         "Firmicutes"     "Bacilli"       
-#&gt; Aneurinibacillus                   "Firmicutes"     "Bacilli"       
-#&gt; Bacillus                           "Firmicutes"     "Bacilli"       
-#&gt; Enterococcus                       "Firmicutes"     "Bacilli"       
-#&gt;                                    Genus                               
-#&gt; Actinomycetaceae                   "Actinomycetaceae"                  
-#&gt; Atopobium                          "Atopobium"                         
-#&gt; Bifidobacterium                    "Bifidobacterium"                   
-#&gt; Collinsella                        "Collinsella"                       
-#&gt; Corynebacterium                    "Corynebacterium"                   
-#&gt; Eggerthella lenta et rel.          "Eggerthella lenta et rel."         
-#&gt; Micrococcaceae                     "Micrococcaceae"                    
-#&gt; Propionibacterium                  "Propionibacterium"                 
-#&gt; Allistipes et rel.                 "Allistipes et rel."                
-#&gt; Bacteroides fragilis et rel.       "Bacteroides fragilis et rel."      
-#&gt; Bacteroides intestinalis et rel.   "Bacteroides intestinalis et rel."  
-#&gt; Bacteroides ovatus et rel.         "Bacteroides ovatus et rel."        
-#&gt; Bacteroides plebeius et rel.       "Bacteroides plebeius et rel."      
-#&gt; Bacteroides splachnicus et rel.    "Bacteroides splachnicus et rel."   
-#&gt; Bacteroides stercoris et rel.      "Bacteroides stercoris et rel."     
-#&gt; Bacteroides uniformis et rel.      "Bacteroides uniformis et rel."     
-#&gt; Bacteroides vulgatus et rel.       "Bacteroides vulgatus et rel."      
-#&gt; Parabacteroides distasonis et rel. "Parabacteroides distasonis et rel."
-#&gt; Prevotella melaninogenica et rel.  "Prevotella melaninogenica et rel." 
-#&gt; Prevotella oralis et rel.          "Prevotella oralis et rel."         
-#&gt; Prevotella ruminicola et rel.      "Prevotella ruminicola et rel."     
-#&gt; Prevotella tannerae et rel.        "Prevotella tannerae et rel."       
-#&gt; Tannerella et rel.                 "Tannerella et rel."                
-#&gt; Uncultured Bacteroidetes           "Uncultured Bacteroidetes"          
-#&gt; Uncultured Chroococcales           "Uncultured Chroococcales"          
-#&gt; Asteroleplasma et rel.             "Asteroleplasma et rel."            
-#&gt; Aerococcus                         "Aerococcus"                        
-#&gt; Aneurinibacillus                   "Aneurinibacillus"                  
-#&gt; Bacillus                           "Bacillus"                          
-#&gt; Enterococcus                       "Enterococcus"                      </div><div class='input'>
-<span class='co'># sort by function e.g. median abundance</span>
-<span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>tax_sort</span><span class='op'>(</span>by <span class='op'>=</span> <span class='va'>median</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html'>taxa_names</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fl'>20</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;  [1] "Prevotella melaninogenica et rel."   
-#&gt;  [2] "Oscillospira guillermondii et rel."  
-#&gt;  [3] "Bacteroides vulgatus et rel."        
-#&gt;  [4] "Prevotella oralis et rel."           
-#&gt;  [5] "Faecalibacterium prausnitzii et rel."
-#&gt;  [6] "Clostridium cellulosi et rel."       
-#&gt;  [7] "Sporobacter termitidis et rel."      
-#&gt;  [8] "Clostridium symbiosum et rel."       
-#&gt;  [9] "Clostridium orbiscindens et rel."    
-#&gt; [10] "Ruminococcus obeum et rel."          
-#&gt; [11] "Subdoligranulum variable at rel."    
-#&gt; [12] "Butyrivibrio crossotus et rel."      
-#&gt; [13] "Allistipes et rel."                  
-#&gt; [14] "Bacteroides fragilis et rel."        
-#&gt; [15] "Parabacteroides distasonis et rel."  
-#&gt; [16] "Dorea formicigenerans et rel."       
-#&gt; [17] "Clostridium sphenoides et rel."      
-#&gt; [18] "Clostridium leptum et rel."          
-#&gt; [19] "Bacteroides ovatus et rel."          
-#&gt; [20] "Bryantella formatexigens et rel."    </div><div class='input'>
-<span class='co'># order by descending abundance in a single named sample</span>
-<span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>tax_sort</span><span class='op'>(</span>by <span class='op'>=</span> <span class='st'>"Sample-1"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/otu_table-methods.html'>otu_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='va'>.</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; OTU Table:          [4 taxa and 8 samples]
-#&gt;                      taxa are columns
-#&gt;          Bacteroides vulgatus et rel. Oscillospira guillermondii et rel.
-#&gt; Sample-1                         2774                                861
-#&gt; Sample-2                           48                               4697
-#&gt; Sample-3                          455                               2915
-#&gt; Sample-4                          469                               4279
-#&gt; Sample-5                          167                                392
-#&gt; Sample-6                           75                                200
-#&gt; Sample-7                           33                               2201
-#&gt; Sample-8                           85                               1123
-#&gt;          Bacteroides fragilis et rel. Bacteroides ovatus et rel.
-#&gt; Sample-1                          443                        427
-#&gt; Sample-2                           21                         15
-#&gt; Sample-3                           73                         31
-#&gt; Sample-4                           29                         46
-#&gt; Sample-5                           33                         29
-#&gt; Sample-6                           14                         13
-#&gt; Sample-7                           22                         15
-#&gt; Sample-8                          560                         19</div><div class='input'>
-
-<span class='co'># sum order should always equal mean order if non-negative abundances</span>
-<span class='co'># don't forget to add na.rm = TRUE if you expect NAs in otu_table somehow</span>
-<span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>tax_sort</span><span class='op'>(</span>by <span class='op'>=</span> <span class='va'>sum</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html'>taxa_names</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fl'>20</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;  [1] "Prevotella melaninogenica et rel."   
-#&gt;  [2] "Oscillospira guillermondii et rel."  
-#&gt;  [3] "Bacteroides vulgatus et rel."        
-#&gt;  [4] "Clostridium cellulosi et rel."       
-#&gt;  [5] "Prevotella oralis et rel."           
-#&gt;  [6] "Faecalibacterium prausnitzii et rel."
-#&gt;  [7] "Sporobacter termitidis et rel."      
-#&gt;  [8] "Clostridium symbiosum et rel."       
-#&gt;  [9] "Allistipes et rel."                  
-#&gt; [10] "Clostridium orbiscindens et rel."    
-#&gt; [11] "Subdoligranulum variable at rel."    
-#&gt; [12] "Ruminococcus obeum et rel."          
-#&gt; [13] "Butyrivibrio crossotus et rel."      
-#&gt; [14] "Bacteroides fragilis et rel."        
-#&gt; [15] "Akkermansia"                         
-#&gt; [16] "Bacteroides ovatus et rel."          
-#&gt; [17] "Parabacteroides distasonis et rel."  
-#&gt; [18] "Dorea formicigenerans et rel."       
-#&gt; [19] "Bacteroides uniformis et rel."       
-#&gt; [20] "Dialister"                           </div><div class='input'>
-<span class='co'># if your phyloseq object has a phylogenetic tree,</span>
-<span class='co'># tax_sort will remove the tree, and warn you about this.</span>
-
-<span class='co'># You can sort by abundance at higher taxonomic ranks,</span>
-<span class='co'># without losing lower rank info</span>
-<span class='co'># e.g. sort (descending) by phyla abundances</span>
-<span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>tax_sort</span><span class='op'>(</span>by <span class='op'>=</span> <span class='va'>sum</span>, at <span class='op'>=</span> <span class='st'>"Phylum"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html'>tax_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Taxonomy Table:     [6 taxa by 3 taxonomic ranks]:
-#&gt;                                  Phylum          Family         
-#&gt; Allistipes et rel.               "Bacteroidetes" "Bacteroidetes"
-#&gt; Bacteroides fragilis et rel.     "Bacteroidetes" "Bacteroidetes"
-#&gt; Bacteroides intestinalis et rel. "Bacteroidetes" "Bacteroidetes"
-#&gt; Bacteroides ovatus et rel.       "Bacteroidetes" "Bacteroidetes"
-#&gt; Bacteroides plebeius et rel.     "Bacteroidetes" "Bacteroidetes"
-#&gt; Bacteroides splachnicus et rel.  "Bacteroidetes" "Bacteroidetes"
-#&gt;                                  Genus                             
-#&gt; Allistipes et rel.               "Allistipes et rel."              
-#&gt; Bacteroides fragilis et rel.     "Bacteroides fragilis et rel."    
-#&gt; Bacteroides intestinalis et rel. "Bacteroides intestinalis et rel."
-#&gt; Bacteroides ovatus et rel.       "Bacteroides ovatus et rel."      
-#&gt; Bacteroides plebeius et rel.     "Bacteroides plebeius et rel."    
-#&gt; Bacteroides splachnicus et rel.  "Bacteroides splachnicus et rel." </div><div class='input'>
-<span class='co'># You can sort by ascending abundance by reversing afterwards</span>
-<span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>tax_sort</span><span class='op'>(</span>by <span class='op'>=</span> <span class='st'>"prev"</span>, at <span class='op'>=</span> <span class='st'>"Phylum"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>tax_sort</span><span class='op'>(</span>by <span class='op'>=</span> <span class='st'>"rev"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html'>tax_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Taxonomy Table:     [6 taxa by 3 taxonomic ranks]:
-#&gt;                             Phylum          Family         
-#&gt; Uncultured Chroococcales    "Cyanobacteria" "Cyanobacteria"
-#&gt; Brachyspira                 "Spirochaetes"  "Spirochaetes" 
-#&gt; Fusobacteria                "Fusobacteria"  "Fusobacteria" 
-#&gt; Uncultured Bacteroidetes    "Bacteroidetes" "Bacteroidetes"
-#&gt; Tannerella et rel.          "Bacteroidetes" "Bacteroidetes"
-#&gt; Prevotella tannerae et rel. "Bacteroidetes" "Bacteroidetes"
-#&gt;                             Genus                        
-#&gt; Uncultured Chroococcales    "Uncultured Chroococcales"   
-#&gt; Brachyspira                 "Brachyspira"                
-#&gt; Fusobacteria                "Fusobacteria"               
-#&gt; Uncultured Bacteroidetes    "Uncultured Bacteroidetes"   
-#&gt; Tannerella et rel.          "Tannerella et rel."         
-#&gt; Prevotella tannerae et rel. "Prevotella tannerae et rel."</div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://microbiome.github.io/microbiome'>microbiome</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>dietswap</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> phyloseq-class experiment-level object</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> otu_table()   OTU Table:         [ 130 taxa and 222 samples ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sample_data() Sample Data:       [ 222 samples by 8 sample variables ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># reverse current order</span></span>
+<span class='r-in'><span class='va'>dietswap</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>tax_sort</span><span class='op'>(</span><span class='st'>"rev"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html'>tax_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fl'>30</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Taxonomy Table:     [30 taxa by 3 taxonomic ranks]:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                   Phylum           Family                    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Yersinia et rel.                  "Proteobacteria" "Proteobacteria"          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Xanthomonadaceae                  "Proteobacteria" "Proteobacteria"          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Wissella et rel.                  "Firmicutes"     "Bacilli"                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Weissella et rel.                 "Firmicutes"     "Bacilli"                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Vibrio                            "Proteobacteria" "Proteobacteria"          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Veillonella                       "Firmicutes"     "Clostridium cluster IX"  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Uncultured Selenomonadaceae       "Firmicutes"     "Clostridium cluster IX"  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Uncultured Mollicutes             "Firmicutes"     "Uncultured Mollicutes"   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Uncultured Clostridiales II       "Firmicutes"     "Uncultured Clostridiales"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Uncultured Clostridiales I        "Firmicutes"     "Uncultured Clostridiales"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Uncultured Chroococcales          "Cyanobacteria"  "Cyanobacteria"           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Uncultured Bacteroidetes          "Bacteroidetes"  "Bacteroidetes"           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tannerella et rel.                "Bacteroidetes"  "Bacteroidetes"           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sutterella wadsworthia et rel.    "Proteobacteria" "Proteobacteria"          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Subdoligranulum variable at rel.  "Firmicutes"     "Clostridium cluster IV"  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Streptococcus mitis et rel.       "Firmicutes"     "Bacilli"                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Streptococcus intermedius et rel. "Firmicutes"     "Bacilli"                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Streptococcus bovis et rel.       "Firmicutes"     "Bacilli"                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Staphylococcus                    "Firmicutes"     "Bacilli"                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sporobacter termitidis et rel.    "Firmicutes"     "Clostridium cluster IV"  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Serratia                          "Proteobacteria" "Proteobacteria"          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Ruminococcus obeum et rel.        "Firmicutes"     "Clostridium cluster XIVa"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Ruminococcus lactaris et rel.     "Firmicutes"     "Clostridium cluster XIVa"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Ruminococcus gnavus et rel.       "Firmicutes"     "Clostridium cluster XIVa"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Ruminococcus callidus et rel.     "Firmicutes"     "Clostridium cluster IV"  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Ruminococcus bromii et rel.       "Firmicutes"     "Clostridium cluster IV"  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Roseburia intestinalis et rel.    "Firmicutes"     "Clostridium cluster XIVa"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Pseudomonas                       "Proteobacteria" "Proteobacteria"          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Proteus et rel.                   "Proteobacteria" "Proteobacteria"          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Propionibacterium                 "Actinobacteria" "Actinobacteria"          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                   Genus                              </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Yersinia et rel.                  "Yersinia et rel."                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Xanthomonadaceae                  "Xanthomonadaceae"                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Wissella et rel.                  "Wissella et rel."                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Weissella et rel.                 "Weissella et rel."                </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Vibrio                            "Vibrio"                           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Veillonella                       "Veillonella"                      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Uncultured Selenomonadaceae       "Uncultured Selenomonadaceae"      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Uncultured Mollicutes             "Uncultured Mollicutes"            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Uncultured Clostridiales II       "Uncultured Clostridiales II"      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Uncultured Clostridiales I        "Uncultured Clostridiales I"       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Uncultured Chroococcales          "Uncultured Chroococcales"         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Uncultured Bacteroidetes          "Uncultured Bacteroidetes"         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tannerella et rel.                "Tannerella et rel."               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sutterella wadsworthia et rel.    "Sutterella wadsworthia et rel."   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Subdoligranulum variable at rel.  "Subdoligranulum variable at rel." </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Streptococcus mitis et rel.       "Streptococcus mitis et rel."      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Streptococcus intermedius et rel. "Streptococcus intermedius et rel."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Streptococcus bovis et rel.       "Streptococcus bovis et rel."      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Staphylococcus                    "Staphylococcus"                   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sporobacter termitidis et rel.    "Sporobacter termitidis et rel."   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Serratia                          "Serratia"                         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Ruminococcus obeum et rel.        "Ruminococcus obeum et rel."       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Ruminococcus lactaris et rel.     "Ruminococcus lactaris et rel."    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Ruminococcus gnavus et rel.       "Ruminococcus gnavus et rel."      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Ruminococcus callidus et rel.     "Ruminococcus callidus et rel."    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Ruminococcus bromii et rel.       "Ruminococcus bromii et rel."      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Roseburia intestinalis et rel.    "Roseburia intestinalis et rel."   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Pseudomonas                       "Pseudomonas"                      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Proteus et rel.                   "Proteus et rel."                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Propionibacterium                 "Propionibacterium"                </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># sort alphabetically by a taxonomic rank (or "names" for taxa_names)</span></span>
+<span class='r-in'><span class='va'>dietswap</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>tax_sort</span><span class='op'>(</span>by <span class='op'>=</span> <span class='st'>"name"</span>, at <span class='op'>=</span> <span class='st'>"Phylum"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html'>tax_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fl'>30</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Taxonomy Table:     [30 taxa by 3 taxonomic ranks]:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                    Phylum           Family                    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Actinomycetaceae                   "Actinobacteria" "Actinobacteria"          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Atopobium                          "Actinobacteria" "Actinobacteria"          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bifidobacterium                    "Actinobacteria" "Actinobacteria"          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Collinsella                        "Actinobacteria" "Actinobacteria"          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Corynebacterium                    "Actinobacteria" "Actinobacteria"          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Eggerthella lenta et rel.          "Actinobacteria" "Actinobacteria"          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Micrococcaceae                     "Actinobacteria" "Actinobacteria"          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Propionibacterium                  "Actinobacteria" "Actinobacteria"          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Allistipes et rel.                 "Bacteroidetes"  "Bacteroidetes"           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides fragilis et rel.       "Bacteroidetes"  "Bacteroidetes"           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides intestinalis et rel.   "Bacteroidetes"  "Bacteroidetes"           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides ovatus et rel.         "Bacteroidetes"  "Bacteroidetes"           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides plebeius et rel.       "Bacteroidetes"  "Bacteroidetes"           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides splachnicus et rel.    "Bacteroidetes"  "Bacteroidetes"           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides stercoris et rel.      "Bacteroidetes"  "Bacteroidetes"           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides uniformis et rel.      "Bacteroidetes"  "Bacteroidetes"           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides vulgatus et rel.       "Bacteroidetes"  "Bacteroidetes"           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Parabacteroides distasonis et rel. "Bacteroidetes"  "Bacteroidetes"           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Prevotella melaninogenica et rel.  "Bacteroidetes"  "Bacteroidetes"           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Prevotella oralis et rel.          "Bacteroidetes"  "Bacteroidetes"           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Prevotella ruminicola et rel.      "Bacteroidetes"  "Bacteroidetes"           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Prevotella tannerae et rel.        "Bacteroidetes"  "Bacteroidetes"           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tannerella et rel.                 "Bacteroidetes"  "Bacteroidetes"           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Uncultured Bacteroidetes           "Bacteroidetes"  "Bacteroidetes"           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Uncultured Chroococcales           "Cyanobacteria"  "Cyanobacteria"           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Aerococcus                         "Firmicutes"     "Bacilli"                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Anaerofustis                       "Firmicutes"     "Clostridium cluster XV"  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Anaerostipes caccae et rel.        "Firmicutes"     "Clostridium cluster XIVa"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Anaerotruncus colihominis et rel.  "Firmicutes"     "Clostridium cluster IV"  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Anaerovorax odorimutans et rel.    "Firmicutes"     "Clostridium cluster XI"  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                    Genus                               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Actinomycetaceae                   "Actinomycetaceae"                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Atopobium                          "Atopobium"                         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bifidobacterium                    "Bifidobacterium"                   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Collinsella                        "Collinsella"                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Corynebacterium                    "Corynebacterium"                   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Eggerthella lenta et rel.          "Eggerthella lenta et rel."         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Micrococcaceae                     "Micrococcaceae"                    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Propionibacterium                  "Propionibacterium"                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Allistipes et rel.                 "Allistipes et rel."                </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides fragilis et rel.       "Bacteroides fragilis et rel."      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides intestinalis et rel.   "Bacteroides intestinalis et rel."  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides ovatus et rel.         "Bacteroides ovatus et rel."        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides plebeius et rel.       "Bacteroides plebeius et rel."      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides splachnicus et rel.    "Bacteroides splachnicus et rel."   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides stercoris et rel.      "Bacteroides stercoris et rel."     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides uniformis et rel.      "Bacteroides uniformis et rel."     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides vulgatus et rel.       "Bacteroides vulgatus et rel."      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Parabacteroides distasonis et rel. "Parabacteroides distasonis et rel."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Prevotella melaninogenica et rel.  "Prevotella melaninogenica et rel." </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Prevotella oralis et rel.          "Prevotella oralis et rel."         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Prevotella ruminicola et rel.      "Prevotella ruminicola et rel."     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Prevotella tannerae et rel.        "Prevotella tannerae et rel."       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tannerella et rel.                 "Tannerella et rel."                </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Uncultured Bacteroidetes           "Uncultured Bacteroidetes"          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Uncultured Chroococcales           "Uncultured Chroococcales"          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Aerococcus                         "Aerococcus"                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Anaerofustis                       "Anaerofustis"                      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Anaerostipes caccae et rel.        "Anaerostipes caccae et rel."       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Anaerotruncus colihominis et rel.  "Anaerotruncus colihominis et rel." </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Anaerovorax odorimutans et rel.    "Anaerovorax odorimutans et rel."   </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># sequentially sorting by higher ranks</span></span>
+<span class='r-in'><span class='co'># sets tax_table in nested alphabetical order</span></span>
+<span class='r-in'><span class='va'>dietswap</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>tax_sort</span><span class='op'>(</span>at <span class='op'>=</span> <span class='st'>"names"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>tax_sort</span><span class='op'>(</span>at <span class='op'>=</span> <span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>tax_sort</span><span class='op'>(</span>at <span class='op'>=</span> <span class='st'>"Family"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>tax_sort</span><span class='op'>(</span>at <span class='op'>=</span> <span class='st'>"Phylum"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html'>tax_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fl'>30</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Taxonomy Table:     [30 taxa by 3 taxonomic ranks]:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                    Phylum           Family          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Actinomycetaceae                   "Actinobacteria" "Actinobacteria"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Atopobium                          "Actinobacteria" "Actinobacteria"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bifidobacterium                    "Actinobacteria" "Actinobacteria"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Collinsella                        "Actinobacteria" "Actinobacteria"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Corynebacterium                    "Actinobacteria" "Actinobacteria"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Eggerthella lenta et rel.          "Actinobacteria" "Actinobacteria"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Micrococcaceae                     "Actinobacteria" "Actinobacteria"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Propionibacterium                  "Actinobacteria" "Actinobacteria"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Allistipes et rel.                 "Bacteroidetes"  "Bacteroidetes" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides fragilis et rel.       "Bacteroidetes"  "Bacteroidetes" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides intestinalis et rel.   "Bacteroidetes"  "Bacteroidetes" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides ovatus et rel.         "Bacteroidetes"  "Bacteroidetes" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides plebeius et rel.       "Bacteroidetes"  "Bacteroidetes" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides splachnicus et rel.    "Bacteroidetes"  "Bacteroidetes" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides stercoris et rel.      "Bacteroidetes"  "Bacteroidetes" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides uniformis et rel.      "Bacteroidetes"  "Bacteroidetes" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides vulgatus et rel.       "Bacteroidetes"  "Bacteroidetes" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Parabacteroides distasonis et rel. "Bacteroidetes"  "Bacteroidetes" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Prevotella melaninogenica et rel.  "Bacteroidetes"  "Bacteroidetes" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Prevotella oralis et rel.          "Bacteroidetes"  "Bacteroidetes" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Prevotella ruminicola et rel.      "Bacteroidetes"  "Bacteroidetes" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Prevotella tannerae et rel.        "Bacteroidetes"  "Bacteroidetes" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tannerella et rel.                 "Bacteroidetes"  "Bacteroidetes" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Uncultured Bacteroidetes           "Bacteroidetes"  "Bacteroidetes" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Uncultured Chroococcales           "Cyanobacteria"  "Cyanobacteria" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Asteroleplasma et rel.             "Firmicutes"     "Asteroleplasma"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Aerococcus                         "Firmicutes"     "Bacilli"       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Aneurinibacillus                   "Firmicutes"     "Bacilli"       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacillus                           "Firmicutes"     "Bacilli"       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Enterococcus                       "Firmicutes"     "Bacilli"       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                    Genus                               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Actinomycetaceae                   "Actinomycetaceae"                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Atopobium                          "Atopobium"                         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bifidobacterium                    "Bifidobacterium"                   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Collinsella                        "Collinsella"                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Corynebacterium                    "Corynebacterium"                   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Eggerthella lenta et rel.          "Eggerthella lenta et rel."         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Micrococcaceae                     "Micrococcaceae"                    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Propionibacterium                  "Propionibacterium"                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Allistipes et rel.                 "Allistipes et rel."                </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides fragilis et rel.       "Bacteroides fragilis et rel."      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides intestinalis et rel.   "Bacteroides intestinalis et rel."  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides ovatus et rel.         "Bacteroides ovatus et rel."        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides plebeius et rel.       "Bacteroides plebeius et rel."      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides splachnicus et rel.    "Bacteroides splachnicus et rel."   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides stercoris et rel.      "Bacteroides stercoris et rel."     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides uniformis et rel.      "Bacteroides uniformis et rel."     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides vulgatus et rel.       "Bacteroides vulgatus et rel."      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Parabacteroides distasonis et rel. "Parabacteroides distasonis et rel."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Prevotella melaninogenica et rel.  "Prevotella melaninogenica et rel." </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Prevotella oralis et rel.          "Prevotella oralis et rel."         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Prevotella ruminicola et rel.      "Prevotella ruminicola et rel."     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Prevotella tannerae et rel.        "Prevotella tannerae et rel."       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tannerella et rel.                 "Tannerella et rel."                </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Uncultured Bacteroidetes           "Uncultured Bacteroidetes"          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Uncultured Chroococcales           "Uncultured Chroococcales"          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Asteroleplasma et rel.             "Asteroleplasma et rel."            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Aerococcus                         "Aerococcus"                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Aneurinibacillus                   "Aneurinibacillus"                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacillus                           "Bacillus"                          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Enterococcus                       "Enterococcus"                      </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># sort by function e.g. median abundance</span></span>
+<span class='r-in'><span class='va'>dietswap</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>tax_sort</span><span class='op'>(</span>by <span class='op'>=</span> <span class='va'>median</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html'>taxa_names</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fl'>20</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "Prevotella melaninogenica et rel."   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [2] "Oscillospira guillermondii et rel."  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [3] "Bacteroides vulgatus et rel."        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [4] "Prevotella oralis et rel."           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [5] "Faecalibacterium prausnitzii et rel."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [6] "Clostridium cellulosi et rel."       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [7] "Sporobacter termitidis et rel."      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [8] "Clostridium symbiosum et rel."       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [9] "Clostridium orbiscindens et rel."    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [10] "Ruminococcus obeum et rel."          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [11] "Subdoligranulum variable at rel."    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [12] "Butyrivibrio crossotus et rel."      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [13] "Allistipes et rel."                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [14] "Bacteroides fragilis et rel."        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [15] "Parabacteroides distasonis et rel."  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [16] "Dorea formicigenerans et rel."       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [17] "Clostridium sphenoides et rel."      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [18] "Clostridium leptum et rel."          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [19] "Bacteroides ovatus et rel."          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [20] "Bryantella formatexigens et rel."    </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># order by descending abundance in a single named sample</span></span>
+<span class='r-in'><span class='va'>dietswap</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>tax_sort</span><span class='op'>(</span>by <span class='op'>=</span> <span class='st'>"Sample-1"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/otu_table-methods.html'>otu_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='va'>.</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> OTU Table:          [4 taxa and 8 samples]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                      taxa are columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          Bacteroides vulgatus et rel. Oscillospira guillermondii et rel.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-1                         2774                                861</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-2                           48                               4697</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-3                          455                               2915</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-4                          469                               4279</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-5                          167                                392</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-6                           75                                200</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-7                           33                               2201</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-8                           85                               1123</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          Bacteroides fragilis et rel. Bacteroides ovatus et rel.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-1                          443                        427</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-2                           21                         15</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-3                           73                         31</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-4                           29                         46</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-5                           33                         29</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-6                           14                         13</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-7                           22                         15</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-8                          560                         19</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># sum order should always equal mean order if non-negative abundances</span></span>
+<span class='r-in'><span class='co'># don't forget to add na.rm = TRUE if you expect NAs in otu_table somehow</span></span>
+<span class='r-in'><span class='va'>dietswap</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>tax_sort</span><span class='op'>(</span>by <span class='op'>=</span> <span class='va'>sum</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html'>taxa_names</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fl'>20</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "Prevotella melaninogenica et rel."   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [2] "Oscillospira guillermondii et rel."  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [3] "Bacteroides vulgatus et rel."        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [4] "Clostridium cellulosi et rel."       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [5] "Prevotella oralis et rel."           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [6] "Faecalibacterium prausnitzii et rel."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [7] "Sporobacter termitidis et rel."      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [8] "Clostridium symbiosum et rel."       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [9] "Allistipes et rel."                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [10] "Clostridium orbiscindens et rel."    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [11] "Subdoligranulum variable at rel."    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [12] "Ruminococcus obeum et rel."          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [13] "Butyrivibrio crossotus et rel."      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [14] "Bacteroides fragilis et rel."        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [15] "Akkermansia"                         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [16] "Bacteroides ovatus et rel."          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [17] "Parabacteroides distasonis et rel."  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [18] "Dorea formicigenerans et rel."       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [19] "Bacteroides uniformis et rel."       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [20] "Dialister"                           </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># if your phyloseq object has a phylogenetic tree,</span></span>
+<span class='r-in'><span class='co'># tax_sort will remove the tree, and warn you about this.</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># You can sort by abundance at higher taxonomic ranks,</span></span>
+<span class='r-in'><span class='co'># without losing lower rank info</span></span>
+<span class='r-in'><span class='co'># e.g. sort (descending) by phyla abundances</span></span>
+<span class='r-in'><span class='va'>dietswap</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>tax_sort</span><span class='op'>(</span>by <span class='op'>=</span> <span class='va'>sum</span>, at <span class='op'>=</span> <span class='st'>"Phylum"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html'>tax_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Taxonomy Table:     [6 taxa by 3 taxonomic ranks]:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                  Phylum          Family         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Allistipes et rel.               "Bacteroidetes" "Bacteroidetes"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides fragilis et rel.     "Bacteroidetes" "Bacteroidetes"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides intestinalis et rel. "Bacteroidetes" "Bacteroidetes"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides ovatus et rel.       "Bacteroidetes" "Bacteroidetes"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides plebeius et rel.     "Bacteroidetes" "Bacteroidetes"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides splachnicus et rel.  "Bacteroidetes" "Bacteroidetes"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                  Genus                             </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Allistipes et rel.               "Allistipes et rel."              </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides fragilis et rel.     "Bacteroides fragilis et rel."    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides intestinalis et rel. "Bacteroides intestinalis et rel."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides ovatus et rel.       "Bacteroides ovatus et rel."      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides plebeius et rel.     "Bacteroides plebeius et rel."    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bacteroides splachnicus et rel.  "Bacteroides splachnicus et rel." </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># You can sort by ascending abundance by reversing afterwards</span></span>
+<span class='r-in'><span class='va'>dietswap</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>tax_sort</span><span class='op'>(</span>by <span class='op'>=</span> <span class='st'>"prev"</span>, at <span class='op'>=</span> <span class='st'>"Phylum"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>tax_sort</span><span class='op'>(</span>by <span class='op'>=</span> <span class='st'>"rev"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html'>tax_table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Taxonomy Table:     [6 taxa by 3 taxonomic ranks]:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                             Phylum          Family         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Uncultured Chroococcales    "Cyanobacteria" "Cyanobacteria"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Brachyspira                 "Spirochaetes"  "Spirochaetes" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Fusobacteria                "Fusobacteria"  "Fusobacteria" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Uncultured Bacteroidetes    "Bacteroidetes" "Bacteroidetes"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tannerella et rel.          "Bacteroidetes" "Bacteroidetes"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Prevotella tannerae et rel. "Bacteroidetes" "Bacteroidetes"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                             Genus                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Uncultured Chroococcales    "Uncultured Chroococcales"   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Brachyspira                 "Brachyspira"                </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Fusobacteria                "Fusobacteria"               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Uncultured Bacteroidetes    "Uncultured Bacteroidetes"   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tannerella et rel.          "Tannerella et rel."         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Prevotella tannerae et rel. "Prevotella tannerae et rel."</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

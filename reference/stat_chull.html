@@ -90,7 +90,7 @@ such as an ordination plot." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9037</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9038</span>
       </span>
     </div>
 
@@ -261,21 +261,23 @@ to the paired geom/stat.</p></td>
 <p><code><a href='ord_plot.html'>ord_plot</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>
-<span class='fu'>corncob</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/corncob/man/ibd_phylo.html'>ibd_phylo</a></span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_fix.html'>tax_fix</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span>rank <span class='op'>=</span> <span class='st'>"Genus"</span>, trans <span class='op'>=</span> <span class='st'>"clr"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"PCA"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span>colour <span class='op'>=</span> <span class='st'>"DiseaseState"</span>, shape <span class='op'>=</span> <span class='st'>"DiseaseState"</span>, alpha <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'>stat_chull</span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>colour <span class='op'>=</span> <span class='va'>DiseaseState</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='img'><img src='stat_chull-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'>corncob</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/corncob/man/ibd_phylo.html'>ibd_phylo</a></span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_fix.html'>tax_fix</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span>rank <span class='op'>=</span> <span class='st'>"Genus"</span>, trans <span class='op'>=</span> <span class='st'>"clr"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"PCA"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span>colour <span class='op'>=</span> <span class='st'>"DiseaseState"</span>, shape <span class='op'>=</span> <span class='st'>"DiseaseState"</span>, alpha <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'>stat_chull</span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>colour <span class='op'>=</span> <span class='va'>DiseaseState</span>, fill <span class='op'>=</span> <span class='va'>DiseaseState</span><span class='op'>)</span>, alpha <span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span>
-</div><div class='img'><img src='stat_chull-2.png' alt='' width='700' height='433' /></div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>corncob</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/corncob/man/ibd_phylo.html'>ibd_phylo</a></span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='tax_fix.html'>tax_fix</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span>rank <span class='op'>=</span> <span class='st'>"Genus"</span>, trans <span class='op'>=</span> <span class='st'>"clr"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"PCA"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span>colour <span class='op'>=</span> <span class='st'>"DiseaseState"</span>, shape <span class='op'>=</span> <span class='st'>"DiseaseState"</span>, alpha <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'>stat_chull</span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>colour <span class='op'>=</span> <span class='va'>DiseaseState</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='stat_chull-1.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>corncob</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/corncob/man/ibd_phylo.html'>ibd_phylo</a></span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='tax_fix.html'>tax_fix</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span>rank <span class='op'>=</span> <span class='st'>"Genus"</span>, trans <span class='op'>=</span> <span class='st'>"clr"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"PCA"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span>colour <span class='op'>=</span> <span class='st'>"DiseaseState"</span>, shape <span class='op'>=</span> <span class='st'>"DiseaseState"</span>, alpha <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'>stat_chull</span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>colour <span class='op'>=</span> <span class='va'>DiseaseState</span>, fill <span class='op'>=</span> <span class='va'>DiseaseState</span><span class='op'>)</span>, alpha <span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='stat_chull-2.png' alt='' width='700' height='433' /></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

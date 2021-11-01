@@ -93,7 +93,7 @@ returns the top n number of taxa names
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9037</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9038</span>
       </span>
     </div>
 
@@ -223,19 +223,21 @@ defaults to <code>sum</code> which sorts by total abundance across all samples</
 <p><code><a href='tax_sort.html'>tax_sort</a></code> for more info on sorting taxa</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span>
-<span class='fu'>tax_top</span><span class='op'>(</span><span class='va'>dietswap</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;  [1] "Prevotella melaninogenica et rel."   
-#&gt;  [2] "Oscillospira guillermondii et rel."  
-#&gt;  [3] "Bacteroides vulgatus et rel."        
-#&gt;  [4] "Clostridium cellulosi et rel."       
-#&gt;  [5] "Prevotella oralis et rel."           
-#&gt;  [6] "Faecalibacterium prausnitzii et rel."
-#&gt;  [7] "Sporobacter termitidis et rel."      
-#&gt;  [8] "Clostridium symbiosum et rel."       
-#&gt;  [9] "Allistipes et rel."                  
-#&gt; [10] "Clostridium orbiscindens et rel."    </div><div class='input'><span class='fu'>tax_top</span><span class='op'>(</span><span class='va'>dietswap</span>, n <span class='op'>=</span> <span class='fl'>4</span>, by <span class='op'>=</span> <span class='st'>"prev"</span>, rank <span class='op'>=</span> <span class='st'>"Phylum"</span>, undetected <span class='op'>=</span> <span class='fl'>30</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "Firmicutes"     "Proteobacteria" "Bacteroidetes"  "Actinobacteria"</div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>tax_top</span><span class='op'>(</span><span class='va'>dietswap</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "Prevotella melaninogenica et rel."   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [2] "Oscillospira guillermondii et rel."  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [3] "Bacteroides vulgatus et rel."        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [4] "Clostridium cellulosi et rel."       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [5] "Prevotella oralis et rel."           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [6] "Faecalibacterium prausnitzii et rel."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [7] "Sporobacter termitidis et rel."      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [8] "Clostridium symbiosum et rel."       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [9] "Allistipes et rel."                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [10] "Clostridium orbiscindens et rel."    </span>
+<span class='r-in'><span class='fu'>tax_top</span><span class='op'>(</span><span class='va'>dietswap</span>, n <span class='op'>=</span> <span class='fl'>4</span>, by <span class='op'>=</span> <span class='st'>"prev"</span>, rank <span class='op'>=</span> <span class='st'>"Phylum"</span>, undetected <span class='op'>=</span> <span class='fl'>30</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Firmicutes"     "Proteobacteria" "Bacteroidetes"  "Actinobacteria"</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

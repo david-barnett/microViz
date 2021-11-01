@@ -89,7 +89,7 @@ Uses dplyr::mutate() syntax." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9037</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9038</span>
       </span>
     </div>
 
@@ -204,90 +204,93 @@ Uses <code><a href='https://dplyr.tidyverse.org/reference/mutate.html'>dplyr::mu
 <p><code><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://dx.plos.org/10.1371/journal.pone.0061217'>phyloseq</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"enterotype"</span><span class='op'>)</span>
-
-<span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='va'>enterotype</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='op'>]</span>
-</div><div class='output co'>#&gt; Sample Data:        [10 samples by 9 sample variables]:
-#&gt;           Enterotype Sample_ID SeqTech  SampleID     Project Nationality Gender
-#&gt; AM.AD.1         &lt;NA&gt;   AM.AD.1  Sanger   AM.AD.1      gill06    american      F
-#&gt; AM.AD.2         &lt;NA&gt;   AM.AD.2  Sanger   AM.AD.2      gill06    american      M
-#&gt; AM.F10.T1       &lt;NA&gt; AM.F10.T1  Sanger AM.F10.T1 turnbaugh09    american      F
-#&gt; AM.F10.T2          3 AM.F10.T2  Sanger AM.F10.T2 turnbaugh09    american      F
-#&gt; DA.AD.1            2   DA.AD.1  Sanger   DA.AD.1     MetaHIT      danish      F
-#&gt; DA.AD.1T        &lt;NA&gt;  DA.AD.1T  Sanger      &lt;NA&gt;        &lt;NA&gt;        &lt;NA&gt;   &lt;NA&gt;
-#&gt; DA.AD.2            3   DA.AD.2  Sanger   DA.AD.2     MetaHIT      danish      M
-#&gt; DA.AD.3            3   DA.AD.3  Sanger   DA.AD.3     MetaHIT      danish      F
-#&gt; DA.AD.3T        &lt;NA&gt;  DA.AD.3T  Sanger      &lt;NA&gt;        &lt;NA&gt;        &lt;NA&gt;   &lt;NA&gt;
-#&gt; DA.AD.4            2   DA.AD.4  Sanger   DA.AD.4     MetaHIT      danish      M
-#&gt;           Age ClinicalStatus
-#&gt; AM.AD.1    28        healthy
-#&gt; AM.AD.2    37        healthy
-#&gt; AM.F10.T1  NA          obese
-#&gt; AM.F10.T2  NA          obese
-#&gt; DA.AD.1    59        healthy
-#&gt; DA.AD.1T   NA           &lt;NA&gt;
-#&gt; DA.AD.2    54        healthy
-#&gt; DA.AD.3    49          obese
-#&gt; DA.AD.3T   NA           &lt;NA&gt;
-#&gt; DA.AD.4    59          obese</div><div class='input'>
-<span class='va'>months_in_year</span> <span class='op'>&lt;-</span> <span class='fl'>12</span>
-<span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>enterotype</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>ps_mutate</span><span class='op'>(</span>
-    age_months <span class='op'>=</span> <span class='va'>Age</span> <span class='op'>*</span> <span class='va'>months_in_year</span>,
-    IDs_match <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='va'>Sample_ID</span><span class='op'>)</span> <span class='op'>==</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='va'>SampleID</span><span class='op'>)</span>,
-    placeholder <span class='op'>=</span> <span class='st'>"Word"</span>
-  <span class='op'>)</span>
-
-<span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='op'>]</span>
-</div><div class='output co'>#&gt; Sample Data:        [10 samples by 12 sample variables]:
-#&gt;           Enterotype Sample_ID SeqTech  SampleID     Project Nationality Gender
-#&gt; AM.AD.1         &lt;NA&gt;   AM.AD.1  Sanger   AM.AD.1      gill06    american      F
-#&gt; AM.AD.2         &lt;NA&gt;   AM.AD.2  Sanger   AM.AD.2      gill06    american      M
-#&gt; AM.F10.T1       &lt;NA&gt; AM.F10.T1  Sanger AM.F10.T1 turnbaugh09    american      F
-#&gt; AM.F10.T2          3 AM.F10.T2  Sanger AM.F10.T2 turnbaugh09    american      F
-#&gt; DA.AD.1            2   DA.AD.1  Sanger   DA.AD.1     MetaHIT      danish      F
-#&gt; DA.AD.1T        &lt;NA&gt;  DA.AD.1T  Sanger      &lt;NA&gt;        &lt;NA&gt;        &lt;NA&gt;   &lt;NA&gt;
-#&gt; DA.AD.2            3   DA.AD.2  Sanger   DA.AD.2     MetaHIT      danish      M
-#&gt; DA.AD.3            3   DA.AD.3  Sanger   DA.AD.3     MetaHIT      danish      F
-#&gt; DA.AD.3T        &lt;NA&gt;  DA.AD.3T  Sanger      &lt;NA&gt;        &lt;NA&gt;        &lt;NA&gt;   &lt;NA&gt;
-#&gt; DA.AD.4            2   DA.AD.4  Sanger   DA.AD.4     MetaHIT      danish      M
-#&gt;           Age ClinicalStatus age_months IDs_match placeholder
-#&gt; AM.AD.1    28        healthy        336      TRUE        Word
-#&gt; AM.AD.2    37        healthy        444      TRUE        Word
-#&gt; AM.F10.T1  NA          obese         NA      TRUE        Word
-#&gt; AM.F10.T2  NA          obese         NA      TRUE        Word
-#&gt; DA.AD.1    59        healthy        708      TRUE        Word
-#&gt; DA.AD.1T   NA           &lt;NA&gt;         NA        NA        Word
-#&gt; DA.AD.2    54        healthy        648      TRUE        Word
-#&gt; DA.AD.3    49          obese        588      TRUE        Word
-#&gt; DA.AD.3T   NA           &lt;NA&gt;         NA        NA        Word
-#&gt; DA.AD.4    59          obese        708      TRUE        Word</div><div class='input'>
-<span class='co'># Using the dplyr::across functionality is also possible</span>
-<span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>ps</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>ps_mutate</span><span class='op'>(</span>
-    <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/across.html'>across</a></span><span class='op'>(</span><span class='fu'>where</span><span class='op'>(</span><span class='va'>is.factor</span><span class='op'>)</span>, <span class='va'>toupper</span><span class='op'>)</span>,
-    another_var <span class='op'>=</span> <span class='cn'>TRUE</span>,
-    SeqTech <span class='op'>=</span> <span class='cn'>NULL</span> <span class='co'># deletes SeqTech variable</span>
-  <span class='op'>)</span>
-
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Sample Data:        [6 samples by 12 sample variables]:
-#&gt;           Enterotype Sample_ID  SampleID     Project Nationality Gender Age
-#&gt; AM.AD.1         &lt;NA&gt;   AM.AD.1   AM.AD.1      GILL06    AMERICAN      F  28
-#&gt; AM.AD.2         &lt;NA&gt;   AM.AD.2   AM.AD.2      GILL06    AMERICAN      M  37
-#&gt; AM.F10.T1       &lt;NA&gt; AM.F10.T1 AM.F10.T1 TURNBAUGH09    AMERICAN      F  NA
-#&gt; AM.F10.T2          3 AM.F10.T2 AM.F10.T2 TURNBAUGH09    AMERICAN      F  NA
-#&gt; DA.AD.1            2   DA.AD.1   DA.AD.1     METAHIT      DANISH      F  59
-#&gt; DA.AD.1T        &lt;NA&gt;  DA.AD.1T      &lt;NA&gt;        &lt;NA&gt;        &lt;NA&gt;   &lt;NA&gt;  NA
-#&gt;           ClinicalStatus age_months IDs_match placeholder another_var
-#&gt; AM.AD.1          HEALTHY        336      TRUE        Word        TRUE
-#&gt; AM.AD.2          HEALTHY        444      TRUE        Word        TRUE
-#&gt; AM.F10.T1          OBESE         NA      TRUE        Word        TRUE
-#&gt; AM.F10.T2          OBESE         NA      TRUE        Word        TRUE
-#&gt; DA.AD.1          HEALTHY        708      TRUE        Word        TRUE
-#&gt; DA.AD.1T            &lt;NA&gt;         NA        NA        Word        TRUE</div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://dx.plos.org/10.1371/journal.pone.0061217'>phyloseq</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"enterotype"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='va'>enterotype</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample Data:        [10 samples by 9 sample variables]:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           Enterotype Sample_ID SeqTech  SampleID     Project Nationality Gender</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AM.AD.1         &lt;NA&gt;   AM.AD.1  Sanger   AM.AD.1      gill06    american      F</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AM.AD.2         &lt;NA&gt;   AM.AD.2  Sanger   AM.AD.2      gill06    american      M</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AM.F10.T1       &lt;NA&gt; AM.F10.T1  Sanger AM.F10.T1 turnbaugh09    american      F</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AM.F10.T2          3 AM.F10.T2  Sanger AM.F10.T2 turnbaugh09    american      F</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.1            2   DA.AD.1  Sanger   DA.AD.1     MetaHIT      danish      F</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.1T        &lt;NA&gt;  DA.AD.1T  Sanger      &lt;NA&gt;        &lt;NA&gt;        &lt;NA&gt;   &lt;NA&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.2            3   DA.AD.2  Sanger   DA.AD.2     MetaHIT      danish      M</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.3            3   DA.AD.3  Sanger   DA.AD.3     MetaHIT      danish      F</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.3T        &lt;NA&gt;  DA.AD.3T  Sanger      &lt;NA&gt;        &lt;NA&gt;        &lt;NA&gt;   &lt;NA&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.4            2   DA.AD.4  Sanger   DA.AD.4     MetaHIT      danish      M</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           Age ClinicalStatus</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AM.AD.1    28        healthy</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AM.AD.2    37        healthy</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AM.F10.T1  NA          obese</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AM.F10.T2  NA          obese</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.1    59        healthy</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.1T   NA           &lt;NA&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.2    54        healthy</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.3    49          obese</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.3T   NA           &lt;NA&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.4    59          obese</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>months_in_year</span> <span class='op'>&lt;-</span> <span class='fl'>12</span></span>
+<span class='r-in'><span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>enterotype</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>ps_mutate</span><span class='op'>(</span></span>
+<span class='r-in'>    age_months <span class='op'>=</span> <span class='va'>Age</span> <span class='op'>*</span> <span class='va'>months_in_year</span>,</span>
+<span class='r-in'>    IDs_match <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='va'>Sample_ID</span><span class='op'>)</span> <span class='op'>==</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='va'>SampleID</span><span class='op'>)</span>,</span>
+<span class='r-in'>    placeholder <span class='op'>=</span> <span class='st'>"Word"</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample Data:        [10 samples by 12 sample variables]:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           Enterotype Sample_ID SeqTech  SampleID     Project Nationality Gender</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AM.AD.1         &lt;NA&gt;   AM.AD.1  Sanger   AM.AD.1      gill06    american      F</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AM.AD.2         &lt;NA&gt;   AM.AD.2  Sanger   AM.AD.2      gill06    american      M</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AM.F10.T1       &lt;NA&gt; AM.F10.T1  Sanger AM.F10.T1 turnbaugh09    american      F</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AM.F10.T2          3 AM.F10.T2  Sanger AM.F10.T2 turnbaugh09    american      F</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.1            2   DA.AD.1  Sanger   DA.AD.1     MetaHIT      danish      F</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.1T        &lt;NA&gt;  DA.AD.1T  Sanger      &lt;NA&gt;        &lt;NA&gt;        &lt;NA&gt;   &lt;NA&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.2            3   DA.AD.2  Sanger   DA.AD.2     MetaHIT      danish      M</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.3            3   DA.AD.3  Sanger   DA.AD.3     MetaHIT      danish      F</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.3T        &lt;NA&gt;  DA.AD.3T  Sanger      &lt;NA&gt;        &lt;NA&gt;        &lt;NA&gt;   &lt;NA&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.4            2   DA.AD.4  Sanger   DA.AD.4     MetaHIT      danish      M</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           Age ClinicalStatus age_months IDs_match placeholder</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AM.AD.1    28        healthy        336      TRUE        Word</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AM.AD.2    37        healthy        444      TRUE        Word</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AM.F10.T1  NA          obese         NA      TRUE        Word</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AM.F10.T2  NA          obese         NA      TRUE        Word</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.1    59        healthy        708      TRUE        Word</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.1T   NA           &lt;NA&gt;         NA        NA        Word</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.2    54        healthy        648      TRUE        Word</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.3    49          obese        588      TRUE        Word</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.3T   NA           &lt;NA&gt;         NA        NA        Word</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.4    59          obese        708      TRUE        Word</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Using the dplyr::across functionality is also possible</span></span>
+<span class='r-in'><span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>ps</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>ps_mutate</span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/across.html'>across</a></span><span class='op'>(</span><span class='fu'>where</span><span class='op'>(</span><span class='va'>is.factor</span><span class='op'>)</span>, <span class='va'>toupper</span><span class='op'>)</span>,</span>
+<span class='r-in'>    another_var <span class='op'>=</span> <span class='cn'>TRUE</span>,</span>
+<span class='r-in'>    SeqTech <span class='op'>=</span> <span class='cn'>NULL</span> <span class='co'># deletes SeqTech variable</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample Data:        [6 samples by 12 sample variables]:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           Enterotype Sample_ID  SampleID     Project Nationality Gender Age</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AM.AD.1         &lt;NA&gt;   AM.AD.1   AM.AD.1      GILL06    AMERICAN      F  28</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AM.AD.2         &lt;NA&gt;   AM.AD.2   AM.AD.2      GILL06    AMERICAN      M  37</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AM.F10.T1       &lt;NA&gt; AM.F10.T1 AM.F10.T1 TURNBAUGH09    AMERICAN      F  NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AM.F10.T2          3 AM.F10.T2 AM.F10.T2 TURNBAUGH09    AMERICAN      F  NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.1            2   DA.AD.1   DA.AD.1     METAHIT      DANISH      F  59</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.1T        &lt;NA&gt;  DA.AD.1T      &lt;NA&gt;        &lt;NA&gt;        &lt;NA&gt;   &lt;NA&gt;  NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           ClinicalStatus age_months IDs_match placeholder another_var</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AM.AD.1          HEALTHY        336      TRUE        Word        TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AM.AD.2          HEALTHY        444      TRUE        Word        TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AM.F10.T1          OBESE         NA      TRUE        Word        TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AM.F10.T2          OBESE         NA      TRUE        Word        TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.1          HEALTHY        708      TRUE        Word        TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.1T            &lt;NA&gt;         NA        NA        Word        TRUE</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

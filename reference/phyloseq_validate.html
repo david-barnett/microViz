@@ -95,7 +95,7 @@ If remove_undetected = TRUE, it removes taxa where phyloseq::taxa_sums() is equa
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9037</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9038</span>
       </span>
     </div>
 
@@ -221,61 +221,69 @@ If remove_undetected = TRUE, it removes taxa where phyloseq::taxa_sums() is equa
     <p>possibly modified phyloseq object</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>dietswap</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span>
-
-<span class='co'># expect warning about taxa summing to zero</span>
-<span class='fu'>phyloseq_validate</span><span class='op'>(</span><span class='va'>dietswap</span>, remove_undetected <span class='op'>=</span> <span class='cn'>TRUE</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Some taxa_sums were zero, removing the following taxa:</span>
-#&gt; <span class='warning'>	Aerococcus </span>
-#&gt; <span class='warning'>	Aneurinibacillus </span>
-#&gt; <span class='warning'>	Asteroleplasma et rel. </span>
-#&gt; <span class='warning'>	Clostridium felsineum et rel. </span>
-#&gt; <span class='warning'>	Clostridium thermocellum et rel. </span>
-#&gt; <span class='warning'>	Methylobacterium </span>
-#&gt; <span class='warning'>	Micrococcaceae</span>
-#&gt; <span class='warning'>This may be caused by using `subset_samples()`.</span>
-#&gt; <span class='warning'>Try using `ps_filter()` instead, with .keep_all_taxa = FALSE.</span>
-#&gt; <span class='warning'>Otherwise, to avoid this warning, try filtering out taxa summing to zero with `tax_filter()`.</span>
-#&gt; <span class='warning'>If you have already transformed and/or scaled your taxa, e.g. with a log transformation or scale,</span>
-#&gt; <span class='warning'>seeing this warning is possible, but very unlikely and possibly a bug. Please report this.</span></div><div class='output co'>#&gt; phyloseq-class experiment-level object
-#&gt; otu_table()   OTU Table:         [ 123 taxa and 222 samples ]
-#&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 123 taxa by 3 taxonomic ranks ]</div><div class='input'>
-<span class='co'># verbose = FALSE will suppress messages and warnings but still:</span>
-<span class='co'># replace NULL sample_data and remove taxa that sum to 0 across all samples</span>
-<span class='co'># (if remove_undetected = TRUE)</span>
-<span class='fu'>phyloseq_validate</span><span class='op'>(</span><span class='va'>dietswap</span>, verbose <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; phyloseq-class experiment-level object
-#&gt; otu_table()   OTU Table:         [ 130 taxa and 222 samples ]
-#&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]</div><div class='input'>
-<span class='co'># Sometimes you might have a phyloseq with no sample_data</span>
-<span class='co'># This isn't compatible with some microViz functions, like comp_barplot</span>
-<span class='co'># So some functions internally use phyloseq_validate to fix this</span>
-<span class='va'>dietswap</span><span class='op'>@</span><span class='va'>sam_data</span> <span class='op'>&lt;-</span> <span class='cn'>NULL</span>
-<span class='fu'>phyloseq_validate</span><span class='op'>(</span><span class='va'>dietswap</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Note: Replacing missing sample_data with a dataframe of only sample_names.</span>
-#&gt; <span class='message'>Try `ps &lt;- phyloseq_validate(ps, verbose = FALSE)` to avoid this message</span></div><div class='output co'>#&gt; phyloseq-class experiment-level object
-#&gt; otu_table()   OTU Table:         [ 130 taxa and 222 samples ]
-#&gt; sample_data() Sample Data:       [ 222 samples by 1 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]</div><div class='input'>
-<span class='co'># Sometimes you might have a phyloseq with no tax_table</span>
-<span class='co'># This isn't compatible with some microViz functions, like tax_top,</span>
-<span class='co'># so this is another reason to start your analyses with phyloseq_validate!</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"soilrep"</span>, package <span class='op'>=</span> <span class='st'>"phyloseq"</span><span class='op'>)</span>
-<span class='va'>soilrep</span> <span class='co'># has NULL tax_table</span>
-</div><div class='output co'>#&gt; phyloseq-class experiment-level object
-#&gt; otu_table()   OTU Table:         [ 16825 taxa and 56 samples ]
-#&gt; sample_data() Sample Data:       [ 56 samples by 4 sample variables ]</div><div class='input'><span class='fu'>phyloseq_validate</span><span class='op'>(</span><span class='va'>soilrep</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Note: Replacing missing tax_table with a 1-column table of only taxa_names.</span>
-#&gt; <span class='message'>Try `ps &lt;- phyloseq_validate(ps, verbose = FALSE)` to avoid this message</span></div><div class='output co'>#&gt; phyloseq-class experiment-level object
-#&gt; otu_table()   OTU Table:         [ 16825 taxa and 56 samples ]
-#&gt; sample_data() Sample Data:       [ 56 samples by 4 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 16825 taxa by 1 taxonomic ranks ]</div><div class='input'>
-<span class='co'># If no messages or warnings are emitted,</span>
-<span class='co'># this means no problems were detected, and nothing was changed</span>
-<span class='co'># (but only if verbose = TRUE)</span>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>dietswap</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># expect warning about taxa summing to zero</span></span>
+<span class='r-in'><span class='fu'>phyloseq_validate</span><span class='op'>(</span><span class='va'>dietswap</span>, remove_undetected <span class='op'>=</span> <span class='cn'>TRUE</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Some taxa_sums were zero, removing the following taxa:</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> 	Aerococcus </span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> 	Aneurinibacillus </span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> 	Asteroleplasma et rel. </span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> 	Clostridium felsineum et rel. </span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> 	Clostridium thermocellum et rel. </span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> 	Methylobacterium </span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> 	Micrococcaceae</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> This may be caused by using `subset_samples()`.</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> Try using `ps_filter()` instead, with .keep_all_taxa = FALSE.</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> Otherwise, to avoid this warning, try filtering out taxa summing to zero with `tax_filter()`.</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> If you have already transformed and/or scaled your taxa, e.g. with a log transformation or scale,</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> seeing this warning is possible, but very unlikely and possibly a bug. Please report this.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> phyloseq-class experiment-level object</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> otu_table()   OTU Table:         [ 123 taxa and 222 samples ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sample_data() Sample Data:       [ 222 samples by 8 sample variables ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tax_table()   Taxonomy Table:    [ 123 taxa by 3 taxonomic ranks ]</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># verbose = FALSE will suppress messages and warnings but still:</span></span>
+<span class='r-in'><span class='co'># replace NULL sample_data and remove taxa that sum to 0 across all samples</span></span>
+<span class='r-in'><span class='co'># (if remove_undetected = TRUE)</span></span>
+<span class='r-in'><span class='fu'>phyloseq_validate</span><span class='op'>(</span><span class='va'>dietswap</span>, verbose <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> phyloseq-class experiment-level object</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> otu_table()   OTU Table:         [ 130 taxa and 222 samples ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sample_data() Sample Data:       [ 222 samples by 8 sample variables ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Sometimes you might have a phyloseq with no sample_data</span></span>
+<span class='r-in'><span class='co'># This isn't compatible with some microViz functions, like comp_barplot</span></span>
+<span class='r-in'><span class='co'># So some functions internally use phyloseq_validate to fix this</span></span>
+<span class='r-in'><span class='va'>dietswap</span><span class='op'>@</span><span class='va'>sam_data</span> <span class='op'>&lt;-</span> <span class='cn'>NULL</span></span>
+<span class='r-in'><span class='fu'>phyloseq_validate</span><span class='op'>(</span><span class='va'>dietswap</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Note: Replacing missing sample_data with a dataframe of only sample_names.</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Try `ps &lt;- phyloseq_validate(ps, verbose = FALSE)` to avoid this message</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> phyloseq-class experiment-level object</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> otu_table()   OTU Table:         [ 130 taxa and 222 samples ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sample_data() Sample Data:       [ 222 samples by 1 sample variables ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Sometimes you might have a phyloseq with no tax_table</span></span>
+<span class='r-in'><span class='co'># This isn't compatible with some microViz functions, like tax_top,</span></span>
+<span class='r-in'><span class='co'># so this is another reason to start your analyses with phyloseq_validate!</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"soilrep"</span>, package <span class='op'>=</span> <span class='st'>"phyloseq"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>soilrep</span> <span class='co'># has NULL tax_table</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> phyloseq-class experiment-level object</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> otu_table()   OTU Table:         [ 16825 taxa and 56 samples ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sample_data() Sample Data:       [ 56 samples by 4 sample variables ]</span>
+<span class='r-in'><span class='fu'>phyloseq_validate</span><span class='op'>(</span><span class='va'>soilrep</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Note: Replacing missing tax_table with a 1-column table of only taxa_names.</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Try `ps &lt;- phyloseq_validate(ps, verbose = FALSE)` to avoid this message</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> phyloseq-class experiment-level object</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> otu_table()   OTU Table:         [ 16825 taxa and 56 samples ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sample_data() Sample Data:       [ 56 samples by 4 sample variables ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tax_table()   Taxonomy Table:    [ 16825 taxa by 1 taxonomic ranks ]</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># If no messages or warnings are emitted,</span></span>
+<span class='r-in'><span class='co'># this means no problems were detected, and nothing was changed</span></span>
+<span class='r-in'><span class='co'># (but only if verbose = TRUE)</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

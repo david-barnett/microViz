@@ -88,7 +88,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9037</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9038</span>
       </span>
     </div>
 
@@ -199,86 +199,90 @@
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://dx.plos.org/10.1371/journal.pone.0061217'>phyloseq</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://microbiome.github.io/microbiome'>microbiome</a></span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span><span class='op'>)</span>
-<span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span>
-<span class='va'>ps</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ps_extra-accessors.html'>otu_get</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='va'>.</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; OTU Table:          [6 taxa and 6 samples]
-#&gt;                      taxa are columns
-#&gt;          Actinomycetaceae Aerococcus Aeromonas Akkermansia
-#&gt; Sample-1                0          0         0          18
-#&gt; Sample-2                1          0         0          97
-#&gt; Sample-3                0          0         0          67
-#&gt; Sample-4                1          0         0         256
-#&gt; Sample-5                0          0         0          21
-#&gt; Sample-6                0          0         0          16
-#&gt;          Alcaligenes faecalis et rel. Allistipes et rel.
-#&gt; Sample-1                            1                336
-#&gt; Sample-2                            2                 63
-#&gt; Sample-3                            3                 36
-#&gt; Sample-4                            2                 96
-#&gt; Sample-5                            2                 49
-#&gt; Sample-6                            2                 17</div><div class='input'><span class='co'># standard use (mean center and SD scale)</span>
-<span class='fu'>tax_scale</span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ps_extra-accessors.html'>otu_get</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='va'>.</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; OTU Table:          [6 taxa and 6 samples]
-#&gt;                      taxa are columns
-#&gt;          Actinomycetaceae Aerococcus   Aeromonas Akkermansia
-#&gt; Sample-1       -0.2780648        NaN -0.09513127  -0.3332126
-#&gt; Sample-2        3.5800844        NaN -0.09513127  -0.0622108
-#&gt; Sample-3       -0.2780648        NaN -0.09513127  -0.1651229
-#&gt; Sample-4        3.5800844        NaN -0.09513127   0.4832231
-#&gt; Sample-5       -0.2780648        NaN -0.09513127  -0.3229214
-#&gt; Sample-6       -0.2780648        NaN -0.09513127  -0.3400734
-#&gt;          Alcaligenes faecalis et rel. Allistipes et rel.
-#&gt; Sample-1                   -0.3262211          0.2690184
-#&gt; Sample-2                   -0.2720137         -0.5929499
-#&gt; Sample-3                   -0.2178063         -0.6781996
-#&gt; Sample-4                   -0.2720137         -0.4887560
-#&gt; Sample-5                   -0.2720137         -0.6371534
-#&gt; Sample-6                   -0.2720137         -0.7381900</div><div class='input'><span class='co'># RMS scale only (directly on otu_table)</span>
-<span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/otu_table-methods.html'>otu_table</a></span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>tax_scale</span><span class='op'>(</span>center <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='va'>.</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span> <span class='co'># Aerococcus is NaN as prevalence=0</span>
-</div><div class='output co'>#&gt; OTU Table:          [6 taxa and 6 samples]
-#&gt;                      taxa are columns
-#&gt;          Actinomycetaceae Aerococcus Aeromonas Akkermansia
-#&gt; Sample-1         0.000000        NaN         0  0.05741261
-#&gt; Sample-2         3.716517        NaN         0  0.30939020
-#&gt; Sample-3         0.000000        NaN         0  0.21370251
-#&gt; Sample-4         3.716517        NaN         0  0.81653496
-#&gt; Sample-5         0.000000        NaN         0  0.06698138
-#&gt; Sample-6         0.000000        NaN         0  0.05103343
-#&gt;          Alcaligenes faecalis et rel. Allistipes et rel.
-#&gt; Sample-1                   0.05065049         0.83097699
-#&gt; Sample-2                   0.10130097         0.15580819
-#&gt; Sample-3                   0.15195146         0.08903325
-#&gt; Sample-4                   0.10130097         0.23742200
-#&gt; Sample-5                   0.10130097         0.12118414
-#&gt; Sample-6                   0.10130097         0.04204348</div><div class='input'><span class='co'># example using alternative `do` argument (to center only, no scaling)</span>
-<span class='fu'>tax_scale</span><span class='op'>(</span><span class='va'>ps</span>, do <span class='op'>=</span> <span class='st'>"center"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ps_extra-accessors.html'>otu_get</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='va'>.</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; OTU Table:          [6 taxa and 6 samples]
-#&gt;                      taxa are columns
-#&gt;          Actinomycetaceae Aerococcus    Aeromonas Akkermansia
-#&gt; Sample-1      -0.07207207          0 -0.009009009   -97.13514
-#&gt; Sample-2       0.92792793          0 -0.009009009   -18.13514
-#&gt; Sample-3      -0.07207207          0 -0.009009009   -48.13514
-#&gt; Sample-4       0.92792793          0 -0.009009009   140.86486
-#&gt; Sample-5      -0.07207207          0 -0.009009009   -94.13514
-#&gt; Sample-6      -0.07207207          0 -0.009009009   -99.13514
-#&gt;          Alcaligenes faecalis et rel. Allistipes et rel.
-#&gt; Sample-1                    -6.018018            85.2027
-#&gt; Sample-2                    -5.018018          -187.7973
-#&gt; Sample-3                    -4.018018          -214.7973
-#&gt; Sample-4                    -5.018018          -154.7973
-#&gt; Sample-5                    -5.018018          -201.7973
-#&gt; Sample-6                    -5.018018          -233.7973</div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://dx.plos.org/10.1371/journal.pone.0061217'>phyloseq</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://microbiome.github.io/microbiome'>microbiome</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span></span>
+<span class='r-in'><span class='va'>ps</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='ps_extra-accessors.html'>otu_get</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='va'>.</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> OTU Table:          [6 taxa and 6 samples]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                      taxa are columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          Actinomycetaceae Aerococcus Aeromonas Akkermansia</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-1                0          0         0          18</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-2                1          0         0          97</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-3                0          0         0          67</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-4                1          0         0         256</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-5                0          0         0          21</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-6                0          0         0          16</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          Alcaligenes faecalis et rel. Allistipes et rel.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-1                            1                336</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-2                            2                 63</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-3                            3                 36</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-4                            2                 96</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-5                            2                 49</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-6                            2                 17</span>
+<span class='r-in'><span class='co'># standard use (mean center and SD scale)</span></span>
+<span class='r-in'><span class='fu'>tax_scale</span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='ps_extra-accessors.html'>otu_get</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='va'>.</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> OTU Table:          [6 taxa and 6 samples]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                      taxa are columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          Actinomycetaceae Aerococcus   Aeromonas Akkermansia</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-1       -0.2780648        NaN -0.09513127  -0.3332126</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-2        3.5800844        NaN -0.09513127  -0.0622108</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-3       -0.2780648        NaN -0.09513127  -0.1651229</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-4        3.5800844        NaN -0.09513127   0.4832231</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-5       -0.2780648        NaN -0.09513127  -0.3229214</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-6       -0.2780648        NaN -0.09513127  -0.3400734</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          Alcaligenes faecalis et rel. Allistipes et rel.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-1                   -0.3262211          0.2690184</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-2                   -0.2720137         -0.5929499</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-3                   -0.2178063         -0.6781996</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-4                   -0.2720137         -0.4887560</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-5                   -0.2720137         -0.6371534</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-6                   -0.2720137         -0.7381900</span>
+<span class='r-in'><span class='co'># RMS scale only (directly on otu_table)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/otu_table-methods.html'>otu_table</a></span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>tax_scale</span><span class='op'>(</span>center <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='va'>.</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span> <span class='co'># Aerococcus is NaN as prevalence=0</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> OTU Table:          [6 taxa and 6 samples]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                      taxa are columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          Actinomycetaceae Aerococcus Aeromonas Akkermansia</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-1         0.000000        NaN         0  0.05741261</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-2         3.716517        NaN         0  0.30939020</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-3         0.000000        NaN         0  0.21370251</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-4         3.716517        NaN         0  0.81653496</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-5         0.000000        NaN         0  0.06698138</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-6         0.000000        NaN         0  0.05103343</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          Alcaligenes faecalis et rel. Allistipes et rel.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-1                   0.05065049         0.83097699</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-2                   0.10130097         0.15580819</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-3                   0.15195146         0.08903325</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-4                   0.10130097         0.23742200</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-5                   0.10130097         0.12118414</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-6                   0.10130097         0.04204348</span>
+<span class='r-in'><span class='co'># example using alternative `do` argument (to center only, no scaling)</span></span>
+<span class='r-in'><span class='fu'>tax_scale</span><span class='op'>(</span><span class='va'>ps</span>, do <span class='op'>=</span> <span class='st'>"center"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='ps_extra-accessors.html'>otu_get</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='va'>.</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> OTU Table:          [6 taxa and 6 samples]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                      taxa are columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          Actinomycetaceae Aerococcus    Aeromonas Akkermansia</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-1      -0.07207207          0 -0.009009009   -97.13514</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-2       0.92792793          0 -0.009009009   -18.13514</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-3      -0.07207207          0 -0.009009009   -48.13514</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-4       0.92792793          0 -0.009009009   140.86486</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-5      -0.07207207          0 -0.009009009   -94.13514</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-6      -0.07207207          0 -0.009009009   -99.13514</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          Alcaligenes faecalis et rel. Allistipes et rel.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-1                    -6.018018            85.2027</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-2                    -5.018018          -187.7973</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-3                    -4.018018          -214.7973</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-4                    -5.018018          -154.7973</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-5                    -5.018018          -201.7973</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-6                    -5.018018          -233.7973</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

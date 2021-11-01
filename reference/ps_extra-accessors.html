@@ -101,7 +101,7 @@ with sample_names as new first column called .sample_name
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9037</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9038</span>
       </span>
     </div>
 
@@ -241,72 +241,82 @@ if NA, return data.frame with rownames (sample_names)</p></td>
     <p>element of ps_extra class object (or NULL)</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span>
-<span class='va'>psx</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='va'>dietswap</span>, <span class='st'>"identity"</span>, rank <span class='op'>=</span> <span class='st'>"Genus"</span><span class='op'>)</span>
-<span class='va'>psx</span>
-</div><div class='output co'>#&gt; ps_extra object - a list with phyloseq and extras:
-#&gt; 
-#&gt; phyloseq-class experiment-level object
-#&gt; otu_table()   OTU Table:         [ 130 taxa and 222 samples ]
-#&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]
-#&gt; 
-#&gt; ps_extra info:
-#&gt; tax_agg = Genus tax_transform = identity</div><div class='input'>
-<span class='fu'>ps_get</span><span class='op'>(</span><span class='va'>psx</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; phyloseq-class experiment-level object
-#&gt; otu_table()   OTU Table:         [ 130 taxa and 222 samples ]
-#&gt; sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]</div><div class='input'><span class='fu'>info_get</span><span class='op'>(</span><span class='va'>psx</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; ps_extra info:
-#&gt; tax_agg = Genus 
-#&gt; tax_transform = identity 
-#&gt; tax_scale = NA 
-#&gt; distMethod = NA 
-#&gt; ordMethod = NA 
-#&gt; constraints = NA 
-#&gt; conditions = NA </div><div class='input'>
-<span class='fu'>dist_get</span><span class='op'>(</span><span class='va'>psx</span><span class='op'>)</span> <span class='co'># this ps_extra has no dist_calc result</span>
-</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'>ord_get</span><span class='op'>(</span><span class='va'>psx</span><span class='op'>)</span> <span class='co'># this ps_extra has no ord_calc result</span>
-</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'>perm_get</span><span class='op'>(</span><span class='va'>psx</span><span class='op'>)</span> <span class='co'># this ps_extra has no dist_permanova result</span>
-</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'>bdisp_get</span><span class='op'>(</span><span class='va'>psx</span><span class='op'>)</span> <span class='co'># this ps_extra has no dist_bdisp result</span>
-</div><div class='output co'>#&gt; NULL</div><div class='input'>
-<span class='co'># these can be returned from phyloseq objects too</span>
-<span class='fu'>otu_get</span><span class='op'>(</span><span class='va'>psx</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; OTU Table:          [4 taxa and 6 samples]
-#&gt;                      taxa are columns
-#&gt;          Actinomycetaceae Aerococcus Aeromonas Akkermansia
-#&gt; Sample-1                0          0         0          18
-#&gt; Sample-2                1          0         0          97
-#&gt; Sample-3                0          0         0          67
-#&gt; Sample-4                1          0         0         256
-#&gt; Sample-5                0          0         0          21
-#&gt; Sample-6                0          0         0          16</div><div class='input'><span class='fu'>tt_get</span><span class='op'>(</span><span class='va'>psx</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Taxonomy Table:     [6 taxa by 3 taxonomic ranks]:
-#&gt;                              Phylum            Family           
-#&gt; Actinomycetaceae             "Actinobacteria"  "Actinobacteria" 
-#&gt; Aerococcus                   "Firmicutes"      "Bacilli"        
-#&gt; Aeromonas                    "Proteobacteria"  "Proteobacteria" 
-#&gt; Akkermansia                  "Verrucomicrobia" "Verrucomicrobia"
-#&gt; Alcaligenes faecalis et rel. "Proteobacteria"  "Proteobacteria" 
-#&gt; Allistipes et rel.           "Bacteroidetes"   "Bacteroidetes"  
-#&gt;                              Genus                         
-#&gt; Actinomycetaceae             "Actinomycetaceae"            
-#&gt; Aerococcus                   "Aerococcus"                  
-#&gt; Aeromonas                    "Aeromonas"                   
-#&gt; Akkermansia                  "Akkermansia"                 
-#&gt; Alcaligenes faecalis et rel. "Alcaligenes faecalis et rel."
-#&gt; Allistipes et rel.           "Allistipes et rel."          </div><div class='input'><span class='fu'>samdat_tbl</span><span class='op'>(</span><span class='va'>psx</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 × 9</span>
-#&gt;   .sample_name subject sex   nationality group sample timepoint timepoint.withi…
-#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span> Sample-1     byn     male  AAM         DI    Sampl…         4                1
-#&gt; <span style='color: #BCBCBC;'>2</span> Sample-2     nms     male  AFR         HE    Sampl…         2                1
-#&gt; <span style='color: #BCBCBC;'>3</span> Sample-3     olt     male  AFR         HE    Sampl…         2                1
-#&gt; <span style='color: #BCBCBC;'>4</span> Sample-4     pku     fema… AFR         HE    Sampl…         2                1
-#&gt; <span style='color: #BCBCBC;'>5</span> Sample-5     qjy     fema… AFR         HE    Sampl…         2                1
-#&gt; <span style='color: #BCBCBC;'>6</span> Sample-6     riv     fema… AFR         HE    Sampl…         2                1
-#&gt; <span style='color: #949494;'># … with 1 more variable: bmi_group &lt;fct&gt;</span></div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>psx</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='va'>dietswap</span>, <span class='st'>"identity"</span>, rank <span class='op'>=</span> <span class='st'>"Genus"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>psx</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ps_extra object - a list with phyloseq and extras:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> phyloseq-class experiment-level object</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> otu_table()   OTU Table:         [ 130 taxa and 222 samples ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sample_data() Sample Data:       [ 222 samples by 8 sample variables ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ps_extra info:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tax_agg = Genus tax_transform = identity</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>ps_get</span><span class='op'>(</span><span class='va'>psx</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> phyloseq-class experiment-level object</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> otu_table()   OTU Table:         [ 130 taxa and 222 samples ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sample_data() Sample Data:       [ 222 samples by 8 sample variables ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]</span>
+<span class='r-in'><span class='fu'>info_get</span><span class='op'>(</span><span class='va'>psx</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ps_extra info:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tax_agg = Genus </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tax_transform = identity </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tax_scale = NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> distMethod = NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ordMethod = NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> constraints = NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> conditions = NA </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>dist_get</span><span class='op'>(</span><span class='va'>psx</span><span class='op'>)</span> <span class='co'># this ps_extra has no dist_calc result</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NULL</span>
+<span class='r-in'><span class='fu'>ord_get</span><span class='op'>(</span><span class='va'>psx</span><span class='op'>)</span> <span class='co'># this ps_extra has no ord_calc result</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NULL</span>
+<span class='r-in'><span class='fu'>perm_get</span><span class='op'>(</span><span class='va'>psx</span><span class='op'>)</span> <span class='co'># this ps_extra has no dist_permanova result</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NULL</span>
+<span class='r-in'><span class='fu'>bdisp_get</span><span class='op'>(</span><span class='va'>psx</span><span class='op'>)</span> <span class='co'># this ps_extra has no dist_bdisp result</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NULL</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># these can be returned from phyloseq objects too</span></span>
+<span class='r-in'><span class='fu'>otu_get</span><span class='op'>(</span><span class='va'>psx</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> OTU Table:          [4 taxa and 6 samples]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                      taxa are columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          Actinomycetaceae Aerococcus Aeromonas Akkermansia</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-1                0          0         0          18</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-2                1          0         0          97</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-3                0          0         0          67</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-4                1          0         0         256</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-5                0          0         0          21</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-6                0          0         0          16</span>
+<span class='r-in'><span class='fu'>tt_get</span><span class='op'>(</span><span class='va'>psx</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Taxonomy Table:     [6 taxa by 3 taxonomic ranks]:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                              Phylum            Family           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Actinomycetaceae             "Actinobacteria"  "Actinobacteria" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Aerococcus                   "Firmicutes"      "Bacilli"        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Aeromonas                    "Proteobacteria"  "Proteobacteria" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Akkermansia                  "Verrucomicrobia" "Verrucomicrobia"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Alcaligenes faecalis et rel. "Proteobacteria"  "Proteobacteria" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Allistipes et rel.           "Bacteroidetes"   "Bacteroidetes"  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                              Genus                         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Actinomycetaceae             "Actinomycetaceae"            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Aerococcus                   "Aerococcus"                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Aeromonas                    "Aeromonas"                   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Akkermansia                  "Akkermansia"                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Alcaligenes faecalis et rel. "Alcaligenes faecalis et rel."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Allistipes et rel.           "Allistipes et rel."          </span>
+<span class='r-in'><span class='fu'>samdat_tbl</span><span class='op'>(</span><span class='va'>psx</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 6 × 9</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   .sample_name subject sex   nationality group sample timepoint timepoint.withi…</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span> Sample-1     byn     male  AAM         DI    Sampl…         4                1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>2</span> Sample-2     nms     male  AFR         HE    Sampl…         2                1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>3</span> Sample-3     olt     male  AFR         HE    Sampl…         2                1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>4</span> Sample-4     pku     fema… AFR         HE    Sampl…         2                1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>5</span> Sample-5     qjy     fema… AFR         HE    Sampl…         2                1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>6</span> Sample-6     riv     fema… AFR         HE    Sampl…         2                1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 1 more variable: bmi_group &lt;fct&gt;</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

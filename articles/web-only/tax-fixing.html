@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9037</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9038</span>
       </span>
     </div>
 
@@ -176,7 +176,7 @@
 <code class="sourceCode R"><span class="co"># tax_agg(pseq, rank = "Family") # this fails, and sends (helpful) messages about taxa problems</span></code></pre></div>
 <p>So we should run <code>tax_fix</code> first, which will fix <strong>most</strong> problems with default settings, allowing taxa to be aggregated successfully (at any rank). If you still have errors when using tax_agg after tax_fix, carefully read the error and accompanying messages. Often you can copy suggested tax_fix code from the tax_agg error. You should generally also have a look around your tax_table for other uninformative values, using <a href="https://david-barnett.github.io/microViz/articles/articles/tax-fixing.html#interactive-solutions">tax_fix_interactive</a>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pseq</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../../reference/tax_fix.html">tax_fix</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"Family"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">pseq</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/tax_fix.html">tax_fix</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"Family"</span><span class="op">)</span>
 <span class="co">#&gt; ps_extra object - a list with phyloseq and extras:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; phyloseq-class experiment-level object</span>
@@ -197,10 +197,10 @@
 </ul>
 <p><code>tax_fix</code> replaces these values with the next higher taxonomic rank, e.g. an “unknown” Family within the Order Clostridiales will be renamed “Clostridiales Order”, as seen below.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pseq</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../../reference/tax_fix.html">tax_fix</a></span><span class="op">(</span>min_length <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Family"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../../reference/ps_extra-accessors.html">ps_get</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># gets the phyloseq from the ps_extra list</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html">tax_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">pseq</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/tax_fix.html">tax_fix</a></span><span class="op">(</span>min_length <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> 
+  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> 
+  <span class="fu"><a href="../../reference/ps_extra-accessors.html">ps_get</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> <span class="co"># gets the phyloseq from the ps_extra list</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html">tax_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> 
   <span class="va">.</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, <span class="fl">3</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span> <span class="co"># removes the first 2 ranks and shows only first 8 rows for nice printing</span>
 <span class="co">#&gt; Taxonomy Table:     [8 taxa by 3 taxonomic ranks]:</span>
 <span class="co">#&gt;                       Class           Order             Family                 </span>
@@ -253,26 +253,29 @@
 <a href="#session-info" class="anchor"></a>Session info</h2>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sessioninfo/man/session_info.html">session_info</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; ─ Session info ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt;  setting  value                       </span>
+<span class="co">#&gt; ─ Session info  🇿🇼  🟰  🇲🇿   ───────────────────────────────────────────────────</span>
+<span class="co">#&gt;  hash: flag: Zimbabwe, heavy equals sign, flag: Mozambique</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  setting  value</span>
 <span class="co">#&gt;  version  R version 4.1.1 (2021-08-10)</span>
-<span class="co">#&gt;  os       macOS Catalina 10.15.7      </span>
-<span class="co">#&gt;  system   x86_64, darwin17.0          </span>
-<span class="co">#&gt;  ui       X11                         </span>
-<span class="co">#&gt;  language (EN)                        </span>
-<span class="co">#&gt;  collate  en_US.UTF-8                 </span>
-<span class="co">#&gt;  ctype    en_US.UTF-8                 </span>
-<span class="co">#&gt;  tz       UTC                         </span>
-<span class="co">#&gt;  date     2021-10-29                  </span>
+<span class="co">#&gt;  os       macOS Catalina 10.15.7</span>
+<span class="co">#&gt;  system   x86_64, darwin17.0</span>
+<span class="co">#&gt;  ui       X11</span>
+<span class="co">#&gt;  language (EN)</span>
+<span class="co">#&gt;  collate  en_US.UTF-8</span>
+<span class="co">#&gt;  ctype    en_US.UTF-8</span>
+<span class="co">#&gt;  tz       UTC</span>
+<span class="co">#&gt;  date     2021-11-01</span>
+<span class="co">#&gt;  pandoc   2.7.3 @ /usr/local/bin/ (via rmarkdown)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ─ Packages ───────────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt;  package          * version     date       lib source        </span>
+<span class="co">#&gt;  package          * version     date (UTC) lib source</span>
 <span class="co">#&gt;  ade4               1.7-18      2021-09-16 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  ape                5.5         2021-04-25 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  Biobase            2.52.0      2021-05-19 [1] Bioconductor  </span>
-<span class="co">#&gt;  BiocGenerics       0.38.0      2021-05-19 [1] Bioconductor  </span>
-<span class="co">#&gt;  biomformat         1.20.0      2021-05-19 [1] Bioconductor  </span>
-<span class="co">#&gt;  Biostrings         2.60.2      2021-08-05 [1] Bioconductor  </span>
+<span class="co">#&gt;  Biobase            2.52.0      2021-05-19 [1] Bioconductor</span>
+<span class="co">#&gt;  BiocGenerics       0.38.0      2021-05-19 [1] Bioconductor</span>
+<span class="co">#&gt;  biomformat         1.20.0      2021-05-19 [1] Bioconductor</span>
+<span class="co">#&gt;  Biostrings         2.60.2      2021-08-05 [1] Bioconductor</span>
 <span class="co">#&gt;  bitops             1.0-7       2021-04-24 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  bslib              0.3.1       2021-10-06 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  cachem             1.0.6       2021-08-19 [1] CRAN (R 4.1.0)</span>
@@ -282,7 +285,7 @@
 <span class="co">#&gt;  codetools          0.2-18      2020-11-04 [2] CRAN (R 4.1.1)</span>
 <span class="co">#&gt;  colorspace         2.0-2       2021-06-24 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  corncob            0.2.0       2021-03-11 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  crayon             1.4.1       2021-02-08 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  crayon             1.4.2       2021-10-29 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  data.table         1.14.2      2021-09-27 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  desc               1.4.0       2021-09-28 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  devtools           2.4.2       2021-06-07 [1] CRAN (R 4.1.0)</span>
@@ -295,14 +298,14 @@
 <span class="co">#&gt;  foreach            1.5.1       2020-10-15 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  fs                 1.5.0       2020-07-31 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  generics           0.1.1       2021-10-25 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  GenomeInfoDb       1.28.4      2021-09-09 [1] Bioconductor  </span>
-<span class="co">#&gt;  GenomeInfoDbData   1.2.6       2021-10-25 [1] Bioconductor  </span>
+<span class="co">#&gt;  GenomeInfoDb       1.28.4      2021-09-09 [1] Bioconductor</span>
+<span class="co">#&gt;  GenomeInfoDbData   1.2.6       2021-10-25 [1] Bioconductor</span>
 <span class="co">#&gt;  ggplot2            3.3.5       2021-06-25 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  glue               1.4.2       2020-08-27 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  gtable             0.3.0       2019-03-25 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  htmltools          0.5.2       2021-08-25 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  igraph             1.2.7       2021-10-15 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  IRanges            2.26.0      2021-05-19 [1] Bioconductor  </span>
+<span class="co">#&gt;  IRanges            2.26.0      2021-05-19 [1] Bioconductor</span>
 <span class="co">#&gt;  iterators          1.0.13      2020-10-15 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  jquerylib          0.1.4       2021-04-26 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  jsonlite           1.7.2       2020-12-09 [1] CRAN (R 4.1.0)</span>
@@ -314,12 +317,12 @@
 <span class="co">#&gt;  Matrix             1.3-4       2021-06-01 [2] CRAN (R 4.1.1)</span>
 <span class="co">#&gt;  memoise            2.0.0       2021-01-26 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  mgcv               1.8-36      2021-06-01 [2] CRAN (R 4.1.1)</span>
-<span class="co">#&gt;  microViz         * 0.7.10.9037 2021-10-29 [1] local         </span>
-<span class="co">#&gt;  multtest           2.48.0      2021-05-19 [1] Bioconductor  </span>
+<span class="co">#&gt;  microViz         * 0.7.10.9038 2021-11-01 [1] local</span>
+<span class="co">#&gt;  multtest           2.48.0      2021-05-19 [1] Bioconductor</span>
 <span class="co">#&gt;  munsell            0.5.0       2018-06-12 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  nlme               3.1-152     2021-02-04 [2] CRAN (R 4.1.1)</span>
 <span class="co">#&gt;  permute            0.9-5       2019-03-12 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  phyloseq         * 1.36.0      2021-05-19 [1] Bioconductor  </span>
+<span class="co">#&gt;  phyloseq         * 1.36.0      2021-05-19 [1] Bioconductor</span>
 <span class="co">#&gt;  pillar             1.6.4       2021-10-18 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  pkgbuild           1.2.0       2020-12-15 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  pkgconfig          2.0.3       2019-09-22 [1] CRAN (R 4.1.0)</span>
@@ -336,16 +339,16 @@
 <span class="co">#&gt;  RCurl              1.98-1.5    2021-09-17 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  remotes            2.4.1       2021-09-29 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  reshape2           1.4.4       2020-04-09 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  rhdf5              2.36.0      2021-05-19 [1] Bioconductor  </span>
-<span class="co">#&gt;  rhdf5filters       1.4.0       2021-05-19 [1] Bioconductor  </span>
-<span class="co">#&gt;  Rhdf5lib           1.14.2      2021-07-06 [1] Bioconductor  </span>
+<span class="co">#&gt;  rhdf5              2.36.0      2021-05-19 [1] Bioconductor</span>
+<span class="co">#&gt;  rhdf5filters       1.4.0       2021-05-19 [1] Bioconductor</span>
+<span class="co">#&gt;  Rhdf5lib           1.14.2      2021-07-06 [1] Bioconductor</span>
 <span class="co">#&gt;  rlang              0.4.12      2021-10-18 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  rmarkdown          2.11        2021-09-14 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  rprojroot          2.0.2       2020-11-15 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  S4Vectors          0.30.2      2021-10-03 [1] Bioconductor  </span>
+<span class="co">#&gt;  S4Vectors          0.30.2      2021-10-03 [1] Bioconductor</span>
 <span class="co">#&gt;  sass               0.4.0       2021-05-12 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  scales             1.1.1       2020-05-11 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  sessioninfo        1.1.1       2018-11-05 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  sessioninfo        1.2.0       2021-10-31 [1] CRAN (R 4.1.1)</span>
 <span class="co">#&gt;  stringi            1.7.5       2021-10-04 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  stringr            1.4.0       2019-02-10 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  survival           3.2-11      2021-04-26 [2] CRAN (R 4.1.1)</span>
@@ -360,12 +363,14 @@
 <span class="co">#&gt;  vegan              2.5-7       2020-11-28 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  withr              2.4.2       2021-04-18 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  xfun               0.27        2021-10-18 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  XVector            0.32.0      2021-05-19 [1] Bioconductor  </span>
+<span class="co">#&gt;  XVector            0.32.0      2021-05-19 [1] Bioconductor</span>
 <span class="co">#&gt;  yaml               2.2.1       2020-02-01 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  zlibbioc           1.38.0      2021-05-19 [1] Bioconductor  </span>
+<span class="co">#&gt;  zlibbioc           1.38.0      2021-05-19 [1] Bioconductor</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; [1] /Users/runner/work/_temp/Library</span>
-<span class="co">#&gt; [2] /Library/Frameworks/R.framework/Versions/4.1/Resources/library</span></code></pre></div>
+<span class="co">#&gt;  [1] /Users/runner/work/_temp/Library</span>
+<span class="co">#&gt;  [2] /Library/Frameworks/R.framework/Versions/4.1/Resources/library</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; ──────────────────────────────────────────────────────────────────────────────</span></code></pre></div>
 </div>
   </div>
 

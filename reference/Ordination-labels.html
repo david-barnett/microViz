@@ -91,7 +91,7 @@ constraint_lab_style()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9037</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9038</span>
       </span>
     </div>
 
@@ -255,136 +255,145 @@ Should the text/label align with the arrows at the text center or text sides
     <p>named list</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># These examples show styling of taxa labels with tax_lab_style().</span>
-<span class='co'># The same options are available for constraint labels in constrained</span>
-<span class='co'># ordinations. constraint_lab_style() just has different default settings.</span>
-
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>
-
-<span class='co'># get example inflammatory bowel disease stool dataset from corncob package</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"ibd_phylo"</span>, package <span class='op'>=</span> <span class='st'>"corncob"</span><span class='op'>)</span>
-
-<span class='co'># filter out rare taxa and clean up names etc</span>
-<span class='va'>ibd</span> <span class='op'>&lt;-</span> <span class='va'>ibd_phylo</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_filter.html'>tax_filter</a></span><span class='op'>(</span>min_prevalence <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_fix.html'>tax_fix</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='phyloseq_validate.html'>phyloseq_validate</a></span><span class='op'>(</span><span class='op'>)</span>
-
-<span class='co'># calculate a centered-log-ratio transformed PCA ordination</span>
-<span class='va'>ibd_ord</span> <span class='op'>&lt;-</span> <span class='va'>ibd</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span>, rank <span class='op'>=</span> <span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span><span class='st'>"PCA"</span><span class='op'>)</span>
-
-<span class='co'># basic plot with default label style</span>
-<span class='va'>ibd_ord</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"ibd"</span>, plot_taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span>
-</div><div class='img'><img src='Ordination-labels-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># Rotating labels: requires the ggtext package #</span>
-<span class='co'># A fixed coordinate ratio must be set to ensure label rotation</span>
-<span class='co'># matches the vectors. It is also helpful to set the vector and label length</span>
-<span class='co'># multipliers manually for a good look. Rotated labels are justified to the</span>
-<span class='co'># 'sides' automatically by tax_lab_style() with justify = 'auto'</span>
-<span class='va'>ibd_ord</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span>
-    color <span class='op'>=</span> <span class='st'>"ibd"</span>, plot_taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>7</span>,
-    tax_vec_length <span class='op'>=</span> <span class='fl'>1.3</span>, tax_lab_length <span class='op'>=</span> <span class='fl'>1.3</span>,
-    tax_lab_style <span class='op'>=</span> <span class='fu'>tax_lab_style</span><span class='op'>(</span>max_angle <span class='op'>=</span> <span class='fl'>90</span><span class='op'>)</span>
-  <span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span>ratio <span class='op'>=</span> <span class='fl'>1</span>, clip <span class='op'>=</span> <span class='st'>"off"</span>, xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>3.5</span>, <span class='fl'>3.5</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='img'><img src='Ordination-labels-2.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># You can use text instead of labels</span>
-<span class='co'># - a bold fontface helps text to stand out</span>
-<span class='co'># - see ?ggplot2::geom_text for all settings available</span>
-<span class='va'>ibd_ord</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span>
-    color <span class='op'>=</span> <span class='st'>"ibd"</span>, plot_taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>7</span>,
-    tax_vec_length <span class='op'>=</span> <span class='fl'>1.3</span>, tax_lab_length <span class='op'>=</span> <span class='fl'>1.4</span>,
-    tax_lab_style <span class='op'>=</span> <span class='fu'>tax_lab_style</span><span class='op'>(</span>
-      type <span class='op'>=</span> <span class='st'>"text"</span>, max_angle <span class='op'>=</span> <span class='fl'>90</span>, size <span class='op'>=</span> <span class='fl'>2.5</span>, fontface <span class='op'>=</span> <span class='st'>"bold.italic"</span>
-    <span class='op'>)</span>
-  <span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span>ratio <span class='op'>=</span> <span class='fl'>1</span>, clip <span class='op'>=</span> <span class='st'>"off"</span>, xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>3.5</span>, <span class='fl'>3.5</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='img'><img src='Ordination-labels-3.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># With text you can prevent overlaps with check_overlap = TRUE</span>
-<span class='va'>ibd_ord</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span>
-    color <span class='op'>=</span> <span class='st'>"ibd"</span>, plot_taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>12</span>,
-    tax_vec_length <span class='op'>=</span> <span class='fl'>1.3</span>, tax_lab_length <span class='op'>=</span> <span class='fl'>1.4</span>,
-    tax_lab_style <span class='op'>=</span> <span class='fu'>tax_lab_style</span><span class='op'>(</span>
-      type <span class='op'>=</span> <span class='st'>"text"</span>, max_angle <span class='op'>=</span> <span class='fl'>90</span>, size <span class='op'>=</span> <span class='fl'>3</span>, fontface <span class='op'>=</span> <span class='st'>"bold.italic"</span>,
-      check_overlap <span class='op'>=</span> <span class='cn'>TRUE</span>
-    <span class='op'>)</span>
-  <span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span>ratio <span class='op'>=</span> <span class='fl'>1</span>, clip <span class='op'>=</span> <span class='st'>"off"</span>, xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>3.5</span>, <span class='fl'>3.5</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='img'><img src='Ordination-labels-4.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># With labels, you can reduce the padding and line weight to free space</span>
-<span class='co'># but check_overlap is not available</span>
-<span class='co'># see ?ggtext::geom_richtext for more possibilities</span>
-<span class='va'>ibd_ord</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span>
-    color <span class='op'>=</span> <span class='st'>"ibd"</span>, plot_taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>7</span>,
-    tax_vec_length <span class='op'>=</span> <span class='fl'>1.3</span>, tax_lab_length <span class='op'>=</span> <span class='fl'>1.35</span>,
-    tax_lab_style <span class='op'>=</span> <span class='fu'>tax_lab_style</span><span class='op'>(</span>
-      max_angle <span class='op'>=</span> <span class='fl'>90</span>, fontface <span class='op'>=</span> <span class='st'>"italic"</span>, size <span class='op'>=</span> <span class='fl'>2.5</span>, fill <span class='op'>=</span> <span class='st'>"grey95"</span>,
-      label.size <span class='op'>=</span> <span class='fl'>0.1</span>, <span class='co'># width outline</span>
-      label.padding <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>0.1</span>, <span class='st'>"lines"</span><span class='op'>)</span>,
-      label.r <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='st'>"lines"</span><span class='op'>)</span> <span class='co'># reduces rounding of corners to radius 0</span>
-    <span class='op'>)</span>
-  <span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span>ratio <span class='op'>=</span> <span class='fl'>1</span>, clip <span class='op'>=</span> <span class='st'>"off"</span>, xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>3.5</span>, <span class='fl'>3.5</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='img'><img src='Ordination-labels-5.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># Perpendicular angled labels/text are possible</span>
-<span class='va'>ibd_ord</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span>
-    color <span class='op'>=</span> <span class='st'>"ibd"</span>, plot_taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>12</span>,
-    tax_lab_style <span class='op'>=</span> <span class='fu'>tax_lab_style</span><span class='op'>(</span>
-      type <span class='op'>=</span> <span class='st'>"text"</span>, max_angle <span class='op'>=</span> <span class='fl'>90</span>, perpendicular <span class='op'>=</span> <span class='cn'>TRUE</span>, size <span class='op'>=</span> <span class='fl'>3</span>,
-      check_overlap <span class='op'>=</span> <span class='cn'>TRUE</span>
-    <span class='op'>)</span>
-  <span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span>ratio <span class='op'>=</span> <span class='fl'>1</span>, clip <span class='op'>=</span> <span class='st'>"off"</span>, xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>3.5</span>, <span class='fl'>3.5</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='img'><img src='Ordination-labels-6.png' alt='' width='700' height='433' /></div><div class='input'>
-
-<span class='co'># You can limit and/or attenuate the angle of rotation by:</span>
-<span class='co'>#  - setting a lower max_angle</span>
-<span class='co'>#  - decreasing the aspect_ratio in the tax_lab_style call</span>
-<span class='va'>ibd_ord</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span>
-    shape <span class='op'>=</span> <span class='st'>"circle"</span>, color <span class='op'>=</span> <span class='st'>"ibd"</span>, plot_taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>7</span>,
-    tax_vec_length <span class='op'>=</span> <span class='fl'>1.3</span>, tax_lab_length <span class='op'>=</span> <span class='fl'>1.3</span>,
-    tax_lab_style <span class='op'>=</span> <span class='fu'>tax_lab_style</span><span class='op'>(</span>
-      max_angle <span class='op'>=</span> <span class='fl'>10</span>, size <span class='op'>=</span> <span class='fl'>2</span>, label.size <span class='op'>=</span> <span class='fl'>0.1</span>,
-      label.padding <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>0.1</span>, <span class='st'>"lines"</span><span class='op'>)</span>, label.r <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='st'>"lines"</span><span class='op'>)</span>
-    <span class='op'>)</span>
-  <span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span>ratio <span class='op'>=</span> <span class='fl'>1</span>, clip <span class='op'>=</span> <span class='st'>"off"</span>, xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>3.5</span>, <span class='fl'>3.5</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='img'><img src='Ordination-labels-7.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='va'>ibd_ord</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span>
-    shape <span class='op'>=</span> <span class='st'>"circle"</span>, color <span class='op'>=</span> <span class='st'>"ibd"</span>, plot_taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>7</span>,
-    tax_vec_length <span class='op'>=</span> <span class='fl'>1.3</span>, tax_lab_length <span class='op'>=</span> <span class='fl'>1.3</span>,
-    tax_lab_style <span class='op'>=</span> <span class='fu'>tax_lab_style</span><span class='op'>(</span>
-      max_angle <span class='op'>=</span> <span class='fl'>90</span>, size <span class='op'>=</span> <span class='fl'>2</span>, label.size <span class='op'>=</span> <span class='fl'>0.1</span>, aspect_ratio <span class='op'>=</span> <span class='fl'>0.5</span>,
-      label.padding <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>0.1</span>, <span class='st'>"lines"</span><span class='op'>)</span>, label.r <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='st'>"lines"</span><span class='op'>)</span>
-    <span class='op'>)</span>
-  <span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span>ratio <span class='op'>=</span> <span class='fl'>1</span>, clip <span class='op'>=</span> <span class='st'>"off"</span>, xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>3.5</span>, <span class='fl'>3.5</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='img'><img src='Ordination-labels-8.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># another example with some extras #</span>
-<span class='va'>ibd_ord</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span>
-    shape <span class='op'>=</span> <span class='st'>"circle filled"</span>, fill <span class='op'>=</span> <span class='st'>"ibd"</span>,
-    plot_taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>,
-    taxon_renamer <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace_all</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"_"</span>, <span class='st'>" "</span><span class='op'>)</span>,
-    tax_vec_length <span class='op'>=</span> <span class='fl'>2</span>, tax_lab_length <span class='op'>=</span> <span class='fl'>2.1</span>,
-    tax_lab_style <span class='op'>=</span> <span class='fu'>tax_lab_style</span><span class='op'>(</span>
-      type <span class='op'>=</span> <span class='st'>"text"</span>, max_angle <span class='op'>=</span> <span class='fl'>90</span>, size <span class='op'>=</span> <span class='fl'>2.5</span>,
-      fontface <span class='op'>=</span> <span class='st'>"bold.italic"</span>, check_overlap <span class='op'>=</span> <span class='cn'>TRUE</span>
-    <span class='op'>)</span>
-  <span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span><span class='fl'>1</span>, clip <span class='op'>=</span> <span class='st'>"off"</span>, xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>5</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>legend.position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.8</span>, <span class='fl'>0.2</span><span class='op'>)</span>, legend.background <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_rect</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='stat_chull.html'>stat_chull</a></span><span class='op'>(</span>mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>colour <span class='op'>=</span> <span class='va'>ibd</span>, fill <span class='op'>=</span> <span class='va'>ibd</span><span class='op'>)</span>, alpha <span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span>
-</div><div class='img'><img src='Ordination-labels-9.png' alt='' width='700' height='433' /></div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># These examples show styling of taxa labels with tax_lab_style().</span></span>
+<span class='r-in'><span class='co'># The same options are available for constraint labels in constrained</span></span>
+<span class='r-in'><span class='co'># ordinations. constraint_lab_style() just has different default settings.</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># get example inflammatory bowel disease stool dataset from corncob package</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"ibd_phylo"</span>, package <span class='op'>=</span> <span class='st'>"corncob"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># filter out rare taxa and clean up names etc</span></span>
+<span class='r-in'><span class='va'>ibd</span> <span class='op'>&lt;-</span> <span class='va'>ibd_phylo</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='tax_filter.html'>tax_filter</a></span><span class='op'>(</span>min_prevalence <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='tax_fix.html'>tax_fix</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='phyloseq_validate.html'>phyloseq_validate</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># calculate a centered-log-ratio transformed PCA ordination</span></span>
+<span class='r-in'><span class='va'>ibd_ord</span> <span class='op'>&lt;-</span> <span class='va'>ibd</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span>, rank <span class='op'>=</span> <span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span><span class='st'>"PCA"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># basic plot with default label style</span></span>
+<span class='r-in'><span class='va'>ibd_ord</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span> <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"ibd"</span>, plot_taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='Ordination-labels-1.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Rotating labels: requires the ggtext package #</span></span>
+<span class='r-in'><span class='co'># A fixed coordinate ratio must be set to ensure label rotation</span></span>
+<span class='r-in'><span class='co'># matches the vectors. It is also helpful to set the vector and label length</span></span>
+<span class='r-in'><span class='co'># multipliers manually for a good look. Rotated labels are justified to the</span></span>
+<span class='r-in'><span class='co'># 'sides' automatically by tax_lab_style() with justify = 'auto'</span></span>
+<span class='r-in'><span class='va'>ibd_ord</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span></span>
+<span class='r-in'>    color <span class='op'>=</span> <span class='st'>"ibd"</span>, plot_taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>7</span>,</span>
+<span class='r-in'>    tax_vec_length <span class='op'>=</span> <span class='fl'>1.3</span>, tax_lab_length <span class='op'>=</span> <span class='fl'>1.3</span>,</span>
+<span class='r-in'>    tax_lab_style <span class='op'>=</span> <span class='fu'>tax_lab_style</span><span class='op'>(</span>max_angle <span class='op'>=</span> <span class='fl'>90</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span>ratio <span class='op'>=</span> <span class='fl'>1</span>, clip <span class='op'>=</span> <span class='st'>"off"</span>, xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>3.5</span>, <span class='fl'>3.5</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='Ordination-labels-2.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># You can use text instead of labels</span></span>
+<span class='r-in'><span class='co'># - a bold fontface helps text to stand out</span></span>
+<span class='r-in'><span class='co'># - see ?ggplot2::geom_text for all settings available</span></span>
+<span class='r-in'><span class='va'>ibd_ord</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span></span>
+<span class='r-in'>    color <span class='op'>=</span> <span class='st'>"ibd"</span>, plot_taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>7</span>,</span>
+<span class='r-in'>    tax_vec_length <span class='op'>=</span> <span class='fl'>1.3</span>, tax_lab_length <span class='op'>=</span> <span class='fl'>1.4</span>,</span>
+<span class='r-in'>    tax_lab_style <span class='op'>=</span> <span class='fu'>tax_lab_style</span><span class='op'>(</span></span>
+<span class='r-in'>      type <span class='op'>=</span> <span class='st'>"text"</span>, max_angle <span class='op'>=</span> <span class='fl'>90</span>, size <span class='op'>=</span> <span class='fl'>2.5</span>, fontface <span class='op'>=</span> <span class='st'>"bold.italic"</span></span>
+<span class='r-in'>    <span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span>ratio <span class='op'>=</span> <span class='fl'>1</span>, clip <span class='op'>=</span> <span class='st'>"off"</span>, xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>3.5</span>, <span class='fl'>3.5</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='Ordination-labels-3.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># With text you can prevent overlaps with check_overlap = TRUE</span></span>
+<span class='r-in'><span class='va'>ibd_ord</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span></span>
+<span class='r-in'>    color <span class='op'>=</span> <span class='st'>"ibd"</span>, plot_taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>12</span>,</span>
+<span class='r-in'>    tax_vec_length <span class='op'>=</span> <span class='fl'>1.3</span>, tax_lab_length <span class='op'>=</span> <span class='fl'>1.4</span>,</span>
+<span class='r-in'>    tax_lab_style <span class='op'>=</span> <span class='fu'>tax_lab_style</span><span class='op'>(</span></span>
+<span class='r-in'>      type <span class='op'>=</span> <span class='st'>"text"</span>, max_angle <span class='op'>=</span> <span class='fl'>90</span>, size <span class='op'>=</span> <span class='fl'>3</span>, fontface <span class='op'>=</span> <span class='st'>"bold.italic"</span>,</span>
+<span class='r-in'>      check_overlap <span class='op'>=</span> <span class='cn'>TRUE</span></span>
+<span class='r-in'>    <span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span>ratio <span class='op'>=</span> <span class='fl'>1</span>, clip <span class='op'>=</span> <span class='st'>"off"</span>, xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>3.5</span>, <span class='fl'>3.5</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='Ordination-labels-4.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># With labels, you can reduce the padding and line weight to free space</span></span>
+<span class='r-in'><span class='co'># but check_overlap is not available</span></span>
+<span class='r-in'><span class='co'># see ?ggtext::geom_richtext for more possibilities</span></span>
+<span class='r-in'><span class='va'>ibd_ord</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span></span>
+<span class='r-in'>    color <span class='op'>=</span> <span class='st'>"ibd"</span>, plot_taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>7</span>,</span>
+<span class='r-in'>    tax_vec_length <span class='op'>=</span> <span class='fl'>1.3</span>, tax_lab_length <span class='op'>=</span> <span class='fl'>1.35</span>,</span>
+<span class='r-in'>    tax_lab_style <span class='op'>=</span> <span class='fu'>tax_lab_style</span><span class='op'>(</span></span>
+<span class='r-in'>      max_angle <span class='op'>=</span> <span class='fl'>90</span>, fontface <span class='op'>=</span> <span class='st'>"italic"</span>, size <span class='op'>=</span> <span class='fl'>2.5</span>, fill <span class='op'>=</span> <span class='st'>"grey95"</span>,</span>
+<span class='r-in'>      label.size <span class='op'>=</span> <span class='fl'>0.1</span>, <span class='co'># width outline</span></span>
+<span class='r-in'>      label.padding <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>0.1</span>, <span class='st'>"lines"</span><span class='op'>)</span>,</span>
+<span class='r-in'>      label.r <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='st'>"lines"</span><span class='op'>)</span> <span class='co'># reduces rounding of corners to radius 0</span></span>
+<span class='r-in'>    <span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span>ratio <span class='op'>=</span> <span class='fl'>1</span>, clip <span class='op'>=</span> <span class='st'>"off"</span>, xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>3.5</span>, <span class='fl'>3.5</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='Ordination-labels-5.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Perpendicular angled labels/text are possible</span></span>
+<span class='r-in'><span class='va'>ibd_ord</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span></span>
+<span class='r-in'>    color <span class='op'>=</span> <span class='st'>"ibd"</span>, plot_taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>12</span>,</span>
+<span class='r-in'>    tax_lab_style <span class='op'>=</span> <span class='fu'>tax_lab_style</span><span class='op'>(</span></span>
+<span class='r-in'>      type <span class='op'>=</span> <span class='st'>"text"</span>, max_angle <span class='op'>=</span> <span class='fl'>90</span>, perpendicular <span class='op'>=</span> <span class='cn'>TRUE</span>, size <span class='op'>=</span> <span class='fl'>3</span>,</span>
+<span class='r-in'>      check_overlap <span class='op'>=</span> <span class='cn'>TRUE</span></span>
+<span class='r-in'>    <span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span>ratio <span class='op'>=</span> <span class='fl'>1</span>, clip <span class='op'>=</span> <span class='st'>"off"</span>, xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>3.5</span>, <span class='fl'>3.5</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='Ordination-labels-6.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># You can limit and/or attenuate the angle of rotation by:</span></span>
+<span class='r-in'><span class='co'>#  - setting a lower max_angle</span></span>
+<span class='r-in'><span class='co'>#  - decreasing the aspect_ratio in the tax_lab_style call</span></span>
+<span class='r-in'><span class='va'>ibd_ord</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span></span>
+<span class='r-in'>    shape <span class='op'>=</span> <span class='st'>"circle"</span>, color <span class='op'>=</span> <span class='st'>"ibd"</span>, plot_taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>7</span>,</span>
+<span class='r-in'>    tax_vec_length <span class='op'>=</span> <span class='fl'>1.3</span>, tax_lab_length <span class='op'>=</span> <span class='fl'>1.3</span>,</span>
+<span class='r-in'>    tax_lab_style <span class='op'>=</span> <span class='fu'>tax_lab_style</span><span class='op'>(</span></span>
+<span class='r-in'>      max_angle <span class='op'>=</span> <span class='fl'>10</span>, size <span class='op'>=</span> <span class='fl'>2</span>, label.size <span class='op'>=</span> <span class='fl'>0.1</span>,</span>
+<span class='r-in'>      label.padding <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>0.1</span>, <span class='st'>"lines"</span><span class='op'>)</span>, label.r <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='st'>"lines"</span><span class='op'>)</span></span>
+<span class='r-in'>    <span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span>ratio <span class='op'>=</span> <span class='fl'>1</span>, clip <span class='op'>=</span> <span class='st'>"off"</span>, xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>3.5</span>, <span class='fl'>3.5</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='Ordination-labels-7.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>ibd_ord</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span></span>
+<span class='r-in'>    shape <span class='op'>=</span> <span class='st'>"circle"</span>, color <span class='op'>=</span> <span class='st'>"ibd"</span>, plot_taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>7</span>,</span>
+<span class='r-in'>    tax_vec_length <span class='op'>=</span> <span class='fl'>1.3</span>, tax_lab_length <span class='op'>=</span> <span class='fl'>1.3</span>,</span>
+<span class='r-in'>    tax_lab_style <span class='op'>=</span> <span class='fu'>tax_lab_style</span><span class='op'>(</span></span>
+<span class='r-in'>      max_angle <span class='op'>=</span> <span class='fl'>90</span>, size <span class='op'>=</span> <span class='fl'>2</span>, label.size <span class='op'>=</span> <span class='fl'>0.1</span>, aspect_ratio <span class='op'>=</span> <span class='fl'>0.5</span>,</span>
+<span class='r-in'>      label.padding <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>0.1</span>, <span class='st'>"lines"</span><span class='op'>)</span>, label.r <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='st'>"lines"</span><span class='op'>)</span></span>
+<span class='r-in'>    <span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span>ratio <span class='op'>=</span> <span class='fl'>1</span>, clip <span class='op'>=</span> <span class='st'>"off"</span>, xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>3.5</span>, <span class='fl'>3.5</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='Ordination-labels-8.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># another example with some extras #</span></span>
+<span class='r-in'><span class='va'>ibd_ord</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span></span>
+<span class='r-in'>    shape <span class='op'>=</span> <span class='st'>"circle filled"</span>, fill <span class='op'>=</span> <span class='st'>"ibd"</span>,</span>
+<span class='r-in'>    plot_taxa <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>,</span>
+<span class='r-in'>    taxon_renamer <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace_all</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"_"</span>, <span class='st'>" "</span><span class='op'>)</span>,</span>
+<span class='r-in'>    tax_vec_length <span class='op'>=</span> <span class='fl'>2</span>, tax_lab_length <span class='op'>=</span> <span class='fl'>2.1</span>,</span>
+<span class='r-in'>    tax_lab_style <span class='op'>=</span> <span class='fu'>tax_lab_style</span><span class='op'>(</span></span>
+<span class='r-in'>      type <span class='op'>=</span> <span class='st'>"text"</span>, max_angle <span class='op'>=</span> <span class='fl'>90</span>, size <span class='op'>=</span> <span class='fl'>2.5</span>,</span>
+<span class='r-in'>      fontface <span class='op'>=</span> <span class='st'>"bold.italic"</span>, check_overlap <span class='op'>=</span> <span class='cn'>TRUE</span></span>
+<span class='r-in'>    <span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span><span class='op'>(</span><span class='fl'>1</span>, clip <span class='op'>=</span> <span class='st'>"off"</span>, xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>5</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>legend.position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.8</span>, <span class='fl'>0.2</span><span class='op'>)</span>, legend.background <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_rect</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'><a href='stat_chull.html'>stat_chull</a></span><span class='op'>(</span>mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>colour <span class='op'>=</span> <span class='va'>ibd</span>, fill <span class='op'>=</span> <span class='va'>ibd</span><span class='op'>)</span>, alpha <span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='Ordination-labels-9.png' alt='' width='700' height='433' /></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

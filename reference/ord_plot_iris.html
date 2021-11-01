@@ -90,7 +90,7 @@ Best paired with ordination plot made from same ord_calc output." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9037</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9038</span>
       </span>
     </div>
 
@@ -274,130 +274,135 @@ Either "species" or "site" scores are scaled by (proportional) eigenvalues, and 
 as the fill is used for the taxonomic composition bars</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span>
-
-<span class='co'># although these iris plots are great for 100s of samples</span>
-<span class='co'># we'll take a subset of the data (for speed in this example)</span>
-<span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ps_filter.html'>ps_filter</a></span><span class='op'>(</span><span class='va'>timepoint</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='co'># copy an otu to the sample data</span>
-  <span class='fu'><a href='ps_otu2samdat.html'>ps_otu2samdat</a></span><span class='op'>(</span><span class='st'>"Prevotella melaninogenica et rel."</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='co'># create a couple of useful variables</span>
-  <span class='fu'><a href='ps_mutate.html'>ps_mutate</a></span><span class='op'>(</span>
-    female <span class='op'>=</span> <span class='va'>sex</span> <span class='op'>==</span> <span class='st'>"female"</span>,
-    african <span class='op'>=</span> <span class='va'>nationality</span> <span class='op'>==</span> <span class='st'>"AFR"</span>,
-    log_P.melaninogenica <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log10</a></span><span class='op'>(</span><span class='va'>`Prevotella melaninogenica et rel.`</span> <span class='op'>+</span> <span class='fl'>1</span><span class='op'>)</span>
-  <span class='op'>)</span>
-
-<span class='co'># define a function for taking the end off the long genus names in this dataset</span>
-<span class='va'>tax_renamer</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>tax</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_remove.html'>str_remove</a></span><span class='op'>(</span><span class='va'>tax</span>, <span class='st'>" [ae]t rel."</span><span class='op'>)</span>
-<span class='op'>}</span>
-
-<span class='va'>ord</span> <span class='op'>&lt;-</span> <span class='va'>ps</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='dist_calc.html'>dist_calc</a></span><span class='op'>(</span><span class='st'>"aitchison"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"PCoA"</span><span class='op'>)</span>
-
-<span class='co'># ordination plot for comparison</span>
-<span class='va'>ord</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"log_P.melaninogenica"</span>, size <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
-</div><div class='img'><img src='ord_plot_iris-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'>ord_plot_iris</span><span class='op'>(</span>
-  data <span class='op'>=</span> <span class='va'>ord</span>,
-  tax_level <span class='op'>=</span> <span class='st'>"Genus"</span>,
-  n_taxa <span class='op'>=</span> <span class='fl'>10</span>,
-  anno_colour <span class='op'>=</span> <span class='st'>"nationality"</span>,
-  anno_colour_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>,
-  anno_binary <span class='op'>=</span> <span class='st'>"female"</span>,
-  anno_binary_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>shape <span class='op'>=</span> <span class='st'>"F"</span>, size <span class='op'>=</span> <span class='fl'>2.5</span><span class='op'>)</span>,
-  taxon_renamer <span class='op'>=</span> <span class='va'>tax_renamer</span>
-<span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_brewer.html'>scale_colour_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Dark2"</span><span class='op'>)</span>
-</div><div class='img'><img src='ord_plot_iris-2.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># It is also possible to use comp_barplot customisation arguments</span>
-<span class='co'># like bar_width and bar_outline_colour, and to make interactive iris plots</span>
-<span class='co'># using ggiraph:</span>
-
-<span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='va'>hover_over_me</span> <span class='op'>&lt;-</span> <span class='fu'>ord_plot_iris</span><span class='op'>(</span>
-    data <span class='op'>=</span> <span class='va'>ord</span>,
-    tax_level <span class='op'>=</span> <span class='st'>"Genus"</span>,
-    n_taxa <span class='op'>=</span> <span class='fl'>10</span>,
-    anno_colour <span class='op'>=</span> <span class='st'>"nationality"</span>,
-    anno_colour_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>,
-    anno_binary <span class='op'>=</span> <span class='st'>"female"</span>,
-    anno_binary_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>shape <span class='op'>=</span> <span class='st'>"F"</span>, size <span class='op'>=</span> <span class='fl'>2.5</span><span class='op'>)</span>,
-    taxon_renamer <span class='op'>=</span> <span class='va'>tax_renamer</span>,
-    interactive <span class='op'>=</span> <span class='cn'>TRUE</span>,
-    bar_width <span class='op'>=</span> <span class='fl'>0.8</span>, bar_outline_colour <span class='op'>=</span> <span class='st'>"black"</span>
-  <span class='op'>)</span> <span class='op'>+</span>
-    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_brewer.html'>scale_colour_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Dark2"</span><span class='op'>)</span>
-
-  <span class='fu'>ggiraph</span><span class='fu'>::</span><span class='fu'><a href='https://davidgohel.github.io/ggiraph/reference/girafe.html'>girafe</a></span><span class='op'>(</span>ggobj <span class='op'>=</span> <span class='va'>hover_over_me</span><span class='op'>)</span>
-<span class='op'>}</span>
-
-<span class='co'># Using PCA for ordination after transformations (e.g. clr) means the untransformed taxonomic</span>
-<span class='co'># data are only available for plotting as compositions if you transformed with</span>
-<span class='co'># tax_transform(keep_counts = TRUE) and your original data were in fact counts.</span>
-<span class='co'># Compositional data will also work, and you can set count_warn to FALSE to avoid the warning</span>
-
-<span class='va'>clr_pca</span> <span class='op'>&lt;-</span> <span class='va'>ps</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"PCA"</span><span class='op'>)</span>
-
-<span class='co'># you can generate a simple paired layout of ord_plot and iris plot</span>
-<span class='co'># or separately create and pair the plots yourself, for more control</span>
-
-<span class='co'># simple pairing</span>
-<span class='fu'>ord_plot_iris</span><span class='op'>(</span>
-  data <span class='op'>=</span> <span class='va'>clr_pca</span>, n_taxa <span class='op'>=</span> <span class='fl'>12</span>,
-  tax_level <span class='op'>=</span> <span class='st'>"Genus"</span>,
-  taxon_renamer <span class='op'>=</span> <span class='va'>tax_renamer</span>,
-  ord_plot <span class='op'>=</span> <span class='st'>"below"</span>,
-  bar_width <span class='op'>=</span> <span class='fl'>0.8</span>, bar_outline_colour <span class='op'>=</span> <span class='st'>"black"</span>,
-  anno_binary <span class='op'>=</span> <span class='st'>"african"</span>,
-  anno_binary_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    y <span class='op'>=</span> <span class='fl'>1.08</span>, colour <span class='op'>=</span> <span class='st'>"gray50"</span>, shape <span class='op'>=</span> <span class='st'>"circle open"</span>, size <span class='op'>=</span> <span class='fl'>1</span>, stroke <span class='op'>=</span> <span class='fl'>1.5</span>
-  <span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='img'><img src='ord_plot_iris-3.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># manual pairing</span>
-<span class='va'>plot1</span> <span class='op'>&lt;-</span> <span class='va'>clr_pca</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span>
-  plot_taxa <span class='op'>=</span> <span class='fl'>6</span><span class='op'>:</span><span class='fl'>1</span>, tax_vec_length <span class='op'>=</span> <span class='fl'>0.6</span>,
-  colour <span class='op'>=</span> <span class='st'>"gray50"</span>, shape <span class='op'>=</span> <span class='st'>"nationality"</span>,
-  taxon_renamer <span class='op'>=</span> <span class='va'>tax_renamer</span>,
-  auto_caption <span class='op'>=</span> <span class='cn'>NA</span>, center <span class='op'>=</span> <span class='cn'>TRUE</span>,
-<span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_shape_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>AFR <span class='op'>=</span> <span class='st'>"circle"</span>, AAM <span class='op'>=</span> <span class='st'>"circle open"</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='va'>iris</span> <span class='op'>&lt;-</span> <span class='fu'>ord_plot_iris</span><span class='op'>(</span>
-  data <span class='op'>=</span> <span class='va'>clr_pca</span>, n_taxa <span class='op'>=</span> <span class='fl'>15</span>,
-  tax_level <span class='op'>=</span> <span class='st'>"Genus"</span>,
-  taxon_renamer <span class='op'>=</span> <span class='va'>tax_renamer</span>,
-  anno_binary <span class='op'>=</span> <span class='st'>"african"</span>,
-  anno_binary_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>y <span class='op'>=</span> <span class='fl'>1.05</span>, colour <span class='op'>=</span> <span class='st'>"gray50"</span>, shape <span class='op'>=</span> <span class='st'>"circle"</span>, size <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
-<span class='op'>)</span> <span class='op'>+</span>
-  <span class='co'># shrink legend text size</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>legend.text <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>7</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='fu'>cowplot</span><span class='fu'>::</span><span class='fu'><a href='https://wilkelab.org/cowplot/reference/plot_grid.html'>plot_grid</a></span><span class='op'>(</span><span class='va'>plot1</span>, <span class='va'>iris</span>, nrow <span class='op'>=</span> <span class='fl'>1</span>, align <span class='op'>=</span> <span class='st'>"h"</span>, axis <span class='op'>=</span> <span class='st'>"b"</span>, rel_widths <span class='op'>=</span> <span class='fl'>3</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>)</span>
-</div><div class='img'><img src='ord_plot_iris-4.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># you can add multiple rings of binary annotations</span>
-<span class='fu'>ord_plot_iris</span><span class='op'>(</span>
-  data <span class='op'>=</span> <span class='va'>clr_pca</span>, n_taxa <span class='op'>=</span> <span class='fl'>15</span>,
-  tax_level <span class='op'>=</span> <span class='st'>"Genus"</span>,
-  taxon_renamer <span class='op'>=</span> <span class='va'>tax_renamer</span>,
-  anno_binary <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"african"</span>, <span class='st'>"female"</span><span class='op'>)</span>,
-  anno_binary_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    colour <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"gray50"</span>, <span class='st'>"coral"</span><span class='op'>)</span>,
-    shape <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"circle"</span>, <span class='st'>"F"</span><span class='op'>)</span>, size <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.5</span>, <span class='fl'>2</span><span class='op'>)</span>
-  <span class='op'>)</span>
-<span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>legend.text <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>7</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='img'><img src='ord_plot_iris-5.png' alt='' width='700' height='433' /></div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># although these iris plots are great for 100s of samples</span></span>
+<span class='r-in'><span class='co'># we'll take a subset of the data (for speed in this example)</span></span>
+<span class='r-in'><span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='ps_filter.html'>ps_filter</a></span><span class='op'>(</span><span class='va'>timepoint</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='co'># copy an otu to the sample data</span></span>
+<span class='r-in'>  <span class='fu'><a href='ps_otu2samdat.html'>ps_otu2samdat</a></span><span class='op'>(</span><span class='st'>"Prevotella melaninogenica et rel."</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='co'># create a couple of useful variables</span></span>
+<span class='r-in'>  <span class='fu'><a href='ps_mutate.html'>ps_mutate</a></span><span class='op'>(</span></span>
+<span class='r-in'>    female <span class='op'>=</span> <span class='va'>sex</span> <span class='op'>==</span> <span class='st'>"female"</span>,</span>
+<span class='r-in'>    african <span class='op'>=</span> <span class='va'>nationality</span> <span class='op'>==</span> <span class='st'>"AFR"</span>,</span>
+<span class='r-in'>    log_P.melaninogenica <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log10</a></span><span class='op'>(</span><span class='va'>`Prevotella melaninogenica et rel.`</span> <span class='op'>+</span> <span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># define a function for taking the end off the long genus names in this dataset</span></span>
+<span class='r-in'><span class='va'>tax_renamer</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>tax</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'>  <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_remove.html'>str_remove</a></span><span class='op'>(</span><span class='va'>tax</span>, <span class='st'>" [ae]t rel."</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>ord</span> <span class='op'>&lt;-</span> <span class='va'>ps</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='dist_calc.html'>dist_calc</a></span><span class='op'>(</span><span class='st'>"aitchison"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"PCoA"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># ordination plot for comparison</span></span>
+<span class='r-in'><span class='va'>ord</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span> <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"log_P.melaninogenica"</span>, size <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='ord_plot_iris-1.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>ord_plot_iris</span><span class='op'>(</span></span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>ord</span>,</span>
+<span class='r-in'>  tax_level <span class='op'>=</span> <span class='st'>"Genus"</span>,</span>
+<span class='r-in'>  n_taxa <span class='op'>=</span> <span class='fl'>10</span>,</span>
+<span class='r-in'>  anno_colour <span class='op'>=</span> <span class='st'>"nationality"</span>,</span>
+<span class='r-in'>  anno_colour_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>,</span>
+<span class='r-in'>  anno_binary <span class='op'>=</span> <span class='st'>"female"</span>,</span>
+<span class='r-in'>  anno_binary_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>shape <span class='op'>=</span> <span class='st'>"F"</span>, size <span class='op'>=</span> <span class='fl'>2.5</span><span class='op'>)</span>,</span>
+<span class='r-in'>  taxon_renamer <span class='op'>=</span> <span class='va'>tax_renamer</span></span>
+<span class='r-in'><span class='op'>)</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_brewer.html'>scale_colour_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Dark2"</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='ord_plot_iris-2.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># It is also possible to use comp_barplot customisation arguments</span></span>
+<span class='r-in'><span class='co'># like bar_width and bar_outline_colour, and to make interactive iris plots</span></span>
+<span class='r-in'><span class='co'># using ggiraph:</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'>  <span class='va'>hover_over_me</span> <span class='op'>&lt;-</span> <span class='fu'>ord_plot_iris</span><span class='op'>(</span></span>
+<span class='r-in'>    data <span class='op'>=</span> <span class='va'>ord</span>,</span>
+<span class='r-in'>    tax_level <span class='op'>=</span> <span class='st'>"Genus"</span>,</span>
+<span class='r-in'>    n_taxa <span class='op'>=</span> <span class='fl'>10</span>,</span>
+<span class='r-in'>    anno_colour <span class='op'>=</span> <span class='st'>"nationality"</span>,</span>
+<span class='r-in'>    anno_colour_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>,</span>
+<span class='r-in'>    anno_binary <span class='op'>=</span> <span class='st'>"female"</span>,</span>
+<span class='r-in'>    anno_binary_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>shape <span class='op'>=</span> <span class='st'>"F"</span>, size <span class='op'>=</span> <span class='fl'>2.5</span><span class='op'>)</span>,</span>
+<span class='r-in'>    taxon_renamer <span class='op'>=</span> <span class='va'>tax_renamer</span>,</span>
+<span class='r-in'>    interactive <span class='op'>=</span> <span class='cn'>TRUE</span>,</span>
+<span class='r-in'>    bar_width <span class='op'>=</span> <span class='fl'>0.8</span>, bar_outline_colour <span class='op'>=</span> <span class='st'>"black"</span></span>
+<span class='r-in'>  <span class='op'>)</span> <span class='op'>+</span></span>
+<span class='r-in'>    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_brewer.html'>scale_colour_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Dark2"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'>  <span class='fu'>ggiraph</span><span class='fu'>::</span><span class='fu'><a href='https://davidgohel.github.io/ggiraph/reference/girafe.html'>girafe</a></span><span class='op'>(</span>ggobj <span class='op'>=</span> <span class='va'>hover_over_me</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Using PCA for ordination after transformations (e.g. clr) means the untransformed taxonomic</span></span>
+<span class='r-in'><span class='co'># data are only available for plotting as compositions if you transformed with</span></span>
+<span class='r-in'><span class='co'># tax_transform(keep_counts = TRUE) and your original data were in fact counts.</span></span>
+<span class='r-in'><span class='co'># Compositional data will also work, and you can set count_warn to FALSE to avoid the warning</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>clr_pca</span> <span class='op'>&lt;-</span> <span class='va'>ps</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"clr"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='ord_calc.html'>ord_calc</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"PCA"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># you can generate a simple paired layout of ord_plot and iris plot</span></span>
+<span class='r-in'><span class='co'># or separately create and pair the plots yourself, for more control</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># simple pairing</span></span>
+<span class='r-in'><span class='fu'>ord_plot_iris</span><span class='op'>(</span></span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>clr_pca</span>, n_taxa <span class='op'>=</span> <span class='fl'>12</span>,</span>
+<span class='r-in'>  tax_level <span class='op'>=</span> <span class='st'>"Genus"</span>,</span>
+<span class='r-in'>  taxon_renamer <span class='op'>=</span> <span class='va'>tax_renamer</span>,</span>
+<span class='r-in'>  ord_plot <span class='op'>=</span> <span class='st'>"below"</span>,</span>
+<span class='r-in'>  bar_width <span class='op'>=</span> <span class='fl'>0.8</span>, bar_outline_colour <span class='op'>=</span> <span class='st'>"black"</span>,</span>
+<span class='r-in'>  anno_binary <span class='op'>=</span> <span class='st'>"african"</span>,</span>
+<span class='r-in'>  anno_binary_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    y <span class='op'>=</span> <span class='fl'>1.08</span>, colour <span class='op'>=</span> <span class='st'>"gray50"</span>, shape <span class='op'>=</span> <span class='st'>"circle open"</span>, size <span class='op'>=</span> <span class='fl'>1</span>, stroke <span class='op'>=</span> <span class='fl'>1.5</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-plt img'><img src='ord_plot_iris-3.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># manual pairing</span></span>
+<span class='r-in'><span class='va'>plot1</span> <span class='op'>&lt;-</span> <span class='va'>clr_pca</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span> <span class='fu'><a href='ord_plot.html'>ord_plot</a></span><span class='op'>(</span></span>
+<span class='r-in'>  plot_taxa <span class='op'>=</span> <span class='fl'>6</span><span class='op'>:</span><span class='fl'>1</span>, tax_vec_length <span class='op'>=</span> <span class='fl'>0.6</span>,</span>
+<span class='r-in'>  colour <span class='op'>=</span> <span class='st'>"gray50"</span>, shape <span class='op'>=</span> <span class='st'>"nationality"</span>,</span>
+<span class='r-in'>  taxon_renamer <span class='op'>=</span> <span class='va'>tax_renamer</span>,</span>
+<span class='r-in'>  auto_caption <span class='op'>=</span> <span class='cn'>NA</span>, center <span class='op'>=</span> <span class='cn'>TRUE</span>,</span>
+<span class='r-in'><span class='op'>)</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_shape_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>AFR <span class='op'>=</span> <span class='st'>"circle"</span>, AAM <span class='op'>=</span> <span class='st'>"circle open"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>iris</span> <span class='op'>&lt;-</span> <span class='fu'>ord_plot_iris</span><span class='op'>(</span></span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>clr_pca</span>, n_taxa <span class='op'>=</span> <span class='fl'>15</span>,</span>
+<span class='r-in'>  tax_level <span class='op'>=</span> <span class='st'>"Genus"</span>,</span>
+<span class='r-in'>  taxon_renamer <span class='op'>=</span> <span class='va'>tax_renamer</span>,</span>
+<span class='r-in'>  anno_binary <span class='op'>=</span> <span class='st'>"african"</span>,</span>
+<span class='r-in'>  anno_binary_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>y <span class='op'>=</span> <span class='fl'>1.05</span>, colour <span class='op'>=</span> <span class='st'>"gray50"</span>, shape <span class='op'>=</span> <span class='st'>"circle"</span>, size <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='co'># shrink legend text size</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>legend.text <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>7</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>cowplot</span><span class='fu'>::</span><span class='fu'><a href='https://wilkelab.org/cowplot/reference/plot_grid.html'>plot_grid</a></span><span class='op'>(</span><span class='va'>plot1</span>, <span class='va'>iris</span>, nrow <span class='op'>=</span> <span class='fl'>1</span>, align <span class='op'>=</span> <span class='st'>"h"</span>, axis <span class='op'>=</span> <span class='st'>"b"</span>, rel_widths <span class='op'>=</span> <span class='fl'>3</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='ord_plot_iris-4.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># you can add multiple rings of binary annotations</span></span>
+<span class='r-in'><span class='fu'>ord_plot_iris</span><span class='op'>(</span></span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>clr_pca</span>, n_taxa <span class='op'>=</span> <span class='fl'>15</span>,</span>
+<span class='r-in'>  tax_level <span class='op'>=</span> <span class='st'>"Genus"</span>,</span>
+<span class='r-in'>  taxon_renamer <span class='op'>=</span> <span class='va'>tax_renamer</span>,</span>
+<span class='r-in'>  anno_binary <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"african"</span>, <span class='st'>"female"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  anno_binary_style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    colour <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"gray50"</span>, <span class='st'>"coral"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    shape <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"circle"</span>, <span class='st'>"F"</span><span class='op'>)</span>, size <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.5</span>, <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>legend.text <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>7</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='ord_plot_iris-5.png' alt='' width='700' height='433' /></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

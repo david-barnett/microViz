@@ -89,7 +89,7 @@ Use this function as you would use use dplyr::filter(), but with a phyloseq obje
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9037</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9038</span>
       </span>
     </div>
 
@@ -210,82 +210,90 @@ remove taxa which are no longer present in the dataset after filtering</p></td>
 <p><code><a href='tax_filter.html'>tax_filter</a></code> for filtering taxa (not samples)</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://dx.plos.org/10.1371/journal.pone.0061217'>phyloseq</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://microbiome.github.io/microbiome'>microbiome</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"enterotype"</span><span class='op'>)</span>
-<span class='va'>enterotype</span>
-</div><div class='output co'>#&gt; phyloseq-class experiment-level object
-#&gt; otu_table()   OTU Table:         [ 553 taxa and 280 samples ]
-#&gt; sample_data() Sample Data:       [ 280 samples by 9 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 553 taxa by 1 taxonomic ranks ]</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='va'>enterotype</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; Sample Data:        [10 samples by 5 sample variables]:
-#&gt;           Enterotype Sample_ID SeqTech  SampleID     Project
-#&gt; AM.AD.1         &lt;NA&gt;   AM.AD.1  Sanger   AM.AD.1      gill06
-#&gt; AM.AD.2         &lt;NA&gt;   AM.AD.2  Sanger   AM.AD.2      gill06
-#&gt; AM.F10.T1       &lt;NA&gt; AM.F10.T1  Sanger AM.F10.T1 turnbaugh09
-#&gt; AM.F10.T2          3 AM.F10.T2  Sanger AM.F10.T2 turnbaugh09
-#&gt; DA.AD.1            2   DA.AD.1  Sanger   DA.AD.1     MetaHIT
-#&gt; DA.AD.1T        &lt;NA&gt;  DA.AD.1T  Sanger      &lt;NA&gt;        &lt;NA&gt;
-#&gt; DA.AD.2            3   DA.AD.2  Sanger   DA.AD.2     MetaHIT
-#&gt; DA.AD.3            3   DA.AD.3  Sanger   DA.AD.3     MetaHIT
-#&gt; DA.AD.3T        &lt;NA&gt;  DA.AD.3T  Sanger      &lt;NA&gt;        &lt;NA&gt;
-#&gt; DA.AD.4            2   DA.AD.4  Sanger   DA.AD.4     MetaHIT</div><div class='input'>
-<span class='co'># keep only samples with seqtech not equal to sanger</span>
-<span class='va'>ps1</span> <span class='op'>&lt;-</span> <span class='fu'>ps_filter</span><span class='op'>(</span><span class='va'>enterotype</span>, <span class='va'>SeqTech</span> <span class='op'>!=</span> <span class='st'>"Sanger"</span><span class='op'>)</span>
-<span class='va'>ps1</span>
-</div><div class='output co'>#&gt; phyloseq-class experiment-level object
-#&gt; otu_table()   OTU Table:         [ 552 taxa and 239 samples ]
-#&gt; sample_data() Sample Data:       [ 239 samples by 9 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 552 taxa by 1 taxonomic ranks ]</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='va'>ps1</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; Sample Data:        [10 samples by 5 sample variables]:
-#&gt;        Enterotype Sample_ID  SeqTech SampleID Project
-#&gt; MH0001          2    MH0001 Illumina     &lt;NA&gt;    &lt;NA&gt;
-#&gt; MH0002          1    MH0002 Illumina     &lt;NA&gt;    &lt;NA&gt;
-#&gt; MH0003          1    MH0003 Illumina     &lt;NA&gt;    &lt;NA&gt;
-#&gt; MH0004          1    MH0004 Illumina     &lt;NA&gt;    &lt;NA&gt;
-#&gt; MH0005          2    MH0005 Illumina     &lt;NA&gt;    &lt;NA&gt;
-#&gt; MH0006          2    MH0006 Illumina     &lt;NA&gt;    &lt;NA&gt;
-#&gt; MH0007          1    MH0007 Illumina     &lt;NA&gt;    &lt;NA&gt;
-#&gt; MH0008          1    MH0008 Illumina     &lt;NA&gt;    &lt;NA&gt;
-#&gt; MH0009          3    MH0009 Illumina     &lt;NA&gt;    &lt;NA&gt;
-#&gt; MH0010          1    MH0010 Illumina     &lt;NA&gt;    &lt;NA&gt;</div><div class='input'>
-<span class='co'># keep only samples with no NAs in any samples</span>
-<span class='va'>ps2</span> <span class='op'>&lt;-</span> <span class='va'>enterotype</span> <span class='op'>%&gt;%</span> <span class='fu'>ps_filter</span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/across.html'>across</a></span><span class='op'>(</span><span class='fu'><a href='https://tidyselect.r-lib.org/reference/everything.html'>everything</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='op'>~</span> <span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>ps2</span>
-</div><div class='output co'>#&gt; phyloseq-class experiment-level object
-#&gt; otu_table()   OTU Table:         [ 221 taxa and 31 samples ]
-#&gt; sample_data() Sample Data:       [ 31 samples by 9 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 221 taxa by 1 taxonomic ranks ]</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='va'>ps2</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; Sample Data:        [8 samples by 8 sample variables]:
-#&gt;         Enterotype Sample_ID SeqTech SampleID Project Nationality Gender Age
-#&gt; DA.AD.1          2   DA.AD.1  Sanger  DA.AD.1 MetaHIT      danish      F  59
-#&gt; DA.AD.2          3   DA.AD.2  Sanger  DA.AD.2 MetaHIT      danish      M  54
-#&gt; DA.AD.3          3   DA.AD.3  Sanger  DA.AD.3 MetaHIT      danish      F  49
-#&gt; DA.AD.4          2   DA.AD.4  Sanger  DA.AD.4 MetaHIT      danish      M  59
-#&gt; ES.AD.1          1   ES.AD.1  Sanger  ES.AD.1 MetaHIT     spanish      F  25
-#&gt; ES.AD.2          2   ES.AD.2  Sanger  ES.AD.2 MetaHIT     spanish      M  49
-#&gt; ES.AD.3          2   ES.AD.3  Sanger  ES.AD.3 MetaHIT     spanish      F  47
-#&gt; ES.AD.4          3   ES.AD.4  Sanger  ES.AD.4 MetaHIT     spanish      F  38</div><div class='input'>
-<span class='co'># ps2 is equivalent to dropping samples with incomplete sample_variables and tax_filtering 0s</span>
-<span class='va'>ps3</span> <span class='op'>&lt;-</span> <span class='va'>enterotype</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ps_drop_incomplete.html'>ps_drop_incomplete</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_filter.html'>tax_filter</a></span><span class='op'>(</span>prev_detection_threshold <span class='op'>=</span> <span class='fl'>1e-20</span>, use_counts <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-<span class='co'># we needed to set a low detection threshold because this example data is proportions</span>
-<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span><span class='op'>(</span><span class='va'>ps2</span>, <span class='va'>ps3</span><span class='op'>)</span> <span class='co'># TRUE</span>
-</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='co'># function will give warning if some of the otu_values are negative</span>
-<span class='co'># (which may happen when filtering data that has e.g. clr-transformed taxa abundances)</span>
-<span class='co'># as it attempts to discard any taxa that become always absent/0 after filtering (by default)</span>
-<span class='co'># set .keep_all_taxa = TRUE to avoid this filtering behaviour, which is unwanted in this case</span>
-<span class='va'>enterotype</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>microbiome</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/microbiome/man/transform.html'>transform</a></span><span class='op'>(</span><span class='st'>"clr"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>ps_filter</span><span class='op'>(</span><span class='va'>SeqTech</span> <span class='op'>==</span> <span class='st'>"Sanger"</span>, .keep_all_taxa <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; phyloseq-class experiment-level object
-#&gt; otu_table()   OTU Table:         [ 553 taxa and 41 samples ]
-#&gt; sample_data() Sample Data:       [ 41 samples by 9 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 553 taxa by 1 taxonomic ranks ]</div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://dx.plos.org/10.1371/journal.pone.0061217'>phyloseq</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://microbiome.github.io/microbiome'>microbiome</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"enterotype"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>enterotype</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> phyloseq-class experiment-level object</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> otu_table()   OTU Table:         [ 553 taxa and 280 samples ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sample_data() Sample Data:       [ 280 samples by 9 sample variables ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tax_table()   Taxonomy Table:    [ 553 taxa by 1 taxonomic ranks ]</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='va'>enterotype</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample Data:        [10 samples by 5 sample variables]:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           Enterotype Sample_ID SeqTech  SampleID     Project</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AM.AD.1         &lt;NA&gt;   AM.AD.1  Sanger   AM.AD.1      gill06</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AM.AD.2         &lt;NA&gt;   AM.AD.2  Sanger   AM.AD.2      gill06</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AM.F10.T1       &lt;NA&gt; AM.F10.T1  Sanger AM.F10.T1 turnbaugh09</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AM.F10.T2          3 AM.F10.T2  Sanger AM.F10.T2 turnbaugh09</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.1            2   DA.AD.1  Sanger   DA.AD.1     MetaHIT</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.1T        &lt;NA&gt;  DA.AD.1T  Sanger      &lt;NA&gt;        &lt;NA&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.2            3   DA.AD.2  Sanger   DA.AD.2     MetaHIT</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.3            3   DA.AD.3  Sanger   DA.AD.3     MetaHIT</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.3T        &lt;NA&gt;  DA.AD.3T  Sanger      &lt;NA&gt;        &lt;NA&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.4            2   DA.AD.4  Sanger   DA.AD.4     MetaHIT</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># keep only samples with seqtech not equal to sanger</span></span>
+<span class='r-in'><span class='va'>ps1</span> <span class='op'>&lt;-</span> <span class='fu'>ps_filter</span><span class='op'>(</span><span class='va'>enterotype</span>, <span class='va'>SeqTech</span> <span class='op'>!=</span> <span class='st'>"Sanger"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>ps1</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> phyloseq-class experiment-level object</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> otu_table()   OTU Table:         [ 552 taxa and 239 samples ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sample_data() Sample Data:       [ 239 samples by 9 sample variables ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tax_table()   Taxonomy Table:    [ 552 taxa by 1 taxonomic ranks ]</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='va'>ps1</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample Data:        [10 samples by 5 sample variables]:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        Enterotype Sample_ID  SeqTech SampleID Project</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MH0001          2    MH0001 Illumina     &lt;NA&gt;    &lt;NA&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MH0002          1    MH0002 Illumina     &lt;NA&gt;    &lt;NA&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MH0003          1    MH0003 Illumina     &lt;NA&gt;    &lt;NA&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MH0004          1    MH0004 Illumina     &lt;NA&gt;    &lt;NA&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MH0005          2    MH0005 Illumina     &lt;NA&gt;    &lt;NA&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MH0006          2    MH0006 Illumina     &lt;NA&gt;    &lt;NA&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MH0007          1    MH0007 Illumina     &lt;NA&gt;    &lt;NA&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MH0008          1    MH0008 Illumina     &lt;NA&gt;    &lt;NA&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MH0009          3    MH0009 Illumina     &lt;NA&gt;    &lt;NA&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MH0010          1    MH0010 Illumina     &lt;NA&gt;    &lt;NA&gt;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># keep only samples with no NAs in any samples</span></span>
+<span class='r-in'><span class='va'>ps2</span> <span class='op'>&lt;-</span> <span class='va'>enterotype</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span> <span class='fu'>ps_filter</span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/across.html'>across</a></span><span class='op'>(</span><span class='fu'><a href='https://tidyselect.r-lib.org/reference/everything.html'>everything</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='op'>~</span> <span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>ps2</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> phyloseq-class experiment-level object</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> otu_table()   OTU Table:         [ 221 taxa and 31 samples ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sample_data() Sample Data:       [ 31 samples by 9 sample variables ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tax_table()   Taxonomy Table:    [ 221 taxa by 1 taxonomic ranks ]</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html'>sample_data</a></span><span class='op'>(</span><span class='va'>ps2</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span><span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample Data:        [8 samples by 8 sample variables]:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         Enterotype Sample_ID SeqTech SampleID Project Nationality Gender Age</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.1          2   DA.AD.1  Sanger  DA.AD.1 MetaHIT      danish      F  59</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.2          3   DA.AD.2  Sanger  DA.AD.2 MetaHIT      danish      M  54</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.3          3   DA.AD.3  Sanger  DA.AD.3 MetaHIT      danish      F  49</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DA.AD.4          2   DA.AD.4  Sanger  DA.AD.4 MetaHIT      danish      M  59</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ES.AD.1          1   ES.AD.1  Sanger  ES.AD.1 MetaHIT     spanish      F  25</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ES.AD.2          2   ES.AD.2  Sanger  ES.AD.2 MetaHIT     spanish      M  49</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ES.AD.3          2   ES.AD.3  Sanger  ES.AD.3 MetaHIT     spanish      F  47</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ES.AD.4          3   ES.AD.4  Sanger  ES.AD.4 MetaHIT     spanish      F  38</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># ps2 is equivalent to dropping samples with incomplete sample_variables and tax_filtering 0s</span></span>
+<span class='r-in'><span class='va'>ps3</span> <span class='op'>&lt;-</span> <span class='va'>enterotype</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='ps_drop_incomplete.html'>ps_drop_incomplete</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='tax_filter.html'>tax_filter</a></span><span class='op'>(</span>prev_detection_threshold <span class='op'>=</span> <span class='fl'>1e-20</span>, use_counts <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'># we needed to set a low detection threshold because this example data is proportions</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span><span class='op'>(</span><span class='va'>ps2</span>, <span class='va'>ps3</span><span class='op'>)</span> <span class='co'># TRUE</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># function will give warning if some of the otu_values are negative</span></span>
+<span class='r-in'><span class='co'># (which may happen when filtering data that has e.g. clr-transformed taxa abundances)</span></span>
+<span class='r-in'><span class='co'># as it attempts to discard any taxa that become always absent/0 after filtering (by default)</span></span>
+<span class='r-in'><span class='co'># set .keep_all_taxa = TRUE to avoid this filtering behaviour, which is unwanted in this case</span></span>
+<span class='r-in'><span class='va'>enterotype</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>microbiome</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/microbiome/man/transform.html'>transform</a></span><span class='op'>(</span><span class='st'>"clr"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>ps_filter</span><span class='op'>(</span><span class='va'>SeqTech</span> <span class='op'>==</span> <span class='st'>"Sanger"</span>, .keep_all_taxa <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> phyloseq-class experiment-level object</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> otu_table()   OTU Table:         [ 553 taxa and 41 samples ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sample_data() Sample Data:       [ 41 samples by 9 sample variables ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tax_table()   Taxonomy Table:    [ 553 taxa by 1 taxonomic ranks ]</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

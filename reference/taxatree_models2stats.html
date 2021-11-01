@@ -88,7 +88,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9037</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9038</span>
       </span>
     </div>
 
@@ -202,111 +202,118 @@
     <p>data.frame, attached to ps_extra</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># This example is an abbreviated excerpt from article on taxon modelling on</span>
-<span class='co'># the microViz documentation website</span>
-
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"ibd_phylo"</span>, package <span class='op'>=</span> <span class='st'>"corncob"</span><span class='op'>)</span>
-
-<span class='co'># We'll keep only the Ulcerative Colitis and Healthy Control samples, to</span>
-<span class='co'># simplify the analyses for this example. We'll also remove the Species</span>
-<span class='co'># rank information, as most OTUs in this dataset are not assigned to a</span>
-<span class='co'># species. We'll also use `tax_fix` to fill any gaps where the Genus is</span>
-<span class='co'># unknown, with the family name or whatever higher rank classification is</span>
-<span class='co'># known.</span>
-
-<span class='va'>phylo</span> <span class='op'>&lt;-</span> <span class='va'>ibd_phylo</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ps_filter.html'>ps_filter</a></span><span class='op'>(</span><span class='va'>DiseaseState</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"UC"</span>, <span class='st'>"nonIBD"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_mutate.html'>tax_mutate</a></span><span class='op'>(</span>Species <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_fix.html'>tax_fix</a></span><span class='op'>(</span><span class='op'>)</span>
-
-<span class='co'># Let's make some sample data variables that are easier to use and compare</span>
-<span class='co'># in the statistical modelling ahead. We will convert dichotomous</span>
-<span class='co'># categorical variables into similar binary variables (values: 1 for true,</span>
-<span class='co'># or 0 for false). We will also scale and center the numeric variable for</span>
-<span class='co'># age.</span>
-
-<span class='va'>phylo</span> <span class='op'>&lt;-</span> <span class='va'>phylo</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ps_mutate.html'>ps_mutate</a></span><span class='op'>(</span>
-    UC <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>DiseaseState</span> <span class='op'>==</span> <span class='st'>"UC"</span>, yes <span class='op'>=</span> <span class='fl'>1</span>, no <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>,
-    female <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>gender</span> <span class='op'>==</span> <span class='st'>"female"</span>, yes <span class='op'>=</span> <span class='fl'>1</span>, no <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>,
-    antibiotics <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>abx</span> <span class='op'>==</span> <span class='st'>"abx"</span>, yes <span class='op'>=</span> <span class='fl'>1</span>, no <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>,
-    steroids <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>steroids</span> <span class='op'>==</span> <span class='st'>"steroids"</span>, yes <span class='op'>=</span> <span class='fl'>1</span>, no <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>,
-    age_scaled <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/scale.html'>scale</a></span><span class='op'>(</span><span class='va'>age</span>, center <span class='op'>=</span> <span class='cn'>TRUE</span>, scale <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-  <span class='op'>)</span>
-
-<span class='va'>lm_models</span> <span class='op'>&lt;-</span> <span class='va'>phylo</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_fix.html'>tax_fix</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_prepend_ranks.html'>tax_prepend_ranks</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"compositional"</span>, rank <span class='op'>=</span> <span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_filter.html'>tax_filter</a></span><span class='op'>(</span>min_prevalence <span class='op'>=</span> <span class='fl'>0.1</span>, use_counts <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"log2"</span>, zero_replace <span class='op'>=</span> <span class='st'>"halfmin"</span>, chain <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='taxatree_models.html'>taxatree_models</a></span><span class='op'>(</span>
-    type <span class='op'>=</span> <span class='va'>lm</span>,
-    ranks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Phylum"</span>, <span class='st'>"Class"</span>, <span class='st'>"Genus"</span><span class='op'>)</span>,
-    variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"UC"</span>, <span class='st'>"female"</span>, <span class='st'>"antibiotics"</span>, <span class='st'>"steroids"</span>, <span class='st'>"age_scaled"</span><span class='op'>)</span>
-  <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Proportional min_prevalence given: 0.1 --&gt; min 7/67 samples.</span></div><div class='output co'>#&gt; <span class='message'>2021-10-29 21:06:25 - modelling at rank: Phylum</span></div><div class='output co'>#&gt; <span class='message'>2021-10-29 21:06:25 - modelling at rank: Class</span></div><div class='output co'>#&gt; <span class='message'>2021-10-29 21:06:25 - modelling at rank: Genus</span></div><div class='input'>
-
-<span class='va'>lm_stats</span> <span class='op'>&lt;-</span> <span class='va'>lm_models</span> <span class='op'>%&gt;%</span> <span class='fu'>taxatree_models2stats</span><span class='op'>(</span><span class='op'>)</span>
-
-<span class='co'># inspect the ps_extra returned, now with taxatree_stats dataframe added</span>
-<span class='va'>lm_stats</span>
-</div><div class='output co'>#&gt; ps_extra object - a list with phyloseq and extras:
-#&gt; 
-#&gt; phyloseq-class experiment-level object
-#&gt; otu_table()   OTU Table:         [ 68 taxa and 67 samples ]
-#&gt; sample_data() Sample Data:       [ 67 samples by 19 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 68 taxa by 6 taxonomic ranks ]
-#&gt; 
-#&gt; ps_extra info:
-#&gt; tax_agg = Genus tax_transform = compositional&amp;log2
-#&gt; 
-#&gt; $counts OTU Table: [ 68 taxa and 67 samples ]
-#&gt; 
-#&gt; $taxatree_stats dataframe:
-#&gt; 88 taxa at 3 ranks: Phylum, Class, Genus 
-#&gt; 5 terms: UC, female, antibiotics, steroids, age_scaled</div><div class='input'>
-<span class='co'># inspect the dataframe itself</span>
-<span class='va'>lm_stats</span><span class='op'>$</span><span class='va'>taxatree_stats</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 440 × 7</span>
-#&gt;    term        taxon            rank   estimate std.error statistic p.value
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span> UC          P: Firmicutes    Phylum  -<span style='color: #BB0000;'>22.3</span>       13.6     -<span style='color: #BB0000;'>1.64</span>  0.107  
-#&gt; <span style='color: #BCBCBC;'> 2</span> female      P: Firmicutes    Phylum  -<span style='color: #BB0000;'>11.7</span>        9.66    -<span style='color: #BB0000;'>1.21</span>  0.230  
-#&gt; <span style='color: #BCBCBC;'> 3</span> antibiotics P: Firmicutes    Phylum  -<span style='color: #BB0000;'>19.8</span>       13.1     -<span style='color: #BB0000;'>1.51</span>  0.137  
-#&gt; <span style='color: #BCBCBC;'> 4</span> steroids    P: Firmicutes    Phylum  -<span style='color: #BB0000;'>32.7</span>       12.4     -<span style='color: #BB0000;'>2.63</span>  0.010<span style='text-decoration: underline;'>7</span> 
-#&gt; <span style='color: #BCBCBC;'> 5</span> age_scaled  P: Firmicutes    Phylum   -<span style='color: #BB0000;'>0.600</span>      5.45    -<span style='color: #BB0000;'>0.110</span> 0.913  
-#&gt; <span style='color: #BCBCBC;'> 6</span> UC          P: Bacteroidetes Phylum  -<span style='color: #BB0000;'>13.8</span>        4.15    -<span style='color: #BB0000;'>3.32</span>  0.001<span style='text-decoration: underline;'>51</span>
-#&gt; <span style='color: #BCBCBC;'> 7</span> female      P: Bacteroidetes Phylum   -<span style='color: #BB0000;'>1.21</span>       2.95    -<span style='color: #BB0000;'>0.410</span> 0.683  
-#&gt; <span style='color: #BCBCBC;'> 8</span> antibiotics P: Bacteroidetes Phylum    1.37       4.01     0.342 0.734  
-#&gt; <span style='color: #BCBCBC;'> 9</span> steroids    P: Bacteroidetes Phylum   -<span style='color: #BB0000;'>4.36</span>       3.79    -<span style='color: #BB0000;'>1.15</span>  0.255  
-#&gt; <span style='color: #BCBCBC;'>10</span> age_scaled  P: Bacteroidetes Phylum   -<span style='color: #BB0000;'>0.937</span>      1.67    -<span style='color: #BB0000;'>0.563</span> 0.576  
-#&gt; <span style='color: #949494;'># … with 430 more rows</span></div><div class='input'>
-<span class='co'># keep the models on the ps_extra object</span>
-<span class='va'>lm_models</span> <span class='op'>%&gt;%</span> <span class='fu'>taxatree_models2stats</span><span class='op'>(</span>.keep_models <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; ps_extra object - a list with phyloseq and extras:
-#&gt; 
-#&gt; phyloseq-class experiment-level object
-#&gt; otu_table()   OTU Table:         [ 68 taxa and 67 samples ]
-#&gt; sample_data() Sample Data:       [ 67 samples by 19 sample variables ]
-#&gt; tax_table()   Taxonomy Table:    [ 68 taxa by 6 taxonomic ranks ]
-#&gt; 
-#&gt; ps_extra info:
-#&gt; tax_agg = Genus tax_transform = compositional&amp;log2
-#&gt; 
-#&gt; $counts OTU Table: [ 68 taxa and 67 samples ]
-#&gt; 
-#&gt; $taxatree_models list:
-#&gt; Ranks: Phylum/Class/Genus
-#&gt; 
-#&gt; $taxatree_stats dataframe:
-#&gt; 88 taxa at 3 ranks: Phylum, Class, Genus 
-#&gt; 5 terms: UC, female, antibiotics, steroids, age_scaled</div><div class='input'>
-<span class='co'># you can adjust the p values with taxatree_stats_p_adjust</span>
-
-<span class='co'># you can plot the results with taxatree_plots</span>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># This example is an abbreviated excerpt from article on taxon modelling on</span></span>
+<span class='r-in'><span class='co'># the microViz documentation website</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"ibd_phylo"</span>, package <span class='op'>=</span> <span class='st'>"corncob"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># We'll keep only the Ulcerative Colitis and Healthy Control samples, to</span></span>
+<span class='r-in'><span class='co'># simplify the analyses for this example. We'll also remove the Species</span></span>
+<span class='r-in'><span class='co'># rank information, as most OTUs in this dataset are not assigned to a</span></span>
+<span class='r-in'><span class='co'># species. We'll also use `tax_fix` to fill any gaps where the Genus is</span></span>
+<span class='r-in'><span class='co'># unknown, with the family name or whatever higher rank classification is</span></span>
+<span class='r-in'><span class='co'># known.</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>phylo</span> <span class='op'>&lt;-</span> <span class='va'>ibd_phylo</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='ps_filter.html'>ps_filter</a></span><span class='op'>(</span><span class='va'>DiseaseState</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"UC"</span>, <span class='st'>"nonIBD"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='tax_mutate.html'>tax_mutate</a></span><span class='op'>(</span>Species <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='tax_fix.html'>tax_fix</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Let's make some sample data variables that are easier to use and compare</span></span>
+<span class='r-in'><span class='co'># in the statistical modelling ahead. We will convert dichotomous</span></span>
+<span class='r-in'><span class='co'># categorical variables into similar binary variables (values: 1 for true,</span></span>
+<span class='r-in'><span class='co'># or 0 for false). We will also scale and center the numeric variable for</span></span>
+<span class='r-in'><span class='co'># age.</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>phylo</span> <span class='op'>&lt;-</span> <span class='va'>phylo</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='ps_mutate.html'>ps_mutate</a></span><span class='op'>(</span></span>
+<span class='r-in'>    UC <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>DiseaseState</span> <span class='op'>==</span> <span class='st'>"UC"</span>, yes <span class='op'>=</span> <span class='fl'>1</span>, no <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>,</span>
+<span class='r-in'>    female <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>gender</span> <span class='op'>==</span> <span class='st'>"female"</span>, yes <span class='op'>=</span> <span class='fl'>1</span>, no <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>,</span>
+<span class='r-in'>    antibiotics <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>abx</span> <span class='op'>==</span> <span class='st'>"abx"</span>, yes <span class='op'>=</span> <span class='fl'>1</span>, no <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>,</span>
+<span class='r-in'>    steroids <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>steroids</span> <span class='op'>==</span> <span class='st'>"steroids"</span>, yes <span class='op'>=</span> <span class='fl'>1</span>, no <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>,</span>
+<span class='r-in'>    age_scaled <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/scale.html'>scale</a></span><span class='op'>(</span><span class='va'>age</span>, center <span class='op'>=</span> <span class='cn'>TRUE</span>, scale <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>lm_models</span> <span class='op'>&lt;-</span> <span class='va'>phylo</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='tax_fix.html'>tax_fix</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='tax_prepend_ranks.html'>tax_prepend_ranks</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"compositional"</span>, rank <span class='op'>=</span> <span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='tax_filter.html'>tax_filter</a></span><span class='op'>(</span>min_prevalence <span class='op'>=</span> <span class='fl'>0.1</span>, use_counts <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='st'>"log2"</span>, zero_replace <span class='op'>=</span> <span class='st'>"halfmin"</span>, chain <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='taxatree_models.html'>taxatree_models</a></span><span class='op'>(</span></span>
+<span class='r-in'>    type <span class='op'>=</span> <span class='va'>lm</span>,</span>
+<span class='r-in'>    ranks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Phylum"</span>, <span class='st'>"Class"</span>, <span class='st'>"Genus"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"UC"</span>, <span class='st'>"female"</span>, <span class='st'>"antibiotics"</span>, <span class='st'>"steroids"</span>, <span class='st'>"age_scaled"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Proportional min_prevalence given: 0.1 --&gt; min 7/67 samples.</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> 2021-11-01 09:34:11 - modelling at rank: Phylum</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> 2021-11-01 09:34:11 - modelling at rank: Class</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> 2021-11-01 09:34:11 - modelling at rank: Genus</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>lm_stats</span> <span class='op'>&lt;-</span> <span class='va'>lm_models</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span> <span class='fu'>taxatree_models2stats</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># inspect the ps_extra returned, now with taxatree_stats dataframe added</span></span>
+<span class='r-in'><span class='va'>lm_stats</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ps_extra object - a list with phyloseq and extras:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> phyloseq-class experiment-level object</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> otu_table()   OTU Table:         [ 68 taxa and 67 samples ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sample_data() Sample Data:       [ 67 samples by 19 sample variables ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tax_table()   Taxonomy Table:    [ 68 taxa by 6 taxonomic ranks ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ps_extra info:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tax_agg = Genus tax_transform = compositional&amp;log2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $counts OTU Table: [ 68 taxa and 67 samples ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $taxatree_stats dataframe:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 88 taxa at 3 ranks: Phylum, Class, Genus </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5 terms: UC, female, antibiotics, steroids, age_scaled</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># inspect the dataframe itself</span></span>
+<span class='r-in'><span class='va'>lm_stats</span><span class='op'>$</span><span class='va'>taxatree_stats</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 440 × 7</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    term        taxon            rank   estimate std.error statistic p.value</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> UC          P: Firmicutes    Phylum  -<span style='color: #BB0000;'>22.3</span>       13.6     -<span style='color: #BB0000;'>1.64</span>  0.107  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> female      P: Firmicutes    Phylum  -<span style='color: #BB0000;'>11.7</span>        9.66    -<span style='color: #BB0000;'>1.21</span>  0.230  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span> antibiotics P: Firmicutes    Phylum  -<span style='color: #BB0000;'>19.8</span>       13.1     -<span style='color: #BB0000;'>1.51</span>  0.137  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span> steroids    P: Firmicutes    Phylum  -<span style='color: #BB0000;'>32.7</span>       12.4     -<span style='color: #BB0000;'>2.63</span>  0.010<span style='text-decoration: underline;'>7</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span> age_scaled  P: Firmicutes    Phylum   -<span style='color: #BB0000;'>0.600</span>      5.45    -<span style='color: #BB0000;'>0.110</span> 0.913  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span> UC          P: Bacteroidetes Phylum  -<span style='color: #BB0000;'>13.8</span>        4.15    -<span style='color: #BB0000;'>3.32</span>  0.001<span style='text-decoration: underline;'>51</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span> female      P: Bacteroidetes Phylum   -<span style='color: #BB0000;'>1.21</span>       2.95    -<span style='color: #BB0000;'>0.410</span> 0.683  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> antibiotics P: Bacteroidetes Phylum    1.37       4.01     0.342 0.734  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> steroids    P: Bacteroidetes Phylum   -<span style='color: #BB0000;'>4.36</span>       3.79    -<span style='color: #BB0000;'>1.15</span>  0.255  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> age_scaled  P: Bacteroidetes Phylum   -<span style='color: #BB0000;'>0.937</span>      1.67    -<span style='color: #BB0000;'>0.563</span> 0.576  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 430 more rows</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># keep the models on the ps_extra object</span></span>
+<span class='r-in'><span class='va'>lm_models</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span> <span class='fu'>taxatree_models2stats</span><span class='op'>(</span>.keep_models <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ps_extra object - a list with phyloseq and extras:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> phyloseq-class experiment-level object</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> otu_table()   OTU Table:         [ 68 taxa and 67 samples ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sample_data() Sample Data:       [ 67 samples by 19 sample variables ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tax_table()   Taxonomy Table:    [ 68 taxa by 6 taxonomic ranks ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ps_extra info:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tax_agg = Genus tax_transform = compositional&amp;log2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $counts OTU Table: [ 68 taxa and 67 samples ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $taxatree_models list:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Ranks: Phylum/Class/Genus</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $taxatree_stats dataframe:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 88 taxa at 3 ranks: Phylum, Class, Genus </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5 terms: UC, female, antibiotics, steroids, age_scaled</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># you can adjust the p values with taxatree_stats_p_adjust</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># you can plot the results with taxatree_plots</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
