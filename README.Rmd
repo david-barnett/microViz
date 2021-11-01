@@ -260,7 +260,7 @@ ord_calc(perm2, constraints = c("weight", "female")) %>%
 
 microViz heatmaps are powered by `ComplexHeatmap` and annotated with taxa prevalence and/or abundance.
 
-```{r heatmap, dpi=300}
+```{r heatmap, dpi=180, fig.width=7, fig.height=5.5}
 # set up the data with numerical variables and filter to top taxa
 psq <- dietswap %>%
  ps_mutate(
@@ -277,7 +277,10 @@ psq <- dietswap %>%
 set.seed(123)
 taxa <- sample(microbiome::top_taxa(ps_get(psq))[1:50], size = 30)
 # actually draw the heatmap
-cor_heatmap(psq, taxa, anno_tax = tax_anno(undetected = 50))
+cor_heatmap(
+  data = psq, taxa = taxa, 
+  anno_tax = tax_anno(undetected = 50, size = 50, rel_sizes = 1:2)
+)
 ```
 
 ## Citation

@@ -23,6 +23,7 @@
 ### Other
 - `tax_filter`'s `is_counts` argument replaced by `use_counts`, allowing it to filter ps_extra objects using stored count data (i.e. after `tax_transform`).
 - `comp_heatmap` can no longer transform data internally, but accepts data already transformed with `tax_transform` and uses stored count data in the ps_extra for any taxa annotations
+- `tax_anno` heatmap annotation default style slightly changed.
 - `tax_names2rank` replaces deprecated `tax_names2tt`
 
 ## Features 

@@ -30,13 +30,16 @@ cor_heatmap(
 
 \item{taxa}{list of taxa to include, or NA for all}
 
-\item{anno_tax}{optional annotation of taxa distributions: tax_anno() list output, or a pre-made ComplexHeatmap HeatmapAnnotation}
+\item{anno_tax}{optional annotation of taxa distributions: tax_anno() list output,
+or a pre-made ComplexHeatmap HeatmapAnnotation}
 
 \item{vars}{selection of variable names from sample_data}
 
-\item{anno_vars}{optional annotation of variable distributions: var_anno() list output, or a pre-made ComplexHeatmap HeatmapAnnotation}
+\item{anno_vars}{optional annotation of variable distributions:
+var_anno() list output, or a pre-made ComplexHeatmap HeatmapAnnotation}
 
-\item{cor}{correlation coefficient. pearson/kendall/spearman, can be abbreviated (used as legend title)}
+\item{cor}{correlation coefficient. pearson/kendall/spearman,
+can be abbreviated (used as legend title)}
 
 \item{cor_use}{passed to cor(use = cor_use)}
 
@@ -44,7 +47,8 @@ cor_heatmap(
 
 \item{numbers}{output of heat_numbers() to draw numbers on heatmap cells}
 
-\item{taxa_side}{controls heatmap orientation and where any anno_tax annotations are placed (top/bottom/left/right)}
+\item{taxa_side}{controls heatmap orientation and where any
+anno_tax annotations are placed (top/bottom/left/right)}
 
 \item{seriation_method}{method to order the rows (in seriation::seriate)}
 
@@ -54,13 +58,15 @@ cor_heatmap(
 
 \item{seriation_dist_col}{distance to use in seriation_method_col (if needed)}
 
-\item{tax_transform}{transformation applied to otu_table before correlating (and BEFORE selection of taxa)}
+\item{tax_transform}{transformation applied to otu_table before correlating
+(and BEFORE selection of taxa)}
 
-\item{var_fun}{character: name of a function to be applied (columns) to a matrix of vars before correlating (but not used in any variable annotations)}
+\item{var_fun}{character: name of a function to be applied (columns) to a matrix of vars
+before correlating (but not used in any variable annotations)}
 
 \item{gridlines}{list output of heat_grid() for setting gridline style}
 
-\item{...}{extra args, for cor_heatmap passed to internal function viz_heatmap (for heat_numbers() dots are passed to grid::gpar for grid::grid.text)}
+\item{...}{extra args, for cor_heatmap passed to internal function viz_heatmap}
 }
 \description{
 Plot correlations between (transformed) microbial abundances and (selected) numeric-like sample_data variables from a phyloseq object.

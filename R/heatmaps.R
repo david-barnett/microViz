@@ -7,22 +7,36 @@
 #'
 #' @param data phyloseq or phyloseq extra
 #' @param taxa list of taxa to include, or NA for all
-#' @param anno_tax optional annotation of taxa distributions: tax_anno() list output, or a pre-made ComplexHeatmap HeatmapAnnotation
+#' @param anno_tax
+#' optional annotation of taxa distributions: tax_anno() list output,
+#' or a pre-made ComplexHeatmap HeatmapAnnotation
 #' @param vars selection of variable names from sample_data
-#' @param anno_vars optional annotation of variable distributions: var_anno() list output, or a pre-made ComplexHeatmap HeatmapAnnotation
-#' @param taxa_side controls heatmap orientation and where any anno_tax annotations are placed (top/bottom/left/right)
-#' @param cor correlation coefficient. pearson/kendall/spearman, can be abbreviated (used as legend title)
+#' @param anno_vars
+#' optional annotation of variable distributions:
+#' var_anno() list output, or a pre-made ComplexHeatmap HeatmapAnnotation
+#' @param taxa_side
+#' controls heatmap orientation and where any
+#' anno_tax annotations are placed (top/bottom/left/right)
+#' @param cor
+#' correlation coefficient. pearson/kendall/spearman,
+#' can be abbreviated (used as legend title)
 #' @param cor_use passed to cor(use = cor_use)
 #' @param colors output of heat_palette() to set heatmap fill color scheme
 #' @param numbers output of heat_numbers() to draw numbers on heatmap cells
 #' @param seriation_method method to order the rows (in seriation::seriate)
 #' @param seriation_dist distance to use in seriation_method (if needed)
-#' @param seriation_method_col method to order the columns (in seriation::seriate)
-#' @param seriation_dist_col distance to use in seriation_method_col (if needed)
-#' @param tax_transform transformation applied to otu_table before correlating (and BEFORE selection of taxa)
+#' @param seriation_method_col
+#'  method to order the columns (in seriation::seriate)
+#' @param seriation_dist_col
+#' distance to use in seriation_method_col (if needed)
+#' @param tax_transform
+#' transformation applied to otu_table before correlating
+#' (and BEFORE selection of taxa)
 #' @param gridlines list output of heat_grid() for setting gridline style
-#' @param var_fun character: name of a function to be applied (columns) to a matrix of vars before correlating (but not used in any variable annotations)
-#' @param ... extra args, for cor_heatmap passed to internal function viz_heatmap (for heat_numbers() dots are passed to grid::gpar for grid::grid.text)
+#' @param var_fun
+#' character: name of a function to be applied (columns) to a matrix of vars
+#'  before correlating (but not used in any variable annotations)
+#' @param ... extra args, for cor_heatmap passed to internal function viz_heatmap
 #'
 #' @export
 #'

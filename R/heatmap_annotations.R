@@ -134,8 +134,8 @@ anno_prev <- function(data,
                       undetected = 0,
                       which = "row",
                       size = 15,
-                      bar_width = 0.4,
-                      gp = grid::gpar(fill = "grey"),
+                      bar_width = 0.6,
+                      gp = grid::gpar(fill = "grey85"),
                       ...) {
   dots <- list(...)
   prevs <- prev_calc(data = data, taxa = taxa, undetected = undetected)
@@ -162,14 +162,15 @@ anno_abund <- function(data,
                        undetected = 0,
                        which = "row",
                        size = 15,
-                       point_size = 1,
-                       box_width = 0.4,
+                       point_size = 0.75,
+                       box_width = 0.6,
+                       gp = grid::gpar(fill = "grey85"),
                        ...) {
   dots <- list(...)
   abunds <- abund_calc(data = data, taxa = taxa, undetected = undetected)
   args <- list(
     x = abunds, size = grid::unit(point_size, "mm"),
-    box_width = box_width, which = which
+    box_width = box_width, which = which, gp = gp
   )
   if (identical(which, "row")) {
     args[["x"]] <- t(abunds)
@@ -381,7 +382,7 @@ anno_checkExtraArgsLists <- function(args, annos, names = NULL) {
   if (identical(names, NULL)) names <- names(annos)
   if (!identical(args, NULL)) {
     if (!inherits(args, "list") ||
-      inherits(args, "list") && length(args) != length(annos) ||
+      length(args) != length(annos) ||
       any(!names(args) %in% names)) {
       stop(
         "\n- args can be NULL or list of named lists (named by annotation)",

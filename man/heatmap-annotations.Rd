@@ -28,8 +28,8 @@ anno_prev(
   undetected = 0,
   which = "row",
   size = 15,
-  bar_width = 0.4,
-  gp = grid::gpar(fill = "grey"),
+  bar_width = 0.6,
+  gp = grid::gpar(fill = "grey85"),
   ...
 )
 
@@ -39,8 +39,9 @@ anno_abund(
   undetected = 0,
   which = "row",
   size = 15,
-  point_size = 1,
-  box_width = 0.4,
+  point_size = 0.75,
+  box_width = 0.6,
+  gp = grid::gpar(fill = "grey85"),
   ...
 )
 
