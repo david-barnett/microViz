@@ -380,6 +380,8 @@ comp_heatmap <- function(data,
 
   args <- list(
     name = name,
+    mat = otu_mat,
+    numbers_mat = otu_numbers,
     colors = colors,
     numbers = numbers,
     seriation_method = seriation_method,
@@ -393,18 +395,17 @@ comp_heatmap <- function(data,
     heatmap_legend_param = list(labels_gp = grid::gpar(fontsize = 8))
   )
 
-  taxa_which <- taxa_which_from_taxa_side(taxa_side)
-  args[["mat"]] <- otu_mat
-  args[["numbers_mat"]] <- otu_numbers
   args[[paste0(taxa_side, "_annotation")]] <- anno_tax
-  sam_which <- ifelse(taxa_which == "column", yes = "row", no = "column")
-  args[[paste0("show_", sam_which, "_names")]] <- FALSE
-
+  taxa_which <- taxa_which_from_taxa_side(taxa_side)
   # rotate matrices if taxa are rows
   if (identical(taxa_which, "row")) {
     args[["mat"]] <- t(args[["mat"]])
     args[["numbers_mat"]] <- t(args[["numbers_mat"]])
   }
+
+  sam_which <- ifelse(taxa_which == "column", yes = "row", no = "column")
+  args[[paste0("show_", sam_which, "_names")]] <- FALSE
+
   # use extra args (overwriting any set including with anno_tax [relevant if anno_tax = NULL])
   dots <- list(...)
   args[names(dots)] <- dots
