@@ -35,6 +35,7 @@
 - `tax_sort` can now sort ps_extra objects
 - heatmap annotation helper `tax_anno` no longer requires 'column' or 'row' to be specified in advance
 - `prev`, a low level helper function for calculating taxon prevalence now exported
+- Various phyloseq accessor functions now work with ps_extra objects e.g. taxa_names, sample_names
 
 ## Fixes
 - `cor_heatmap` and `comp_heatmap` now respect column seriation arguments when different to row seriation

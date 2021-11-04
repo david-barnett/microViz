@@ -183,3 +183,55 @@ ps_counts <- function(data, warn = TRUE) {
   }
   return(ps)
 }
+
+# ps_extra methods for phyloseq accessors -------------------------------------
+methods::setOldClass("ps_extra")
+
+# methods::setGeneric("otu_table", def = phyloseq::otu_table)
+methods::setMethod(
+  f = phyloseq::otu_table, signature = c(object = "ps_extra"),
+  definition = function(object) {
+    warning(
+      "Using otu_table() with ps_extra objects is not recommended.\n\t",
+      "Use otu_get() instead, which always returns taxa as columns."
+    )
+    return(phyloseq::otu_table(ps_get(object)))
+  })
+
+methods::setMethod(
+  f = phyloseq::sample_data, signature = c(object = "ps_extra"),
+  definition = function(object) phyloseq::sample_data(ps_get(object))
+)
+
+methods::setMethod(
+  f = phyloseq::tax_table, signature = c(object = "ps_extra"),
+  definition = function(object) {
+    return(phyloseq::tax_table(ps_get(object)))
+  })
+
+methods::setMethod(
+  f = phyloseq::sample_names, signature = c(physeq = "ps_extra"),
+  definition = function(physeq) phyloseq::sample_names(ps_get(physeq))
+)
+
+methods::setMethod(
+  f = phyloseq::taxa_names, signature = c(physeq = "ps_extra"),
+  definition = function(physeq) phyloseq::taxa_names(ps_get(physeq))
+)
+
+methods::setMethod(
+  f = phyloseq::phy_tree, signature = c(physeq = "ps_extra"),
+  definition = function(physeq) phyloseq::phy_tree(ps_get(physeq))
+)
+
+methods::setMethod(
+  f = phyloseq::refseq, signature = c(physeq = "ps_extra"),
+  definition = function(physeq) phyloseq::refseq(ps_get(physeq))
+)
+
+# rank names is not a generic in phyloseq
+methods::setGeneric(name = "rank_names", def = phyloseq::rank_names)
+methods::setMethod(
+  f = "rank_names", signature = c(physeq = "ps_extra"),
+  definition = function(physeq) phyloseq::rank_names(ps_get(physeq))
+)
