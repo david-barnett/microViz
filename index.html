@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.10.9040</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
       </span>
     </div>
 
@@ -155,16 +155,17 @@
 <code class="sourceCode R"><span class="co"># Installing from github requires the devtools package</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span> 
 
-<span class="co"># You can install the latest versions of phyloseq and microbiome from Bioconductor:</span>
-<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span> 
-<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu">install</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"phyloseq"</span>, <span class="st">"microbiome"</span><span class="op">)</span><span class="op">)</span>
-
 <span class="co"># To install the latest "released" version of this package</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"david-barnett/microViz@0.7.10"</span><span class="op">)</span> <span class="co"># check 0.7.10 is the latest release</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"david-barnett/microViz@0.8.0"</span><span class="op">)</span> <span class="co"># check 0.8.0 is the latest release</span>
 
 <span class="co"># To install the very latest version:</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"david-barnett/microViz"</span><span class="op">)</span>
-<span class="co"># If you encounter a bug please try the latest version &amp; let me know if the bug persists!</span></code></pre></div>
+<span class="co"># If you encounter a bug please try the latest version &amp; let me know if the bug persists!</span>
+
+<span class="co"># If the Bioconductor dependencies don't automatically install you can install</span>
+<span class="co"># them yourself like this:</span>
+<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span> 
+<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu">install</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"phyloseq"</span>, <span class="st">"microbiome"</span>, <span class="st">"ComplexHeatmap"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><span class="emoji" data-emoji="computer">💻</span> <strong>Windows users</strong> - will need to have RTools installed so that your computer can build this package (follow instructions here: <a href="http://jtleek.com/modules/01_DataScientistToolbox/02_10_rtools/" class="uri">http://jtleek.com/modules/01_DataScientistToolbox/02_10_rtools/</a>)</p>
 <p><strong><span class="emoji" data-emoji="apple">🍎</span> macOS</strong> <strong>users</strong> - might need to install <a href="https://www.xquartz.org/">xquartz</a> to make the heatmaps work (to do this with homebrew, run the following command in your mac’s Terminal: <code>brew install --cask xquartz</code></p>
 <p><span class="emoji" data-emoji="package">📦</span> I highly recommend using <a href="https://rstudio.github.io/renv/index.html">renv</a> for managing your R package installations across multiple projects.</p>
@@ -297,6 +298,7 @@
   <span class="fu"><a href="reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"identity"</span><span class="op">)</span> <span class="op"><a href="reference/%&gt;%.html">%&gt;%</a></span> 
   <span class="fu"><a href="reference/dist_calc.html">dist_calc</a></span><span class="op">(</span><span class="st">"aitchison"</span><span class="op">)</span>
 <span class="co">#&gt; Proportional min_prevalence given: 0.1 --&gt; min 23/222 samples.</span>
+
 <span class="co"># the more permutations you request, the longer it takes</span>
 <span class="co"># but also the more stable and precise your p-values become</span>
 <span class="va">aitchison_perm</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/dist_permanova.html">dist_permanova</a></span><span class="op">(</span>
@@ -307,8 +309,8 @@
   variables <span class="op">=</span> <span class="st">"bmi_group + female"</span>
 <span class="op">)</span>
 <span class="co">#&gt; Dropping samples with missings: 2</span>
-<span class="co">#&gt; 2021-10-31 21:13:31 - Starting PERMANOVA with 99 perms with 1 processes</span>
-<span class="co">#&gt; 2021-10-31 21:13:31 - Finished PERMANOVA</span>
+<span class="co">#&gt; 2021-11-08 11:42:58 - Starting PERMANOVA with 99 perms with 1 processes</span>
+<span class="co">#&gt; 2021-11-08 11:42:58 - Finished PERMANOVA</span>
 <span class="co"># view the permanova results</span>
 <span class="fu"><a href="reference/ps_extra-accessors.html">perm_get</a></span><span class="op">(</span><span class="va">aitchison_perm</span><span class="op">)</span> <span class="op"><a href="reference/%&gt;%.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt;            Df   SumOfSqs         R2        F Pr(&gt;F)</span>
@@ -336,8 +338,8 @@
   data <span class="op">=</span> <span class="va">aitchison_dists</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"female"</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">321</span>
 <span class="op">)</span>
 <span class="co">#&gt; Dropping samples with missings: 2</span>
-<span class="co">#&gt; 2021-10-31 21:13:31 - Starting PERMANOVA with 999 perms with 1 processes</span>
-<span class="co">#&gt; 2021-10-31 21:13:31 - Finished PERMANOVA</span>
+<span class="co">#&gt; 2021-11-08 11:42:58 - Starting PERMANOVA with 999 perms with 1 processes</span>
+<span class="co">#&gt; 2021-11-08 11:42:58 - Finished PERMANOVA</span>
 <span class="fu"><a href="reference/ps_extra-accessors.html">perm_get</a></span><span class="op">(</span><span class="va">perm2</span><span class="op">)</span>
 <span class="co">#&gt; Permutation test for adonis under reduced model</span>
 <span class="co">#&gt; Marginal effects of terms</span>
@@ -388,11 +390,15 @@
   <span class="op">)</span> <span class="op"><a href="reference/%&gt;%.html">%&gt;%</a></span> 
   <span class="fu"><a href="reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"identity"</span>, rank <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span>
 <span class="co">#&gt; Proportional min_prevalence given: 0.1 --&gt; min 23/222 samples.</span>
+
 <span class="co"># randomly select 30 taxa from the 50 most abundant taxa (just for an example)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span>
 <span class="va">taxa</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fu">microbiome</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/microbiome/man/top_taxa.html">top_taxa</a></span><span class="op">(</span><span class="fu"><a href="reference/ps_extra-accessors.html">ps_get</a></span><span class="op">(</span><span class="va">psq</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span><span class="op">]</span>, size <span class="op">=</span> <span class="fl">30</span><span class="op">)</span>
 <span class="co"># actually draw the heatmap</span>
-<span class="fu"><a href="reference/cor_heatmap.html">cor_heatmap</a></span><span class="op">(</span><span class="va">psq</span>, <span class="va">taxa</span>, anno_tax <span class="op">=</span> <span class="fu"><a href="reference/heatmap-annotations.html">tax_anno</a></span><span class="op">(</span>undetected <span class="op">=</span> <span class="fl">50</span>, size <span class="op">=</span> <span class="fl">50</span>, rel_sizes <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="reference/cor_heatmap.html">cor_heatmap</a></span><span class="op">(</span>
+  data <span class="op">=</span> <span class="va">psq</span>, taxa <span class="op">=</span> <span class="va">taxa</span>, 
+  anno_tax <span class="op">=</span> <span class="fu"><a href="reference/heatmap-annotations.html">tax_anno</a></span><span class="op">(</span>undetected <span class="op">=</span> <span class="fl">50</span>, size <span class="op">=</span> <span class="fl">50</span>, rel_sizes <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span>
+<span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-heatmap-1.png" width="100%"></p>
 </div>
 </div>
@@ -413,7 +419,7 @@
 <a href="#session-info" class="anchor"></a>Session info</h2>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; R version 4.1.1 (2021-08-10)</span>
+<span class="co">#&gt; R version 4.1.2 (2021-11-01)</span>
 <span class="co">#&gt; Platform: x86_64-pc-linux-gnu (64-bit)</span>
 <span class="co">#&gt; Running under: Ubuntu 18.04.6 LTS</span>
 <span class="co">#&gt; </span>
@@ -431,40 +437,40 @@
 <span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; other attached packages:</span>
-<span class="co">#&gt; [1] ggplot2_3.3.5        dplyr_1.0.7          phyloseq_1.36.0      microViz_0.7.10.9038</span>
-<span class="co">#&gt; [5] devtools_2.4.2       usethis_2.0.1        pkgdown_1.6.1       </span>
+<span class="co">#&gt; [1] ggplot2_3.3.5   dplyr_1.0.7     phyloseq_1.36.0 microViz_0.8.0  devtools_2.4.2  usethis_2.1.3  </span>
+<span class="co">#&gt; [7] pkgdown_1.6.1  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; loaded via a namespace (and not attached):</span>
 <span class="co">#&gt;   [1] Rtsne_0.15             colorspace_2.0-2       rjson_0.2.20           ellipsis_0.3.2        </span>
 <span class="co">#&gt;   [5] rprojroot_2.0.2        circlize_0.4.13        markdown_1.1           XVector_0.32.0        </span>
 <span class="co">#&gt;   [9] GlobalOptions_0.1.2    fs_1.5.0               gridtext_0.1.4         ggtext_0.1.1          </span>
-<span class="co">#&gt;  [13] clue_0.3-59            rstudioapi_0.13        farver_2.1.0           remotes_2.4.0         </span>
-<span class="co">#&gt;  [17] fansi_0.5.0            xml2_1.3.2             codetools_0.2-18       splines_4.1.1         </span>
-<span class="co">#&gt;  [21] doParallel_1.0.16      cachem_1.0.6           knitr_1.34             pkgload_1.2.2         </span>
+<span class="co">#&gt;  [13] clue_0.3-60            rstudioapi_0.13        farver_2.1.0           remotes_2.4.1         </span>
+<span class="co">#&gt;  [17] fansi_0.5.0            xml2_1.3.2             codetools_0.2-18       splines_4.1.2         </span>
+<span class="co">#&gt;  [21] doParallel_1.0.16      cachem_1.0.6           knitr_1.36             pkgload_1.2.3         </span>
 <span class="co">#&gt;  [25] ade4_1.7-18            jsonlite_1.7.2         Cairo_1.5-12.2         cluster_2.1.2         </span>
-<span class="co">#&gt;  [29] png_0.1-7              compiler_4.1.1         assertthat_0.2.1       Matrix_1.3-4          </span>
-<span class="co">#&gt;  [33] fastmap_1.1.0          cli_3.0.1              htmltools_0.5.2        prettyunits_1.1.1     </span>
-<span class="co">#&gt;  [37] tools_4.1.1            igraph_1.2.7           gtable_0.3.0           glue_1.4.2            </span>
+<span class="co">#&gt;  [29] png_0.1-7              compiler_4.1.2         assertthat_0.2.1       Matrix_1.3-4          </span>
+<span class="co">#&gt;  [33] fastmap_1.1.0          cli_3.1.0              htmltools_0.5.2        prettyunits_1.1.1     </span>
+<span class="co">#&gt;  [37] tools_4.1.2            igraph_1.2.8           gtable_0.3.0           glue_1.4.2            </span>
 <span class="co">#&gt;  [41] GenomeInfoDbData_1.2.6 reshape2_1.4.4         Rcpp_1.0.7             Biobase_2.52.0        </span>
 <span class="co">#&gt;  [45] vctrs_0.3.8            Biostrings_2.60.2      rhdf5filters_1.4.0     multtest_2.48.0       </span>
-<span class="co">#&gt;  [49] ape_5.5                nlme_3.1-152           iterators_1.0.13       xfun_0.26             </span>
-<span class="co">#&gt;  [53] stringr_1.4.0          ps_1.6.0               testthat_3.0.4         lifecycle_1.0.1       </span>
-<span class="co">#&gt;  [57] zlibbioc_1.38.0        MASS_7.3-54            scales_1.1.1           TSP_1.1-10            </span>
-<span class="co">#&gt;  [61] parallel_4.1.1         biomformat_1.20.0      rhdf5_2.36.0           RColorBrewer_1.1-2    </span>
+<span class="co">#&gt;  [49] ape_5.5                nlme_3.1-152           iterators_1.0.13       xfun_0.27             </span>
+<span class="co">#&gt;  [53] stringr_1.4.0          ps_1.6.0               testthat_3.1.0         lifecycle_1.0.1       </span>
+<span class="co">#&gt;  [57] zlibbioc_1.38.0        MASS_7.3-54            scales_1.1.1           TSP_1.1-11            </span>
+<span class="co">#&gt;  [61] parallel_4.1.2         biomformat_1.20.0      rhdf5_2.36.0           RColorBrewer_1.1-2    </span>
 <span class="co">#&gt;  [65] ComplexHeatmap_2.8.0   yaml_2.2.1             memoise_2.0.0          stringi_1.7.5         </span>
-<span class="co">#&gt;  [69] highr_0.9              S4Vectors_0.30.1       desc_1.3.0             foreach_1.5.1         </span>
-<span class="co">#&gt;  [73] permute_0.9-5          seriation_1.3.0        BiocGenerics_0.38.0    pkgbuild_1.2.0        </span>
-<span class="co">#&gt;  [77] shape_1.4.6            GenomeInfoDb_1.28.4    rlang_0.4.11           pkgconfig_2.0.3       </span>
+<span class="co">#&gt;  [69] highr_0.9              S4Vectors_0.30.1       desc_1.4.0             foreach_1.5.1         </span>
+<span class="co">#&gt;  [73] permute_0.9-5          seriation_1.3.1        BiocGenerics_0.38.0    pkgbuild_1.2.0        </span>
+<span class="co">#&gt;  [77] shape_1.4.6            GenomeInfoDb_1.28.4    rlang_0.4.12           pkgconfig_2.0.3       </span>
 <span class="co">#&gt;  [81] bitops_1.0-7           matrixStats_0.59.0     evaluate_0.14          lattice_0.20-45       </span>
 <span class="co">#&gt;  [85] purrr_0.3.4            Rhdf5lib_1.14.2        labeling_0.4.2         processx_3.5.2        </span>
 <span class="co">#&gt;  [89] tidyselect_1.1.1       plyr_1.8.6             magrittr_2.0.1         R6_2.5.1              </span>
-<span class="co">#&gt;  [93] IRanges_2.26.0         generics_0.1.0         DBI_1.1.1              pillar_1.6.3          </span>
+<span class="co">#&gt;  [93] IRanges_2.26.0         generics_0.1.1         DBI_1.1.1              pillar_1.6.4          </span>
 <span class="co">#&gt;  [97] withr_2.4.2            mgcv_1.8-38            survival_3.2-13        RCurl_1.98-1.5        </span>
-<span class="co">#&gt; [101] tibble_3.1.5           corncob_0.2.0          crayon_1.4.1           utf8_1.2.2            </span>
-<span class="co">#&gt; [105] microbiome_1.14.0      rmarkdown_2.11         GetoptLong_1.0.5       grid_4.1.1            </span>
+<span class="co">#&gt; [101] tibble_3.1.5           corncob_0.2.0          crayon_1.4.2           utf8_1.2.2            </span>
+<span class="co">#&gt; [105] microbiome_1.14.0      rmarkdown_2.11         GetoptLong_1.0.5       grid_4.1.2            </span>
 <span class="co">#&gt; [109] data.table_1.14.2      callr_3.7.0            vegan_2.5-7            digest_0.6.28         </span>
-<span class="co">#&gt; [113] tidyr_1.1.4            stats4_4.1.1           munsell_0.5.0          registry_0.5-1        </span>
-<span class="co">#&gt; [117] sessioninfo_1.1.1</span></code></pre></div>
+<span class="co">#&gt; [113] tidyr_1.1.4            stats4_4.1.2           munsell_0.5.0          registry_0.5-1        </span>
+<span class="co">#&gt; [117] sessioninfo_1.2.0</span></code></pre></div>
 </div>
 </div>
   </div>
