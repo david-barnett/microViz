@@ -3,7 +3,7 @@
 ## Breaking changes
 
 ### Trees
-**The taxatree_* family of functions are largely rewritten.** For guidance, see the new website article on statistical modelling of taxa.
+__The taxatree_* family of functions are largely rewritten.__ For guidance, see the new website article on statistical modelling of taxa.
 
 - `taxatree_models` now attaches resulting list to ps_extra
 - `taxatree_models2stats` must be run on the output of `taxatree_models` before using `taxatree_plots`
