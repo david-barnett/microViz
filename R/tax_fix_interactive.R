@@ -56,7 +56,7 @@ tax_fix_interactive <- function(data,
   tt_df <- as.data.frame.matrix(tt, optional = TRUE, make.names = FALSE)
 
   # find common unknown values to populate unknowns list
-  unique_tt_vals <- unique.default(tt) # .default = treat as vector
+  unique_tt_vals <- rev(unique.default(tt)) # .default = treat as vector
   all_common_unknowns <- tax_common_unknowns(0)
   found_common_unknowns <-
     all_common_unknowns[all_common_unknowns %in% unique_tt_vals]
