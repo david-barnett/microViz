@@ -138,6 +138,9 @@ tax_agg <- function(ps,
     if (anyNA(namesAtRank)) {
       stop("NAs in tax_table at rank: ", rank, taxFixPrompt())
     }
+    if (purrr::some(.x = namesAtRank, .p = `==`, "")) {
+      stop('zero-length name(s) in tax_table at rank: ', rank, taxFixPrompt())
+    }
 
     # unique names needed as factor levels for .taxID. column
     # otherwise grouped summarise later reorders otu table to alphabetical...
@@ -320,8 +323,8 @@ taxFixPrompt <- function(unknowns = NULL) {
       paste0('unknowns = c("', paste(unknowns, collapse = '", "'), '")')
   }
   taxFixLine <- paste0(
-    "\nTo fix the problem, try:\n`yourData %>% tax_fix(", unknowns, ")`"
+    "\n\nTo fix the problem, try:\n  `yourData %>% tax_fix(", unknowns, ")`"
   )
-  extraLine <- "\nTry tax_fix_interactive() to find and fix further problems"
+  extraLine <- "\n\nTry tax_fix_interactive() to find and fix further problems"
   paste0(taxFixLine, extraLine)
 }

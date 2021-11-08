@@ -54,8 +54,10 @@
       cat(taxFixPrompt())
     Output
       
+      
       To fix the problem, try:
-      `yourData %>% tax_fix()`
+        `yourData %>% tax_fix()`
+      
       Try tax_fix_interactive() to find and fix further problems
 
 ---
@@ -64,18 +66,34 @@
       cat(taxFixPrompt(unknowns = c("anUnknown", "another")))
     Output
       
+      
       To fix the problem, try:
-      `yourData %>% tax_fix(unknowns = c("anUnknown", "another"))`
+        `yourData %>% tax_fix(unknowns = c("anUnknown", "another"))`
+      
       Try tax_fix_interactive() to find and fix further problems
 
-# tax_agg errors on NAs or convergent values
+# tax_agg errors on NAs, '', or convergent values
 
     Code
       tax_agg(dietswap, rank = "Genus")
     Error <simpleError>
       NAs in tax_table at rank: Genus
+      
       To fix the problem, try:
-      `yourData %>% tax_fix()`
+        `yourData %>% tax_fix()`
+      
+      Try tax_fix_interactive() to find and fix further problems
+
+---
+
+    Code
+      tax_agg(dietswap, rank = "Genus")
+    Error <simpleError>
+      zero-length name(s) in tax_table at rank: Genus
+      
+      To fix the problem, try:
+        `yourData %>% tax_fix()`
+      
       Try tax_fix_interactive() to find and fix further problems
 
 ---
@@ -97,7 +115,9 @@
     Error <simpleError>
       Taxa not unique at rank: Genus
       See last messages for convergent taxa rows.
+      
       To fix the problem, try:
-      `yourData %>% tax_fix(unknowns = c("g__"))`
+        `yourData %>% tax_fix(unknowns = c("g__"))`
+      
       Try tax_fix_interactive() to find and fix further problems
 

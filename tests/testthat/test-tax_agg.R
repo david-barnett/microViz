@@ -1,14 +1,13 @@
 library(phyloseq)
-library(microbiome)
-data("dietswap")
+data("dietswap", package = "microbiome")
 
 options(width = 80)
 local_edition(3)
 
 test_that("microbiome's dietswap data hasn't changed", {
   expect_snapshot(dietswap)
-  tt_df <- data.frame(tax_table(dietswap), check.names = FALSE, check.rows = FALSE, stringsAsFactors = FALSE)
-  otu_df <- data.frame(otu_table(dietswap), check.names = FALSE, check.rows = FALSE, stringsAsFactors = FALSE)
+  tt_df <- data.frame(tax_table(dietswap), check.names = FALSE)
+  otu_df <- data.frame(otu_table(dietswap), check.names = FALSE)
   expect_snapshot_csv(name = "tt", object = tt_df)
   expect_snapshot_csv(name = "otu", object = otu_df)
 })
@@ -46,7 +45,7 @@ for (level in agg_level_test) {
 }
 
 test_that(
-  desc = paste("tax_agg with top_N and no agg eqivalent to microbiome::top_taxa"),
+  desc = "tax_agg with top_N and no agg eqivalent to microbiome::top_taxa",
   code = {
     biome_top <- microbiome::top_taxa(x = dietswap, n = 40)
     viz_tt <- tt_get(tax_agg(dietswap, rank = "unique", top_N = 40))
@@ -56,7 +55,7 @@ test_that(
 )
 
 test_that(
-  desc = paste("tax_top gives same results as tax_agg with top_N and no agg"),
+  desc = "tax_top gives same results as tax_agg with top_N and no agg",
   code = {
     tax_top_out <- tax_top(dietswap, n = 40, by = sum)
     viz_tt <- tt_get(tax_agg(dietswap, rank = "unique", top_N = 40, sort_by = sum))
@@ -66,7 +65,7 @@ test_that(
 )
 
 test_that(
-  desc = paste("tax_agg with top_N and Family agg eqivalent to aggregate_taxa and top_taxa"),
+  desc = "tax_agg with top_N and Family agg eqivalent to aggregate_taxa and top_taxa",
   code = {
     biome_top <- dietswap %>%
       microbiome::aggregate_taxa("Family") %>%
@@ -82,8 +81,10 @@ test_that("tax_fix error prompt looks right", {
   expect_snapshot(cat(taxFixPrompt(unknowns = c("anUnknown", "another"))))
 })
 
-test_that("tax_agg errors on NAs or convergent values", {
+test_that("tax_agg errors on NAs, '', or convergent values", {
   phyloseq::tax_table(dietswap)[3, "Genus"] <- NA
+  expect_snapshot(tax_agg(dietswap, rank = "Genus"), error = TRUE)
+  phyloseq::tax_table(dietswap)[3, "Genus"] <- ""
   expect_snapshot(tax_agg(dietswap, rank = "Genus"), error = TRUE)
   phyloseq::tax_table(dietswap)[3:10, "Genus"] <- "g__"
   expect_snapshot(tax_agg(dietswap, rank = "Genus"), error = TRUE)
