@@ -196,7 +196,8 @@ methods::setMethod(
       "Use otu_get() instead, which always returns taxa as columns."
     )
     return(phyloseq::otu_table(ps_get(object)))
-  })
+  }
+)
 
 methods::setMethod(
   f = phyloseq::sample_data, signature = c(object = "ps_extra"),
@@ -207,7 +208,8 @@ methods::setMethod(
   f = phyloseq::tax_table, signature = c(object = "ps_extra"),
   definition = function(object) {
     return(phyloseq::tax_table(ps_get(object)))
-  })
+  }
+)
 
 methods::setMethod(
   f = phyloseq::sample_names, signature = c(physeq = "ps_extra"),

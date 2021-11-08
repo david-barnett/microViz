@@ -68,16 +68,17 @@ You can install the latest available microViz package version using the followin
 # Installing from github requires the devtools package
 install.packages("devtools") 
 
-# You can install the latest versions of phyloseq and microbiome from Bioconductor:
-if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager") 
-BiocManager::install(c("phyloseq", "microbiome"))
-
 # To install the latest "released" version of this package
-devtools::install_github("david-barnett/microViz@0.7.10") # check 0.7.10 is the latest release
+devtools::install_github("david-barnett/microViz@0.8.0") # check 0.8.0 is the latest release
 
 # To install the very latest version:
 devtools::install_github("david-barnett/microViz")
 # If you encounter a bug please try the latest version & let me know if the bug persists!
+
+# If the Bioconductor dependencies don't automatically install you can install
+# them yourself like this:
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager") 
+BiocManager::install(c("phyloseq", "microbiome", "ComplexHeatmap"))
 ```
 
 :computer: **Windows users** - will need to have RTools installed so that your computer can build this package (follow instructions here: <http://jtleek.com/modules/01_DataScientistToolbox/02_10_rtools/>)

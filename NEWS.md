@@ -1,9 +1,9 @@
-# microViz (development version)
+# microViz 0.8.0 - "autumn leaves"
 
 ## Breaking changes
 
 ### Trees
-**The taxatree_* family of functions are largely rewritten.** See the new website article on taxon modelling for guidance.
+**The taxatree_* family of functions are largely rewritten.** For guidance, see the new website article on statistical modelling of taxa.
 
 - `taxatree_models` now attaches resulting list to ps_extra
 - `taxatree_models2stats` must be run on the output of `taxatree_models` before using `taxatree_plots`

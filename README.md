@@ -75,16 +75,17 @@ following instructions.
 # Installing from github requires the devtools package
 install.packages("devtools") 
 
-# You can install the latest versions of phyloseq and microbiome from Bioconductor:
-if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager") 
-BiocManager::install(c("phyloseq", "microbiome"))
-
 # To install the latest "released" version of this package
-devtools::install_github("david-barnett/microViz@0.7.10") # check 0.7.10 is the latest release
+devtools::install_github("david-barnett/microViz@0.8.0") # check 0.8.0 is the latest release
 
 # To install the very latest version:
 devtools::install_github("david-barnett/microViz")
 # If you encounter a bug please try the latest version & let me know if the bug persists!
+
+# If the Bioconductor dependencies don't automatically install you can install
+# them yourself like this:
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager") 
+BiocManager::install(c("phyloseq", "microbiome", "ComplexHeatmap"))
 ```
 
 :computer: **Windows users** - will need to have RTools installed so
@@ -257,6 +258,7 @@ aitchison_dists <-
   tax_transform("identity") %>% 
   dist_calc("aitchison")
 #> Proportional min_prevalence given: 0.1 --> min 23/222 samples.
+
 # the more permutations you request, the longer it takes
 # but also the more stable and precise your p-values become
 aitchison_perm <- dist_permanova(
@@ -267,8 +269,8 @@ aitchison_perm <- dist_permanova(
   variables = "bmi_group + female"
 )
 #> Dropping samples with missings: 2
-#> 2021-10-31 21:13:31 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2021-10-31 21:13:31 - Finished PERMANOVA
+#> 2021-11-08 11:42:58 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2021-11-08 11:42:58 - Finished PERMANOVA
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
 #>            Df   SumOfSqs         R2        F Pr(>F)
@@ -298,8 +300,8 @@ perm2 <- dist_permanova(
   data = aitchison_dists, variables = c("weight", "female"), seed = 321
 )
 #> Dropping samples with missings: 2
-#> 2021-10-31 21:13:31 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2021-10-31 21:13:31 - Finished PERMANOVA
+#> 2021-11-08 11:42:58 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2021-11-08 11:42:58 - Finished PERMANOVA
 perm_get(perm2)
 #> Permutation test for adonis under reduced model
 #> Marginal effects of terms
@@ -355,11 +357,15 @@ psq <- dietswap %>%
   ) %>% 
   tax_transform("identity", rank = "Genus")
 #> Proportional min_prevalence given: 0.1 --> min 23/222 samples.
+
 # randomly select 30 taxa from the 50 most abundant taxa (just for an example)
 set.seed(123)
 taxa <- sample(microbiome::top_taxa(ps_get(psq))[1:50], size = 30)
 # actually draw the heatmap
-cor_heatmap(psq, taxa, anno_tax = tax_anno(undetected = 50, size = 50, rel_sizes = 1:2))
+cor_heatmap(
+  data = psq, taxa = taxa, 
+  anno_tax = tax_anno(undetected = 50, size = 50, rel_sizes = 1:2)
+)
 ```
 
 <img src="man/figures/README-heatmap-1.png" width="100%" />
@@ -390,7 +396,7 @@ and by participating in this project you agree to abide by its terms.
 
 ``` r
 sessionInfo()
-#> R version 4.1.1 (2021-08-10)
+#> R version 4.1.2 (2021-11-01)
 #> Platform: x86_64-pc-linux-gnu (64-bit)
 #> Running under: Ubuntu 18.04.6 LTS
 #> 
@@ -408,38 +414,38 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] ggplot2_3.3.5        dplyr_1.0.7          phyloseq_1.36.0      microViz_0.7.10.9038
-#> [5] devtools_2.4.2       usethis_2.0.1        pkgdown_1.6.1       
+#> [1] ggplot2_3.3.5   dplyr_1.0.7     phyloseq_1.36.0 microViz_0.8.0  devtools_2.4.2  usethis_2.1.3  
+#> [7] pkgdown_1.6.1  
 #> 
 #> loaded via a namespace (and not attached):
 #>   [1] Rtsne_0.15             colorspace_2.0-2       rjson_0.2.20           ellipsis_0.3.2        
 #>   [5] rprojroot_2.0.2        circlize_0.4.13        markdown_1.1           XVector_0.32.0        
 #>   [9] GlobalOptions_0.1.2    fs_1.5.0               gridtext_0.1.4         ggtext_0.1.1          
-#>  [13] clue_0.3-59            rstudioapi_0.13        farver_2.1.0           remotes_2.4.0         
-#>  [17] fansi_0.5.0            xml2_1.3.2             codetools_0.2-18       splines_4.1.1         
-#>  [21] doParallel_1.0.16      cachem_1.0.6           knitr_1.34             pkgload_1.2.2         
+#>  [13] clue_0.3-60            rstudioapi_0.13        farver_2.1.0           remotes_2.4.1         
+#>  [17] fansi_0.5.0            xml2_1.3.2             codetools_0.2-18       splines_4.1.2         
+#>  [21] doParallel_1.0.16      cachem_1.0.6           knitr_1.36             pkgload_1.2.3         
 #>  [25] ade4_1.7-18            jsonlite_1.7.2         Cairo_1.5-12.2         cluster_2.1.2         
-#>  [29] png_0.1-7              compiler_4.1.1         assertthat_0.2.1       Matrix_1.3-4          
-#>  [33] fastmap_1.1.0          cli_3.0.1              htmltools_0.5.2        prettyunits_1.1.1     
-#>  [37] tools_4.1.1            igraph_1.2.7           gtable_0.3.0           glue_1.4.2            
+#>  [29] png_0.1-7              compiler_4.1.2         assertthat_0.2.1       Matrix_1.3-4          
+#>  [33] fastmap_1.1.0          cli_3.1.0              htmltools_0.5.2        prettyunits_1.1.1     
+#>  [37] tools_4.1.2            igraph_1.2.8           gtable_0.3.0           glue_1.4.2            
 #>  [41] GenomeInfoDbData_1.2.6 reshape2_1.4.4         Rcpp_1.0.7             Biobase_2.52.0        
 #>  [45] vctrs_0.3.8            Biostrings_2.60.2      rhdf5filters_1.4.0     multtest_2.48.0       
-#>  [49] ape_5.5                nlme_3.1-152           iterators_1.0.13       xfun_0.26             
-#>  [53] stringr_1.4.0          ps_1.6.0               testthat_3.0.4         lifecycle_1.0.1       
-#>  [57] zlibbioc_1.38.0        MASS_7.3-54            scales_1.1.1           TSP_1.1-10            
-#>  [61] parallel_4.1.1         biomformat_1.20.0      rhdf5_2.36.0           RColorBrewer_1.1-2    
+#>  [49] ape_5.5                nlme_3.1-152           iterators_1.0.13       xfun_0.27             
+#>  [53] stringr_1.4.0          ps_1.6.0               testthat_3.1.0         lifecycle_1.0.1       
+#>  [57] zlibbioc_1.38.0        MASS_7.3-54            scales_1.1.1           TSP_1.1-11            
+#>  [61] parallel_4.1.2         biomformat_1.20.0      rhdf5_2.36.0           RColorBrewer_1.1-2    
 #>  [65] ComplexHeatmap_2.8.0   yaml_2.2.1             memoise_2.0.0          stringi_1.7.5         
-#>  [69] highr_0.9              S4Vectors_0.30.1       desc_1.3.0             foreach_1.5.1         
-#>  [73] permute_0.9-5          seriation_1.3.0        BiocGenerics_0.38.0    pkgbuild_1.2.0        
-#>  [77] shape_1.4.6            GenomeInfoDb_1.28.4    rlang_0.4.11           pkgconfig_2.0.3       
+#>  [69] highr_0.9              S4Vectors_0.30.1       desc_1.4.0             foreach_1.5.1         
+#>  [73] permute_0.9-5          seriation_1.3.1        BiocGenerics_0.38.0    pkgbuild_1.2.0        
+#>  [77] shape_1.4.6            GenomeInfoDb_1.28.4    rlang_0.4.12           pkgconfig_2.0.3       
 #>  [81] bitops_1.0-7           matrixStats_0.59.0     evaluate_0.14          lattice_0.20-45       
 #>  [85] purrr_0.3.4            Rhdf5lib_1.14.2        labeling_0.4.2         processx_3.5.2        
 #>  [89] tidyselect_1.1.1       plyr_1.8.6             magrittr_2.0.1         R6_2.5.1              
-#>  [93] IRanges_2.26.0         generics_0.1.0         DBI_1.1.1              pillar_1.6.3          
+#>  [93] IRanges_2.26.0         generics_0.1.1         DBI_1.1.1              pillar_1.6.4          
 #>  [97] withr_2.4.2            mgcv_1.8-38            survival_3.2-13        RCurl_1.98-1.5        
-#> [101] tibble_3.1.5           corncob_0.2.0          crayon_1.4.1           utf8_1.2.2            
-#> [105] microbiome_1.14.0      rmarkdown_2.11         GetoptLong_1.0.5       grid_4.1.1            
+#> [101] tibble_3.1.5           corncob_0.2.0          crayon_1.4.2           utf8_1.2.2            
+#> [105] microbiome_1.14.0      rmarkdown_2.11         GetoptLong_1.0.5       grid_4.1.2            
 #> [109] data.table_1.14.2      callr_3.7.0            vegan_2.5-7            digest_0.6.28         
-#> [113] tidyr_1.1.4            stats4_4.1.1           munsell_0.5.0          registry_0.5-1        
-#> [117] sessioninfo_1.1.1
+#> [113] tidyr_1.1.4            stats4_4.1.2           munsell_0.5.0          registry_0.5-1        
+#> [117] sessioninfo_1.2.0
 ```
