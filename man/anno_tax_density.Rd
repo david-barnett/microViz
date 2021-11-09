@@ -16,7 +16,7 @@ anno_tax_density(
   heatmap_colors = c("white", "forestgreen"),
   joyplot_scale = 1.5,
   border = TRUE,
-  gp = grid::gpar(fill = "#CCCCCC"),
+  gp = grid::gpar(fill = "lightgrey"),
   axis = TRUE,
   ...,
   data = NULL,
@@ -51,7 +51,11 @@ anno_tax_density(
 
 \item{axis}{Whether to add axis?}
 
-\item{...}{Other arguments.}
+\item{...}{
+  Arguments passed on to \code{\link[ComplexHeatmap:anno_density]{ComplexHeatmap::anno_density}}
+  \describe{
+    \item{\code{axis_param}}{parameters for controlling axis. See \code{\link[ComplexHeatmap]{default_axis_param}} for all possible settings and default parameters.}
+  }}
 
 \item{data}{OPTIONAL phyloseq or ps_extra,
 only set this to override use of same data as in heatmap}
@@ -81,23 +85,28 @@ taxa <- tax_top(psq, n = 15, rank = "Family")
 fun <- anno_tax_density()
 # manually specify the density plot function by giving it data etc.
 heatmapAnnoFunction <- fun(data = psq, which = "column", taxa = taxa)
+
 # draw the density plot without a heatmap, you will never normally do this!
-grid::grid.newpage()
-draw(heatmapAnnoFunction)
-# let's change some style options and specify the data up front
-grid::grid.newpage()
-grid.draw(rectGrob())
-vp <- viewport(
-  x = 0.5, y = 0.5,
-  width = 0.75, height = 0.75,
-  just = c("center", "center")
-)
+vp <- viewport(width = 0.75, height = 0.75)
+grid.newpage()
 pushViewport(vp)
-grid.draw(rectGrob())
+draw(heatmapAnnoFunction)
+
+# let's change some style options and specify the data up front
+grid.newpage()
+pushViewport(vp)
 draw(anno_tax_density(
  data = psq, taxa = taxa, which = "row",
  gp = grid::gpar(fill = "red"), border = FALSE
 ))
-# clear drawings
-grid::grid.newpage()
+
+# heatmap type, with alternative transformation and axis_param
+grid.newpage()
+pushViewport(vp)
+draw(anno_tax_density(
+ data = psq, taxa = taxa, which = "row", type = "heatmap",
+ trans = "log2", zero_replace = "halfmin", axis_param = list(labels_rot = 0)
+))
+
+grid.newpage()
 }

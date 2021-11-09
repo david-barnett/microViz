@@ -34,10 +34,13 @@
 #' taxa <- tax_top(psq, n = 15, rank = "Family")
 #'
 #' # makes a function that takes data, taxa and which (at minimum)
+#' customAxis <- list(labels_rot = 0, at = c(0, 0.5, 1))
+#'
 #' fun <- taxAnnotation(
-#'   gap = grid::unit(5, "mm"),
-#'   Prev. = anno_tax_prev(size = unit(20, "mm")),
-#'   Abundance = anno_tax_box(size = unit(40, "mm"), only_detected = TRUE)
+#'   gap = grid::unit(2.5, "mm"),
+#'   Prev. = anno_tax_prev(axis_param = customAxis, ylim = c(0, 1), extend = 0),
+#'   `Prop. Abd.` = anno_tax_box(size = unit(40, "mm"), axis_param = customAxis),
+#'   `Log10p Abd.` = anno_tax_density(type = "heatmap")
 #' )
 #'
 #' # manually specify the prevalence barplot function by giving it data etc.
@@ -45,26 +48,13 @@
 #'
 #' # draw the annotation without a heatmap, you will never normally do this!
 #' grid.newpage()
-#' grid.draw(rectGrob())
-#' vp <- viewport(
-#'   x = 0.5, y = 0.5,
-#'   width = 0.75, height = 0.75,
-#'   just = c("center", "center")
-#' )
+#' vp <- viewport(width = 0.65, height = 0.75)
 #' pushViewport(vp)
-#' grid.draw(rectGrob())
 #' draw(heatmapAnnoFunction)
 #'
 #' # try again as a row annotation
 #' grid.newpage()
-#' grid.draw(rectGrob())
-#' vp <- viewport(
-#'   x = 0.5, y = 0.5,
-#'   width = 0.75, height = 0.75,
-#'   just = c("center", "center")
-#' )
 #' pushViewport(vp)
-#' grid.draw(rectGrob())
 #' draw(fun(.data = psq, .side = "right", .taxa = rev(taxa)))
 taxAnnotation <- function(...,
                           name,
@@ -72,7 +62,7 @@ taxAnnotation <- function(...,
                           show_legend = TRUE,
                           gp = grid::gpar(col = NA),
                           border = FALSE,
-                          gap = unit(2, "mm"),
+                          gap = grid::unit(2, "mm"),
                           show_annotation_name = TRUE,
                           annotation_label = NULL,
                           annotation_name_gp = grid::gpar(),
@@ -150,6 +140,7 @@ taxAnnotation <- function(...,
 #' which itself is used by cor_heatmap and comp_heatmap as tax_anno argument.
 #'
 #' @inheritParams ComplexHeatmap::anno_barplot
+#' @inheritDotParams ComplexHeatmap::anno_barplot axis_param
 #'
 #' @param undetected
 #' the value above which taxa are classed as detected/present in a sample
@@ -183,12 +174,15 @@ taxAnnotation <- function(...,
 #' heatmapAnnoFunction <- fun(data = psq, which = "row", taxa = taxa)
 #'
 #' # draw the barplot without a heatmap, you will never normally do this!
+#' vp <- viewport(width = 0.75, height = 0.75)
+#'
 #' grid::grid.newpage()
+#' pushViewport(vp)
 #' draw(heatmapAnnoFunction)
 #'
 #' # let's change some style options and specify the data up front
 #' grid::grid.newpage()
-#'
+#' pushViewport(vp)
 #' anno_tax_prev(
 #'   data = psq, taxa = taxa, which = "column",
 #'   gp = grid::gpar(fill = "red", lwd = 3, alpha = 0.5),
@@ -200,7 +194,7 @@ taxAnnotation <- function(...,
 #' grid::grid.newpage()
 anno_tax_prev <- function(undetected = 0,
                           use_counts = TRUE,
-                          size = grid::unit(10, "mm"),
+                          size = grid::unit(20, "mm"),
                           baseline = 0,
                           border = TRUE,
                           bar_width = 0.6,
@@ -257,6 +251,7 @@ anno_tax_prev <- function(undetected = 0,
 #'
 #' @inheritParams anno_tax_prev
 #' @inheritParams ComplexHeatmap::anno_boxplot
+#' @inheritDotParams ComplexHeatmap::anno_boxplot axis_param
 #'
 #' @param only_detected
 #' only plot values for samples where the taxon abundance is > undetected
@@ -280,14 +275,19 @@ anno_tax_prev <- function(undetected = 0,
 #' # manually specify the prevalence barplot function by giving it data etc.
 #' heatmapAnnoFunction <- fun(data = psq, which = "column", taxa = taxa)
 #' # draw the barplot without a heatmap, you will never normally do this!
-#' grid::grid.newpage()
+#' vp <- viewport(width = 0.75, height = 0.75)
+#' grid.newpage()
+#' pushViewport(vp)
 #' draw(heatmapAnnoFunction)
+#'
 #' # let's change some style options and specify the data up front
 #' grid::grid.newpage()
+#' pushViewport(vp)
 #' draw(anno_tax_box(
 #'  data = psq, taxa = taxa, which = "row", pointsize = grid::unit(1, "mm"),
 #'  gp = grid::gpar(fill = "red"), border = FALSE, box_width = 0.2
 #' ))
+#'
 #' # clear drawings
 #' grid::grid.newpage()
 anno_tax_box <- function(undetected = 0,
@@ -363,6 +363,7 @@ anno_tax_box <- function(undetected = 0,
 #'
 #' @inheritParams anno_tax_box
 #' @inheritParams ComplexHeatmap::anno_density
+#' @inheritDotParams ComplexHeatmap::anno_density axis_param
 #'
 #' @param only_detected
 #' only plot values for samples where the taxon abundance is > undetected
@@ -383,25 +384,30 @@ anno_tax_box <- function(undetected = 0,
 #' fun <- anno_tax_density()
 #' # manually specify the density plot function by giving it data etc.
 #' heatmapAnnoFunction <- fun(data = psq, which = "column", taxa = taxa)
+#'
 #' # draw the density plot without a heatmap, you will never normally do this!
-#' grid::grid.newpage()
-#' draw(heatmapAnnoFunction)
-#' # let's change some style options and specify the data up front
-#' grid::grid.newpage()
-#' grid.draw(rectGrob())
-#' vp <- viewport(
-#'   x = 0.5, y = 0.5,
-#'   width = 0.75, height = 0.75,
-#'   just = c("center", "center")
-#' )
+#' vp <- viewport(width = 0.75, height = 0.75)
+#' grid.newpage()
 #' pushViewport(vp)
-#' grid.draw(rectGrob())
+#' draw(heatmapAnnoFunction)
+#'
+#' # let's change some style options and specify the data up front
+#' grid.newpage()
+#' pushViewport(vp)
 #' draw(anno_tax_density(
 #'  data = psq, taxa = taxa, which = "row",
 #'  gp = grid::gpar(fill = "red"), border = FALSE
 #' ))
-#' # clear drawings
-#' grid::grid.newpage()
+#'
+#' # heatmap type, with alternative transformation and axis_param
+#' grid.newpage()
+#' pushViewport(vp)
+#' draw(anno_tax_density(
+#'  data = psq, taxa = taxa, which = "row", type = "heatmap",
+#'  trans = "log2", zero_replace = "halfmin", axis_param = list(labels_rot = 0)
+#' ))
+#'
+#' grid.newpage()
 anno_tax_density <- function(undetected = 0,
                              only_detected = TRUE,
                              trans = "log10p",
@@ -413,7 +419,7 @@ anno_tax_density <- function(undetected = 0,
                              heatmap_colors = c("white", "forestgreen"),
                              joyplot_scale = 1.5,
                              border = TRUE,
-                             gp = grid::gpar(fill = "#CCCCCC"),
+                             gp = grid::gpar(fill = "lightgrey"),
                              axis = TRUE,
                              ...,
                              data = NULL,
@@ -479,6 +485,7 @@ anno_tax_density <- function(undetected = 0,
 #' replace values with NaN for samples where taxon abundance is <= undetected
 #'
 #' @return numeric matrix, taxa as columns
+#' @noRd
 taxCalcAbund <- function(data,
                          taxa,
                          trans,

@@ -7,7 +7,7 @@
 cor_heatmap(
   data,
   taxa = phyloseq::taxa_names(ps_get(data)),
-  tax_anno = taxAnnotation(Prev. = anno_tax_prev()),
+  tax_anno = taxAnnotation(Prev. = anno_tax_prev(), Abun. = anno_tax_box()),
   vars = NA,
   anno_vars = NULL,
   cor = c("pearson", "kendall", "spearman")[1],

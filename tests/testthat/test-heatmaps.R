@@ -14,18 +14,23 @@ psq <- tax_agg(psq, "Genus")
 set.seed(123)
 taxa <- sample(microbiome::top_taxa(ps_get(psq))[1:50], size = 30)
 
-# cor_heatmap --------------------------------------------------------------
+# deprecated cor_heatmap functionality ---------------------------------------
+
 test_that("default taxa_side ('right') is not compatible with taxa column annotations", {
-  column_tax_anno <- tax_anno(undetected = 50, which = "column")
+  column_tax_anno <- suppressWarnings( # warns about deprecation
+    tax_anno(undetected = 50, which = "column")
+  )
   expect_error(
-    object = cor_heatmap(psq, taxa, anno_tax = column_tax_anno),
+    object = suppressWarnings(
+      cor_heatmap(psq, taxa, anno_tax = column_tax_anno)
+    ),
     regexp = "\nYou specified the `which` argument to anno_tax()"
   )
 })
 
 test_that("cor_heatmap error on invalid anno_tax argument", {
   expect_error(
-    object = cor_heatmap(psq, taxa, anno_tax = 3),
+    object = suppressWarnings(cor_heatmap(psq, taxa, anno_tax = 3)),
     regexp = "heatmap anno_tax argument must be one of the following"
   )
 })
@@ -33,8 +38,10 @@ test_that("cor_heatmap error on invalid anno_tax argument", {
 test_that("cor_heatmap doesn't change: ", {
   local_edition(3)
   # make simple correlation heatmap with all numeric-like variables
-  p <- cor_heatmap(
-    data = psq, taxa = taxa, anno_tax = tax_anno(undetected = 50)
+  p <- suppressWarnings(
+    cor_heatmap(
+      data = psq, taxa = taxa, anno_tax = tax_anno(undetected = 50)
+    )
   )
   expect_snapshot_csv(
     name = "cor_heatmap_dietswap",
@@ -53,13 +60,15 @@ test_that("cor_heatmap doesn't change: ", {
 test_that("cor_heatmap with var_anno doesn't change: ", {
   local_edition(3)
 
-  v <- cor_heatmap(
-    data = psq, taxa = taxa,
-    anno_tax = tax_anno(undetected = 50),
-    anno_vars = var_anno(
-      annos = c("var_hist", "var_box"),
-      funs = list("identity", function(x) log10(x + 1)),
-      names = c("x", "log10(x+1)"), rel_sizes = c(1, 2)
+  v <- suppressWarnings(
+    cor_heatmap(
+      data = psq, taxa = taxa,
+      anno_tax = tax_anno(undetected = 50),
+      anno_vars = var_anno(
+        annos = c("var_hist", "var_box"),
+        funs = list("identity", function(x) log10(x + 1)),
+        names = c("x", "log10(x+1)"), rel_sizes = c(1, 2)
+      )
     )
   )
 
@@ -80,15 +89,16 @@ test_that("cor_heatmap with var_anno doesn't change: ", {
 
 
 
-# comp_heatmap ------------------------------------------------------------
+# deprecated comp_heatmap functionality ---------------------------------------
 
 test_that("comp_heatmap doesn't change: ", {
   local_edition(3)
 
-  p <- psq %>%
-    tax_transform("clr") %>%
-    comp_heatmap(taxa = taxa, anno_tax = tax_anno(undetected = 50))
-
+  p <- suppressWarnings(
+    psq %>%
+      tax_transform("clr") %>%
+      comp_heatmap(taxa = taxa, anno_tax = tax_anno(undetected = 50))
+  )
   expect_snapshot_csv(
     name = "comp_heatmap_dietswap",
     object = p@matrix

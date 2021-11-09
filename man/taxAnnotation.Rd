@@ -11,7 +11,7 @@ taxAnnotation(
   show_legend = TRUE,
   gp = grid::gpar(col = NA),
   border = FALSE,
-  gap = unit(2, "mm"),
+  gap = grid::unit(2, "mm"),
   show_annotation_name = TRUE,
   annotation_label = NULL,
   annotation_name_gp = grid::gpar(),
@@ -80,10 +80,13 @@ psq <- tax_agg(psq, rank = "Family")
 taxa <- tax_top(psq, n = 15, rank = "Family")
 
 # makes a function that takes data, taxa and which (at minimum)
+customAxis <- list(labels_rot = 0, at = c(0, 0.5, 1))
+
 fun <- taxAnnotation(
-  gap = grid::unit(5, "mm"),
-  Prev. = anno_tax_prev(size = unit(20, "mm")),
-  Abundance = anno_tax_box(size = unit(40, "mm"), only_detected = TRUE)
+  gap = grid::unit(2.5, "mm"),
+  Prev. = anno_tax_prev(axis_param = customAxis, ylim = c(0, 1), extend = 0),
+  `Prop. Abd.` = anno_tax_box(size = unit(40, "mm"), axis_param = customAxis),
+  `Log10p Abd.` = anno_tax_density(type = "heatmap")
 )
 
 # manually specify the prevalence barplot function by giving it data etc.
@@ -91,25 +94,12 @@ heatmapAnnoFunction <- fun(.data = psq, .side = "top", .taxa = taxa)
 
 # draw the annotation without a heatmap, you will never normally do this!
 grid.newpage()
-grid.draw(rectGrob())
-vp <- viewport(
-  x = 0.5, y = 0.5,
-  width = 0.75, height = 0.75,
-  just = c("center", "center")
-)
+vp <- viewport(width = 0.65, height = 0.75)
 pushViewport(vp)
-grid.draw(rectGrob())
 draw(heatmapAnnoFunction)
 
 # try again as a row annotation
 grid.newpage()
-grid.draw(rectGrob())
-vp <- viewport(
-  x = 0.5, y = 0.5,
-  width = 0.75, height = 0.75,
-  just = c("center", "center")
-)
 pushViewport(vp)
-grid.draw(rectGrob())
 draw(fun(.data = psq, .side = "right", .taxa = rev(taxa)))
 }

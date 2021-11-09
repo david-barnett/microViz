@@ -7,7 +7,7 @@
 anno_tax_prev(
   undetected = 0,
   use_counts = TRUE,
-  size = grid::unit(10, "mm"),
+  size = grid::unit(20, "mm"),
   baseline = 0,
   border = TRUE,
   bar_width = 0.6,
@@ -42,7 +42,11 @@ anno_tax_prev(
 
 \item{axis}{Whether to add axis?}
 
-\item{...}{Other arguments.}
+\item{...}{
+  Arguments passed on to \code{\link[ComplexHeatmap:anno_barplot]{ComplexHeatmap::anno_barplot}}
+  \describe{
+    \item{\code{axis_param}}{parameters for controlling axis. See \code{\link[ComplexHeatmap]{default_axis_param}} for all possible settings and default parameters.}
+  }}
 
 \item{data}{OPTIONAL phyloseq or ps_extra,
 only set this to override use of same data as in heatmap}
@@ -76,12 +80,15 @@ fun <- anno_tax_prev()
 heatmapAnnoFunction <- fun(data = psq, which = "row", taxa = taxa)
 
 # draw the barplot without a heatmap, you will never normally do this!
+vp <- viewport(width = 0.75, height = 0.75)
+
 grid::grid.newpage()
+pushViewport(vp)
 draw(heatmapAnnoFunction)
 
 # let's change some style options and specify the data up front
 grid::grid.newpage()
-
+pushViewport(vp)
 anno_tax_prev(
   data = psq, taxa = taxa, which = "column",
   gp = grid::gpar(fill = "red", lwd = 3, alpha = 0.5),

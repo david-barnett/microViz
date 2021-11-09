@@ -137,7 +137,9 @@
 #' cor_heatmap(psq, taxa, anno_vars = var_annotations, anno_tax = tax_anno(undetected = 50))
 cor_heatmap <- function(data,
                         taxa = phyloseq::taxa_names(ps_get(data)),
-                        tax_anno = taxAnnotation(Prev. = anno_tax_prev()),
+                        tax_anno = taxAnnotation(
+                          Prev. = anno_tax_prev(), Abun. = anno_tax_box()
+                        ),
                         vars = NA,
                         anno_vars = NULL,
                         cor = c("pearson", "kendall", "spearman")[1],
@@ -177,9 +179,9 @@ cor_heatmap <- function(data,
           anno_tax = anno_tax, ps = ps, taxa = taxa, side = taxa_side
         )
       } else if (!identical(tax_anno, NULL)) {
-        ### TODO
-        ### Add stuff for new version! using tax_anno
         anno_tax <- tax_anno(.data = data, .taxa = taxa, .side = taxa_side)
+      } else {
+        anno_tax <- NULL
       }
 
     }

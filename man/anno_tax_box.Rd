@@ -57,7 +57,11 @@ anno_tax_box(
 
 \item{axis}{Whether to add axis?}
 
-\item{...}{Other arguments.}
+\item{...}{
+  Arguments passed on to \code{\link[ComplexHeatmap:anno_boxplot]{ComplexHeatmap::anno_boxplot}}
+  \describe{
+    \item{\code{axis_param}}{parameters for controlling axis. See \code{\link[ComplexHeatmap]{default_axis_param}} for all possible settings and default parameters.}
+  }}
 
 \item{data}{OPTIONAL phyloseq or ps_extra,
 only set this to override use of same data as in heatmap}
@@ -88,14 +92,19 @@ fun <- anno_tax_box()
 # manually specify the prevalence barplot function by giving it data etc.
 heatmapAnnoFunction <- fun(data = psq, which = "column", taxa = taxa)
 # draw the barplot without a heatmap, you will never normally do this!
-grid::grid.newpage()
+vp <- viewport(width = 0.75, height = 0.75)
+grid.newpage()
+pushViewport(vp)
 draw(heatmapAnnoFunction)
+
 # let's change some style options and specify the data up front
 grid::grid.newpage()
+pushViewport(vp)
 draw(anno_tax_box(
  data = psq, taxa = taxa, which = "row", pointsize = grid::unit(1, "mm"),
  gp = grid::gpar(fill = "red"), border = FALSE, box_width = 0.2
 ))
+
 # clear drawings
 grid::grid.newpage()
 }
