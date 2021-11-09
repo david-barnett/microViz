@@ -7,7 +7,7 @@
 cor_heatmap(
   data,
   taxa = phyloseq::taxa_names(ps_get(data)),
-  anno_tax = tax_anno(),
+  tax_anno = taxAnnotation(Prev. = anno_tax_prev()),
   vars = NA,
   anno_vars = NULL,
   cor = c("pearson", "kendall", "spearman")[1],
@@ -22,6 +22,7 @@ cor_heatmap(
   tax_transform = "identity",
   var_fun = "identity",
   gridlines = heat_grid(lwd = 0.5),
+  anno_tax = NULL,
   ...
 )
 }
@@ -29,9 +30,6 @@ cor_heatmap(
 \item{data}{phyloseq or phyloseq extra}
 
 \item{taxa}{list of taxa to include, or NA for all}
-
-\item{anno_tax}{optional annotation of taxa distributions: tax_anno() list output,
-or a pre-made ComplexHeatmap HeatmapAnnotation}
 
 \item{vars}{selection of variable names from sample_data}
 
@@ -65,6 +63,9 @@ anno_tax annotations are placed (top/bottom/left/right)}
 before correlating (but not used in any variable annotations)}
 
 \item{gridlines}{list output of heat_grid() for setting gridline style}
+
+\item{anno_tax}{optional annotation of taxa distributions: tax_anno() list output,
+or a pre-made ComplexHeatmap HeatmapAnnotation}
 
 \item{...}{extra args, for cor_heatmap passed to internal function viz_heatmap}
 }

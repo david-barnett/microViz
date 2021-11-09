@@ -137,7 +137,7 @@
 #' cor_heatmap(psq, taxa, anno_vars = var_annotations, anno_tax = tax_anno(undetected = 50))
 cor_heatmap <- function(data,
                         taxa = phyloseq::taxa_names(ps_get(data)),
-                        anno_tax = tax_anno(),
+                        tax_anno = taxAnnotation(Prev. = anno_tax_prev()),
                         vars = NA,
                         anno_vars = NULL,
                         cor = c("pearson", "kendall", "spearman")[1],
@@ -152,6 +152,7 @@ cor_heatmap <- function(data,
                         tax_transform = "identity",
                         var_fun = "identity",
                         gridlines = heat_grid(lwd = 0.5),
+                        anno_tax = NULL,
                         ...) {
   if (inherits(data, "data.frame")) {
     otu_mat <- NULL # causes cor to only use x (meta_mat)
@@ -169,8 +170,18 @@ cor_heatmap <- function(data,
       otu_mat <- unclass(otu)
 
       taxa_which <- taxa_which_from_taxa_side(taxa_side)
-      # create taxa annotation object if "instructions" given
-      anno_tax <- anno_tax_helper(anno_tax, ps = ps, taxa = taxa, side = taxa_side)
+
+      if (!identical(anno_tax, NULL)) {
+        # create taxa annotation object if "instructions" given
+        anno_tax <- anno_tax_helper(
+          anno_tax = anno_tax, ps = ps, taxa = taxa, side = taxa_side
+        )
+      } else if (!identical(tax_anno, NULL)) {
+        ### TODO
+        ### Add stuff for new version! using tax_anno
+        anno_tax <- tax_anno(.data = data, .taxa = taxa, .side = taxa_side)
+      }
+
     }
     # handle sample metadata
     samdat <- phyloseq::sample_data(ps)
@@ -579,6 +590,8 @@ annoWhichFromAnnoSide <- function(side, argName = "side") {
 #
 # used inside cor_heatmap (when given phyloseq as data) and comp_heatmap (always)
 anno_tax_helper <- function(anno_tax, ps, taxa, side) {
+  warning("anno_tax argument is deprecated, use tax_anno arg instead")
+
   # infer row or column from side specification
   taxa_which <- taxa_which_from_taxa_side(side)
 
@@ -586,7 +599,7 @@ anno_tax_helper <- function(anno_tax, ps, taxa, side) {
   if (inherits(anno_tax, "list")) {
     if (identical(anno_tax$which, NA)) anno_tax$which <- taxa_which
     anno_args <- c(anno_tax, list(data = ps, taxa = taxa))
-    anno_tax <- do.call(what = taxAnnotation, args = anno_args)
+    anno_tax <- do.call(what = taxAnnotate, args = anno_args)
   }
 
   # check anno_tax suitable for taxa_which?

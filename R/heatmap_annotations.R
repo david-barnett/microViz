@@ -38,6 +38,7 @@ tax_anno <- function(undetected = 0,
                      rel_sizes = NA,
                      args = NULL,
                      ...) {
+  .Deprecated(new = "taxAnnotation")
   # written to support further annotations in future
   annos <- c(prev = prev, abund = abund)
   # remove NAs
@@ -57,7 +58,7 @@ tax_anno <- function(undetected = 0,
   # get absolute sizes from relative sizes (and check right number for annos)
   sizes <- annoSizesCalc(size = size, rel_sizes = rel_sizes, annos = annos)
 
-  # return partial list of instructions for taxAnnotation
+  # return partial list of instructions for taxAnnotate
   out_list <- list(
     what = names(annos), undetected = undetected,
     which = which, sizes = sizes, gap = gap, args = args, ...
@@ -66,9 +67,9 @@ tax_anno <- function(undetected = 0,
 }
 
 
-#' @title taxAnnotation for ComplexHeatmap
+#' @title taxAnnotate for ComplexHeatmap
 #' @description
-#' taxAnnotation is used in cor_heatmap & comp_heatmap
+#' taxAnnotate is used in cor_heatmap & comp_heatmap
 #' (& will be used in tax_model_heatmap?)
 #'
 #' @param data phyloseq or ps-extra
@@ -82,15 +83,15 @@ tax_anno <- function(undetected = 0,
 #'
 #' @return HeatmapAnnotation object
 #' @noRd
-taxAnnotation <- function(data,
-                          taxa,
-                          undetected = 0,
-                          which = "row",
-                          what = c("prev", "abund"),
-                          sizes = c(15, 15),
-                          gap = 2,
-                          args = NULL,
-                          ...) {
+taxAnnotate <- function(data,
+                        taxa,
+                        undetected = 0,
+                        which = "row",
+                        what = c("prev", "abund"),
+                        sizes = c(15, 15),
+                        gap = 2,
+                        args = NULL,
+                        ...) {
   ps <- ps_get(data)
   dots <- list(...)
   # start building args list

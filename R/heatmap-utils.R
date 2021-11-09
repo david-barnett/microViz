@@ -9,7 +9,7 @@
 #' @param seriation_dist distance to use in seriation_method (if needed)
 #' @param seriation_method_col method to order the columns (in seriation::seriate)
 #' @param seriation_dist_col distance to use in seriation_method_col (if needed)
-#' @param right_annotation heatmap annotation for right hand side, e.g. taxAnnotation
+#' @param right_annotation heatmap annotation for right hand side, e.g. taxAnnotate
 #' @param ... extra args passed to ComplexHeatmap::Heatmap()
 #' @noRd
 viz_heatmap <- function(mat, # used for seriation and colours
