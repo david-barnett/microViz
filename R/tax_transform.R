@@ -185,8 +185,14 @@ tax_transformInfoUpdate <- function(info, trans, chain, rank) {
 otuTransform <- function(otu, trans, ...) {
   # perform one of several transformations #
   if (identical(trans, "binary")) {
-    # perform special binary transformation
-    otu <- otuTransformBinary(otu, dots = list(...))
+    # perform special binary transformation #
+    dots <- list(...)
+    # retrieve or create "undetected" argument
+    if ("undetected" %in% names(dots)) {
+      otu <- otuTransformBinary(otu, undetected = dots[["undetected"]])
+    } else {
+      otu <- otuTransformBinary(otu, undetected = 0)
+    }
   } else if (identical(trans, "log2")) {
     if (any(otu == 0)) {
       stop(
@@ -209,21 +215,12 @@ otuTransform <- function(otu, trans, ...) {
 
 # binary transformation helper
 # otu is from otu_get(ps)
-# dots is from list(...)
-otuTransformBinary <- function(otu, dots) {
-
-  # retrieve or create "undetected" argument
-  if ("undetected" %in% names(dots)) {
-    undetected <- dots[["undetected"]]
-  } else {
-    undetected <- 0
-  }
+otuTransformBinary <- function(otu, undetected = 0) {
   # get and transform otu_table
   otu <- unclass(otu)
   otu <- otu > undetected
   # cast from logical to double
   storage.mode(otu) <- "double"
-
   return(otu)
 }
 
