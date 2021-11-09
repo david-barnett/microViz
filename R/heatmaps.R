@@ -187,7 +187,6 @@ cor_heatmap <- function(data,
       } else {
         anno_tax <- NULL
       }
-
     }
   } else {
     stop("data must be phyloseq, ps_extra, or data.frame, not: ", paste(class(data), collapse = " "))

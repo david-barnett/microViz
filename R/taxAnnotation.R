@@ -284,8 +284,8 @@ anno_tax_prev <- function(undetected = 0,
 #' grid::grid.newpage()
 #' pushViewport(vp)
 #' draw(anno_tax_box(
-#'  data = psq, taxa = taxa, which = "row", pointsize = grid::unit(1, "mm"),
-#'  gp = grid::gpar(fill = "red"), border = FALSE, box_width = 0.2
+#'   data = psq, taxa = taxa, which = "row", pointsize = grid::unit(1, "mm"),
+#'   gp = grid::gpar(fill = "red"), border = FALSE, box_width = 0.2
 #' ))
 #'
 #' # clear drawings
@@ -308,8 +308,7 @@ anno_tax_box <- function(undetected = 0,
                          ...,
                          data = NULL,
                          taxa = NULL,
-                         which = NULL){
-
+                         which = NULL) {
   force(undetected)
   force(only_detected)
   force(trans)
@@ -395,16 +394,16 @@ anno_tax_box <- function(undetected = 0,
 #' grid.newpage()
 #' pushViewport(vp)
 #' draw(anno_tax_density(
-#'  data = psq, taxa = taxa, which = "row",
-#'  gp = grid::gpar(fill = "red"), border = FALSE
+#'   data = psq, taxa = taxa, which = "row",
+#'   gp = grid::gpar(fill = "red"), border = FALSE
 #' ))
 #'
 #' # heatmap type, with alternative transformation and axis_param
 #' grid.newpage()
 #' pushViewport(vp)
 #' draw(anno_tax_density(
-#'  data = psq, taxa = taxa, which = "row", type = "heatmap",
-#'  trans = "log2", zero_replace = "halfmin", axis_param = list(labels_rot = 0)
+#'   data = psq, taxa = taxa, which = "row", type = "heatmap",
+#'   trans = "log2", zero_replace = "halfmin", axis_param = list(labels_rot = 0)
 #' ))
 #'
 #' grid.newpage()
@@ -424,8 +423,7 @@ anno_tax_density <- function(undetected = 0,
                              ...,
                              data = NULL,
                              taxa = NULL,
-                             which = NULL){
-
+                             which = NULL) {
   force(undetected)
   force(only_detected)
   force(trans)
@@ -494,7 +492,7 @@ taxCalcAbund <- function(data,
                          only_detected) {
   # mark values in otu matrix that are detected
   if (isTRUE(only_detected)) {
-    otu <- otu_get(data)[ , taxa, drop = FALSE]
+    otu <- otu_get(data)[, taxa, drop = FALSE]
     keep <- otu > undetected
   } else {
     # everything is kept if only_detected is FALSE
@@ -503,12 +501,10 @@ taxCalcAbund <- function(data,
 
   # transform and subset data
   data <- tax_transform(data, trans = trans, zero_replace = zero_replace)
-  otu <- otu_get(data)[ , taxa, drop = FALSE]
+  otu <- otu_get(data)[, taxa, drop = FALSE]
 
   # replace undetected with NaN to avoid them showing in anno_tax_box
   otu[!keep] <- NaN
 
   return(otu)
-
 }
-

@@ -96,16 +96,16 @@ draw(heatmapAnnoFunction)
 grid.newpage()
 pushViewport(vp)
 draw(anno_tax_density(
- data = psq, taxa = taxa, which = "row",
- gp = grid::gpar(fill = "red"), border = FALSE
+  data = psq, taxa = taxa, which = "row",
+  gp = grid::gpar(fill = "red"), border = FALSE
 ))
 
 # heatmap type, with alternative transformation and axis_param
 grid.newpage()
 pushViewport(vp)
 draw(anno_tax_density(
- data = psq, taxa = taxa, which = "row", type = "heatmap",
- trans = "log2", zero_replace = "halfmin", axis_param = list(labels_rot = 0)
+  data = psq, taxa = taxa, which = "row", type = "heatmap",
+  trans = "log2", zero_replace = "halfmin", axis_param = list(labels_rot = 0)
 ))
 
 grid.newpage()

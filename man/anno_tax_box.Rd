@@ -101,8 +101,8 @@ draw(heatmapAnnoFunction)
 grid::grid.newpage()
 pushViewport(vp)
 draw(anno_tax_box(
- data = psq, taxa = taxa, which = "row", pointsize = grid::unit(1, "mm"),
- gp = grid::gpar(fill = "red"), border = FALSE, box_width = 0.2
+  data = psq, taxa = taxa, which = "row", pointsize = grid::unit(1, "mm"),
+  gp = grid::gpar(fill = "red"), border = FALSE, box_width = 0.2
 ))
 
 # clear drawings
