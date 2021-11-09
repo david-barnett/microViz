@@ -21,7 +21,9 @@ ord_arrows <- function(p, data, styleList, axesNames, defaultStyles) {
   return(p)
 }
 
-#' @title create ordination plot vector styling lists
+#' @title Create ordination plot vector styling lists
+#'
+#' Used by ord_plot, see examples there.
 #'
 #' @param size width of vector
 #' @param alpha opacity of vector
@@ -37,6 +39,7 @@ ord_arrows <- function(p, data, styleList, axesNames, defaultStyles) {
 
 #' @export
 #' @rdname ord_arrows
+#' @name Ordination-arrows
 vec_constraint <- function(size = 1, alpha = 0.8, colour = "brown",
                            arrow = grid::arrow(
                              length = grid::unit(0.005, units = "npc"),
