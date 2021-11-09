@@ -171,7 +171,7 @@ cor_heatmap <- function(data,
       otu <- otu[, taxa, drop = FALSE]
       otu_mat <- unclass(otu)
 
-      taxa_which <- taxa_which_from_taxa_side(taxa_side)
+      taxa_which <- annoWhichFromAnnoSide(taxa_side, argName = "taxa_side")
 
       if (!identical(anno_tax, NULL)) {
         # create taxa annotation object if "instructions" given
@@ -409,7 +409,7 @@ comp_heatmap <- function(data,
   )
 
   args[[paste0(taxa_side, "_annotation")]] <- anno_tax
-  taxa_which <- taxa_which_from_taxa_side(taxa_side)
+  taxa_which <- annoWhichFromAnnoSide(taxa_side, argName = "taxa_side")
   # rotate matrices if taxa are rows
   if (identical(taxa_which, "row")) {
     args[["mat"]] <- t(args[["mat"]])
@@ -558,16 +558,7 @@ heat_grid <- function(col = "white",
 }
 
 # helper function to convert top or bottom to column, and left or right to row
-# with helpful error for invalid argument, used inside cor_heatmap (and comp_heatmap)
-# taxa_which is used for rotating heatmap matrix and checking clashes with other annotations
-# taxa_side actually specifies the side taxa annotations are drawn on
-taxa_which_from_taxa_side <- function(taxa_side) {
-  taxa_which <- annoWhichFromAnnoSide(side = taxa_side, argName = "taxa_side")
-  return(taxa_which)
-}
-
-# more general internal helper for taxa_which_from_taxa_side
-# used directly in anno_sample
+# with helpful error for invalid argument, used inside cor_heatmap and comp_heatmap
 annoWhichFromAnnoSide <- function(side, argName = "side") {
   opts <- c("top", "bottom", "left", "right")
   if (!inherits(side, "character") || length(side) != 1 || !side %in% opts) {
@@ -595,7 +586,7 @@ anno_tax_helper <- function(anno_tax, ps, taxa, side) {
   warning("anno_tax argument is deprecated, use tax_anno arg instead")
 
   # infer row or column from side specification
-  taxa_which <- taxa_which_from_taxa_side(side)
+  taxa_which <- annoWhichFromAnnoSide(side, argName = "taxa_side")
 
   # create taxa annotation object if "instructions" list given
   if (inherits(anno_tax, "list")) {
