@@ -139,7 +139,7 @@ tax_agg <- function(ps,
       stop("NAs in tax_table at rank: ", rank, taxFixPrompt())
     }
     if (purrr::some(.x = namesAtRank, .p = `==`, "")) {
-      stop('zero-length name(s) in tax_table at rank: ', rank, taxFixPrompt())
+      stop("zero-length name(s) in tax_table at rank: ", rank, taxFixPrompt())
     }
 
     # unique names needed as factor levels for .taxID. column
