@@ -78,7 +78,8 @@ df_to_numeric_matrix <- function(df, vars = NA, trans_fun = NA) {
     stopifnot(storage.mode(df) %in% c("double", "integer", "logical"))
     mat <- df
   } else {
-    df <- df[, sapply(df, function(x) is.numeric(x) | is.logical(x) | is.integer(x)), drop = FALSE]
+    nm <- sapply(df, function(x) is.numeric(x) | is.logical(x) | is.integer(x))
+    df <- df[, nm, drop = FALSE]
     mat <- as.matrix.data.frame(df)
   }
   num_vars <- colnames(mat)
@@ -98,8 +99,16 @@ df_to_numeric_matrix <- function(df, vars = NA, trans_fun = NA) {
   }
   # apply transformation function to matrix columns?
   if (!identical(trans_fun, NA)) {
-    if (inherits(trans_fun, "function")) mat <- apply(mat, MARGIN = 2, FUN = trans_fun)
-    if (inherits(trans_fun, "character")) mat <- apply(mat, MARGIN = 2, FUN = function(x) do.call(what = trans_fun, args = list(x)))
+    if (inherits(trans_fun, "function")) {
+      mat <- apply(mat, MARGIN = 2, FUN = trans_fun)
+    } else if (inherits(trans_fun, "character")) {
+      mat <- apply(
+        X = mat, MARGIN = 2,
+        FUN = function(x) do.call(what = trans_fun, args = list(x))
+      )
+    } else {
+      stop("var transformation must be specified as a function or name of one")
+    }
   }
   return(mat)
 }
