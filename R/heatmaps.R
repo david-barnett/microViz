@@ -161,13 +161,17 @@ cor_heatmap <- function(data,
     meta_mat <- df_to_numeric_matrix(data, vars = vars, trans_fun = var_fun)
   } else if (methods::is(data, "phyloseq") || inherits(data, "ps_extra")) {
     ps <- ps_get(data)
+
+    # handle sample metadata
+    samdat <- phyloseq::sample_data(ps)
+    meta_mat <- df_to_numeric_matrix(samdat, vars = vars, trans_fun = var_fun)
+
     # handle otu_mat and taxa annotations if relevant
     if (identical(taxa, NULL)) {
       otu_mat <- NULL
     } else {
       # handle otu_table data
-      otu <- otu_get(data)
-      otu <- microbiome::transform(otu, transform = tax_transform)
+      otu <- otu_get(tax_transform(data = data, trans = tax_transform))
       otu <- otu[, taxa, drop = FALSE]
       otu_mat <- unclass(otu)
 
@@ -185,9 +189,6 @@ cor_heatmap <- function(data,
       }
 
     }
-    # handle sample metadata
-    samdat <- phyloseq::sample_data(ps)
-    meta_mat <- df_to_numeric_matrix(samdat, vars = vars, trans_fun = var_fun)
   } else {
     stop("data must be phyloseq, ps_extra, or data.frame, not: ", paste(class(data), collapse = " "))
   }
@@ -207,34 +208,52 @@ cor_heatmap <- function(data,
     stop("anno_vars annotation which arg should NOT match taxa_which arg: one should be 'row' and the other 'column'")
   }
 
-  # correlate datasets (x to y or just within x if y is NULL)
+  # correlate datasets (x to y or just pairs within x if y is NULL)
   cor_mat <- stats::cor(x = meta_mat, y = otu_mat, use = cor_use, method = cor)
+  if (identical(taxa_which, "row")) cor_mat <- t(cor_mat)
+
+  # compute order and any h clustering trees for matrix rows and columns
+  ser <- mat_seriate(
+    mat = cor_mat, method = seriation_method, dist = seriation_dist,
+    col_method = seriation_method_col, col_dist = seriation_dist_col
+  )
+
+  # getting colour range from data if necessary
+  # the formalArgs condition is to exclude the grDevices::colors function!
+  if ("range" %in% methods::formalArgs(def = colors)) {
+    colors <- colors(range = range(cor_mat, na.rm = TRUE, finite = TRUE))
+  }
+
+  # cell label function from `numbers` (function or arg list) & number matrix
+  # this is a ComplexHeatmap-specific format of function
+  cell_fun <- heatmapMakeCellFun(numbers = numbers, numbers_mat = cor_mat)
 
   args <- list(
+    matrix = cor_mat,
     name = cor,
-    colors = colors,
-    numbers = numbers,
-    seriation_method = seriation_method,
-    seriation_dist = seriation_dist,
-    seriation_method_col = seriation_method_col,
-    seriation_dist_col = seriation_dist_col,
+    col = colors,
+    cell_fun = cell_fun,
+    row_order = ser$row_order,
+    cluster_rows = ser$row_tree,
+    column_order = ser$col_order,
+    cluster_columns = ser$col_tree,
+    column_names_gp = grid::gpar(fontsize = 7),
+    row_names_gp = grid::gpar(fontsize = 7),
     column_names_rot = 45,
     column_dend_side = "bottom",
     column_names_side = "top",
     rect_gp = gridlines
   )
 
-  args[["mat"]] <- cor_mat
-  args[["numbers_mat"]] <- cor_mat # this differs in comp_heatmap (is there value in it being separable in this function?)
-  args[[paste0(taxa_side, "_annotation")]] <- anno_tax
 
   if (methods::is(data, "phyloseq") || inherits(data, "ps_extra")) {
+    # add taxa annotation if exists
+    args[[paste0(taxa_side, "_annotation")]] <- anno_tax
+
     # TODO allow bottom, top, left and right in addition to rows and columns
     if (identical(taxa_which, "row")) {
       args[["top_annotation"]] <- anno_vars
-      args[["mat"]] <- t(args[["mat"]])
-      args[["numbers_mat"]] <- t(args[["numbers_mat"]])
-    } else if (identical(taxa_which, "column")) {
+    } else {
       args[["right_annotation"]] <- anno_vars
     }
   } else if (inherits(data, "data.frame") && !identical(anno_vars, NULL)) {
@@ -242,12 +261,13 @@ cor_heatmap <- function(data,
     if (anno_vars@which == "row") args[["right_annotation"]] <- anno_vars
     if (anno_vars@which == "column") args[["top_annotation"]] <- anno_vars
   }
-  # use extra args (overwriting any set including with anno_tax [relevant if anno_tax = NULL])
+
+  # use extra args
   dots <- list(...)
   args[names(dots)] <- dots
 
-  p <- do.call(viz_heatmap, args = args)
-  p
+  p <- do.call(ComplexHeatmap::Heatmap, args = args)
+  return(p)
 }
 
 
@@ -391,40 +411,69 @@ comp_heatmap <- function(data,
     otu_numbers <- otu_numbers[samples, taxa, drop = FALSE]
   }
 
+  # getting colour range from data if necessary
+  # the formalArgs condition is to exclude the grDevices::colors function!
+  if ("range" %in% methods::formalArgs(def = colors)) {
+    colors <- colors(range = range(otu_mat, na.rm = TRUE, finite = TRUE))
+  }
+
+  # infer whether taxa are rows or columns from side argument
+  taxa_which <- annoWhichFromAnnoSide(taxa_side, argName = "taxa_side")
+
+  # rotate matrices if taxa are rows of heatmap
+  if (identical(taxa_which, "row")) {
+    otu_mat <- t(otu_mat)
+    otu_numbers <- t(otu_numbers)
+  }
+
+  # compute order and any h clustering trees for matrix rows and columns
+  ser <- mat_seriate(
+    mat = otu_mat, method = seriation_method, dist = seriation_dist,
+    col_method = seriation_method_col, col_dist = seriation_dist_col
+  )
+
+  # remove taxa_are_rows attr. which can remain from comp_heatmap otu_table
+  # (caused warning when Heatmap sets class(mat))
+  otu_mat <- methods::as(otu_mat, Class = "matrix")
+  otu_numbers <- methods::as(otu_numbers, Class = "matrix")
+
+  # cell label function from `numbers` (function or arg list) & number matrix
+  # this is a ComplexHeatmap-specific format of function
+  cell_fun <- heatmapMakeCellFun(numbers = numbers, numbers_mat = otu_numbers)
+
+  # build list of arguments for ComplexHeatmap::Heatmap
   args <- list(
     name = name,
-    mat = otu_mat,
-    numbers_mat = otu_numbers,
-    colors = colors,
-    numbers = numbers,
-    seriation_method = seriation_method,
-    seriation_dist = seriation_dist,
-    seriation_method_col = seriation_method_col,
-    seriation_dist_col = seriation_dist_col,
+    matrix = otu_mat,
+    col = colors,
+    cell_fun = cell_fun,
+    row_order = ser$row_order,
+    cluster_rows = ser$row_tree,
+    column_order = ser$col_order,
+    cluster_columns = ser$col_tree,
     rect_gp = gridlines,
     column_names_rot = -45,
     column_dend_side = "top",
     column_names_side = "bottom",
-    heatmap_legend_param = list(labels_gp = grid::gpar(fontsize = 8))
+    heatmap_legend_param = list(labels_gp = grid::gpar(fontsize = 8)),
+    column_names_gp = grid::gpar(fontsize = 7),
+    row_names_gp = grid::gpar(fontsize = 7)
   )
 
+  # add taxa annotation object to correct side argument
   args[[paste0(taxa_side, "_annotation")]] <- anno_tax
-  taxa_which <- annoWhichFromAnnoSide(taxa_side, argName = "taxa_side")
-  # rotate matrices if taxa are rows
-  if (identical(taxa_which, "row")) {
-    args[["mat"]] <- t(args[["mat"]])
-    args[["numbers_mat"]] <- t(args[["numbers_mat"]])
-  }
 
+  # suppress showing names of samples on whichever side they appear
   sam_which <- ifelse(taxa_which == "column", yes = "row", no = "column")
   args[[paste0("show_", sam_which, "_names")]] <- FALSE
 
-  # use extra args (overwriting any set including with anno_tax [relevant if anno_tax = NULL])
+  # use extra args passed to dots
+  # (overwriting any set including with anno_tax [relevant if anno_tax = NULL])
   dots <- list(...)
   args[names(dots)] <- dots
 
-  p <- do.call(viz_heatmap, args = args)
-  p
+  p <- do.call(ComplexHeatmap::Heatmap, args = args)
+  return(p)
 }
 
 #' @title Easy palettes for ComplexHeatmap

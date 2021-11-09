@@ -1,43 +1,6 @@
-#' make heatmap from a matrix and annotations
-#'
-#' Used inside cor_heatmap and comp_heatmap & will be inside tax_model_heatmap
-#'
-#' @param mat matrix for ComplexHeatmap
-#' @param colors output of heat_palette() to set heatmap fill color scheme
-#' @param numbers output of heat_numbers() to draw numbers on heatmap cells
-#' @param seriation_method method to order the rows (in seriation::seriate)
-#' @param seriation_dist distance to use in seriation_method (if needed)
-#' @param seriation_method_col method to order the columns (in seriation::seriate)
-#' @param seriation_dist_col distance to use in seriation_method_col (if needed)
-#' @param right_annotation heatmap annotation for right hand side, e.g. taxAnnotate
-#' @param ... extra args passed to ComplexHeatmap::Heatmap()
-#' @noRd
-viz_heatmap <- function(mat, # used for seriation and colours
-                        numbers_mat, # used only for numbers
-                        name = "value",
-                        colors = heat_palette(),
-                        numbers = heat_numbers(),
-                        seriation_method = "OLO_ward",
-                        seriation_dist = "euclidean",
-                        seriation_method_col = seriation_method,
-                        seriation_dist_col = seriation_dist,
-                        right_annotation = NULL,
-                        ...) {
-  stopifnot(inherits(mat, "matrix") && storage.mode(mat) %in% c("double", "integer"))
-  stopifnot(inherits(numbers_mat, "matrix") && storage.mode(numbers_mat) %in% c("double", "integer"))
-
-  dots <- list(...)
-  # compute order and any h clustering trees for matrix rows and columns
-  ser <- mat_seriate(
-    mat = mat, method = seriation_method, dist = seriation_dist,
-    col_method = seriation_method_col, col_dist = seriation_dist_col
-  )
-
-  # remove taxa_are_rows attr. which can remain from comp_heatmap otu_table mat
-  # (caused warning when Heatmap sets class(mat))
-  mat <- methods::as(mat, Class = "matrix")
-  numbers_mat <- methods::as(numbers_mat, Class = "matrix")
-
+# helper for heatmap functions for number-drawing cell function
+heatmapMakeCellFun <- function(numbers, numbers_mat) {
+  mat <- numbers_mat
   # cell_fun function for drawing numbers on heatmap cells
   if (identical(numbers, NULL)) {
     cell_fun <- NULL
@@ -49,7 +12,7 @@ viz_heatmap <- function(mat, # used for seriation and colours
     # ref https://adv-r.hadley.nz/function-factories.html
   } else if (inherits(numbers, "list")) {
     cell_fun <- function(j, i, x, y, width, height, fill) {
-      val <- numbers_mat[i, j]
+      val <- mat[i, j]
       if (!is.na(val)) {
         grid::grid.text(
           label = sprintf(numbers[["fmt"]], val),
@@ -58,31 +21,8 @@ viz_heatmap <- function(mat, # used for seriation and colours
       }
     }
   }
-
-  # getting colour range from data if necessary
-  if ("range" %in% methods::formalArgs(def = colors)) {
-    colors <- colors(range = range(mat, na.rm = TRUE, finite = TRUE))
-  }
-
-  args <- list(
-    matrix = mat,
-    name = name,
-    col = colors,
-    right_annotation = right_annotation,
-    row_order = ser$row_order,
-    cluster_rows = ser$row_tree,
-    column_order = ser$col_order,
-    cluster_columns = ser$col_tree,
-    cell_fun = cell_fun,
-    column_names_gp = grid::gpar(fontsize = 7),
-    row_names_gp = grid::gpar(fontsize = 7)
-  )
-  args[names(dots)] <- dots
-
-  p <- do.call(ComplexHeatmap::Heatmap, args = args)
-  return(p)
+  return(cell_fun)
 }
-
 
 #' @param data phyloseq or ps_Extra
 #' @param taxa selection vector of taxa (names, numbers or logical)
