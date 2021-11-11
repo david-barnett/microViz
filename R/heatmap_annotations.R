@@ -213,6 +213,7 @@ var_anno <- function(annos = "var_box",
                      rel_sizes = NA,
                      args = NULL,
                      ...) {
+  .Deprecated(new = "varAnnotation")
   # fill empty names and sizes
   if (identical(names, NA)) names <- annos
 
@@ -238,16 +239,16 @@ var_anno <- function(annos = "var_box",
 }
 
 #' @noRd
-varAnnotation <- function(data, # from heatmap fun # converted to df
-                          vars, # from heatmap fun # passed along to var_anno_*
-                          annos, # from var_anno / anno_var
-                          funs, # from var_anno / anno_var
-                          names, # from var_anno / anno_var
-                          which, # from var_anno / anno_var
-                          sizes, # from var_anno / anno_var
-                          gap, # from var_anno / anno_var
-                          args, # from var_anno / anno_var
-                          ... # from var_anno / anno_var
+varAnnotate <- function(data, # from heatmap fun # converted to df
+                        vars, # from heatmap fun # passed along to var_anno_*
+                        annos, # from var_anno / anno_var
+                        funs, # from var_anno / anno_var
+                        names, # from var_anno / anno_var
+                        which, # from var_anno / anno_var
+                        sizes, # from var_anno / anno_var
+                        gap, # from var_anno / anno_var
+                        args, # from var_anno / anno_var
+                        ... # from var_anno / anno_var
 ) {
   dots <- list(...)
   # extract data if phyloseq
@@ -293,7 +294,7 @@ varAnnotation <- function(data, # from heatmap fun # converted to df
     }
     # compute annotation
     ha_args[[name]] <- do.call(
-      what = paste0("anno_", annos[[i]]),
+      what = paste0("old_anno_", annos[[i]]),
       args = c(
         list(data = dat[[i]], vars = vars, which = which, size = sizes[[i]]),
         args[[name]]
@@ -310,7 +311,7 @@ varAnnotation <- function(data, # from heatmap fun # converted to df
 #' @param vars names of variables to plot
 #' @export
 #' @rdname heatmap-annotations
-anno_var_hist <- function(data, vars = NA, which = "column", size = 15, ...) {
+old_anno_var_hist <- function(data, vars = NA, which = "column", size = 15, ...) {
   dots <- list(...)
 
   # extract (sample)data to matrix
@@ -341,7 +342,7 @@ anno_var_hist <- function(data, vars = NA, which = "column", size = 15, ...) {
 
 #' @export
 #' @rdname heatmap-annotations
-anno_var_box <- function(data, vars = NA, which = "column", size = 15, ...) {
+old_anno_var_box <- function(data, vars = NA, which = "column", size = 15, ...) {
   dots <- list(...)
 
   # extract (sample)data to matrix

@@ -112,3 +112,20 @@ df_to_numeric_matrix <- function(df, vars = NA, trans_fun = NA) {
   }
   return(mat)
 }
+
+#' Simple heatmap helper to get a default adjacent side for another annotation
+#'
+#' @param side one of "top", "right", "bottom", or "left"
+#'
+#' @return character
+#'
+#' @export
+#'
+#' @examples
+#' adjacentSide("top")
+adjacentSide <- function(side = c("top", "right", "bottom", "left")) {
+  side <- match.arg(side)
+  if (side %in% c("left", "right")) adj <- "top"
+  if (side %in% c("top", "bottom")) adj <- "right"
+  return(adj)
+}

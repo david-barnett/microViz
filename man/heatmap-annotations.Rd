@@ -6,8 +6,8 @@
 \alias{anno_prev}
 \alias{anno_abund}
 \alias{var_anno}
-\alias{anno_var_hist}
-\alias{anno_var_box}
+\alias{old_anno_var_hist}
+\alias{old_anno_var_box}
 \title{Heatmap annotations helpers}
 \usage{
 tax_anno(
@@ -57,9 +57,9 @@ var_anno(
   ...
 )
 
-anno_var_hist(data, vars = NA, which = "column", size = 15, ...)
+old_anno_var_hist(data, vars = NA, which = "column", size = 15, ...)
 
-anno_var_box(data, vars = NA, which = "column", size = 15, ...)
+old_anno_var_box(data, vars = NA, which = "column", size = 15, ...)
 }
 \arguments{
 \item{undetected}{value above which taxa are considered present/detected in a sample}

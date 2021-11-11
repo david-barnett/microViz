@@ -57,7 +57,18 @@ comp_heatmap(
 
 \item{name}{used as legend title (colourbar)}
 
-\item{...}{extra args, passed to viz_heatmap internal function}
+\item{...}{
+  Arguments passed on to \code{\link[ComplexHeatmap:Heatmap]{ComplexHeatmap::Heatmap}}
+  \describe{
+    \item{\code{row_dend_side}}{Should the row dendrogram be put on the left or right of the heatmap?}
+    \item{\code{row_dend_width}}{Width of the row dendrogram, should be a \code{\link[grid]{unit}} object.}
+    \item{\code{show_row_dend}}{Whether show row dendrogram?}
+    \item{\code{row_dend_gp}}{Graphic parameters for the dendrogram segments. If users already provide a \code{\link[stats]{dendrogram}} object with edges rendered, this argument will be ignored.}
+    \item{\code{show_row_names}}{Whether show row names.}
+    \item{\code{row_names_gp}}{Graphic parameters for row names.}
+    \item{\code{row_names_rot}}{Rotation of row names.}
+    \item{\code{row_names_centered}}{Should row names put centered?}
+  }}
 }
 \description{
 Heatmap made with ComplexHeatmap, with optional (but default) annotation of taxa prevalence and abundance.

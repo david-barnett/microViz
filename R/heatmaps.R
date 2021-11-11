@@ -5,18 +5,23 @@
 #' @details Using a data.frame for the data argument is also possible, in which case the (selected) numeric-like variables will be correlated which each other,
 #' and all arguments relating to taxa will be ignored.
 #'
+#' @inheritDotParams ComplexHeatmap::Heatmap
+#' row_dend_side row_dend_width show_row_dend row_dend_gp
+#' row_names_side show_row_names row_names_gp row_names_rot row_names_centered
+#'
 #' @param data phyloseq or phyloseq extra
 #' @param taxa list of taxa to include, or NA for all
-#' @param anno_tax
-#' optional annotation of taxa distributions: tax_anno() list output,
-#' or a pre-made ComplexHeatmap HeatmapAnnotation
+#' @param tax_anno
+#' NULL or annotation function for taxa: taxAnnotation() output.
 #' @param vars selection of variable names from sample_data
-#' @param anno_vars
-#' optional annotation of variable distributions:
-#' var_anno() list output, or a pre-made ComplexHeatmap HeatmapAnnotation
+#' @param var_anno
+#' NULL or annotation function for variables: varAnnotation() output.
 #' @param taxa_side
-#' controls heatmap orientation and where any
-#' anno_tax annotations are placed (top/bottom/left/right)
+#' "top"/"right"/"bottom"/"left": controls heatmap orientation and where any
+#' annotations specified in tax_anno are placed
+#' @param vars_side
+#' which side to place any variable annotations specified in var_anno,
+#' must be an adjacent side to taxa_side
 #' @param cor
 #' correlation coefficient. pearson/kendall/spearman,
 #' can be abbreviated (used as legend title)
@@ -36,7 +41,14 @@
 #' @param var_fun
 #' character: name of a function to be applied (columns) to a matrix of vars
 #'  before correlating (but not used in any variable annotations)
-#' @param ... extra args, for cor_heatmap passed to internal function viz_heatmap
+#' @param anno_tax
+#' DEPRECATED:
+#' optional annotation of taxa distributions: tax_anno() list output,
+#' or a pre-made ComplexHeatmap HeatmapAnnotation
+#' @param anno_vars
+#' DEPRECATED: use var_anno argument instead.
+#' Optional annotation of variable distributions:
+#' var_anno() list output, or a pre-made ComplexHeatmap HeatmapAnnotation
 #'
 #' @export
 #'
@@ -141,12 +153,13 @@ cor_heatmap <- function(data,
                           Prev. = anno_tax_prev(), Abun. = anno_tax_box()
                         ),
                         vars = NA,
-                        anno_vars = NULL,
-                        cor = c("pearson", "kendall", "spearman")[1],
+                        var_anno = NULL,
+                        cor = c("pearson", "kendall", "spearman"),
                         cor_use = "everything",
                         colors = heat_palette(palette = "Green-Orange", sym = TRUE),
                         numbers = heat_numbers(),
                         taxa_side = "right",
+                        vars_side = adjacentSide(taxa_side),
                         seriation_method = "OLO_ward",
                         seriation_dist = "euclidean",
                         seriation_method_col = seriation_method,
@@ -155,7 +168,16 @@ cor_heatmap <- function(data,
                         var_fun = "identity",
                         gridlines = heat_grid(lwd = 0.5),
                         anno_tax = NULL,
+                        anno_vars = NULL,
                         ...) {
+  # check correlation type argument
+  cor <- match.arg(cor)
+  taxa_which <- annoWhichFromAnnoSide(taxa_side, argName = "taxa_side")
+  vars_which <- annoWhichFromAnnoSide(vars_side, argName = "vars_side")
+  if (identical(taxa_which, vars_which)) {
+    stop("vars and taxa sides must be adjacent, not the same or opposite")
+  }
+
   if (inherits(data, "data.frame")) {
     otu_mat <- NULL # causes cor to only use x (meta_mat)
     meta_mat <- df_to_numeric_matrix(data, vars = vars, trans_fun = var_fun)
@@ -174,37 +196,12 @@ cor_heatmap <- function(data,
       otu <- otu_get(tax_transform(data = data, trans = tax_transform))
       otu <- otu[, taxa, drop = FALSE]
       otu_mat <- unclass(otu)
-
-      taxa_which <- annoWhichFromAnnoSide(taxa_side, argName = "taxa_side")
-
-      if (!identical(anno_tax, NULL)) {
-        # create taxa annotation object if "instructions" given
-        anno_tax <- anno_tax_helper(
-          anno_tax = anno_tax, ps = ps, taxa = taxa, side = taxa_side
-        )
-      } else if (!identical(tax_anno, NULL)) {
-        anno_tax <- tax_anno(.data = data, .taxa = taxa, .side = taxa_side)
-      } else {
-        anno_tax <- NULL
-      }
     }
   } else {
-    stop("data must be phyloseq, ps_extra, or data.frame, not: ", paste(class(data), collapse = " "))
-  }
-
-  # create variable annotation object if "instructions" given
-  if (inherits(anno_vars, "list")) {
-    anno_args <- c(anno_vars, list(data = data, vars = vars))
-    anno_vars <- do.call(what = varAnnotation, args = anno_args)
-  }
-  # check anno_vars doesn't match taxa_which (if taxa are used/relevant)
-  if (!inherits(data, "data.frame") &&
-    !identical(taxa, NULL) &&
-    !identical(anno_vars, NULL) &&
-    methods::is(anno_vars, "HeatmapAnnotation") &&
-    identical(taxa_which, anno_vars@which)
-  ) {
-    stop("anno_vars annotation which arg should NOT match taxa_which arg: one should be 'row' and the other 'column'")
+    stop(
+      "data must be phyloseq, ps_extra, or data.frame, not: ",
+      paste(class(data), collapse = " ")
+    )
   }
 
   # correlate datasets (x to y or just pairs within x if y is NULL)
@@ -226,6 +223,40 @@ cor_heatmap <- function(data,
   # cell label function from `numbers` (function or arg list) & number matrix
   # this is a ComplexHeatmap-specific format of function
   cell_fun <- heatmapMakeCellFun(numbers = numbers, numbers_mat = cor_mat)
+
+  # annotations --------------------------------------------------------------
+
+  # possibly create taxa annotation if otu_table extracted (i.e. taxa used)
+  if (!identical(otu_mat, NULL)) {
+    if (!identical(anno_tax, NULL)) {
+      # create taxa annotation object if "instructions" given
+      anno_tax <- anno_tax_helper(
+        anno_tax = anno_tax, ps = ps, taxa = taxa, side = taxa_side
+      )
+    } else if (inherits(tax_anno, "function")) {
+      anno_tax <- tax_anno(.data = data, .taxa = taxa, .side = taxa_side)
+    } else if (methods::is(tax_anno, "HeatmapAnnotation")) {
+      annoWhichMatchCheck(which = taxa_which, anno = tax_anno)
+      anno_tax <- tax_anno
+    } else {
+      anno_tax <- NULL
+    }
+  }
+
+  # create variable annotation object if "instructions" given
+  if (inherits(anno_vars, "list")) {
+    warning("anno_vars argument is deprecated, used var_anno instead!")
+    anno_args <- c(anno_vars, list(data = data, vars = vars))
+    anno_vars <- do.call(what = varAnnotate, args = anno_args)
+  } else if (identical(anno_vars, NULL)) {
+    if (identical(var_anno, NULL)){
+      anno_vars <- var_anno
+    } else if (inherits(var_anno, "function")) {
+      anno_vars <- var_anno(data = data, vars = vars, side = vars_side)
+    }
+  }
+
+  # Heatmap args ------------------------------------------------------------
 
   args <- list(
     matrix = cor_mat,
@@ -283,6 +314,10 @@ cor_heatmap <- function(data,
 #' The transformed data will be ordered via your selected seriation methods and distances.
 #' Any cell numbers printed can be set to different values, and do not affect ordering.
 #'
+#' @inheritDotParams ComplexHeatmap::Heatmap
+#' row_dend_side row_dend_width show_row_dend row_dend_gp
+#' row_names_side show_row_names row_names_gp row_names_rot row_names_centered
+#'
 #' @param data phyloseq extra output of tax_transform or tax_agg
 #' @param taxa list of taxa to include (selection occurs AFTER any tax_transform and scaling)
 #' @param samples list of taxa to include (selection occurs AFTER any tax_transform and scaling)
@@ -299,7 +334,6 @@ cor_heatmap <- function(data,
 #' @param tax_scale_numbers scaling applied to numbers otu_table after transformation
 #' @param gridlines list output of heat_grid() for setting gridline style
 #' @param name used as legend title (colourbar)
-#' @param ... extra args, passed to viz_heatmap internal function
 #'
 #' @export
 #' @examples
@@ -378,7 +412,7 @@ comp_heatmap <- function(data,
                          tax_scale_numbers = "neither",
                          gridlines = heat_grid(lwd = 0.1, col = "black"),
                          name = "mat",
-                         ... # passed to viz_heatmap
+                         ...
 ) {
   # get otu_table data (used for colours and seriation)
   # any transformation must be done in advance
@@ -620,6 +654,18 @@ annoWhichFromAnnoSide <- function(side, argName = "side") {
   return(Which)
 }
 
+# internal helper checks if which ("row"/"column") inferred from a *side
+# argument and the @which slot in a prebuilt HeatmapAnnotation match
+annoWhichMatchCheck <- function(which, anno, context = "taxa") {
+  if (!identical(which, anno@which)) {
+    stop(
+      context," annotation side & HeatmapAnnotation `which` are not compatible"
+    )
+  }
+}
+
+
+# deprecated anno_tax_helper =================================================
 
 # anno_tax input --> output possibilities:
 # * NULL--> NULL,

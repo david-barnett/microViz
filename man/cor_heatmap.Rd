@@ -9,12 +9,13 @@ cor_heatmap(
   taxa = phyloseq::taxa_names(ps_get(data)),
   tax_anno = taxAnnotation(Prev. = anno_tax_prev(), Abun. = anno_tax_box()),
   vars = NA,
-  anno_vars = NULL,
-  cor = c("pearson", "kendall", "spearman")[1],
+  var_anno = NULL,
+  cor = c("pearson", "kendall", "spearman"),
   cor_use = "everything",
   colors = heat_palette(palette = "Green-Orange", sym = TRUE),
   numbers = heat_numbers(),
   taxa_side = "right",
+  vars_side = adjacentSide(taxa_side),
   seriation_method = "OLO_ward",
   seriation_dist = "euclidean",
   seriation_method_col = seriation_method,
@@ -23,6 +24,7 @@ cor_heatmap(
   var_fun = "identity",
   gridlines = heat_grid(lwd = 0.5),
   anno_tax = NULL,
+  anno_vars = NULL,
   ...
 )
 }
@@ -31,10 +33,11 @@ cor_heatmap(
 
 \item{taxa}{list of taxa to include, or NA for all}
 
+\item{tax_anno}{NULL or annotation function for taxa: taxAnnotation() output.}
+
 \item{vars}{selection of variable names from sample_data}
 
-\item{anno_vars}{optional annotation of variable distributions:
-var_anno() list output, or a pre-made ComplexHeatmap HeatmapAnnotation}
+\item{var_anno}{NULL or annotation function for variables: varAnnotation() output.}
 
 \item{cor}{correlation coefficient. pearson/kendall/spearman,
 can be abbreviated (used as legend title)}
@@ -45,8 +48,11 @@ can be abbreviated (used as legend title)}
 
 \item{numbers}{output of heat_numbers() to draw numbers on heatmap cells}
 
-\item{taxa_side}{controls heatmap orientation and where any
-anno_tax annotations are placed (top/bottom/left/right)}
+\item{taxa_side}{"top"/"right"/"bottom"/"left": controls heatmap orientation and where any
+annotations specified in tax_anno are placed}
+
+\item{vars_side}{which side to place any variable annotations specified in var_anno,
+must be an adjacent side to taxa_side}
 
 \item{seriation_method}{method to order the rows (in seriation::seriate)}
 
@@ -64,10 +70,26 @@ before correlating (but not used in any variable annotations)}
 
 \item{gridlines}{list output of heat_grid() for setting gridline style}
 
-\item{anno_tax}{optional annotation of taxa distributions: tax_anno() list output,
+\item{anno_tax}{DEPRECATED:
+optional annotation of taxa distributions: tax_anno() list output,
 or a pre-made ComplexHeatmap HeatmapAnnotation}
 
-\item{...}{extra args, for cor_heatmap passed to internal function viz_heatmap}
+\item{anno_vars}{DEPRECATED: use var_anno argument instead.
+Optional annotation of variable distributions:
+var_anno() list output, or a pre-made ComplexHeatmap HeatmapAnnotation}
+
+\item{...}{
+  Arguments passed on to \code{\link[ComplexHeatmap:Heatmap]{ComplexHeatmap::Heatmap}}
+  \describe{
+    \item{\code{row_dend_side}}{Should the row dendrogram be put on the left or right of the heatmap?}
+    \item{\code{row_dend_width}}{Width of the row dendrogram, should be a \code{\link[grid]{unit}} object.}
+    \item{\code{show_row_dend}}{Whether show row dendrogram?}
+    \item{\code{row_dend_gp}}{Graphic parameters for the dendrogram segments. If users already provide a \code{\link[stats]{dendrogram}} object with edges rendered, this argument will be ignored.}
+    \item{\code{show_row_names}}{Whether show row names.}
+    \item{\code{row_names_gp}}{Graphic parameters for row names.}
+    \item{\code{row_names_rot}}{Rotation of row names.}
+    \item{\code{row_names_centered}}{Should row names put centered?}
+  }}
 }
 \description{
 Plot correlations between (transformed) microbial abundances and (selected) numeric-like sample_data variables from a phyloseq object.
