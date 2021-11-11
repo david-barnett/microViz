@@ -249,7 +249,7 @@ cor_heatmap <- function(data,
     anno_args <- c(anno_vars, list(data = data, vars = vars))
     anno_vars <- do.call(what = varAnnotate, args = anno_args)
   } else if (identical(anno_vars, NULL)) {
-    if (identical(var_anno, NULL)){
+    if (identical(var_anno, NULL)) {
       anno_vars <- var_anno
     } else if (inherits(var_anno, "function")) {
       anno_vars <- var_anno(data = data, vars = vars, side = vars_side)
@@ -412,8 +412,7 @@ comp_heatmap <- function(data,
                          tax_scale_numbers = "neither",
                          gridlines = heat_grid(lwd = 0.1, col = "black"),
                          name = "mat",
-                         ...
-) {
+                         ...) {
   # get otu_table data (used for colours and seriation)
   # any transformation must be done in advance
   otu_mat <- otu_get(data)
@@ -659,7 +658,7 @@ annoWhichFromAnnoSide <- function(side, argName = "side") {
 annoWhichMatchCheck <- function(which, anno, context = "taxa") {
   if (!identical(which, anno@which)) {
     stop(
-      context," annotation side & HeatmapAnnotation `which` are not compatible"
+      context, " annotation side & HeatmapAnnotation `which` are not compatible"
     )
   }
 }

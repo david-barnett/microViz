@@ -70,3 +70,6 @@ HeatmapAnnotation object
 \description{
 Helper to specify a HeatmapAnnotation for variables in cor_heatmap
 }
+\seealso{
+\code{\link[=taxAnnotation]{taxAnnotation()}}
+}
