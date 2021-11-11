@@ -126,7 +126,7 @@
 <h2 class="hasAnchor">
 <a href="#intro" class="anchor"></a>Intro</h2>
 <p>This article will show you how to create and customise ordination plots, like <a href="#pca">PCA</a> and <a href="#rda">RDA</a>, with microViz.</p>
-<p>For an even quicker start with ordinating your phyloseq data, check out the <code>ord_explore</code> <a href="https://david-barnett.github.io/microViz/articles/articles/Interactive-Ordination.html">Shiny app</a>, which allows you to create ordination plots with a point and click interface, and generates <code>ord_plot</code> code for you to copy. Return to this article to understand more about creating and customising your ordination plotting script.</p>
+<p>For an even quicker start with ordinating your phyloseq data, check out the <code>ord_explore</code> <a href="https://david-barnett.github.io/microViz/articles/web-only/Interactive-Ordination.html">Shiny app</a>, which allows you to create ordination plots with a point and click interface, and generates <code>ord_plot</code> code for you to copy. Return to this article to understand more about creating and customising your ordination plotting script.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://dx.plos.org/10.1371/journal.pone.0061217">phyloseq</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
@@ -137,7 +137,7 @@
 <span class="co">#&gt; * Useful? For citation info, run: citation('microViz')</span>
 <span class="co">#&gt; * Silence: suppressPackageStartupMessages(library(microViz))</span>
 <span class="fu">knitr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/knitr/man/opts_chunk.html">opts_chunk</a></span><span class="op">$</span><span class="fu">set</span><span class="op">(</span>fig.width <span class="op">=</span> <span class="fl">7</span>, fig.height <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></code></pre></div>
-<p>We will use example data from stool samples from an inflammatory bowel disease (IBD) study, borrowed from the great <code>corncob</code> package. See the article about <a href="https://david-barnett.github.io/microViz/articles/articles/phyloseq.html">working with phyloseq objects</a> if you want to get started with your own data, or just to learn more about manipulating phyloseq objects with microViz.</p>
+<p>We will use example data from stool samples from an inflammatory bowel disease (IBD) study, borrowed from the great <code>corncob</code> package. See the article about <a href="https://david-barnett.github.io/microViz/articles/web-only/phyloseq.html">working with phyloseq objects</a> if you want to get started with your own data, or just to learn more about manipulating phyloseq objects with microViz.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ibd</span> <span class="op">&lt;-</span> <span class="fu">corncob</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/corncob/man/ibd_phylo.html">ibd_phylo</a></span>
 <span class="va">ibd</span>
@@ -145,7 +145,7 @@
 <span class="co">#&gt; otu_table()   OTU Table:         [ 36349 taxa and 91 samples ]</span>
 <span class="co">#&gt; sample_data() Sample Data:       [ 91 samples by 15 sample variables ]</span>
 <span class="co">#&gt; tax_table()   Taxonomy Table:    [ 36349 taxa by 7 taxonomic ranks ]</span></code></pre></div>
-<p>First we fix any uninformative tax_table entries and check the phyloseq object (see the article on <a href="https://david-barnett.github.io/microViz/articles/articles/tax-fixing.html">fixing your tax_table</a> for more info).</p>
+<p>First we fix any uninformative tax_table entries and check the phyloseq object (see the article on <a href="https://david-barnett.github.io/microViz/articles/web-only/tax-fixing.html">fixing your tax_table</a> for more info).</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ibd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/tax_fix.html">tax_fix</a></span><span class="op">(</span><span class="va">ibd</span><span class="op">)</span> <span class="co"># try tax_fix_interactive if you have problems with your own data</span>
 <span class="va">ibd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/phyloseq_validate.html">phyloseq_validate</a></span><span class="op">(</span><span class="va">ibd</span>, remove_undetected <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
@@ -155,7 +155,7 @@
 <a href="#motivation" class="anchor"></a>Motivation</h2>
 <p>Ordination plots are a great way to see any clustering or other patterns of microbiota (dis)similarity in (many) samples. Ordinations like PCA or PCoA show the largest patterns of variation in your data, and constrained ordination techniques like RDA or CCA can show you microbial variation that could be explained by other variables in your sample_data (but interpret constrained ordinations with care, and ideally test for the statistical significance of any hypothesised associations using a method like PERMANOVA, see <code><a href="../../reference/dist_permanova.html">dist_permanova()</a></code>).</p>
 <p>Check out the GUide to STatistical Analysis in Microbial Ecology (GUSTA ME)<a href="https://sites.google.com/site/mb3gustame/">website</a> for a gentle theoretical introduction to <a href="https://sites.google.com/site/mb3gustame/indirect-gradient-analysis/pca">PCA</a>, <a href="https://sites.google.com/site/mb3gustame/dissimilarity-based-methods/principal-coordinates-analysis">PCoA</a>, <a href="https://sites.google.com/site/mb3gustame/constrained-analyses/rda">RDA</a>, <a href="https://sites.google.com/site/mb3gustame/constrained-analyses/cca">CCA</a> and more.</p>
-<p>Ordination plots can also be paired with barplots for greater insight into microbial compositions, e.g. see <code><a href="../../reference/ord_plot_iris.html">ord_plot_iris()</a></code> and the <code><a href="../../reference/ord_explore.html">ord_explore()</a></code> interactive <a href="https://david-barnett.github.io/microViz/articles/articles/Interactive-Ordination.html">Shiny app</a>.</p>
+<p>Ordination plots can also be paired with barplots for greater insight into microbial compositions, e.g. see <code><a href="../../reference/ord_plot_iris.html">ord_plot_iris()</a></code> and the <code><a href="../../reference/ord_explore.html">ord_explore()</a></code> interactive <a href="https://david-barnett.github.io/microViz/articles/web-only/Interactive-Ordination.html">Shiny app</a>.</p>
 </div>
 <div id="prepare-your-microbes" class="section level2">
 <h2 class="hasAnchor">
@@ -284,7 +284,7 @@
 <div id="unifrac-distances" class="section level3">
 <h3 class="hasAnchor">
 <a href="#unifrac-distances" class="anchor"></a>UniFrac distances</h3>
-<p>If you have a phylogenetic tree available, and <a href="https://david-barnett.github.io/microViz/articles/articles/phyloseq.html#getting-your-data-into-phyloseq">attached to your phyloseq object</a>. You can calculate dissimilarities from the <a href="https://en.wikipedia.org/wiki/UniFrac">UniFrac family</a> of methods, which take into account the phylogenetic relatedness of the taxa / sequences in your samples when calculating dissimilarity. Un-weighted UniFrac, <code>dist_calc(dist = "unifrac")</code>, does not consider the relative abundance of taxa, only their presence (detection) or absence, which can make it (overly) sensitive to rare taxa, sequencing artefacts, and abundance filtering choices. Conversely, weighted UniFrac, <code>"wunifrac"</code>, does put (perhaps too much) more importance on highly abundant taxa, when determining dissimilarities. The Generalised UniFrac, <code>"gunifrac"</code>, finds a balance between these two extremes, and by adjusting the <code>gunifrac_alpha</code> argument of <code><a href="../../reference/dist_calc.html">dist_calc()</a></code>, you can tune this balance to your liking (although the 0.5 default should be fine!).</p>
+<p>If you have a phylogenetic tree available, and <a href="https://david-barnett.github.io/microViz/articles/web-only/phyloseq.html#getting-your-data-into-phyloseq">attached to your phyloseq object</a>. You can calculate dissimilarities from the <a href="https://en.wikipedia.org/wiki/UniFrac">UniFrac family</a> of methods, which take into account the phylogenetic relatedness of the taxa / sequences in your samples when calculating dissimilarity. Un-weighted UniFrac, <code>dist_calc(dist = "unifrac")</code>, does not consider the relative abundance of taxa, only their presence (detection) or absence, which can make it (overly) sensitive to rare taxa, sequencing artefacts, and abundance filtering choices. Conversely, weighted UniFrac, <code>"wunifrac"</code>, does put (perhaps too much) more importance on highly abundant taxa, when determining dissimilarities. The Generalised UniFrac, <code>"gunifrac"</code>, finds a balance between these two extremes, and by adjusting the <code>gunifrac_alpha</code> argument of <code><a href="../../reference/dist_calc.html">dist_calc()</a></code>, you can tune this balance to your liking (although the 0.5 default should be fine!).</p>
 <p>Below is a Generalised UniFrac example using a different, and tiny, example dataset from the phyloseq package that has a phylogenetic tree.</p>
 <p>You should <strong>not</strong> aggregate taxa before using a phylogenetic distance measure, but you can and probably should register the choice not to transform or aggregate, as below.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
@@ -461,8 +461,8 @@
 <a href="#session-info" class="anchor"></a>Session info</h2>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://r-lib.github.io/sessioninfo/reference/session_info.html">session_info</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; ─ Session info  👈🏾  👨🏻‍🍳  🕐   ─────────────────────────────────────────────────</span>
-<span class="co">#&gt;  hash: backhand index pointing left: medium-dark skin tone, man cook: light skin tone, one o’clock</span>
+<span class="co">#&gt; ─ Session info  🛫  🏸  🤑   ─────────────────────────────────────────────────</span>
+<span class="co">#&gt;  hash: airplane departure, badminton, money-mouth face</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;  setting  value</span>
 <span class="co">#&gt;  version  R version 4.1.2 (2021-11-01)</span>
@@ -473,7 +473,7 @@
 <span class="co">#&gt;  collate  en_US.UTF-8</span>
 <span class="co">#&gt;  ctype    en_US.UTF-8</span>
 <span class="co">#&gt;  tz       UTC</span>
-<span class="co">#&gt;  date     2021-11-08</span>
+<span class="co">#&gt;  date     2021-11-11</span>
 <span class="co">#&gt;  pandoc   2.7.3 @ /usr/local/bin/ (via rmarkdown)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ─ Packages ───────────────────────────────────────────────────────────────────</span>
@@ -485,10 +485,12 @@
 <span class="co">#&gt;  biomformat         1.20.0     2021-05-19 [1] Bioconductor</span>
 <span class="co">#&gt;  Biostrings         2.60.2     2021-08-05 [1] Bioconductor</span>
 <span class="co">#&gt;  bitops             1.0-7      2021-04-24 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  boot               1.3-28     2021-05-03 [2] CRAN (R 4.1.2)</span>
 <span class="co">#&gt;  bslib              0.3.1      2021-10-06 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  cachem             1.0.6      2021-08-19 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  callr              3.7.0      2021-04-20 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  cli                3.1.0      2021-10-27 [1] CRAN (R 4.1.1)</span>
+<span class="co">#&gt;  clue               0.3-60     2021-10-11 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  cluster            2.1.2      2021-04-17 [2] CRAN (R 4.1.2)</span>
 <span class="co">#&gt;  codetools          0.2-18     2020-11-04 [2] CRAN (R 4.1.2)</span>
 <span class="co">#&gt;  colorspace         2.0-2      2021-06-24 [1] CRAN (R 4.1.0)</span>
@@ -504,17 +506,19 @@
 <span class="co">#&gt;  fansi              0.5.0      2021-05-25 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  farver             2.1.0      2021-02-28 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  fastmap            1.1.0      2021-01-25 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  fBasics            3042.89.1  2020-03-07 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  foreach            1.5.1      2020-10-15 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  fs                 1.5.0      2020-07-31 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  generics           0.1.1      2021-10-25 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  GenomeInfoDb       1.28.4     2021-09-09 [1] Bioconductor</span>
 <span class="co">#&gt;  GenomeInfoDbData   1.2.6      2021-10-25 [1] Bioconductor</span>
 <span class="co">#&gt;  ggplot2          * 3.3.5      2021-06-25 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  ggrepel            0.9.1      2021-01-15 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  ggtext             0.1.1      2020-12-17 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  glue               1.5.0      2021-11-07 [1] CRAN (R 4.1.2)</span>
 <span class="co">#&gt;  gridtext           0.1.4      2020-12-10 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  gtable             0.3.0      2019-03-25 [1] CRAN (R 4.1.0)</span>
-<span class="co">#&gt;  GUniFrac           1.3        2021-08-18 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  GUniFrac           1.4        2021-11-10 [1] CRAN (R 4.1.2)</span>
 <span class="co">#&gt;  highr              0.9        2021-04-16 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  htmltools          0.5.2      2021-08-25 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  igraph             1.2.8      2021-11-07 [1] CRAN (R 4.1.2)</span>
@@ -526,6 +530,8 @@
 <span class="co">#&gt;  labeling           0.4.2      2020-10-20 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  lattice            0.20-45    2021-09-22 [2] CRAN (R 4.1.2)</span>
 <span class="co">#&gt;  lifecycle          1.0.1      2021-09-24 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  lme4               1.1-27.1   2021-06-22 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  lmerTest           3.1-3      2020-10-23 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  magrittr           2.0.1      2020-11-17 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  markdown           1.1        2019-08-07 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  MASS               7.3-54     2021-05-03 [2] CRAN (R 4.1.2)</span>
@@ -534,10 +540,14 @@
 <span class="co">#&gt;  memoise            2.0.0      2021-01-26 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  mgcv               1.8-38     2021-10-06 [2] CRAN (R 4.1.2)</span>
 <span class="co">#&gt;  microbiome         1.14.0     2021-05-19 [1] Bioconductor</span>
-<span class="co">#&gt;  microViz         * 0.8.0.9000 2021-11-08 [1] local</span>
+<span class="co">#&gt;  microViz         * 0.8.0.9000 2021-11-11 [1] local</span>
+<span class="co">#&gt;  minqa              1.2.4      2014-10-09 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  modeest            2.4.0      2019-11-18 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  multtest           2.48.0     2021-05-19 [1] Bioconductor</span>
 <span class="co">#&gt;  munsell            0.5.0      2018-06-12 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  nlme               3.1-153    2021-09-07 [2] CRAN (R 4.1.2)</span>
+<span class="co">#&gt;  nloptr             1.2.2.3    2021-11-02 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  numDeriv           2016.8-1.1 2019-06-06 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  patchwork          1.1.1      2020-12-17 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  permute            0.9-5      2019-03-12 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  phyloseq         * 1.36.0     2021-05-19 [1] Bioconductor</span>
@@ -564,12 +574,17 @@
 <span class="co">#&gt;  rlang              0.4.12     2021-10-18 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  rmarkdown          2.11       2021-09-14 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  rmutil             1.1.5      2020-06-09 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  rpart              4.1-15     2019-04-12 [2] CRAN (R 4.1.2)</span>
 <span class="co">#&gt;  rprojroot          2.0.2      2020-11-15 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  Rtsne              0.15       2018-11-10 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  S4Vectors          0.30.2     2021-10-03 [1] Bioconductor</span>
 <span class="co">#&gt;  sass               0.4.0      2021-05-12 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  scales             1.1.1      2020-05-11 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  sessioninfo        1.2.1      2021-11-02 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  spatial            7.3-14     2021-05-03 [2] CRAN (R 4.1.2)</span>
+<span class="co">#&gt;  stable             1.1.4      2019-02-04 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  stabledist         0.7-1      2016-09-12 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  statip             0.2.3      2019-11-17 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  statmod            1.4.36     2021-05-10 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  stringi            1.7.5      2021-10-04 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  stringr          * 1.4.0      2019-02-10 [1] CRAN (R 4.1.0)</span>
@@ -580,6 +595,8 @@
 <span class="co">#&gt;  tibble             3.1.6      2021-11-07 [1] CRAN (R 4.1.2)</span>
 <span class="co">#&gt;  tidyr              1.1.4      2021-09-27 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  tidyselect         1.1.1      2021-04-30 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  timeDate           3043.102   2018-02-21 [1] CRAN (R 4.1.0)</span>
+<span class="co">#&gt;  timeSeries         3062.100   2020-01-24 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  usethis            2.1.3      2021-10-27 [1] CRAN (R 4.1.1)</span>
 <span class="co">#&gt;  utf8               1.2.2      2021-07-24 [1] CRAN (R 4.1.0)</span>
 <span class="co">#&gt;  vctrs              0.3.8      2021-04-29 [1] CRAN (R 4.1.0)</span>
