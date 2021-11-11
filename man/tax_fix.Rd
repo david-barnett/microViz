@@ -48,7 +48,7 @@ It is up to the user to specify sensible values in \code{unknowns} if their data
 }
 
 See this article for an extended discussion of tax_table fixing.
-\url{https://david-barnett.github.io/microViz/articles/articles/tax-fixing.html}
+\url{https://david-barnett.github.io/microViz/articles/web-only/tax-fixing.html}
 }
 \details{
 By default (unknowns = NA), unknowns is set to a vector containing:

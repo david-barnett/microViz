@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 
 This article will show you how to create and customise ordination plots, like [PCA](#pca) and [RDA](#rda), with microViz.
 
-For an even quicker start with ordinating your phyloseq data, check out the `ord_explore` [Shiny app](https://david-barnett.github.io/microViz/articles/articles/Interactive-Ordination.html), which allows you to create ordination plots with a point and click interface, and generates `ord_plot` code for you to copy. Return to this article to understand more about creating and customising your ordination plotting script.
+For an even quicker start with ordinating your phyloseq data, check out the `ord_explore` [Shiny app](https://david-barnett.github.io/microViz/articles/web-only/Interactive-Ordination.html), which allows you to create ordination plots with a point and click interface, and generates `ord_plot` code for you to copy. Return to this article to understand more about creating and customising your ordination plotting script.
 
 ```{r setup}
 library(phyloseq)
@@ -27,14 +27,14 @@ library(microViz)
 knitr::opts_chunk$set(fig.width = 7, fig.height = 6)
 ```
 
-We will use example data from stool samples from an inflammatory bowel disease (IBD) study, borrowed from the great `corncob` package. See the article about [working with phyloseq objects](https://david-barnett.github.io/microViz/articles/articles/phyloseq.html) if you want to get started with your own data, or just to learn more about manipulating phyloseq objects with microViz.
+We will use example data from stool samples from an inflammatory bowel disease (IBD) study, borrowed from the great `corncob` package. See the article about [working with phyloseq objects](https://david-barnett.github.io/microViz/articles/web-only/phyloseq.html) if you want to get started with your own data, or just to learn more about manipulating phyloseq objects with microViz.
 
 ```{r get data}
 ibd <- corncob::ibd_phylo
 ibd
 ```
 
-First we fix any uninformative tax_table entries and check the phyloseq object (see the article on [fixing your tax_table](https://david-barnett.github.io/microViz/articles/articles/tax-fixing.html) for more info).
+First we fix any uninformative tax_table entries and check the phyloseq object (see the article on [fixing your tax_table](https://david-barnett.github.io/microViz/articles/web-only/tax-fixing.html) for more info).
 
 ```{r fix it}
 ibd <- tax_fix(ibd) # try tax_fix_interactive if you have problems with your own data
@@ -47,7 +47,7 @@ Ordination plots are a great way to see any clustering or other patterns of micr
 
 Check out the GUide to STatistical Analysis in Microbial Ecology (GUSTA ME)[website](https://sites.google.com/site/mb3gustame/) for a gentle theoretical introduction to [PCA](https://sites.google.com/site/mb3gustame/indirect-gradient-analysis/pca), [PCoA](https://sites.google.com/site/mb3gustame/dissimilarity-based-methods/principal-coordinates-analysis), [RDA](https://sites.google.com/site/mb3gustame/constrained-analyses/rda), [CCA](https://sites.google.com/site/mb3gustame/constrained-analyses/cca) and more.
 
-Ordination plots can also be paired with barplots for greater insight into microbial compositions, e.g. see `ord_plot_iris()` and the `ord_explore()` interactive [Shiny app](https://david-barnett.github.io/microViz/articles/articles/Interactive-Ordination.html).
+Ordination plots can also be paired with barplots for greater insight into microbial compositions, e.g. see `ord_plot_iris()` and the `ord_explore()` interactive [Shiny app](https://david-barnett.github.io/microViz/articles/web-only/Interactive-Ordination.html).
 
 ## Prepare your microbes
 
@@ -161,7 +161,7 @@ ibd %>%
 
 ### UniFrac distances
 
-If you have a phylogenetic tree available, and [attached to your phyloseq object](https://david-barnett.github.io/microViz/articles/articles/phyloseq.html#getting-your-data-into-phyloseq). You can calculate dissimilarities from the [UniFrac family](https://en.wikipedia.org/wiki/UniFrac) of methods, which take into account the phylogenetic relatedness of the taxa / sequences in your samples when calculating dissimilarity. Un-weighted UniFrac, `dist_calc(dist = "unifrac")`, does not consider the relative abundance of taxa, only their presence (detection) or absence, which can make it (overly) sensitive to rare taxa, sequencing artefacts, and abundance filtering choices. Conversely, weighted UniFrac, `"wunifrac"`, does put (perhaps too much) more importance on highly abundant taxa, when determining dissimilarities. The Generalised UniFrac, `"gunifrac"`, finds a balance between these two extremes, and by adjusting the `gunifrac_alpha` argument of `dist_calc()`, you can tune this balance to your liking (although the 0.5 default should be fine!).
+If you have a phylogenetic tree available, and [attached to your phyloseq object](https://david-barnett.github.io/microViz/articles/web-only/phyloseq.html#getting-your-data-into-phyloseq). You can calculate dissimilarities from the [UniFrac family](https://en.wikipedia.org/wiki/UniFrac) of methods, which take into account the phylogenetic relatedness of the taxa / sequences in your samples when calculating dissimilarity. Un-weighted UniFrac, `dist_calc(dist = "unifrac")`, does not consider the relative abundance of taxa, only their presence (detection) or absence, which can make it (overly) sensitive to rare taxa, sequencing artefacts, and abundance filtering choices. Conversely, weighted UniFrac, `"wunifrac"`, does put (perhaps too much) more importance on highly abundant taxa, when determining dissimilarities. The Generalised UniFrac, `"gunifrac"`, finds a balance between these two extremes, and by adjusting the `gunifrac_alpha` argument of `dist_calc()`, you can tune this balance to your liking (although the 0.5 default should be fine!).
 
 Below is a Generalised UniFrac example using a different, and tiny, example dataset from the phyloseq package that has a phylogenetic tree.
 
