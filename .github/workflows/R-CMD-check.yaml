@@ -63,6 +63,12 @@ jobs:
             eval sudo $cmd
           done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "20.04"))')
 
+      - name: Install igraph source build dependencies
+        if: runner.os == 'Windows'
+        run: |
+          pacman -Sy --noconfirm mingw-w64-{i686,x86_64}-glpk
+        shell: bash
+      
       - name: Install XQuartz on macOS
         if: runner.os == 'macOS'
         run: brew install --cask xquartz
