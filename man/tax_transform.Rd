@@ -11,6 +11,7 @@ tax_transform(
   keep_counts = TRUE,
   chain = FALSE,
   zero_replace = 0,
+  add = 0,
   transformation = NULL,
   ...
 )
@@ -33,6 +34,10 @@ i.e. multiple transformations can be chained with multiple tax_transform calls}
 "halfmin" which replaces zeros with half of the smallest value across the
 entire dataset.
 Beware: the choice of zero replacement is not tracked in the ps_extra output.}
+
+\item{add}{Add this value to the otu_table before transforming. If \code{add} != 0,
+\code{zero_replace} does nothing. Either a numeric, or "halfmin".
+Beware: this choice is not tracked in the ps_extra output.}
 
 \item{transformation}{deprecated, use \code{trans} instead!}
 

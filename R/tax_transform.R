@@ -62,6 +62,10 @@
 #' "halfmin" which replaces zeros with half of the smallest value across the
 #' entire dataset.
 #' Beware: the choice of zero replacement is not tracked in the ps_extra output.
+#' @param add
+#' Add this value to the otu_table before transforming. If `add` != 0,
+#' `zero_replace` does nothing. Either a numeric, or "halfmin".
+#' Beware: this choice is not tracked in the ps_extra output.
 #'
 #' @return `ps_extra` list including phyloseq object and info
 #' @export
@@ -101,6 +105,7 @@ tax_transform <- function(data,
                           keep_counts = TRUE,
                           chain = FALSE,
                           zero_replace = 0,
+                          add = 0,
                           transformation = NULL,
                           ...) {
 
@@ -132,6 +137,9 @@ tax_transform <- function(data,
   ps <- ps_get(data)
   # extract otu
   otu <- otu_get(ps)
+
+  # add constant to all otu table values
+  otu <- otuAddConstant(otu, add = add)
 
   # add pseudocount to zeros if desired
   otu <- otuZeroReplace(otu, zero_replace = zero_replace)
@@ -229,18 +237,34 @@ otuZeroReplace <- function(otu, zero_replace) {
   if (!identical(zero_replace, "halfmin") && !is.numeric(zero_replace)) {
     stop(call. = FALSE, "zero_replace argument must be 'halfmin' or a number")
   }
+
   # calculate zero replacement number if halfmin option given
-  if (identical(zero_replace, "halfmin")) {
-    if (any(otu < 0)) {
-      stop(
-        "halfmin is not a valid zero_replace option
-        when some otu_table values are negative"
-      )
-    }
-    otu <- methods::as(otu, "matrix")
-    zero_replace <- min(otu[otu > 0], na.rm = TRUE) / 2
-  }
+  if (identical(zero_replace, "halfmin")) zero_replace <- otuHalfMin(otu)
+
   # replace zeros with zero_replace number
   if (!identical(zero_replace, 0)) otu[otu == 0] <- zero_replace
   return(otu)
+}
+
+# otu table helper adds a constant value to ALL entries in otuTable
+otuAddConstant <- function(otu, add) {
+  if (!identical(add, "halfmin") && !is.numeric(add) || length(add) != 1) {
+    stop(call. = FALSE, "`add` argument must be 'halfmin' or a number")
+  }
+
+  # calculate constant number if halfmin option given
+  if (identical(add, "halfmin")) add <- otuHalfMin(otu)
+
+  if (!identical(add, 0)) otu <- otu + add
+  return(otu)
+}
+
+# otu table helper finds half of the global minimum
+otuHalfMin <- function(otu){
+  if (any(otu < 0)) {
+    stop("'halfmin' is not valid when some otu_table values are negative")
+  }
+  otu <- methods::as(otu, "matrix")
+  halfmin <- min(otu[otu > 0], na.rm = TRUE) / 2
+  return(halfmin)
 }
