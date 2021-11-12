@@ -72,34 +72,75 @@ psq <- psq %>%
 
 ### Calculating correlations
 
-The `cor_heatmap` function will correlate all taxa to all numerical sample
-data by default.
+By default, the `cor_heatmap` function will correlate all taxa to all
+numerical sample data, using pearson correlation method.
 
-*Older versions of microViz `cor_heatmap` had a `tax_transform`
-argument. But for flexibility, you must now transform your taxa
-**before** passing the ps_extra object to `cor_heatmap`.*
-
-```{r}
+```{r, fig.width=7, dpi=120}
 psq %>% 
   tax_agg("Family") %>% 
   cor_heatmap(vars = c("var1", "var2", "var3", "var4", "var5", "var6"))
 ```
 
+It's easy to change to a different method, i.e. spearman's rank
+correlation or kendall's tau, which will be reflected in the legend
+title. We will also specify to use only the 15 most abundant taxa, by
+maximum count, just to make these tutorial figures a little more
+compact!
 
-
-### Taxon annotations
-
-As seen in the previous plots taxa are annotated by default with 
-prevalence and relative abundance.
-
-You can transform the taxa for the abundance annotation. 
-The `trans` and `zero_replace` arguments are sent to `tax_transform()`.
-
-```{r, fig.width=7, dpi=120}
+```{r, fig.width=7, fig.height=3, dpi=120}
 psq %>% 
   tax_agg("Family") %>% 
   cor_heatmap(
-    vars = paste0("var", 1:6),
+    taxa = tax_top(psq, 15, by = max, rank = "Family"),
+    vars = paste0("var", 1:6), cor = "spearman"
+  )
+```
+
+*Older versions of microViz `cor_heatmap` had a `tax_transform`
+argument. But for flexibility, you must now transform your taxa
+**before** passing the ps_extra object to `cor_heatmap`.*
+
+Here we have transformed our taxa with the "clr" or centered-log-ratio
+transformation prior to correlating. *Notice that the annotations stay
+on the same scale, as by default the annotation functions extract the
+stored counts data from the ps_extra input, not the transformed data.*
+
+```{r, fig.width=7, fig.height=3, dpi=120}
+psq %>% 
+  tax_agg("Family") %>% 
+  tax_transform("clr", zero_replace = "halfmin") %>% 
+  cor_heatmap(
+    taxa = tax_top(psq, 15, by = max, rank = "Family"),
+    vars = paste0("var", 1:6)
+  )
+```
+
+Let's transform and scale the taxon abundances before correlating.
+
+```{r, fig.width=7, fig.height=3, dpi=120}
+psq %>% 
+  tax_agg("Family") %>% 
+  tax_transform("clr", zero_replace = "halfmin") %>% 
+  cor_heatmap(
+    taxa = tax_top(psq, 15, by = max, rank = "Family"),
+    vars = paste0("var", 1:6)
+  )
+```
+
+### Taxon annotations
+
+As seen in the previous plots taxa are annotated by default with
+prevalence and relative abundance.
+
+You can transform the taxa for the abundance annotation. The `trans` and
+`zero_replace` arguments are sent to `tax_transform()`.
+
+```{r, fig.width=7, fig.height=3, dpi=120}
+psq %>% 
+  tax_agg("Family") %>% 
+  cor_heatmap(
+    taxa = tax_top(psq, 15, by = max, rank = "Family"),
+    vars = paste0("var", 1:6), 
     tax_anno = taxAnnotation(
       Prev. = anno_tax_prev(ylim = 0:1), 
       Log10. = anno_tax_box(trans = "log10", zero_replace = "halfmin")
@@ -107,20 +148,22 @@ psq %>%
   )
 ```
 
-You can do multiple transformations and or scaling by supplying a function,
-that takes a ps_extra or phyloseq object, transforms it, and returns it.
+You can do multiple transformations and or scaling by supplying a
+function, that takes a ps_extra or phyloseq object, transforms it, and
+returns it.
 
-```{r, fig.width=7, dpi=120}
+```{r, fig.width=7, fig.height=3, dpi=120}
 psq %>% 
   tax_agg("Family") %>% 
   cor_heatmap(
-    vars = paste0("var", 1:6),
+    taxa = tax_top(psq, 15, by = max, rank = "Family"),
+    vars = paste0("var", 1:6), 
     tax_anno = taxAnnotation(
       Log2 = anno_tax_density(
-        joyplot_scale = 1.5, gp = grid::gpar(fill = "black", alpha = 0.2),
+        joyplot_scale = 2, gp = grid::gpar(fill = "black", alpha = 0.2),
         trans = "log2", zero_replace = 1
       ),
-      prop_Log2 = anno_tax_density(
+      `prop Log2` = anno_tax_density(
         joyplot_scale = 1.5, gp = grid::gpar(fill = "black", alpha = 0.2),
         trans = function(ps) {
           ps %>% 
@@ -131,11 +174,6 @@ psq %>%
     )
   )
 ```
-
-
-
-
-
 
 Note that by default the relative abundance is shown only for samples
 where the taxon is detected! You can include values for all samples for
@@ -148,13 +186,14 @@ We'll compare it side-by-side with the default setting of showing only
 distribution of values above the detection threshold.
 
 For zero-inflated microbiome data, showing prevalence and "abundance
-when detected" seems like a more informative annotation.
+when detected" often seems like a more informative annotation.
 
-```{r, fig.width=7, dpi=120}
+```{r, fig.width=7, fig.height=3, dpi=120}
 psq %>% 
   tax_agg("Family") %>% 
   cor_heatmap(
-    vars = paste0("var", 1:6),
+    taxa = tax_top(psq, 15, by = max, rank = "Family"),
+    vars = paste0("var", 1:6), 
     tax_anno = taxAnnotation(
       Prev. = anno_tax_prev(size = grid::unit(10, "mm"), ylim = 0:1), 
       All = anno_tax_density(
@@ -182,14 +221,15 @@ from the `seriation` package. You can suppress ordering by using
 ordering, so you can set `seriation_method_col = OLO_ward` to keep
 ordering.
 
-```{r, fig.width=7, dpi=120}
+```{r, fig.width=7, fig.height=3, dpi=120}
 psq %>% 
   tax_agg("Family") %>% 
   tax_sort(by = prev, at = "Family") %>% 
   cor_heatmap(
     seriation_method = "Identity",
     seriation_method_col = "OLO_ward",
-    vars = paste0("var", 1:6),
+    taxa = tax_top(psq, 15, by = max, rank = "Family"),
+    vars = paste0("var", 1:6), 
     tax_anno = taxAnnotation(
       Prev. = anno_tax_prev(ylim = 0:1), 
       CLR = anno_tax_box(trans = "clr", zero_replace = "halfmin")
@@ -202,7 +242,7 @@ psq %>%
 You can easily put the taxa annotations on another of the heatmap with
 e.g. `taxa_side = "left"`
 
-```{r, fig.width=7, dpi=120}
+```{r, fig.width=7, fig.height=3, dpi=120}
 psq %>% 
   tax_agg("Family") %>% 
   tax_sort(by = prev, at = "Family") %>% 
@@ -210,6 +250,7 @@ psq %>%
     seriation_method = "Identity",
     seriation_method_col = "OLO_ward",
     taxa_side = "left",
+    taxa = tax_top(psq, 15, by = max, rank = "Family"),
     vars = paste0("var", 1:6),
     tax_anno = taxAnnotation(
       Prev. = anno_tax_prev(ylim = 0:1), 
@@ -221,7 +262,7 @@ psq %>%
 Or on the top or bottom is also possible, this will rotate the heatmap.
 Remember to swap the seriation method arguments around!
 
-```{r, fig.width=8, fig.height = 5, dpi=120}
+```{r, fig.width=6, fig.height=5, dpi=120}
 psq %>% 
   tax_agg("Family") %>% 
   tax_sort(by = prev, at = "Family") %>% 
@@ -229,6 +270,7 @@ psq %>%
     seriation_method_col = "Identity", #swapped!
     seriation_method = "OLO_ward", #swapped!
     taxa_side = "top",
+    taxa = tax_top(psq, 15, by = max, rank = "Family"),
     vars = paste0("var", 1:6),
     tax_anno = taxAnnotation(
       Prev. = anno_tax_prev(ylim = 0:1), 
@@ -241,11 +283,12 @@ psq %>%
 
 As well as annotating the taxa, you can also annotate the variables.
 
-```{r, fig.width=7, fig.height=8, dpi=120}
+```{r, fig.width=7, fig.height=6, dpi=120}
 psq %>% 
   tax_agg("Family") %>% 
   cor_heatmap(
-    vars = paste0("var", 1:6),
+    taxa = tax_top(psq, 15, by = max, rank = "Family"),
+    vars = paste0("var", 1:6), 
     var_anno = varAnnotation(
       Value = anno_var_box(),
       Zscore = anno_var_density(fun = scale, type = "violin")
