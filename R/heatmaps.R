@@ -36,11 +36,11 @@
 #' distance to use in seriation_method_col (if needed)
 #' @param tax_transform
 #' transformation applied to otu_table before correlating
-#' (and BEFORE selection of taxa)
+#' (and before selection of taxa by name, so e.g. proportions use all taxa)
 #' @param gridlines list output of heat_grid() for setting gridline style
 #' @param var_fun
 #' character: name of a function to be applied (columns) to a matrix of vars
-#'  before correlating (but not used in any variable annotations)
+#' before correlating (but not used in any variable annotations)
 #' @param anno_tax
 #' DEPRECATED:
 #' optional annotation of taxa distributions: tax_anno() list output,
@@ -148,7 +148,7 @@
 #' var_annotations <- var_anno(annos = c("var_hist", "var_box"), args = extra_args2)
 #' cor_heatmap(psq, taxa, anno_vars = var_annotations, anno_tax = tax_anno(undetected = 50))
 cor_heatmap <- function(data,
-                        taxa = phyloseq::taxa_names(ps_get(data)),
+                        taxa = NA,
                         tax_anno = taxAnnotation(
                           Prev. = anno_tax_prev(), Abun. = anno_tax_box()
                         ),
@@ -164,7 +164,6 @@ cor_heatmap <- function(data,
                         seriation_dist = "euclidean",
                         seriation_method_col = seriation_method,
                         seriation_dist_col = seriation_dist,
-                        tax_transform = "identity",
                         var_fun = "identity",
                         gridlines = heat_grid(lwd = 0.5),
                         anno_tax = NULL,
@@ -172,30 +171,32 @@ cor_heatmap <- function(data,
                         ...) {
   # check correlation type argument
   cor <- match.arg(cor)
+
   taxa_which <- annoWhichFromAnnoSide(taxa_side, argName = "taxa_side")
   vars_which <- annoWhichFromAnnoSide(vars_side, argName = "vars_side")
-  if (identical(taxa_which, vars_which)) {
-    stop("vars and taxa sides must be adjacent, not the same or opposite")
-  }
 
   if (inherits(data, "data.frame")) {
     otu_mat <- NULL # causes cor to only use x (meta_mat)
     meta_mat <- df_to_numeric_matrix(data, vars = vars, trans_fun = var_fun)
   } else if (methods::is(data, "phyloseq") || inherits(data, "ps_extra")) {
+    if (identical(taxa_which, vars_which)) {
+      stop("vars and taxa sides must be adjacent, not the same or opposite")
+    }
+
     ps <- ps_get(data)
 
     # handle sample metadata
     samdat <- phyloseq::sample_data(ps)
     meta_mat <- df_to_numeric_matrix(samdat, vars = vars, trans_fun = var_fun)
 
-    # handle otu_mat and taxa annotations if relevant
+    # default taxa names is all taxa names
+    if (identical(taxa, NA)) taxa <- phyloseq::taxa_names(ps)
+
+    # handle otu_table data if relevant
     if (identical(taxa, NULL)) {
       otu_mat <- NULL
     } else {
-      # handle otu_table data
-      otu <- otu_get(tax_transform(data = data, trans = tax_transform))
-      otu <- otu[, taxa, drop = FALSE]
-      otu_mat <- unclass(otu)
+      otu_mat <- unclass(otu_get(data)[, taxa, drop = FALSE])
     }
   } else {
     stop(
@@ -252,7 +253,7 @@ cor_heatmap <- function(data,
     if (identical(var_anno, NULL)) {
       anno_vars <- var_anno
     } else if (inherits(var_anno, "function")) {
-      anno_vars <- var_anno(data = data, vars = vars, side = vars_side)
+      anno_vars <- var_anno(.data = data, .vars = vars, .side = vars_side)
     }
   }
 
@@ -275,22 +276,10 @@ cor_heatmap <- function(data,
     rect_gp = gridlines
   )
 
-
-  if (methods::is(data, "phyloseq") || inherits(data, "ps_extra")) {
-    # add taxa annotation if exists
-    args[[paste0(taxa_side, "_annotation")]] <- anno_tax
-
-    # TODO allow bottom, top, left and right in addition to rows and columns
-    if (identical(taxa_which, "row")) {
-      args[["top_annotation"]] <- anno_vars
-    } else {
-      args[["right_annotation"]] <- anno_vars
-    }
-  } else if (inherits(data, "data.frame") && !identical(anno_vars, NULL)) {
-    # TODO add vars_side arg allow anno_vars side instead of which
-    if (anno_vars@which == "row") args[["right_annotation"]] <- anno_vars
-    if (anno_vars@which == "column") args[["top_annotation"]] <- anno_vars
-  }
+  # add taxa annotation (is NULL if no taxa were used)
+  args[[paste0(taxa_side, "_annotation")]] <- anno_tax
+  # add variable annotation
+  args[[paste0(vars_side, "_annotation")]] <- anno_vars
 
   # use extra args
   dots <- list(...)

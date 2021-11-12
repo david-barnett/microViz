@@ -31,9 +31,11 @@ anno_tax_box(
 
 \item{only_detected}{only plot values for samples where the taxon abundance is > undetected}
 
-\item{trans}{transformation suitable for tax_transform}
+\item{trans}{name of transformation suitable for tax_transform,
+or a function calling tax_transform, and/or tax_scale,
+(a function must take a phyloseq or ps_extra, and return one)}
 
-\item{zero_replace}{zero_replace value for for tax_transform}
+\item{zero_replace}{zero_replace value for for tax_transform, ignored if trans is a function}
 
 \item{use_counts}{try to retrieve counts from data object?}
 

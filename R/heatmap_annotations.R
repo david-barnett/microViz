@@ -1,7 +1,8 @@
+## Everything in this file is deprecated and will later be removed ##
 # taxa --------------------
 
-#' @name heatmap-annotations
-#' @title Heatmap annotations helpers
+#' @name deprecated-heatmap-annotations
+#' @title DEPRECATED Heatmap annotations helpers
 #' @description
 #' Functions to easily define ComplexHeatmap annotations for taxa and/or variables
 #' - tax_anno creates list describing taxa annotation (for cor_heatmap or comp_heatmap)
@@ -28,7 +29,7 @@
 #' @param ... further args are passed ComplexHeatmap::HeatmapAnnotation()
 #'
 #' @export
-#' @rdname heatmap-annotations
+#' @rdname deprecated-heatmap-annotations
 tax_anno <- function(undetected = 0,
                      which = NA,
                      prev = 1,
@@ -129,7 +130,7 @@ taxAnnotate <- function(data,
 #' a grid::gpar() object for graphics parameter settings like fill or lwd
 #'
 #' @export
-#' @rdname heatmap-annotations
+#' @rdname deprecated-heatmap-annotations
 anno_prev <- function(data,
                       taxa,
                       undetected = 0,
@@ -157,7 +158,7 @@ anno_prev <- function(data,
 #' @param box_width relative width of boxplot boxes
 #'
 #' @export
-#' @rdname heatmap-annotations
+#' @rdname deprecated-heatmap-annotations
 anno_abund <- function(data,
                        taxa,
                        undetected = 0,
@@ -203,7 +204,7 @@ anno_abund <- function(data,
 #' @param ... further named args to be passed on (to list)
 #'
 #' @export
-#' @rdname heatmap-annotations
+#' @rdname deprecated-heatmap-annotations
 var_anno <- function(annos = "var_box",
                      funs = "identity",
                      names = NA,
@@ -310,7 +311,7 @@ varAnnotate <- function(data, # from heatmap fun # converted to df
 
 #' @param vars names of variables to plot
 #' @export
-#' @rdname heatmap-annotations
+#' @rdname deprecated-heatmap-annotations
 old_anno_var_hist <- function(data, vars = NA, which = "column", size = 15, ...) {
   dots <- list(...)
 
@@ -341,7 +342,7 @@ old_anno_var_hist <- function(data, vars = NA, which = "column", size = 15, ...)
 }
 
 #' @export
-#' @rdname heatmap-annotations
+#' @rdname deprecated-heatmap-annotations
 old_anno_var_box <- function(data, vars = NA, which = "column", size = 15, ...) {
   dots <- list(...)
 

@@ -17,7 +17,7 @@ taxAnnotation(
   annotation_name_gp = grid::gpar(),
   annotation_name_offset = NULL,
   annotation_name_rot = NULL,
-  annotation_name_align = FALSE,
+  annotation_name_align = TRUE,
   annotation_name_side = "auto",
   .data = NULL,
   .taxa = NULL,

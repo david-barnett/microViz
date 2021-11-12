@@ -68,7 +68,7 @@ taxAnnotation <- function(...,
                           annotation_name_gp = grid::gpar(),
                           annotation_name_offset = NULL,
                           annotation_name_rot = NULL,
-                          annotation_name_align = FALSE,
+                          annotation_name_align = TRUE,
                           annotation_name_side = "auto",
                           .data = NULL,
                           .taxa = NULL,
@@ -255,8 +255,12 @@ anno_tax_prev <- function(undetected = 0,
 #'
 #' @param only_detected
 #' only plot values for samples where the taxon abundance is > undetected
-#' @param trans transformation suitable for tax_transform
-#' @param zero_replace zero_replace value for for tax_transform
+#' @param trans
+#' name of transformation suitable for tax_transform,
+#' or a function calling tax_transform, and/or tax_scale,
+#' (a function must take a phyloseq or ps_extra, and return one)
+#' @param zero_replace
+#' zero_replace value for for tax_transform, ignored if trans is a function
 #' @param pointsize size of outlier points, as grid::unit() object
 #'
 #' @return function or ComplexHeatmap AnnotationFunction object
@@ -363,10 +367,6 @@ anno_tax_box <- function(undetected = 0,
 #' @inheritParams anno_tax_box
 #' @inheritParams ComplexHeatmap::anno_density
 #' @inheritDotParams ComplexHeatmap::anno_density axis_param
-#'
-#' @param only_detected
-#' only plot values for samples where the taxon abundance is > undetected
-#' @param trans transformation suitable for tax_transform
 #'
 #' @return function or ComplexHeatmap AnnotationFunction object
 #' @export
@@ -500,7 +500,13 @@ taxCalcAbund <- function(data,
   }
 
   # transform and subset data
-  data <- tax_transform(data, trans = trans, zero_replace = zero_replace)
+  if (inherits(trans, "function")) {
+    data <- trans(data)
+  } else if (inherits(trans, "character")) {
+    data <- tax_transform(data, trans = trans, zero_replace = zero_replace)
+  } else if (!is.null(trans)) {
+    stop("trans for annotation must be transform name, a function, or NULL")
+  }
   otu <- otu_get(data)[, taxa, drop = FALSE]
 
   # replace undetected with NaN to avoid them showing in anno_tax_box

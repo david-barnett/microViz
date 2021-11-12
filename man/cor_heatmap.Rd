@@ -6,7 +6,7 @@
 \usage{
 cor_heatmap(
   data,
-  taxa = phyloseq::taxa_names(ps_get(data)),
+  taxa = NA,
   tax_anno = taxAnnotation(Prev. = anno_tax_prev(), Abun. = anno_tax_box()),
   vars = NA,
   var_anno = NULL,
@@ -20,7 +20,6 @@ cor_heatmap(
   seriation_dist = "euclidean",
   seriation_method_col = seriation_method,
   seriation_dist_col = seriation_dist,
-  tax_transform = "identity",
   var_fun = "identity",
   gridlines = heat_grid(lwd = 0.5),
   anno_tax = NULL,
@@ -62,9 +61,6 @@ must be an adjacent side to taxa_side}
 
 \item{seriation_dist_col}{distance to use in seriation_method_col (if needed)}
 
-\item{tax_transform}{transformation applied to otu_table before correlating
-(and BEFORE selection of taxa)}
-
 \item{var_fun}{character: name of a function to be applied (columns) to a matrix of vars
 before correlating (but not used in any variable annotations)}
 
@@ -90,6 +86,9 @@ var_anno() list output, or a pre-made ComplexHeatmap HeatmapAnnotation}
     \item{\code{row_names_rot}}{Rotation of row names.}
     \item{\code{row_names_centered}}{Should row names put centered?}
   }}
+
+\item{tax_transform}{transformation applied to otu_table before correlating
+(and before selection of taxa by name, so e.g. proportions use all taxa)}
 }
 \description{
 Plot correlations between (transformed) microbial abundances and (selected) numeric-like sample_data variables from a phyloseq object.
