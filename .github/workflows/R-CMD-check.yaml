@@ -67,7 +67,7 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           pacman -Sy mingw-w64-{i686,x86_64}-glpk mingw-w64-{i686,x86_64}-libxml2 mingw-w64-{i686,x86_64}-gmp
-
+        shell: bash
       
       - name: Install XQuartz on macOS
         if: runner.os == 'macOS'
