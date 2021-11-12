@@ -64,9 +64,9 @@ jobs:
           done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "20.04"))')
 
       - name: Install igraph source build dependencies
-        if: runner.os == "Windows"
+        if: runner.os == 'Windows'
         run: |
-        pacman -Sy mingw-w64-{i686,x86_64}-glpk mingw-w64-{i686,x86_64}-libxml2 mingw-w64-{i686,x86_64}-gmp
+          pacman -Sy mingw-w64-{i686,x86_64}-glpk mingw-w64-{i686,x86_64}-libxml2 mingw-w64-{i686,x86_64}-gmp
 
       
       - name: Install XQuartz on macOS
