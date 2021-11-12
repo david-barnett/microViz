@@ -90,7 +90,7 @@ or equivalently set the rank argument in tax_transform." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0.9001</span>
       </span>
     </div>
 
@@ -181,6 +181,7 @@ or equivalently set the rank argument in <code>tax_transform</code>.</p>
   keep_counts <span class='op'>=</span> <span class='cn'>TRUE</span>,
   chain <span class='op'>=</span> <span class='cn'>FALSE</span>,
   zero_replace <span class='op'>=</span> <span class='fl'>0</span>,
+  add <span class='op'>=</span> <span class='fl'>0</span>,
   transformation <span class='op'>=</span> <span class='cn'>NULL</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
@@ -217,6 +218,12 @@ i.e. multiple transformations can be chained with multiple tax_transform calls</
 "halfmin" which replaces zeros with half of the smallest value across the
 entire dataset.
 Beware: the choice of zero replacement is not tracked in the ps_extra output.</p></td>
+    </tr>
+    <tr>
+      <th>add</th>
+      <td><p>Add this value to the otu_table before transforming. If <code>add</code> != 0,
+<code>zero_replace</code> does nothing. Either a numeric, or "halfmin".
+Beware: this choice is not tracked in the ps_extra output.</p></td>
     </tr>
     <tr>
       <th>transformation</th>
