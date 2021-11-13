@@ -1,4 +1,4 @@
-app <- ShinyDriver$new("../../", seed = 1)
+app <- ShinyDriver$new("../../", seed = 1, loadTimeout = 100000, phantomTimeout = 100000)
 app$snapshotInit("test-barplot")
 
 priorPlotValue <- app$waitForValue("comps_girafe", iotype = "output", ignore = list(NULL))

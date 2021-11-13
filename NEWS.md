@@ -2,6 +2,7 @@
 
 ## Features
 - `tax_transform` gains `add` argument to simply add a constant value to all otu_table values before transformation (as an alternative to `zero_replace`)
+- `tax_scale` gains `keep_counts` argument for consistency with `tax_transform`
 
 # microViz 0.8.0 - "autumn leaves"
 
