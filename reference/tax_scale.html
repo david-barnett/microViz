@@ -88,7 +88,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0.9002</span>
       </span>
     </div>
 
@@ -170,7 +170,7 @@
     <p>Wrapper for applying base scale function to phyloseq otu_table</p>
     </div>
 
-    <pre class="usage"><span class='fu'>tax_scale</span><span class='op'>(</span><span class='va'>data</span>, center <span class='op'>=</span> <span class='cn'>TRUE</span>, scale <span class='op'>=</span> <span class='cn'>TRUE</span>, do <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>tax_scale</span><span class='op'>(</span><span class='va'>data</span>, center <span class='op'>=</span> <span class='cn'>TRUE</span>, scale <span class='op'>=</span> <span class='cn'>TRUE</span>, do <span class='op'>=</span> <span class='cn'>NA</span>, keep_counts <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -191,13 +191,15 @@
       <th>do</th>
       <td><p>alternative argument that overrides center and scale options! takes "both", "scale", "center" or "neither"</p></td>
     </tr>
+    <tr>
+      <th>keep_counts</th>
+      <td><p>if TRUE, retain the original count data in ps_extra counts slot</p></td>
+    </tr>
     </table>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://dx.plos.org/10.1371/journal.pone.0061217'>phyloseq</a></span><span class='op'>)</span></span>
-<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://microbiome.github.io/microbiome'>microbiome</a></span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span><span class='op'>)</span></span>
+    <pre class="examples"><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dietswap"</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span></span>
 <span class='r-in'><span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span></span>
 <span class='r-in'><span class='va'>ps</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'><a href='ps_extra-accessors.html'>otu_get</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
@@ -218,30 +220,17 @@
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-4                            2                 96</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-5                            2                 49</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-6                            2                 17</span>
+<span class='r-in'></span>
 <span class='r-in'><span class='co'># standard use (mean center and SD scale)</span></span>
 <span class='r-in'><span class='fu'>tax_scale</span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'><a href='ps_extra-accessors.html'>otu_get</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='va'>.</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> OTU Table:          [6 taxa and 6 samples]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>                      taxa are columns</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>          Actinomycetaceae Aerococcus   Aeromonas Akkermansia</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-1       -0.2780648        NaN -0.09513127  -0.3332126</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-2        3.5800844        NaN -0.09513127  -0.0622108</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-3       -0.2780648        NaN -0.09513127  -0.1651229</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-4        3.5800844        NaN -0.09513127   0.4832231</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-5       -0.2780648        NaN -0.09513127  -0.3229214</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-6       -0.2780648        NaN -0.09513127  -0.3400734</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>          Alcaligenes faecalis et rel. Allistipes et rel.</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-1                   -0.3262211          0.2690184</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-2                   -0.2720137         -0.5929499</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-3                   -0.2178063         -0.6781996</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-4                   -0.2720137         -0.4887560</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-5                   -0.2720137         -0.6371534</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-6                   -0.2720137         -0.7381900</span>
+<span class='r-in'>  <span class='va'>.</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span> <span class='co'># Aerococcus is NaN as standard deviation = 0 (0 prevalence)</span></span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in new_ps_extra(ps, info = new_ps_extra_info(tax_scale = scaling)):</span> object 'ps' not found</span>
+<span class='r-in'></span>
 <span class='r-in'><span class='co'># RMS scale only (directly on otu_table)</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/pkg/phyloseq/man/otu_table-methods.html'>otu_table</a></span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'><span class='fu'><a href='ps_extra-accessors.html'>otu_get</a></span><span class='op'>(</span><span class='va'>ps</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'>tax_scale</span><span class='op'>(</span>center <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='va'>.</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span> <span class='co'># Aerococcus is NaN as prevalence=0</span></span>
+<span class='r-in'>  <span class='va'>.</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span> <span class='co'># Aerococcus is NaN as standard deviation = 0 (0 prevalence)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> OTU Table:          [6 taxa and 6 samples]</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>                      taxa are columns</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>          Actinomycetaceae Aerococcus Aeromonas Akkermansia</span>
@@ -258,26 +247,63 @@
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-4                   0.10130097         0.23742200</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-5                   0.10130097         0.12118414</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-6                   0.10130097         0.04204348</span>
+<span class='r-in'></span>
 <span class='r-in'><span class='co'># example using alternative `do` argument (to center only, no scaling)</span></span>
 <span class='r-in'><span class='fu'>tax_scale</span><span class='op'>(</span><span class='va'>ps</span>, do <span class='op'>=</span> <span class='st'>"center"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'><a href='ps_extra-accessors.html'>otu_get</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='va'>.</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> OTU Table:          [6 taxa and 6 samples]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>                      taxa are columns</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>          Actinomycetaceae Aerococcus    Aeromonas Akkermansia</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-1      -0.07207207          0 -0.009009009   -97.13514</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-2       0.92792793          0 -0.009009009   -18.13514</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-3      -0.07207207          0 -0.009009009   -48.13514</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-4       0.92792793          0 -0.009009009   140.86486</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-5      -0.07207207          0 -0.009009009   -94.13514</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-6      -0.07207207          0 -0.009009009   -99.13514</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>          Alcaligenes faecalis et rel. Allistipes et rel.</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-1                    -6.018018            85.2027</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-2                    -5.018018          -187.7973</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-3                    -4.018018          -214.7973</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-4                    -5.018018          -154.7973</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-5                    -5.018018          -201.7973</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Sample-6                    -5.018018          -233.7973</span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in new_ps_extra(ps, info = new_ps_extra_info(tax_scale = scaling)):</span> object 'ps' not found</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># preserves existing info</span></span>
+<span class='r-in'><span class='fu'><a href='tax_transform.html'>tax_transform</a></span><span class='op'>(</span><span class='va'>ps</span>, <span class='st'>"compositional"</span>, rank <span class='op'>=</span> <span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span> <span class='fu'>tax_scale</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ps_extra object - a list with phyloseq and extras:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> phyloseq-class experiment-level object</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> otu_table()   OTU Table:         [ 130 taxa and 222 samples ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sample_data() Sample Data:       [ 222 samples by 8 sample variables ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ps_extra info:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tax_agg = Genus tax_transform = compositional tax_scale = centered&amp;scaled</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $counts OTU Table: [ 130 taxa and 222 samples ]</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># drop other ps_extra objects previously calculated with unscaled data</span></span>
+<span class='r-in'><span class='va'>psxDist</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tax_agg.html'>tax_agg</a></span><span class='op'>(</span><span class='va'>ps</span>, <span class='st'>"Genus"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span> <span class='fu'><a href='dist_calc.html'>dist_calc</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>psxDist</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ps_extra object - a list with phyloseq and extras:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> phyloseq-class experiment-level object</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> otu_table()   OTU Table:         [ 130 taxa and 222 samples ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sample_data() Sample Data:       [ 222 samples by 8 sample variables ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ps_extra info:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tax_agg = Genus tax_transform = NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> bray distance matrix of size 222 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 0.7639533 0.7851213 0.6680796 0.7699252 0.80507 ...</span>
+<span class='r-in'><span class='va'>psxDist</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span> <span class='fu'>tax_scale</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ps_extra object - a list with phyloseq and extras:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> phyloseq-class experiment-level object</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> otu_table()   OTU Table:         [ 130 taxa and 222 samples ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sample_data() Sample Data:       [ 222 samples by 8 sample variables ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ps_extra info:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tax_agg = Genus tax_transform = NA tax_scale = centered&amp;scaled</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $counts OTU Table: [ 130 taxa and 222 samples ]</span>
+<span class='r-in'><span class='fu'>tax_scale</span><span class='op'>(</span><span class='va'>psxDist</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span> <span class='fu'><a href='ps_extra-accessors.html'>info_get</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ps_extra info:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tax_agg = Genus </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tax_transform = NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tax_scale = centered&amp;scaled </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> distMethod = NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ordMethod = NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> constraints = NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> conditions = NA </span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
