@@ -4,7 +4,7 @@
 \alias{tax_scale}
 \title{Mean-center and SD-scale taxa in phyloseq}
 \usage{
-tax_scale(data, center = TRUE, scale = TRUE, do = NA)
+tax_scale(data, center = TRUE, scale = TRUE, do = NA, keep_counts = TRUE)
 }
 \arguments{
 \item{data}{phyloseq or ps_extra or otu_table}
@@ -14,28 +14,40 @@ tax_scale(data, center = TRUE, scale = TRUE, do = NA)
 \item{scale}{if TRUE, divide each centred taxon by its standard deviation (or divide by RMS if not centred!)}
 
 \item{do}{alternative argument that overrides center and scale options! takes "both", "scale", "center" or "neither"}
+
+\item{keep_counts}{if TRUE, retain the original count data in ps_extra counts slot}
 }
 \description{
 Wrapper for applying base scale function to phyloseq otu_table
 }
 \examples{
-library(phyloseq)
-library(microbiome)
-data("dietswap")
+data("dietswap", package = "microbiome")
 ps <- dietswap
 ps \%>\%
   otu_get() \%>\%
   .[1:6, 1:6]
+
 # standard use (mean center and SD scale)
 tax_scale(ps) \%>\%
   otu_get() \%>\%
-  .[1:6, 1:6]
+  .[1:6, 1:6] # Aerococcus is NaN as standard deviation = 0 (0 prevalence)
+
 # RMS scale only (directly on otu_table)
-otu_table(ps) \%>\%
+otu_get(ps) \%>\%
   tax_scale(center = FALSE) \%>\%
-  .[1:6, 1:6] # Aerococcus is NaN as prevalence=0
+  .[1:6, 1:6] # Aerococcus is NaN as standard deviation = 0 (0 prevalence)
+
 # example using alternative `do` argument (to center only, no scaling)
 tax_scale(ps, do = "center") \%>\%
   otu_get() \%>\%
   .[1:6, 1:6]
+
+# preserves existing info
+tax_transform(ps, "compositional", rank = "Genus") \%>\% tax_scale()
+
+# drop other ps_extra objects previously calculated with unscaled data
+psxDist <- tax_agg(ps, "Genus") \%>\% dist_calc()
+psxDist
+psxDist \%>\% tax_scale()
+tax_scale(psxDist) \%>\% info_get()
 }
