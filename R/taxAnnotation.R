@@ -330,12 +330,11 @@ anno_tax_box <- function(undetected = 0,
 
   # create AnnotationFunction-making function
   FUN <- function(data, taxa, which, size = .size, boxplotArgs = boxArgs) {
-    # create x from data
-    if (isTRUE(use_counts)) data <- ps_counts(data)
     # get taxon abundances (with undetected replaced with NaN, optionally)
     x <- taxCalcAbund(
-      data = data, taxa = taxa, trans = trans, zero_replace = zero_replace,
-      undetected = undetected, only_detected = only_detected
+      data = data, use_counts = use_counts, taxa = taxa, trans = trans,
+      zero_replace = zero_replace, undetected = undetected,
+      only_detected = only_detected
     )
     if (identical(which, "row")) x <- t(x)
 
@@ -440,12 +439,11 @@ anno_tax_density <- function(undetected = 0,
 
   # create AnnotationFunction-making function
   FUN <- function(data, taxa, which, size = .size, args = densityArgs) {
-    # create x from data
-    if (isTRUE(use_counts)) data <- ps_counts(data)
     # get taxon abundances (with undetected replaced with NaN, optionally)
     x <- taxCalcAbund(
-      data = data, taxa = taxa, trans = trans, zero_replace = zero_replace,
-      undetected = undetected, only_detected = only_detected
+      data = data, use_counts = use_counts, taxa = taxa, trans = trans,
+      zero_replace = zero_replace, undetected = undetected,
+      only_detected = only_detected
     )
     if (identical(which, "row")) x <- t(x)
 
@@ -474,6 +472,7 @@ anno_tax_density <- function(undetected = 0,
 #' Get taxon abundance matrix (with undetected replaced with NaN, optionally)
 #'
 #' @param data ps_extra or phyloseq
+#' @param use_counts use count data from data if possible
 #' @param taxa vector of taxa to return abundances for
 #' @param trans transformation for tax_transform
 #' @param zero_replace zero_replace for tax_transform
@@ -485,11 +484,14 @@ anno_tax_density <- function(undetected = 0,
 #' @return numeric matrix, taxa as columns
 #' @noRd
 taxCalcAbund <- function(data,
+                         use_counts,
                          taxa,
                          trans,
                          zero_replace,
                          undetected,
                          only_detected) {
+  if (isTRUE(use_counts)) data <- ps_counts(data)
+
   # mark values in otu matrix that are detected
   if (isTRUE(only_detected)) {
     otu <- otu_get(data)[, taxa, drop = FALSE]
@@ -505,7 +507,7 @@ taxCalcAbund <- function(data,
   } else if (inherits(trans, "character")) {
     data <- tax_transform(data, trans = trans, zero_replace = zero_replace)
   } else if (!is.null(trans)) {
-    stop("trans for annotation must be transform name, a function, or NULL")
+    stop("trans must be transform name, a function, or NULL")
   }
   otu <- otu_get(data)[, taxa, drop = FALSE]
 
