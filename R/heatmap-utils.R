@@ -122,8 +122,8 @@ df_to_numeric_matrix <- function(df, vars = NA, trans_fun = NA) {
 #' @export
 #'
 #' @examples
-#' adjacentSide("top")
-adjacentSide <- function(side = c("top", "right", "bottom", "left")) {
+#' adjacent_side("top")
+adjacent_side <- function(side = c("top", "right", "bottom", "left")) {
   side <- match.arg(side)
   if (side %in% c("left", "right")) adj <- "top"
   if (side %in% c("top", "bottom")) adj <- "right"

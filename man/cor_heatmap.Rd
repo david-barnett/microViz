@@ -15,7 +15,7 @@ cor_heatmap(
   colors = heat_palette(palette = "Blue-Red 2", sym = TRUE),
   numbers = heat_numbers(),
   taxa_side = "right",
-  vars_side = adjacentSide(taxa_side),
+  vars_side = adjacent_side(taxa_side),
   seriation_method = "OLO_ward",
   seriation_dist = "euclidean",
   seriation_method_col = seriation_method,
@@ -180,7 +180,6 @@ cor_heatmap(
   data = psq, taxa = taxa, tax_anno = taxAnno,
   colors = heat_palette("Green-Orange", rev = TRUE, sym = TRUE)
 )
-
 
 # You can hide or change the style of the numbers with heat_numbers()
 cor_heatmap(data = psq, taxa = taxa, tax_anno = taxAnno, numbers = NULL)
