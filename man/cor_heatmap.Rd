@@ -12,7 +12,7 @@ cor_heatmap(
   var_anno = NULL,
   cor = c("pearson", "kendall", "spearman"),
   cor_use = "everything",
-  colors = heat_palette(palette = "Green-Orange", sym = TRUE),
+  colors = heat_palette(palette = "Blue-Red 2", sym = TRUE),
   numbers = heat_numbers(),
   taxa_side = "right",
   vars_side = adjacentSide(taxa_side),
@@ -21,7 +21,7 @@ cor_heatmap(
   seriation_method_col = seriation_method,
   seriation_dist_col = seriation_dist,
   var_fun = "identity",
-  gridlines = heat_grid(lwd = 0.5),
+  gridlines = heat_grid(),
   anno_tax = NULL,
   anno_vars = NULL,
   ...
@@ -61,7 +61,7 @@ must be an adjacent side to taxa_side}
 
 \item{seriation_dist_col}{distance to use in seriation_method_col (if needed)}
 
-\item{var_fun}{character: name of a function to be applied (columns) to a matrix of vars
+\item{var_fun}{a function (or name of) to be applied to columns of a matrix of vars
 before correlating (but not used in any variable annotations)}
 
 \item{gridlines}{list output of heat_grid() for setting gridline style}
@@ -77,7 +77,6 @@ var_anno() list output, or a pre-made ComplexHeatmap HeatmapAnnotation}
 \item{...}{
   Arguments passed on to \code{\link[ComplexHeatmap:Heatmap]{ComplexHeatmap::Heatmap}}
   \describe{
-    \item{\code{row_dend_side}}{Should the row dendrogram be put on the left or right of the heatmap?}
     \item{\code{row_dend_width}}{Width of the row dendrogram, should be a \code{\link[grid]{unit}} object.}
     \item{\code{show_row_dend}}{Whether show row dendrogram?}
     \item{\code{row_dend_gp}}{Graphic parameters for the dendrogram segments. If users already provide a \code{\link[stats]{dendrogram}} object with edges rendered, this argument will be ignored.}
@@ -85,6 +84,7 @@ var_anno() list output, or a pre-made ComplexHeatmap HeatmapAnnotation}
     \item{\code{row_names_gp}}{Graphic parameters for row names.}
     \item{\code{row_names_rot}}{Rotation of row names.}
     \item{\code{row_names_centered}}{Should row names put centered?}
+    \item{\code{show_heatmap_legend}}{Whether show heatmap legend?}
   }}
 
 \item{tax_transform}{transformation applied to otu_table before correlating
@@ -100,6 +100,7 @@ and all arguments relating to taxa will be ignored.
 \examples{
 library(dplyr)
 data("dietswap", package = "microbiome")
+
 # create a couple of numerical variables to use
 psq <- dietswap \%>\%
   ps_mutate(
@@ -107,89 +108,105 @@ psq <- dietswap \%>\%
     female = if_else(sex == "female", true = 1, false = 0),
     african = if_else(nationality == "AFR", true = 1, false = 0)
   )
-psq <- tax_filter(ps = psq, min_prevalence = 1 / 10, min_sample_abundance = 1 / 10)
+psq <- tax_filter(psq, min_prevalence = 1 / 10, min_sample_abundance = 1 / 10)
 psq <- tax_agg(psq, "Genus")
 
 # randomly select 30 taxa from the 50 most abundant taxa
 set.seed(123)
-taxa <- sample(microbiome::top_taxa(ps_get(psq))[1:50], size = 30)
+taxa <- sample(tax_top(psq, n = 50), size = 30)
+
+# NOTE: detection threshold set to 50 as HITchip example data seems to have background noise
+ud <- 50
 
 # make simple correlation heatmap with all numeric-like variables
-p <- cor_heatmap(psq, taxa, anno_tax = tax_anno(undetected = 50))
-# NOTE: detection threshold set to 50 as HITchip example data seems to have background noise
-p
-
-# or with a selection of numeric-like variables
 cor_heatmap(
-  psq, taxa,
-  vars = c("african", "female", "weight"), anno_tax = tax_anno(undetected = 50)
+  data = psq, taxa = taxa,
+  tax_anno = taxAnnotation(
+    Prv. = anno_tax_prev(undetected = ud),
+    Abd. = anno_tax_box(undetected = ud)
+  )
 )
 
-# also with alternative correlation measures
-cor_heatmap(psq, taxa, cor = "spearman", anno_tax = tax_anno(undetected = 50))
+# You can create an annotation object separately in advance
+taxAnno <- taxAnnotation(
+  Prv. = anno_tax_prev(undetected = ud), Abd. = anno_tax_box(undetected = ud)
+)
+class(taxAnno) # "function"
 
-# annotating variables is possible, and easy with var_anno() which defaults to a boxplot
-cor_heatmap(psq, taxa, anno_vars = var_anno(), anno_tax = tax_anno(undetected = 50))
-
-# you can transform the variables before correlating by giving var_fun a function name
-# this does not affect the data used for annotations
+# You can select which numeric-like variables to correlate taxa with
 cor_heatmap(
   psq, taxa,
-  anno_vars = var_anno(), anno_tax = tax_anno(undetected = 50),
-  var_fun = "exp"
+  vars = c("african", "female", "weight"), tax_anno = taxAnno
+)
+
+# Also you can choose alternative correlation measures
+cor_heatmap(psq, taxa, cor = "spearman", tax_anno = taxAnno)
+
+# Annotating variables is possible, and easy with varAnnotation()
+cor_heatmap(
+  data = psq, taxa = taxa, tax_anno = taxAnno,
+  var_anno = varAnnotation(Val. = anno_var_box(size = grid::unit(2, "cm")))
+)
+
+# you can transform the variables before correlating by var_fun
+# notice this does not affect the data used for annotations
+cor_heatmap(
+  data = psq, taxa = taxa, tax_anno = taxAnno, var_fun = "exp",
+  var_anno = varAnnotation(Val. = anno_var_box(size = grid::unit(2, "cm")))
 )
 
 # other and multiple annotations
 cor_heatmap(
-  psq, taxa,
-  anno_tax = tax_anno(undetected = 50),
-  anno_vars = var_anno(
-    annos = c("var_hist", "var_box"),
-    funs = list("identity", function(x) log10(x + 1)),
-    names = c("x", "log10(x+1)"), rel_sizes = c(1, 2)
+  data = psq, taxa = taxa[1:10], vars = c("african", "weight", "female"),
+   tax_anno = taxAnno,
+  var_anno = varAnnotation(
+    value = anno_var_hist(size = grid::unit(15, "mm")),
+    log10p = anno_var_box(function(x) log10(x + 1))
   )
 )
 
-
-# optionally you can set the absolute width and height of the heatmap body manually
-p1 <- cor_heatmap(psq, taxa,
-  anno_tax = tax_anno(undetected = 50),
-  width = grid::unit(5, "cm"), height = grid::unit(15, "cm")
-)
-p1
-
-# you can also change the annotation sizes
-p2 <- cor_heatmap(psq, taxa,
-  anno_tax = tax_anno(undetected = 50, size = 45, rel_sizes = c(1, 2)),
-  width = grid::unit(5, "cm"), height = grid::unit(15, "cm")
-)
-p2
-
-# make the same correlation heatmap, but rotated
-p3 <- cor_heatmap(psq, taxa,
-  taxa_side = "top", anno_tax = tax_anno(undetected = 50)
-)
-p3
-
-# or rotated with taxa annotations at bottom
-p4 <- cor_heatmap(psq, taxa,
-  taxa_side = "bottom", anno_tax = tax_anno(undetected = 50)
-)
-p4
-
-# customising annotation styles is possible using the args argument in tax_anno or var_anno
-# but it is tricky: pass a list of lists, the inner lists are named to match the annotation type
-# this approach might be simplified/changed in future versions
-extra_args <- list(prev = list(gp = grid::gpar(fill = "white", lwd = 1), bar_width = 0.3))
+# make the same heatmap, but rotated
 cor_heatmap(
-  psq, taxa,
-  anno_tax = tax_anno(undetected = 50, prev = 1, abund = NA, args = extra_args)
+  data = psq, taxa = taxa[1:10], vars = c("african", "weight", "female"),
+  tax_anno = taxAnno, taxa_side = "top",
+  var_anno = varAnnotation(
+    value = anno_var_hist(size = grid::unit(15, "mm")),
+    log10p = anno_var_box(function(x) log10(x + 1))
+  )
 )
 
-extra_args2 <- list(
-  var_hist = list(gp = grid::gpar(fill = "black", lwd = 1)),
-  var_box = list(point_size = 3, box_width = 0.9)
+# You can change the colour scheme used, using heat_palette()
+cor_heatmap(
+  data = psq, taxa = taxa, tax_anno = taxAnno,
+  colors = heat_palette("Green-Orange", rev = TRUE, sym = TRUE)
 )
-var_annotations <- var_anno(annos = c("var_hist", "var_box"), args = extra_args2)
-cor_heatmap(psq, taxa, anno_vars = var_annotations, anno_tax = tax_anno(undetected = 50))
+
+
+# You can hide or change the style of the numbers with heat_numbers()
+cor_heatmap(data = psq, taxa = taxa, tax_anno = taxAnno, numbers = NULL)
+cor_heatmap(
+  data = psq, taxa = taxa, tax_anno = taxAnno,
+  colors = heat_palette("Berlin", rev = TRUE, sym = TRUE),
+  numbers = heat_numbers(decimals = 2, col = "white", fontface = "bold")
+)
+
+# You can hide or change the style of the gridlines with heat_grid()
+cor_heatmap(
+  data = psq, taxa = taxa, tax_anno = taxAnno,
+  gridlines = heat_grid(lwd = 0)
+)
+
+# You can pass any other argument from `ComplexHeatmap::Heatmap()` to `...`
+
+# e.g. You can set the absolute width and height of the heatmap body
+cor_heatmap(
+  data = psq, taxa = taxa, tax_anno = taxAnno,
+  width = grid::unit(40, "mm"), height = grid::unit(10, "cm")
+)
+
+# e.g. You can suppress the legend
+cor_heatmap(
+  data = psq, taxa = taxa, tax_anno = taxAnno, show_heatmap_legend = FALSE,
+  width = grid::unit(40, "mm"), height = grid::unit(10, "cm")
+)
 }

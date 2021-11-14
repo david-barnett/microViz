@@ -124,8 +124,8 @@ taxAnnotation <- function(...,
     if (identical(.taxa, NULL)) stop(".taxa must not be NULL if .data given")
     if (identical(.side, NULL)) stop(".side must not be NULL if .data given")
     out <- annoFun(
-      data = .data, taxa = .taxa,
-      side = ifelse(is.null(.side), "right", .side)
+      .data = .data, .taxa = .taxa,
+      .side = ifelse(is.null(.side), "right", .side)
     )
   }
   return(out)
