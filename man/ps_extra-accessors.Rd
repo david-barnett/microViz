@@ -25,7 +25,7 @@ perm_get(ps_extra)
 
 bdisp_get(ps_extra)
 
-otu_get(data)
+otu_get(data, taxa = NA, samples = NA, counts = FALSE)
 
 tt_get(data)
 
@@ -35,6 +35,12 @@ samdat_tbl(data, sample_names_col = ".sample_name")
 \item{ps_extra}{ps_extra class object}
 
 \item{data}{phyloseq or ps_extra}
+
+\item{taxa}{subset of taxa to return, NA for all (default)}
+
+\item{samples}{subset of samples to return, NA for all (default)}
+
+\item{counts}{should otu_get ensure it returns counts? if present in object}
 
 \item{sample_names_col}{name of column where sample_names are put.
 if NA, return data.frame with rownames (sample_names)}

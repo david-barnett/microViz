@@ -91,16 +91,29 @@ bdisp_get <- function(ps_extra) {
 
 #' @param data phyloseq or ps_extra
 # @return phyloseq otu_table matrix with taxa as columns
+#'
+#' @param taxa subset of taxa to return, NA for all (default)
+#' @param samples subset of samples to return, NA for all (default)
+#' @param counts should otu_get ensure it returns counts? if present in object
+#'
 #' @rdname ps_extra-accessors
 #' @export
-otu_get <- function(data) {
+otu_get <- function(data, taxa = NA, samples = NA, counts = FALSE) {
+  # get otu_table from object
   if (methods::is(data, "otu_table")) {
+    if (isTRUE(counts)) warning("data is otu_table: ignoring `counts = TRUE`")
     otu <- data
   } else {
-    ps <- ps_get(data)
+    if (isTRUE(counts)) ps <- ps_counts(data)
+    if (!isTRUE(counts)) ps <- ps_get(data)
     otu <- phyloseq::otu_table(ps)
   }
   if (phyloseq::taxa_are_rows(otu)) otu <- phyloseq::t(otu)
+
+  # subset samples and or taxa if requested
+  if (!identical(taxa, NA) || !identical(samples, NA)) {
+    otu <- otu[samples, taxa, drop = FALSE]
+  }
   return(otu)
 }
 
