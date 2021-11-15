@@ -8,12 +8,13 @@ cor_heatmap(
   data,
   taxa = NA,
   tax_anno = taxAnnotation(Prev. = anno_tax_prev(), Abun. = anno_tax_box()),
+  taxon_renamer = identity,
   vars = NA,
   var_anno = NULL,
   cor = c("pearson", "kendall", "spearman"),
   cor_use = "everything",
   colors = heat_palette(palette = "Blue-Red 2", sym = TRUE),
-  numbers = heat_numbers(),
+  numbers = heat_numbers(decimals = 1, col = "black", fontface = "plain"),
   taxa_side = "right",
   vars_side = adjacent_side(taxa_side),
   seriation_method = "OLO_ward",
@@ -21,7 +22,8 @@ cor_heatmap(
   seriation_method_col = seriation_method,
   seriation_dist_col = seriation_dist,
   var_fun = "identity",
-  gridlines = heat_grid(),
+  grid_col = "white",
+  grid_lwd = 0.5,
   anno_tax = NULL,
   anno_vars = NULL,
   ...
@@ -64,8 +66,6 @@ must be an adjacent side to taxa_side}
 \item{var_fun}{a function (or name of) to be applied to columns of a matrix of vars
 before correlating (but not used in any variable annotations)}
 
-\item{gridlines}{list output of heat_grid() for setting gridline style}
-
 \item{anno_tax}{DEPRECATED:
 optional annotation of taxa distributions: tax_anno() list output,
 or a pre-made ComplexHeatmap HeatmapAnnotation}
@@ -89,6 +89,8 @@ var_anno() list output, or a pre-made ComplexHeatmap HeatmapAnnotation}
 
 \item{tax_transform}{transformation applied to otu_table before correlating
 (and before selection of taxa by name, so e.g. proportions use all taxa)}
+
+\item{gridlines}{list output of heat_grid() for setting gridline style}
 }
 \description{
 Plot correlations between (transformed) microbial abundances and (selected) numeric-like sample_data variables from a phyloseq object.
@@ -111,9 +113,9 @@ psq <- dietswap \%>\%
 psq <- tax_filter(psq, min_prevalence = 1 / 10, min_sample_abundance = 1 / 10)
 psq <- tax_agg(psq, "Genus")
 
-# randomly select 30 taxa from the 50 most abundant taxa
+# randomly select 20 taxa from the 50 most abundant taxa
 set.seed(123)
-taxa <- sample(tax_top(psq, n = 50), size = 30)
+taxa <- sample(tax_top(psq, n = 50), size = 20)
 
 # NOTE: detection threshold set to 50 as HITchip example data seems to have background noise
 ud <- 50
@@ -189,11 +191,9 @@ cor_heatmap(
   numbers = heat_numbers(decimals = 2, col = "white", fontface = "bold")
 )
 
-# You can hide or change the style of the gridlines with heat_grid()
-cor_heatmap(
-  data = psq, taxa = taxa, tax_anno = taxAnno,
-  gridlines = heat_grid(lwd = 0)
-)
+# You can hide or change the style of the grid lines with grid_col & grid_lwd
+cor_heatmap(psq, taxa = taxa, tax_anno = taxAnno, grid_col = NA) # hidden
+cor_heatmap(psq, taxa = taxa, tax_anno = taxAnno, grid_lwd = 3) # bigger
 
 # You can pass any other argument from `ComplexHeatmap::Heatmap()` to `...`
 

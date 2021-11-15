@@ -66,9 +66,9 @@
 #' psq <- tax_filter(psq, min_prevalence = 1 / 10, min_sample_abundance = 1 / 10)
 #' psq <- tax_agg(psq, "Genus")
 #'
-#' # randomly select 30 taxa from the 50 most abundant taxa
+#' # randomly select 20 taxa from the 50 most abundant taxa
 #' set.seed(123)
-#' taxa <- sample(tax_top(psq, n = 50), size = 30)
+#' taxa <- sample(tax_top(psq, n = 50), size = 20)
 #'
 #' # NOTE: detection threshold set to 50 as HITchip example data seems to have background noise
 #' ud <- 50
@@ -144,11 +144,9 @@
 #'   numbers = heat_numbers(decimals = 2, col = "white", fontface = "bold")
 #' )
 #'
-#' # You can hide or change the style of the gridlines with heat_grid()
-#' cor_heatmap(
-#'   data = psq, taxa = taxa, tax_anno = taxAnno,
-#'   gridlines = heat_grid(lwd = 0)
-#' )
+#' # You can hide or change the style of the grid lines with grid_col & grid_lwd
+#' cor_heatmap(psq, taxa = taxa, tax_anno = taxAnno, grid_col = NA) # hidden
+#' cor_heatmap(psq, taxa = taxa, tax_anno = taxAnno, grid_lwd = 3) # bigger
 #'
 #' # You can pass any other argument from `ComplexHeatmap::Heatmap()` to `...`
 #'
@@ -168,6 +166,7 @@ cor_heatmap <- function(data,
                         tax_anno = taxAnnotation(
                           Prev. = anno_tax_prev(), Abun. = anno_tax_box()
                         ),
+                        taxon_renamer = identity,
                         vars = NA,
                         var_anno = NULL,
                         cor = c("pearson", "kendall", "spearman"),
@@ -175,7 +174,9 @@ cor_heatmap <- function(data,
                         colors = heat_palette(
                           palette = "Blue-Red 2", sym = TRUE
                         ),
-                        numbers = heat_numbers(),
+                        numbers = heat_numbers(
+                          decimals = 1, col = "black", fontface = "plain"
+                        ),
                         taxa_side = "right",
                         vars_side = adjacent_side(taxa_side),
                         seriation_method = "OLO_ward",
@@ -183,10 +184,12 @@ cor_heatmap <- function(data,
                         seriation_method_col = seriation_method,
                         seriation_dist_col = seriation_dist,
                         var_fun = "identity",
-                        gridlines = heat_grid(),
+                        grid_col = "white",
+                        grid_lwd = 0.5,
                         anno_tax = NULL,
                         anno_vars = NULL,
                         ...) {
+
   # check correlation type argument
   cor <- match.arg(cor)
 
@@ -215,6 +218,9 @@ cor_heatmap <- function(data,
       otu_mat <- NULL
     } else {
       otu_mat <- unclass(otu_get(data)[, taxa, drop = FALSE])
+
+      # rename taxa
+      colnames(otu_mat) <- taxon_renamer(colnames(otu_mat))
     }
   } else {
     stop(
@@ -249,7 +255,7 @@ cor_heatmap <- function(data,
   if (!identical(otu_mat, NULL)) {
     if (!identical(anno_tax, NULL)) {
       # create taxa annotation object if "instructions" given
-      anno_tax <- anno_tax_helper(
+      anno_tax <- old_anno_tax_helper(
         anno_tax = anno_tax, ps = ps, taxa = taxa, side = taxa_side
       )
     } else if (inherits(tax_anno, "function")) {
@@ -277,6 +283,10 @@ cor_heatmap <- function(data,
 
   # Heatmap args ------------------------------------------------------------
 
+  # get other args
+  dots <- list(...)
+  if ("gridlines" %in% names(dots)) stop("gridlines is deprecated, use grid_col and grid_lwd instead")
+
   args <- list(
     matrix = cor_mat,
     name = cor,
@@ -291,7 +301,7 @@ cor_heatmap <- function(data,
     column_names_rot = 45,
     column_dend_side = "bottom",
     column_names_side = "top",
-    rect_gp = gridlines,
+    rect_gp = grid::gpar(col = grid_col, lwd = grid_lwd),
     heatmap_legend_param = list(
       title = cor, title_gp = grid::gpar(fontsize = 9, fontface = "bold"),
       labels_gp = grid::gpar(fontsize = 7)
@@ -303,8 +313,7 @@ cor_heatmap <- function(data,
   # add variable annotation
   args[[paste0(vars_side, "_annotation")]] <- anno_vars
 
-  # use extra args
-  dots <- list(...)
+  # use extra args, adding or overwriting
   args[names(dots)] <- dots
 
   p <- do.call(ComplexHeatmap::Heatmap, args = args)
@@ -405,53 +414,83 @@ cor_heatmap <- function(data,
 #' psq %>%
 #'   tax_transform("log2", zero_replace = 1) %>%
 #'   comp_heatmap(taxa, anno_tax = tax_anno(undetected = 50), name = "auto")
+# library(dplyr)
+# data("dietswap", package = "microbiome")
+# # create a couple of numerical variables to use
+# psq <- dietswap %>%
+#  ps_mutate(
+#    weight = recode(bmi_group, obese = 3, overweight = 2, lean = 1),
+#    female = if_else(sex == "female", true = 1, false = 0),
+#    african = if_else(nationality == "AFR", true = 1, false = 0)
+#  )
+# psq <- tax_filter(psq, min_prevalence = 1 / 10, min_sample_abundance = 1 / 10)
+# psq <- tax_agg(psq, "Genus")
+# # randomly select 30 taxa from the 50 most abundant taxa
+# set.seed(123)
+# taxa <- sample(tax_top(psq, n = 50), size = 30)
+#
+# # NOTE: detection threshold set to 50 as HITchip example data seems to have background noise
+# ud <- 50
+# comp_heatmap(psq, taxa = taxa, samples = 1:30, taxa_side = "top")
 comp_heatmap <- function(data,
-                         taxa = phyloseq::taxa_names(ps_get(data)),
-                         samples = phyloseq::sample_names(ps_get(data)),
-                         anno_tax = NULL,
-                         anno_samples = NULL,
-                         colors = heat_palette(palette = "Greens", rev = TRUE),
-                         numbers = NULL, # or list made by heat_numbers() or a function in format of a ComplexHeatmap cell_fun
+                         taxa = NA,
                          taxa_side = "right",
-                         # stuff just passed to viz_heatmap
-                         seriation_method = "OLO_ward",
-                         seriation_dist = "euclidean",
-                         seriation_method_col = seriation_method,
-                         seriation_dist_col = seriation_dist,
+                         tax_anno = NULL,
+                         taxon_renamer = identity,
+                         samples = NA,
+                         sample_side = adjacent_side(taxa_side),
+                         sample_anno = NULL,
+                         sample_names_show = FALSE,
+                         colors = heat_palette(palette = "Rocket", rev = TRUE),
+                         numbers = NULL, # or list made by heat_numbers()
+                         sample_seriation = "OLO_ward",
+                         sample_ser_dist = "euclidean",
+                         sample_ser_counts =
+                           !sample_ser_dist %in% c("euclidean", "maximum", "manhattan", "canberra", "binary"),
+                         sample_ser_trans = NULL,
+                         tax_seriation = "OLO_ward",
+                         tax_ser_dist = "euclidean",
+                         tax_ser_counts = FALSE,
+                         tax_ser_trans = NULL,
                          # numbers
-                         tax_transform_numbers = "identity",
-                         tax_scale_numbers = "neither",
-                         gridlines = heat_grid(lwd = 0.1, col = "black"),
-                         name = "mat",
+                         numbers_trans = NULL,
+                         numbers_zero_replace = 0,
+                         numbers_use_counts = TRUE,
+                         grid_col = "white",
+                         grid_lwd = 0.1,
+                         name = "Abd.",
+                         anno_tax = NULL,
                          ...) {
+  # infer whether taxa and samples are rows or columns from side arguments
+  taxa_which <- annoWhichFromAnnoSide(taxa_side, argName = "taxa_side")
+  sample_which <- annoWhichFromAnnoSide(sample_side, argName = "sample_side")
+  if (identical(taxa_which, sample_which)) {
+    stop("taxa and sample sides must be adjacent, not the same or opposite")
+  }
+
+  # default to all taxa and all samples
+  if (identical(taxa, NA)) taxa <- phyloseq::taxa_names(ps_get(data))
+  if (identical(samples, NA)) samples <- phyloseq::sample_names(ps_get(data))
+
   # get otu_table data (used for colours and seriation)
   # any transformation must be done in advance
-  otu_mat <- otu_get(data)
-  otu_mat <- otu_mat[samples, taxa, drop = FALSE]
+  otu_mat <- otu_get(data, samples = samples, taxa = taxa, counts = FALSE)
+
+  # rename taxa
+  colnames(otu_mat) <- taxon_renamer(colnames(otu_mat))
 
   # get automatic name for colourbar legend
   if (identical(name, "auto")) name <- info_get(data)[["tax_transform"]]
 
-  # get phyloseq with stored counts if needed for annotation or numbers
-  if (!identical(numbers, NULL) || !identical(anno_tax, NULL)) {
-    psCounts <- ps_counts(data, warn = TRUE)
-  }
-
-  # create heatmap annotation object for taxa if "instructions" given
-  if (!identical(anno_tax, NULL)) {
-    anno_tax <- anno_tax_helper(
-      anno_tax = anno_tax, ps = psCounts, taxa = taxa, side = taxa_side
-    )
-  }
-
+  # get matrix for printing numbers on cells
   if (identical(numbers, NULL)) {
     # avoid computation if otu_numbers won't be shown anyway
     otu_numbers <- otu_mat
   } else {
-    # used for numbers only
-    otu_numbers <- otu_get(tax_transform(psCounts, trans = tax_transform_numbers))
-    otu_numbers <- tax_scale(data = otu_numbers, do = tax_scale_numbers)
-    otu_numbers <- otu_numbers[samples, taxa, drop = FALSE]
+    otu_numbers <- taxCalcAbund(
+      data = data, taxa = taxa, trans = numbers_trans,
+      use_counts = numbers_use_counts, zero_replace = numbers_zero_replace
+    )[samples, , drop = FALSE]
   }
 
   # getting colour range from data if necessary
@@ -460,23 +499,32 @@ comp_heatmap <- function(data,
     colors <- colors(range = range(otu_mat, na.rm = TRUE, finite = TRUE))
   }
 
-  # infer whether taxa are rows or columns from side argument
-  taxa_which <- annoWhichFromAnnoSide(taxa_side, argName = "taxa_side")
-
   # rotate matrices if taxa are rows of heatmap
   if (identical(taxa_which, "row")) {
     otu_mat <- t(otu_mat)
     otu_numbers <- t(otu_numbers)
   }
 
-  # compute order and any h clustering trees for matrix rows and columns
-  ser <- mat_seriate(
-    mat = otu_mat, method = seriation_method, dist = seriation_dist,
-    col_method = seriation_method_col, col_dist = seriation_dist_col
+  # seriate taxa and samples appropriately
+  otuTax <- taxCalcAbund(
+    data = data, taxa = taxa, use_counts = tax_ser_counts,
+    trans = tax_ser_trans, zero_replace = "halfmin"
+  )[samples, , drop = FALSE]
+  otuSam <- taxCalcAbund(
+    data = data, taxa = taxa, use_counts = sample_ser_counts,
+    trans = sample_ser_trans, zero_replace = "halfmin"
+  )[samples, , drop = FALSE]
+  ser <- list()
+  ser[[taxa_which]] <- rowSeriationInfo(
+    mat = t(otuTax), method = tax_seriation, dist = tax_ser_dist
+  )
+  ser[[sample_which]] <- rowSeriationInfo(
+    mat = otuSam, method = sample_seriation, dist = sample_ser_dist
   )
 
   # remove taxa_are_rows attr. which can remain from comp_heatmap otu_table
   # (caused warning when Heatmap sets class(mat))
+  # must be done only after seriation
   otu_mat <- methods::as(otu_mat, Class = "matrix")
   otu_numbers <- methods::as(otu_numbers, Class = "matrix")
 
@@ -484,40 +532,81 @@ comp_heatmap <- function(data,
   # this is a ComplexHeatmap-specific format of function
   cell_fun <- heatmapMakeCellFun(numbers = numbers, numbers_mat = otu_numbers)
 
+  # Annotations ---------------------------------------------------------------
+
+  # create heatmap annotation object for taxa if "instructions" given
+  if (!identical(anno_tax, NULL)) {
+    # create taxa annotation object if "instructions" given
+    anno_tax <- old_anno_tax_helper(
+      anno_tax = anno_tax, ps = ps, taxa = taxa, side = taxa_side
+    )
+  } else if (inherits(tax_anno, "function")) {
+    anno_tax <- tax_anno(.data = data, .taxa = taxa, .side = taxa_side)
+  } else if (methods::is(tax_anno, "HeatmapAnnotation")) {
+    annoWhichMatchCheck(which = taxa_which, anno = tax_anno)
+    anno_tax <- tax_anno
+  } else {
+    anno_tax <- NULL
+  }
+
+  if (inherits(sample_anno, "function")) {
+    sample_anno <- sample_anno(
+      .data = data, .samples = samples, .side = sample_side
+    )
+  } else if (methods::is(sample_anno, "HeatmapAnnotation")) {
+    annoWhichMatchCheck(
+      which = sample_which, anno = sample_anno, context = "sample"
+    )
+  } else if (!is.null(sample_anno)) {
+    stop(
+      "sample_anno must be output of sampleAnnotation() or a HeatmapAnnotation"
+    )
+  }
+
+  # Heatmap args --------------------------------------------------------------
   # build list of arguments for ComplexHeatmap::Heatmap
+
+  # get other args
+  dots <- list(...)
+  if ("gridlines" %in% names(dots)) stop("gridlines is deprecated, use grid_col and grid_lwd instead")
+
   args <- list(
     name = name,
     matrix = otu_mat,
     col = colors,
     cell_fun = cell_fun,
-    row_order = ser$row_order,
-    cluster_rows = ser$row_tree,
-    column_order = ser$col_order,
-    cluster_columns = ser$col_tree,
-    rect_gp = gridlines,
-    column_names_rot = -45,
-    column_dend_side = "top",
-    column_names_side = "bottom",
+    row_order = ser$row$order,
+    cluster_rows = ser$row$tree,
+    column_order = ser$column$order,
+    cluster_columns = ser$column$tree,
+    rect_gp = grid::gpar(col = grid_col, lwd = grid_lwd),
     heatmap_legend_param = list(labels_gp = grid::gpar(fontsize = 8)),
     column_names_gp = grid::gpar(fontsize = 7),
     row_names_gp = grid::gpar(fontsize = 7)
   )
 
-  # add taxa annotation object to correct side argument
+  # add taxa and sample annotation objects to correct side arguments
   args[[paste0(taxa_side, "_annotation")]] <- anno_tax
+  args[[paste0(sample_side, "_annotation")]] <- sample_anno
 
+  # heuristics for decent automatic placing of dendrograms and names
+  args$column_dend_side <- ifelse(is.null(args$top_annotation), "top", "bottom")
+  args$column_names_side <- opposite_side(args$column_dend_side)
+  args$column_names_rot <- ifelse(args$column_names_side == "top", 45, -45)
+  # row dends and names
+  args$row_dend_side <- ifelse(is.null(args$left_annotation), "left", "right")
+  args$row_names_side <- opposite_side(args$row_dend_side)
   # suppress showing names of samples on whichever side they appear
-  sam_which <- ifelse(taxa_which == "column", yes = "row", no = "column")
-  args[[paste0("show_", sam_which, "_names")]] <- FALSE
+  args[[paste0("show_", sample_which, "_names")]] <- sample_names_show
 
-  # use extra args passed to dots
-  # (overwriting any set including with anno_tax [relevant if anno_tax = NULL])
-  dots <- list(...)
+
+  # use extra args passed to dots (overwriting any already set)
   args[names(dots)] <- dots
 
   p <- do.call(ComplexHeatmap::Heatmap, args = args)
   return(p)
 }
+
 
 #' @title Easy palettes for ComplexHeatmap
 #'
@@ -543,7 +632,11 @@ comp_heatmap <- function(data,
 #' or function returning a palette when given a range
 #' @export
 #' @rdname heat_palette
-heat_palette <- function(palette = "Greens", breaks = 5, range = NA, rev = FALSE, sym = FALSE) {
+heat_palette <- function(palette = ifelse(sym, "Blue-Red 3", "Rocket"),
+                         breaks = 7,
+                         range = NA,
+                         sym = FALSE,
+                         rev = !sym) {
   n_breaks <- if (length(breaks) > 1) length(breaks) else breaks
 
   # palette arg of length 1 must be valid colorspace::hcl_palette()
@@ -611,10 +704,10 @@ heat_palette <- function(palette = "Greens", breaks = 5, range = NA, rev = FALSE
 #' @return list
 #' @export
 #' @rdname heat_numbers
-heat_numbers <- function(decimals = 1,
+heat_numbers <- function(decimals = 0,
                          fontsize = 7,
-                         col = "black",
-                         fontface = "plain",
+                         col = "darkgrey",
+                         fontface = "bold",
                          fmt = NULL,
                          ...) {
   if (identical(fmt, NULL)) fmt <- paste0("%.", decimals, "f")
@@ -642,6 +735,7 @@ heat_grid <- function(col = "white",
                       lex = 1,
                       lineend = "round",
                       linejoin = "round") {
+  stop("heat_grid is deprecated, use grid_col and grid_lwd args instead!")
   grid::gpar(
     col = col,
     alpha = alpha,
@@ -690,7 +784,7 @@ annoWhichMatchCheck <- function(which, anno, context = "taxa") {
 # side takes taxa_side argument as passed to heatmap function
 #
 # used inside cor_heatmap (when given phyloseq as data) and comp_heatmap (always)
-anno_tax_helper <- function(anno_tax, ps, taxa, side) {
+old_anno_tax_helper <- function(anno_tax, ps, taxa, side) {
   warning("anno_tax argument is deprecated, use tax_anno arg instead")
 
   # infer row or column from side specification

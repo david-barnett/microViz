@@ -5,11 +5,11 @@
 \title{Easy palettes for ComplexHeatmap}
 \usage{
 heat_palette(
-  palette = "Greens",
-  breaks = 5,
+  palette = ifelse(sym, "Blue-Red 3", "Rocket"),
+  breaks = 7,
   range = NA,
-  rev = FALSE,
-  sym = FALSE
+  sym = FALSE,
+  rev = !sym
 )
 }
 \arguments{
@@ -21,9 +21,9 @@ or a vector of colour names/hexcodes}
 \item{range}{NA to return palette generating function that takes range
 or numeric vector indicating the range, to return a palette}
 
-\item{rev}{reverse the palette?}
-
 \item{sym}{makes palette range symmetrical around 0 if TRUE}
+
+\item{rev}{reverse the palette?}
 }
 \value{
 circlize::colorRamp2 palette if range = NA,

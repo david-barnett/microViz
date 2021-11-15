@@ -129,3 +129,20 @@ adjacent_side <- function(side = c("top", "right", "bottom", "left")) {
   if (side %in% c("top", "bottom")) adj <- "right"
   return(adj)
 }
+
+#' Simple heatmap internal helper to get opposite side
+#'
+#' @param side one of "top", "right", "bottom", or "left"
+#'
+#' @return character
+opposite_side <- function(side = c("top", "right", "bottom", "left")) {
+  side <- match.arg(side)
+  opp <- switch (side,
+    left = "right",
+    right = "left",
+    top = "bottom",
+    bottom = "top"
+  )
+  return(opp)
+}
+

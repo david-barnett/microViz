@@ -34,7 +34,7 @@ anno_tax_prev(
 
 \item{bar_width}{Relative width of the bars. The value should be smaller than one.}
 
-\item{gp}{Graphic parameters for points. The length of each graphic parameter can be 1, length of \code{x} if \code{x} is a vector, or number of columns of \code{x} is \code{x} is a matrix.}
+\item{gp}{Graphic parameters for bars. The length of each graphic parameter can be 1, length of \code{x} if \code{x} is a vector, or number of columns of \code{x} is \code{x} is a matrix.}
 
 \item{ylim}{Data ranges. By default it is \code{range(x)} if \code{x} is a vector, or \code{range(rowSums(x))} if \code{x} is a matrix.}
 

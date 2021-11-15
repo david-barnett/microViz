@@ -18,7 +18,7 @@ microbial composition heatmaps with microViz.
 library(corncob)
 library(dplyr)
 library(phyloseq)
-# library(microViz)
+library(microViz)
 ```
 
 First we'll get some OTU abundance data from inflammatory bowel disease
@@ -44,7 +44,135 @@ psq
 
 ## Microbial composition heatmaps
 
-Coming soon.
+Visualise the microbial composition of your samples.
+
+The samples and taxa are sorted by similarity.
+(*By default this uses hierarchical clustering with optimal leaf ordering, using
+euclidean distances on the transformed data*).
+
+In this example we use a "compositional" transformation, so the Class 
+abundances are shown as proportions of each sample.
+
+```{r, fig.height=2.5, fig.width=7, dpi=120}
+psq %>% 
+  tax_transform("compositional", rank = "Class") %>% 
+  comp_heatmap()
+```
+
+You can easily swap to a symmetrical colour palette for transformations like
+"clr" or "standardize". This is the default symmetrical palette but you can pick from many.
+
+```{r, fig.height=4, fig.width=7, dpi=120}
+psq %>% 
+  tax_transform("clr", rank = "Family") %>% 
+  comp_heatmap(colors = heat_palette(sym = TRUE))
+```
+
+### Annotating taxa
+
+```{r, fig.height=2.5, fig.width=7, dpi=120}
+psq %>% 
+  tax_transform("compositional", rank = "Class") %>% 
+  comp_heatmap(tax_anno = taxAnnotation(
+    Prev. = anno_tax_prev(bar_width = 0.3, size = grid::unit(1, "cm"))
+  ))
+```
+
+### Legend positioning
+
+Positioning the heatmap legend at the bottom is possible. 
+You can assign the heatmap to a name and then call `ComplexHeatmap`'s `draw` function.
+
+```{r, fig.height=2.5, fig.width=7, dpi=120}
+heat <- psq %>% 
+  tax_transform("compositional", rank = "Class") %>% 
+  comp_heatmap(
+    tax_anno = taxAnnotation(
+      Prev. = anno_tax_prev(bar_width = 0.3, size = grid::unit(1, "cm"))),
+    heatmap_legend_param = list(
+      at = 0:5 / 5,
+      direction = "horizontal", title_position = "leftcenter", 
+      legend_width = grid::unit(4, "cm"), grid_height = grid::unit(5, "mm")
+      )
+  )
+
+ComplexHeatmap::draw(
+  object = heat, heatmap_legend_side = "bottom", 
+  adjust_annotation_extension = FALSE
+  )
+```
+
+### Annotating samples
+
+```{r, fig.height=3.5, fig.width=7, dpi=120}
+psq %>% 
+  tax_transform("compositional", rank = "Class") %>% 
+  comp_heatmap(
+    tax_anno = taxAnnotation(
+      Prev. = anno_tax_prev(bar_width = 0.3, size = grid::unit(1, "cm"))
+    ),
+    sample_anno = sampleAnnotation(
+      ibd = anno_sample("ibd"), #show_legend = TRUE,
+      col = list(ibd = c("ibd" = "blue", "nonibd" = "grey90")),
+    border = TRUE, gp = gpar(col = "black")
+    ),
+  ) 
+```
+
+### Numbering cells
+
+If you have fewer samples (and taxa) you might like to label the cells with
+their values. By default, the raw counts are shown.
+
+```{r, fig.height=3, fig.width=7, dpi=120}
+psq %>% 
+  tax_transform("compositional", rank = "Class") %>% 
+  comp_heatmap(samples = 1:15, numbers = heat_numbers())
+```
+
+You can easily change to showing the same values as the colours by setting
+`numbers_use_counts = FALSE`, and you can/should change the number of decimals shown too.
+
+```{r, fig.height=3, fig.width=7, dpi=120}
+psq %>% 
+  tax_transform("compositional", rank = "Class") %>% 
+  comp_heatmap(
+    samples = 1:15, numbers_use_counts = FALSE,
+    numbers = heat_numbers(decimals = 2)
+  )
+```
+
+The numbers can any transformation of counts, irrespective of what transformations were used for the colours, or seriation. 
+
+```{r, fig.height=3, fig.width=7, dpi=120}
+psq %>% 
+  tax_transform("binary", undetected = 0, rank = "Class") %>% 
+  comp_heatmap(
+    samples = 1:15, numbers_use_counts = TRUE, numbers_trans = "compositional", 
+    numbers = heat_numbers(decimals = 2, col = "white"), 
+    show_heatmap_legend = FALSE
+  )
+```
+
+
+To demonstrate that coloration, numbering and seriation can all use different 
+transformations of the original count data, the example below we specifies
+seriating the taxa and samples using the same numerical values used for the numbers transformation, not the colours, which are just presence/absence!
+
+```{r, fig.height=3, fig.width=7, dpi=120}
+psq %>% 
+  tax_transform("binary", undetected = 0, rank = "Class") %>% 
+  comp_heatmap(
+    samples = 1:15, 
+    sample_ser_counts = TRUE, sample_ser_trans = "compositional",
+    tax_ser_counts = TRUE, tax_ser_trans = "compositional",
+    numbers_use_counts = TRUE, numbers_trans = "compositional", 
+    numbers = heat_numbers(decimals = 2, col = "white"), 
+    show_heatmap_legend = FALSE
+  )
+```
+
+
 
 ## Correlation heatmaps
 
@@ -55,6 +183,7 @@ microbial abundances and other metadata.
 Let's make some fake numeric variables to exemplify.
 
 ```{r}
+set.seed(111) # ensures making same random variables every time!
 psq <- psq %>% 
   ps_arrange(ibd) %>% 
   ps_mutate(

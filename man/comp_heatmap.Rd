@@ -6,21 +6,32 @@
 \usage{
 comp_heatmap(
   data,
-  taxa = phyloseq::taxa_names(ps_get(data)),
-  samples = phyloseq::sample_names(ps_get(data)),
-  anno_tax = NULL,
-  anno_samples = NULL,
-  colors = heat_palette(palette = "Greens", rev = TRUE),
-  numbers = NULL,
+  taxa = NA,
   taxa_side = "right",
-  seriation_method = "OLO_ward",
-  seriation_dist = "euclidean",
-  seriation_method_col = seriation_method,
-  seriation_dist_col = seriation_dist,
-  tax_transform_numbers = "identity",
-  tax_scale_numbers = "neither",
-  gridlines = heat_grid(lwd = 0.1, col = "black"),
-  name = "mat",
+  tax_anno = NULL,
+  taxon_renamer = identity,
+  samples = NA,
+  sample_side = adjacent_side(taxa_side),
+  sample_anno = NULL,
+  sample_names_show = FALSE,
+  colors = heat_palette(palette = "Rocket", rev = TRUE),
+  numbers = NULL,
+  sample_seriation = "OLO_ward",
+  sample_ser_dist = "euclidean",
+  sample_ser_counts = !sample_ser_dist \%in\% c("euclidean", "maximum", "manhattan",
+    "canberra", "binary"),
+  sample_ser_trans = NULL,
+  tax_seriation = "OLO_ward",
+  tax_ser_dist = "euclidean",
+  tax_ser_counts = FALSE,
+  tax_ser_trans = NULL,
+  numbers_trans = NULL,
+  numbers_zero_replace = 0,
+  numbers_use_counts = TRUE,
+  grid_col = "white",
+  grid_lwd = 0.1,
+  name = "Abd.",
+  anno_tax = NULL,
   ...
 )
 }
@@ -29,17 +40,32 @@ comp_heatmap(
 
 \item{taxa}{list of taxa to include (selection occurs AFTER any tax_transform and scaling)}
 
+\item{taxa_side}{controls heatmap orientation and where any anno_tax annotations are placed (top/bottom/left/right)}
+
 \item{samples}{list of taxa to include (selection occurs AFTER any tax_transform and scaling)}
-
-\item{anno_tax}{NULL or tax_anno() list output}
-
-\item{anno_samples}{NULL only support so far TODO}
 
 \item{colors}{output of heat_palette() to set heatmap fill color scheme}
 
 \item{numbers}{NULL or output of heat_numbers() to draw numbers on heatmap cells}
 
-\item{taxa_side}{controls heatmap orientation and where any anno_tax annotations are placed (top/bottom/left/right)}
+\item{name}{used as legend title (colourbar)}
+
+\item{anno_tax}{NULL or tax_anno() list output}
+
+\item{...}{
+  Arguments passed on to \code{\link[ComplexHeatmap:Heatmap]{ComplexHeatmap::Heatmap}}
+  \describe{
+    \item{\code{row_dend_side}}{Should the row dendrogram be put on the left or right of the heatmap?}
+    \item{\code{row_dend_width}}{Width of the row dendrogram, should be a \code{\link[grid]{unit}} object.}
+    \item{\code{show_row_dend}}{Whether show row dendrogram?}
+    \item{\code{row_dend_gp}}{Graphic parameters for the dendrogram segments. If users already provide a \code{\link[stats]{dendrogram}} object with edges rendered, this argument will be ignored.}
+    \item{\code{show_row_names}}{Whether show row names.}
+    \item{\code{row_names_gp}}{Graphic parameters for row names.}
+    \item{\code{row_names_rot}}{Rotation of row names.}
+    \item{\code{row_names_centered}}{Should row names put centered?}
+  }}
+
+\item{anno_samples}{NULL only support so far TODO}
 
 \item{seriation_method}{method to order the rows (in seriation::seriate)}
 
@@ -54,21 +80,6 @@ comp_heatmap(
 \item{tax_scale_numbers}{scaling applied to numbers otu_table after transformation}
 
 \item{gridlines}{list output of heat_grid() for setting gridline style}
-
-\item{name}{used as legend title (colourbar)}
-
-\item{...}{
-  Arguments passed on to \code{\link[ComplexHeatmap:Heatmap]{ComplexHeatmap::Heatmap}}
-  \describe{
-    \item{\code{row_dend_side}}{Should the row dendrogram be put on the left or right of the heatmap?}
-    \item{\code{row_dend_width}}{Width of the row dendrogram, should be a \code{\link[grid]{unit}} object.}
-    \item{\code{show_row_dend}}{Whether show row dendrogram?}
-    \item{\code{row_dend_gp}}{Graphic parameters for the dendrogram segments. If users already provide a \code{\link[stats]{dendrogram}} object with edges rendered, this argument will be ignored.}
-    \item{\code{show_row_names}}{Whether show row names.}
-    \item{\code{row_names_gp}}{Graphic parameters for row names.}
-    \item{\code{row_names_rot}}{Rotation of row names.}
-    \item{\code{row_names_centered}}{Should row names put centered?}
-  }}
 }
 \description{
 Heatmap made with ComplexHeatmap, with optional (but default) annotation of taxa prevalence and abundance.

@@ -33,9 +33,9 @@
 #' psq <- tax_agg(psq, rank = "Family")
 #' taxa <- tax_top(psq, n = 15, rank = "Family")
 #'
-#' # makes a function that takes data, taxa and which (at minimum)
 #' customAxis <- list(labels_rot = 0, at = c(0, 0.5, 1))
 #'
+#' # makes a function that takes data, taxa and which (at minimum)
 #' fun <- taxAnnotation(
 #'   gap = grid::unit(2.5, "mm"),
 #'   Prev. = anno_tax_prev(axis_param = customAxis, ylim = c(0, 1), extend = 0),
@@ -488,8 +488,8 @@ taxCalcAbund <- function(data,
                          taxa,
                          trans,
                          zero_replace,
-                         undetected,
-                         only_detected) {
+                         undetected = NaN,
+                         only_detected = FALSE) {
   if (isTRUE(use_counts)) data <- ps_counts(data)
 
   # mark values in otu matrix that are detected
@@ -505,7 +505,7 @@ taxCalcAbund <- function(data,
   if (inherits(trans, "function")) {
     data <- trans(data)
   } else if (inherits(trans, "character")) {
-    data <- tax_transform(data, trans = trans, zero_replace = zero_replace)
+    data <- tax_transform(data, trans = trans, zero_replace = zero_replace, chain = TRUE)
   } else if (!is.null(trans)) {
     stop("trans must be transform name, a function, or NULL")
   }

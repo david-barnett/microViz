@@ -5,10 +5,10 @@
 \title{Aesthetic settings for drawing numbers on heatmap tiles}
 \usage{
 heat_numbers(
-  decimals = 1,
+  decimals = 0,
   fontsize = 7,
-  col = "black",
-  fontface = "plain",
+  col = "darkgrey",
+  fontface = "bold",
   fmt = NULL,
   ...
 )
