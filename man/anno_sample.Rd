@@ -2,7 +2,7 @@
 % Please edit documentation in R/sampleAnnotation.R
 \name{anno_sample}
 \alias{anno_sample}
-\title{Helper to specify comp_heatmap annotation for other sample data}
+\title{Helper to specify simple comp_heatmap annotation for other sample data}
 \usage{
 anno_sample(var, fun = identity, data = NULL, samples = NULL)
 }
@@ -29,49 +29,15 @@ vector of values
 }
 \description{
 Use this as an argument to sampleAnnotation(),
-which itself is used by comp_heatmap as sample_anno argument.
+which itself is used by comp_heatmap() as sample_anno argument.
+
+This creates a vector, which sampleAnnotation() interprets as a
+simple annotation, so then you set colours and legend parameters
+for each simple annotation as further arguments in sampleAnnotation.
 }
 \examples{
-library("ComplexHeatmap")
-data("ibd_phylo", package = "corncob")
-samples <- phyloseq::sample_names(psq)
-
-# makes a function that takes data, taxa and which (at minimum)
-fun <- anno_sample(var = "ibd", col = c("ibd" = "red", "nonibd" = "white"))
-
-# manually specify the prevalence barplot function by giving it data etc.
-heatmapAnnoFunction <- fun(data = psq, which = "row", samples = samples)
-
-# draw the barplot without a heatmap, you will never normally do this!
-vp <- viewport(width = 0.75, height = 0.75)
-
-grid::grid.newpage()
-pushViewport(vp)
-draw(heatmapAnnoFunction)
-
-# change some options and specify the data up front
-grid::grid.newpage()
-pushViewport(vp)
-anno_sample(
-  data = psq, var = "DiseaseState", samples = samples, which = "column",
-  border = TRUE, size = grid::unit(5, "cm"),
-  col = c(UC = "red", CD = "green", nonIBD = "white", IBDundef = "grey")
-) \%>\%
-  draw()
-
-# multi-pack
-grid::grid.newpage()
-pushViewport(vp)
-anno_sample(
-  data = psq, var = c("ibd", "DiseaseState"), samples = samples, which = "column",
-  size = grid::unit(5, "cm"),
-  col = c(
-  UC = "red", CD = "green", nonIBD = "white", IBDundef = "grey",
-  ibd = "black", nonibd = "white"
-  )
-) \%>\%
-  draw()
-
-# clear drawings
-grid::grid.newpage()
+# see `?sampleAnnotation()`
+}
+\seealso{
+\code{\link[=sampleAnnotation]{sampleAnnotation()}}
 }

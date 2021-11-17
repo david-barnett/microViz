@@ -80,16 +80,16 @@ psq <- tax_agg(psq, rank = "Family")
 taxa <- tax_top(psq, n = 15, rank = "Family")
 samples <- phyloseq::sample_names(psq)
 
-customAxis <- list(labels_rot = 0, at = c(0, 0.5, 1))
-
-# makes a function that takes data, taxa and which (at minimum)
+set.seed(42) # random colours used in first example
+# sampleAnnotation returns a function that takes data, samples, and which
 fun <- sampleAnnotation(
   gap = grid::unit(2.5, "mm"),
-  IBD = anno_sample(var = "ibd"),
-  Dis. = anno_sample(var = "DiseaseState")
+  Dis1 = anno_sample(var = "DiseaseState"),
+  IBD = anno_sample_cat(var = "ibd"),
+  Dis2 = anno_sample_cat(var = "DiseaseState", col = 1:4)
 )
 
-# manually specify the prevalence barplot function by giving it data etc.
+# manually specify the sample annotation function by giving it data etc.
 heatmapAnnoFunction <- fun(.data = psq, .side = "top", .samples = samples)
 
 # draw the annotation without a heatmap, you will never normally do this!
@@ -97,6 +97,8 @@ grid.newpage()
 vp <- viewport(width = 0.65, height = 0.75)
 pushViewport(vp)
 draw(heatmapAnnoFunction)
+pushViewport(viewport(x = 0.7, y = 0.6))
+draw(attr(heatmapAnnoFunction, "Legends"))
 }
 \seealso{
 \code{\link[=taxAnnotation]{taxAnnotation()}}
