@@ -113,7 +113,7 @@
 #' # other and multiple annotations
 #' cor_heatmap(
 #'   data = psq, taxa = taxa[1:10], vars = c("african", "weight", "female"),
-#'    tax_anno = taxAnno,
+#'   tax_anno = taxAnno,
 #'   var_anno = varAnnotation(
 #'     value = anno_var_hist(size = grid::unit(15, "mm")),
 #'     log10p = anno_var_box(function(x) log10(x + 1))
@@ -357,81 +357,78 @@ cor_heatmap <- function(data,
 #'
 #' @export
 #' @examples
+#' library(dplyr)
 #' data("dietswap", package = "microbiome")
-#' psq <- tax_filter(dietswap, min_prevalence = 1 / 10, min_sample_abundance = 1 / 10)
+#' # create a couple of numerical variables to use
+#' psq <- dietswap %>%
+#'   ps_mutate(
+#'     weight = recode(bmi_group, obese = 3, overweight = 2, lean = 1),
+#'     female = if_else(sex == "female", true = 1, false = 0),
+#'     african = if_else(nationality == "AFR", true = 1, false = 0)
+#'   )
+#' psq <- tax_filter(psq, min_prevalence = 1 / 10, min_sample_abundance = 1 / 10)
 #' psq <- tax_agg(psq, "Genus")
 #'
+#' # randomly select 20 taxa from the 40 top taxa, and 40 random samples
+#'
 #' set.seed(123)
-#' taxa <- sample(microbiome::top_taxa(ps_get(psq))[1:50], size = 30)
+#' taxa <- sample(tax_top(psq, n = 40), size = 20)
+#' samples <- sample(1:122, size = 40)
 #'
-#' p <- psq %>%
-#'   tax_transform("clr") %>%
-#'   comp_heatmap(taxa = taxa, anno_tax = tax_anno(undetected = 50))
-#' p
+#' comp_heatmap(data = psq, taxa = taxa, samples = samples)
 #'
-#' # set the colour range yourself
+#' # transforming taxon abundances #
+#'
+#' # NOTE: if you plan on transforming taxa (e.g. to compositional data or clr)
+#' # but only want to plot a subset of the taxa (e.g. most abundant)
+#' # you should NOT subset the original phyloseq before transformation!
+#' # Instead, choose the subset of taxa plotted with:
+#'
+#' # Note 2, choose a symmetrical palette for clr-transformed data
 #' psq %>%
-#'   tax_transform("clr") %>%
+#'   tax_transform("clr", zero_replace = "halfmin") %>%
 #'   comp_heatmap(
-#'     taxa = taxa, anno_tax = tax_anno(undetected = 50),
-#'     colors = heat_palette(palette = "Greens", rev = TRUE, range = 0:10)
-#'   )
-#' psq %>%
-#'   tax_transform("clr") %>%
-#'   comp_heatmap(
-#'     taxa = taxa, anno_tax = tax_anno(undetected = 50),
-#'     colors = heat_palette(palette = "Green-Orange", range = 0:5, sym = TRUE)
+#'     taxa = taxa, samples = samples, colors = heat_palette(sym = TRUE)
 #'   )
 #'
-#' # supply a different colour palette to heat_palette (match breaks to length)
+#' # Almost all the taxa have high values (>> 0) because they are a highly
+#' # abundant subset taken after clr transformation was calculated on all taxa
+#'
+#' # See how just taking the first 30 taxa from the dataset gives more balance
 #' psq %>%
-#'   tax_transform("clr") %>%
+#'   tax_transform("clr", zero_replace = "halfmin") %>%
 #'   comp_heatmap(
-#'     taxa = taxa, anno_tax = tax_anno(undetected = 50),
-#'     colors = heat_palette(palette = viridisLite::turbo(12), breaks = 12)
+#'     taxa = 1:30, samples = samples, colors = heat_palette(sym = TRUE)
 #'   )
 #'
-#' # you can place the legend at the bottom, but it is a little complicated
-#' p <- psq %>%
-#'   tax_transform("clr") %>%
-#'   comp_heatmap(
-#'     taxa = taxa, anno_tax = tax_anno(undetected = 50), name = "auto",
-#'     heatmap_legend_param = list(direction = "horizontal", title_position = "lefttop")
-#'   )
-#' ComplexHeatmap::draw(p,
-#'   heatmap_legend_side = "bottom", adjust_annotation_extension = FALSE
+#' # annotating taxa #
+#'
+#' # Notes:
+#' # - Unlike cor_heatmap, taxa are not annotated by default
+#' # - Detection threshold set to 50 as HITchip example data seems to have background noise
+#'
+#' comp_heatmap(
+#'   data = psq, taxa = taxa, samples = samples,
+#'   tax_anno = taxAnnotation(Prev = anno_tax_prev(undetected = 50))
 #' )
 #'
-#' # rotate plot to have taxa as columns, annotated at the bottom
-#' p2 <- psq %>%
-#'   tax_transform("clr") %>%
-#'   comp_heatmap(
-#'     taxa = taxa, taxa_side = "bottom", anno_tax = tax_anno(undetected = 50)
-#'   )
-#' p2
+#' # annotating samples #
 #'
-#' # log2 transform data before plotting and automatic naming of scale
-#' psq %>%
-#'   tax_transform("log2", zero_replace = 1) %>%
-#'   comp_heatmap(taxa, anno_tax = tax_anno(undetected = 50), name = "auto")
-# library(dplyr)
-# data("dietswap", package = "microbiome")
-# # create a couple of numerical variables to use
-# psq <- dietswap %>%
-#  ps_mutate(
-#    weight = recode(bmi_group, obese = 3, overweight = 2, lean = 1),
-#    female = if_else(sex == "female", true = 1, false = 0),
-#    african = if_else(nationality == "AFR", true = 1, false = 0)
-#  )
-# psq <- tax_filter(psq, min_prevalence = 1 / 10, min_sample_abundance = 1 / 10)
-# psq <- tax_agg(psq, "Genus")
-# # randomly select 30 taxa from the 50 most abundant taxa
-# set.seed(123)
-# taxa <- sample(tax_top(psq, n = 50), size = 30)
-#
-# # NOTE: detection threshold set to 50 as HITchip example data seems to have background noise
-# ud <- 50
-# comp_heatmap(psq, taxa = taxa, samples = 1:30, taxa_side = "top")
+#' htmp <- psq %>%
+#'   tax_transform("clr", zero_replace = "halfmin") %>%
+#'   comp_heatmap(
+#'     taxa = taxa, samples = samples, colors = heat_palette(sym = TRUE),
+#'     sample_anno = sampleAnnotation(
+#'       Nation. = anno_sample_cat("nationality", legend_title = "Nation.")
+#'     )
+#'   )
+#' htmp
+#'
+#' # legends from `anno_sample_cat()` are stored as an attribute of the Heatmap
+#' ComplexHeatmap::draw(
+#'   object = htmp,
+#'   annotation_legend_list = attr(htmp, "AnnoLegends"), merge_legends = TRUE
+#' )
 comp_heatmap <- function(data,
                          taxa = NA,
                          taxa_side = "right",
@@ -448,10 +445,16 @@ comp_heatmap <- function(data,
                          sample_ser_counts =
                            !sample_ser_dist %in% c("euclidean", "maximum", "manhattan", "canberra", "binary"),
                          sample_ser_trans = NULL,
+                         # TODO sample_ser_taxa = "shown",
+                         # "shown", "all" or vector of names/numbers
+                         # (or 'auto'?, to depend on whether ecological distance measure used?)
                          tax_seriation = "OLO_ward",
                          tax_ser_dist = "euclidean",
                          tax_ser_counts = FALSE,
                          tax_ser_trans = NULL,
+                         # TODO tax_ser_samples = "shown",
+                         # "shown", "all" or vector of names/numbers
+                         #
                          # numbers
                          numbers_trans = NULL,
                          numbers_zero_replace = 0,
@@ -568,7 +571,9 @@ comp_heatmap <- function(data,
 
   # get other args
   dots <- list(...)
-  if ("gridlines" %in% names(dots)) stop("gridlines is deprecated, use grid_col and grid_lwd instead")
+  if ("gridlines" %in% names(dots)) {
+    stop("argument gridlines is deprecated: use grid_col and grid_lwd instead")
+  }
 
   args <- list(
     name = name,
@@ -604,6 +609,10 @@ comp_heatmap <- function(data,
   args[names(dots)] <- dots
 
   p <- do.call(ComplexHeatmap::Heatmap, args = args)
+
+  # add legends as attribute
+  attr(p, "AnnoLegends") <- attr(sample_anno, "Legends")
+
   return(p)
 }
 

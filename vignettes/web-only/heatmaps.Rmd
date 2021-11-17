@@ -104,7 +104,19 @@ ComplexHeatmap::draw(
 
 ### Annotating samples
 
+#### Group membership
+
+2 different methods for annotating each sample's values of categorical
+metadata are possible. 
+
+ - `anno_sample()` cannot have borders around each cell, but automatically adds a legend.
+
+ - `anno_sample_cat()` can have cell borders, but can't draw a legend **YET**
+
 ```{r, fig.height=3.5, fig.width=7, dpi=120}
+cols <- distinct_palette(n = 3, add = NA)
+names(cols) <- unique(samdat_tbl(psq)$DiseaseState)
+
 psq %>% 
   tax_transform("compositional", rank = "Class") %>% 
   comp_heatmap(
@@ -112,12 +124,37 @@ psq %>%
       Prev. = anno_tax_prev(bar_width = 0.3, size = grid::unit(1, "cm"))
     ),
     sample_anno = sampleAnnotation(
-      ibd = anno_sample("ibd"), #show_legend = TRUE,
-      col = list(ibd = c("ibd" = "blue", "nonibd" = "grey90")),
-    border = TRUE, gp = gpar(col = "black")
-    ),
+      State1 = anno_sample("DiseaseState"),
+      col = list(State1 = cols), border = FALSE,
+      State2 = anno_sample_cat("DiseaseState", col = cols)
+    )
   ) 
 ```
+
+Equivalent categorical annotations by two methods.
+
+```{r, fig.height=4, fig.width=7, dpi=120}
+psqC <- psq %>% tax_transform("compositional", rank = "Class") 
+
+psqC %>% 
+  comp_heatmap(
+    grid_col = NA, cluster_rows = FALSE, row_title = NULL,
+    row_dend_width = grid::unit(5, "mm"),
+    row_split = seq_len(ntaxa(ps_get(psqC))),
+    tax_anno = taxAnnotation(
+      Prev. = anno_tax_prev(bar_width = 0.9, size = grid::unit(1, "cm"), border = F)
+    ),
+    sample_anno = sampleAnnotation(
+      State1 = anno_sample("DiseaseState"), 
+      col = list(State1 = cols), border = TRUE,
+      State2 = anno_sample_cat(
+        var = "DiseaseState", border = T, col = cols, gp = grid::gpar(col = NA)
+      )
+    )
+  ) %>% 
+  ComplexHeatmap::draw(merge_legends = TRUE)
+```
+
 
 ### Numbering cells
 

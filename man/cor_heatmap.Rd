@@ -160,7 +160,7 @@ cor_heatmap(
 # other and multiple annotations
 cor_heatmap(
   data = psq, taxa = taxa[1:10], vars = c("african", "weight", "female"),
-   tax_anno = taxAnno,
+  tax_anno = taxAnno,
   var_anno = varAnnotation(
     value = anno_var_hist(size = grid::unit(15, "mm")),
     log10p = anno_var_box(function(x) log10(x + 1))
