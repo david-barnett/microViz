@@ -24,9 +24,7 @@
 #' @seealso \code{\link{ps_filter}} for filtering samples by sample_data variables
 #'
 #' @examples
-#' library(phyloseq)
-#' library(microbiome)
-#' data("dietswap")
+#' data("dietswap", package = "microbiome")
 #'
 #' dietswap
 #' # let's pretend the dietswap data contains technical replicates from each subject
@@ -34,17 +32,17 @@
 #' ps_dedupe(dietswap, vars = "subject", method = "readcount", verbose = TRUE)
 #'
 #' # contrived example to show identifying "duplicates" via the interaction of multiple columns
-#' ps1 <- ps_dedupe(dietswap,
-#'   method = "readcount", verbose = TRUE,
+#' ps1 <- ps_dedupe(
+#'   ps = dietswap, method = "readcount", verbose = TRUE,
 #'   vars = c("timepoint", "group", "bmi_group")
 #' )
-#' sample_data(ps1)
+#' phyloseq::sample_data(ps1)
 #'
-#' ps2 <- ps_dedupe(dietswap,
-#'   method = "first", verbose = TRUE,
+#' ps2 <- ps_dedupe(
+#'   ps = dietswap, method = "first", verbose = TRUE,
 #'   vars = c("timepoint", "group", "bmi_group")
 #' )
-#' sample_data(ps2)
+#' phyloseq::sample_data(ps2)
 ps_dedupe <- function(ps,
                       vars,
                       method = "readcount",

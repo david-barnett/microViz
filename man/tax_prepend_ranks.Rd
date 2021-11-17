@@ -21,13 +21,11 @@ Prepend the start of rank names to each taxon at each rank
 (useful particularly in case of duplicated taxa names across ranks, e.g. dietswap dataset)
 }
 \examples{
-library(dplyr)
-library(microbiome)
-data(dietswap)
-tax_table(dietswap) \%>\% head()
+data("dietswap", package = "microbiome")
+phyloseq::tax_table(dietswap) \%>\% head()
 dietswap \%>\%
   tax_prepend_ranks() \%>\%
-  tax_table() \%>\%
+  phyloseq::tax_table() \%>\%
   head()
 }
 \seealso{

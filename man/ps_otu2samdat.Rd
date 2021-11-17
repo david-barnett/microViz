@@ -18,10 +18,8 @@ phyloseq with augmented sample_data
 Copy phyloseq otu_table data to sample_data
 }
 \examples{
-library(dplyr)
 library(phyloseq)
-library(microbiome)
-data("dietswap")
+data("dietswap", package = "microbiome")
 
 ps <- dietswap \%>\% ps_otu2samdat("Akkermansia")
 sample_variables(ps)

@@ -38,8 +38,7 @@ tax_select will also search the otu names/rownames, BUT only for perfect matches
 }
 \examples{
 # Get example phyloseq object data
-library(microbiome)
-data("dietswap")
+data("dietswap", package = "microbiome")
 pSeq <- dietswap
 
 # SELECTION EXAMPLES #
@@ -48,10 +47,12 @@ b <- pSeq \%>\% tax_select(tax_list = "Bifidobacterium", n_typos = 0)
 c <- pSeq \%>\% tax_select(tax_list = "Bif", n_typos = 1)
 identical(a, b) # TRUE
 identical(a, c) # FALSE
+
 pSeq \%>\% tax_select(tax_list = "Bifidobactrium") # default 1 typo allowed
 one <- pSeq \%>\% tax_select(tax_list = "Akkarmensia", n_typos = 2)
 two <- pSeq \%>\% tax_select(tax_list = "Akkermansia", n_typos = 0)
 identical(one, two) # TRUE
+
 # DESELECTION EXAMPLE # #
 pSeq \%>\% tax_select(tax_list = "Bif", strict_matches = FALSE, deselect = TRUE)
 # Incorrect example

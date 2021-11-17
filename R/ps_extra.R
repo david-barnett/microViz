@@ -2,14 +2,11 @@
 #'
 #' S3 class to store a list of "extras" alongside a phyloseq object
 #' @examples
-#' library(phyloseq)
-#' library(microbiome)
 #' data("dietswap", package = "microbiome")
-#' ps <- dietswap
 #'
 #' new_ps_extra_info()
 #' print(new_ps_extra_info(), all = TRUE)
-#' ps_extra <- new_ps_extra(ps)
+#' ps_extra <- new_ps_extra(dietswap)
 #' ps_extra
 #' @export
 #' @noRd

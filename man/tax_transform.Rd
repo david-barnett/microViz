@@ -95,7 +95,6 @@ Beware that the choice of detection threshold is not tracked in the ps_extra.
 }
 
 \examples{
-library(microbiome)
 data("dietswap", package = "microbiome")
 
 # aggregate taxa at Phylum level and center log ratio transform the phyla counts

@@ -18,8 +18,7 @@
 #'
 #' @examples
 #' library(phyloseq)
-#' library(microbiome)
-#' data("dietswap")
+#' data("dietswap", package = "microbiome")
 #'
 #' dietswap %>%
 #'   sample_data() %>%

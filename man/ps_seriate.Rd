@@ -31,8 +31,7 @@ Uses seriation methods from seriation::seriate and often dist_calc (depending on
 }
 \examples{
 library(phyloseq)
-library(microbiome)
-data("dietswap")
+data("dietswap", package = "microbiome")
 
 dietswap \%>\%
   sample_data() \%>\%

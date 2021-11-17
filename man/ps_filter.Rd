@@ -26,10 +26,9 @@ Use this function as you would use use dplyr::filter(), but with a phyloseq obje
 }
 \examples{
 library(phyloseq)
-library(microbiome)
 library(dplyr)
 
-data("enterotype")
+data("enterotype", package = "phyloseq")
 enterotype
 sample_data(enterotype)[1:10, 1:5]
 
@@ -55,7 +54,8 @@ identical(ps2, ps3) # TRUE
 # as it attempts to discard any taxa that become always absent/0 after filtering (by default)
 # set .keep_all_taxa = TRUE to avoid this filtering behaviour, which is unwanted in this case
 enterotype \%>\%
-  microbiome::transform("clr") \%>\%
+  tax_transform("clr") \%>\%
+  ps_get() \%>\%
   ps_filter(SeqTech == "Sanger", .keep_all_taxa = TRUE)
 }
 \seealso{

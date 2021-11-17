@@ -1,6 +1,5 @@
 library(phyloseq)
-library(microbiome)
-data("dietswap")
+data("dietswap", package = "microbiome")
 
 test_that("tax_reorder works", {
   new_order <- c(

@@ -74,7 +74,6 @@
 #' @seealso \code{\link{tax_agg}}
 #'
 #' @examples
-#' library(microbiome)
 #' data("dietswap", package = "microbiome")
 #'
 #' # aggregate taxa at Phylum level and center log ratio transform the phyla counts
@@ -260,7 +259,7 @@ otuAddConstant <- function(otu, add) {
 }
 
 # otu table helper finds half of the global minimum
-otuHalfMin <- function(otu){
+otuHalfMin <- function(otu) {
   if (any(otu < 0)) {
     stop("'halfmin' is not valid when some otu_table values are negative")
   }
