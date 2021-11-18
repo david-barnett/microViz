@@ -369,7 +369,7 @@ anno_cat <- function(x,
 #' @param x
 #' optional: vector of data to pair with unnamed col or check against named col
 #' @param title title of legend
-#' @renamer function applied to generate labels: from names(col) or levels of x
+#' @param renamer function applied to generate labels: from names(col) or levels of x
 #'
 #' @inheritDotParams
 #' ComplexHeatmap::Legend labels nrow ncol by_row grid_height grid_width gap

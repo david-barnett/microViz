@@ -11,6 +11,8 @@ anno_cat_legend(col, x = NULL, renamer = identity, title = "", ...)
 
 \item{x}{optional: vector of data to pair with unnamed col or check against named col}
 
+\item{renamer}{function applied to generate labels: from names(col) or levels of x}
+
 \item{title}{title of legend}
 
 \item{...}{
