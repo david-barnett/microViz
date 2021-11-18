@@ -587,7 +587,7 @@ comp_heatmap <- function(data,
   if (!identical(anno_tax, NULL)) {
     # create taxa annotation object if "instructions" given
     anno_tax <- old_anno_tax_helper(
-      anno_tax = anno_tax, ps = ps, taxa = taxa, side = taxa_side
+      anno_tax = anno_tax, ps = ps_counts(data), taxa = taxa, side = taxa_side
     )
   } else if (inherits(tax_anno, "function")) {
     anno_tax <- tax_anno(.data = data, .taxa = taxa, .side = taxa_side)

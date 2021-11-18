@@ -112,27 +112,3 @@ test_that("comp_heatmap doesn't change: ", {
   expect_snapshot_csv(name = "comp_col_order", object = p@column_order)
 })
 
-test_that("comp_heatmap allows different ordering method for rows and cols", {
-  local_edition(3)
-  p2 <- suppressWarnings( # warnings from using bray with clr data
-    psq %>%
-      tax_transform("clr") %>%
-      comp_heatmap(
-        taxa = taxa, anno_tax = tax_anno(undetected = 50),
-        seriation_method_col = "OLO_ward", seriation_dist_col = "bray",
-        seriation_method = "Identity"
-      )
-  )
-
-  expect_snapshot_csv(
-    name = "comp_heatmap_alternate_identity_rows",
-    object = p2@matrix
-  )
-  expect_snapshot(p2@matrix_param)
-  expect_snapshot(p2@matrix_color_mapping)
-  expect_snapshot(p2@right_annotation@anno_list)
-  expect_snapshot(str(p2@column_dend_param$obj))
-  expect_snapshot(str(p2@row_dend_param$obj))
-  expect_snapshot_csv(name = "comp_row_order2", object = p2@row_order)
-  expect_snapshot_csv(name = "comp_col_order2", object = p2@column_order)
-})
