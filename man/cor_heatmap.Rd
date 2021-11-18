@@ -93,11 +93,13 @@ var_anno() list output, or a pre-made ComplexHeatmap HeatmapAnnotation}
 \item{gridlines}{list output of heat_grid() for setting gridline style}
 }
 \description{
-Plot correlations between (transformed) microbial abundances and (selected) numeric-like sample_data variables from a phyloseq object.
+Plot correlations between (transformed) microbial abundances and
+(selected) numeric-like sample_data variables from a phyloseq object.
 }
 \details{
-Using a data.frame for the data argument is also possible, in which case the (selected) numeric-like variables will be correlated which each other,
-and all arguments relating to taxa will be ignored.
+Using a data.frame for the data argument is also possible,
+in which case the (selected) numeric-like variables will be correlated
+with each other, and all arguments relating to taxa will be ignored.
 }
 \examples{
 library(dplyr)

@@ -15,7 +15,6 @@ microbial composition heatmaps with microViz.
 ## Setup
 
 ```{r setup}
-library(corncob)
 library(dplyr)
 library(phyloseq)
 library(microViz)
@@ -428,7 +427,7 @@ psq %>%
 Or on the top or bottom is also possible, this will rotate the heatmap.
 Remember to swap the seriation method arguments around!
 
-```{r, fig.width=6, fig.height=5, dpi=120}
+```{r, fig.width=5, fig.height=4, dpi=120}
 psq %>% 
   tax_agg("Family") %>% 
   tax_sort(by = prev, at = "Family") %>% 
@@ -449,7 +448,7 @@ psq %>%
 
 As well as annotating the taxa, you can also annotate the variables.
 
-```{r, fig.width=7, fig.height=6, dpi=120}
+```{r, fig.width=6, fig.height=6, dpi=120}
 psq %>% 
   tax_agg("Family") %>% 
   cor_heatmap(

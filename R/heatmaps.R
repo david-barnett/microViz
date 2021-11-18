@@ -1,9 +1,15 @@
+# main heatmap functions --------------------------------------------------
+
 #' @title Microbe-to-sample-data correlation heatmap
 #'
-#' @description Plot correlations between (transformed) microbial abundances and (selected) numeric-like sample_data variables from a phyloseq object.
+#' @description
+#' Plot correlations between (transformed) microbial abundances and
+#' (selected) numeric-like sample_data variables from a phyloseq object.
 #'
-#' @details Using a data.frame for the data argument is also possible, in which case the (selected) numeric-like variables will be correlated which each other,
-#' and all arguments relating to taxa will be ignored.
+#' @details
+#' Using a data.frame for the data argument is also possible,
+#' in which case the (selected) numeric-like variables will be correlated
+#' with each other, and all arguments relating to taxa will be ignored.
 #'
 #' @inheritDotParams ComplexHeatmap::Heatmap show_heatmap_legend
 #' row_dend_side row_dend_width show_row_dend row_dend_gp
@@ -616,6 +622,7 @@ comp_heatmap <- function(data,
   return(p)
 }
 
+# helper functions ------------------------------------------------------------
 
 #' @title Easy palettes for ComplexHeatmap
 #'
