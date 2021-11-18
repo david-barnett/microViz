@@ -71,7 +71,7 @@ of the taxonomic rank info pasted together into one, often very long, name.
 which should then result in (much) shorter unique names at the aggregation rank.
 }
 \examples{
-library(microbiome)
+library(phyloseq)
 data("dietswap", package = "microbiome")
 
 tax_agg(ps = dietswap, "Phylum") \%>\%

@@ -1,6 +1,4 @@
-library(phyloseq)
-library(microbiome)
-data("dietswap")
+data("dietswap", package = "microbiome")
 
 test_that("dietswap sample_data .target arranging remains the same", {
   expect_identical(

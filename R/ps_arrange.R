@@ -18,23 +18,21 @@
 #' @seealso \code{\link[dplyr]{arrange}}
 #'
 #' @examples
-#' library(phyloseq)
-#' library(microbiome)
-#' data("dietswap")
+#' data("dietswap", package = "microbiome")
 #'
 #' dietswap %>%
 #'   ps_arrange(subject, timepoint) %>%
-#'   sample_data() %>%
+#'   phyloseq::sample_data() %>%
 #'   head(8)
 #'
 #' ps <- dietswap %>% ps_arrange(subject, desc(timepoint))
-#' sample_data(ps) %>% head(8)
-#' otu_table(ps)[1:8, 1:8]
+#' phyloseq::sample_data(ps) %>% head(8)
+#' phyloseq::otu_table(ps)[1:8, 1:8]
 #'
 #' # you can also arrange samples by the abundances of taxa in the otu tables
 #' pst <- dietswap %>% ps_arrange(desc(Akkermansia), .target = "otu_table")
-#' otu_table(pst)[1:8, 1:8]
-#' sample_data(pst) %>% head(8)
+#' phyloseq::otu_table(pst)[1:8, 1:8]
+#' phyloseq::sample_data(pst) %>% head(8)
 ps_arrange <- function(ps, ..., .target = "sample_data") {
   ps <- ps_get(ps)
   sample_order <- switch(.target,

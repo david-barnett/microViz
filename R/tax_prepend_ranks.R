@@ -13,13 +13,11 @@
 #' @seealso \code{\link{tax_fix}} for fixing other tax_table problems
 #'
 #' @examples
-#' library(dplyr)
-#' library(microbiome)
-#' data(dietswap)
-#' tax_table(dietswap) %>% head()
+#' data("dietswap", package = "microbiome")
+#' phyloseq::tax_table(dietswap) %>% head()
 #' dietswap %>%
 #'   tax_prepend_ranks() %>%
-#'   tax_table() %>%
+#'   phyloseq::tax_table() %>%
 #'   head()
 tax_prepend_ranks <- function(ps, sep = ": ", nchar = 1) {
   ntax <- phyloseq::ntaxa(ps)

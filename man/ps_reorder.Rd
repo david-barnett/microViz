@@ -22,8 +22,7 @@ Ordering of samples in a phyloseq is controlled from the otu_table slot!
 }
 \examples{
 library(phyloseq)
-library(microbiome)
-data("dietswap")
+data("dietswap", package = "microbiome")
 
 dietswap \%>\%
   sample_data() \%>\%

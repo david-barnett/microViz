@@ -61,7 +61,7 @@
 #' @rdname tax_agg
 #'
 #' @examples
-#' library(microbiome)
+#' library(phyloseq)
 #' data("dietswap", package = "microbiome")
 #'
 #' tax_agg(ps = dietswap, "Phylum") %>%

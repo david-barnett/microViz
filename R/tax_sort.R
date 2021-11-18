@@ -33,8 +33,8 @@
 #' @export
 #'
 #' @examples
-#' library(microbiome)
-#' data("dietswap")
+#' library(phyloseq)
+#' data("dietswap", package = "microbiome")
 #' dietswap
 #'
 #' # reverse current order
