@@ -36,6 +36,8 @@ cor_heatmap(
 
 \item{tax_anno}{NULL or annotation function for taxa: taxAnnotation() output.}
 
+\item{taxon_renamer}{function to rename taxa before plotting}
+
 \item{vars}{selection of variable names from sample_data}
 
 \item{var_anno}{NULL or annotation function for variables: varAnnotation() output.}
@@ -66,6 +68,10 @@ must be an adjacent side to taxa_side}
 \item{var_fun}{a function (or name of) to be applied to columns of a matrix of vars
 before correlating (but not used in any variable annotations)}
 
+\item{grid_col}{colour of gridlines, or NA for none}
+
+\item{grid_lwd}{width of gridlines}
+
 \item{anno_tax}{DEPRECATED:
 optional annotation of taxa distributions: tax_anno() list output,
 or a pre-made ComplexHeatmap HeatmapAnnotation}
@@ -86,15 +92,13 @@ var_anno() list output, or a pre-made ComplexHeatmap HeatmapAnnotation}
     \item{\code{row_names_centered}}{Should row names put centered?}
     \item{\code{show_heatmap_legend}}{Whether show heatmap legend?}
   }}
-
-\item{tax_transform}{transformation applied to otu_table before correlating
-(and before selection of taxa by name, so e.g. proportions use all taxa)}
-
-\item{gridlines}{list output of heat_grid() for setting gridline style}
 }
 \description{
 Plot correlations between (transformed) microbial abundances and
 (selected) numeric-like sample_data variables from a phyloseq object.
+
+Lots of customisation options available through the listed arguments,
+and you can pass any other argument from \code{ComplexHeatmap::Heatmap()} too.
 }
 \details{
 Using a data.frame for the data argument is also possible,
@@ -210,4 +214,11 @@ cor_heatmap(
   data = psq, taxa = taxa, tax_anno = taxAnno, show_heatmap_legend = FALSE,
   width = grid::unit(40, "mm"), height = grid::unit(10, "cm")
 )
+}
+\seealso{
+\code{\link[=taxAnnotation]{taxAnnotation()}} \code{\link[=varAnnotation]{varAnnotation()}}
+
+\code{\link[=comp_heatmap]{comp_heatmap()}}
+
+\code{\link[ComplexHeatmap:Heatmap]{ComplexHeatmap::Heatmap()}}
 }

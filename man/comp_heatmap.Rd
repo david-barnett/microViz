@@ -2,7 +2,7 @@
 % Please edit documentation in R/heatmaps.R
 \name{comp_heatmap}
 \alias{comp_heatmap}
-\title{Heatmap of taxonomic composition across samples}
+\title{Draw heatmap of microbiome composition across samples}
 \usage{
 comp_heatmap(
   data,
@@ -36,21 +36,65 @@ comp_heatmap(
 )
 }
 \arguments{
-\item{data}{phyloseq extra output of tax_transform or tax_agg}
+\item{data}{phyloseq or phyloseq extra}
 
-\item{taxa}{list of taxa to include (selection occurs AFTER any tax_transform and scaling)}
+\item{taxa}{list of taxa to include, or NA for all}
 
-\item{taxa_side}{controls heatmap orientation and where any anno_tax annotations are placed (top/bottom/left/right)}
+\item{taxa_side}{"top"/"right"/"bottom"/"left": controls heatmap orientation and where any
+annotations specified in tax_anno are placed}
 
-\item{samples}{list of taxa to include (selection occurs AFTER any tax_transform and scaling)}
+\item{tax_anno}{NULL or annotation function for taxa: taxAnnotation() output.}
+
+\item{taxon_renamer}{function to rename taxa before plotting}
+
+\item{samples}{list of samples to include on plot}
+
+\item{sample_side}{which side to show any sample annotation on, must be adjacent to taxa_side}
+
+\item{sample_anno}{NULL or annotation function for samples: sampleAnnotation() output.}
+
+\item{sample_names_show}{show sample names? (you can control side and rotation of names with
+other ComplexHeatmap::Heatmap arguments)}
 
 \item{colors}{output of heat_palette() to set heatmap fill color scheme}
 
-\item{numbers}{NULL or output of heat_numbers() to draw numbers on heatmap cells}
+\item{numbers}{output of heat_numbers() to draw numbers on heatmap cells}
+
+\item{sample_seriation}{name of method used to order the samples (from seriation::seriate)}
+
+\item{sample_ser_dist}{name of distance to use with sample_seriation method (if needed)}
+
+\item{sample_ser_counts}{insist on using count data for sample seriation?}
+
+\item{sample_ser_trans}{function for transformation of data used for sample seriation
+(such as a call to \code{tax_transform()})}
+
+\item{tax_seriation}{name of method used to order the taxa (from seriation::seriate)}
+
+\item{tax_ser_dist}{name of distance to use with tax_seriation method (if needed)}
+
+\item{tax_ser_counts}{insist on using count data for taxa seriation?}
+
+\item{tax_ser_trans}{function for transformation of data used for taxa seriation
+(such as a call to \code{tax_transform()})}
+
+\item{numbers_trans}{name of tax_transform transformation, or a function
+for transformation of data used for drawing numbers on cells}
+
+\item{numbers_zero_replace}{zero replacement method used if named transformation given to number_trans}
+
+\item{numbers_use_counts}{insist on using count data for number drawing?
+(if TRUE, any numbers_trans transformation would be applied to count data)}
+
+\item{grid_col}{colour of gridlines, or NA for none}
+
+\item{grid_lwd}{width of gridlines}
 
 \item{name}{used as legend title (colourbar)}
 
-\item{anno_tax}{NULL or tax_anno() list output}
+\item{anno_tax}{DEPRECATED:
+optional annotation of taxa distributions: tax_anno() list output,
+or a pre-made ComplexHeatmap HeatmapAnnotation}
 
 \item{...}{
   Arguments passed on to \code{\link[ComplexHeatmap:Heatmap]{ComplexHeatmap::Heatmap}}
@@ -64,32 +108,27 @@ comp_heatmap(
     \item{\code{row_names_rot}}{Rotation of row names.}
     \item{\code{row_names_centered}}{Should row names put centered?}
   }}
-
-\item{anno_samples}{NULL only support so far TODO}
-
-\item{seriation_method}{method to order the rows (in seriation::seriate)}
-
-\item{seriation_dist}{distance to use in seriation_method (if needed)}
-
-\item{seriation_method_col}{method to order the columns (in seriation::seriate)}
-
-\item{seriation_dist_col}{distance to use in seriation_method_col (if needed)}
-
-\item{tax_transform_numbers}{transformation applied to otu_table used only for any numbers printed}
-
-\item{tax_scale_numbers}{scaling applied to numbers otu_table after transformation}
-
-\item{gridlines}{list output of heat_grid() for setting gridline style}
 }
 \description{
-Heatmap made with ComplexHeatmap, with optional (but default) annotation of taxa prevalence and abundance.
+Heatmap made with \code{ComplexHeatmap::Heatmap()},
+with optional annotation of taxa prevalence/abundance,
+and/or other sample data.
 
-Transform your data with tax_transform prior to plotting (and/or scale with tax_scale).
+Transform your data with \code{tax_transform()} prior to plotting
+(and/or scale with \code{tax_scale()}).
+
+See the heatmaps vignette for more examples of use.
+
 Plotting "compositional" data can give an idea of the dominant taxa in each sample.
 Plotting some form of log or clr transformed (or scaled) microbial features can highlight
 other patterns.
-The transformed data will be ordered via your selected seriation methods and distances.
-Any cell numbers printed can be set to different values, and do not affect ordering.
+
+The data will be ordered via your selected seriation methods and distances
+on either the transformed data (default) or the original count data
+(or with any other transformation).
+
+Any cell numbers printed can be transformed independently of the colour scheme,
+and do not affect ordering.
 }
 \examples{
 library(dplyr)
@@ -164,4 +203,7 @@ ComplexHeatmap::draw(
   object = htmp,
   annotation_legend_list = attr(htmp, "AnnoLegends"), merge_legends = TRUE
 )
+}
+\seealso{
+\code{\link[=cor_heatmap]{cor_heatmap()}}
 }

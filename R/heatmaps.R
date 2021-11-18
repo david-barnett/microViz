@@ -6,6 +6,9 @@
 #' Plot correlations between (transformed) microbial abundances and
 #' (selected) numeric-like sample_data variables from a phyloseq object.
 #'
+#' Lots of customisation options available through the listed arguments,
+#' and you can pass any other argument from `ComplexHeatmap::Heatmap()` too.
+#'
 #' @details
 #' Using a data.frame for the data argument is also possible,
 #' in which case the (selected) numeric-like variables will be correlated
@@ -17,14 +20,15 @@
 #'
 #' @param data phyloseq or phyloseq extra
 #' @param taxa list of taxa to include, or NA for all
-#' @param tax_anno
-#' NULL or annotation function for taxa: taxAnnotation() output.
-#' @param vars selection of variable names from sample_data
-#' @param var_anno
-#' NULL or annotation function for variables: varAnnotation() output.
 #' @param taxa_side
 #' "top"/"right"/"bottom"/"left": controls heatmap orientation and where any
 #' annotations specified in tax_anno are placed
+#' @param tax_anno
+#' NULL or annotation function for taxa: taxAnnotation() output.
+#' @param taxon_renamer function to rename taxa before plotting
+#' @param vars selection of variable names from sample_data
+#' @param var_anno
+#' NULL or annotation function for variables: varAnnotation() output.
 #' @param vars_side
 #' which side to place any variable annotations specified in var_anno,
 #' must be an adjacent side to taxa_side
@@ -40,13 +44,11 @@
 #'  method to order the columns (in seriation::seriate)
 #' @param seriation_dist_col
 #' distance to use in seriation_method_col (if needed)
-#' @param tax_transform
-#' transformation applied to otu_table before correlating
-#' (and before selection of taxa by name, so e.g. proportions use all taxa)
-#' @param gridlines list output of heat_grid() for setting gridline style
 #' @param var_fun
 #' a function (or name of) to be applied to columns of a matrix of vars
 #' before correlating (but not used in any variable annotations)
+#' @param grid_col colour of gridlines, or NA for none
+#' @param grid_lwd width of gridlines
 #' @param anno_tax
 #' DEPRECATED:
 #' optional annotation of taxa distributions: tax_anno() list output,
@@ -57,6 +59,9 @@
 #' var_anno() list output, or a pre-made ComplexHeatmap HeatmapAnnotation
 #'
 #' @export
+#' @seealso [taxAnnotation()] [varAnnotation()]
+#' @seealso [comp_heatmap()]
+#' @seealso [ComplexHeatmap::Heatmap()]
 #'
 #' @examples
 #' library(dplyr)
@@ -328,40 +333,70 @@ cor_heatmap <- function(data,
 
 
 #' @title
-#' Heatmap of taxonomic composition across samples
+#' Draw heatmap of microbiome composition across samples
 #'
 #' @description
-#' Heatmap made with ComplexHeatmap, with optional (but default) annotation of taxa prevalence and abundance.
+#' Heatmap made with `ComplexHeatmap::Heatmap()`,
+#' with optional annotation of taxa prevalence/abundance,
+#' and/or other sample data.
 #'
-#' Transform your data with tax_transform prior to plotting (and/or scale with tax_scale).
+#' Transform your data with `tax_transform()` prior to plotting
+#' (and/or scale with `tax_scale()`).
+#'
+#' See the heatmaps vignette for more examples of use.
+#'
 #' Plotting "compositional" data can give an idea of the dominant taxa in each sample.
 #' Plotting some form of log or clr transformed (or scaled) microbial features can highlight
 #' other patterns.
-#' The transformed data will be ordered via your selected seriation methods and distances.
-#' Any cell numbers printed can be set to different values, and do not affect ordering.
 #'
+#' The data will be ordered via your selected seriation methods and distances
+#' on either the transformed data (default) or the original count data
+#' (or with any other transformation).
+#'
+#' Any cell numbers printed can be transformed independently of the colour scheme,
+#' and do not affect ordering.
+#'
+#' @inheritParams cor_heatmap
 #' @inheritDotParams ComplexHeatmap::Heatmap
 #' row_dend_side row_dend_width show_row_dend row_dend_gp
 #' row_names_side show_row_names row_names_gp row_names_rot row_names_centered
 #'
-#' @param data phyloseq extra output of tax_transform or tax_agg
-#' @param taxa list of taxa to include (selection occurs AFTER any tax_transform and scaling)
-#' @param samples list of taxa to include (selection occurs AFTER any tax_transform and scaling)
-#' @param anno_tax NULL or tax_anno() list output
-#' @param anno_samples NULL only support so far TODO
-#' @param taxa_side controls heatmap orientation and where any anno_tax annotations are placed (top/bottom/left/right)
-#' @param colors output of heat_palette() to set heatmap fill color scheme
-#' @param numbers NULL or output of heat_numbers() to draw numbers on heatmap cells
-#' @param seriation_method method to order the rows (in seriation::seriate)
-#' @param seriation_dist distance to use in seriation_method (if needed)
-#' @param seriation_method_col method to order the columns (in seriation::seriate)
-#' @param seriation_dist_col distance to use in seriation_method_col (if needed)
-#' @param tax_transform_numbers transformation applied to otu_table used only for any numbers printed
-#' @param tax_scale_numbers scaling applied to numbers otu_table after transformation
-#' @param gridlines list output of heat_grid() for setting gridline style
+#' @param samples list of samples to include on plot
 #' @param name used as legend title (colourbar)
+#' @param sample_side
+#' which side to show any sample annotation on, must be adjacent to taxa_side
+#' @param sample_anno
+#' NULL or annotation function for samples: sampleAnnotation() output.
+#' @param sample_names_show
+#' show sample names? (you can control side and rotation of names with
+#' other ComplexHeatmap::Heatmap arguments)
+#' @param sample_seriation
+#' name of method used to order the samples (from seriation::seriate)
+#' @param sample_ser_dist
+#' name of distance to use with sample_seriation method (if needed)
+#' @param sample_ser_counts insist on using count data for sample seriation?
+#' @param sample_ser_trans
+#' function for transformation of data used for sample seriation
+#' (such as a call to `tax_transform()`)
+#' @param tax_seriation
+#' name of method used to order the taxa (from seriation::seriate)
+#' @param tax_ser_dist
+#' name of distance to use with tax_seriation method (if needed)
+#' @param tax_ser_counts insist on using count data for taxa seriation?
+#' @param tax_ser_trans
+#' function for transformation of data used for taxa seriation
+#' (such as a call to `tax_transform()`)
+#' @param numbers_trans
+#' name of tax_transform transformation, or a function
+#' for transformation of data used for drawing numbers on cells
+#' @param numbers_zero_replace
+#' zero replacement method used if named transformation given to number_trans
+#' @param numbers_use_counts insist on using count data for number drawing?
+#' (if TRUE, any numbers_trans transformation would be applied to count data)
 #'
 #' @export
+#' @seealso [cor_heatmap()]
+#'
 #' @examples
 #' library(dplyr)
 #' data("dietswap", package = "microbiome")
@@ -514,19 +549,22 @@ comp_heatmap <- function(data,
     otu_numbers <- t(otu_numbers)
   }
 
-  # seriate taxa and samples appropriately
+  # seriation -------------------------------------------------------------
+
+  ser <- list()
+  # taxa seriation (update this when tax_ser_samples args is added)
   otuTax <- taxCalcAbund(
     data = data, taxa = taxa, use_counts = tax_ser_counts,
     trans = tax_ser_trans, zero_replace = "halfmin"
   )[samples, , drop = FALSE]
+  ser[[taxa_which]] <- rowSeriationInfo(
+    mat = t(otuTax), method = tax_seriation, dist = tax_ser_dist
+  )
+  # sample seriation (update this when sample_ser_taxa arg is added)
   otuSam <- taxCalcAbund(
     data = data, taxa = taxa, use_counts = sample_ser_counts,
     trans = sample_ser_trans, zero_replace = "halfmin"
   )[samples, , drop = FALSE]
-  ser <- list()
-  ser[[taxa_which]] <- rowSeriationInfo(
-    mat = t(otuTax), method = tax_seriation, dist = tax_ser_dist
-  )
   ser[[sample_which]] <- rowSeriationInfo(
     mat = otuSam, method = sample_seriation, dist = sample_ser_dist
   )
@@ -536,6 +574,8 @@ comp_heatmap <- function(data,
   # must be done only after seriation
   otu_mat <- methods::as(otu_mat, Class = "matrix")
   otu_numbers <- methods::as(otu_numbers, Class = "matrix")
+
+  # numbers ------------------------------------------------------------------
 
   # cell label function from `numbers` (function or arg list) & number matrix
   # this is a ComplexHeatmap-specific format of function
@@ -762,6 +802,9 @@ heat_grid <- function(col = "white",
     linejoin = linejoin
   )
 }
+
+
+# internal helpers --------------------------------------------------------
 
 # helper function to convert top or bottom to column, and left or right to row
 # with helpful error for invalid argument, used inside cor_heatmap and comp_heatmap
