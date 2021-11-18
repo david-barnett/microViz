@@ -45,11 +45,11 @@ psq
 
 Visualise the microbial composition of your samples.
 
-The samples and taxa are sorted by similarity.
-(*By default this uses hierarchical clustering with optimal leaf ordering, using
-euclidean distances on the transformed data*).
+The samples and taxa are sorted by similarity. (*By default this uses
+hierarchical clustering with optimal leaf ordering, using euclidean
+distances on the transformed data*).
 
-In this example we use a "compositional" transformation, so the Class 
+In this example we use a "compositional" transformation, so the Class
 abundances are shown as proportions of each sample.
 
 ```{r, fig.height=2.5, fig.width=7, dpi=120}
@@ -58,8 +58,9 @@ psq %>%
   comp_heatmap()
 ```
 
-You can easily swap to a symmetrical colour palette for transformations like
-"clr" or "standardize". This is the default symmetrical palette but you can pick from many.
+You can easily swap to a symmetrical colour palette for transformations
+like "clr" or "standardize". This is the default symmetrical palette but
+you can pick from many.
 
 ```{r, fig.height=4, fig.width=7, dpi=120}
 psq %>% 
@@ -79,8 +80,8 @@ psq %>%
 
 ### Legend positioning
 
-Positioning the heatmap legend at the bottom is possible. 
-You can assign the heatmap to a name and then call `ComplexHeatmap`'s `draw` function.
+Positioning the heatmap legend at the bottom is possible. You can assign
+the heatmap to a name and then call `ComplexHeatmap`'s `draw` function.
 
 ```{r, fig.height=2.5, fig.width=7, dpi=120}
 heat <- psq %>% 
@@ -106,11 +107,13 @@ ComplexHeatmap::draw(
 #### Group membership
 
 2 different methods for annotating each sample's values of categorical
-metadata are possible. 
+metadata are possible.
 
- - `anno_sample()` cannot have borders around each cell, but automatically adds a legend.
+-   `anno_sample()` cannot have borders around each cell, but
+    automatically adds a legend.
 
- - `anno_sample_cat()` can have cell borders, but can't draw a legend **YET**
+-   `anno_sample_cat()` can have cell borders, but requires an extra
+    step to draw a legend
 
 ```{r, fig.height=3.5, fig.width=7, dpi=120}
 cols <- distinct_palette(n = 3, add = NA)
@@ -130,35 +133,46 @@ psq %>%
   ) 
 ```
 
-Equivalent categorical annotations by two methods.
+Let's try drawing equivalent categorical annotations by two methods.
+Both methods can draw annotations with borders and no individual boxes.
+This style suits heatmaps with no gridlines (i.e. `grid_col = NA`).
+
+In the example below we have suppressed row ordering with
+`cluster_rows = FALSE`, and added spaces between taxa by splitting at
+every row with `row_split = 1:11`, which are both
+`ComplexHeatmap::Heatmap()` arguments.
 
 ```{r, fig.height=4, fig.width=7, dpi=120}
 psqC <- psq %>% tax_transform("compositional", rank = "Class") 
 
-psqC %>% 
+htmp <- psqC %>% 
   comp_heatmap(
-    grid_col = NA, cluster_rows = FALSE, row_title = NULL,
-    row_dend_width = grid::unit(5, "mm"),
+    grid_col = NA,
+    cluster_rows = FALSE, row_title = NULL,
     row_split = seq_len(ntaxa(ps_get(psqC))),
     tax_anno = taxAnnotation(
       Prev. = anno_tax_prev(bar_width = 0.9, size = grid::unit(1, "cm"), border = F)
     ),
     sample_anno = sampleAnnotation(
+      # method one
       State1 = anno_sample("DiseaseState"), 
       col = list(State1 = cols), border = TRUE,
+      # method two
       State2 = anno_sample_cat(
-        var = "DiseaseState", border = T, col = cols, gp = grid::gpar(col = NA)
+        var = "DiseaseState", col = cols, box_col = NA, border_col = "black",
+        legend_title = "State2"
       )
     )
-  ) %>% 
-  ComplexHeatmap::draw(merge_legends = TRUE)
+  ) 
+htmp %>% ComplexHeatmap::draw(
+  annotation_legend_list = attr(htmp, "AnnoLegends")
+)
 ```
-
 
 ### Numbering cells
 
-If you have fewer samples (and taxa) you might like to label the cells with
-their values. By default, the raw counts are shown.
+If you have fewer samples (and taxa) you might like to label the cells
+with their values. By default, the raw counts are shown.
 
 ```{r, fig.height=3, fig.width=7, dpi=120}
 psq %>% 
@@ -166,8 +180,9 @@ psq %>%
   comp_heatmap(samples = 1:15, numbers = heat_numbers())
 ```
 
-You can easily change to showing the same values as the colours by setting
-`numbers_use_counts = FALSE`, and you can/should change the number of decimals shown too.
+You can easily change to showing the same values as the colours by
+setting `numbers_use_counts = FALSE`, and you can/should change the
+number of decimals shown too.
 
 ```{r, fig.height=3, fig.width=7, dpi=120}
 psq %>% 
@@ -178,7 +193,8 @@ psq %>%
   )
 ```
 
-The numbers can any transformation of counts, irrespective of what transformations were used for the colours, or seriation. 
+The numbers can any transformation of counts, irrespective of what
+transformations were used for the colours, or seriation.
 
 ```{r, fig.height=3, fig.width=7, dpi=120}
 psq %>% 
@@ -190,10 +206,11 @@ psq %>%
   )
 ```
 
-
-To demonstrate that coloration, numbering and seriation can all use different 
-transformations of the original count data, the example below we specifies
-seriating the taxa and samples using the same numerical values used for the numbers transformation, not the colours, which are just presence/absence!
+To demonstrate that coloration, numbering and seriation can all use
+different transformations of the original count data, the example below
+we specifies seriating the taxa and samples using the same numerical
+values used for the numbers transformation, not the colours, which are
+just presence/absence!
 
 ```{r, fig.height=3, fig.width=7, dpi=120}
 psq %>% 
@@ -207,8 +224,6 @@ psq %>%
     show_heatmap_legend = FALSE
   )
 ```
-
-
 
 ## Correlation heatmaps
 

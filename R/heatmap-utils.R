@@ -137,7 +137,7 @@ adjacent_side <- function(side = c("top", "right", "bottom", "left")) {
 #' @return character
 opposite_side <- function(side = c("top", "right", "bottom", "left")) {
   side <- match.arg(side)
-  opp <- switch (side,
+  opp <- switch(side,
     left = "right",
     right = "left",
     top = "bottom",
@@ -145,4 +145,3 @@ opposite_side <- function(side = c("top", "right", "bottom", "left")) {
   )
   return(opp)
 }
-

@@ -185,8 +185,10 @@ anno_sample_cat <- function(var,
                             size = grid::unit(5, "mm"),
                             legend = TRUE,
                             legend_title = "",
-                            border = FALSE,
-                            border_gp = grid::gpar(col = "black"),
+                            box_col = "white",
+                            box_lwd = 0.5,
+                            border_col = NA,
+                            border_lwd = 1,
                             data = NULL,
                             samples = NULL,
                             which = NULL,
@@ -200,7 +202,8 @@ anno_sample_cat <- function(var,
   Args <- c(
     list(
       col = col, renamer = renamer, legend = legend,
-      border = border, border_gp = border_gp
+      box_col = box_col, box_lwd = box_lwd,
+      border_col = border_col, border_lwd = border_lwd
     ),
     list(...)
   )
@@ -287,15 +290,14 @@ anno_cat <- function(x,
                      col = distinct_palette(),
                      width = NULL,
                      height = NULL,
-                     gp = grid::gpar(col = "white", lwd = 1),
-                     border = FALSE,
-                     border_gp = grid::gpar(col = "black", fill = NA),
+                     box_col = "white",
+                     box_lwd = 0.5,
+                     border_col = NA,
+                     border_lwd = 1,
                      legend = TRUE,
                      legend_title = "") {
-  force(gp)
-  force(border)
-  force(border_gp)
-  border_gp[["fill"]] <- NA
+  gp <- grid::gpar(col = box_col, lwd = box_lwd)
+  border_gp <- grid::gpar(lwd = border_lwd, col = border_col, fill = NA)
 
   # process colours, checking against data to ensure all levels have a colour
   col <- anno_catColors(x = x, col = col)
@@ -340,13 +342,13 @@ anno_cat <- function(x,
       grid::popViewport()
       grid::popViewport()
     }
-    # draw the border
-    if (isTRUE(border)) grid::grid.rect(gp = border_gp)
+    # draw the border (NA col makes invisible)
+    grid::grid.rect(gp = border_gp)
   }
 
   af <- ComplexHeatmap::AnnotationFunction(
     fun = fun,
-    var_import = list(x, colorMap, gp, border, border_gp),
+    var_import = list(x, colorMap, gp, border_gp),
     which = which, width = width, height = height,
     subsetable = TRUE,
     n = length(x)
@@ -483,4 +485,3 @@ anno_sample <- function(var,
   }
   return(o)
 }
-

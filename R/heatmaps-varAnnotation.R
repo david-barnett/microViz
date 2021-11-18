@@ -367,4 +367,3 @@ anno_var_hist <- function(fun = identity,
   }
   return(o)
 }
-

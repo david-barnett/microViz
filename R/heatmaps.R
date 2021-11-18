@@ -501,7 +501,7 @@ comp_heatmap <- function(data,
                          numbers_zero_replace = 0,
                          numbers_use_counts = TRUE,
                          grid_col = "white",
-                         grid_lwd = 0.1,
+                         grid_lwd = 0.5,
                          name = "Abd.",
                          anno_tax = NULL,
                          ...) {

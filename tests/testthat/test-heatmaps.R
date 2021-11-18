@@ -111,4 +111,3 @@ test_that("comp_heatmap doesn't change: ", {
   expect_snapshot_csv(name = "comp_row_order", object = p@row_order)
   expect_snapshot_csv(name = "comp_col_order", object = p@column_order)
 })
-

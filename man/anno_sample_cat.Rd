@@ -11,8 +11,10 @@ anno_sample_cat(
   size = grid::unit(5, "mm"),
   legend = TRUE,
   legend_title = "",
-  border = FALSE,
-  border_gp = grid::gpar(col = "black"),
+  box_col = "white",
+  box_lwd = 0.5,
+  border_col = NA,
+  border_lwd = 1,
   data = NULL,
   samples = NULL,
   which = NULL,
@@ -28,8 +30,6 @@ anno_sample_cat(
 
 \item{size}{width or height as a grid unit object}
 
-\item{border}{Wether draw borders of the annotation region?}
-
 \item{data}{OPTIONAL phyloseq or ps_extra,
 only set this to override use of same data as in heatmap}
 
@@ -43,8 +43,6 @@ only set this if providing data argument to override default}
   Arguments passed on to \code{\link[=anno_cat]{anno_cat}}
   \describe{
     \item{\code{x}}{data vector, treated as categorical}
-    \item{\code{gp}}{gpar object: don't set the fill!}
-    \item{\code{border_gp}}{gpar for border, if drawn}
     \item{\code{width}}{Width of the annotation. The value should be an absolute unit. Width is not allowed to be set for column annotation.}
     \item{\code{height}}{Height of the annotation. The value should be an absolute unit. Height is not allowed to be set for row annotation.}
   }}

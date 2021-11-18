@@ -11,9 +11,10 @@ anno_cat(
   col = distinct_palette(),
   width = NULL,
   height = NULL,
-  gp = grid::gpar(col = "white", lwd = 1),
-  border = FALSE,
-  border_gp = grid::gpar(col = "black", fill = NA),
+  box_col = "white",
+  box_lwd = 0.5,
+  border_col = NA,
+  border_lwd = 1,
   legend = TRUE,
   legend_title = ""
 )
