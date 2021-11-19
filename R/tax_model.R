@@ -97,6 +97,9 @@ tax_model <- function(ps,
                       taxa = NULL,
                       verbose = TRUE,
                       ...) {
+  # check if corncob models are requested/possible & converts bbdml to "bbdml"
+  type <- tax_modelTypeCorncob(type)
+
   ps <- ps_get(ps)
   # check phyloseq for common problems (and fix or message about this)
   ps <- phyloseq_validate(ps, remove_undetected = TRUE, verbose = TRUE)
@@ -167,12 +170,14 @@ tax_model <- function(ps,
       )
       args <- list(formula = f, data = ps, ...)
 
-      if (identical(type, "bbdml") || identical(type, corncob::bbdml)) {
+      if (identical(type, "bbdml")) {
+        type <- corncob::bbdml
+        # setup for corncob
         # phi.formula is for modelling dispersion (doesn't take a response var)
-        if (identical(args[["phi.formula"]], NULL)) {
-          args[["phi.formula"]] <- rhs
-        }
+        phi <- args[["phi.formula"]]
+        if (identical(phi, NULL)) args[["phi.formula"]] <- rhs
       } else {
+        # setup for all other models (in future, add more supported types?)
         ps <- ps_otu2samdat(ps = ps, taxa = taxon)
         args[["data"]] <- samdatAsDataframe(ps)
       }
@@ -185,4 +190,16 @@ tax_model <- function(ps,
   )
   names(taxon_models) <- taxons
   return(taxon_models)
+}
+
+# helper to safely check if corncob is installed and requested
+# and return type value safe for later if else constructs: "bbdml"
+tax_modelTypeCorncob <- function(type) {
+  hasCorncob <- requireNamespace("corncob", quietly = TRUE)
+  if (hasCorncob && identical(type, corncob::bbdml)) {
+    type <- "bbdml"
+  } else if (!hasCorncob && identical(type, "bbdml")) {
+    stop("you must install corncob package to use 'bbdml' models")
+  }
+  return(type)
 }

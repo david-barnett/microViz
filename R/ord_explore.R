@@ -810,6 +810,10 @@ ord_explore <- function(data,
 
     ## build ggplot ----------------------------------------------------------
 
+    # debounce numeric inputs to prevent repeated barplot redrawing
+    n_taxa <- shiny::debounce(shiny::reactive(input$ntaxa), millis = 200)
+    max_taxa <- shiny::debounce(shiny::reactive(input$taxmax), millis = 200)
+
     comp_plot <- shiny::reactive({
       # make logical vector indicating whether sample is selected on ord plot
       isSampleSelected <- markSelectedSamples(
@@ -819,10 +823,10 @@ ord_explore <- function(data,
       # make barplot (or placeholder)
       barplot <- ggBarplot(
         selected = isSampleSelected, ps = phylos$comps,
-        facet_by = input$facet_by, n_taxa = input$ntaxa,
+        facet_by = input$facet_by, n_taxa = n_taxa(),
         tax_level = input$tax_level_comp, tax_order = ordered_taxa(),
         palette = palet(), label = input$comp_label,
-        max_taxa = input$taxmax, merge_other = input$mergeOther
+        max_taxa = max_taxa(), merge_other = input$mergeOther
       )
     })
 
@@ -1121,17 +1125,22 @@ dist_choices <- function(data, type) {
   }
   # individual options
   all <- c(
-    "none" = "none (for PCA/RDA/CCA)",
-    "bray" = "bray (Bray-Curtis)",
-    "aitchison" = "aitchison (a.k.a. CLR & euclidean)",
+    "none" = "none: no distance used for PCA/RDA/CCA",
+    "bray" = "bray: Bray-Curtis",
+    "aitchison" = "aitchison: CLR & Euclidean",
     "euclidean" = "euclidean",
-    "gunifrac" = "gunifrac (Generalised UniFrac, alpha=0.5)",
-    "unifrac" = "unifrac (unweighted UniFrac)",
-    "wunifrac" = "wunifrac (weighted UniFrac)",
-    "va-wunifrac" = "va-wunifrac (variance adjusted weighted)"
+    "jsd" = "jsd: Jensen-Shannon Divergence",
+    "gunifrac" = "gunifrac: Generalised UniFrac, alpha=0.5",
+    "unifrac" = "unifrac: unweighted UniFrac",
+    "wunifrac" = "wunifrac: weighted UniFrac",
+    "va-wunifrac" = "va-wunifrac: variance-adjusted weighted UniFrac"
   )
   # add more phyloseq dist methods
-  pdists <- unlist(phyloseq::distanceMethodList)
+  pdists <- c(
+    phyloseq::distanceMethodList$vegdist,
+    phyloseq::distanceMethodList$betadiver,
+    phyloseq::distanceMethodList$DPCoA
+  )
   more <- stats::setNames(object = pdists, nm = pdists)
   all <- c(all, more[!names(more) %in% names(all)])
 
@@ -1154,11 +1163,12 @@ dist_choices <- function(data, type) {
 trans_choices <- function(type) {
   # individual options
   all <- list(
-    "identity" = "identity (no transformation)",
-    "clr" = "clr (centred log ratio)",
-    "log10p" = "log10p (log base 10 with pseudocount)",
+    "identity" = "identity: no transformation",
+    "clr" = "clr: centred log ratio",
+    "log10p" = "log10p: log10(x + 1)",
     "compositional" = "compositional",
-    "hellinger" = "hellinger"
+    "hellinger" = "hellinger",
+    "binary" = "binary: presence-absence"
   )
   # overlapping type lists
   l <- list(

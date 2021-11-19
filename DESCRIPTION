@@ -1,6 +1,6 @@
 Package: microViz
 Title: Microbiome Data Analysis and Visualization
-Version: 0.8.0.9004
+Version: 0.8.0.9005
 Authors@R: 
     person(given = "David",
            family = "Barnett",
@@ -8,7 +8,7 @@ Authors@R:
            email = "david.barnett@maastrichtuniversity.nl",
            comment = c(ORCID = "0000-0003-1961-7206"))
 URL: https://david-barnett.github.io/microViz, https://github.com/david-barnett/microViz
-Description: Extends phyloseq and microbiome with further visualization and data manipulation functionality.
+Description: Microbiome data visualization and statistics tools built upon phyloseq.
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
@@ -16,42 +16,42 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 biocViews:
 Imports: 
-    microbiome,
-    vegan,
     phyloseq,
+    vegan,
+    microbiome,
+    ggiraph,
+    ggplot2,
     dplyr (>= 1.0.0),
     rlang (>= 0.4.0),
-    ggplot2,
-    seriation,
+    shiny (>= 1.5.0),
     ggraph (>= 2.0.0),
-    future.apply,
+    tidygraph,
+    ComplexHeatmap (>= 2.0.0),
+    circlize,
+    seriation,
+    colorspace,
+    scales,
     purrr,
     tibble,
     tidyr,
-    shiny (>= 1.5.0),
-    scales,
-    colorspace,
-    tidygraph,
     ggrepel,
     broom,
-    methods,
-    ComplexHeatmap (>= 2.0.0),
-    circlize,
-    ggiraph,
+    future.apply,
     cowplot,
+    methods,
     DT
 Suggests: 
     GUniFrac,
-    future,
-    stringr,
-    patchwork (>= 1.0.0),
     corncob,
-    devtools,
-    testthat,
-    shinytest,
-    knitr,
-    rmarkdown,
-    vdiffr,
+    patchwork (>= 1.0.0),
     ggtext,
     viridisLite,
-    skimr
+    stringr,
+    future,
+    skimr,
+    devtools,
+    testthat,
+    vdiffr,
+    knitr,
+    rmarkdown,
+    shinytest

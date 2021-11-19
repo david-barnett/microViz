@@ -27,16 +27,16 @@ list with distance matrix, phyloseq object, and name of distance used
 \description{
 Can compute various sample-sample distances using the microbiota composition of your samples:
 \itemize{
-\item bray curtis ('bray') or any other ecological distance from phyloseq::distance() / vegan::vegdist()
-\item unifrac distances (using the GUniFrac package)
+\item Bray Curtis ('bray') or any other ecological distance from phyloseq::distance() / vegan::vegdist()
+\item UniFrac distances (using the GUniFrac package)
 \itemize{
 \item generalised: 'gunifrac' (optionally set weighting alpha in gunifrac alpha)
 \item unweighted: 'unifrac'
 \item weighted: 'wunifrac'
 \item variance adjusted weighted: 'va-wunifrac'
 }
-\item aitchison distance (euclidean distance after centered log ratio transform clr, see details)
-\item euclidean distance
+\item Aitchison distance (Euclidean distance after centered log ratio transform clr, see details)
+\item Euclidean distance
 }
 
 Use dist_calc with ps_extra output of tax_transform (or tax_agg).
@@ -45,8 +45,10 @@ in addition to the distance matrix itself.
 The resulting object is intended to be piped into ord_calc or dist_permanova functions.
 Alternatively you can directly access the distance matrix with dist_get().
 }
-\details{
-Aitchison distance note: You should EITHER:
+\section{Aitchison distance note}{
+
+
+You should EITHER:
 \enumerate{
 \item skip the dist_calc function and call ord_calc(method = "PCA") directly on an object with taxa transformed with tax_transform(trans = "clr")
 \item pass an object with untransformed (or 'identity' transformed) taxa to the data argument of dist_calc() and specify dist = "aitchison".
@@ -55,6 +57,16 @@ Aitchison distance note: You should EITHER:
 If ordination plots with taxon loading vectors are desired, users require option 1.
 If the distance matrix is required for permanova, users require option 2.
 }
+
+\section{Binary Jaccard distance note}{
+
+
+Jaccard distance can be computed on abundances, but often in microbiome
+research it is the Binary Jaccard distance that is desired. So remember to
+first perform a "binary" transformation with \code{tax_transform("binary")},
+OR pass an additional argument to \code{dist_calc("jaccard", binary = TRUE)}
+}
+
 \examples{
 # bray curtis distance on genera-level features
 data("dietswap", package = "microbiome")
@@ -81,4 +93,6 @@ class(gunifrac)
 \code{\link{dist_permanova}}
 
 \code{phyloseq::\link[phyloseq:distance]{distance}}
+
+\code{vegan::\link[vegan:vegdist]{vegdist}}
 }
