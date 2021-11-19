@@ -169,6 +169,20 @@ htmp %>% ComplexHeatmap::draw(
 )
 ```
 
+You can also manually draw a legend with the convenience function 
+`anno_cat_legend()`. 
+
+
+```{r, fig.height=0.5, fig.width=4, dpi=120}
+grid::grid.newpage()
+anno_cat_legend(
+  col = c("a level" = "red", "another level" = "blue", c = "white"), 
+  border = "black", gap = grid::unit(2, "cm"), ncol = 3
+) %>% 
+ComplexHeatmap::draw()
+```
+
+
 ### Numbering cells
 
 If you have fewer samples (and taxa) you might like to label the cells
