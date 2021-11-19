@@ -111,11 +111,11 @@ sampleAnnotation <- function(...,
     out <- do.call(what = ComplexHeatmap::HeatmapAnnotation, args = args)
 
     # collect legends
-    legends <- sapply(annos, function(a) attr(a, "Legend"))
-    legends <- legends[!sapply(legends, is.null)]
-    legends <- ComplexHeatmap::packLegend(list = legends)
-    attr(out, "Legends") <- legends
-
+    legs <- sapply(annos, function(a) attr(a, "Legend"))
+    noLegs <- sapply(legs, is.null)
+    if (!all(noLegs)) {
+      attr(out, "Legends") <- ComplexHeatmap::packLegend(list = legs[!noLegs])
+    }
     return(out)
   }
 
@@ -215,6 +215,7 @@ anno_sample_cat <- function(var,
       data <- samdatAsDataframe(ps_get(data))
     }
     if (inherits(data, "data.frame") || inherits(data, "matrix")) {
+      if (!var %in% colnames(data)) stop(var, " is not a variable in data")
       x <- data[samples, var, drop = TRUE]
     } else {
       stop("data must be phyloseq/ps_extra or data.frame/matrix")
@@ -296,6 +297,10 @@ anno_cat <- function(x,
                      border_lwd = 1,
                      legend = TRUE,
                      legend_title = "") {
+  if (!inherits(x, "character")) {
+    warning("coercing non-character anno_cat annotation data to character")
+    x <- as.character(x)
+  }
   gp <- grid::gpar(col = box_col, lwd = box_lwd)
   border_gp <- grid::gpar(lwd = border_lwd, col = border_col, fill = NA)
 
