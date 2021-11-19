@@ -1,4 +1,4 @@
-# microViz (development version)
+# microViz 0.8.1
 
 ## Features
 - `ord_explore` can perform "binary" transformations, unlocking interactive use of Binary Jaccard etc.
