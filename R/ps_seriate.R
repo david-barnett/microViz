@@ -31,7 +31,7 @@ ps_seriate <- function(ps, method = "OLO_ward", dist = "bray", tax_transform = "
 
   if (phyloseq::nsamples(ps) > 2) {
     # transform taxa for ordering (facilitated primarily for clr for PCA_angle method)
-    ps_transformed <- microbiome::transform(ps, transform = tax_transform)
+    ps_transformed <- ps_get(tax_transform(ps, trans = tax_transform))
 
     if (method %in% seriation::list_seriation_methods(kind = "matrix")) {
       # directly seriate the otu matrix
