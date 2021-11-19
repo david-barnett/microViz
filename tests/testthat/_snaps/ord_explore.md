@@ -222,16 +222,16 @@
     Code
       dist_choices(esophagus, type = "tree")
     Output
-      gunifrac (Generalised UniFrac, alpha=0.5) 
-                                     "gunifrac" 
-                    wunifrac (weighted UniFrac) 
-                                     "wunifrac" 
-                   unifrac (unweighted UniFrac) 
-                                      "unifrac" 
-       va-wunifrac (variance adjusted weighted) 
-                                  "va-wunifrac" 
-                                          dpcoa 
-                                        "dpcoa" 
+             gunifrac: Generalised UniFrac, alpha=0.5 
+                                           "gunifrac" 
+                           wunifrac: weighted UniFrac 
+                                           "wunifrac" 
+                          unifrac: unweighted UniFrac 
+                                            "unifrac" 
+      va-wunifrac: variance-adjusted weighted UniFrac 
+                                        "va-wunifrac" 
+                                                dpcoa 
+                                              "dpcoa" 
 
 # ord_choices helper works
 
