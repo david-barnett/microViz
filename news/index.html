@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0.9005</span>
       </span>
     </div>
 
@@ -172,6 +172,8 @@
 <a href="#features" class="anchor"></a>Features</h2>
 <ul>
 <li>
+<code>ord_explore</code> can perform “binary” transformations, unlocking interactive use of Binary Jaccard etc.</li>
+<li>
 <code>tax_transform</code> gains <code>add</code> argument to simply add a constant value to all otu_table values before transformation (as an alternative to <code>zero_replace</code>)</li>
 <li>
 <code>tax_scale</code> gains <code>keep_counts</code> argument for consistency with <code>tax_transform</code>
@@ -184,6 +186,8 @@
 <ul>
 <li>
 <code>tax_model</code> now only requires <code>corncob</code> to be installed when actually used</li>
+<li>
+<code>ord_explore</code> barplot numerical inputs are now debounced to prevent lag from repeated redrawing</li>
 </ul>
 </div>
 </div>

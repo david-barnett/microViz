@@ -47,15 +47,15 @@
 
 <meta property="og:title" content="Calculate distances between pairs of samples in phyloseq object — dist_calc" />
 <meta property="og:description" content="Can compute various sample-sample distances using the microbiota composition of your samples:
-bray curtis ('bray') or any other ecological distance from phyloseq::distance() / vegan::vegdist()
-unifrac distances (using the GUniFrac package)
+Bray Curtis ('bray') or any other ecological distance from phyloseq::distance() / vegan::vegdist()
+UniFrac distances (using the GUniFrac package)
 generalised: 'gunifrac' (optionally set weighting alpha in gunifrac alpha)
 unweighted: 'unifrac'
 weighted: 'wunifrac'
 variance adjusted weighted: 'va-wunifrac'
 
-aitchison distance (euclidean distance after centered log ratio transform clr, see details)
-euclidean distance
+Aitchison distance (Euclidean distance after centered log ratio transform clr, see details)
+Euclidean distance
 
 
 Use dist_calc with ps_extra output of tax_transform (or tax_agg).
@@ -104,7 +104,7 @@ Alternatively you can directly access the distance matrix with dist_get()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0.9005</span>
       </span>
     </div>
 
@@ -184,15 +184,15 @@ Alternatively you can directly access the distance matrix with dist_get()." />
 
     <div class="ref-description">
     <p>Can compute various sample-sample distances using the microbiota composition of your samples:</p><ul>
-<li><p>bray curtis ('bray') or any other ecological distance from phyloseq::distance() / vegan::vegdist()</p></li>
-<li><p>unifrac distances (using the GUniFrac package)</p><ul>
+<li><p>Bray Curtis ('bray') or any other ecological distance from phyloseq::distance() / vegan::vegdist()</p></li>
+<li><p>UniFrac distances (using the GUniFrac package)</p><ul>
 <li><p>generalised: 'gunifrac' (optionally set weighting alpha in gunifrac alpha)</p></li>
 <li><p>unweighted: 'unifrac'</p></li>
 <li><p>weighted: 'wunifrac'</p></li>
 <li><p>variance adjusted weighted: 'va-wunifrac'</p></li>
 </ul></li>
-<li><p>aitchison distance (euclidean distance after centered log ratio transform clr, see details)</p></li>
-<li><p>euclidean distance</p></li>
+<li><p>Aitchison distance (Euclidean distance after centered log ratio transform clr, see details)</p></li>
+<li><p>Euclidean distance</p></li>
 </ul>
 
 <p>Use dist_calc with ps_extra output of tax_transform (or tax_agg).
@@ -234,22 +234,35 @@ Alternatively you can directly access the distance matrix with dist_get().</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>list with distance matrix, phyloseq object, and name of distance used</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <h2 class="hasAnchor" id="aitchison-distance-note"><a class="anchor" href="#aitchison-distance-note"></a>Aitchison distance note</h2>
 
-    <p>Aitchison distance note: You should EITHER:</p><ol>
+    
+
+
+<p>You should EITHER:</p><ol>
 <li><p>skip the dist_calc function and call ord_calc(method = "PCA") directly on an object with taxa transformed with tax_transform(trans = "clr")</p></li>
 <li><p>pass an object with untransformed (or 'identity' transformed) taxa to the data argument of dist_calc() and specify dist = "aitchison".</p></li>
 </ol>
 
 <p>If ordination plots with taxon loading vectors are desired, users require option 1.
 If the distance matrix is required for permanova, users require option 2.</p>
+    <h2 class="hasAnchor" id="binary-jaccard-distance-note"><a class="anchor" href="#binary-jaccard-distance-note"></a>Binary Jaccard distance note</h2>
+
+    
+
+
+<p>Jaccard distance can be computed on abundances, but often in microbiome
+research it is the Binary Jaccard distance that is desired. So remember to
+first perform a "binary" transformation with <code>tax_transform("binary")</code>,
+OR pass an additional argument to <code>dist_calc("jaccard", binary = TRUE)</code></p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='tax_transform.html'>tax_transform</a></code> for the function to use before dist_calc</p>
 <p><code><a href='ord_calc.html'>ord_calc</a></code></p>
 <p><code><a href='ord_plot.html'>ord_plot</a></code></p>
 <p><code><a href='dist_permanova.html'>dist_permanova</a></code></p>
-<p><code>phyloseq::<a href='https://rdrr.io/pkg/phyloseq/man/distance.html'>distance</a></code></p></div>
+<p><code>phyloseq::<a href='https://rdrr.io/pkg/phyloseq/man/distance.html'>distance</a></code></p>
+<p><code>vegan::<a href='https://rdrr.io/pkg/vegan/man/vegdist.html'>vegdist</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='r-in'><span class='co'># bray curtis distance on genera-level features</span></span>
