@@ -628,7 +628,9 @@ ord_explore <- function(data,
       eventExpr = input$trans,
       handlerExpr = {
         x <- dist_choices(init$data, type = "all")
-        if (input$trans %in% trans_choices("log")) x <- x[x != "aitchison"]
+        if (input$trans %in% trans_choices("log")) {
+          x <- x[!x %in% c("aitchison", "jsd")]
+        }
         shiny::updateSelectizeInput(
           session = session, inputId = "dist", choices = x
         )
@@ -1136,11 +1138,10 @@ dist_choices <- function(data, type) {
     "va-wunifrac" = "va-wunifrac: variance-adjusted weighted UniFrac"
   )
   # add more phyloseq dist methods
-  pdists <- c(
-    phyloseq::distanceMethodList$vegdist,
-    phyloseq::distanceMethodList$betadiver,
-    phyloseq::distanceMethodList$DPCoA
-  )
+  pdists <- unlist(c(
+    "maximum", "binary",
+    phyloseq::distanceMethodList[c("vegdist", "betadiver", "DPCoA")]
+  ))
   more <- stats::setNames(object = pdists, nm = pdists)
   all <- c(all, more[!names(more) %in% names(all)])
 
