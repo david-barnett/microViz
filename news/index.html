@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.1.9000</span>
       </span>
     </div>
 
@@ -164,12 +164,24 @@
       <small>Source: <a href='https://github.com/david-barnett/microViz/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="microviz-081" class="section level1">
-<h1 class="page-header" data-toc-text="0.8.1">
-<a href="#microviz-081" class="anchor"></a>microViz 0.8.1</h1>
+    <div id="microviz-development-version" class="section level1">
+<h1 class="page-header" data-toc-text="development version">
+<a href="#microviz-development-version" class="anchor"></a>microViz (development version)</h1>
 <div id="features" class="section level2">
 <h2 class="hasAnchor">
 <a href="#features" class="anchor"></a>Features</h2>
+<ul>
+<li>
+<code>taxatree_plots</code>: it is now easier to use other colour palettes with their default luminance</li>
+</ul>
+</div>
+</div>
+    <div id="microviz-081" class="section level1">
+<h1 class="page-header" data-toc-text="0.8.1">
+<a href="#microviz-081" class="anchor"></a>microViz 0.8.1</h1>
+<div id="features-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#features-1" class="anchor"></a>Features</h2>
 <ul>
 <li>
 <code>ord_explore</code> can perform “binary” transformations, unlocking interactive use of Binary Jaccard etc.</li>
@@ -253,9 +265,9 @@
 </ul>
 </div>
 </div>
-<div id="features-1" class="section level2">
+<div id="features-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-1" class="anchor"></a>Features</h2>
+<a href="#features-2" class="anchor"></a>Features</h2>
 <ul>
 <li>
 <code>ord_plot</code> arrow labels can now be rotated with the help of <code><a href="../reference/Ordination-labels.html">tax_lab_style()</a></code> and <code><a href="../reference/Ordination-labels.html">constraint_lab_style()</a></code>
@@ -321,9 +333,9 @@
     <div id="microviz-076" class="section level1">
 <h1 class="page-header" data-toc-text="0.7.6">
 <a href="#microviz-076" class="anchor"></a>microViz 0.7.6</h1>
-<div id="features-2" class="section level2">
+<div id="features-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-2" class="anchor"></a>Features</h2>
+<a href="#features-3" class="anchor"></a>Features</h2>
 <ul>
 <li>
 <code>stat_chulls</code> added, for drawing convex hulls on ord_plot and ord_explore ordinations</li>
@@ -395,9 +407,9 @@
 <code>tax_fix</code> replaces the deprecated <code>tax_fill_unknowns</code>, <code>tax_fix</code> has all the same arguments except the ‘levels’ argument, which was removed</li>
 </ul>
 </div>
-<div id="features-3" class="section level2">
+<div id="features-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-3" class="anchor"></a>Features</h2>
+<a href="#features-4" class="anchor"></a>Features</h2>
 <ul>
 <li>
 <code>tax_fix_interactive</code> Shiny app will help you clean up your taxonomy table with <code>tax_fix</code>
@@ -416,9 +428,9 @@
 <code>ord_plot_iris</code> and <code>ord_explore</code> no longer take ps argument of untransformed counts, because (by default) <code>tax_transform</code> now keeps the untransformed counts otu_table in the ps_extra object</li>
 </ul>
 </div>
-<div id="features-4" class="section level2">
+<div id="features-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-4" class="anchor"></a>Features</h2>
+<a href="#features-5" class="anchor"></a>Features</h2>
 <ul>
 <li>
 <code>ord_explore</code> now allows much better control over selection of points (using <code>ggiraph</code> functionality)</li>
@@ -449,9 +461,9 @@
 <code>tax_fill_unknowns</code> x arg renamed to ps. Also now stops when unknown values are detected to the left of known values in the tax_table, as this should always be wrong/need fixing. Also, by default it now searches a larger list of probably unknown/uninformative tax_table values e.g. "k__NA“,”p__Unknown" will now be replaced</li>
 </ul>
 </div>
-<div id="features-5" class="section level2">
+<div id="features-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-5" class="anchor"></a>Features</h2>
+<a href="#features-6" class="anchor"></a>Features</h2>
 <ul>
 <li>
 <code>comp_barplot</code> gets merge_other argument, which, when FALSE, shows full diversity of samples by outlining individual taxa within the (grey) “other” category!</li>
@@ -479,9 +491,9 @@
 <code>cor_heatmap</code> and <code>comp_heatmap</code> argument changed: ‘taxa_which’ replaced with ‘taxa_side’ for easier control over where taxa annotations are placed (default behaviour stays the same)</li>
 </ul>
 </div>
-<div id="features-6" class="section level2">
+<div id="features-7" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-6" class="anchor"></a>Features</h2>
+<a href="#features-7" class="anchor"></a>Features</h2>
 <ul>
 <li>Optionally annotate <code>cor_heatmap</code> with variable distributions using <code>var_anno</code> and its helpers: <code>anno_var_box</code> and <code>anno_var_hist</code>
 </li>
@@ -513,9 +525,9 @@
     <div id="microviz-043" class="section level1">
 <h1 class="page-header" data-toc-text="0.4.3">
 <a href="#microviz-043" class="anchor"></a>microViz 0.4.3</h1>
-<div id="features-7" class="section level2">
+<div id="features-8" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-7" class="anchor"></a>Features</h2>
+<a href="#features-8" class="anchor"></a>Features</h2>
 <ul>
 <li>
 <code>cor_heatmap</code> for microbe-metadata correlation heatmaps</li>
@@ -593,18 +605,18 @@
 <code>comp_barplot</code> replaces <code>plot_comp_bar</code> in anticipation of (a) future heatmap function(s) named comp_heatmap or similar</li>
 </ul>
 </div>
-<div id="features-8" class="section level2">
+<div id="features-9" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-8" class="anchor"></a>Features</h2>
+<a href="#features-9" class="anchor"></a>Features</h2>
 <p>New <strong>“ps_extra”</strong> class (S3) conveniently stores phyloseq object alongside any calculated distance matrix, ordination and permanova models, as well as records of <code>tax_agg</code> and <code>tax_transform</code> calls. “ps_extra” class objects have a pretty and compact print method, a simple list structure, and convenient accessor functions to return each component: <code>ps_get</code>, <code>info_get</code>, <code>dist_get</code>, <code>ord_get</code>, <code>perm_get</code>, <code>bdisp_get</code>.</p>
 </div>
 </div>
     <div id="microviz-032" class="section level1">
 <h1 class="page-header" data-toc-text="0.3.2">
 <a href="#microviz-032" class="anchor"></a>microViz 0.3.2</h1>
-<div id="features-9" class="section level2">
+<div id="features-10" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-9" class="anchor"></a>Features</h2>
+<a href="#features-10" class="anchor"></a>Features</h2>
 <ul>
 <li>Taxon modelling updates:
 <ul>
@@ -630,9 +642,9 @@
 <code>permanova</code> always uses adonis2 now, so that arg is <strong>removed</strong>, and replaced with <code>by</code> argument to set sums of squares choice</li>
 </ul>
 </div>
-<div id="features-10" class="section level2">
+<div id="features-11" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-10" class="anchor"></a>Features</h2>
+<a href="#features-11" class="anchor"></a>Features</h2>
 <ul>
 <li>
 <code>ord_plot</code> gets a <code>center</code> argument to center expand the plot limits to center around zero (useful when pairing with <code>ord_plot_iris</code>)</li>
@@ -657,9 +669,9 @@
     <div id="microviz-020" class="section level1">
 <h1 class="page-header" data-toc-text="0.2.0">
 <a href="#microviz-020" class="anchor"></a>microViz 0.2.0</h1>
-<div id="features-11" class="section level2">
+<div id="features-12" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-11" class="anchor"></a>Features</h2>
+<a href="#features-12" class="anchor"></a>Features</h2>
 <ul>
 <li>
 <code>taxatree_models</code> and <code>taxatree_plots</code> bring tree-based visualisations of statistical models</li>
@@ -680,9 +692,9 @@
     <div id="microviz-012" class="section level1">
 <h1 class="page-header" data-toc-text="0.1.2">
 <a href="#microviz-012" class="anchor"></a>microViz 0.1.2</h1>
-<div id="features-12" class="section level2">
+<div id="features-13" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-12" class="anchor"></a>Features</h2>
+<a href="#features-13" class="anchor"></a>Features</h2>
 <ul>
 <li>
 <code>ord_explore</code> allows interactive exploration of the composition of ordinated samples using <code>Shiny</code>
@@ -693,9 +705,9 @@
     <div id="microviz-011" class="section level1">
 <h1 class="page-header" data-toc-text="0.1.1">
 <a href="#microviz-011" class="anchor"></a>microViz 0.1.1</h1>
-<div id="features-13" class="section level2">
+<div id="features-14" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-13" class="anchor"></a>Features</h2>
+<a href="#features-14" class="anchor"></a>Features</h2>
 <ul>
 <li>
 <code>ord_plot_iris</code> for pca-ordered circular compositional barplots to pair with <code>ord_plot</code> output</li>
@@ -743,9 +755,9 @@
 </li>
 </ul>
 </div>
-<div id="features-14" class="section level2">
+<div id="features-15" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-14" class="anchor"></a>Features</h2>
+<a href="#features-15" class="anchor"></a>Features</h2>
 <ul>
 <li>
 <code>ps_seriate</code> for ordering phyloseq samples by similarity</li>
@@ -755,9 +767,9 @@
     <div id="microviz-006" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.6">
 <a href="#microviz-006" class="anchor"></a>microViz 0.0.6</h1>
-<div id="features-15" class="section level2">
+<div id="features-16" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-15" class="anchor"></a>Features</h2>
+<a href="#features-16" class="anchor"></a>Features</h2>
 <ul>
 <li>
 <code>ps_filter</code> allows filtering of <code>phyloseq</code> samples by values of variables in <code>sample_data</code> (wrapper around <code>dplyr</code>’s <code>filter</code> function)</li>
@@ -776,9 +788,9 @@
     <div id="microviz-005" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.5">
 <a href="#microviz-005" class="anchor"></a>microViz 0.0.5</h1>
-<div id="features-16" class="section level2">
+<div id="features-17" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-16" class="anchor"></a>Features</h2>
+<a href="#features-17" class="anchor"></a>Features</h2>
 <ul>
 <li>
 <code>ps_dedupe</code> bug fix method = “readcount” now correctly keeps all samples that “first” or “last” methods do</li>
@@ -788,9 +800,9 @@
     <div id="microviz-004" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.4">
 <a href="#microviz-004" class="anchor"></a>microViz 0.0.4</h1>
-<div id="features-17" class="section level2">
+<div id="features-18" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-17" class="anchor"></a>Features</h2>
+<a href="#features-18" class="anchor"></a>Features</h2>
 <ul>
 <li>
 <code>ps_arrange</code> allows reordering of <code>phyloseq</code> samples by values of variables in <code>sample_data</code> or <code>otu_table</code> (wrapper around <code>dplyr</code>’s <code>arrange</code> function)</li>
@@ -802,9 +814,9 @@
     <div id="microviz-003" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.3">
 <a href="#microviz-003" class="anchor"></a>microViz 0.0.3</h1>
-<div id="features-18" class="section level2">
+<div id="features-19" class="section level2">
 <h2 class="hasAnchor">
-<a href="#features-18" class="anchor"></a>Features</h2>
+<a href="#features-19" class="anchor"></a>Features</h2>
 <ul>
 <li>
 <code>ps_mutate</code> allowing easy and piped modification of <code>phyloseq</code> <code>sample_data</code> (wrapper around <code>dplyr</code>’s <code>mutate</code> function)</li>

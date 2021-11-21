@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plot taxonomic stats on a ggraph tree (and draw key) — taxatree_plots • microViz</title>
+<title>Plot statistical model results for all taxa on a taxonomic tree — taxatree_plots • microViz</title>
 
 
 <!-- jquery -->
@@ -45,12 +45,13 @@
 
 
 
-<meta property="og:title" content="Plot taxonomic stats on a ggraph tree (and draw key) — taxatree_plots" />
+<meta property="og:title" content="Plot statistical model results for all taxa on a taxonomic tree — taxatree_plots" />
 <meta property="og:description" content="
 
-Uses a phyloseq object to make a tree graph structure from the taxonomic table.
-Then adds statistical results stored in &quot;taxatree_stats&quot;
-taxatree_plotkey plots same layout as taxatree_plots, but in a fixed colour
+Uses a ps_extra object to make a tree graph structure from the taxonomic table.
+Then adds statistical results stored in &quot;taxatree_stats&quot; of ps_extra data
+You must use taxatree_models() first to generate statistical model results.
+You can adjust p-values with taxatree_stats_p_adjust()
 
 " />
 
@@ -94,7 +95,7 @@ taxatree_plotkey plots same layout as taxatree_plots, but in a fixed colour
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.1.9000</span>
       </span>
     </div>
 
@@ -167,7 +168,7 @@ taxatree_plotkey plots same layout as taxatree_plots, but in a fixed colour
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plot taxonomic stats on a ggraph tree (and draw key)</h1>
+    <h1>Plot statistical model results for all taxa on a taxonomic tree</h1>
     <small class="dont-index">Source: <a href='https://github.com/david-barnett/microViz/blob/master/R/taxatree_plots.R'><code>R/taxatree_plots.R</code></a></small>
     <div class="hidden name"><code>taxatree_plots.Rd</code></div>
     </div>
@@ -175,9 +176,10 @@ taxatree_plotkey plots same layout as taxatree_plots, but in a fixed colour
     <div class="ref-description">
     
 <ul>
-<li><p>Uses a phyloseq object to make a tree graph structure from the taxonomic table.</p></li>
-<li><p>Then adds statistical results stored in "taxatree_stats"</p></li>
-<li><p><code>taxatree_plotkey</code> plots same layout as <code>taxatree_plots</code>, but in a fixed colour</p></li>
+<li><p>Uses a ps_extra object to make a tree graph structure from the taxonomic table.</p></li>
+<li><p>Then adds statistical results stored in "taxatree_stats" of ps_extra data</p></li>
+<li><p>You must use <code><a href='taxatree_models.html'>taxatree_models()</a></code> first to generate statistical model results.</p></li>
+<li><p>You can adjust p-values with <code><a href='taxatree_stats_p_adjust.html'>taxatree_stats_p_adjust()</a></code></p></li>
 </ul>
 
     </div>
@@ -188,7 +190,6 @@ taxatree_plotkey plots same layout as taxatree_plots, but in a fixed colour
   palette <span class='op'>=</span> <span class='st'>"Green-Brown"</span>,
   reverse_palette <span class='op'>=</span> <span class='cn'>FALSE</span>,
   colour_lims <span class='op'>=</span> <span class='cn'>NULL</span>,
-  lum_range <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>10</span>, <span class='fl'>85</span><span class='op'>)</span>,
   colour_oob <span class='op'>=</span> <span class='fu'>scales</span><span class='fu'>::</span><span class='va'><a href='https://scales.r-lib.org/reference/oob.html'>oob_squish</a></span>,
   colour_trans <span class='op'>=</span> <span class='st'>"abs_sqrt"</span>,
   size_stat <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>prevalence <span class='op'>=</span> <span class='va'>prev</span><span class='op'>)</span>,
@@ -211,6 +212,8 @@ taxatree_plotkey plots same layout as taxatree_plots, but in a fixed colour
   node_sort <span class='op'>=</span> <span class='cn'>NULL</span>,
   add_circles <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Logic.html'>isTRUE</a></span><span class='op'>(</span><span class='va'>circular</span><span class='op'>)</span>,
   drop_ranks <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  l1 <span class='op'>=</span> <span class='kw'>if</span> <span class='op'>(</span><span class='va'>palette</span> <span class='op'>==</span> <span class='st'>"Green-Brown"</span><span class='op'>)</span> <span class='fl'>10</span> <span class='kw'>else</span> <span class='cn'>NULL</span>,
+  l2 <span class='op'>=</span> <span class='kw'>if</span> <span class='op'>(</span><span class='va'>palette</span> <span class='op'>==</span> <span class='st'>"Green-Brown"</span><span class='op'>)</span> <span class='fl'>85</span> <span class='kw'>else</span> <span class='cn'>NULL</span>,
   colour_na <span class='op'>=</span> <span class='st'>"grey35"</span>
 <span class='op'>)</span></pre>
 
@@ -236,11 +239,6 @@ taxatree_plotkey plots same layout as taxatree_plots, but in a fixed colour
     <tr>
       <th>colour_lims</th>
       <td><p>limits of colour and fill scale, NULL will infer lims from range of all data</p></td>
-    </tr>
-    <tr>
-      <th>lum_range</th>
-      <td><p>colour palette luminance range, higher is brighter.
-1st value is for both ends of colour scale, 2nd is for the midpoint</p></td>
     </tr>
     <tr>
       <th>colour_oob</th>
@@ -339,6 +337,14 @@ Use <code><a href='tax_sort.html'>tax_sort()</a></code> before <code>taxatree_pl
       <td><p>drop ranks from tree if not included in stats dataframe</p></td>
     </tr>
     <tr>
+      <th>l1</th>
+      <td><p>Luminance value at the scale endpoints, NULL for palette's default</p></td>
+    </tr>
+    <tr>
+      <th>l2</th>
+      <td><p>Luminance value at the scale midpoint, NULL for palette's default</p></td>
+    </tr>
+    <tr>
       <th>colour_na</th>
       <td><p>colour for NA values in tree.
 (if unused ranks are not dropped, they will have NA values for colour_stat)</p></td>
@@ -350,14 +356,22 @@ Use <code><a href='tax_sort.html'>tax_sort()</a></code> before <code>taxatree_pl
     <p>list of ggraph ggplots</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Uses ggraph (see help for main underlying graphing function with ?ggraph::ggraph)</p>
+    <p><code>taxatree_plotkey</code> plots same layout as <code>taxatree_plots</code>, but in a fixed colour</p>
+<p>See website article for more examples of use:
+https://david-barnett.github.io/microViz/articles/web-only/modelling-taxa.html</p>
+<p>Uses ggraph, see help for main underlying graphing function with <code><a href='https://ggraph.data-imaginist.com/reference/ggraph.html'>?ggraph::ggraph</a></code></p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='taxatree_models.html'>taxatree_models()</a></code> to calculate statistical models for each taxon</p>
+<p><code><a href='taxatree_plotkey.html'>taxatree_plotkey()</a></code> to plot the corresponding labelled key</p>
+<p><code><a href='taxatree_plot_labels.html'>taxatree_plot_labels()</a></code> and <code><a href='taxatree_label.html'>taxatree_label()</a></code> to add labels</p>
+<p><code><a href='taxatree_stats_p_adjust.html'>taxatree_stats_p_adjust()</a></code> to adjust p-values</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='r-in'><span class='co'># Limited examples, see website article for more</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span></span>
 <span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span></span>
-<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://patchwork.data-imaginist.com'>patchwork</a></span><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>dietswap</span>, package <span class='op'>=</span> <span class='st'>"microbiome"</span><span class='op'>)</span></span>
 <span class='r-in'><span class='va'>ps</span> <span class='op'>&lt;-</span> <span class='va'>dietswap</span></span>
@@ -388,10 +402,10 @@ Use <code><a href='tax_sort.html'>tax_sort()</a></code> before <code>taxatree_pl
 <span class='r-in'>  ps <span class='op'>=</span> <span class='va'>ps</span>, type <span class='op'>=</span> <span class='fu'>corncob</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/corncob/man/bbdml.html'>bbdml</a></span>, ranks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Phylum"</span>, <span class='st'>"Genus"</span><span class='op'>)</span>,</span>
 <span class='r-in'>  formula <span class='op'>=</span> <span class='op'>~</span> <span class='va'>female</span> <span class='op'>+</span> <span class='va'>african</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span></span>
 <span class='r-in'><span class='op'>)</span></span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> 2021-11-19 11:02:27 - modelling at rank: Phylum</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> 2021-11-21 13:30:04 - modelling at rank: Phylum</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> Modelling: P: Bacteroidetes</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> Modelling: P: Firmicutes</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> 2021-11-19 11:02:28 - modelling at rank: Genus</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> 2021-11-21 13:30:04 - modelling at rank: Genus</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> Modelling: G: Allistipes et rel.</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> Modelling: G: Bacteroides vulgatus et rel.</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> Modelling: G: Butyrivibrio crossotus et rel.</span>

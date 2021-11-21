@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.1.9000</span>
       </span>
     </div>
 
@@ -129,7 +129,7 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://david-barnett.github.io/microViz">microViz</a></span><span class="op">)</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; microViz version 0.8.1 - Copyright (C) 2021 David Barnett</span>
+<span class="co">#&gt; microViz version 0.8.1.9000 - Copyright (C) 2021 David Barnett</span>
 <span class="co">#&gt; * Website: https://david-barnett.github.io/microViz/</span>
 <span class="co">#&gt; * Useful? For citation info, run: citation('microViz')</span>
 <span class="co">#&gt; * Silence: suppressPackageStartupMessages(library(microViz))</span>
@@ -525,11 +525,11 @@
     variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"UC"</span>, <span class="st">"female"</span>, <span class="st">"antibiotics"</span>, <span class="st">"steroids"</span>, <span class="st">"age_scaled"</span><span class="op">)</span>
   <span class="op">)</span>
 <span class="co">#&gt; Proportional min_prevalence given: 0.1 --&gt; min 7/67 samples.</span>
-<span class="co">#&gt; 2021-11-19 11:07:01 - modelling at rank: Phylum</span>
-<span class="co">#&gt; 2021-11-19 11:07:02 - modelling at rank: Class</span>
-<span class="co">#&gt; 2021-11-19 11:07:02 - modelling at rank: Order</span>
-<span class="co">#&gt; 2021-11-19 11:07:03 - modelling at rank: Family</span>
-<span class="co">#&gt; 2021-11-19 11:07:04 - modelling at rank: Genus</span></code></pre></div>
+<span class="co">#&gt; 2021-11-21 13:33:51 - modelling at rank: Phylum</span>
+<span class="co">#&gt; 2021-11-21 13:33:52 - modelling at rank: Class</span>
+<span class="co">#&gt; 2021-11-21 13:33:52 - modelling at rank: Order</span>
+<span class="co">#&gt; 2021-11-21 13:33:53 - modelling at rank: Family</span>
+<span class="co">#&gt; 2021-11-21 13:33:53 - modelling at rank: Genus</span></code></pre></div>
 <p>Why filter the taxa? <em>It’s less likely that we are interested in rare taxa, and models of rare taxon abundances are more likely to be unreliable. Reducing the the number of taxa modelled also makes visualising the results easier!</em></p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lm_models</span>
@@ -711,35 +711,88 @@
   <span class="op">)</span> <span class="op">+</span>
   <span class="co"># the lines below allow expansion and make some space for labels</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_fixed.html">coord_fixed</a></span><span class="op">(</span>clip <span class="op">=</span> <span class="st">"off"</span>, expand <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expansion.html">expansion</a></span><span class="op">(</span>mult <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.15</span>, <span class="fl">0.25</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expansion.html">expansion</a></span><span class="op">(</span>mult <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="modelling-taxa_files/figure-html/unnamed-chunk-20-1.png" width="624"></p>
+</div>
+<div id="changing-color-palette" class="section level3">
+<h3 class="hasAnchor">
+<a href="#changing-color-palette" class="anchor"></a>Changing color palette</h3>
+<p>Choosing another color palette is easy, just name any diverging palette from colorspace hcl diverging palettes. See your options below.</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">colorspace</span><span class="fu">::</span><span class="fu"><a href="https://colorspace.R-Forge.R-project.org//reference/hcl_palettes.html">hcl_palettes</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"diverging"</span>, plot <span class="op">=</span> <span class="cn">TRUE</span>, n <span class="op">=</span> <span class="fl">11</span><span class="op">)</span></code></pre></div>
+<p><img src="modelling-taxa_files/figure-html/unnamed-chunk-21-1.png" width="288"></p>
+<p>By default, the colour scale is transformed by taking the square root of the absolute values. But you can change this to “identity” to have no palette transformation.</p>
+<p>By default the range of the data is used to set symmetrical limits on the colour scale, which are the same for all plots in the list produced. You can set alternative limits. If some data lie outside these limits, their values will be “squished” to match the max or min limit value.</p>
+<p>For finer control of the palette luminance range, you can set custom values for l1 and l2, e.g. if the extremes are too bright or dark. This is done by default for the Green-Brown palette.</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">lm_stats</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> 
+  <span class="fu"><a href="../../reference/taxatree_label.html">taxatree_label</a></span><span class="op">(</span>
+    <span class="va">rank</span> <span class="op">==</span> <span class="st">"Genus"</span>, <span class="va">p.value</span> <span class="op">&lt;</span> <span class="fl">0.05</span> <span class="op">|</span> <span class="va">prevalence</span> <span class="op">&gt;</span> <span class="fl">0.5</span>, <span class="va">estimate</span> <span class="op">&gt;</span> <span class="fl">0</span>
+  <span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> 
+  <span class="fu"><a href="../../reference/taxatree_plots.html">taxatree_plots</a></span><span class="op">(</span>
+    colour_lims <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">20</span>, <span class="fl">20</span><span class="op">)</span>, colour_trans <span class="op">=</span> <span class="st">"identity"</span>,
+    palette <span class="op">=</span> <span class="st">"Blue-Red 3"</span>, l2 <span class="op">=</span> <span class="fl">90</span>
+  <span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> 
+  <span class="va">.</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> <span class="co"># show only the first plot</span>
+  <span class="fu"><a href="../../reference/taxatree_plot_labels.html">taxatree_plot_labels</a></span><span class="op">(</span>
+    taxon_renamer <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"G: "</span><span class="op">)</span>,
+    fun <span class="op">=</span> <span class="fu">ggrepel</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/ggrepel/man/geom_text_repel.html">geom_label_repel</a></span>, x_nudge <span class="op">=</span> <span class="fl">0.7</span>, hjust <span class="op">=</span> <span class="fl">0.5</span>, size <span class="op">=</span> <span class="fl">2</span>
+  <span class="op">)</span> <span class="op">+</span>
+  <span class="co"># the lines below allow expansion and make some space for labels</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_fixed.html">coord_fixed</a></span><span class="op">(</span>clip <span class="op">=</span> <span class="st">"off"</span>, expand <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expansion.html">expansion</a></span><span class="op">(</span>mult <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span><span class="op">)</span> </code></pre></div>
+<p><img src="modelling-taxa_files/figure-html/unnamed-chunk-22-1.png" width="624"></p>
+<p>Palettes like “Berlin” that go through a black midpoint would probably only make sense with a darker background!</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">lm_stats</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> 
+  <span class="fu"><a href="../../reference/taxatree_label.html">taxatree_label</a></span><span class="op">(</span>
+    <span class="va">rank</span> <span class="op">==</span> <span class="st">"Genus"</span>, <span class="va">p.value</span> <span class="op">&lt;</span> <span class="fl">0.05</span> <span class="op">|</span> <span class="va">prevalence</span> <span class="op">&gt;</span> <span class="fl">0.5</span>, <span class="va">estimate</span> <span class="op">&gt;</span> <span class="fl">0</span>
+  <span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> 
+  <span class="fu"><a href="../../reference/taxatree_plots.html">taxatree_plots</a></span><span class="op">(</span>
+    palette <span class="op">=</span> <span class="st">"Berlin"</span>, colour_lims <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">20</span>, <span class="fl">20</span><span class="op">)</span>
+  <span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> 
+  <span class="va">.</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> <span class="co"># show only the first plot</span>
+  <span class="fu"><a href="../../reference/taxatree_plot_labels.html">taxatree_plot_labels</a></span><span class="op">(</span>
+    taxon_renamer <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"G: "</span><span class="op">)</span>,
+    fun <span class="op">=</span> <span class="fu">ggrepel</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/ggrepel/man/geom_text_repel.html">geom_label_repel</a></span>, 
+    x_nudge <span class="op">=</span> <span class="fl">0.7</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1.7</span>, <span class="fl">1.5</span><span class="op">)</span>, hjust <span class="op">=</span> <span class="fl">0.5</span>, size <span class="op">=</span> <span class="fl">2</span>
+  <span class="op">)</span> <span class="op">+</span>
+  <span class="co"># the lines below allow expansion and make some space for labels</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_fixed.html">coord_fixed</a></span><span class="op">(</span>clip <span class="op">=</span> <span class="st">"off"</span>, expand <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expansion.html">expansion</a></span><span class="op">(</span>mult <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>
+    text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span>,
+    plot.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"grey30"</span><span class="op">)</span>, 
+    plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">20</span>, colour <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span>
+  <span class="op">)</span></code></pre></div>
+<p><img src="modelling-taxa_files/figure-html/unnamed-chunk-23-1.png" width="624"></p>
 </div>
 <div id="sorting-taxa-nodes" class="section level3">
 <h3 class="hasAnchor">
 <a href="#sorting-taxa-nodes" class="anchor"></a>Sorting taxa nodes</h3>
 <p>If you like, you can sort the nodes by sorting the taxa in the ps_extra object.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lm_stats</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> 
   <span class="fu"><a href="../../reference/tax_sort.html">tax_sort</a></span><span class="op">(</span>by <span class="op">=</span> <span class="st">"prev"</span>, at <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span>
   <span class="fu"><a href="../../reference/taxatree_plots.html">taxatree_plots</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> 
   <span class="va">.</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="co"># show only the first plot</span></code></pre></div>
-<p><img src="modelling-taxa_files/figure-html/unnamed-chunk-21-1.png" width="480"></p>
+<p><img src="modelling-taxa_files/figure-html/unnamed-chunk-24-1.png" width="480"></p>
 <p>You can chain multiple <code><a href="../../reference/tax_sort.html">tax_sort()</a></code> calls together to fine-tune the order of the nodes on the tree to your own preference.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lm_stats</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> 
   <span class="fu"><a href="../../reference/tax_sort.html">tax_sort</a></span><span class="op">(</span>by <span class="op">=</span> <span class="st">"prev"</span>, at <span class="op">=</span> <span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span>
   <span class="fu"><a href="../../reference/tax_sort.html">tax_sort</a></span><span class="op">(</span>by <span class="op">=</span> <span class="st">"name"</span>, at <span class="op">=</span> <span class="st">"Phylum"</span><span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span>
   <span class="fu"><a href="../../reference/tax_sort.html">tax_sort</a></span><span class="op">(</span>by <span class="op">=</span> <span class="st">"rev"</span><span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span>
   <span class="fu"><a href="../../reference/taxatree_plots.html">taxatree_plots</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> 
   <span class="va">.</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="co"># show only the first plot</span></code></pre></div>
-<p><img src="modelling-taxa_files/figure-html/unnamed-chunk-22-1.png" width="480"></p>
+<p><img src="modelling-taxa_files/figure-html/unnamed-chunk-25-1.png" width="480"></p>
 </div>
 <div id="plotting-adjusted-p-values" class="section level3">
 <h3 class="hasAnchor">
 <a href="#plotting-adjusted-p-values" class="anchor"></a>Plotting adjusted p values</h3>
 <p>Remember we made adjusted p values earlier? Let’s plot those instead. Just to show how it’s done, we’ll also change the symbol used to identify the significant sites to a cross, and we’ll also relax the significance threshold to 0.1.</p>
 <p>It looks like only the disease state (having ulcerative colitis) shows any significant associations after this FDR correction.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lm_stats</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> 
   <span class="fu"><a href="../../reference/taxatree_plots.html">taxatree_plots</a></span><span class="op">(</span>
     sig_stat <span class="op">=</span> <span class="st">"p.adj.BH.rank"</span>, sig_threshold <span class="op">=</span> <span class="fl">0.1</span>, 
@@ -750,7 +803,7 @@
   <span class="fu">patchwork</span><span class="fu">::</span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html">wrap_plots</a></span><span class="op">(</span>
     ncol <span class="op">=</span> <span class="fl">2</span>, guides <span class="op">=</span> <span class="st">"collect"</span>
   <span class="op">)</span></code></pre></div>
-<p><img src="modelling-taxa_files/figure-html/unnamed-chunk-23-1.png" width="672"></p>
+<p><img src="modelling-taxa_files/figure-html/unnamed-chunk-26-1.png" width="672"></p>
 </div>
 </div>
 <div id="beta-binomial-regression-example" class="section level2">
@@ -758,7 +811,7 @@
 <a href="#beta-binomial-regression-example" class="anchor"></a>Beta-binomial regression example</h2>
 <p>The corncob package provides beta-binomial regression models. See the paper <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7514055/">here</a>, and the helpful package vignette: <code>vignette("corncob-intro", package = "corncob")</code>.</p>
 <p>We will filter the taxa more strictly (by a higher prevalence threshold) before this type of modelling. We do not need to transform the data, as this approach uses counts.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">bb_models</span> <span class="op">&lt;-</span> <span class="va">phylo</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> 
   <span class="fu"><a href="../../reference/tax_fix.html">tax_fix</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> 
   <span class="fu"><a href="../../reference/tax_prepend_ranks.html">tax_prepend_ranks</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> 
@@ -769,10 +822,10 @@
     variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"UC"</span>, <span class="st">"female"</span>, <span class="st">"antibiotics"</span>, <span class="st">"steroids"</span>, <span class="st">"age_scaled"</span><span class="op">)</span>
   <span class="op">)</span>
 <span class="co">#&gt; Proportional min_prevalence given: 0.3 --&gt; min 21/67 samples.</span>
-<span class="co">#&gt; 2021-11-19 11:07:39 - modelling at rank: Phylum</span>
-<span class="co">#&gt; 2021-11-19 11:07:40 - modelling at rank: Class</span>
-<span class="co">#&gt; 2021-11-19 11:07:40 - modelling at rank: Order</span>
-<span class="co">#&gt; 2021-11-19 11:07:41 - modelling at rank: Family</span>
+<span class="co">#&gt; 2021-11-21 13:34:27 - modelling at rank: Phylum</span>
+<span class="co">#&gt; 2021-11-21 13:34:27 - modelling at rank: Class</span>
+<span class="co">#&gt; 2021-11-21 13:34:27 - modelling at rank: Order</span>
+<span class="co">#&gt; 2021-11-21 13:34:28 - modelling at rank: Family</span>
 <span class="va">bb_models</span>
 <span class="co">#&gt; ps_extra object - a list with phyloseq and extras:</span>
 <span class="co">#&gt; </span>
@@ -787,7 +840,7 @@
 <span class="co">#&gt; $taxatree_models list:</span>
 <span class="co">#&gt; Ranks: Phylum/Class/Order/Family</span></code></pre></div>
 <p>When extracting stats from corncob beta-binomial models, you need to specify which parameter estimate you want, “mu” for differential abundance, or “phi” for differential variability or overdispersion.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">bb_stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/taxatree_models2stats.html">taxatree_models2stats</a></span><span class="op">(</span><span class="va">bb_models</span>, param <span class="op">=</span> <span class="st">"mu"</span><span class="op">)</span>
 <span class="va">bb_stats</span>
 <span class="co">#&gt; ps_extra object - a list with phyloseq and extras:</span>
@@ -818,7 +871,7 @@
 <span class="co">#&gt;  9 steroids    P: Bacter… Phyl… mu         -0.130      0.656     -0.197    0.844</span>
 <span class="co">#&gt; 10 age_scaled  P: Bacter… Phyl… mu         -0.0967     0.264     -0.366    0.716</span>
 <span class="co">#&gt; # … with 140 more rows</span></code></pre></div>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">bb_stats</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/taxatree_plots.html">taxatree_plots</a></span><span class="op">(</span>
   node_size_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span>, colour_trans <span class="op">=</span> <span class="st">"identity"</span>
 <span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> 
@@ -827,12 +880,12 @@
   <span class="fu">patchwork</span><span class="fu">::</span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html">wrap_plots</a></span><span class="op">(</span>
     ncol <span class="op">=</span> <span class="fl">2</span>, guides <span class="op">=</span> <span class="st">"collect"</span>
   <span class="op">)</span> </code></pre></div>
-<p><img src="modelling-taxa_files/figure-html/unnamed-chunk-26-1.png" width="480"></p>
+<p><img src="modelling-taxa_files/figure-html/unnamed-chunk-29-1.png" width="480"></p>
 <div id="alternative-layouts" class="section level3">
 <h3 class="hasAnchor">
 <a href="#alternative-layouts" class="anchor"></a>Alternative layouts</h3>
 <p>You do not need to make circular tree plots if you don’t want to!</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">alt_trees</span> <span class="op">&lt;-</span> <span class="va">bb_stats</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> 
   <span class="fu"><a href="../../reference/taxatree_plots.html">taxatree_plots</a></span><span class="op">(</span>
     node_size_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span>, circular <span class="op">=</span> <span class="cn">FALSE</span>, colour_trans <span class="op">=</span> <span class="st">"identity"</span>
@@ -846,9 +899,9 @@
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_reverse</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="va">alt_trees</span></code></pre></div>
-<p><img src="modelling-taxa_files/figure-html/unnamed-chunk-27-1.png" width="480"></p>
+<p><img src="modelling-taxa_files/figure-html/unnamed-chunk-30-1.png" width="480"></p>
 <p>Let’s add the key for this layout and label it manually with <code><a href="../../reference/taxatree_plot_labels.html">taxatree_plot_labels()</a></code>.</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">alt_tree_key</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/taxatree_plotkey.html">taxatree_plotkey</a></span><span class="op">(</span>
   data <span class="op">=</span> <span class="va">bb_stats</span>, circular <span class="op">=</span> <span class="cn">FALSE</span>, .draw_label <span class="op">=</span> <span class="cn">FALSE</span>,
   <span class="va">rank</span> <span class="op">==</span> <span class="st">"Family"</span>
@@ -863,10 +916,10 @@
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">14</span><span class="op">)</span><span class="op">)</span>
 
 <span class="fu">patchwork</span><span class="fu">::</span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html">wrap_plots</a></span><span class="op">(</span><span class="va">alt_tree_key</span>, <span class="va">alt_trees</span>, nrow <span class="op">=</span> <span class="fl">2</span>, heights <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
-<p><img src="modelling-taxa_files/figure-html/unnamed-chunk-28-1.png" width="480"></p>
+<p><img src="modelling-taxa_files/figure-html/unnamed-chunk-31-1.png" width="480"></p>
 <p>You don’t have to use a regular tree!</p>
 <p>Alternative layouts from the igraph package are possible, such as the Kamada and Kawai spring algorithm (“kk”) or Fruchterman and Reingold force-directed algorithm (“fr”). You must set a layout_seed number for these layouts to ensure they are always the same.</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">bb_stats</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/taxatree_plots.html">taxatree_plots</a></span><span class="op">(</span>
   node_size_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span>, 
   colour_trans <span class="op">=</span> <span class="st">"identity"</span>, layout <span class="op">=</span> <span class="st">"kk"</span>, layout_seed <span class="op">=</span> <span class="fl">321</span>
@@ -876,16 +929,16 @@
   <span class="fu">patchwork</span><span class="fu">::</span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html">wrap_plots</a></span><span class="op">(</span>
     ncol <span class="op">=</span> <span class="fl">2</span>, guides <span class="op">=</span> <span class="st">"collect"</span>
   <span class="op">)</span></code></pre></div>
-<p><img src="modelling-taxa_files/figure-html/unnamed-chunk-29-1.png" width="480"></p>
+<p><img src="modelling-taxa_files/figure-html/unnamed-chunk-32-1.png" width="480"></p>
 </div>
 </div>
 <div id="session-info" class="section level1">
 <h1 class="hasAnchor">
 <a href="#session-info" class="anchor"></a>Session info</h1>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://r-lib.github.io/sessioninfo/reference/session_info.html">session_info</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; ─ Session info  ──────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt;  hash: brown square, clinking beer mugs, flexed biceps</span>
+<span class="co">#&gt;  hash: blowfish, bug, joker</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;  setting  value</span>
 <span class="co">#&gt;  version  R version 4.1.2 (2021-11-01)</span>
@@ -896,7 +949,7 @@
 <span class="co">#&gt;  collate  C.UTF-8</span>
 <span class="co">#&gt;  ctype    C.UTF-8</span>
 <span class="co">#&gt;  tz       UTC</span>
-<span class="co">#&gt;  date     2021-11-19</span>
+<span class="co">#&gt;  date     2021-11-21</span>
 <span class="co">#&gt;  pandoc   2.7.3 @ /usr/bin/ (via rmarkdown)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ─ Packages ───────────────────────────────────────────────────────────────────</span>
@@ -944,7 +997,7 @@
 <span class="co">#&gt;  ggrepel              0.9.1        2021-01-15 [1] Custom</span>
 <span class="co">#&gt;  globals              0.14.0       2020-11-22 [1] Custom</span>
 <span class="co">#&gt;  glue                 1.5.0        2021-11-07 [1] Custom</span>
-<span class="co">#&gt;  graphlayouts         0.7.1        2020-10-26 [1] Custom</span>
+<span class="co">#&gt;  graphlayouts         0.7.2        2021-11-21 [1] CRAN (R 4.1.2)</span>
 <span class="co">#&gt;  gridExtra            2.3          2017-09-09 [1] Custom</span>
 <span class="co">#&gt;  gtable               0.3.0        2019-03-25 [1] Custom</span>
 <span class="co">#&gt;  highr                0.9          2021-04-16 [1] Custom</span>
@@ -966,12 +1019,12 @@
 <span class="co">#&gt;  memoise              2.0.0        2021-01-26 [1] Custom</span>
 <span class="co">#&gt;  mgcv                 1.8-38       2021-10-06 [2] CRAN (R 4.1.2)</span>
 <span class="co">#&gt;  microbiome           1.16.0       2021-10-26 [1] Bioconductor</span>
-<span class="co">#&gt;  microViz           * 0.8.1        2021-11-19 [1] local</span>
+<span class="co">#&gt;  microViz           * 0.8.1.9000   2021-11-21 [1] local</span>
 <span class="co">#&gt;  multtest             2.50.0       2021-10-26 [1] Bioconductor</span>
 <span class="co">#&gt;  munsell              0.5.0        2018-06-12 [1] Custom</span>
 <span class="co">#&gt;  nlme                 3.1-153      2021-09-07 [2] CRAN (R 4.1.2)</span>
 <span class="co">#&gt;  numDeriv             2016.8-1.1   2019-06-06 [1] Custom</span>
-<span class="co">#&gt;  parallelly           1.28.1       2021-09-09 [1] Custom</span>
+<span class="co">#&gt;  parallelly           1.29.0       2021-11-21 [1] CRAN (R 4.1.2)</span>
 <span class="co">#&gt;  patchwork            1.1.1        2020-12-17 [1] Custom</span>
 <span class="co">#&gt;  permute              0.9-5        2019-03-12 [1] Custom</span>
 <span class="co">#&gt;  phyloseq             1.38.0       2021-10-26 [1] Bioconductor</span>
