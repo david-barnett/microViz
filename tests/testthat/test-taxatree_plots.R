@@ -70,6 +70,24 @@ test_that("taxatree_plot plotting works", {
   vdiffr::expect_doppelganger("taxatree_plot_age", lm_plots$age_scaled)
 })
 
+
+# test multiple significance markers
+lmp_multiSig <- taxatree_plots(
+  lm_stats, sig_shape = list(4, "circle filled"), # 4 = cross, tests conversion
+  sig_threshold = c(0.01, 0.1), sig_stat = "p.value", sig_stroke = 1.5,
+  sig_size = c(2, 1), sig_colour = c("white", "green")
+)
+
+test_that("taxatree_plot plotting works with multiple sig markers", {
+  local_edition(3)
+  expect_equal(names(lmp_multiSig), c("UC", "female", "age_scaled"))
+  expect_s3_class(lmp_multiSig[[1]], "ggplot")
+  skip_on_os(c("windows", "mac"))
+  vdiffr::expect_doppelganger("taxatree_plot_UC_m", lmp_multiSig$UC)
+  vdiffr::expect_doppelganger("taxatree_plot_age_m", lmp_multiSig$age_scaled)
+})
+
+
 #
 #
 # # OLD TESTING BELOW

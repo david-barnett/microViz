@@ -13,6 +13,12 @@
 #' @details
 #' Uses ggraph, see help for main underlying graphing function with `?ggraph::ggraph`
 #'
+#' It is possible to provide multiple significance markers for multiple thresholds,
+#' by passing vectors to the sig_shape, sig_threshold, etc. arguments.
+#' It is critically important that the thresholds are provided in decreasing
+#' order of severity, e.g. sig_threshold = c(0.001, 0.01, 0.1) and you must provide
+#' a shape value for each of them.
+#'
 #' @param data ps_extra with taxatree_stats, e.g. output of `taxatree_models2stats()`
 #' @param colour_stat name of variable to scale colour/fill of nodes and edges
 #' @param palette
@@ -44,7 +50,9 @@
 #' value of sig_stat variable indicating statistical significance (below this)
 #' @param sig_shape fixed shape for significance marker
 #' @param sig_size fixed size for significance marker
-#' @param sig_colour fixed colour for significance marker
+#' @param sig_stroke fixed stroke width for significance marker
+#' @param sig_colour
+#' fixed colour for significance marker (used as fill for filled shapes)
 #' @param edge_alpha fixed alpha value for edges
 #' @param vars
 #' name of column indicating terms in models (one plot made per term)
@@ -157,6 +165,7 @@ taxatree_plots <- function(data,
                            sig_threshold = 0.05,
                            sig_shape = "circle filled",
                            sig_size = 0.75,
+                           sig_stroke = 0.75,
                            sig_colour = "white",
                            edge_alpha = 0.7,
                            vars = "term",
@@ -232,9 +241,10 @@ taxatree_plots <- function(data,
       )
       # add significance markings
       p <- taxatree_plot_sig(
-        p = p, colour_stat = colour_stat, colour_lims = colour_lims,
+        p = p, colour_stat = colour_stat, palette = palette, l1 = l1, l2 = l2,
         sig_stat = sig_stat, sig_threshold = sig_threshold,
-        sig_shape = sig_shape, sig_size = sig_size, sig_colour = sig_colour
+        sig_stroke = sig_stroke, sig_shape = sig_shape, sig_size = sig_size,
+        sig_colour = sig_colour
       )
 
       p <- taxatree_plotSizeScaling(
@@ -331,70 +341,131 @@ taxatree_plotRootNode <- function(p, size_stat) {
 # helper, to add significance markings to some points
 taxatree_plot_sig <- function(p,
                               colour_stat,
-                              colour_lims,
+                              palette,
+                              l1, l2,
                               sig_stat,
                               sig_threshold = 0.05,
                               sig_size = 0.75,
+                              sig_stroke = 1,
                               sig_colour = "white",
                               sig_shape = "circle filled") {
   if (!identical(sig_stat, NULL)) {
 
     # stop early if nothing is significant for this variable
-    if (all(p[["data"]][[sig_stat]] >= sig_threshold, na.rm = TRUE)) {
+    if (all(p[["data"]][, sig_stat] >= max(sig_threshold), na.rm = TRUE)) {
       return(p)
     }
 
-    if (sig_shape %in% c(filled_shapes(), 21:25)) {
-      # filled shape
-      p <- p + ggplot2::geom_point(
-        data = ~ dplyr::filter(.x, .data[[sig_stat]] < sig_threshold),
-        mapping = ggplot2::aes(
-          x = .data$x, y = .data$y, shape = sig_shape,
-          color = dplyr::if_else(
-            condition = .data[[colour_stat]] < 0,
-            true = colour_lims[[1]],
-            false = colour_lims[[2]]
-          )
-        ),
-        size = sig_size,
-        fill = sig_colour
-      ) +
-        ggplot2::guides(shape = ggplot2::guide_legend(
-          title = sig_stat, order = 3,
-          override.aes = list(size = 1, stroke = 1.5)
-        ))
-    } else {
-      # non-filled shape
-      p <- p + ggplot2::geom_point(
-        data = ~ dplyr::filter(.x, .data[[sig_stat]] < sig_threshold),
-        mapping = ggplot2::aes(
-          x = .data$x, y = .data$y, shape = sig_shape
-        ),
-        size = sig_size,
-        colour = sig_colour
-      ) +
-        ggplot2::guides(shape = ggplot2::guide_legend(
-          title = sig_stat, order = 3,
-          override.aes = list(size = 2, colour = "black")
-        ))
+    # convert shape numbers to character names for consistency
+    sig_shape <- sapply(sig_shape, shape_number2name)
+
+    # extremes of palette
+    palArgs <- list(n = 11, palette = palette)
+    if (!is.null(l1)) palArgs$l1 <- l1
+    if (!is.null(l2)) palArgs$l2 <- l2
+    pal <- do.call(colorspace::diverging_hcl, args = palArgs)
+
+    plotdf <- p$data
+    plotdf$filledPointCol <- dplyr::if_else(
+      condition = plotdf[[colour_stat]] < 0,
+      true = pal[[1]], false = pal[[11]]
+    )
+
+    # process significance point aesthetics into complete & equal length vecs
+    sigNames <- paste(sig_stat, "<", sig_threshold)
+    maxLength <- length(sigNames)
+    if (length(sig_shape) != maxLength) {
+      stop("you must provide one shape per significance level")
     }
 
-    # set up significance legend using manual shape scale & legend
-    if (is.numeric(sig_shape)) sig_shape <- shape_numbers2names(sig_shape)
-    shape_scale_values <- sig_shape
-    names(shape_scale_values) <- sig_shape
-    p <- p + ggplot2::scale_shape_manual(
-      values = shape_scale_values,
-      labels = paste("<", sig_threshold)
+    sig <- list(
+      stat = sig_stat, threshold = sig_threshold, size = sig_size,
+      stroke = sig_stroke, colour = sig_colour, shape = sig_shape
     )
-  }
+    sig <- lapply(sig, rep_len, maxLength)
+    sig <- lapply(sig, `names<-`, sigNames)
 
+    # flip it, process, flip back
+    sig <- purrr::transpose(sig)
+    sig <- lapply(sig, function(x) {
+      if (x$shape %in% c(filled_shapes(), 21:25)) {
+        x$fill <- x$colour
+        x$colour <- "black"
+      }
+      else {
+        x$fill <- "hotpink" # shouldn't ever show
+      }
+      return(x)
+    })
+    # increase size and stroke for legend
+    sigLegend <- lapply(sig, function(x) {
+      x[c("stroke", "size")] <- lapply(x[c("stroke", "size")], `*`, 1.5)
+      x$colour <- "black"
+      return(x)
+    })
+    sigLegend <- purrr::transpose(sigLegend)
+    sigLegend <- lapply(sigLegend, unlist)
+
+    # add a layer with nothing, just to give a shape legend
+    invisibleData <- data.frame(.shape. = sig_shape)
+    names(sig_shape) <- sig_shape # named for use as manual scale values
+    p <- p +
+      ggplot2::geom_point(
+      data = invisibleData, x = 0, y = 0, alpha = 0,
+      mapping = ggplot2::aes(shape = .shape.), show.legend = TRUE
+    ) +
+      ggplot2::scale_shape_manual(
+        values = sig_shape, labels = sigNames,
+        guide = ggplot2::guide_legend(
+          title = "", order = 3, override.aes = c(sigLegend, list(alpha = 1))
+        )
+      )
+
+     sig <- purrr::transpose(sig) # don't unlist
+
+    # identity which are significant at which level
+    # levels must start with strictest!
+    plotdf$sigName <- NA_character_
+    plotdf$.COLOR <- NA
+    plotdf$.SHAPE <- NA
+    plotdf$.FILL <- NA
+    plotdf$.SIZE <- NA
+    plotdf$.STROKE <- NA
+
+    for (i in seq_len(maxLength)) {
+      yes <- is.na(plotdf$sigName) & plotdf[[sig$stat[[i]]]] < sig$threshold[[i]]
+      yes[is.na(yes)] <- FALSE
+      plotdf$sigName[yes] <- sigNames[[i]]
+      # filled shape colours
+      if (sig$shape[[i]] %in% c(filled_shapes(), 21:25)) {
+        plotdf[yes, ".COLOR"] <- plotdf$filledPointCol[yes]
+      } else {
+        plotdf[yes, ".COLOR"] <- sig$colour[[i]]
+      }
+      plotdf[yes, ".SHAPE"] <- sig$shape[[i]]
+      plotdf[yes, ".FILL"] <- sig$fill[[i]]
+      plotdf[yes, ".SIZE"] <- sig$size[[i]]
+      plotdf[yes, ".STROKE"] <- sig$stroke[[i]]
+    }
+
+    plotdf <- plotdf[!is.na(plotdf$sigName), , drop = FALSE]
+
+    p <- p + ggplot2::geom_point(
+      data = plotdf,
+      mapping = ggplot2::aes(x = .data$x, y = .data$y),
+      shape = plotdf$.SHAPE,
+      size = plotdf$.SIZE,
+      stroke = plotdf$.STROKE,
+      fill = plotdf$.FILL,
+      colour = plotdf$.COLOR
+    )
+
+  }
   return(p)
 }
 
 # helper for taxatree_plot_sig, to convert shape numbers to names
-shape_numbers2names <- function(shape_number) {
-  stopifnot(is.numeric(shape_number) && all(shape_number %in% 0:25))
+shape_number2name <- function(shape_number) {
 
   namedShapeNums <- c(
     `square open` = 0, `circle open` = 1, `triangle open` = 2,
@@ -407,10 +478,19 @@ shape_numbers2names <- function(shape_number) {
     `diamond filled` = 23, `triangle filled` = 24, `triangle down filled` = 25
   )
 
-  shape_names <- sapply(X = shape_number, FUN = function(num) {
-    names(namedShapeNums[namedShapeNums == num])
-  })
-  return(shape_names)
+  # return or stop early if shape_number is character
+  if (is.character(shape_number)) {
+    if (shape_number %in% names(namedShapeNums)) return(shape_number)
+    stop(shape_number, " is not a valid shape name", call. = FALSE)
+  } else if (is.numeric(shape_number) && shape_number %in% 0:25) {
+    shape_name <- names(namedShapeNums[namedShapeNums == shape_number])
+  } else if (is.numeric(shape_number)) {
+    stop (shape, " is not a valid shape number, must be from 0 to 25")
+  } else {
+    stop ("shapes must be named or numbered, not class: ", class(shape_number))
+  }
+
+  return(shape_name)
 }
 
 # helper to set size scales

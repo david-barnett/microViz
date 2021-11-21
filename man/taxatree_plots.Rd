@@ -21,6 +21,7 @@ taxatree_plots(
   sig_threshold = 0.05,
   sig_shape = "circle filled",
   sig_size = 0.75,
+  sig_stroke = 0.75,
   sig_colour = "white",
   edge_alpha = 0.7,
   vars = "term",
@@ -77,7 +78,9 @@ such as "identity", "log1p", or "sqrt"}
 
 \item{sig_size}{fixed size for significance marker}
 
-\item{sig_colour}{fixed colour for significance marker}
+\item{sig_stroke}{fixed stroke width for significance marker}
+
+\item{sig_colour}{fixed colour for significance marker (used as fill for filled shapes)}
 
 \item{edge_alpha}{fixed alpha value for edges}
 
@@ -125,6 +128,12 @@ See website article for more examples of use:
 https://david-barnett.github.io/microViz/articles/web-only/modelling-taxa.html
 
 Uses ggraph, see help for main underlying graphing function with \code{?ggraph::ggraph}
+
+It is possible to provide multiple significance markers for multiple thresholds,
+by passing vectors to the sig_shape, sig_threshold, etc. arguments.
+It is critically important that the thresholds are provided in decreasing
+order of severity, e.g. sig_threshold = c(0.001, 0.01, 0.1) and you must provide
+a shape value for each of them.
 }
 \examples{
 # Limited examples, see website article for more
