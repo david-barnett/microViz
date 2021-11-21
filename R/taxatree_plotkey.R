@@ -158,7 +158,8 @@ taxatree_plotkey <- function(data,
 #' @param point.padding padding around node points (for label positioning)
 #' @param box.padding padding around labels/text (for label positioning)
 #' @param seed set this for reproducible label positions
-#' @param ... other arguments passed to `fun` labelling function
+#' @inheritDotParams ggrepel::geom_text_repel
+#' arrow force force_pull max.time max.iter xlim ylim direction verbose
 #'
 #' @export
 taxatree_plot_labels <- function(p,

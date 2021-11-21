@@ -62,7 +62,27 @@ taxatree_plot_labels(
 
 \item{seed}{set this for reproducible label positions}
 
-\item{...}{other arguments passed to \code{fun} labelling function}
+\item{...}{
+  Arguments passed on to \code{\link[ggrepel:geom_text_repel]{ggrepel::geom_text_repel}}
+  \describe{
+    \item{\code{arrow}}{specification for arrow heads, as created by \code{\link[grid]{arrow}}}
+    \item{\code{force}}{Force of repulsion between overlapping text labels. Defaults
+to 1.}
+    \item{\code{force_pull}}{Force of attraction between a text label and its
+corresponding data point. Defaults to 1.}
+    \item{\code{max.time}}{Maximum number of seconds to try to resolve overlaps.
+Defaults to 0.5.}
+    \item{\code{max.iter}}{Maximum number of iterations to try to resolve overlaps.
+Defaults to 10000.}
+    \item{\code{xlim}}{Limits for the x and y axes. Text labels will be constrained
+to these limits. By default, text labels are constrained to the entire plot
+area.}
+    \item{\code{ylim}}{Limits for the x and y axes. Text labels will be constrained
+to these limits. By default, text labels are constrained to the entire plot
+area.}
+    \item{\code{direction}}{"both", "x", or "y" -- direction in which to adjust position of labels}
+    \item{\code{verbose}}{If \code{TRUE}, some diagnostics of the repel algorithm are printed}
+  }}
 }
 \description{
 Finer control over label drawing for \code{taxatree_plotkey}

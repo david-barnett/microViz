@@ -1,10 +1,17 @@
-#' Plot taxonomic stats on a ggraph tree (and draw key)
+#' Plot statistical model results for all taxa on a taxonomic tree
 #'
-#' - Uses a phyloseq object to make a tree graph structure from the taxonomic table.
-#' - Then adds statistical results stored in "taxatree_stats"
-#' - `taxatree_plotkey` plots same layout as `taxatree_plots`, but in a fixed colour
+#' - Uses a ps_extra object to make a tree graph structure from the taxonomic table.
+#' - Then adds statistical results stored in "taxatree_stats" of ps_extra data
+#' - You must use `taxatree_models()` first to generate statistical model results.
+#' - You can adjust p-values with `taxatree_stats_p_adjust()`
 #'
-#' Uses ggraph (see help for main underlying graphing function with ?ggraph::ggraph)
+#' `taxatree_plotkey` plots same layout as `taxatree_plots`, but in a fixed colour
+#'
+#' See website article for more examples of use:
+#' https://david-barnett.github.io/microViz/articles/web-only/modelling-taxa.html
+#'
+#' @details
+#' Uses ggraph, see help for main underlying graphing function with `?ggraph::ggraph`
 #'
 #' @param data ps_extra with taxatree_stats, e.g. output of `taxatree_models2stats()`
 #' @param colour_stat name of variable to scale colour/fill of nodes and edges
@@ -21,9 +28,6 @@
 #' default is "abs_sqrt", the square-root of absolute values,
 #' but you can use the name of any transformer from the `scales` package,
 #' such as "identity" or "exp"
-#' @param lum_range
-#' colour palette luminance range, higher is brighter.
-#' 1st value is for both ends of colour scale, 2nd is for the midpoint
 #' @param size_stat
 #' named list of length 1, giving function calculated for each taxon,
 #' to determine the size of nodes (and edges). Name used as size legend title.
@@ -59,6 +63,13 @@
 #' @param colour_na
 #' colour for NA values in tree.
 #' (if unused ranks are not dropped, they will have NA values for colour_stat)
+#' @param l1 Luminance value at the scale endpoints, NULL for palette's default
+#' @param l2 Luminance value at the scale midpoint, NULL for palette's default
+#'
+#' @seealso [taxatree_models()] to calculate statistical models for each taxon
+#' @seealso [taxatree_plotkey()] to plot the corresponding labelled key
+#' @seealso [taxatree_plot_labels()] and [taxatree_label()] to add labels
+#' @seealso [taxatree_stats_p_adjust()] to adjust p-values
 #'
 #' @return list of ggraph ggplots
 #' @export
@@ -68,7 +79,6 @@
 #'
 #' library(dplyr)
 #' library(ggplot2)
-#' library(patchwork)
 #'
 #' data(dietswap, package = "microbiome")
 #' ps <- dietswap
@@ -136,7 +146,6 @@ taxatree_plots <- function(data,
                            palette = "Green-Brown",
                            reverse_palette = FALSE,
                            colour_lims = NULL,
-                           lum_range = c(10, 85),
                            colour_oob = scales::oob_squish,
                            colour_trans = "abs_sqrt",
                            size_stat = list(prevalence = prev),
@@ -159,6 +168,8 @@ taxatree_plots <- function(data,
                            node_sort = NULL,
                            add_circles = isTRUE(circular),
                            drop_ranks = TRUE,
+                           l1 = if (palette == "Green-Brown") 10 else NULL,
+                           l2 = if (palette == "Green-Brown") 85 else NULL,
                            colour_na = "grey35") {
   # get variable-specific stats for joining to node data
   stats <- data[["taxatree_stats"]]
@@ -233,8 +244,7 @@ taxatree_plots <- function(data,
       p <- taxatree_plotColourScaling(
         p = p, palette = palette, reverse_palette = reverse_palette,
         colour_lims = colour_lims, colour_oob = colour_oob,
-        colour_trans = colour_trans, colour_na = colour_na,
-        lum_range = lum_range
+        colour_trans = colour_trans, colour_na = colour_na, l1 = l1, l2 = l2
       )
       p <- taxatree_plot_styling(
         p = p, circular = circular, title_size = title_size
@@ -428,7 +438,8 @@ taxatree_plotColourScaling <- function(p,
                                        colour_oob = scales::oob_squish,
                                        colour_trans = "abs_sqrt",
                                        colour_na = "grey35",
-                                       lum_range = c(5, 80)) {
+                                       l1 = NULL,
+                                       l2 = NULL) {
   # get colour transformation function referenced by character
   if (identical(colour_trans, "abs_sqrt")) {
     colour_trans <- abs_sqrt
@@ -438,32 +449,35 @@ taxatree_plotColourScaling <- function(p,
     )
   }
 
-  # set colour scale
-  p <- p +
-    # NOTE:
-    # Previously colorspace block was THROWING ERRORS about
-    # can't find objects specified in its args... when used INSIDE a function:
-    # solution, bizarrely, was just to use scale_colour_continuous_diverging
-    # (with aesthetics = "fill") instead of scale_fill_continuous_diverging
-    # which fails to find the args, seemingly given the resulting location
-    # of the do.call(parent.env()) call....???
-    colorspace::scale_colour_continuous_diverging(
-      palette = palette,
-      na.value = colour_na,
-      l1 = lum_range[[1]],
-      l2 = lum_range[[2]],
-      aesthetics = c("edge_colour", "fill", "colour"),
-      limits = colour_lims,
-      oob = colour_oob,
-      rev = reverse_palette,
-      trans = colour_trans(),
-      guide = ggplot2::guide_colourbar(
-        order = 1,
-        frame.colour = "black",
-        ticks.colour = "black" # ,
-        # barwidth = grid::unit(0.05, "npc")
-      )
+  args <- list(
+    palette = palette,
+    na.value = colour_na,
+    aesthetics = c("edge_colour", "fill", "colour"),
+    limits = colour_lims,
+    oob = colour_oob,
+    rev = reverse_palette,
+    trans = colour_trans(),
+    guide = ggplot2::guide_colourbar(
+      order = 1,
+      frame.colour = "black",
+      ticks.colour = "black" # ,
+      # barwidth = grid::unit(0.05, "npc")
     )
+  )
+  # add luminance range limits if not NULL
+  if (!is.null(l1)) args["l1"] <- l1
+  if (!is.null(l2)) args["l2"] <- l2
+
+  # set colour scale
+  p <- p + do.call(colorspace::scale_colour_continuous_diverging, args = args)
+  # NOTE:
+  # Previously colorspace block was THROWING ERRORS about
+  # can't find objects specified in its args... when used INSIDE a function:
+  # solution, bizarrely, was just to use scale_colour_continuous_diverging
+  # (with aesthetics = "fill") instead of scale_fill_continuous_diverging
+  # which fails to find the args, seemingly given the resulting location
+  # of the do.call(parent.env()) call....???
+
   return(p)
 }
 
