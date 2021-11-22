@@ -2,7 +2,7 @@
 % Please edit documentation in R/taxatree_plots.R
 \name{taxatree_plots}
 \alias{taxatree_plots}
-\title{Plot taxonomic stats on a ggraph tree (and draw key)}
+\title{Plot statistical model results for all taxa on a taxonomic tree}
 \usage{
 taxatree_plots(
   data,
@@ -10,7 +10,6 @@ taxatree_plots(
   palette = "Green-Brown",
   reverse_palette = FALSE,
   colour_lims = NULL,
-  lum_range = c(10, 85),
   colour_oob = scales::oob_squish,
   colour_trans = "abs_sqrt",
   size_stat = list(prevalence = prev),
@@ -22,6 +21,7 @@ taxatree_plots(
   sig_threshold = 0.05,
   sig_shape = "circle filled",
   sig_size = 0.75,
+  sig_stroke = 0.75,
   sig_colour = "white",
   edge_alpha = 0.7,
   vars = "term",
@@ -33,6 +33,8 @@ taxatree_plots(
   node_sort = NULL,
   add_circles = isTRUE(circular),
   drop_ranks = TRUE,
+  l1 = if (palette == "Green-Brown") 10 else NULL,
+  l2 = if (palette == "Green-Brown") 85 else NULL,
   colour_na = "grey35"
 )
 }
@@ -46,9 +48,6 @@ taxatree_plots(
 \item{reverse_palette}{reverse direction of colour palette?}
 
 \item{colour_lims}{limits of colour and fill scale, NULL will infer lims from range of all data}
-
-\item{lum_range}{colour palette luminance range, higher is brighter.
-1st value is for both ends of colour scale, 2nd is for the midpoint}
 
 \item{colour_oob}{scales function to handle colour_stat values outside of colour_lims
 (default simply squishes "out of bounds" values into the given range)}
@@ -79,7 +78,9 @@ such as "identity", "log1p", or "sqrt"}
 
 \item{sig_size}{fixed size for significance marker}
 
-\item{sig_colour}{fixed colour for significance marker}
+\item{sig_stroke}{fixed stroke width for significance marker}
+
+\item{sig_colour}{fixed colour for significance marker (used as fill for filled shapes)}
 
 \item{edge_alpha}{fixed alpha value for edges}
 
@@ -102,6 +103,10 @@ Use \code{tax_sort()} before \code{taxatree_plots()} for finer control.}
 
 \item{drop_ranks}{drop ranks from tree if not included in stats dataframe}
 
+\item{l1}{Luminance value at the scale endpoints, NULL for palette's default}
+
+\item{l2}{Luminance value at the scale midpoint, NULL for palette's default}
+
 \item{colour_na}{colour for NA values in tree.
 (if unused ranks are not dropped, they will have NA values for colour_stat)}
 }
@@ -110,20 +115,31 @@ list of ggraph ggplots
 }
 \description{
 \itemize{
-\item Uses a phyloseq object to make a tree graph structure from the taxonomic table.
-\item Then adds statistical results stored in "taxatree_stats"
-\item \code{taxatree_plotkey} plots same layout as \code{taxatree_plots}, but in a fixed colour
+\item Uses a ps_extra object to make a tree graph structure from the taxonomic table.
+\item Then adds statistical results stored in "taxatree_stats" of ps_extra data
+\item You must use \code{taxatree_models()} first to generate statistical model results.
+\item You can adjust p-values with \code{taxatree_stats_p_adjust()}
 }
 }
 \details{
-Uses ggraph (see help for main underlying graphing function with ?ggraph::ggraph)
+\code{taxatree_plotkey} plots same layout as \code{taxatree_plots}, but in a fixed colour
+
+See website article for more examples of use:
+https://david-barnett.github.io/microViz/articles/web-only/modelling-taxa.html
+
+Uses ggraph, see help for main underlying graphing function with \code{?ggraph::ggraph}
+
+It is possible to provide multiple significance markers for multiple thresholds,
+by passing vectors to the sig_shape, sig_threshold, etc. arguments.
+It is critically important that the thresholds are provided in decreasing
+order of severity, e.g. sig_threshold = c(0.001, 0.01, 0.1) and you must provide
+a shape value for each of them.
 }
 \examples{
 # Limited examples, see website article for more
 
 library(dplyr)
 library(ggplot2)
-library(patchwork)
 
 data(dietswap, package = "microbiome")
 ps <- dietswap
@@ -186,4 +202,13 @@ plot_col <- cowplot::plot_grid(
   ncol = 1
 )
 cowplot::plot_grid(key, plot_col, legend, nrow = 1, rel_widths = c(4, 2, 1))
+}
+\seealso{
+\code{\link[=taxatree_models]{taxatree_models()}} to calculate statistical models for each taxon
+
+\code{\link[=taxatree_plotkey]{taxatree_plotkey()}} to plot the corresponding labelled key
+
+\code{\link[=taxatree_plot_labels]{taxatree_plot_labels()}} and \code{\link[=taxatree_label]{taxatree_label()}} to add labels
+
+\code{\link[=taxatree_stats_p_adjust]{taxatree_stats_p_adjust()}} to adjust p-values
 }

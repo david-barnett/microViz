@@ -1,5 +1,9 @@
 # microViz (development version)
 
+## Features
+-`taxatree_plots` can now show symbols indicating multiple levels of statistical significance
+- `taxatree_plots`: it is now easier to use other colour palettes with their default luminance
+
 # microViz 0.8.1
 
 ## Features

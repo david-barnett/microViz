@@ -339,7 +339,75 @@ lm_stats %>%
   ) +
   # the lines below allow expansion and make some space for labels
   coord_fixed(clip = "off", expand = TRUE) +
-  scale_x_continuous(expand = expansion(mult = c(0.15, 0.25)))
+  scale_x_continuous(expand = expansion(mult = 0.3))
+```
+
+### Changing color palette
+
+Choosing another color palette is easy, just name any diverging palette
+from colorspace hcl diverging palettes. See your options below.
+
+```{r, fig.width=3, fig.height=2.5}
+colorspace::hcl_palettes(type = "diverging", plot = TRUE, n = 11)
+```
+
+By default, the colour scale is transformed by taking the square root of
+the absolute values. But you can change this to "identity" to have no
+palette transformation.
+
+By default the range of the data is used to set symmetrical limits on
+the colour scale, which are the same for all plots in the list produced.
+You can set alternative limits. If some data lie outside these limits,
+their values will be "squished" to match the max or min limit value.
+
+For finer control of the palette luminance range, you can set custom
+values for l1 and l2, e.g. if the extremes are too bright or dark. This
+is done by default for the Green-Brown palette.
+
+```{r, fig.width=6.5, fig.height=4}
+lm_stats %>% 
+  taxatree_label(
+    rank == "Genus", p.value < 0.05 | prevalence > 0.5, estimate > 0
+  ) %>% 
+  taxatree_plots(
+    colour_lims = c(-20, 20), colour_trans = "identity",
+    palette = "Blue-Red 3", l2 = 90
+  ) %>% 
+  .[[1]] %>% # show only the first plot
+  taxatree_plot_labels(
+    taxon_renamer = function(x) stringr::str_remove(x, "G: "),
+    fun = ggrepel::geom_label_repel, x_nudge = 0.7, hjust = 0.5, size = 2
+  ) +
+  # the lines below allow expansion and make some space for labels
+  coord_fixed(clip = "off", expand = TRUE) +
+  scale_x_continuous(expand = expansion(mult = 0.3)) 
+```
+
+Palettes like "Berlin" that go through a black midpoint would probably
+only make sense with a darker background!
+
+```{r, fig.width=6.5, fig.height=4}
+lm_stats %>% 
+  taxatree_label(
+    rank == "Genus", p.value < 0.05 | prevalence > 0.5, estimate > 0
+  ) %>% 
+  taxatree_plots(
+    palette = "Berlin", colour_lims = c(-20, 20)
+  ) %>% 
+  .[[1]] %>% # show only the first plot
+  taxatree_plot_labels(
+    taxon_renamer = function(x) stringr::str_remove(x, "G: "),
+    fun = ggrepel::geom_label_repel, 
+    x_nudge = 0.7, xlim = c(-1.7, 1.5), hjust = 0.5, size = 2
+  ) +
+  # the lines below allow expansion and make some space for labels
+  coord_fixed(clip = "off", expand = TRUE) +
+  scale_x_continuous(expand = expansion(mult = 0.3)) +
+  theme(
+    text = element_text(colour = "white"),
+    plot.background = element_rect(fill = "grey30"), 
+    plot.title = element_text(size = 20, colour = "white")
+  )
 ```
 
 ### Sorting taxa nodes
@@ -381,6 +449,28 @@ lm_stats %>%
   taxatree_plots(
     sig_stat = "p.adj.BH.rank", sig_threshold = 0.1, 
     sig_shape = "cross", sig_size = 1.5,
+    node_size_range = c(1, 3), var_renamer = toupper
+) %>% 
+  .[1:4] %>% # keep only first 4 plots
+  patchwork::wrap_plots(
+    ncol = 2, guides = "collect"
+  )
+```
+
+### Plotting multiple significance markers
+
+You can also plot multiple significance markers. You must start with the
+strictest threshold. Here we will plot the FDR corrected significance
+markers at for p.adj \< 0.05 (as thick white crosses) and then also
+unadjusted significance markers for p \< 0.05 (as outlined white
+circles).
+
+```{r, fig.width=7, fig.height=6}
+lm_stats %>% 
+  taxatree_plots(
+    sig_stat = c("p.adj.BH.rank", "p.value"), sig_threshold = 0.05, 
+    sig_shape = c("cross", "circle filled"), sig_colour = "white",
+    sig_size = c(1.5, 1), sig_stroke = c(1, 0.25),
     node_size_range = c(1, 3), var_renamer = toupper
 ) %>% 
   .[1:4] %>% # keep only first 4 plots
