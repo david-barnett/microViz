@@ -351,19 +351,18 @@ from colorspace hcl diverging palettes. See your options below.
 colorspace::hcl_palettes(type = "diverging", plot = TRUE, n = 11)
 ```
 
-
 By default, the colour scale is transformed by taking the square root of
 the absolute values. But you can change this to "identity" to have no
 palette transformation.
 
 By default the range of the data is used to set symmetrical limits on
 the colour scale, which are the same for all plots in the list produced.
-You can set alternative limits. If some data lie outside these limits, 
+You can set alternative limits. If some data lie outside these limits,
 their values will be "squished" to match the max or min limit value.
 
-For finer control of the palette luminance range, you can set custom 
-values for l1 and l2, e.g. if the extremes are too bright or dark.
-This is done by default for the Green-Brown palette.
+For finer control of the palette luminance range, you can set custom
+values for l1 and l2, e.g. if the extremes are too bright or dark. This
+is done by default for the Green-Brown palette.
 
 ```{r, fig.width=6.5, fig.height=4}
 lm_stats %>% 
