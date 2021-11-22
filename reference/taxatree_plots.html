@@ -95,7 +95,7 @@ You can adjust p-values with taxatree_stats_p_adjust()
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.1.9001</span>
       </span>
     </div>
 
@@ -201,6 +201,7 @@ You can adjust p-values with taxatree_stats_p_adjust()
   sig_threshold <span class='op'>=</span> <span class='fl'>0.05</span>,
   sig_shape <span class='op'>=</span> <span class='st'>"circle filled"</span>,
   sig_size <span class='op'>=</span> <span class='fl'>0.75</span>,
+  sig_stroke <span class='op'>=</span> <span class='fl'>0.75</span>,
   sig_colour <span class='op'>=</span> <span class='st'>"white"</span>,
   edge_alpha <span class='op'>=</span> <span class='fl'>0.7</span>,
   vars <span class='op'>=</span> <span class='st'>"term"</span>,
@@ -292,8 +293,12 @@ such as "identity", "log1p", or "sqrt"</p></td>
       <td><p>fixed size for significance marker</p></td>
     </tr>
     <tr>
+      <th>sig_stroke</th>
+      <td><p>fixed stroke width for significance marker</p></td>
+    </tr>
+    <tr>
       <th>sig_colour</th>
-      <td><p>fixed colour for significance marker</p></td>
+      <td><p>fixed colour for significance marker (used as fill for filled shapes)</p></td>
     </tr>
     <tr>
       <th>edge_alpha</th>
@@ -360,6 +365,11 @@ Use <code><a href='tax_sort.html'>tax_sort()</a></code> before <code>taxatree_pl
 <p>See website article for more examples of use:
 https://david-barnett.github.io/microViz/articles/web-only/modelling-taxa.html</p>
 <p>Uses ggraph, see help for main underlying graphing function with <code><a href='https://ggraph.data-imaginist.com/reference/ggraph.html'>?ggraph::ggraph</a></code></p>
+<p>It is possible to provide multiple significance markers for multiple thresholds,
+by passing vectors to the sig_shape, sig_threshold, etc. arguments.
+It is critically important that the thresholds are provided in decreasing
+order of severity, e.g. sig_threshold = c(0.001, 0.01, 0.1) and you must provide
+a shape value for each of them.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='taxatree_models.html'>taxatree_models()</a></code> to calculate statistical models for each taxon</p>
@@ -402,10 +412,10 @@ https://david-barnett.github.io/microViz/articles/web-only/modelling-taxa.html</
 <span class='r-in'>  ps <span class='op'>=</span> <span class='va'>ps</span>, type <span class='op'>=</span> <span class='fu'>corncob</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/corncob/man/bbdml.html'>bbdml</a></span>, ranks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Phylum"</span>, <span class='st'>"Genus"</span><span class='op'>)</span>,</span>
 <span class='r-in'>  formula <span class='op'>=</span> <span class='op'>~</span> <span class='va'>female</span> <span class='op'>+</span> <span class='va'>african</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span></span>
 <span class='r-in'><span class='op'>)</span></span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> 2021-11-21 13:30:04 - modelling at rank: Phylum</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> 2021-11-22 10:29:36 - modelling at rank: Phylum</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> Modelling: P: Bacteroidetes</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> Modelling: P: Firmicutes</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> 2021-11-21 13:30:04 - modelling at rank: Genus</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> 2021-11-22 10:29:37 - modelling at rank: Genus</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> Modelling: G: Allistipes et rel.</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> Modelling: G: Bacteroides vulgatus et rel.</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> Modelling: G: Butyrivibrio crossotus et rel.</span>
