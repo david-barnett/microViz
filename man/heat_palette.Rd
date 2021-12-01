@@ -6,17 +6,17 @@
 \usage{
 heat_palette(
   palette = ifelse(sym, "Blue-Red 3", "Rocket"),
-  breaks = 7,
+  breaks = "auto",
   range = NA,
   sym = FALSE,
-  rev = !sym
+  rev = FALSE
 )
 }
 \arguments{
 \item{palette}{named palette from colorspace::hcl_palettes() diverging/sequential
 or a vector of colour names/hexcodes}
 
-\item{breaks}{integer number of breaks}
+\item{breaks}{number of breaks, "auto" is 11 for a named palette, or uses palette length}
 
 \item{range}{NA to return palette generating function that takes range
 or numeric vector indicating the range, to return a palette}

@@ -41,7 +41,7 @@ psq <- ibd_phylo %>%
 psq
 ```
 
-## Microbial composition heatmaps
+## Microbiome heatmaps
 
 Visualise the microbial composition of your samples.
 
@@ -65,7 +65,7 @@ you can pick from many.
 ```{r, fig.height=4, fig.width=7, dpi=120}
 psq %>% 
   tax_transform("clr", rank = "Family") %>% 
-  comp_heatmap(colors = heat_palette(sym = TRUE))
+  comp_heatmap(colors = heat_palette(sym = TRUE), name = "CLR")
 ```
 
 ### Annotating taxa
@@ -101,6 +101,7 @@ ComplexHeatmap::draw(
   adjust_annotation_extension = FALSE
   )
 ```
+
 
 ### Annotating samples
 
@@ -245,7 +246,7 @@ Correlation heatmaps can be a nice way to quickly assess patterns of
 associations between numerical variables in your dataset, such as
 microbial abundances and other metadata.
 
-Let's make some fake numeric variables to exemplify.
+Let's make some fake numeric variables to exemplify this.
 
 ```{r}
 set.seed(111) # ensures making same random variables every time!
@@ -490,4 +491,49 @@ psq %>%
   )
 ```
 
-### 
+## Other stuff
+
+Complicated stuff demonstrated down here, not necessarily useful.
+
+### Custom breaks and seriation
+
+Two approaches to custom colour scale breaks. The first way is better, because
+the colour scale is interpolated through the default 11 colours, instead of only 5.
+
+Transform data and customise only labels.
+
+```{r, fig.height=2.5, fig.width=8, dpi=120}
+psq %>%
+  tax_transform("compositional", rank = "Class") %>%
+  tax_transform("log10", zero_replace = "halfmin", chain = TRUE) %>% 
+  comp_heatmap(
+    tax_anno = taxAnnotation(
+      Prev. = anno_tax_prev(bar_width = 0.3, size = grid::unit(1, "cm"))
+    ),
+    heatmap_legend_param = list(
+      labels = rev(c("100%", " 10%", "  1%", " 0.1%", "0.01%"))
+    )
+  )
+```
+
+
+This alternative way might be helpful in some cases, maybe... 
+It demonstrates that custom breaks can be set in `heat_palette()`.
+
+```{r, fig.height=2.5, fig.width=8, dpi=120}
+# seriation transform
+serTrans <- function(x) {
+  tax_transform(x, trans = "log10", zero_replace = "halfmin", chain = TRUE)
+}
+
+psq %>%
+  tax_transform("compositional", rank = "Class") %>%
+  comp_heatmap(
+    sample_ser_trans = serTrans, tax_ser_trans = serTrans,
+    colors = heat_palette(breaks = c(0.0001, 0.001, 0.01, 0.1, 1), rev = T),
+    tax_anno = taxAnnotation(
+      Prev. = anno_tax_prev(bar_width = 0.3, size = grid::unit(1, "cm"))
+    ),
+    heatmap_legend_param = list(at = c(0.0001, 0.001, 0.01, 0.1, 1), break_dist = 1)
+  )
+```

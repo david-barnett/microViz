@@ -676,7 +676,8 @@ comp_heatmap <- function(data,
 #' @param palette
 #' named palette from colorspace::hcl_palettes() diverging/sequential
 #' or a vector of colour names/hexcodes
-#' @param breaks integer number of breaks
+#' @param breaks
+#' number of breaks, "auto" is 11 for a named palette, or uses palette length
 #' @param range
 #' NA to return palette generating function that takes range
 #' or numeric vector indicating the range, to return a palette
@@ -689,10 +690,13 @@ comp_heatmap <- function(data,
 #' @export
 #' @rdname heat_palette
 heat_palette <- function(palette = ifelse(sym, "Blue-Red 3", "Rocket"),
-                         breaks = 7,
+                         breaks = "auto",
                          range = NA,
                          sym = FALSE,
-                         rev = !sym) {
+                         rev = FALSE) {
+  if (identical(breaks, "auto")) {
+    if (length(palette) == 1) breaks <- 11 else breaks <- length(palette)
+  }
   n_breaks <- if (length(breaks) > 1) length(breaks) else breaks
 
   # palette arg of length 1 must be valid colorspace::hcl_palette()
@@ -724,7 +728,9 @@ heat_palette <- function(palette = ifelse(sym, "Blue-Red 3", "Rocket"),
   # set up colour function
   col_fun <- function(range) {
     if (isTRUE(sym)) range <- c(-max(abs(range)), max(abs(range)))
-    breaks <- seq(from = range[[1]], to = range[[2]], length.out = n_breaks)
+    if (length(breaks) == 1) {
+      breaks <- seq(from = range[[1]], to = range[[2]], length.out = n_breaks)
+    }
     pal <- circlize::colorRamp2(breaks = breaks, colors = palette)
     return(pal)
   }

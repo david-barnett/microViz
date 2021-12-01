@@ -61,8 +61,7 @@
       [1] -1.0 -0.5  0.0  0.5  1.0
       
       colors:
-      [1] "#4A6FE3FF" "#6B82E2FF" "#E2E2E2FF" "#DA5F7DFF"
-      [5] "#D33F6AFF"
+      [1] "#4A6FE3FF" "#6B82E1FF" "#E2E2E2FF" "#DA5F7DFF" "#D33F6AFF"
       
 
 ---
@@ -236,8 +235,7 @@
       [1] -1.0 -0.5  0.0  0.5  1.0
       
       colors:
-      [1] "#4A6FE3FF" "#6B82E2FF" "#E2E2E2FF" "#DA5F7DFF"
-      [5] "#D33F6AFF"
+      [1] "#4A6FE3FF" "#6B82E1FF" "#E2E2E2FF" "#DA5F7DFF" "#D33F6AFF"
       
 
 ---
@@ -409,7 +407,7 @@
       [1] "white"
       
       $lwd
-      [1] 0.1
+      [1] 0.5
       
       $lineheight
       [1] 0.9
@@ -441,8 +439,7 @@
       [1] -2  0  2  4  6  8
       
       colors:
-      [1] "#FDF5EBFF" "#EF9B6BFF" "#D63E56FF" "#910161FF"
-      [5] "#3F063CFF" "#070707FF"
+      [1] "#FDF5EBFF" "#EF9B66FF" "#DE2F52FF" "#910062FF" "#40043FFF" "#070707FF"
       
 
 ---
