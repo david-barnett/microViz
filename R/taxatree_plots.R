@@ -464,7 +464,7 @@ shape_number2name <- function(shape_number) {
   } else if (is.numeric(shape_number) && shape_number %in% 0:25) {
     shape_name <- names(namedShapeNums[namedShapeNums == shape_number])
   } else if (is.numeric(shape_number)) {
-    stop (shape, " is not a valid shape number, must be from 0 to 25")
+    stop (shape_number, " is not a valid shape number, must be from 0 to 25")
   } else {
     stop ("shapes must be named or numbered, not class: ", class(shape_number))
   }
@@ -486,7 +486,7 @@ taxatree_plot_sigLegend <- function(p, sigMarkerList) {
   sigNames <- names(sigLegend)
   sigLegend <- purrr::transpose(sigLegend)
   sigLegend <- lapply(sigLegend, unlist)
-  sig_shape <- sigLegend$shape
+  sig_shape <- sigLegend[["shape"]]
 
   # add a layer with nothing, just to give a shape legend
   invisibleData <- data.frame(.shape. = sig_shape)
@@ -494,7 +494,7 @@ taxatree_plot_sigLegend <- function(p, sigMarkerList) {
   p <- p +
     ggplot2::geom_point(
       data = invisibleData, x = 0, y = 0, alpha = 0,
-      mapping = ggplot2::aes(shape = .shape.), show.legend = TRUE
+      mapping = ggplot2::aes(shape = .data[[".shape."]]), show.legend = TRUE
     ) +
     ggplot2::scale_shape_manual(
       values = sig_shape, labels = sigNames,

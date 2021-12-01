@@ -22,6 +22,8 @@ anno_var_hist(
 
 \item{size}{width or height as a grid unit object}
 
+\item{n_breaks}{number of breaks}
+
 \item{border}{Wether draw borders of the annotation region?}
 
 \item{gp}{Graphic parameters for points. The length of each graphic parameter can be 1, length of \code{x} if \code{x} is a vector, or number of columns of \code{x} is \code{x} is a matrix.}

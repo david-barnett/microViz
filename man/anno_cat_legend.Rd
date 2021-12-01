@@ -42,7 +42,7 @@ Convenience function for generating levels of convenience.
 }
 \examples{
 grid::grid.newpage()
-draw(
+ComplexHeatmap::draw(
   anno_cat_legend(
     col = c("ibd" = "blue", "nonibd" = "grey90"),
     renamer = toupper, title = "Hi there, I'm a title"

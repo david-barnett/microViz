@@ -7,10 +7,10 @@
 
 [![R-CMD-check](https://github.com/david-barnett/microViz/workflows/R-CMD-check/badge.svg)](https://github.com/david-barnett/microViz/actions)
 [![codecov](https://codecov.io/gh/david-barnett/microViz/branch/main/graph/badge.svg?token=C1EoVkhnxA)](https://codecov.io/gh/david-barnett/microViz)
-[![DOI](https://zenodo.org/badge/307119750.svg)](https://zenodo.org/badge/latestdoi/307119750)
 [![Docker Cloud Build
 Status](https://img.shields.io/docker/cloud/build/barnettdavid/microviz-rocker-verse)](https://hub.docker.com/r/barnettdavid/microviz-rocker-verse)
 [![status](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa/status.svg)](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa)
+[![DOI](https://zenodo.org/badge/307119750.svg)](https://zenodo.org/badge/latestdoi/307119750)
 
 <!-- badges: end -->
 
@@ -30,7 +30,7 @@ ecology packages like `phyloseq`, `vegan`, & `microbiome`.
 :paperclip: This website is the best place for documentation and
 examples: <https://david-barnett.github.io/microViz/>
 
--   **[This ReadMe](https://david-barnett.github.io/microViz/)** shows a
+-   [**This ReadMe**](https://david-barnett.github.io/microViz/) shows a
     few example analyses
 
 -   **The
@@ -47,17 +47,17 @@ examples: <https://david-barnett.github.io/microViz/>
         objects](https://david-barnett.github.io/microViz/articles/web-only/phyloseq.html)
 
     -   [Fixing your taxa table with
-        tax\_fix](https://david-barnett.github.io/microViz/articles/web-only/tax-fixing.html)
+        tax_fix](https://david-barnett.github.io/microViz/articles/web-only/tax-fixing.html)
 
     -   [Creating ordination
         plots](https://david-barnett.github.io/microViz/articles/web-only/ordination.html)
         (e.g. PCA or PCoA)
 
     -   [Interactive ordination plots with
-        ord\_explore](https://david-barnett.github.io/microViz/articles/web-only/ordination-interactive.html)
+        ord_explore](https://david-barnett.github.io/microViz/articles/web-only/ordination-interactive.html)
 
     -   [Visualising taxonomic compositions with
-        comp\_barplot](https://david-barnett.github.io/microViz/articles/web-only/compositions.html)
+        comp_barplot](https://david-barnett.github.io/microViz/articles/web-only/compositions.html)
 
     -   [Modelling and plotting individual taxon associations with
         taxatrees](https://david-barnett.github.io/microViz/articles/web-only/modelling-taxa.html)
@@ -76,7 +76,7 @@ following instructions.
 install.packages("devtools") 
 
 # To install the latest "released" version of this package
-devtools::install_github("david-barnett/microViz@0.8.0") # check 0.8.0 is the latest release
+devtools::install_github("david-barnett/microViz@0.8.2") # check 0.8.2 is the latest release
 
 # To install the very latest version:
 devtools::install_github("david-barnett/microViz")
@@ -120,7 +120,9 @@ microbiome data: all you need is a phyloseq object.
 
 ``` r
 # example data from corncob package
-pseq <- corncob::ibd_phylo %>% tax_fix() %>% phyloseq_validate()
+pseq <- corncob::ibd_phylo %>%
+  tax_fix() %>%
+  phyloseq_validate()
 ```
 
 ``` r
@@ -153,32 +155,31 @@ data("dietswap", package = "microbiome")
 dietswap <- dietswap %>%
   ps_mutate(
     weight = recode(bmi_group, obese = 3, overweight = 2, lean = 1),
-    female = if_else(sex == "female", true = 1, false = 0)
+    female = if_else(sex == "female", true = 1, false = 0),
+    african = if_else(nationality == "AFR", true = 1, false = 0)
   )
 # add a couple of missing values to show how microViz handles missing data
-sample_data(dietswap)$female[c(3, 4)] <- NA
+sample_data(dietswap)$african[c(3, 4)] <- NA
 ```
 
 ### Looking at your data
 
 You have quite a few samples in your phyloseq object, and would like to
-visualise their compositions. Perhaps these example data differ across
-BMI groups?
+visualise their compositions. Perhaps these example data differ
+participant nationality?
 
 ``` r
 dietswap %>%
-  tax_filter(min_prevalence = 1) %>%
   comp_barplot(
-    tax_level = "Genus",  n_taxa = 12, 
-    merge_other = FALSE 
-    # set merge_other = TRUE (the default) to remove outlines from inside "other" category
+    tax_level = "Genus", n_taxa = 15, other_name = "Other",
+    taxon_renamer = function(x) stringr::str_remove(x, " [ae]t rel."),
+    palette = distinct_palette(n = 15, add = "grey90"),
+    merge_other = FALSE, bar_outline_colour = "darkgrey"
   ) +
-  facet_wrap("bmi_group", nrow = 3, scales = "free") +
+  coord_flip() +
+  facet_wrap("nationality", nrow = 1, scales = "free") +
   labs(x = NULL, y = NULL) +
-  theme(
-    axis.text.x = element_blank(),
-    axis.ticks.x = element_blank()
-  )
+  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
 #> Registered S3 method overwritten by 'seriation':
 #>   method         from 
 #>   reorder.hclust vegan
@@ -186,11 +187,35 @@ dietswap %>%
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
+``` r
+htmp <- dietswap %>%
+  ps_mutate(nationality = as.character(nationality)) %>%
+  tax_transform("log2", add = 1, chain = TRUE) %>%
+  comp_heatmap(
+    taxa = tax_top(dietswap, n = 30), grid_col = NA, name = "Log2p",
+    taxon_renamer = function(x) stringr::str_remove(x, " [ae]t rel."),
+    colors = heat_palette(palette = viridis::turbo(11)),
+    row_names_side = "left", row_dend_side = "right", sample_side = "bottom",
+    sample_anno = sampleAnnotation(
+      Nationality = anno_sample_cat(
+        var = "nationality", col = c(AAM = "grey35", AFR = "grey85"),
+        box_col = NA, legend_title = "Nationality", size = grid::unit(4, "mm")
+      )
+    )
+  )
+
+ComplexHeatmap::draw(
+  object = htmp, annotation_legend_list = attr(htmp, "AnnoLegends"),
+  merge_legends = TRUE
+)
+```
+
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+
 ### Example ordination plot workflow
 
-Maybe visually inspecting all your samples isn’t quite what you want.
 Ordination methods can also help you to visualise if overall microbial
-ecosystem composition differs markedly between groups, e.g. BMI.
+ecosystem composition differs markedly between groups, e.g. BMI.
 
 Here is one option as an example:
 
@@ -210,12 +235,11 @@ Here is one option as an example:
 
 ``` r
 # perform ordination
-unconstrained_aitchison_pca <-
-  dietswap %>%
+unconstrained_aitchison_pca <- dietswap %>%
   tax_filter(min_prevalence = 0.1, tax_level = "Genus") %>%
   tax_agg("Family") %>%
   tax_transform("clr") %>%
-  ord_calc() 
+  ord_calc()
 #> Proportional min_prevalence given: 0.1 --> min 23/222 samples.
 # ord_calc will automatically infer you want a "PCA" here
 # specify explicitly with method = "PCA", or you can pick another method
@@ -224,7 +248,7 @@ unconstrained_aitchison_pca <-
 pca_plot <- unconstrained_aitchison_pca %>%
   ord_plot(
     plot_taxa = 1:6, colour = "bmi_group", size = 1.5,
-    tax_vec_length = 0.325, 
+    tax_vec_length = 0.325,
     tax_lab_style = tax_lab_style(max_angle = 90, aspect_ratio = 0.5),
     auto_caption = 8
   )
@@ -255,7 +279,7 @@ aitchison_dists <-
   dietswap %>%
   tax_filter(min_prevalence = 0.1, tax_level = "Genus") %>%
   tax_agg("Family") %>%
-  tax_transform("identity") %>% 
+  tax_transform("identity") %>%
   dist_calc("aitchison")
 #> Proportional min_prevalence given: 0.1 --> min 23/222 samples.
 
@@ -266,18 +290,18 @@ aitchison_perm <- dist_permanova(
   seed = 1234, # for set.seed to ensure reproducibility of random process
   n_perms = 99, # you should use at least 999!
   n_processes = 1,
-  variables = "bmi_group + female"
+  variables = "bmi_group"
 )
-#> Dropping samples with missings: 2
-#> 2021-11-08 11:42:58 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2021-11-08 11:42:58 - Finished PERMANOVA
+#> 2021-12-01 22:37:27 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2021-12-01 22:37:27 - Finished PERMANOVA
+
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
-#>            Df   SumOfSqs         R2        F Pr(>F)
-#> bmi_group   2  106.32182 0.04332620 5.008911   0.01
-#> female      1   53.22231 0.02168812 5.014697   0.01
-#> Residual  216 2292.46559 0.93418103       NA     NA
-#> Total     219 2453.98430 1.00000000       NA     NA
+#>            Df  SumOfSqs         R2        F Pr(>F)
+#> bmi_group   2  104.0678 0.04177157 4.773379   0.01
+#> Residual  219 2387.2862 0.95822843       NA     NA
+#> Total     221 2491.3540 1.00000000       NA     NA
+
 # view the info stored about the distance calculation
 info_get(aitchison_perm)
 #> ps_extra info:
@@ -290,56 +314,50 @@ info_get(aitchison_perm)
 #> conditions = NA
 ```
 
-### Constrained ordination
+### Constrained partial ordination
 
 You could visualise the effect of the (numeric/logical) variables in
-your permanova directly using the ord\_plot function with constraints.
+your permanova directly using the `ord_plot` function with constraints
+(and conditions).
 
 ``` r
 perm2 <- dist_permanova(
-  data = aitchison_dists, variables = c("weight", "female"), seed = 321
+  data = aitchison_dists, variables = c("weight", "african", "sex"), seed = 321
 )
 #> Dropping samples with missings: 2
-#> 2021-11-08 11:42:58 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2021-11-08 11:42:58 - Finished PERMANOVA
-perm_get(perm2)
-#> Permutation test for adonis under reduced model
-#> Marginal effects of terms
-#> Permutation: free
-#> Number of permutations: 999
-#> 
-#> vegan::adonis2(formula = formula, data = metadata, permutations = n_perms, by = by, parallel = parall)
-#>           Df SumOfSqs      R2      F Pr(>F)    
-#> weight     1    56.06 0.02284 5.1927  0.001 ***
-#> female     1    55.83 0.02275 5.1714  0.001 ***
-#> Residual 217  2342.73 0.95466                  
-#> Total    219  2453.98 1.00000                  
-#> ---
-#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#> 2021-12-01 22:37:27 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2021-12-01 22:37:28 - Finished PERMANOVA
 ```
 
+We’ll visualise the effect of nationality and bodyweight on sample
+composition, after first removing the effect of sex.
+
 ``` r
-ord_calc(perm2, constraints = c("weight", "female")) %>%
+perm2 %>%
+  ord_calc(constraints = c("weight", "african"), conditions = "female") %>%
   ord_plot(
-    colour = "sex", size = 1.5,
+    colour = "nationality", size = 2.5, alpha = 0.35,
+    auto_caption = 6,
     constraint_vec_length = 1,
-    constraint_vec_style = vec_constraint(size = 1.15, colour = "black"),
+    constraint_vec_style = vec_constraint(size = 1.5, colour = "grey15"),
     constraint_lab_style = constraint_lab_style(
-      max_angle = 90, size = 3, aspect_ratio = 0.75, colour = "black"
-      )
+      max_angle = 90, size = 3, aspect_ratio = 0.35, colour = "black"
+    )
   ) +
-  stat_ellipse(aes(colour = sex), size = 0.3) + 
-  scale_color_brewer(palette = "Dark2") +
-  coord_fixed(ratio = 0.75)
+  stat_ellipse(aes(colour = nationality), size = 0.2) +
+  scale_color_brewer(palette = "Set1") +
+  coord_fixed(ratio = 0.35, clip = "off") +
+  theme(legend.position = c(0.85, 0.1), legend.background = element_rect())
 #> 
 #> Centering (mean) and scaling (sd) the constraints and conditions:
 #>  weight
+#>  african
 #>  female
 ```
 
 <img src="man/figures/README-constrained-ord-plot-1.png" width="100%" />
 
-### Heatmaps
+### Correlation Heatmaps
 
 microViz heatmaps are powered by `ComplexHeatmap` and annotated with
 taxa prevalence and/or abundance.
@@ -347,24 +365,28 @@ taxa prevalence and/or abundance.
 ``` r
 # set up the data with numerical variables and filter to top taxa
 psq <- dietswap %>%
- ps_mutate(
-   weight = recode(bmi_group, obese = 3, overweight = 2, lean = 1),
-   female = if_else(sex == "female", true = 1, false = 0),
-   african = if_else(nationality == "AFR", true = 1, false = 0)
- ) %>% 
+  ps_mutate(
+    weight = recode(bmi_group, obese = 3, overweight = 2, lean = 1),
+    female = if_else(sex == "female", true = 1, false = 0),
+    african = if_else(nationality == "AFR", true = 1, false = 0)
+  ) %>%
   tax_filter(
     tax_level = "Genus", min_prevalence = 1 / 10, min_sample_abundance = 1 / 10
-  ) %>% 
+  ) %>%
   tax_transform("identity", rank = "Genus")
 #> Proportional min_prevalence given: 0.1 --> min 23/222 samples.
 
 # randomly select 30 taxa from the 50 most abundant taxa (just for an example)
 set.seed(123)
-taxa <- sample(microbiome::top_taxa(ps_get(psq))[1:50], size = 30)
+taxa <- sample(tax_top(psq, n = 50), size = 30)
 # actually draw the heatmap
 cor_heatmap(
-  data = psq, taxa = taxa, 
-  anno_tax = tax_anno(undetected = 50, size = 50, rel_sizes = 1:2)
+  data = psq, taxa = taxa,
+  taxon_renamer = function(x) stringr::str_remove(x, " [ae]t rel."),
+  tax_anno = taxAnnotation(
+    Prev. = anno_tax_prev(undetected = 50),
+    Log2 = anno_tax_box(undetected = 50, trans = "log2", zero_replace = 1)
+  )
 )
 ```
 
@@ -386,7 +408,7 @@ contributions are all welcome. Feel free to create a [GitHub
 Issue](https://github.com/david-barnett/microViz/issues) or write on the
 [Discussions](https://github.com/david-barnett/microViz/discussions)
 page. Alternatively you could also contact me (David) on Twitter
-[@\_david\_barnett\_](https://twitter.com/_david_barnett_) .
+[@\_david_barnett\_](https://twitter.com/_david_barnett_) .
 
 This project is released with a [Contributor Code of
 Conduct](https://david-barnett.github.io/microViz/CODE_OF_CONDUCT.html)
@@ -414,38 +436,34 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] ggplot2_3.3.5   dplyr_1.0.7     phyloseq_1.36.0 microViz_0.8.0  devtools_2.4.2  usethis_2.1.3  
-#> [7] pkgdown_1.6.1  
+#> [1] ggplot2_3.3.5       dplyr_1.0.7         phyloseq_1.36.0     microViz_0.8.2.9001
 #> 
 #> loaded via a namespace (and not attached):
-#>   [1] Rtsne_0.15             colorspace_2.0-2       rjson_0.2.20           ellipsis_0.3.2        
-#>   [5] rprojroot_2.0.2        circlize_0.4.13        markdown_1.1           XVector_0.32.0        
-#>   [9] GlobalOptions_0.1.2    fs_1.5.0               gridtext_0.1.4         ggtext_0.1.1          
-#>  [13] clue_0.3-60            rstudioapi_0.13        farver_2.1.0           remotes_2.4.1         
-#>  [17] fansi_0.5.0            xml2_1.3.2             codetools_0.2-18       splines_4.1.2         
-#>  [21] doParallel_1.0.16      cachem_1.0.6           knitr_1.36             pkgload_1.2.3         
-#>  [25] ade4_1.7-18            jsonlite_1.7.2         Cairo_1.5-12.2         cluster_2.1.2         
-#>  [29] png_0.1-7              compiler_4.1.2         assertthat_0.2.1       Matrix_1.3-4          
-#>  [33] fastmap_1.1.0          cli_3.1.0              htmltools_0.5.2        prettyunits_1.1.1     
-#>  [37] tools_4.1.2            igraph_1.2.8           gtable_0.3.0           glue_1.4.2            
-#>  [41] GenomeInfoDbData_1.2.6 reshape2_1.4.4         Rcpp_1.0.7             Biobase_2.52.0        
-#>  [45] vctrs_0.3.8            Biostrings_2.60.2      rhdf5filters_1.4.0     multtest_2.48.0       
-#>  [49] ape_5.5                nlme_3.1-152           iterators_1.0.13       xfun_0.27             
-#>  [53] stringr_1.4.0          ps_1.6.0               testthat_3.1.0         lifecycle_1.0.1       
-#>  [57] zlibbioc_1.38.0        MASS_7.3-54            scales_1.1.1           TSP_1.1-11            
-#>  [61] parallel_4.1.2         biomformat_1.20.0      rhdf5_2.36.0           RColorBrewer_1.1-2    
-#>  [65] ComplexHeatmap_2.8.0   yaml_2.2.1             memoise_2.0.0          stringi_1.7.5         
-#>  [69] highr_0.9              S4Vectors_0.30.1       desc_1.4.0             foreach_1.5.1         
-#>  [73] permute_0.9-5          seriation_1.3.1        BiocGenerics_0.38.0    pkgbuild_1.2.0        
-#>  [77] shape_1.4.6            GenomeInfoDb_1.28.4    rlang_0.4.12           pkgconfig_2.0.3       
-#>  [81] bitops_1.0-7           matrixStats_0.59.0     evaluate_0.14          lattice_0.20-45       
-#>  [85] purrr_0.3.4            Rhdf5lib_1.14.2        labeling_0.4.2         processx_3.5.2        
-#>  [89] tidyselect_1.1.1       plyr_1.8.6             magrittr_2.0.1         R6_2.5.1              
-#>  [93] IRanges_2.26.0         generics_0.1.1         DBI_1.1.1              pillar_1.6.4          
-#>  [97] withr_2.4.2            mgcv_1.8-38            survival_3.2-13        RCurl_1.98-1.5        
-#> [101] tibble_3.1.5           corncob_0.2.0          crayon_1.4.2           utf8_1.2.2            
-#> [105] microbiome_1.14.0      rmarkdown_2.11         GetoptLong_1.0.5       grid_4.1.2            
-#> [109] data.table_1.14.2      callr_3.7.0            vegan_2.5-7            digest_0.6.28         
-#> [113] tidyr_1.1.4            stats4_4.1.2           munsell_0.5.0          registry_0.5-1        
-#> [117] sessioninfo_1.2.0
+#>   [1] ggtext_0.1.1           nlme_3.1-152           matrixStats_0.61.0     bitops_1.0-7          
+#>   [5] RColorBrewer_1.1-2     doParallel_1.0.16      GenomeInfoDb_1.28.4    tools_4.1.2           
+#>   [9] utf8_1.2.2             R6_2.5.1               vegan_2.5-7            DBI_1.1.1             
+#>  [13] BiocGenerics_0.38.0    mgcv_1.8-38            colorspace_2.0-2       GetoptLong_1.0.5      
+#>  [17] permute_0.9-5          rhdf5filters_1.4.0     ade4_1.7-18            withr_2.4.2           
+#>  [21] tidyselect_1.1.1       gridExtra_2.3          compiler_4.1.2         microbiome_1.14.0     
+#>  [25] Biobase_2.52.0         Cairo_1.5-12.2         TSP_1.1-11             xml2_1.3.2            
+#>  [29] labeling_0.4.2         scales_1.1.1           stringr_1.4.0          digest_0.6.28         
+#>  [33] rmarkdown_2.11         XVector_0.32.0         pkgconfig_2.0.3        htmltools_0.5.2       
+#>  [37] fastmap_1.1.0          highr_0.9              rlang_0.4.12           GlobalOptions_0.1.2   
+#>  [41] shape_1.4.6            generics_0.1.1         farver_2.1.0           jsonlite_1.7.2        
+#>  [45] RCurl_1.98-1.5         magrittr_2.0.1         GenomeInfoDbData_1.2.6 biomformat_1.20.0     
+#>  [49] Matrix_1.3-4           Rcpp_1.0.7             munsell_0.5.0          S4Vectors_0.30.2      
+#>  [53] Rhdf5lib_1.14.2        fansi_0.5.0            ape_5.5                viridis_0.6.2         
+#>  [57] lifecycle_1.0.1        stringi_1.7.5          yaml_2.2.1             MASS_7.3-54           
+#>  [61] zlibbioc_1.38.0        rhdf5_2.36.0           Rtsne_0.15             plyr_1.8.6            
+#>  [65] grid_4.1.2             parallel_4.1.2         crayon_1.4.2           lattice_0.20-45       
+#>  [69] Biostrings_2.60.2      splines_4.1.2          gridtext_0.1.4         multtest_2.48.0       
+#>  [73] circlize_0.4.13        magick_2.7.3           ComplexHeatmap_2.8.0   knitr_1.36            
+#>  [77] pillar_1.6.4           igraph_1.2.8           rjson_0.2.20           markdown_1.1          
+#>  [81] reshape2_1.4.4         codetools_0.2-18       stats4_4.1.2           glue_1.5.0            
+#>  [85] corncob_0.2.0          evaluate_0.14          data.table_1.14.2      png_0.1-7             
+#>  [89] vctrs_0.3.8            foreach_1.5.1          gtable_0.3.0           purrr_0.3.4           
+#>  [93] tidyr_1.1.4            clue_0.3-60            assertthat_0.2.1       xfun_0.28             
+#>  [97] survival_3.2-13        viridisLite_0.4.0      seriation_1.3.1        tibble_3.1.6          
+#> [101] iterators_1.0.13       registry_0.5-1         IRanges_2.26.0         cluster_2.1.2         
+#> [105] ellipsis_0.3.2
 ```

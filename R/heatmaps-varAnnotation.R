@@ -288,6 +288,7 @@ anno_var_density <- function(fun = identity,
 #' Use this as an argument to varAnnotation(),
 #' which itself is used by cor_heatmap var_anno argument.
 #'
+#' @param n_breaks number of breaks
 #' @inheritParams anno_var_density
 #' @inheritDotParams ComplexHeatmap::anno_density axis_param
 #'

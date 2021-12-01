@@ -24,17 +24,26 @@ anno_cat(
 
 \item{which}{Whether it is a column annotation or a row annotation?}
 
+\item{renamer}{function renaming variable values for legend}
+
 \item{col}{colors vector, at least as long as unique(x), optionally named by x levels}
 
-\item{width}{Width of the annotation. The value should be an absolute unit. Width is not allowed to be set for column annotation.}
+\item{width}{grid unit object or NULL}
 
-\item{height}{Height of the annotation. The value should be an absolute unit. Height is not allowed to be set for row annotation.}
+\item{height}{grid unit object or NULL}
 
-\item{gp}{gpar object: don't set the fill!}
+\item{box_col}{colour of boxes around individual cells}
 
-\item{border}{draw a border around the whole annotation (or each split)}
+\item{box_lwd}{line width of boxes around individual cells}
 
-\item{border_gp}{gpar for border, if drawn}
+\item{border_col}{colour of border around all cells}
+
+\item{border_lwd}{line width of border around all cells}
+
+\item{legend}{generate legend for this annotation
+(attached as attribute of heatmap, and not automatically included in plot)}
+
+\item{legend_title}{title for legend, if drawn}
 }
 \value{
 AnnotationFunction
@@ -57,17 +66,21 @@ pushViewport(vp)
 draw(
   anno_cat(
     x = cats, col = structure(names = cats, 1:4), which = "column",
-    gp = grid::gpar(col = "black", lwd = 5)
+    box_col = "black", box_lwd = 5
   )
 )
 
 # developer note #
 # list of annotations can be split and ordered (adding NULL makes a list)
-# https://jokergoo.github.io/ComplexHeatmap-reference/book/a-list-of-heatmaps.html#concatenate-only-the-annotations
+# https://jokergoo.github.io/ComplexHeatmap-reference/book/a-list-of-heatmaps.html
+# (section #4.8 concatenate-only-the-annotations)
 grid::grid.newpage()
 pushViewport(vp)
-(rowAnnotation(hi = anno_cat(cats, which = "row", border = T)) + NULL) \%>\%
-  draw(row_split = c(1, 1:3), row_order = 4:1)
+annoList <- rowAnnotation(
+  hi = anno_cat(cats, which = "row", border_col = "black")
+) +
+  NULL
+draw(object = annoList, row_split = c(1, 1:3), row_order = 4:1)
 pushViewport(viewport(x = 0.6))
 draw(anno_cat(cats, "row", legend_title = "abcd") \%>\% attr("Legend"))
 }

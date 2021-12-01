@@ -138,6 +138,7 @@ sampleAnnotation <- function(...,
 #' which itself is used by comp_heatmap() as sample_anno argument.
 #'
 #' @inheritParams anno_tax_prev
+#' @inheritParams anno_cat
 #' @inheritParams ComplexHeatmap::anno_simple
 #' @inheritDotParams anno_cat
 #'
@@ -153,6 +154,7 @@ sampleAnnotation <- function(...,
 #' @examples
 #' library("ComplexHeatmap")
 #' data("ibd_phylo", package = "corncob")
+#' psq <- ibd_phylo
 #' samples <- phyloseq::sample_names(psq)
 #'
 #' # makes a function that takes data, taxa and which (at minimum)
@@ -246,11 +248,19 @@ anno_sample_cat <- function(var,
 #' Similar to anno_simple but with individual boxes!
 #'
 #' @param x data vector, treated as categorical
+#' @param renamer function renaming variable values for legend
+#' @param width grid unit object or NULL
+#' @param height grid unit object or NULL
 #' @param col
 #' colors vector, at least as long as unique(x), optionally named by x levels
-#' @param gp gpar object: don't set the fill!
-#' @param border draw a border around the whole annotation (or each split)
-#' @param border_gp gpar for border, if drawn
+#' @param box_col colour of boxes around individual cells
+#' @param box_lwd line width of boxes around individual cells
+#' @param border_col colour of border around all cells
+#' @param border_lwd line width of border around all cells
+#' @param legend
+#' generate legend for this annotation
+#' (attached as attribute of heatmap, and not automatically included in plot)
+#' @param legend_title title for legend, if drawn
 #'
 #' @inheritParams ComplexHeatmap::anno_simple
 #'
@@ -272,17 +282,21 @@ anno_sample_cat <- function(var,
 #' draw(
 #'   anno_cat(
 #'     x = cats, col = structure(names = cats, 1:4), which = "column",
-#'     gp = grid::gpar(col = "black", lwd = 5)
+#'     box_col = "black", box_lwd = 5
 #'   )
 #' )
 #'
 #' # developer note #
 #' # list of annotations can be split and ordered (adding NULL makes a list)
-#' # https://jokergoo.github.io/ComplexHeatmap-reference/book/a-list-of-heatmaps.html#concatenate-only-the-annotations
+#' # https://jokergoo.github.io/ComplexHeatmap-reference/book/a-list-of-heatmaps.html
+#' # (section #4.8 concatenate-only-the-annotations)
 #' grid::grid.newpage()
 #' pushViewport(vp)
-#' (rowAnnotation(hi = anno_cat(cats, which = "row", border = T)) + NULL) %>%
-#'   draw(row_split = c(1, 1:3), row_order = 4:1)
+#' annoList <- rowAnnotation(
+#'   hi = anno_cat(cats, which = "row", border_col = "black")
+#' ) +
+#'   NULL
+#' draw(object = annoList, row_split = c(1, 1:3), row_order = 4:1)
 #' pushViewport(viewport(x = 0.6))
 #' draw(anno_cat(cats, "row", legend_title = "abcd") %>% attr("Legend"))
 anno_cat <- function(x,
@@ -388,7 +402,7 @@ anno_cat <- function(x,
 #'
 #' @examples
 #' grid::grid.newpage()
-#' draw(
+#' ComplexHeatmap::draw(
 #'   anno_cat_legend(
 #'     col = c("ibd" = "blue", "nonibd" = "grey90"),
 #'     renamer = toupper, title = "Hi there, I'm a title"
@@ -445,7 +459,6 @@ anno_catColors <- function(x, col) {
 #'
 #' @inheritParams anno_tax_prev
 #' @inheritParams ComplexHeatmap::anno_simple
-#' @inheritDotParams ComplexHeatmap::anno_simple col na_col
 #'
 #' @param var name of variable to use for annotation data
 #' @param fun function to transform variable `var`

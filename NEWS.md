@@ -1,5 +1,14 @@
 # microViz (development version)
 
+## Heatmaps major changes
+__`comp_heatmap` and `cor_heatmap` and their helpers are largely rewritten.__ 
+For guidance, see the new website article on heatmaps.
+
+- `taxAnnotation` and `varAnnotation` annotation helper functions replace the deprecated `tax_anno` and `var_anno` functions
+- `sampleAnnotation` is added for coordinating sample annotations on `comp_heatmap`
+- various `anno_*` helpers for each of the annotation coordinating functions above
+- arguments for 
+
 # microViz 0.8.2
 
 ## Features

@@ -133,7 +133,7 @@ adjacent_side <- function(side = c("top", "right", "bottom", "left")) {
 #' Simple heatmap internal helper to get opposite side
 #'
 #' @param side one of "top", "right", "bottom", or "left"
-#'
+#' @noRd
 #' @return character
 opposite_side <- function(side = c("top", "right", "bottom", "left")) {
   side <- match.arg(side)

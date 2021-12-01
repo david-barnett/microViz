@@ -21,7 +21,7 @@ options(width = 100)
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/david-barnett/microViz/workflows/R-CMD-check/badge.svg)](https://github.com/david-barnett/microViz/actions) [![codecov](https://codecov.io/gh/david-barnett/microViz/branch/main/graph/badge.svg?token=C1EoVkhnxA)](https://codecov.io/gh/david-barnett/microViz) [![DOI](https://zenodo.org/badge/307119750.svg)](https://zenodo.org/badge/latestdoi/307119750) [![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/barnettdavid/microviz-rocker-verse)](https://hub.docker.com/r/barnettdavid/microviz-rocker-verse) [![status](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa/status.svg)](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa)
+[![R-CMD-check](https://github.com/david-barnett/microViz/workflows/R-CMD-check/badge.svg)](https://github.com/david-barnett/microViz/actions) [![codecov](https://codecov.io/gh/david-barnett/microViz/branch/main/graph/badge.svg?token=C1EoVkhnxA)](https://codecov.io/gh/david-barnett/microViz) [![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/barnettdavid/microviz-rocker-verse)](https://hub.docker.com/r/barnettdavid/microviz-rocker-verse) [![status](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa/status.svg)](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa) [![DOI](https://zenodo.org/badge/307119750.svg)](https://zenodo.org/badge/latestdoi/307119750)
 
 <!-- badges: end -->
 
@@ -37,7 +37,7 @@ options(width = 100)
 
 :paperclip: This website is the best place for documentation and examples: <https://david-barnett.github.io/microViz/>
 
--   **[This ReadMe](https://david-barnett.github.io/microViz/)** shows a few example analyses
+-   [**This ReadMe**](https://david-barnett.github.io/microViz/) shows a few example analyses
 
 -   **The [Reference](https://david-barnett.github.io/microViz/reference/index.html) page** lists all functions and links to help pages and examples
 
@@ -54,8 +54,8 @@ options(width = 100)
     -   [Interactive ordination plots with ord_explore](https://david-barnett.github.io/microViz/articles/web-only/ordination-interactive.html)
 
     -   [Visualising taxonomic compositions with comp_barplot](https://david-barnett.github.io/microViz/articles/web-only/compositions.html)
-    
-    - [Modelling and plotting individual taxon associations with taxatrees](https://david-barnett.github.io/microViz/articles/web-only/modelling-taxa.html)
+
+    -   [Modelling and plotting individual taxon associations with taxatrees](https://david-barnett.github.io/microViz/articles/web-only/modelling-taxa.html)
 
     -   More coming soon(ish)!
         Post on [GitHub discussions](https://github.com/david-barnett/microViz/discussions) if you have questions/requests
@@ -69,7 +69,7 @@ You can install the latest available microViz package version using the followin
 install.packages("devtools") 
 
 # To install the latest "released" version of this package
-devtools::install_github("david-barnett/microViz@0.8.0") # check 0.8.0 is the latest release
+devtools::install_github("david-barnett/microViz@0.8.2") # check 0.8.2 is the latest release
 
 # To install the very latest version:
 devtools::install_github("david-barnett/microViz")
@@ -102,7 +102,9 @@ microViz provides a Shiny app for an easy way to start exploring your microbiome
 
 ```{r example ord_explore}
 # example data from corncob package
-pseq <- corncob::ibd_phylo %>% tax_fix() %>% phyloseq_validate()
+pseq <- corncob::ibd_phylo %>%
+  tax_fix() %>%
+  phyloseq_validate()
 ```
 
 ``` {.r}
@@ -127,38 +129,60 @@ data("dietswap", package = "microbiome")
 dietswap <- dietswap %>%
   ps_mutate(
     weight = recode(bmi_group, obese = 3, overweight = 2, lean = 1),
-    female = if_else(sex == "female", true = 1, false = 0)
+    female = if_else(sex == "female", true = 1, false = 0),
+    african = if_else(nationality == "AFR", true = 1, false = 0)
   )
 # add a couple of missing values to show how microViz handles missing data
-sample_data(dietswap)$female[c(3, 4)] <- NA
+sample_data(dietswap)$african[c(3, 4)] <- NA
 ```
 
 ### Looking at your data
 
 You have quite a few samples in your phyloseq object, and would like to visualise their compositions.
-Perhaps these example data differ across BMI groups?
+Perhaps these example data differ participant nationality?
 
-```{r fig.height=8, fig.width=10, dpi=120}
+```{r fig.height=5, fig.width=6, dpi=120}
 dietswap %>%
-  tax_filter(min_prevalence = 1) %>%
   comp_barplot(
-    tax_level = "Genus",  n_taxa = 12, 
-    merge_other = FALSE 
-    # set merge_other = TRUE (the default) to remove outlines from inside "other" category
+    tax_level = "Genus", n_taxa = 15, other_name = "Other",
+    taxon_renamer = function(x) stringr::str_remove(x, " [ae]t rel."),
+    palette = distinct_palette(n = 15, add = "grey90"),
+    merge_other = FALSE, bar_outline_colour = "darkgrey"
   ) +
-  facet_wrap("bmi_group", nrow = 3, scales = "free") +
+  coord_flip() +
+  facet_wrap("nationality", nrow = 1, scales = "free") +
   labs(x = NULL, y = NULL) +
-  theme(
-    axis.text.x = element_blank(),
-    axis.ticks.x = element_blank()
-  )
+  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
 ```
+
+
+```{r, fig.width=5.5, fig.height=3.5, dpi=120}
+htmp <- dietswap %>%
+  ps_mutate(nationality = as.character(nationality)) %>%
+  tax_transform("log2", add = 1, chain = TRUE) %>%
+  comp_heatmap(
+    taxa = tax_top(dietswap, n = 30), grid_col = NA, name = "Log2p",
+    taxon_renamer = function(x) stringr::str_remove(x, " [ae]t rel."),
+    colors = heat_palette(palette = viridis::turbo(11)),
+    row_names_side = "left", row_dend_side = "right", sample_side = "bottom",
+    sample_anno = sampleAnnotation(
+      Nationality = anno_sample_cat(
+        var = "nationality", col = c(AAM = "grey35", AFR = "grey85"),
+        box_col = NA, legend_title = "Nationality", size = grid::unit(4, "mm")
+      )
+    )
+  )
+
+ComplexHeatmap::draw(
+  object = htmp, annotation_legend_list = attr(htmp, "AnnoLegends"),
+  merge_legends = TRUE
+)
+```
+
 
 ### Example ordination plot workflow
 
-Maybe visually inspecting all your samples isn't quite what you want.
-Ordination methods can also help you to visualise if overall microbial ecosystem composition differs markedly between groups, e.g.
-BMI.
+Ordination methods can also help you to visualise if overall microbial ecosystem composition differs markedly between groups, e.g. BMI.
 
 Here is one option as an example:
 
@@ -171,12 +195,11 @@ Here is one option as an example:
 
 ```{r ordination-plot, dpi=120}
 # perform ordination
-unconstrained_aitchison_pca <-
-  dietswap %>%
+unconstrained_aitchison_pca <- dietswap %>%
   tax_filter(min_prevalence = 0.1, tax_level = "Genus") %>%
   tax_agg("Family") %>%
   tax_transform("clr") %>%
-  ord_calc() 
+  ord_calc()
 # ord_calc will automatically infer you want a "PCA" here
 # specify explicitly with method = "PCA", or you can pick another method
 
@@ -184,7 +207,7 @@ unconstrained_aitchison_pca <-
 pca_plot <- unconstrained_aitchison_pca %>%
   ord_plot(
     plot_taxa = 1:6, colour = "bmi_group", size = 1.5,
-    tax_vec_length = 0.325, 
+    tax_vec_length = 0.325,
     tax_lab_style = tax_lab_style(max_angle = 90, aspect_ratio = 0.5),
     auto_caption = 8
   )
@@ -212,7 +235,7 @@ aitchison_dists <-
   dietswap %>%
   tax_filter(min_prevalence = 0.1, tax_level = "Genus") %>%
   tax_agg("Family") %>%
-  tax_transform("identity") %>% 
+  tax_transform("identity") %>%
   dist_calc("aitchison")
 
 # the more permutations you request, the longer it takes
@@ -222,65 +245,74 @@ aitchison_perm <- dist_permanova(
   seed = 1234, # for set.seed to ensure reproducibility of random process
   n_perms = 99, # you should use at least 999!
   n_processes = 1,
-  variables = "bmi_group + female"
+  variables = "bmi_group"
 )
+
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
+
 # view the info stored about the distance calculation
 info_get(aitchison_perm)
 ```
 
-### Constrained ordination
+### Constrained partial ordination
 
-You could visualise the effect of the (numeric/logical) variables in your permanova directly using the ord_plot function with constraints.
+You could visualise the effect of the (numeric/logical) variables in your permanova directly using the `ord_plot` function with constraints (and conditions). 
 
 ```{r constrained-ord}
 perm2 <- dist_permanova(
-  data = aitchison_dists, variables = c("weight", "female"), seed = 321
+  data = aitchison_dists, variables = c("weight", "african", "sex"), seed = 321
 )
-perm_get(perm2)
 ```
 
+We'll visualise the effect of nationality and bodyweight on sample composition, after first removing the effect of sex.
 
-```{r constrained-ord-plot, fig.height=5, fig.width=7, dpi=120}
-ord_calc(perm2, constraints = c("weight", "female")) %>%
+```{r constrained-ord-plot, fig.height=4, fig.width=4, dpi=120}
+perm2 %>%
+  ord_calc(constraints = c("weight", "african"), conditions = "female") %>%
   ord_plot(
-    colour = "sex", size = 1.5,
+    colour = "nationality", size = 2.5, alpha = 0.35,
+    auto_caption = 6,
     constraint_vec_length = 1,
-    constraint_vec_style = vec_constraint(size = 1.15, colour = "black"),
+    constraint_vec_style = vec_constraint(size = 1.5, colour = "grey15"),
     constraint_lab_style = constraint_lab_style(
-      max_angle = 90, size = 3, aspect_ratio = 0.75, colour = "black"
-      )
+      max_angle = 90, size = 3, aspect_ratio = 0.35, colour = "black"
+    )
   ) +
-  stat_ellipse(aes(colour = sex), size = 0.3) + 
-  scale_color_brewer(palette = "Dark2") +
-  coord_fixed(ratio = 0.75)
+  stat_ellipse(aes(colour = nationality), size = 0.2) +
+  scale_color_brewer(palette = "Set1") +
+  coord_fixed(ratio = 0.35, clip = "off") +
+  theme(legend.position = c(0.85, 0.1), legend.background = element_rect())
 ```
 
-### Heatmaps
+### Correlation Heatmaps
 
 microViz heatmaps are powered by `ComplexHeatmap` and annotated with taxa prevalence and/or abundance.
 
-```{r heatmap, dpi=180, fig.width=7, fig.height=5.5}
+```{r heatmap, dpi=120, fig.width=7, fig.height=5.5}
 # set up the data with numerical variables and filter to top taxa
 psq <- dietswap %>%
- ps_mutate(
-   weight = recode(bmi_group, obese = 3, overweight = 2, lean = 1),
-   female = if_else(sex == "female", true = 1, false = 0),
-   african = if_else(nationality == "AFR", true = 1, false = 0)
- ) %>% 
+  ps_mutate(
+    weight = recode(bmi_group, obese = 3, overweight = 2, lean = 1),
+    female = if_else(sex == "female", true = 1, false = 0),
+    african = if_else(nationality == "AFR", true = 1, false = 0)
+  ) %>%
   tax_filter(
     tax_level = "Genus", min_prevalence = 1 / 10, min_sample_abundance = 1 / 10
-  ) %>% 
+  ) %>%
   tax_transform("identity", rank = "Genus")
 
 # randomly select 30 taxa from the 50 most abundant taxa (just for an example)
 set.seed(123)
-taxa <- sample(microbiome::top_taxa(ps_get(psq))[1:50], size = 30)
+taxa <- sample(tax_top(psq, n = 50), size = 30)
 # actually draw the heatmap
 cor_heatmap(
-  data = psq, taxa = taxa, 
-  anno_tax = tax_anno(undetected = 50, size = 50, rel_sizes = 1:2)
+  data = psq, taxa = taxa,
+  taxon_renamer = function(x) stringr::str_remove(x, " [ae]t rel."),
+  tax_anno = taxAnnotation(
+    Prev. = anno_tax_prev(undetected = 50),
+    Log2 = anno_tax_box(undetected = 50, trans = "log2", zero_replace = 1)
+  )
 )
 ```
 
@@ -288,7 +320,9 @@ cor_heatmap(
 
 :innocent: If you find any part of microViz useful to your work, please consider citing the JOSS article:
 
-Barnett et al., (2021). microViz: an R package for microbiome data visualization and statistics. Journal of Open Source Software, 6(63), 3201, https://doi.org/10.21105/joss.03201
+Barnett et al., (2021).
+microViz: an R package for microbiome data visualization and statistics.
+Journal of Open Source Software, 6(63), 3201, <https://doi.org/10.21105/joss.03201>
 
 ## Contributing
 
