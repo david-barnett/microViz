@@ -374,8 +374,7 @@ taxatree_plot_sig <- function(p,
       if (x$shape %in% c(filled_shapes(), 21:25)) {
         x$fill <- x$colour
         x$colour <- "black"
-      }
-      else {
+      } else {
         x$fill <- "hotpink" # shouldn't ever show
       }
       return(x)
@@ -438,14 +437,12 @@ taxatree_plot_sig <- function(p,
       fill = plotdf$.FILL,
       colour = plotdf$.COLOR
     )
-
   }
   return(p)
 }
 
 # helper for taxatree_plot_sig, to convert shape numbers to names
 shape_number2name <- function(shape_number) {
-
   namedShapeNums <- c(
     `square open` = 0, `circle open` = 1, `triangle open` = 2,
     plus = 3, cross = 4, `diamond open` = 5, `triangle down open` = 6,
@@ -459,14 +456,16 @@ shape_number2name <- function(shape_number) {
 
   # return or stop early if shape_number is character
   if (is.character(shape_number)) {
-    if (shape_number %in% names(namedShapeNums)) return(shape_number)
+    if (shape_number %in% names(namedShapeNums)) {
+      return(shape_number)
+    }
     stop(shape_number, " is not a valid shape name", call. = FALSE)
   } else if (is.numeric(shape_number) && shape_number %in% 0:25) {
     shape_name <- names(namedShapeNums[namedShapeNums == shape_number])
   } else if (is.numeric(shape_number)) {
-    stop (shape_number, " is not a valid shape number, must be from 0 to 25")
+    stop(shape_number, " is not a valid shape number, must be from 0 to 25")
   } else {
-    stop ("shapes must be named or numbered, not class: ", class(shape_number))
+    stop("shapes must be named or numbered, not class: ", class(shape_number))
   }
 
   return(shape_name)

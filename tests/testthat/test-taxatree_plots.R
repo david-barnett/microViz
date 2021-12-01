@@ -73,7 +73,8 @@ test_that("taxatree_plot plotting works", {
 
 # test multiple significance markers
 lmp_multiSig <- taxatree_plots(
-  lm_stats, sig_shape = list(4, "circle filled"), # 4 = cross, tests conversion
+  lm_stats,
+  sig_shape = list(4, "circle filled"), # 4 = cross, tests conversion
   sig_threshold = c(0.01, 0.1), sig_stat = "p.value", sig_stroke = 1.5,
   sig_size = c(2, 1), sig_colour = c("white", "green")
 )
