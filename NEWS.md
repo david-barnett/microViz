@@ -1,4 +1,4 @@
-# microViz (development version)
+# microViz 0.8.2
 
 ## Features
 - `taxatree_plots` can now show symbols indicating multiple levels of statistical significance
