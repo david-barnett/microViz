@@ -79,7 +79,7 @@ following instructions.
 install.packages("devtools") 
 
 # To install the latest "released" version of this package
-devtools::install_github("david-barnett/microViz@0.8.2") # check 0.8.2 is the latest release
+devtools::install_github("david-barnett/microViz@0.9.0") # check 0.9.0 is the latest release
 
 # To install the very latest version:
 devtools::install_github("david-barnett/microViz")
@@ -188,7 +188,7 @@ dietswap %>%
 #>   reorder.hclust vegan
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
 ``` r
 htmp <- dietswap %>%
@@ -213,7 +213,7 @@ ComplexHeatmap::draw(
 )
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
 
 ### Example ordination plot workflow
 
@@ -267,7 +267,7 @@ customised_plot <- pca_plot +
 customised_plot
 ```
 
-![](README_files/figure-gfm/ordination-plot-1.png)<!-- -->
+<img src="man/figures/README-ordination-plot-1.png" width="100%" />
 
 ### PERMANOVA
 
@@ -292,8 +292,8 @@ aitchison_perm <- aitchison_dists %>%
     n_processes = 1, n_perms = 99, # you should use at least 999!
     variables = "bmi_group"
   )
-#> 2021-12-02 14:48:54 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2021-12-02 14:48:54 - Finished PERMANOVA
+#> 2021-12-02 19:22:03 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2021-12-02 19:22:03 - Finished PERMANOVA
 
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
@@ -324,8 +324,8 @@ your permanova directly using the `ord_plot` function with constraints
 perm2 <- aitchison_dists %>% 
   dist_permanova(variables = c("weight", "african", "sex"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2021-12-02 14:48:54 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2021-12-02 14:48:55 - Finished PERMANOVA
+#> 2021-12-02 19:22:03 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2021-12-02 19:22:04 - Finished PERMANOVA
 ```
 
 We’ll visualise the effect of nationality and bodyweight on sample
@@ -354,7 +354,7 @@ perm2 %>%
 #>  female
 ```
 
-![](README_files/figure-gfm/constrained-ord-plot-1.png)<!-- -->
+<img src="man/figures/README-constrained-ord-plot-1.png" width="100%" />
 
 ### Correlation Heatmaps
 
@@ -389,7 +389,7 @@ cor_heatmap(
 )
 ```
 
-![](README_files/figure-gfm/heatmap-1.png)<!-- -->
+<img src="man/figures/README-heatmap-1.png" width="100%" />
 
 ## Citation
 
