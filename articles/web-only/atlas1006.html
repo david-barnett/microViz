@@ -27,6 +27,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -39,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.1.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8.2.9001</span>
       </span>
     </div>
 
@@ -68,7 +70,7 @@
       <a href="../../articles/web-only/ordination-interactive.html">Interactive ordination plots</a>
     </li>
     <li>
-      <a href="../../articles/web-only/compositions.html">Visualising microbiota compositions</a>
+      <a href="../../articles/web-only/compositions.html">Visualising compositions with barplots</a>
     </li>
     <li>
       <a href="../../articles/web-only/modelling-taxa.html">Statistical modelling of individual taxa</a>
@@ -85,10 +87,11 @@
   <a href="../../news/index.html">News</a>
 </li>
 <li class="dropdown-header">
-      </ul>
+      </li>
+</ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/david-barnett/microViz/">
+  <a href="https://github.com/david-barnett/microViz/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -115,7 +118,7 @@
       <h1 data-toc-skip>Example analyses with atlas1006 data</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/master/vignettes/web-only/atlas1006.Rmd"><code>vignettes/web-only/atlas1006.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/HEAD/vignettes/web-only/atlas1006.Rmd" class="external-link"><code>vignettes/web-only/atlas1006.Rmd</code></a></small>
       <div class="hidden name"><code>atlas1006.Rmd</code></div>
 
     </div>
@@ -123,43 +126,43 @@
     
     
 <p>This document shows an example <code>microViz</code> analysis workflow using example data <code>atlas1006</code> from the <code>microbiome</code> package.</p>
-<div id="load-necessary-packages" class="section level2">
-<h2 class="hasAnchor">
-<a href="#load-necessary-packages" class="anchor"></a>Load necessary packages</h2>
+<div class="section level2">
+<h2 id="load-necessary-packages">Load necessary packages<a class="anchor" aria-label="anchor" href="#load-necessary-packages"></a>
+</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com">patchwork</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://dx.plos.org/10.1371/journal.pone.0061217">phyloseq</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://microbiome.github.io/microbiome">microbiome</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://david-barnett.github.io/microViz">microViz</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com" class="external-link">patchwork</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://dx.plos.org/10.1371/journal.pone.0061217" class="external-link">phyloseq</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://microbiome.github.io/microbiome" class="external-link">microbiome</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://david-barnett.github.io/microViz">microViz</a></span><span class="op">)</span></code></pre></div>
 </div>
-<div id="get-example-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#get-example-data" class="anchor"></a>Get example data</h2>
+<div class="section level2">
+<h2 id="get-example-data">Get example data<a class="anchor" aria-label="anchor" href="#get-example-data"></a>
+</h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># get some example data</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"atlas1006"</span>, package <span class="op">=</span> <span class="st">"microbiome"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"atlas1006"</span>, package <span class="op">=</span> <span class="st">"microbiome"</span><span class="op">)</span>
 
 <span class="co"># create a couple of numerical variables (often more useful than character strings)</span>
-<span class="va">ps</span> <span class="op">&lt;-</span> <span class="va">atlas1006</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span>
+<span class="va">ps</span> <span class="op">&lt;-</span> <span class="va">atlas1006</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../../reference/ps_mutate.html">ps_mutate</a></span><span class="op">(</span>
-    weight <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/recode.html">recode</a></span><span class="op">(</span>
+    weight <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/recode.html" class="external-link">recode</a></span><span class="op">(</span>
       .x <span class="op">=</span> <span class="va">bmi_group</span>, morbidobese <span class="op">=</span> <span class="fl">5</span>, severeobese <span class="op">=</span> <span class="fl">4</span>, 
       obese <span class="op">=</span> <span class="fl">3</span>, overweight <span class="op">=</span> <span class="fl">2</span>, lean <span class="op">=</span> <span class="fl">1</span>, underweight <span class="op">=</span> <span class="fl">0</span>
     <span class="op">)</span>,
-    lean <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="va">weight</span> <span class="op">&lt;</span> <span class="fl">2</span>, true <span class="op">=</span> <span class="fl">1</span>, false <span class="op">=</span> <span class="fl">0</span>, missing <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>,
-    female <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="va">sex</span> <span class="op">==</span> <span class="st">"female"</span>, true <span class="op">=</span> <span class="fl">1</span>, false <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>,
-    extract_P <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="va">DNA_extraction_method</span> <span class="op">==</span> <span class="st">"p"</span>, true <span class="op">=</span> <span class="fl">1</span>, false <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
-  <span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span>
+    lean <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">weight</span> <span class="op">&lt;</span> <span class="fl">2</span>, true <span class="op">=</span> <span class="fl">1</span>, false <span class="op">=</span> <span class="fl">0</span>, missing <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>,
+    female <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">sex</span> <span class="op">==</span> <span class="st">"female"</span>, true <span class="op">=</span> <span class="fl">1</span>, false <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>,
+    extract_P <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">DNA_extraction_method</span> <span class="op">==</span> <span class="st">"p"</span>, true <span class="op">=</span> <span class="fl">1</span>, false <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
+  <span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span>
   <span class="co"># only look at the baseline time point if multiple samples available</span>
   <span class="co"># and drop samples with no DNA extraction method info</span>
-  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">time</span> <span class="op">==</span> <span class="fl">0</span>, <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">DNA_extraction_method</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">time</span> <span class="op">==</span> <span class="fl">0</span>, <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">DNA_extraction_method</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span>
   <span class="co"># remove the sample data variables about time</span>
   <span class="fu"><a href="../../reference/ps_select.html">ps_select</a></span><span class="op">(</span><span class="op">-</span><span class="va">time</span><span class="op">)</span>
 
 <span class="co"># add a couple of missing values to show how microViz handles missing data</span>
-<span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html">sample_data</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span><span class="op">$</span><span class="va">female</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span>
+<span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html" class="external-link">sample_data</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span><span class="op">$</span><span class="va">female</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span>
 
 <span class="co"># look at phyloseq object description</span>
 <span class="va">ps</span>
@@ -171,24 +174,24 @@
 <code class="sourceCode R"><span class="co"># this example data has a slightly odd tax_table because it comes from HITChip data (instead of sequencing)</span>
 <span class="co"># the taxonomic assignment is done differently, so we need to ensure taxon names are not repeated across columns</span>
 <span class="co"># it can otherwise be used the same as sequencing data for this example</span>
-<span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html">tax_table</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html" class="external-link">tax_table</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span>
 <span class="co">#&gt; Taxonomy Table:     [3 taxa by 3 taxonomic ranks]:</span>
 <span class="co">#&gt;                  Phylum            Family            Genus             </span>
 <span class="co">#&gt; Actinomycetaceae "Actinobacteria"  "Actinobacteria"  "Actinomycetaceae"</span>
 <span class="co">#&gt; Aerococcus       "Firmicutes"      "Bacilli"         "Aerococcus"      </span>
 <span class="co">#&gt; Akkermansia      "Verrucomicrobia" "Verrucomicrobia" "Akkermansia"</span>
-<span class="va">ps</span> <span class="op">&lt;-</span> <span class="va">ps</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/tax_prepend_ranks.html">tax_prepend_ranks</a></span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html">tax_table</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span>
+<span class="va">ps</span> <span class="op">&lt;-</span> <span class="va">ps</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/tax_prepend_ranks.html">tax_prepend_ranks</a></span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html" class="external-link">tax_table</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span>
 <span class="co">#&gt; Taxonomy Table:     [3 taxa by 3 taxonomic ranks]:</span>
 <span class="co">#&gt;                  Phylum               Family               Genus                </span>
 <span class="co">#&gt; Actinomycetaceae "P: Actinobacteria"  "F: Actinobacteria"  "G: Actinomycetaceae"</span>
 <span class="co">#&gt; Aerococcus       "P: Firmicutes"      "F: Bacilli"         "G: Aerococcus"      </span>
 <span class="co">#&gt; Akkermansia      "P: Verrucomicrobia" "F: Verrucomicrobia" "G: Akkermansia"</span>
 <span class="co"># replace any uninformative tax_table values</span>
-<span class="va">ps</span> <span class="op">&lt;-</span> <span class="va">ps</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/tax_fix.html">tax_fix</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">ps</span> <span class="op">&lt;-</span> <span class="va">ps</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/tax_fix.html">tax_fix</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="co"># look at the effect of removing rare Genera, e.g. how many Genera are present in at least 5% of samples?</span>
-<span class="va">ps</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">5</span> <span class="op">/</span> <span class="fl">100</span>, tax_level <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span>
+<span class="va">ps</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">5</span> <span class="op">/</span> <span class="fl">100</span>, tax_level <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span>
 <span class="co">#&gt; Proportional min_prevalence given: 0.05 --&gt; min 41/801 samples.</span>
 <span class="co">#&gt; phyloseq-class experiment-level object</span>
 <span class="co">#&gt; otu_table()   OTU Table:         [ 117 taxa and 801 samples ]</span>
@@ -197,12 +200,12 @@
 <span class="co"># we will use this udring other analyses, but not overwrite the original phyloseq object as the</span>
 <span class="co"># unfiltered set of taxa would be required if we were performing e.g. alpha diversity analyses</span></code></pre></div>
 </div>
-<div id="exploring-your-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#exploring-your-data" class="anchor"></a>Exploring your data</h2>
-<div id="ordination-plots" class="section level3">
-<h3 class="hasAnchor">
-<a href="#ordination-plots" class="anchor"></a>Ordination plots</h3>
+<div class="section level2">
+<h2 id="exploring-your-data">Exploring your data<a class="anchor" aria-label="anchor" href="#exploring-your-data"></a>
+</h2>
+<div class="section level3">
+<h3 id="ordination-plots">Ordination plots<a class="anchor" aria-label="anchor" href="#ordination-plots"></a>
+</h3>
 <p>Ordination methods can help you to visualize variation in overall microbial ecosystem composition, and look at whether it might differ markedly between groups, e.g. weight.</p>
 <p>Here is one option to try first:</p>
 <ol style="list-style-type: decimal">
@@ -219,10 +222,10 @@
 <li>Customise the theme of the ggplot as you like and/or add features like ellipses or annotations</li>
 </ol>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">clr_pca</span> <span class="op">&lt;-</span> <span class="va">ps</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span>
-  <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">5</span> <span class="op">/</span> <span class="fl">100</span>, tax_level <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span>
-  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> <span class="co"># aggregate taxa at Genus level</span>
-  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"clr"</span><span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> <span class="co"># centered log ratio transformation</span>
+<code class="sourceCode R"><span class="va">clr_pca</span> <span class="op">&lt;-</span> <span class="va">ps</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">5</span> <span class="op">/</span> <span class="fl">100</span>, tax_level <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="co"># aggregate taxa at Genus level</span>
+  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"clr"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="co"># centered log ratio transformation</span>
   <span class="fu"><a href="../../reference/ord_calc.html">ord_calc</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"PCA"</span><span class="op">)</span> <span class="co"># Note: PCA is RDA without constraints (&amp; ord_calc uses an RDA method to perform PCA)</span>
 <span class="co">#&gt; Proportional min_prevalence given: 0.05 --&gt; min 41/801 samples.</span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -243,49 +246,49 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $counts OTU Table: [ 117 taxa and 801 samples ]</span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">clr_pca</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span>
+<code class="sourceCode R"><span class="va">clr_pca</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../../reference/ord_plot.html">ord_plot</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"weight"</span>, shape <span class="op">=</span> <span class="st">"DNA_extraction_method"</span>, alpha <span class="op">=</span> <span class="fl">0.7</span>, size <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html">scale_colour_viridis_c</a></span><span class="op">(</span>option <span class="op">=</span> <span class="st">"inferno"</span>, direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, end <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_shape_manual</a></span><span class="op">(</span>
-    values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>o <span class="op">=</span> <span class="st">"square open"</span>, r <span class="op">=</span> <span class="st">"triangle open"</span>, p <span class="op">=</span> <span class="st">"circle"</span><span class="op">)</span>,
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html" class="external-link">scale_colour_viridis_c</a></span><span class="op">(</span>option <span class="op">=</span> <span class="st">"inferno"</span>, direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, end <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_shape_manual</a></span><span class="op">(</span>
+    values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>o <span class="op">=</span> <span class="st">"square open"</span>, r <span class="op">=</span> <span class="st">"triangle open"</span>, p <span class="op">=</span> <span class="st">"circle"</span><span class="op">)</span>,
     name <span class="op">=</span> <span class="st">"DNA\nextraction\nmethod"</span>
   <span class="op">)</span></code></pre></div>
 <p><img src="atlas1006_files/figure-html/visualize%20clr%20pca-1.png" width="700"></p>
 </div>
-<div id="taxonomic-compositions" class="section level3">
-<h3 class="hasAnchor">
-<a href="#taxonomic-compositions" class="anchor"></a>Taxonomic compositions?</h3>
+<div class="section level3">
+<h3 id="taxonomic-compositions">Taxonomic compositions?<a class="anchor" aria-label="anchor" href="#taxonomic-compositions"></a>
+</h3>
 <p>Using a PCA ordination allows us reliably draw biplots, showing which taxa are associated with this major variation in sample microbiota composition as represented on axes PC1 and PC2.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pca</span> <span class="op">&lt;-</span> <span class="va">clr_pca</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span>
+<code class="sourceCode R"><span class="va">pca</span> <span class="op">&lt;-</span> <span class="va">clr_pca</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../../reference/ord_plot.html">ord_plot</a></span><span class="op">(</span>
     colour <span class="op">=</span> <span class="st">"weight"</span>, shape <span class="op">=</span> <span class="st">"DNA_extraction_method"</span>, alpha <span class="op">=</span> <span class="fl">0.7</span>, size <span class="op">=</span> <span class="fl">1</span>,
     plot_taxa <span class="op">=</span> <span class="fl">12</span><span class="op">:</span><span class="fl">1</span>, tax_vec_length <span class="op">=</span> <span class="fl">0.3</span>, 
-    taxon_renamer <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove_all</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"^G: | [ae]t rel."</span><span class="op">)</span>,
+    taxon_renamer <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html" class="external-link">str_remove_all</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"^G: | [ae]t rel."</span><span class="op">)</span>,
     center <span class="op">=</span> <span class="cn">TRUE</span>,
     tax_lab_style <span class="op">=</span> <span class="fu"><a href="../../reference/Ordination-labels.html">tax_lab_style</a></span><span class="op">(</span>
       type <span class="op">=</span> <span class="st">"label"</span>, max_angle <span class="op">=</span> <span class="fl">90</span>, fontface <span class="op">=</span> <span class="st">"bold"</span>, 
       alpha <span class="op">=</span> <span class="fl">0.8</span>, size <span class="op">=</span> <span class="fl">2</span>
     <span class="op">)</span>
   <span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html">scale_colour_viridis_c</a></span><span class="op">(</span>option <span class="op">=</span> <span class="st">"inferno"</span>, direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, end <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_shape_manual</a></span><span class="op">(</span>
-    values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>o <span class="op">=</span> <span class="st">"square open"</span>, r <span class="op">=</span> <span class="st">"triangle open"</span>, p <span class="op">=</span> <span class="st">"circle"</span><span class="op">)</span>,
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html" class="external-link">scale_colour_viridis_c</a></span><span class="op">(</span>option <span class="op">=</span> <span class="st">"inferno"</span>, direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, end <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_shape_manual</a></span><span class="op">(</span>
+    values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>o <span class="op">=</span> <span class="st">"square open"</span>, r <span class="op">=</span> <span class="st">"triangle open"</span>, p <span class="op">=</span> <span class="st">"circle"</span><span class="op">)</span>,
     name <span class="op">=</span> <span class="st">"DNA\nextraction\nmethod"</span>
   <span class="op">)</span> <span class="op">+</span>
   <span class="co"># essential for correct label angles</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_fixed.html">coord_fixed</a></span><span class="op">(</span>clip <span class="op">=</span> <span class="st">"off"</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1.5</span>, <span class="fl">1.5</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1.5</span>, <span class="fl">1.5</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_fixed.html" class="external-link">coord_fixed</a></span><span class="op">(</span>clip <span class="op">=</span> <span class="st">"off"</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1.5</span>, <span class="fl">1.5</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1.5</span>, <span class="fl">1.5</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pca</span></code></pre></div>
 <p><img src="atlas1006_files/figure-html/plot%20clr%20pca%20with%20tax%20loading-1.png" width="768"></p>
 <p>What about the actual compositions of these 800 samples?</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">iris</span> <span class="op">&lt;-</span> <span class="va">clr_pca</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span>
+<code class="sourceCode R"><span class="va">iris</span> <span class="op">&lt;-</span> <span class="va">clr_pca</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../../reference/ord_plot_iris.html">ord_plot_iris</a></span><span class="op">(</span>
     tax_level <span class="op">=</span> <span class="st">"Genus"</span>, n_taxa <span class="op">=</span> <span class="fl">15</span>,
     anno_binary <span class="op">=</span> <span class="st">"extract_P"</span>,
-    anno_binary_style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fl">1.1</span>, size <span class="op">=</span> <span class="fl">0.5</span>, alpha <span class="op">=</span> <span class="fl">0.3</span>, shape <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,
-    taxon_renamer <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove_all</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"^G: | [ae]t rel."</span><span class="op">)</span>
+    anno_binary_style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fl">1.1</span>, size <span class="op">=</span> <span class="fl">0.5</span>, alpha <span class="op">=</span> <span class="fl">0.3</span>, shape <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,
+    taxon_renamer <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html" class="external-link">str_remove_all</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"^G: | [ae]t rel."</span><span class="op">)</span>
   <span class="op">)</span>
 
 <span class="va">iris</span></code></pre></div>
@@ -296,20 +299,20 @@
 <p><img src="atlas1006_files/figure-html/paired%20plots-1.png" width="960"></p>
 </div>
 </div>
-<div id="testing-hypotheses" class="section level2">
-<h2 class="hasAnchor">
-<a href="#testing-hypotheses" class="anchor"></a>Testing hypotheses</h2>
-<div id="permanova" class="section level3">
-<h3 class="hasAnchor">
-<a href="#permanova" class="anchor"></a>PERMANOVA</h3>
+<div class="section level2">
+<h2 id="testing-hypotheses">Testing hypotheses<a class="anchor" aria-label="anchor" href="#testing-hypotheses"></a>
+</h2>
+<div class="section level3">
+<h3 id="permanova">PERMANOVA<a class="anchor" aria-label="anchor" href="#permanova"></a>
+</h3>
 <p>What variables is the overall microbial community variation associated with?</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ps</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span>
-  <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">5</span> <span class="op">/</span> <span class="fl">100</span>, tax_level <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span>
-  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span>
-  <span class="fu"><a href="../../reference/dist_calc.html">dist_calc</a></span><span class="op">(</span><span class="st">"aitchison"</span><span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span>
+<code class="sourceCode R"><span class="va">ps</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">5</span> <span class="op">/</span> <span class="fl">100</span>, tax_level <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../../reference/dist_calc.html">dist_calc</a></span><span class="op">(</span><span class="st">"aitchison"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../../reference/dist_permanova.html">dist_permanova</a></span><span class="op">(</span>
-    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"DNA_extraction_method"</span>, <span class="st">"weight"</span>, <span class="st">"female"</span><span class="op">)</span>,
+    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DNA_extraction_method"</span>, <span class="st">"weight"</span>, <span class="st">"female"</span><span class="op">)</span>,
     n_perms <span class="op">=</span> <span class="fl">99</span>, <span class="co"># this is a low number of permutations for speed, you should set more e.g. 9999</span>
     seed <span class="op">=</span> <span class="fl">12345</span>, complete_cases <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="st">"max"</span>
   <span class="op">)</span>
@@ -317,8 +320,8 @@
 <span class="co">#&gt; Dropping samples with missings: 17</span>
 <span class="co">#&gt; weight has NAs: 15</span>
 <span class="co">#&gt; female has NAs: 2</span>
-<span class="co">#&gt; 2021-11-22 12:11:49 - Starting PERMANOVA with 99 perms with 1 processes</span>
-<span class="co">#&gt; 2021-11-22 12:12:02 - Finished PERMANOVA</span>
+<span class="co">#&gt; 2021-12-02 09:23:52 - Starting PERMANOVA with 99 perms with 1 processes</span>
+<span class="co">#&gt; 2021-12-02 09:24:06 - Finished PERMANOVA</span>
 <span class="co">#&gt; ps_extra object - a list with phyloseq and extras:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; phyloseq-class experiment-level object</span>
@@ -348,27 +351,27 @@
 <span class="co">#&gt; ---</span>
 <span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></code></pre></div>
 </div>
-<div id="visualising-significant-predictors" class="section level3">
-<h3 class="hasAnchor">
-<a href="#visualising-significant-predictors" class="anchor"></a>Visualising significant predictors?</h3>
+<div class="section level3">
+<h3 id="visualising-significant-predictors">Visualising significant predictors?<a class="anchor" aria-label="anchor" href="#visualising-significant-predictors"></a>
+</h3>
 <p>(Partial) Constrained ordination can be useful to show microbial variation explained by predictors significant in PERMANOVA analyses.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># constraints need to be on the same or similar scales for comparability</span>
 <span class="co"># so make binary variables and scale the weight variable</span>
-<span class="va">ps</span> <span class="op">&lt;-</span> <span class="va">ps</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span>
+<span class="va">ps</span> <span class="op">&lt;-</span> <span class="va">ps</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../../reference/ps_mutate.html">ps_mutate</a></span><span class="op">(</span>
-    wt_scaled <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="va">weight</span>, center <span class="op">=</span> <span class="cn">TRUE</span>, scale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>,
-    P <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="va">DNA_extraction_method</span> <span class="op">==</span> <span class="st">"p"</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>,
-    R <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="va">DNA_extraction_method</span> <span class="op">==</span> <span class="st">"r"</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>,
-    O <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="va">DNA_extraction_method</span> <span class="op">==</span> <span class="st">"o"</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>
+    wt_scaled <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">weight</span>, center <span class="op">=</span> <span class="cn">TRUE</span>, scale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>,
+    P <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">DNA_extraction_method</span> <span class="op">==</span> <span class="st">"p"</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>,
+    R <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">DNA_extraction_method</span> <span class="op">==</span> <span class="st">"r"</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>,
+    O <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">DNA_extraction_method</span> <span class="op">==</span> <span class="st">"o"</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>
   <span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">constr_ord</span> <span class="op">&lt;-</span> <span class="va">ps</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span>
-  <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">5</span> <span class="op">/</span> <span class="fl">100</span>, tax_level <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span>
-  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span>
-  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"clr"</span><span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span>
+<code class="sourceCode R"><span class="va">constr_ord</span> <span class="op">&lt;-</span> <span class="va">ps</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">5</span> <span class="op">/</span> <span class="fl">100</span>, tax_level <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"clr"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../../reference/ord_calc.html">ord_calc</a></span><span class="op">(</span>
-    method <span class="op">=</span> <span class="st">"RDA"</span>, constraints <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"female"</span>, <span class="st">"wt_scaled"</span>, <span class="st">"P"</span>, <span class="st">"R"</span>, <span class="st">"O"</span><span class="op">)</span>
+    method <span class="op">=</span> <span class="st">"RDA"</span>, constraints <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"female"</span>, <span class="st">"wt_scaled"</span>, <span class="st">"P"</span>, <span class="st">"R"</span>, <span class="st">"O"</span><span class="op">)</span>
   <span class="op">)</span>
 <span class="co">#&gt; Proportional min_prevalence given: 0.05 --&gt; min 41/801 samples.</span>
 <span class="co">#&gt; Dropping samples with missings: 17</span>
@@ -398,20 +401,20 @@
 <span class="co">#&gt; $counts OTU Table: [ 117 taxa and 801 samples ]</span></code></pre></div>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../reference/ord_plot.html">ord_plot</a></span><span class="op">(</span><span class="va">constr_ord</span>, plot_taxa <span class="op">=</span> <span class="fl">10</span><span class="op">:</span><span class="fl">1</span>, colour <span class="op">=</span> <span class="st">"DNA_extraction_method"</span>, shape <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_color_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Set2"</span>, name <span class="op">=</span> <span class="st">"DNA\nextraction\nmethod"</span><span class="op">)</span></code></pre></div>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_color_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Set2"</span>, name <span class="op">=</span> <span class="st">"DNA\nextraction\nmethod"</span><span class="op">)</span></code></pre></div>
 <p><img src="atlas1006_files/figure-html/constrained%20ord%20plot-1.png" width="700"></p>
 <p>As DNA extraction method dominates the plot above, we could try “partialing out” the variation explained by DNA extraction method, prior to constraining on the other factors of interest.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ps</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span>
-  <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">5</span> <span class="op">/</span> <span class="fl">100</span>, tax_level <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span>
-  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span>
-  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"clr"</span><span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span>
+<code class="sourceCode R"><span class="va">ps</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">5</span> <span class="op">/</span> <span class="fl">100</span>, tax_level <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"clr"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../../reference/ord_calc.html">ord_calc</a></span><span class="op">(</span>
-    method <span class="op">=</span> <span class="st">"RDA"</span>, conditions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"P"</span>, <span class="st">"R"</span>, <span class="st">"O"</span><span class="op">)</span>,
-    constraints <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"female"</span>, <span class="st">"wt_scaled"</span><span class="op">)</span>
-  <span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span>
+    method <span class="op">=</span> <span class="st">"RDA"</span>, conditions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"P"</span>, <span class="st">"R"</span>, <span class="st">"O"</span><span class="op">)</span>,
+    constraints <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"female"</span>, <span class="st">"wt_scaled"</span><span class="op">)</span>
+  <span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../../reference/ord_plot.html">ord_plot</a></span><span class="op">(</span>plot_taxa <span class="op">=</span> <span class="fl">10</span><span class="op">:</span><span class="fl">1</span>, colour <span class="op">=</span> <span class="st">"DNA_extraction_method"</span>, shape <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_color_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Set2"</span>, name <span class="op">=</span> <span class="st">"DNA\nextraction\nmethod"</span><span class="op">)</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_color_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Set2"</span>, name <span class="op">=</span> <span class="st">"DNA\nextraction\nmethod"</span><span class="op">)</span>
 <span class="co">#&gt; Proportional min_prevalence given: 0.05 --&gt; min 41/801 samples.</span>
 <span class="co">#&gt; Dropping samples with missings: 17</span>
 <span class="co">#&gt; </span>
@@ -423,44 +426,44 @@
 <span class="co">#&gt;  O</span></code></pre></div>
 <p><img src="atlas1006_files/figure-html/partial%20constrained%20ord-1.png" width="700"></p>
 </div>
-<div id="taxon-models" class="section level3">
-<h3 class="hasAnchor">
-<a href="#taxon-models" class="anchor"></a>Taxon models</h3>
+<div class="section level3">
+<h3 id="taxon-models">Taxon models<a class="anchor" aria-label="anchor" href="#taxon-models"></a>
+</h3>
 <p>What are the effects of these factors on individual taxa? Let’s use beta binomial regression models to find out. We will skip fitting models for genera here, only for speed of generating this example. You should include all ranks (which is the default) for the best use of taxatree_plots.</p>
 <p>See the taxon modelling article for a more comprehensive look at the taxatree_* family of functions.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bryandmartin/corncob">corncob</a></span><span class="op">)</span>
-<span class="va">tt_models</span> <span class="op">&lt;-</span> <span class="va">ps</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span>
-  <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">5</span> <span class="op">/</span> <span class="fl">100</span>, tax_level <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bryandmartin/corncob" class="external-link">corncob</a></span><span class="op">)</span>
+<span class="va">tt_models</span> <span class="op">&lt;-</span> <span class="va">ps</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">5</span> <span class="op">/</span> <span class="fl">100</span>, tax_level <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../../reference/taxatree_models.html">taxatree_models</a></span><span class="op">(</span>
-    ranks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Phylum"</span>, <span class="st">"Family"</span><span class="op">)</span>, 
-    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"female"</span>, <span class="st">"wt_scaled"</span>, <span class="st">"P"</span>, <span class="st">"R"</span><span class="op">)</span>,
+    ranks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Phylum"</span>, <span class="st">"Family"</span><span class="op">)</span>, 
+    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"female"</span>, <span class="st">"wt_scaled"</span>, <span class="st">"P"</span>, <span class="st">"R"</span><span class="op">)</span>,
     type <span class="op">=</span> <span class="st">"bbdml"</span>, verbose <span class="op">=</span> <span class="st">"max"</span>
   <span class="op">)</span>
 <span class="co">#&gt; Proportional min_prevalence given: 0.05 --&gt; min 41/801 samples.</span>
-<span class="co">#&gt; 2021-11-22 12:12:11 - modelling at rank: Phylum</span>
-<span class="co">#&gt; 2021-11-22 12:12:20 - modelling at rank: Family</span>
+<span class="co">#&gt; 2021-12-02 09:24:17 - modelling at rank: Phylum</span>
+<span class="co">#&gt; 2021-12-02 09:24:26 - modelling at rank: Family</span>
 <span class="va">tt_stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/taxatree_models2stats.html">taxatree_models2stats</a></span><span class="op">(</span><span class="va">tt_models</span>, param <span class="op">=</span> <span class="st">"mu"</span><span class="op">)</span></code></pre></div>
 <p>Visualize the results compactly on a microViz taxonomic association tree.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">tt_stats</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> 
+<code class="sourceCode R"><span class="va">tt_stats</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> 
   <span class="fu"><a href="../../reference/taxatree_plotkey.html">taxatree_plotkey</a></span><span class="op">(</span>
-    node_size_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">8</span><span class="op">)</span>, size_stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="va">mean</span><span class="op">)</span>,
+    node_size_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">8</span><span class="op">)</span>, size_stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="va">mean</span><span class="op">)</span>,
     <span class="va">rank</span> <span class="op">==</span> <span class="st">"Phylum"</span>, 
-    taxon_renamer <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove_all</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"^.: | [ae]t rel."</span><span class="op">)</span>
+    taxon_renamer <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html" class="external-link">str_remove_all</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"^.: | [ae]t rel."</span><span class="op">)</span>
   <span class="op">)</span></code></pre></div>
 <p><img src="atlas1006_files/figure-html/taxa%20tree%20key-1.png" width="700"></p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">tt_stats</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> 
+<code class="sourceCode R"><span class="va">tt_stats</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> 
   <span class="fu"><a href="../../reference/taxatree_plots.html">taxatree_plots</a></span><span class="op">(</span>
-    node_size_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span>, size_stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="va">mean</span><span class="op">)</span>
-  <span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span>
-    <span class="va">.</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"P"</span>, <span class="st">"R"</span>, <span class="st">"female"</span>, <span class="st">"wt_scaled"</span><span class="op">)</span><span class="op">]</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html">wrap_plots</a></span><span class="op">(</span><span class="va">.</span>, ncol <span class="op">=</span> <span class="fl">2</span>, guides <span class="op">=</span> <span class="st">"collect"</span><span class="op">)</span></code></pre></div>
+    node_size_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span>, size_stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="va">mean</span><span class="op">)</span>
+  <span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span>
+    <span class="va">.</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"P"</span>, <span class="st">"R"</span>, <span class="st">"female"</span>, <span class="st">"wt_scaled"</span><span class="op">)</span><span class="op">]</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html" class="external-link">wrap_plots</a></span><span class="op">(</span><span class="va">.</span>, ncol <span class="op">=</span> <span class="fl">2</span>, guides <span class="op">=</span> <span class="st">"collect"</span><span class="op">)</span></code></pre></div>
 <p><img src="atlas1006_files/figure-html/taxatree%20plots-1.png" width="700"></p>
-<div id="example-interpretation-illustrative-only" class="section level4">
-<h4 class="hasAnchor">
-<a href="#example-interpretation-illustrative-only" class="anchor"></a>Example interpretation (illustrative only):</h4>
+<div class="section level4">
+<h4 id="example-interpretation-illustrative-only">Example interpretation (illustrative only):<a class="anchor" aria-label="anchor" href="#example-interpretation-illustrative-only"></a>
+</h4>
 <ul>
 <li>DNA extraction methods P and R are associated with significantly higher levels of Actinobacteria and lower Bacteroides, relative to the reference of extraction method O.</li>
 <li>There are associations between weight and various taxa, but these are not as strong as the associations with extraction method.</li>
@@ -468,170 +471,170 @@
 </div>
 </div>
 </div>
-<div id="disclaimer" class="section level2">
-<h2 class="hasAnchor">
-<a href="#disclaimer" class="anchor"></a>Disclaimer</h2>
+<div class="section level2">
+<h2 id="disclaimer">Disclaimer<a class="anchor" aria-label="anchor" href="#disclaimer"></a>
+</h2>
 <p>This document is intended only to be an example of the kind of analyses and visualization you can do with microViz. The analysis of the atlas1006 data is not intended to be considered theoretically sound or biologically interpretable.</p>
 </div>
-<div id="session-info" class="section level2">
-<h2 class="hasAnchor">
-<a href="#session-info" class="anchor"></a>Session info</h2>
+<div class="section level2">
+<h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
+</h2>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://r-lib.github.io/sessioninfo/reference/session_info.html">session_info</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; ─ Session info  ──────────────────────────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt;  hash: flag: Northern Mariana Islands, flag: Oman, orthodox cross</span>
+<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://r-lib.github.io/sessioninfo/reference/session_info.html" class="external-link">session_info</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">─ Session info  🛁  👍🏿  👨🏾‍🔬   ─────────────────────────────────────────────────────────────────────</span></span>
+<span class="co">#&gt;  hash: bathtub, thumbs up: dark skin tone, man scientist: medium-dark skin tone</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;  setting  value</span>
+<span class="co">#&gt;  <span style="color: #555555; font-style: italic;">setting </span> <span style="color: #555555; font-style: italic;">value</span></span>
 <span class="co">#&gt;  version  R version 4.1.2 (2021-11-01)</span>
-<span class="co">#&gt;  os       Ubuntu 20.04.3 LTS</span>
-<span class="co">#&gt;  system   x86_64, linux-gnu</span>
+<span class="co">#&gt;  os       macOS Catalina 10.15.7</span>
+<span class="co">#&gt;  system   x86_64, darwin17.0</span>
 <span class="co">#&gt;  ui       X11</span>
-<span class="co">#&gt;  language (EN)</span>
-<span class="co">#&gt;  collate  C.UTF-8</span>
-<span class="co">#&gt;  ctype    C.UTF-8</span>
+<span class="co">#&gt;  language en</span>
+<span class="co">#&gt;  collate  en_US.UTF-8</span>
+<span class="co">#&gt;  ctype    en_US.UTF-8</span>
 <span class="co">#&gt;  tz       UTC</span>
-<span class="co">#&gt;  date     2021-11-22</span>
-<span class="co">#&gt;  pandoc   2.7.3 @ /usr/bin/ (via rmarkdown)</span>
+<span class="co">#&gt;  date     2021-12-02</span>
+<span class="co">#&gt;  pandoc   2.7.3 @ /usr/local/bin/ (via rmarkdown)</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; ─ Packages ───────────────────────────────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt;  package            * version      date (UTC) lib source</span>
-<span class="co">#&gt;  ade4                 1.7-18       2021-09-16 [1] Custom</span>
-<span class="co">#&gt;  ape                  5.5          2021-04-25 [1] Custom</span>
-<span class="co">#&gt;  Biobase              2.54.0       2021-10-26 [1] Bioconductor</span>
-<span class="co">#&gt;  BiocGenerics         0.40.0       2021-10-26 [1] Bioconductor</span>
-<span class="co">#&gt;  biomformat           1.22.0       2021-10-26 [1] Bioconductor</span>
-<span class="co">#&gt;  Biostrings           2.62.0       2021-10-26 [1] Bioconductor</span>
-<span class="co">#&gt;  bitops               1.0-7        2021-04-24 [1] Custom</span>
-<span class="co">#&gt;  bslib                0.3.1        2021-10-06 [1] Custom</span>
-<span class="co">#&gt;  cachem               1.0.6        2021-08-19 [1] Custom</span>
-<span class="co">#&gt;  callr                3.7.0        2021-04-20 [1] Custom</span>
-<span class="co">#&gt;  cli                  3.1.0        2021-10-27 [1] Custom</span>
-<span class="co">#&gt;  cluster              2.1.2        2021-04-17 [2] CRAN (R 4.1.2)</span>
-<span class="co">#&gt;  codetools            0.2-18       2020-11-04 [2] CRAN (R 4.1.2)</span>
-<span class="co">#&gt;  colorspace           2.0-2        2021-06-24 [1] Custom</span>
-<span class="co">#&gt;  corncob            * 0.2.0        2021-03-11 [1] Custom</span>
-<span class="co">#&gt;  crayon               1.4.2        2021-10-29 [1] Custom</span>
-<span class="co">#&gt;  data.table           1.14.2       2021-09-27 [1] Custom</span>
-<span class="co">#&gt;  desc                 1.4.0        2021-09-28 [1] Custom</span>
-<span class="co">#&gt;  detectseparation     0.2          2021-04-22 [1] Custom</span>
-<span class="co">#&gt;  devtools             2.4.2        2021-06-07 [1] Custom</span>
-<span class="co">#&gt;  digest               0.6.28       2021-09-23 [1] Custom</span>
-<span class="co">#&gt;  dplyr              * 1.0.7        2021-06-18 [1] Custom</span>
-<span class="co">#&gt;  ellipsis             0.3.2        2021-04-29 [1] Custom</span>
-<span class="co">#&gt;  evaluate             0.14         2019-05-28 [1] Custom</span>
-<span class="co">#&gt;  fansi                0.5.0        2021-05-25 [1] Custom</span>
-<span class="co">#&gt;  farver               2.1.0        2021-02-28 [1] Custom</span>
-<span class="co">#&gt;  fastmap              1.1.0        2021-01-25 [1] Custom</span>
-<span class="co">#&gt;  foreach              1.5.1        2020-10-15 [1] Custom</span>
-<span class="co">#&gt;  fs                   1.5.0        2020-07-31 [1] Custom</span>
-<span class="co">#&gt;  future               1.23.0       2021-10-31 [1] Custom</span>
-<span class="co">#&gt;  future.apply         1.8.1        2021-08-10 [1] Custom</span>
-<span class="co">#&gt;  generics             0.1.1        2021-10-25 [1] Custom</span>
-<span class="co">#&gt;  GenomeInfoDb         1.30.0       2021-10-26 [1] Bioconductor</span>
-<span class="co">#&gt;  GenomeInfoDbData     1.2.7        2021-11-12 [1] Bioconductor</span>
-<span class="co">#&gt;  ggforce              0.3.3        2021-03-05 [1] Custom</span>
-<span class="co">#&gt;  ggplot2            * 3.3.5        2021-06-25 [1] Custom</span>
-<span class="co">#&gt;  ggraph               2.0.5        2021-02-23 [1] Custom</span>
-<span class="co">#&gt;  ggrepel              0.9.1        2021-01-15 [1] Custom</span>
-<span class="co">#&gt;  ggtext               0.1.1        2020-12-17 [1] Custom</span>
-<span class="co">#&gt;  globals              0.14.0       2020-11-22 [1] Custom</span>
-<span class="co">#&gt;  glue                 1.5.0        2021-11-07 [1] Custom</span>
-<span class="co">#&gt;  graphlayouts         0.7.2        2021-11-21 [1] CRAN (R 4.1.2)</span>
-<span class="co">#&gt;  gridExtra            2.3          2017-09-09 [1] Custom</span>
-<span class="co">#&gt;  gridtext             0.1.4        2020-12-10 [1] Custom</span>
-<span class="co">#&gt;  gtable               0.3.0        2019-03-25 [1] Custom</span>
-<span class="co">#&gt;  highr                0.9          2021-04-16 [1] Custom</span>
-<span class="co">#&gt;  htmltools            0.5.2        2021-08-25 [1] Custom</span>
-<span class="co">#&gt;  igraph               1.2.8        2021-11-07 [1] Custom</span>
-<span class="co">#&gt;  IRanges              2.28.0       2021-10-26 [1] Bioconductor</span>
-<span class="co">#&gt;  iterators            1.0.13       2020-10-15 [1] Custom</span>
-<span class="co">#&gt;  jquerylib            0.1.4        2021-04-26 [1] Custom</span>
-<span class="co">#&gt;  jsonlite             1.7.2        2020-12-09 [1] Custom</span>
-<span class="co">#&gt;  knitr                1.36         2021-09-29 [1] Custom</span>
-<span class="co">#&gt;  labeling             0.4.2        2020-10-20 [1] Custom</span>
-<span class="co">#&gt;  lattice              0.20-45      2021-09-22 [2] CRAN (R 4.1.2)</span>
-<span class="co">#&gt;  lifecycle            1.0.1        2021-09-24 [1] Custom</span>
-<span class="co">#&gt;  listenv              0.8.0        2019-12-05 [1] Custom</span>
-<span class="co">#&gt;  lpSolveAPI           5.5.2.0-17.7 2020-06-14 [1] Custom</span>
-<span class="co">#&gt;  magrittr             2.0.1        2020-11-17 [1] Custom</span>
-<span class="co">#&gt;  markdown             1.1          2019-08-07 [1] Custom</span>
-<span class="co">#&gt;  MASS                 7.3-54       2021-05-03 [2] CRAN (R 4.1.2)</span>
-<span class="co">#&gt;  Matrix               1.3-4        2021-06-01 [2] CRAN (R 4.1.2)</span>
-<span class="co">#&gt;  memoise              2.0.0        2021-01-26 [1] Custom</span>
-<span class="co">#&gt;  mgcv                 1.8-38       2021-10-06 [2] CRAN (R 4.1.2)</span>
-<span class="co">#&gt;  microbiome         * 1.16.0       2021-10-26 [1] Bioconductor</span>
-<span class="co">#&gt;  microViz           * 0.8.1.9001   2021-11-22 [1] local</span>
-<span class="co">#&gt;  multtest             2.50.0       2021-10-26 [1] Bioconductor</span>
-<span class="co">#&gt;  munsell              0.5.0        2018-06-12 [1] Custom</span>
-<span class="co">#&gt;  nlme                 3.1-153      2021-09-07 [2] CRAN (R 4.1.2)</span>
-<span class="co">#&gt;  numDeriv             2016.8-1.1   2019-06-06 [1] Custom</span>
-<span class="co">#&gt;  parallelly           1.29.0       2021-11-21 [1] CRAN (R 4.1.2)</span>
-<span class="co">#&gt;  patchwork          * 1.1.1        2020-12-17 [1] Custom</span>
-<span class="co">#&gt;  permute              0.9-5        2019-03-12 [1] Custom</span>
-<span class="co">#&gt;  phyloseq           * 1.38.0       2021-10-26 [1] Bioconductor</span>
-<span class="co">#&gt;  pillar               1.6.4        2021-10-18 [1] Custom</span>
-<span class="co">#&gt;  pkgbuild             1.2.0        2020-12-15 [1] Custom</span>
-<span class="co">#&gt;  pkgconfig            2.0.3        2019-09-22 [1] Custom</span>
-<span class="co">#&gt;  pkgdown              1.6.1        2020-09-12 [1] Custom</span>
-<span class="co">#&gt;  pkgload              1.2.3        2021-10-13 [1] Custom</span>
-<span class="co">#&gt;  plyr                 1.8.6        2020-03-03 [1] Custom</span>
-<span class="co">#&gt;  polyclip             1.10-0       2019-03-14 [1] Custom</span>
-<span class="co">#&gt;  prettyunits          1.1.1        2020-01-24 [1] Custom</span>
-<span class="co">#&gt;  processx             3.5.2        2021-04-30 [1] Custom</span>
-<span class="co">#&gt;  ps                   1.6.0        2021-02-28 [1] Custom</span>
-<span class="co">#&gt;  purrr                0.3.4        2020-04-17 [1] Custom</span>
-<span class="co">#&gt;  R6                   2.5.1        2021-08-19 [1] Custom</span>
-<span class="co">#&gt;  ragg                 1.2.0        2021-10-30 [1] Custom</span>
-<span class="co">#&gt;  RColorBrewer         1.1-2        2014-12-07 [1] Custom</span>
-<span class="co">#&gt;  Rcpp                 1.0.7        2021-07-07 [1] Custom</span>
-<span class="co">#&gt;  RCurl                1.98-1.5     2021-09-17 [1] Custom</span>
-<span class="co">#&gt;  registry             0.5-1        2019-03-05 [1] Custom</span>
-<span class="co">#&gt;  remotes              2.4.1        2021-09-29 [1] Custom</span>
-<span class="co">#&gt;  reshape2             1.4.4        2020-04-09 [1] Custom</span>
-<span class="co">#&gt;  rhdf5                2.38.0       2021-10-26 [1] Bioconductor</span>
-<span class="co">#&gt;  rhdf5filters         1.6.0        2021-10-26 [1] Bioconductor</span>
-<span class="co">#&gt;  Rhdf5lib             1.16.0       2021-10-26 [1] Bioconductor</span>
-<span class="co">#&gt;  rlang                0.4.12       2021-10-18 [1] Custom</span>
-<span class="co">#&gt;  rmarkdown            2.11         2021-09-14 [1] Custom</span>
-<span class="co">#&gt;  ROI                  1.0-0        2020-08-31 [1] Custom</span>
-<span class="co">#&gt;  ROI.plugin.lpsolve   1.0-1        2021-06-15 [1] Custom</span>
-<span class="co">#&gt;  rprojroot            2.0.2        2020-11-15 [1] Custom</span>
-<span class="co">#&gt;  Rtsne                0.15         2018-11-10 [1] Custom</span>
-<span class="co">#&gt;  S4Vectors            0.32.2       2021-11-07 [1] Bioconductor</span>
-<span class="co">#&gt;  sass                 0.4.0        2021-05-12 [1] Custom</span>
-<span class="co">#&gt;  scales               1.1.1        2020-05-11 [1] Custom</span>
-<span class="co">#&gt;  sessioninfo          1.2.1        2021-11-02 [1] Custom</span>
-<span class="co">#&gt;  slam                 0.1-49       2021-11-17 [1] CRAN (R 4.1.2)</span>
-<span class="co">#&gt;  stringi              1.7.5        2021-10-04 [1] Custom</span>
-<span class="co">#&gt;  stringr              1.4.0        2019-02-10 [1] Custom</span>
-<span class="co">#&gt;  survival             3.2-13       2021-08-24 [2] CRAN (R 4.1.2)</span>
-<span class="co">#&gt;  systemfonts          1.0.3        2021-10-13 [1] Custom</span>
-<span class="co">#&gt;  testthat             3.1.0        2021-10-04 [1] Custom</span>
-<span class="co">#&gt;  textshaping          0.3.6        2021-10-13 [1] Custom</span>
-<span class="co">#&gt;  tibble               3.1.6        2021-11-07 [1] Custom</span>
-<span class="co">#&gt;  tidygraph            1.2.0        2020-05-12 [1] Custom</span>
-<span class="co">#&gt;  tidyr                1.1.4        2021-09-27 [1] Custom</span>
-<span class="co">#&gt;  tidyselect           1.1.1        2021-04-30 [1] Custom</span>
-<span class="co">#&gt;  trust                0.1-8        2020-01-10 [1] Custom</span>
-<span class="co">#&gt;  tweenr               1.0.2        2021-03-23 [1] Custom</span>
-<span class="co">#&gt;  usethis              2.1.3        2021-10-27 [1] Custom</span>
-<span class="co">#&gt;  utf8                 1.2.2        2021-07-24 [1] Custom</span>
-<span class="co">#&gt;  vctrs                0.3.8        2021-04-29 [1] Custom</span>
-<span class="co">#&gt;  vegan                2.5-7        2020-11-28 [1] Custom</span>
-<span class="co">#&gt;  VGAM                 1.1-5        2021-01-14 [1] Custom</span>
-<span class="co">#&gt;  viridis              0.6.2        2021-10-13 [1] Custom</span>
-<span class="co">#&gt;  viridisLite          0.4.0        2021-04-13 [1] Custom</span>
-<span class="co">#&gt;  withr                2.4.2        2021-04-18 [1] Custom</span>
-<span class="co">#&gt;  xfun                 0.28         2021-11-04 [1] Custom</span>
-<span class="co">#&gt;  xml2                 1.3.2        2020-04-23 [1] Custom</span>
-<span class="co">#&gt;  XVector              0.34.0       2021-10-26 [1] Bioconductor</span>
-<span class="co">#&gt;  yaml                 2.2.1        2020-02-01 [1] Custom</span>
-<span class="co">#&gt;  zlibbioc             1.40.0       2021-10-26 [1] Bioconductor</span>
+<span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">─ Packages ───────────────────────────────────────────────────────────────────────────────────────</span></span>
+<span class="co">#&gt;  <span style="color: #555555; font-style: italic;">package           </span> <span style="color: #555555; font-style: italic;">*</span> <span style="color: #555555; font-style: italic;">version     </span> <span style="color: #555555; font-style: italic;">date (UTC)</span> <span style="color: #555555; font-style: italic;">lib</span> <span style="color: #555555; font-style: italic;">source</span></span>
+<span class="co">#&gt;  ade4                 1.7-18       <span style="color: #555555;">2021-09-16</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  ape                  5.5          <span style="color: #555555;">2021-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  Biobase              2.54.0       <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
+<span class="co">#&gt;  BiocGenerics         0.40.0       <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
+<span class="co">#&gt;  biomformat           1.22.0       <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
+<span class="co">#&gt;  Biostrings           2.62.0       <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
+<span class="co">#&gt;  bitops               1.0-7        <span style="color: #555555;">2021-04-24</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  bslib                0.3.1        <span style="color: #555555;">2021-10-06</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  cachem               1.0.6        <span style="color: #555555;">2021-08-19</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  callr                3.7.0        <span style="color: #555555;">2021-04-20</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  cli                  3.1.0        <span style="color: #555555;">2021-10-27</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  cluster              2.1.2        <span style="color: #555555;">2021-04-17</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
+<span class="co">#&gt;  codetools            0.2-18       <span style="color: #555555;">2020-11-04</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
+<span class="co">#&gt;  colorspace           2.0-2        <span style="color: #555555;">2021-06-24</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  corncob            * 0.2.0        <span style="color: #555555;">2021-03-11</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  crayon               1.4.2        <span style="color: #555555;">2021-10-29</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  data.table           1.14.2       <span style="color: #555555;">2021-09-27</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  desc                 1.4.0        <span style="color: #555555;">2021-09-28</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  detectseparation     0.2          <span style="color: #555555;">2021-04-22</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  devtools             2.4.3        <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
+<span class="co">#&gt;  digest               0.6.29       <span style="color: #555555;">2021-12-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
+<span class="co">#&gt;  dplyr              * 1.0.7        <span style="color: #555555;">2021-06-18</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  ellipsis             0.3.2        <span style="color: #555555;">2021-04-29</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  evaluate             0.14         <span style="color: #555555;">2019-05-28</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  fansi                0.5.0        <span style="color: #555555;">2021-05-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  farver               2.1.0        <span style="color: #555555;">2021-02-28</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  fastmap              1.1.0        <span style="color: #555555;">2021-01-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  foreach              1.5.1        <span style="color: #555555;">2020-10-15</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  fs                   1.5.1        <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
+<span class="co">#&gt;  future               1.23.0       <span style="color: #555555;">2021-10-31</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  future.apply         1.8.1        <span style="color: #555555;">2021-08-10</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  generics             0.1.1        <span style="color: #555555;">2021-10-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  GenomeInfoDb         1.30.0       <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
+<span class="co">#&gt;  GenomeInfoDbData     1.2.7        <span style="color: #555555;">2021-12-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
+<span class="co">#&gt;  ggforce              0.3.3        <span style="color: #555555;">2021-03-05</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  ggplot2            * 3.3.5        <span style="color: #555555;">2021-06-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  ggraph               2.0.5        <span style="color: #555555;">2021-02-23</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  ggrepel              0.9.1        <span style="color: #555555;">2021-01-15</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  ggtext               0.1.1        <span style="color: #555555;">2020-12-17</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  globals              0.14.0       <span style="color: #555555;">2020-11-22</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  glue                 1.5.1        <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
+<span class="co">#&gt;  graphlayouts         0.7.2        <span style="color: #555555;">2021-11-21</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  gridExtra            2.3          <span style="color: #555555;">2017-09-09</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  gridtext             0.1.4        <span style="color: #555555;">2020-12-10</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  gtable               0.3.0        <span style="color: #555555;">2019-03-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  highr                0.9          <span style="color: #555555;">2021-04-16</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  htmltools            0.5.2        <span style="color: #555555;">2021-08-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  igraph               1.2.9        <span style="color: #555555;">2021-11-23</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  IRanges              2.28.0       <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
+<span class="co">#&gt;  iterators            1.0.13       <span style="color: #555555;">2020-10-15</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  jquerylib            0.1.4        <span style="color: #555555;">2021-04-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  jsonlite             1.7.2        <span style="color: #555555;">2020-12-09</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  knitr                1.36         <span style="color: #555555;">2021-09-29</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  labeling             0.4.2        <span style="color: #555555;">2020-10-20</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  lattice              0.20-45      <span style="color: #555555;">2021-09-22</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
+<span class="co">#&gt;  lifecycle            1.0.1        <span style="color: #555555;">2021-09-24</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  listenv              0.8.0        <span style="color: #555555;">2019-12-05</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  lpSolveAPI           5.5.2.0-17.7 <span style="color: #555555;">2020-06-14</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  magrittr             2.0.1        <span style="color: #555555;">2020-11-17</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  markdown             1.1          <span style="color: #555555;">2019-08-07</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  MASS                 7.3-54       <span style="color: #555555;">2021-05-03</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
+<span class="co">#&gt;  Matrix               1.3-4        <span style="color: #555555;">2021-06-01</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
+<span class="co">#&gt;  memoise              2.0.1        <span style="color: #555555;">2021-11-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  mgcv                 1.8-38       <span style="color: #555555;">2021-10-06</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
+<span class="co">#&gt;  microbiome         * 1.16.0       <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
+<span class="co">#&gt;  microViz           * <span style="color: #BB00BB; font-weight: bold;">0.8.2.9001  </span> <span style="color: #555555;">2021-12-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">local</span></span>
+<span class="co">#&gt;  multtest             2.50.0       <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
+<span class="co">#&gt;  munsell              0.5.0        <span style="color: #555555;">2018-06-12</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  nlme                 3.1-153      <span style="color: #555555;">2021-09-07</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
+<span class="co">#&gt;  numDeriv             <span style="color: #BB00BB; font-weight: bold;">2016.8-1.1  </span> <span style="color: #555555;">2019-06-06</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  parallelly           1.29.0       <span style="color: #555555;">2021-11-21</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  patchwork          * 1.1.1        <span style="color: #555555;">2020-12-17</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  permute              0.9-5        <span style="color: #555555;">2019-03-12</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  phyloseq           * 1.38.0       <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
+<span class="co">#&gt;  pillar               1.6.4        <span style="color: #555555;">2021-10-18</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  pkgbuild             1.2.1        <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
+<span class="co">#&gt;  pkgconfig            2.0.3        <span style="color: #555555;">2019-09-22</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  pkgdown              2.0.0        <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
+<span class="co">#&gt;  pkgload              1.2.4        <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
+<span class="co">#&gt;  plyr                 1.8.6        <span style="color: #555555;">2020-03-03</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  polyclip             1.10-0       <span style="color: #555555;">2019-03-14</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  prettyunits          1.1.1        <span style="color: #555555;">2020-01-24</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  processx             3.5.2        <span style="color: #555555;">2021-04-30</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  ps                   1.6.0        <span style="color: #555555;">2021-02-28</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  purrr                0.3.4        <span style="color: #555555;">2020-04-17</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  R6                   2.5.1        <span style="color: #555555;">2021-08-19</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  ragg                 1.1.3        <span style="color: #555555;">2021-06-09</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  RColorBrewer         1.1-2        <span style="color: #555555;">2014-12-07</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  Rcpp                 1.0.7        <span style="color: #555555;">2021-07-07</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  RCurl                1.98-1.5     <span style="color: #555555;">2021-09-17</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  registry             0.5-1        <span style="color: #555555;">2019-03-05</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  remotes              2.4.2        <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
+<span class="co">#&gt;  reshape2             1.4.4        <span style="color: #555555;">2020-04-09</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  rhdf5                2.38.0       <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
+<span class="co">#&gt;  rhdf5filters         1.6.0        <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
+<span class="co">#&gt;  Rhdf5lib             1.16.0       <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
+<span class="co">#&gt;  rlang                0.4.12       <span style="color: #555555;">2021-10-18</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  rmarkdown            2.11         <span style="color: #555555;">2021-09-14</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  ROI                  1.0-0        <span style="color: #555555;">2020-08-31</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  ROI.plugin.lpsolve   1.0-1        <span style="color: #555555;">2021-06-15</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  rprojroot            2.0.2        <span style="color: #555555;">2020-11-15</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  Rtsne                0.15         <span style="color: #555555;">2018-11-10</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  S4Vectors            0.32.3       <span style="color: #555555;">2021-11-21</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
+<span class="co">#&gt;  sass                 0.4.0        <span style="color: #555555;">2021-05-12</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  scales               1.1.1        <span style="color: #555555;">2020-05-11</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  sessioninfo          1.2.1        <span style="color: #555555;">2021-11-02</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  slam                 0.1-49       <span style="color: #555555;">2021-11-17</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  stringi              1.7.6        <span style="color: #555555;">2021-11-29</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  stringr              1.4.0        <span style="color: #555555;">2019-02-10</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  survival             3.2-13       <span style="color: #555555;">2021-08-24</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
+<span class="co">#&gt;  systemfonts          1.0.3        <span style="color: #555555;">2021-10-13</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
+<span class="co">#&gt;  testthat             3.1.0        <span style="color: #555555;">2021-10-04</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  textshaping          0.3.6        <span style="color: #555555;">2021-10-13</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  tibble               3.1.6        <span style="color: #555555;">2021-11-07</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  tidygraph            1.2.0        <span style="color: #555555;">2020-05-12</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  tidyr                1.1.4        <span style="color: #555555;">2021-09-27</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  tidyselect           1.1.1        <span style="color: #555555;">2021-04-30</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  trust                0.1-8        <span style="color: #555555;">2020-01-10</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  tweenr               1.0.2        <span style="color: #555555;">2021-03-23</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  usethis              2.1.3        <span style="color: #555555;">2021-10-27</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  utf8                 1.2.2        <span style="color: #555555;">2021-07-24</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  vctrs                0.3.8        <span style="color: #555555;">2021-04-29</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  vegan                2.5-7        <span style="color: #555555;">2020-11-28</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  VGAM                 1.1-5        <span style="color: #555555;">2021-01-14</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  viridis              0.6.2        <span style="color: #555555;">2021-10-13</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  viridisLite          0.4.0        <span style="color: #555555;">2021-04-13</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  withr                2.4.3        <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
+<span class="co">#&gt;  xfun                 0.28         <span style="color: #555555;">2021-11-04</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  xml2                 1.3.3        <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
+<span class="co">#&gt;  XVector              0.34.0       <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
+<span class="co">#&gt;  yaml                 2.2.1        <span style="color: #555555;">2020-02-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.0)</span></span>
+<span class="co">#&gt;  zlibbioc             1.40.0       <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;  [1] /home/runner/work/_temp/Library</span>
-<span class="co">#&gt;  [2] /opt/R/4.1.2/lib/R/library</span>
+<span class="co">#&gt; <span style="color: #555555;"> [1] /Users/runner/work/_temp/Library</span></span>
+<span class="co">#&gt; <span style="color: #555555;"> [2] /Library/Frameworks/R.framework/Versions/4.1/Resources/library</span></span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; ──────────────────────────────────────────────────────────────────────────────────────────────────</span></code></pre></div>
+<span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">──────────────────────────────────────────────────────────────────────────────────────────────────</span></span></code></pre></div>
 </div>
   </div>
 
@@ -646,11 +649,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by David Barnett.</p>
+  <p></p>
+<p>Developed by David Barnett.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.0.</p>
 </div>
 
       </footer>
