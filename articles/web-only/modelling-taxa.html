@@ -538,11 +538,11 @@
     variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UC"</span>, <span class="st">"female"</span>, <span class="st">"antibiotics"</span>, <span class="st">"steroids"</span>, <span class="st">"age_scaled"</span><span class="op">)</span>
   <span class="op">)</span>
 <span class="co">#&gt; Proportional min_prevalence given: 0.1 --&gt; min 7/67 samples.</span>
-<span class="co">#&gt; 2021-12-02 18:14:00 - modelling at rank: Phylum</span>
-<span class="co">#&gt; 2021-12-02 18:14:00 - modelling at rank: Class</span>
-<span class="co">#&gt; 2021-12-02 18:14:00 - modelling at rank: Order</span>
-<span class="co">#&gt; 2021-12-02 18:14:00 - modelling at rank: Family</span>
-<span class="co">#&gt; 2021-12-02 18:14:01 - modelling at rank: Genus</span></code></pre></div>
+<span class="co">#&gt; 2021-12-02 18:34:11 - modelling at rank: Phylum</span>
+<span class="co">#&gt; 2021-12-02 18:34:12 - modelling at rank: Class</span>
+<span class="co">#&gt; 2021-12-02 18:34:12 - modelling at rank: Order</span>
+<span class="co">#&gt; 2021-12-02 18:34:13 - modelling at rank: Family</span>
+<span class="co">#&gt; 2021-12-02 18:34:14 - modelling at rank: Genus</span></code></pre></div>
 <p>Why filter the taxa? <em>It’s less likely that we are interested in rare taxa, and models of rare taxon abundances are more likely to be unreliable. Reducing the the number of taxa modelled also makes visualising the results easier!</em></p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lm_models</span>
@@ -563,7 +563,7 @@
 <div class="section level3">
 <h3 id="getting-stats-from-the-models">Getting stats from the models<a class="anchor" aria-label="anchor" href="#getting-stats-from-the-models"></a>
 </h3>
-<p>Next we will get a data.frame containing the regression coefficient estimates, test statistics and corresponding p values from all these regression models. The function <code><a href="../../reference/taxatree_models2stats.html">taxatree_models2stats()</a></code> can do this for any type of model that has a <code><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">broom::tidy()</a></code> method, as well as for beta binomial regression models calculated with the <code>corncob</code> package <code><a href="https://rdrr.io/pkg/corncob/man/bbdml.html" class="external-link">bbdml()</a></code> function.</p>
+<p>Next we will get a data.frame containing the regression coefficient estimates, test statistics and corresponding p values from all these regression models. The function <code><a href="../../reference/taxatree_models2stats.html">taxatree_models2stats()</a></code> can do this for any type of model that has a <code><a href="https://rdrr.io/pkg/generics/man/tidy.html" class="external-link">broom::tidy()</a></code> method, as well as for beta binomial regression models calculated with the <code>corncob</code> package <code><a href="https://rdrr.io/pkg/corncob/man/bbdml.html" class="external-link">bbdml()</a></code> function.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lm_stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/taxatree_models2stats.html">taxatree_models2stats</a></span><span class="op">(</span><span class="va">lm_models</span><span class="op">)</span>
 <span class="va">lm_stats</span>
@@ -853,10 +853,10 @@
     variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UC"</span>, <span class="st">"female"</span>, <span class="st">"antibiotics"</span>, <span class="st">"steroids"</span>, <span class="st">"age_scaled"</span><span class="op">)</span>
   <span class="op">)</span>
 <span class="co">#&gt; Proportional min_prevalence given: 0.3 --&gt; min 21/67 samples.</span>
-<span class="co">#&gt; 2021-12-02 18:14:32 - modelling at rank: Phylum</span>
-<span class="co">#&gt; 2021-12-02 18:14:32 - modelling at rank: Class</span>
-<span class="co">#&gt; 2021-12-02 18:14:33 - modelling at rank: Order</span>
-<span class="co">#&gt; 2021-12-02 18:14:33 - modelling at rank: Family</span>
+<span class="co">#&gt; 2021-12-02 18:34:54 - modelling at rank: Phylum</span>
+<span class="co">#&gt; 2021-12-02 18:34:54 - modelling at rank: Class</span>
+<span class="co">#&gt; 2021-12-02 18:34:54 - modelling at rank: Order</span>
+<span class="co">#&gt; 2021-12-02 18:34:55 - modelling at rank: Family</span>
 <span class="va">bb_models</span>
 <span class="co">#&gt; ps_extra object - a list with phyloseq and extras:</span>
 <span class="co">#&gt; </span>
