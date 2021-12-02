@@ -125,7 +125,7 @@
       </header><div class="row">
   <div class="contents col-md-9">
 <div class="section level1">
-<div class="page-header"><h1 id="microviz-">microViz <a href="https://david-barnett.github.io/microViz/index.html"><img src="reference/figures/microViz-smaller.png" align="right" height="180" width="156"></a>
+<div class="page-header"><h1 id="microviz-">microViz <a href="https://david-barnett.github.io/microViz/index.html"><img src="reference/figures/logo.png" align="right" height="180" width="156"></a>
 <a class="anchor" aria-label="anchor" href="#microviz-"></a>
 </h1></div>
 <!-- badges: start -->
@@ -341,8 +341,8 @@
     n_processes <span class="op">=</span> <span class="fl">1</span>, n_perms <span class="op">=</span> <span class="fl">99</span>, <span class="co"># you should use at least 999!</span>
     variables <span class="op">=</span> <span class="st">"bmi_group"</span>
   <span class="op">)</span>
-<span class="co">#&gt; 2021-12-02 14:11:02 - Starting PERMANOVA with 99 perms with 1 processes</span>
-<span class="co">#&gt; 2021-12-02 14:11:02 - Finished PERMANOVA</span>
+<span class="co">#&gt; 2021-12-02 14:28:31 - Starting PERMANOVA with 99 perms with 1 processes</span>
+<span class="co">#&gt; 2021-12-02 14:28:31 - Finished PERMANOVA</span>
 
 <span class="co"># view the permanova results</span>
 <span class="fu"><a href="reference/ps_extra-accessors.html">perm_get</a></span><span class="op">(</span><span class="va">aitchison_perm</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span>
@@ -370,8 +370,8 @@
 <code class="sourceCode R"><span class="va">perm2</span> <span class="op">&lt;-</span> <span class="va">aitchison_dists</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> 
   <span class="fu"><a href="reference/dist_permanova.html">dist_permanova</a></span><span class="op">(</span>variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"african"</span>, <span class="st">"sex"</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">321</span><span class="op">)</span>
 <span class="co">#&gt; Dropping samples with missings: 2</span>
-<span class="co">#&gt; 2021-12-02 14:11:02 - Starting PERMANOVA with 999 perms with 1 processes</span>
-<span class="co">#&gt; 2021-12-02 14:11:03 - Finished PERMANOVA</span></code></pre></div>
+<span class="co">#&gt; 2021-12-02 14:28:31 - Starting PERMANOVA with 999 perms with 1 processes</span>
+<span class="co">#&gt; 2021-12-02 14:28:32 - Finished PERMANOVA</span></code></pre></div>
 <p>We’ll visualise the effect of nationality and bodyweight on sample composition, after first removing the effect of sex.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">perm2</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span>
