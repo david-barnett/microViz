@@ -188,7 +188,7 @@ dietswap %>%
 #>   reorder.hclust vegan
 ```
 
-![](man/figures/README-unnamed-chunk-2-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
 ``` r
 htmp <- dietswap %>%
@@ -213,7 +213,7 @@ ComplexHeatmap::draw(
 )
 ```
 
-![](man/figures/README-unnamed-chunk-3-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
 ### Example ordination plot workflow
 
@@ -267,7 +267,7 @@ customised_plot <- pca_plot +
 customised_plot
 ```
 
-![](man/figures/README-ordination-plot-1.png)<!-- -->
+![](README_files/figure-gfm/ordination-plot-1.png)<!-- -->
 
 ### PERMANOVA
 
@@ -292,8 +292,8 @@ aitchison_perm <- aitchison_dists %>%
     n_processes = 1, n_perms = 99, # you should use at least 999!
     variables = "bmi_group"
   )
-#> 2021-12-02 14:28:31 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2021-12-02 14:28:31 - Finished PERMANOVA
+#> 2021-12-02 14:48:54 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2021-12-02 14:48:54 - Finished PERMANOVA
 
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
@@ -324,8 +324,8 @@ your permanova directly using the `ord_plot` function with constraints
 perm2 <- aitchison_dists %>% 
   dist_permanova(variables = c("weight", "african", "sex"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2021-12-02 14:28:31 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2021-12-02 14:28:32 - Finished PERMANOVA
+#> 2021-12-02 14:48:54 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2021-12-02 14:48:55 - Finished PERMANOVA
 ```
 
 We’ll visualise the effect of nationality and bodyweight on sample
@@ -354,7 +354,7 @@ perm2 %>%
 #>  female
 ```
 
-![](man/figures/README-constrained-ord-plot-1.png)<!-- -->
+![](README_files/figure-gfm/constrained-ord-plot-1.png)<!-- -->
 
 ### Correlation Heatmaps
 
@@ -389,7 +389,7 @@ cor_heatmap(
 )
 ```
 
-![](man/figures/README-heatmap-1.png)<!-- -->
+![](README_files/figure-gfm/heatmap-1.png)<!-- -->
 
 ## Citation
 

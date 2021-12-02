@@ -9,7 +9,7 @@ name: pkgdown
 
 jobs:
   pkgdown:
-    runs-on: macOS-latest
+    runs-on: ubuntu-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
@@ -25,7 +25,7 @@ jobs:
         with:
           extra-packages: pkgdown
           needs: website
-          
+
       - name: Install XQuartz on macOS
         if: runner.os == 'macOS'
         run: brew install --cask xquartz
