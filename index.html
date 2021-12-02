@@ -6,6 +6,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Microbiome Data Analysis and Visualization • microViz</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="apple-touch-icon-76x76.png">
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
@@ -15,6 +21,7 @@
 <link href="docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Microbiome Data Analysis and Visualization">
 <meta property="og:description" content="Microbiome data visualization and statistics tools built upon phyloseq.">
+<meta property="og:image" content="https://david-barnett.github.io/microViz/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -41,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8.2.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.0</span>
       </span>
     </div>
 
@@ -118,7 +125,7 @@
       </header><div class="row">
   <div class="contents col-md-9">
 <div class="section level1">
-<div class="page-header"><h1 id="microviz-">microViz <a href="https://david-barnett.github.io/microViz/index.html"><img src="reference/figures/microViz-smaller.png" align="right" height="140" width="121"></a>
+<div class="page-header"><h1 id="microviz-">microViz <a href="https://david-barnett.github.io/microViz/index.html"><img src="reference/figures/microViz-smaller.png" align="right" height="180" width="156"></a>
 <a class="anchor" aria-label="anchor" href="#microviz-"></a>
 </h1></div>
 <!-- badges: start -->
@@ -172,7 +179,7 @@
 <span class="co"># If the Bioconductor dependencies don't automatically install you can install</span>
 <span class="co"># them yourself like this:</span>
 <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span> 
-<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu">install</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"phyloseq"</span>, <span class="st">"microbiome"</span>, <span class="st">"ComplexHeatmap"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"phyloseq"</span>, <span class="st">"microbiome"</span>, <span class="st">"ComplexHeatmap"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><span class="emoji" data-emoji="computer">💻</span> <strong>Windows users</strong> - will need to have RTools installed so that your computer can build this package (follow instructions here: <a href="http://jtleek.com/modules/01_DataScientistToolbox/02_10_rtools/" class="external-link uri">http://jtleek.com/modules/01_DataScientistToolbox/02_10_rtools/</a>)</p>
 <p><strong><span class="emoji" data-emoji="apple">🍎</span> macOS</strong> <strong>users</strong> - might need to install <a href="https://www.xquartz.org/" class="external-link">xquartz</a> to make the heatmaps work (to do this with homebrew, run the following command in your mac’s Terminal: <code>brew install --cask xquartz</code></p>
 <p><span class="emoji" data-emoji="package">📦</span> I highly recommend using <a href="https://rstudio.github.io/renv/index.html" class="external-link">renv</a> for managing your R package installations across multiple projects.</p>
@@ -241,7 +248,7 @@
 <span class="co">#&gt; Registered S3 method overwritten by 'seriation':</span>
 <span class="co">#&gt;   method         from </span>
 <span class="co">#&gt;   reorder.hclust vegan</span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-2-1.png" width="100%"></p>
+<p><img src="reference/figures/README-unnamed-chunk-2-1.png"><!-- --></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">htmp</span> <span class="op">&lt;-</span> <span class="va">dietswap</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="reference/ps_mutate.html">ps_mutate</a></span><span class="op">(</span>nationality <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">nationality</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span>
@@ -263,7 +270,7 @@
   object <span class="op">=</span> <span class="va">htmp</span>, annotation_legend_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">htmp</span>, <span class="st">"AnnoLegends"</span><span class="op">)</span>,
   merge_legends <span class="op">=</span> <span class="cn">TRUE</span>
 <span class="op">)</span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-3-1.png" width="100%"></p>
+<p><img src="reference/figures/README-unnamed-chunk-3-1.png"><!-- --></p>
 </div>
 <div class="section level3">
 <h3 id="example-ordination-plot-workflow">Example ordination plot workflow<a class="anchor" aria-label="anchor" href="#example-ordination-plot-workflow"></a>
@@ -312,7 +319,7 @@
 
 <span class="co"># show plot</span>
 <span class="va">customised_plot</span></code></pre></div>
-<p><img src="reference/figures/README-ordination-plot-1.png" width="100%"></p>
+<p><img src="reference/figures/README-ordination-plot-1.png"><!-- --></p>
 </div>
 <div class="section level3">
 <h3 id="permanova">PERMANOVA<a class="anchor" aria-label="anchor" href="#permanova"></a>
@@ -320,25 +327,22 @@
 <p>You visualised your ordinated data in the plot above. Below you can see how to perform a PERMANOVA to test the significance of BMI’s association with overall microbial composition. This example uses the Family-level aitchison distance to correspond with the plot above.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># calculate distances</span>
-<span class="va">aitchison_dists</span> <span class="op">&lt;-</span>
-  <span class="va">dietswap</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">0.1</span>, tax_level <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"identity"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span>
+<span class="va">aitchison_dists</span> <span class="op">&lt;-</span> <span class="va">dietswap</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"identity"</span>, rank <span class="op">=</span> <span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="reference/dist_calc.html">dist_calc</a></span><span class="op">(</span><span class="st">"aitchison"</span><span class="op">)</span>
 <span class="co">#&gt; Proportional min_prevalence given: 0.1 --&gt; min 23/222 samples.</span>
 
 <span class="co"># the more permutations you request, the longer it takes</span>
 <span class="co"># but also the more stable and precise your p-values become</span>
-<span class="va">aitchison_perm</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/dist_permanova.html">dist_permanova</a></span><span class="op">(</span>
-  data <span class="op">=</span> <span class="va">aitchison_dists</span>,
-  seed <span class="op">=</span> <span class="fl">1234</span>, <span class="co"># for set.seed to ensure reproducibility of random process</span>
-  n_perms <span class="op">=</span> <span class="fl">99</span>, <span class="co"># you should use at least 999!</span>
-  n_processes <span class="op">=</span> <span class="fl">1</span>,
-  variables <span class="op">=</span> <span class="st">"bmi_group"</span>
-<span class="op">)</span>
-<span class="co">#&gt; 2021-12-02 11:37:35 - Starting PERMANOVA with 99 perms with 1 processes</span>
-<span class="co">#&gt; 2021-12-02 11:37:35 - Finished PERMANOVA</span>
+<span class="va">aitchison_perm</span> <span class="op">&lt;-</span> <span class="va">aitchison_dists</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="reference/dist_permanova.html">dist_permanova</a></span><span class="op">(</span>
+    seed <span class="op">=</span> <span class="fl">1234</span>, <span class="co"># for set.seed to ensure reproducibility of random process</span>
+    n_processes <span class="op">=</span> <span class="fl">1</span>, n_perms <span class="op">=</span> <span class="fl">99</span>, <span class="co"># you should use at least 999!</span>
+    variables <span class="op">=</span> <span class="st">"bmi_group"</span>
+  <span class="op">)</span>
+<span class="co">#&gt; 2021-12-02 14:11:02 - Starting PERMANOVA with 99 perms with 1 processes</span>
+<span class="co">#&gt; 2021-12-02 14:11:02 - Finished PERMANOVA</span>
 
 <span class="co"># view the permanova results</span>
 <span class="fu"><a href="reference/ps_extra-accessors.html">perm_get</a></span><span class="op">(</span><span class="va">aitchison_perm</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span>
@@ -363,19 +367,18 @@
 </h3>
 <p>You could visualise the effect of the (numeric/logical) variables in your permanova directly using the <code>ord_plot</code> function with constraints (and conditions).</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">perm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/dist_permanova.html">dist_permanova</a></span><span class="op">(</span>
-  data <span class="op">=</span> <span class="va">aitchison_dists</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"african"</span>, <span class="st">"sex"</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">321</span>
-<span class="op">)</span>
+<code class="sourceCode R"><span class="va">perm2</span> <span class="op">&lt;-</span> <span class="va">aitchison_dists</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="reference/dist_permanova.html">dist_permanova</a></span><span class="op">(</span>variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"african"</span>, <span class="st">"sex"</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">321</span><span class="op">)</span>
 <span class="co">#&gt; Dropping samples with missings: 2</span>
-<span class="co">#&gt; 2021-12-02 11:37:35 - Starting PERMANOVA with 999 perms with 1 processes</span>
-<span class="co">#&gt; 2021-12-02 11:37:36 - Finished PERMANOVA</span></code></pre></div>
+<span class="co">#&gt; 2021-12-02 14:11:02 - Starting PERMANOVA with 999 perms with 1 processes</span>
+<span class="co">#&gt; 2021-12-02 14:11:03 - Finished PERMANOVA</span></code></pre></div>
 <p>We’ll visualise the effect of nationality and bodyweight on sample composition, after first removing the effect of sex.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">perm2</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="reference/ord_calc.html">ord_calc</a></span><span class="op">(</span>constraints <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"african"</span><span class="op">)</span>, conditions <span class="op">=</span> <span class="st">"female"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="reference/ord_plot.html">ord_plot</a></span><span class="op">(</span>
     colour <span class="op">=</span> <span class="st">"nationality"</span>, size <span class="op">=</span> <span class="fl">2.5</span>, alpha <span class="op">=</span> <span class="fl">0.35</span>,
-    auto_caption <span class="op">=</span> <span class="fl">6</span>,
+    auto_caption <span class="op">=</span> <span class="fl">7</span>,
     constraint_vec_length <span class="op">=</span> <span class="fl">1</span>,
     constraint_vec_style <span class="op">=</span> <span class="fu"><a href="reference/ord_arrows.html">vec_constraint</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">1.5</span>, colour <span class="op">=</span> <span class="st">"grey15"</span><span class="op">)</span>,
     constraint_lab_style <span class="op">=</span> <span class="fu"><a href="reference/Ordination-labels.html">constraint_lab_style</a></span><span class="op">(</span>
@@ -385,13 +388,13 @@
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/stat_ellipse.html" class="external-link">stat_ellipse</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="va">nationality</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_color_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Set1"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_fixed.html" class="external-link">coord_fixed</a></span><span class="op">(</span>ratio <span class="op">=</span> <span class="fl">0.35</span>, clip <span class="op">=</span> <span class="st">"off"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.85</span>, <span class="fl">0.1</span><span class="op">)</span>, legend.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">0.1</span><span class="op">)</span>, legend.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Centering (mean) and scaling (sd) the constraints and conditions:</span>
 <span class="co">#&gt;  weight</span>
 <span class="co">#&gt;  african</span>
 <span class="co">#&gt;  female</span></code></pre></div>
-<p><img src="reference/figures/README-constrained-ord-plot-1.png" width="100%"></p>
+<p><img src="reference/figures/README-constrained-ord-plot-1.png"><!-- --></p>
 </div>
 <div class="section level3">
 <h3 id="correlation-heatmaps">Correlation Heatmaps<a class="anchor" aria-label="anchor" href="#correlation-heatmaps"></a>
@@ -423,7 +426,7 @@
     Log2 <span class="op">=</span> <span class="fu"><a href="reference/anno_tax_box.html">anno_tax_box</a></span><span class="op">(</span>undetected <span class="op">=</span> <span class="fl">50</span>, trans <span class="op">=</span> <span class="st">"log2"</span>, zero_replace <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
   <span class="op">)</span>
 <span class="op">)</span></code></pre></div>
-<p><img src="reference/figures/README-heatmap-1.png" width="100%"></p>
+<p><img src="reference/figures/README-heatmap-1.png"><!-- --></p>
 </div>
 </div>
 <div class="section level2">
@@ -452,49 +455,61 @@
 <span class="co">#&gt; LAPACK: /usr/lib/x86_64-linux-gnu/libopenblasp-r0.2.20.so</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; locale:</span>
-<span class="co">#&gt;  [1] LC_CTYPE=en_GB.UTF-8       LC_NUMERIC=C               LC_TIME=en_GB.UTF-8       </span>
-<span class="co">#&gt;  [4] LC_COLLATE=en_GB.UTF-8     LC_MONETARY=en_GB.UTF-8    LC_MESSAGES=en_GB.UTF-8   </span>
-<span class="co">#&gt;  [7] LC_PAPER=en_GB.UTF-8       LC_NAME=C                  LC_ADDRESS=C              </span>
-<span class="co">#&gt; [10] LC_TELEPHONE=C             LC_MEASUREMENT=en_GB.UTF-8 LC_IDENTIFICATION=C       </span>
+<span class="co">#&gt;  [1] LC_CTYPE=en_GB.UTF-8       LC_NUMERIC=C              </span>
+<span class="co">#&gt;  [3] LC_TIME=en_GB.UTF-8        LC_COLLATE=en_GB.UTF-8    </span>
+<span class="co">#&gt;  [5] LC_MONETARY=en_GB.UTF-8    LC_MESSAGES=en_GB.UTF-8   </span>
+<span class="co">#&gt;  [7] LC_PAPER=en_GB.UTF-8       LC_NAME=C                 </span>
+<span class="co">#&gt;  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span>
+<span class="co">#&gt; [11] LC_MEASUREMENT=en_GB.UTF-8 LC_IDENTIFICATION=C       </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; attached base packages:</span>
 <span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; other attached packages:</span>
-<span class="co">#&gt; [1] ggplot2_3.3.5       dplyr_1.0.7         phyloseq_1.36.0     microViz_0.8.2.9001</span>
-<span class="co">#&gt; [5] devtools_2.4.2      usethis_2.1.3       pkgdown_2.0.0      </span>
+<span class="co">#&gt; [1] ggplot2_3.3.5   dplyr_1.0.7     phyloseq_1.36.0 microViz_0.9.0 </span>
+<span class="co">#&gt; [5] devtools_2.4.2  usethis_2.1.3   pkgdown_2.0.0  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; loaded via a namespace (and not attached):</span>
-<span class="co">#&gt;   [1] Rtsne_0.15             colorspace_2.0-2       rjson_0.2.20           ellipsis_0.3.2        </span>
-<span class="co">#&gt;   [5] rprojroot_2.0.2        circlize_0.4.13        markdown_1.1           XVector_0.32.0        </span>
-<span class="co">#&gt;   [9] GlobalOptions_0.1.2    fs_1.5.1               gridtext_0.1.4         ggtext_0.1.1          </span>
-<span class="co">#&gt;  [13] clue_0.3-60            rstudioapi_0.13        farver_2.1.0           remotes_2.4.1         </span>
-<span class="co">#&gt;  [17] fansi_0.5.0            xml2_1.3.2             codetools_0.2-18       splines_4.1.2         </span>
-<span class="co">#&gt;  [21] doParallel_1.0.16      cachem_1.0.6           knitr_1.36             pkgload_1.2.3         </span>
-<span class="co">#&gt;  [25] ade4_1.7-18            jsonlite_1.7.2         Cairo_1.5-12.2         cluster_2.1.2         </span>
-<span class="co">#&gt;  [29] png_0.1-7              compiler_4.1.2         assertthat_0.2.1       Matrix_1.3-4          </span>
-<span class="co">#&gt;  [33] fastmap_1.1.0          cli_3.1.0              htmltools_0.5.2        prettyunits_1.1.1     </span>
-<span class="co">#&gt;  [37] tools_4.1.2            igraph_1.2.9           gtable_0.3.0           glue_1.5.1            </span>
-<span class="co">#&gt;  [41] GenomeInfoDbData_1.2.7 reshape2_1.4.4         Rcpp_1.0.7             Biobase_2.52.0        </span>
-<span class="co">#&gt;  [45] vctrs_0.3.8            Biostrings_2.60.2      rhdf5filters_1.4.0     multtest_2.48.0       </span>
-<span class="co">#&gt;  [49] ape_5.5                nlme_3.1-153           iterators_1.0.13       xfun_0.28             </span>
-<span class="co">#&gt;  [53] stringr_1.4.0          ps_1.6.0               testthat_3.1.0         lifecycle_1.0.1       </span>
-<span class="co">#&gt;  [57] zlibbioc_1.38.0        MASS_7.3-54            scales_1.1.1           TSP_1.1-11            </span>
-<span class="co">#&gt;  [61] parallel_4.1.2         biomformat_1.20.0      rhdf5_2.36.0           RColorBrewer_1.1-2    </span>
-<span class="co">#&gt;  [65] ComplexHeatmap_2.8.0   yaml_2.2.1             memoise_2.0.0          gridExtra_2.3         </span>
-<span class="co">#&gt;  [69] stringi_1.7.6          highr_0.9              S4Vectors_0.30.2       desc_1.4.0            </span>
-<span class="co">#&gt;  [73] foreach_1.5.1          permute_0.9-5          seriation_1.3.1        BiocGenerics_0.38.0   </span>
-<span class="co">#&gt;  [77] pkgbuild_1.2.0         shape_1.4.6            GenomeInfoDb_1.28.4    rlang_0.4.12          </span>
-<span class="co">#&gt;  [81] pkgconfig_2.0.3        bitops_1.0-7           matrixStats_0.61.0     evaluate_0.14         </span>
-<span class="co">#&gt;  [85] lattice_0.20-45        purrr_0.3.4            Rhdf5lib_1.14.2        labeling_0.4.2        </span>
-<span class="co">#&gt;  [89] processx_3.5.2         tidyselect_1.1.1       plyr_1.8.6             magrittr_2.0.1        </span>
-<span class="co">#&gt;  [93] R6_2.5.1               magick_2.7.3           IRanges_2.26.0         generics_0.1.1        </span>
-<span class="co">#&gt;  [97] DBI_1.1.1              pillar_1.6.4           withr_2.4.3            mgcv_1.8-38           </span>
-<span class="co">#&gt; [101] survival_3.2-13        RCurl_1.98-1.5         tibble_3.1.6           corncob_0.2.0         </span>
-<span class="co">#&gt; [105] crayon_1.4.2           utf8_1.2.2             microbiome_1.14.0      rmarkdown_2.11        </span>
-<span class="co">#&gt; [109] GetoptLong_1.0.5       viridis_0.6.2          grid_4.1.2             data.table_1.14.2     </span>
-<span class="co">#&gt; [113] callr_3.7.0            vegan_2.5-7            digest_0.6.29          tidyr_1.1.4           </span>
-<span class="co">#&gt; [117] stats4_4.1.2           munsell_0.5.0          registry_0.5-1         viridisLite_0.4.0     </span>
+<span class="co">#&gt;   [1] Rtsne_0.15             colorspace_2.0-2       rjson_0.2.20          </span>
+<span class="co">#&gt;   [4] ellipsis_0.3.2         rprojroot_2.0.2        circlize_0.4.13       </span>
+<span class="co">#&gt;   [7] markdown_1.1           XVector_0.32.0         GlobalOptions_0.1.2   </span>
+<span class="co">#&gt;  [10] fs_1.5.1               gridtext_0.1.4         ggtext_0.1.1          </span>
+<span class="co">#&gt;  [13] clue_0.3-60            rstudioapi_0.13        farver_2.1.0          </span>
+<span class="co">#&gt;  [16] remotes_2.4.1          fansi_0.5.0            xml2_1.3.2            </span>
+<span class="co">#&gt;  [19] codetools_0.2-18       splines_4.1.2          doParallel_1.0.16     </span>
+<span class="co">#&gt;  [22] cachem_1.0.6           knitr_1.36             pkgload_1.2.3         </span>
+<span class="co">#&gt;  [25] ade4_1.7-18            jsonlite_1.7.2         Cairo_1.5-12.2        </span>
+<span class="co">#&gt;  [28] cluster_2.1.2          png_0.1-7              compiler_4.1.2        </span>
+<span class="co">#&gt;  [31] assertthat_0.2.1       Matrix_1.3-4           fastmap_1.1.0         </span>
+<span class="co">#&gt;  [34] cli_3.1.0              htmltools_0.5.2        prettyunits_1.1.1     </span>
+<span class="co">#&gt;  [37] tools_4.1.2            igraph_1.2.9           gtable_0.3.0          </span>
+<span class="co">#&gt;  [40] glue_1.5.1             GenomeInfoDbData_1.2.7 reshape2_1.4.4        </span>
+<span class="co">#&gt;  [43] Rcpp_1.0.7             Biobase_2.52.0         vctrs_0.3.8           </span>
+<span class="co">#&gt;  [46] Biostrings_2.60.2      rhdf5filters_1.4.0     multtest_2.48.0       </span>
+<span class="co">#&gt;  [49] ape_5.5                nlme_3.1-153           iterators_1.0.13      </span>
+<span class="co">#&gt;  [52] xfun_0.28              stringr_1.4.0          ps_1.6.0              </span>
+<span class="co">#&gt;  [55] testthat_3.1.0         lifecycle_1.0.1        zlibbioc_1.38.0       </span>
+<span class="co">#&gt;  [58] MASS_7.3-54            scales_1.1.1           TSP_1.1-11            </span>
+<span class="co">#&gt;  [61] parallel_4.1.2         biomformat_1.20.0      rhdf5_2.36.0          </span>
+<span class="co">#&gt;  [64] RColorBrewer_1.1-2     ComplexHeatmap_2.8.0   yaml_2.2.1            </span>
+<span class="co">#&gt;  [67] memoise_2.0.0          gridExtra_2.3          stringi_1.7.6         </span>
+<span class="co">#&gt;  [70] highr_0.9              S4Vectors_0.30.2       desc_1.4.0            </span>
+<span class="co">#&gt;  [73] foreach_1.5.1          permute_0.9-5          seriation_1.3.1       </span>
+<span class="co">#&gt;  [76] BiocGenerics_0.38.0    pkgbuild_1.2.0         shape_1.4.6           </span>
+<span class="co">#&gt;  [79] GenomeInfoDb_1.28.4    rlang_0.4.12           pkgconfig_2.0.3       </span>
+<span class="co">#&gt;  [82] bitops_1.0-7           matrixStats_0.61.0     evaluate_0.14         </span>
+<span class="co">#&gt;  [85] lattice_0.20-45        purrr_0.3.4            Rhdf5lib_1.14.2       </span>
+<span class="co">#&gt;  [88] labeling_0.4.2         processx_3.5.2         tidyselect_1.1.1      </span>
+<span class="co">#&gt;  [91] plyr_1.8.6             magrittr_2.0.1         R6_2.5.1              </span>
+<span class="co">#&gt;  [94] magick_2.7.3           IRanges_2.26.0         generics_0.1.1        </span>
+<span class="co">#&gt;  [97] DBI_1.1.1              pillar_1.6.4           withr_2.4.3           </span>
+<span class="co">#&gt; [100] mgcv_1.8-38            survival_3.2-13        RCurl_1.98-1.5        </span>
+<span class="co">#&gt; [103] tibble_3.1.6           corncob_0.2.0          crayon_1.4.2          </span>
+<span class="co">#&gt; [106] utf8_1.2.2             microbiome_1.14.0      rmarkdown_2.11        </span>
+<span class="co">#&gt; [109] GetoptLong_1.0.5       viridis_0.6.2          grid_4.1.2            </span>
+<span class="co">#&gt; [112] data.table_1.14.2      callr_3.7.0            vegan_2.5-7           </span>
+<span class="co">#&gt; [115] digest_0.6.29          tidyr_1.1.4            stats4_4.1.2          </span>
+<span class="co">#&gt; [118] munsell_0.5.0          registry_0.5-1         viridisLite_0.4.0     </span>
 <span class="co">#&gt; [121] sessioninfo_1.2.1</span></code></pre></div>
 </div>
 </div>
