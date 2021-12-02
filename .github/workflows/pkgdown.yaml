@@ -9,7 +9,7 @@ name: pkgdown
 
 jobs:
   pkgdown:
-    runs-on: ubuntu-latest
+    runs-on: macOS-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
@@ -19,13 +19,16 @@ jobs:
 
       - uses: r-lib/actions/setup-r@v1
         with:
-          r-version: 'oldrel-1'
           use-public-rspm: true
 
       - uses: r-lib/actions/setup-r-dependencies@v1
         with:
           extra-packages: pkgdown
           needs: website
+          
+      - name: Install XQuartz on macOS
+        if: runner.os == 'macOS'
+        run: brew install --cask xquartz
 
       - name: Deploy package
         run: |
