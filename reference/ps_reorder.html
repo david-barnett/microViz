@@ -130,48 +130,39 @@
 <span class="r-in"><span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html" class="external-link">sample_data</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">8</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          subject    sex nationality group   sample timepoint</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-1     byn   male         AAM    DI Sample-1         4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-2     nms   male         AFR    HE Sample-2         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-3     olt   male         AFR    HE Sample-3         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-4     pku female         AFR    HE Sample-4         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-5     qjy female         AFR    HE Sample-5         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-6     riv female         AFR    HE Sample-6         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-7     shj female         AFR    HE Sample-7         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-8     tgx   male         AFR    HE Sample-8         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          timepoint.within.group  bmi_group</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-1                      1      obese</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-2                      1       lean</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-3                      1 overweight</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-4                      1      obese</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-5                      1 overweight</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-6                      1      obese</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-7                      1      obese</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-8                      1 overweight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          subject    sex nationality group   sample timepoint timepoint.within.group  bmi_group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-1     byn   male         AAM    DI Sample-1         4                      1      obese</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-2     nms   male         AFR    HE Sample-2         2                      1       lean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-3     olt   male         AFR    HE Sample-3         2                      1 overweight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-4     pku female         AFR    HE Sample-4         2                      1      obese</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-5     qjy female         AFR    HE Sample-5         2                      1 overweight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-6     riv female         AFR    HE Sample-6         2                      1      obese</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-7     shj female         AFR    HE Sample-7         2                      1      obese</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-8     tgx   male         AFR    HE Sample-8         2                      1 overweight</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">new_order</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rev.html" class="external-link">rev</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_names-methods.html" class="external-link">sample_names</a></span><span class="op">(</span><span class="va">dietswap</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">ps_reorder</span><span class="op">(</span><span class="va">new_order</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html" class="external-link">sample_data</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">8</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            subject    sex nationality group     sample timepoint</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-222     ufm   male         AFR    ED Sample-222         6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-221     tgx   male         AFR    ED Sample-221         6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-220     shj female         AFR    ED Sample-220         6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-219     riv female         AFR    ED Sample-219         6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-218     qjy female         AFR    ED Sample-218         6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-217     pku female         AFR    ED Sample-217         6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-216     olt   male         AFR    ED Sample-216         6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-215     nms   male         AFR    ED Sample-215         6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            timepoint.within.group  bmi_group</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-222                      2       lean</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-221                      2 overweight</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-220                      2      obese</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-219                      2      obese</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-218                      2 overweight</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-217                      2      obese</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-216                      2 overweight</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-215                      2       lean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            subject    sex nationality group     sample timepoint timepoint.within.group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-222     ufm   male         AFR    ED Sample-222         6                      2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-221     tgx   male         AFR    ED Sample-221         6                      2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-220     shj female         AFR    ED Sample-220         6                      2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-219     riv female         AFR    ED Sample-219         6                      2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-218     qjy female         AFR    ED Sample-218         6                      2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-217     pku female         AFR    ED Sample-217         6                      2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-216     olt   male         AFR    ED Sample-216         6                      2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-215     nms   male         AFR    ED Sample-215         6                      2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             bmi_group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-222       lean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-221 overweight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-220      obese</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-219      obese</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-218 overweight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-217      obese</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-216 overweight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-215       lean</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># random ordering with numbers</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span></span>
@@ -180,24 +171,24 @@
 <span class="r-in">  <span class="fu">ps_reorder</span><span class="op">(</span><span class="va">random_order</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html" class="external-link">sample_data</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">8</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            subject    sex nationality group     sample timepoint</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-68      cxj female         AAM    ED  Sample-68         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-43      gty   male         AAM    ED  Sample-43         6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-214     ufm   male         AFR    ED Sample-214         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-51      dwc   male         AFR    ED  Sample-51         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-88      fud female         AFR    DI  Sample-88         5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-29      qjy female         AFR    DI  Sample-29         5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-99      fud female         AFR    HE  Sample-99         3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-61      azl female         AFR    ED  Sample-61         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            timepoint.within.group  bmi_group</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-68                       1 overweight</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-43                       2 overweight</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-214                      1       lean</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-51                       1       lean</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-88                       2      obese</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-29                       2 overweight</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-99                       2      obese</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-61                       1      obese</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            subject    sex nationality group     sample timepoint timepoint.within.group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-68      cxj female         AAM    ED  Sample-68         1                      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-43      gty   male         AAM    ED  Sample-43         6                      2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-214     ufm   male         AFR    ED Sample-214         1                      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-51      dwc   male         AFR    ED  Sample-51         1                      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-88      fud female         AFR    DI  Sample-88         5                      2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-29      qjy female         AFR    DI  Sample-29         5                      2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-99      fud female         AFR    HE  Sample-99         3                      2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-61      azl female         AFR    ED  Sample-61         1                      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             bmi_group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-68  overweight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-43  overweight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-214       lean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-51        lean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-88       obese</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-29  overweight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-99       obese</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-61       obese</span>
 </code></pre></div>
     </div>
   </div>

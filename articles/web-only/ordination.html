@@ -232,7 +232,7 @@
   <span class="fu"><a href="../../reference/ord_calc.html">ord_calc</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> 
   <span class="fu"><a href="../../reference/ord_plot.html">ord_plot</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"ibd"</span>, shape <span class="op">=</span> <span class="st">"DiseaseState"</span>, size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_colour_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Dark2"</span><span class="op">)</span></code></pre></div>
-<p><img src="ordination_files/figure-html/pca-1.png" width="672"></p>
+<p><img src="ordination_files/figure-html/unnamed-chunk-2-1.png" width="672"></p>
 <p>One benefit of not using a distance matrix, is that you can plot taxa “loadings” onto your PCA axes, using the plot_taxa argument. microViz plots all of the taxa loading vectors in light grey, and you choose how many of the vectors to label, starting with the longest arrows (alternatively you can name particular taxa to label).</p>
 <p>The relative length of each loading vector indicates its contribution to each PCA axis shown, and allows you to roughly estimate which samples will contain more of that taxon e.g. samples on the left of the plot below, will typically contain more <em>Escherichia</em>/<em>Shigella</em> than samples on the right, and this taxon contributes heavily to the PC1 axis.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -242,7 +242,7 @@
   <span class="fu"><a href="../../reference/ord_calc.html">ord_calc</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"PCA"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> 
   <span class="fu"><a href="../../reference/ord_plot.html">ord_plot</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"ibd"</span>, shape <span class="op">=</span> <span class="st">"DiseaseState"</span>, plot_taxa <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_colour_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Dark2"</span><span class="op">)</span></code></pre></div>
-<p><img src="ordination_files/figure-html/pca%20loadings-1.png" width="672"></p>
+<p><img src="ordination_files/figure-html/unnamed-chunk-3-1.png" width="672"></p>
 <p>microViz also allows you directly visualize the sample compositions on a circular barplot or “iris plot” (named because it looks kinda like an eyeball) alongside the PCA plot. The samples on the iris plot are automatically arranged by their rotational position around the center/origin of the PCA plot.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ibd</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> 
@@ -251,7 +251,7 @@
   <span class="fu"><a href="../../reference/ord_calc.html">ord_calc</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> 
   <span class="fu"><a href="../../reference/ord_plot_iris.html">ord_plot_iris</a></span><span class="op">(</span>tax_level <span class="op">=</span> <span class="st">"Genus"</span>, ord_plot <span class="op">=</span> <span class="st">"above"</span>, anno_colour <span class="op">=</span> <span class="st">"ibd"</span><span class="op">)</span>
 <span class="co">#&gt; Loading required namespace: patchwork</span></code></pre></div>
-<p><img src="ordination_files/figure-html/iris-1.png" width="672"></p>
+<p><img src="ordination_files/figure-html/unnamed-chunk-4-1.png" width="672"></p>
 <p>Here we created the ordination plot as a quick accompaniment to the circular barchart, but it is more flexible to create and customise the ordination plot and iris plot separately, and then pair them afterwards with patchwork. See the <code>ord_plot_iris</code> <a href="https://david-barnett.github.io/microViz/reference/ord_plot_iris.html">docs</a> for examples.</p>
 </div>
 <div class="section level2">
@@ -269,7 +269,7 @@
   <span class="fu"><a href="../../reference/ord_calc.html">ord_calc</a></span><span class="op">(</span><span class="st">"PCoA"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> 
   <span class="fu"><a href="../../reference/ord_plot.html">ord_plot</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"ibd"</span>, shape <span class="op">=</span> <span class="st">"DiseaseState"</span>, size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_colour_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Dark2"</span><span class="op">)</span></code></pre></div>
-<p><img src="ordination_files/figure-html/aitchison%20pcoa-1.png" width="672"></p>
+<p><img src="ordination_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
 <p>Note that PCoA is also known as MDS, for (metric) Multi-Dimensional Scaling, hence the axes names.</p>
 </div>
 <div class="section level3">
@@ -283,7 +283,7 @@
   <span class="fu"><a href="../../reference/ord_calc.html">ord_calc</a></span><span class="op">(</span><span class="st">"PCoA"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> 
   <span class="fu"><a href="../../reference/ord_plot.html">ord_plot</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"ibd"</span>, shape <span class="op">=</span> <span class="st">"DiseaseState"</span>, size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_colour_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Dark2"</span><span class="op">)</span></code></pre></div>
-<p><img src="ordination_files/figure-html/bray-1.png" width="672"></p>
+<p><img src="ordination_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
 <p>Beyond Bray-Curtis, microViz <code><a href="../../reference/dist_calc.html">dist_calc()</a></code> can also help you calculate all the other ecological distances listed in <code><a href="https://rdrr.io/pkg/phyloseq/man/distanceMethodList.html" class="external-link">phyloseq::distanceMethodList</a></code> such the Jensen-Shannon Divergence, <code>"jsd"</code>, or Jaccard dissimilarity <code>"jaccard"</code>. Beware that if you want a binary dissimilarity measure from <code><a href="https://rdrr.io/pkg/vegan/man/vegdist.html" class="external-link">vegan::vegdist()</a></code> (i.e. only using presence/absence info, and noting all the caveats about sensitivity to low abundance taxa) you will need to pass <code>binary = TRUE</code>, as below.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ibd</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> 
@@ -292,7 +292,7 @@
   <span class="fu"><a href="../../reference/ord_calc.html">ord_calc</a></span><span class="op">(</span><span class="st">"PCoA"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> 
   <span class="fu"><a href="../../reference/ord_plot.html">ord_plot</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"ibd"</span>, shape <span class="op">=</span> <span class="st">"DiseaseState"</span>, size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_colour_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Dark2"</span><span class="op">)</span></code></pre></div>
-<p><img src="ordination_files/figure-html/binary%20jaccard-1.png" width="672"></p>
+<p><img src="ordination_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
 </div>
 <div class="section level3">
 <h3 id="unifrac-distances">UniFrac distances<a class="anchor" aria-label="anchor" href="#unifrac-distances"></a>
@@ -332,7 +332,7 @@
   <span class="fu"><a href="../../reference/ord_calc.html">ord_calc</a></span><span class="op">(</span><span class="st">"PCoA"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> 
   <span class="fu"><a href="../../reference/ps_extra-accessors.html">ord_get</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> 
   <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/plot_scree.html" class="external-link">plot_scree</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">6</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p><img src="ordination_files/figure-html/scree-1.png" width="480"></p>
+<p><img src="ordination_files/figure-html/unnamed-chunk-9-1.png" width="480"></p>
 <p>Let us view the 1st and 3rd axes.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ibd</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> 
@@ -341,7 +341,7 @@
   <span class="fu"><a href="../../reference/ord_calc.html">ord_calc</a></span><span class="op">(</span><span class="st">"PCoA"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> 
   <span class="fu"><a href="../../reference/ord_plot.html">ord_plot</a></span><span class="op">(</span>axes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"ibd"</span>, shape <span class="op">=</span> <span class="st">"DiseaseState"</span>, size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_colour_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Dark2"</span><span class="op">)</span> </code></pre></div>
-<p><img src="ordination_files/figure-html/bray%203-1.png" width="672"></p>
+<p><img src="ordination_files/figure-html/unnamed-chunk-10-1.png" width="672"></p>
 </div>
 <div class="section level2">
 <h2 id="rda">RDA<a class="anchor" aria-label="anchor" href="#rda"></a>
@@ -367,7 +367,7 @@
     colour <span class="op">=</span> <span class="st">"DiseaseState"</span>, size <span class="op">=</span> <span class="fl">2</span>, alpha <span class="op">=</span> <span class="fl">0.5</span>, shape <span class="op">=</span> <span class="st">"active"</span>,
     plot_taxa <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">8</span>
   <span class="op">)</span></code></pre></div>
-<p><img src="ordination_files/figure-html/rda-1.png" width="672"></p>
+<p><img src="ordination_files/figure-html/unnamed-chunk-11-1.png" width="672"></p>
 <div class="section level3">
 <h3 id="customising-your-ordination-plot">Customising your ordination plot<a class="anchor" aria-label="anchor" href="#customising-your-ordination-plot"></a>
 </h3>
@@ -417,7 +417,7 @@
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"91 samples, 178 genera. Type 2 scaling."</span><span class="op">)</span> <span class="op">+</span>
   <span class="co"># this is one way to set the aspect ratio of the plot</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_fixed.html" class="external-link">coord_fixed</a></span><span class="op">(</span>ratio <span class="op">=</span> <span class="fl">1</span>, clip <span class="op">=</span> <span class="st">"off"</span><span class="op">)</span></code></pre></div>
-<p><img src="ordination_files/figure-html/rda%20custom-1.png" width="672"></p>
+<p><img src="ordination_files/figure-html/unnamed-chunk-12-1.png" width="672"></p>
 <div class="section level4">
 <h4 id="custom-labels">Custom labels<a class="anchor" aria-label="anchor" href="#custom-labels"></a>
 </h4>
@@ -460,7 +460,7 @@
     active <span class="op">=</span> <span class="st">"circle"</span>, mild <span class="op">=</span> <span class="st">"circle cross"</span>,
     inactive <span class="op">=</span> <span class="st">"circle open"</span>, control <span class="op">=</span> <span class="st">"square open"</span>
   <span class="op">)</span><span class="op">)</span> </code></pre></div>
-<p><img src="ordination_files/figure-html/rda%20custom%202-1.png" width="672"></p>
+<p><img src="ordination_files/figure-html/unnamed-chunk-13-1.png" width="672"></p>
 </div>
 </div>
 <div class="section level3">

@@ -212,31 +212,23 @@ if NA, return data.frame with rownames (sample_names)</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sample-6                0          0         0          16</span>
 <span class="r-in"><span class="fu">tt_get</span><span class="op">(</span><span class="va">psx</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Taxonomy Table:     [6 taxa by 3 taxonomic ranks]:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                              Phylum            Family           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Actinomycetaceae             "Actinobacteria"  "Actinobacteria" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Aerococcus                   "Firmicutes"      "Bacilli"        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Aeromonas                    "Proteobacteria"  "Proteobacteria" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Akkermansia                  "Verrucomicrobia" "Verrucomicrobia"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Alcaligenes faecalis et rel. "Proteobacteria"  "Proteobacteria" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Allistipes et rel.           "Bacteroidetes"   "Bacteroidetes"  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                              Genus                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Actinomycetaceae             "Actinomycetaceae"            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Aerococcus                   "Aerococcus"                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Aeromonas                    "Aeromonas"                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Akkermansia                  "Akkermansia"                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Alcaligenes faecalis et rel. "Alcaligenes faecalis et rel."</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Allistipes et rel.           "Allistipes et rel."          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                              Phylum            Family            Genus                         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Actinomycetaceae             "Actinobacteria"  "Actinobacteria"  "Actinomycetaceae"            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Aerococcus                   "Firmicutes"      "Bacilli"         "Aerococcus"                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Aeromonas                    "Proteobacteria"  "Proteobacteria"  "Aeromonas"                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Akkermansia                  "Verrucomicrobia" "Verrucomicrobia" "Akkermansia"                 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Alcaligenes faecalis et rel. "Proteobacteria"  "Proteobacteria"  "Alcaligenes faecalis et rel."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Allistipes et rel.           "Bacteroidetes"   "Bacteroidetes"   "Allistipes et rel."          </span>
 <span class="r-in"><span class="fu">samdat_tbl</span><span class="op">(</span><span class="va">psx</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 9</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .sample_name subject sex   nationality group sample timepoint timepoint.withi…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Sample-1     byn     male  AAM         DI    Sampl…         4                1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Sample-2     nms     male  AFR         HE    Sampl…         2                1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Sample-3     olt     male  AFR         HE    Sampl…         2                1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> Sample-4     pku     fema… AFR         HE    Sampl…         2                1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> Sample-5     qjy     fema… AFR         HE    Sampl…         2                1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> Sample-6     riv     fema… AFR         HE    Sampl…         2                1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 1 more variable: bmi_group &lt;fct&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .sample_name subject sex    nationality group sample   timepoint timepoint.within.gr… bmi_group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Sample-1     byn     male   AAM         DI    Sample-1         4                    1 obese    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Sample-2     nms     male   AFR         HE    Sample-2         2                    1 lean     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Sample-3     olt     male   AFR         HE    Sample-3         2                    1 overweig…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> Sample-4     pku     female AFR         HE    Sample-4         2                    1 obese    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> Sample-5     qjy     female AFR         HE    Sample-5         2                    1 overweig…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> Sample-6     riv     female AFR         HE    Sample-6         2                    1 obese    </span>
 </code></pre></div>
     </div>
   </div>

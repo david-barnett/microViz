@@ -183,7 +183,7 @@
     bar_outline_colour <span class="op">=</span> <span class="st">"grey5"</span> <span class="co"># is the default (use NA to remove outlines)</span>
   <span class="op">)</span> <span class="op">+</span> 
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p><img src="compositions_files/figure-html/simple%20customised-1.png" width="864"></p>
+<p><img src="compositions_files/figure-html/unnamed-chunk-3-1.png" width="864"></p>
 <p><strong>Other notes:</strong></p>
 <ul>
 <li>Dissimilarity is calculated using only the visibly distinct taxa, to optimise sorting for visual similarity. You can change this by setting <code>order_with_all_taxa = TRUE</code>, to always use all taxa for similarity sorting.</li>
@@ -208,7 +208,7 @@
   <span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
 <span class="co">#&gt; Warning in asMethod(object): NAs introduced by coercion</span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-3-1.png" width="864"></p>
+<p><img src="compositions_files/figure-html/unnamed-chunk-4-1.png" width="864"></p>
 </div>
 <div class="section level3">
 <h3 id="faceting">Faceting<a class="anchor" aria-label="anchor" href="#faceting"></a>
@@ -228,7 +228,7 @@
     bar_outline_colour <span class="op">=</span> <span class="cn">NA</span>, facet_by <span class="op">=</span> <span class="st">"DiseaseState"</span>
   <span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span> </code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-4-1.png" width="864"></p>
+<p><img src="compositions_files/figure-html/unnamed-chunk-5-1.png" width="864"></p>
 <p>Instead of using the <code>facet_by</code> argument in <code>comp_barplot</code> you can have more control over faceting by doing it yourself afterwards. You can use facet_grid to create row facets.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pseq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span>
@@ -251,7 +251,7 @@
     axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,
     axis.ticks.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>
   <span class="op">)</span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-5-1.png" width="576"></p>
+<p><img src="compositions_files/figure-html/unnamed-chunk-6-1.png" width="576"></p>
 </div>
 <div class="section level3">
 <h3 id="grouping">Grouping<a class="anchor" aria-label="anchor" href="#grouping"></a>
@@ -269,7 +269,7 @@
 <span class="co"># Plot them side by side with the patchwork package.</span>
 <span class="va">patch</span> <span class="op">&lt;-</span> <span class="fu">patchwork</span><span class="fu">::</span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html" class="external-link">wrap_plots</a></span><span class="op">(</span><span class="va">plot_list</span>, nrow <span class="op">=</span> <span class="fl">1</span>, guides <span class="op">=</span> <span class="st">"collect"</span><span class="op">)</span>
 <span class="va">patch</span> <span class="op">&amp;</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># make all plots horizontal (note: use &amp; instead of +)</span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-6-1.png" width="864"></p>
+<p><img src="compositions_files/figure-html/unnamed-chunk-7-1.png" width="864"></p>
 <p>Notice how you can theme all plots with the <code>&amp;</code> operator.</p>
 <p>See <a href="https://patchwork.data-imaginist.com/index.html" class="external-link uri">https://patchwork.data-imaginist.com/index.html</a> for more examples of arranging multiple plots.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
@@ -284,7 +284,7 @@
     caption <span class="op">=</span> <span class="st">"Caption: patchwork is a great package!"</span>,
     theme <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">14</span>, face <span class="op">=</span> <span class="st">"bold"</span><span class="op">)</span><span class="op">)</span>
   <span class="op">)</span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-7-1.png" width="864"></p>
+<p><img src="compositions_files/figure-html/unnamed-chunk-8-1.png" width="864"></p>
 </div>
 </div>
 <div class="section level2">
@@ -300,7 +300,7 @@
   <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span>tax_level <span class="op">=</span> <span class="st">"Genus"</span>, sample_order <span class="op">=</span> <span class="st">"default"</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Unsorted barcharts are hard to read!"</span><span class="op">)</span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-8-1.png" width="864"></p>
+<p><img src="compositions_files/figure-html/unnamed-chunk-9-1.png" width="864"></p>
 <p>You can play with the dissimilarity measure (set in <code>sample_order</code> argument) and <code>seriate_method</code> if you like, but the defaults (Bray Curtis and OLO Ward) seem to work pretty well most of the time.</p>
 <p>When sorting samples by similarity, the default is to treat the “other” taxa as one group, i.e. when <code>merge_other = TRUE</code> and <code>order_with_all_taxa = FALSE</code>.</p>
 <p>If you set <code>order_with_all_taxa = TRUE</code>, samples are sorted BEFORE merging taxa. The resulting sample order is then the same as when <code>merge_other = FALSE</code>.</p>
@@ -310,7 +310,7 @@
   <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span>tax_level <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Samples sorted AFTER merging 'other' taxa"</span><span class="op">)</span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-9-1.png" width="864"></p>
+<p><img src="compositions_files/figure-html/unnamed-chunk-10-1.png" width="864"></p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">pseq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span>
@@ -318,7 +318,7 @@
   <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span>tax_level <span class="op">=</span> <span class="st">"Genus"</span>, order_with_all_taxa <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Samples sorted BEFORE merging 'other' taxa"</span><span class="op">)</span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-9-2.png" width="864"></p>
+<p><img src="compositions_files/figure-html/unnamed-chunk-10-2.png" width="864"></p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 
@@ -327,7 +327,7 @@
   <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span>tax_level <span class="op">=</span> <span class="st">"Genus"</span>, merge_other <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"'other' taxa not merged"</span><span class="op">)</span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-9-3.png" width="864"></p>
+<p><img src="compositions_files/figure-html/unnamed-chunk-10-3.png" width="864"></p>
 </div>
 <div class="section level3">
 <h3 id="sort-by-ordination">Sort by ordination<a class="anchor" aria-label="anchor" href="#sort-by-ordination"></a>
@@ -349,7 +349,7 @@
 <span class="co">#&gt; Available otu_table contains non-zero values that are less than 1</span>
 <span class="co">#&gt; Warning in ps_counts(data = data): otu_table of counts is NOT available!</span>
 <span class="co">#&gt; Available otu_table contains non-zero values that are less than 1</span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-10-1.png" width="864"></p>
+<p><img src="compositions_files/figure-html/unnamed-chunk-11-1.png" width="864"></p>
 </div>
 <div class="section level3">
 <h3 id="sorting-by-metadata">Sorting by metadata<a class="anchor" aria-label="anchor" href="#sorting-by-metadata"></a>
@@ -390,7 +390,7 @@
   <span class="op">)</span>
 
 <span class="va">times</span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-11-1.png" width="960"></p>
+<p><img src="compositions_files/figure-html/unnamed-chunk-12-1.png" width="960"></p>
 <p>Same grouping, now showing diversity of taxa within other, with <code>merge_other = FALSE</code></p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">times_list</span> <span class="op">&lt;-</span> <span class="va">ps</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span>
@@ -412,7 +412,7 @@
   <span class="op">)</span>
 
 <span class="va">times</span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-12-1.png" width="960"></p>
+<p><img src="compositions_files/figure-html/unnamed-chunk-13-1.png" width="960"></p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://r-lib.github.io/sessioninfo/reference/session_info.html" class="external-link">session_info</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">─ Session info  ──────────────────────────────────────────────────────────────────────────────────</span></span>
