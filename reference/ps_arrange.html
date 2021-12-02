@@ -132,109 +132,109 @@ to set the order of the samples
 <span class="r-in">  <span class="fu">ps_arrange</span><span class="op">(</span><span class="va">subject</span>, <span class="va">timepoint</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html" class="external-link">sample_data</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">8</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            subject    sex nationality group     sample timepoint timepoint.within.group</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-32      azh female         AAM    ED  Sample-32         1                      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-109     azh female         AAM    HE Sample-109         2                      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-119     azh female         AAM    HE Sample-119         3                      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-130     azh female         AAM    DI Sample-130         4                      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-140     azh female         AAM    DI Sample-140         5                      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-41      azh female         AAM    ED  Sample-41         6                      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-61      azl female         AFR    ED  Sample-61         1                      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-93      azl female         AFR    HE  Sample-93         2                      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             bmi_group</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-32  overweight</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-109 overweight</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-119 overweight</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-130 overweight</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-140 overweight</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-41  overweight</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-61       obese</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-93       obese</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            subject    sex nationality group     sample timepoint</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-32      azh female         AAM    ED  Sample-32         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-109     azh female         AAM    HE Sample-109         2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-119     azh female         AAM    HE Sample-119         3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-130     azh female         AAM    DI Sample-130         4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-140     azh female         AAM    DI Sample-140         5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-41      azh female         AAM    ED  Sample-41         6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-61      azl female         AFR    ED  Sample-61         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-93      azl female         AFR    HE  Sample-93         2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            timepoint.within.group  bmi_group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-32                       1 overweight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-109                      1 overweight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-119                      2 overweight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-130                      1 overweight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-140                      2 overweight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-41                       2 overweight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-61                       1      obese</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-93                       1      obese</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">ps</span> <span class="op">&lt;-</span> <span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">ps_arrange</span><span class="op">(</span><span class="va">subject</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">timepoint</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html" class="external-link">sample_data</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">8</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            subject    sex nationality group     sample timepoint timepoint.within.group</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-41      azh female         AAM    ED  Sample-41         6                      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-140     azh female         AAM    DI Sample-140         5                      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-130     azh female         AAM    DI Sample-130         4                      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-119     azh female         AAM    HE Sample-119         3                      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-109     azh female         AAM    HE Sample-109         2                      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-32      azh female         AAM    ED  Sample-32         1                      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-67      azl female         AFR    ED  Sample-67         6                      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-86      azl female         AFR    DI  Sample-86         5                      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             bmi_group</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-41  overweight</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-140 overweight</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-130 overweight</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-119 overweight</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-109 overweight</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-32  overweight</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-67       obese</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-86       obese</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            subject    sex nationality group     sample timepoint</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-41      azh female         AAM    ED  Sample-41         6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-140     azh female         AAM    DI Sample-140         5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-130     azh female         AAM    DI Sample-130         4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-119     azh female         AAM    HE Sample-119         3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-109     azh female         AAM    HE Sample-109         2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-32      azh female         AAM    ED  Sample-32         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-67      azl female         AFR    ED  Sample-67         6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-86      azl female         AFR    DI  Sample-86         5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            timepoint.within.group  bmi_group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-41                       2 overweight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-140                      2 overweight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-130                      1 overweight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-119                      2 overweight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-109                      1 overweight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-32                       1 overweight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-67                       2      obese</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-86                       2      obese</span>
 <span class="r-in"><span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/otu_table-methods.html" class="external-link">otu_table</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> OTU Table:          [8 taxa and 8 samples]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                      taxa are rows</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                              Sample-41 Sample-140 Sample-130 Sample-119 Sample-109 Sample-32</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Actinomycetaceae                     0          0          0          0          0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Aerococcus                           0          0          0          0          0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Aeromonas                            0          0          0          0          0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Akkermansia                        787       2627       2506       1068         52       200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Alcaligenes faecalis et rel.         2          2          2          2          2         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Allistipes et rel.                 564        224        919        209        756       737</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Anaerobiospirillum                   0          0          0          0          0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Anaerofustis                         0          0          0          0          1         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                              Sample-67 Sample-86</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Actinomycetaceae                     0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Aerococcus                           0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Aeromonas                            0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Akkermansia                         35        93</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Alcaligenes faecalis et rel.         2         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Allistipes et rel.                  39        29</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Anaerobiospirillum                   0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Anaerofustis                         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                              Sample-41 Sample-140 Sample-130 Sample-119</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Actinomycetaceae                     0          0          0          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Aerococcus                           0          0          0          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Aeromonas                            0          0          0          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Akkermansia                        787       2627       2506       1068</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Alcaligenes faecalis et rel.         2          2          2          2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Allistipes et rel.                 564        224        919        209</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Anaerobiospirillum                   0          0          0          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Anaerofustis                         0          0          0          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                              Sample-109 Sample-32 Sample-67 Sample-86</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Actinomycetaceae                      0         0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Aerococcus                            0         0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Aeromonas                             0         0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Akkermansia                          52       200        35        93</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Alcaligenes faecalis et rel.          2         2         2         2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Allistipes et rel.                  756       737        39        29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Anaerobiospirillum                    0         0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Anaerofustis                          1         0         0         0</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># you can also arrange samples by the abundances of taxa in the otu tables</span></span>
 <span class="r-in"><span class="va">pst</span> <span class="op">&lt;-</span> <span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">ps_arrange</span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">Akkermansia</span><span class="op">)</span>, .target <span class="op">=</span> <span class="st">"otu_table"</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/otu_table-methods.html" class="external-link">otu_table</a></span><span class="op">(</span><span class="va">pst</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> OTU Table:          [8 taxa and 8 samples]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                      taxa are rows</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                              Sample-140 Sample-130 Sample-167 Sample-119 Sample-100 Sample-121</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Actinomycetaceae                      0          0          0          0          0          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Aerococcus                            0          0          0          0          0          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Aeromonas                             0          0          0          0          0          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Akkermansia                        2627       2506       1214       1068        974        909</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Alcaligenes faecalis et rel.          2          2          4          2          3          2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Allistipes et rel.                  224        919        923        209         64         50</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Anaerobiospirillum                    0          0          0          0          0          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Anaerofustis                          0          0          0          0          0          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                              Sample-41 Sample-35</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Actinomycetaceae                     0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Aerococcus                           0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Aeromonas                            0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Akkermansia                        787       774</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Alcaligenes faecalis et rel.         2         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Allistipes et rel.                 564       112</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Anaerobiospirillum                   0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Anaerofustis                         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                              Sample-140 Sample-130 Sample-167 Sample-119</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Actinomycetaceae                      0          0          0          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Aerococcus                            0          0          0          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Aeromonas                             0          0          0          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Akkermansia                        2627       2506       1214       1068</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Alcaligenes faecalis et rel.          2          2          4          2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Allistipes et rel.                  224        919        923        209</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Anaerobiospirillum                    0          0          0          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Anaerofustis                          0          0          0          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                              Sample-100 Sample-121 Sample-41 Sample-35</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Actinomycetaceae                      0          0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Aerococcus                            0          0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Aeromonas                             0          0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Akkermansia                         974        909       787       774</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Alcaligenes faecalis et rel.          3          2         2         2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Allistipes et rel.                   64         50       564       112</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Anaerobiospirillum                    0          0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Anaerofustis                          0          0         0         0</span>
 <span class="r-in"><span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html" class="external-link">sample_data</a></span><span class="op">(</span><span class="va">pst</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">8</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            subject    sex nationality group     sample timepoint timepoint.within.group</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-140     azh female         AAM    DI Sample-140         5                      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-130     azh female         AAM    DI Sample-130         4                      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-167     kpb   male         AAM    HE Sample-167         3                      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-119     azh female         AAM    HE Sample-119         3                      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-100     wdf   male         AFR    DI Sample-100         4                      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-121     gty   male         AAM    HE Sample-121         3                      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-41      azh female         AAM    ED  Sample-41         6                      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-35      kpp   male         AAM    ED  Sample-35         1                      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             bmi_group</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-140 overweight</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-130 overweight</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-167      obese</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-119 overweight</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-100       lean</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-121 overweight</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-41  overweight</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-35        lean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            subject    sex nationality group     sample timepoint</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-140     azh female         AAM    DI Sample-140         5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-130     azh female         AAM    DI Sample-130         4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-167     kpb   male         AAM    HE Sample-167         3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-119     azh female         AAM    HE Sample-119         3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-100     wdf   male         AFR    DI Sample-100         4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-121     gty   male         AAM    HE Sample-121         3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-41      azh female         AAM    ED  Sample-41         6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-35      kpp   male         AAM    ED  Sample-35         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            timepoint.within.group  bmi_group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-140                      2 overweight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-130                      1 overweight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-167                      2      obese</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-119                      2 overweight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-100                      1       lean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-121                      2 overweight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-41                       2 overweight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample-35                       1       lean</span>
 </code></pre></div>
     </div>
   </div>

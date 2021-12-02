@@ -125,13 +125,20 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"dietswap"</span>, package <span class="op">=</span> <span class="st">"microbiome"</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html" class="external-link">tax_table</a></span><span class="op">(</span><span class="va">dietswap</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Taxonomy Table:     [6 taxa by 3 taxonomic ranks]:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                              Phylum            Family            Genus                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Actinomycetaceae             "Actinobacteria"  "Actinobacteria"  "Actinomycetaceae"            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Aerococcus                   "Firmicutes"      "Bacilli"         "Aerococcus"                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Aeromonas                    "Proteobacteria"  "Proteobacteria"  "Aeromonas"                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Akkermansia                  "Verrucomicrobia" "Verrucomicrobia" "Akkermansia"                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Alcaligenes faecalis et rel. "Proteobacteria"  "Proteobacteria"  "Alcaligenes faecalis et rel."</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Allistipes et rel.           "Bacteroidetes"   "Bacteroidetes"   "Allistipes et rel."          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                              Phylum            Family           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Actinomycetaceae             "Actinobacteria"  "Actinobacteria" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Aerococcus                   "Firmicutes"      "Bacilli"        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Aeromonas                    "Proteobacteria"  "Proteobacteria" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Akkermansia                  "Verrucomicrobia" "Verrucomicrobia"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Alcaligenes faecalis et rel. "Proteobacteria"  "Proteobacteria" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Allistipes et rel.           "Bacteroidetes"   "Bacteroidetes"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                              Genus                         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Actinomycetaceae             "Actinomycetaceae"            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Aerococcus                   "Aerococcus"                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Aeromonas                    "Aeromonas"                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Akkermansia                  "Akkermansia"                 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Alcaligenes faecalis et rel. "Alcaligenes faecalis et rel."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Allistipes et rel.           "Allistipes et rel."          </span>
 <span class="r-in"><span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">tax_prepend_ranks</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html" class="external-link">tax_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>

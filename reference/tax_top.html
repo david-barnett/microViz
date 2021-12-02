@@ -137,11 +137,16 @@ defaults to <code>sum</code> which sorts by total abundance across all samples</
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"dietswap"</span>, package <span class="op">=</span> <span class="st">"microbiome"</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">tax_top</span><span class="op">(</span><span class="va">dietswap</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "Prevotella melaninogenica et rel."    "Oscillospira guillermondii et rel."  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "Bacteroides vulgatus et rel."         "Clostridium cellulosi et rel."       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "Prevotella oralis et rel."            "Faecalibacterium prausnitzii et rel."</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "Sporobacter termitidis et rel."       "Clostridium symbiosum et rel."       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "Allistipes et rel."                   "Clostridium orbiscindens et rel."    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "Prevotella melaninogenica et rel."   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [2] "Oscillospira guillermondii et rel."  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "Bacteroides vulgatus et rel."        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "Clostridium cellulosi et rel."       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "Prevotella oralis et rel."           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [6] "Faecalibacterium prausnitzii et rel."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "Sporobacter termitidis et rel."      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "Clostridium symbiosum et rel."       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "Allistipes et rel."                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [10] "Clostridium orbiscindens et rel."    </span>
 <span class="r-in"><span class="fu">tax_top</span><span class="op">(</span><span class="va">dietswap</span>, n <span class="op">=</span> <span class="fl">4</span>, by <span class="op">=</span> <span class="st">"prev"</span>, rank <span class="op">=</span> <span class="st">"Phylum"</span>, undetected <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Firmicutes"     "Proteobacteria" "Bacteroidetes"  "Actinobacteria"</span>
 </code></pre></div>

@@ -184,12 +184,15 @@ extensively by plot functions in phyloseq.</p>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">mdf</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 17</span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">mdf</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "OTU"                      "Sample"                   "Abundance"               </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "X.SampleID"               "Primer"                   "Final_Barcode"           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "Barcode_truncated_plus_T" "Barcode_full_length"      "SampleType"              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [10] "Description"              "Kingdom"                  "Phylum"                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "Class"                    "Order"                    "Family"                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16] "Genus"                    "Species"                 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "OTU"                      "Sample"                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "Abundance"                "X.SampleID"              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "Primer"                   "Final_Barcode"           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "Barcode_truncated_plus_T" "Barcode_full_length"     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "SampleType"               "Description"             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [11] "Kingdom"                  "Phylum"                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "Class"                    "Order"                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [15] "Family"                   "Genus"                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [17] "Species"                 </span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">mdf</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1" "2" "3" "4" "5" "6"</span>
 <span class="r-in"><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mdf</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">SampleType</span>, y <span class="op">=</span> <span class="va">Abundance</span>, fill <span class="op">=</span> <span class="va">Genus</span><span class="op">)</span><span class="op">)</span></span>
