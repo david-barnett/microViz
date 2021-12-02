@@ -9,15 +9,12 @@ editor_options:
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
+  collapse = TRUE, comment = "#>",
+  fig.path = "man/figures/README-", dev = "CairoPNG"
 )
-options(width = 100)
 ```
 
-# microViz <a href='https://david-barnett.github.io/microViz/index.html'><img src="man/figures/microViz-smaller.png" align="right" height="140" width="121"/></a>
+# microViz <a href='https://david-barnett.github.io/microViz/index.html'><img src="man/figures/microViz-smaller.png" align="right" height="180" width="156"/></a>
 
 <!-- badges: start -->
 
@@ -233,22 +230,19 @@ This example uses the Family-level aitchison distance to correspond with the plo
 
 ```{r permanova}
 # calculate distances
-aitchison_dists <-
-  dietswap %>%
-  tax_filter(min_prevalence = 0.1, tax_level = "Genus") %>%
-  tax_agg("Family") %>%
-  tax_transform("identity") %>%
+aitchison_dists <- dietswap %>%
+  tax_filter(min_prevalence = 0.1) %>%
+  tax_transform("identity", rank = "Family") %>%
   dist_calc("aitchison")
 
 # the more permutations you request, the longer it takes
 # but also the more stable and precise your p-values become
-aitchison_perm <- dist_permanova(
-  data = aitchison_dists,
-  seed = 1234, # for set.seed to ensure reproducibility of random process
-  n_perms = 99, # you should use at least 999!
-  n_processes = 1,
-  variables = "bmi_group"
-)
+aitchison_perm <- aitchison_dists %>% 
+  dist_permanova(
+    seed = 1234, # for set.seed to ensure reproducibility of random process
+    n_processes = 1, n_perms = 99, # you should use at least 999!
+    variables = "bmi_group"
+  )
 
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
@@ -262,19 +256,18 @@ info_get(aitchison_perm)
 You could visualise the effect of the (numeric/logical) variables in your permanova directly using the `ord_plot` function with constraints (and conditions). 
 
 ```{r constrained-ord}
-perm2 <- dist_permanova(
-  data = aitchison_dists, variables = c("weight", "african", "sex"), seed = 321
-)
+perm2 <- aitchison_dists %>% 
+  dist_permanova(variables = c("weight", "african", "sex"), seed = 321)
 ```
 
 We'll visualise the effect of nationality and bodyweight on sample composition, after first removing the effect of sex.
 
-```{r constrained-ord-plot, fig.height=4, fig.width=4, dpi=120}
+```{r constrained-ord-plot, fig.height=6, fig.width=6, dpi=120}
 perm2 %>%
   ord_calc(constraints = c("weight", "african"), conditions = "female") %>%
   ord_plot(
     colour = "nationality", size = 2.5, alpha = 0.35,
-    auto_caption = 6,
+    auto_caption = 7,
     constraint_vec_length = 1,
     constraint_vec_style = vec_constraint(size = 1.5, colour = "grey15"),
     constraint_lab_style = constraint_lab_style(
@@ -284,7 +277,7 @@ perm2 %>%
   stat_ellipse(aes(colour = nationality), size = 0.2) +
   scale_color_brewer(palette = "Set1") +
   coord_fixed(ratio = 0.35, clip = "off") +
-  theme(legend.position = c(0.85, 0.1), legend.background = element_rect())
+  theme(legend.position = c(0.9, 0.1), legend.background = element_rect())
 ```
 
 ### Correlation Heatmaps

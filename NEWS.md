@@ -1,4 +1,4 @@
-# microViz (development version)
+# microViz 0.9.0
 
 ## Heatmaps major changes
 __`comp_heatmap` and `cor_heatmap` and their helpers are largely rewritten.__ 

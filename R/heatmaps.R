@@ -201,11 +201,11 @@ cor_heatmap <- function(data,
                         anno_vars = NULL,
                         ...) {
 
-  # check correlation type argument
-  cor <- match.arg(cor)
-
   taxa_which <- annoWhichFromAnnoSide(taxa_side, argName = "taxa_side")
   vars_which <- annoWhichFromAnnoSide(vars_side, argName = "vars_side")
+
+  # check correlation type argument
+  cor <- match.arg(cor)
 
   if (inherits(data, "data.frame")) {
     otu_mat <- NULL # causes cor to only use x (meta_mat)
