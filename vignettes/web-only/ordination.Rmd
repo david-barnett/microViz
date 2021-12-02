@@ -82,7 +82,7 @@ Principle ***Components*** Analysis is an unconstrained method that does not use
 
 Each point is a sample, and samples that appear closer together are typically more similar to each other than samples which are further apart. So by colouring the points by IBD status you can see that the microbiota from people with IBD is often, but not always, highly distinct from people without IBD.
 
-```{r pca}
+```{r}
 ibd %>% 
   tax_transform("clr", rank = "Genus") %>% 
   # when no distance matrix or constraints are supplied, PCA is the default/auto ordination method
@@ -95,7 +95,7 @@ One benefit of not using a distance matrix, is that you can plot taxa "loadings"
 
 The relative length of each loading vector indicates its contribution to each PCA axis shown, and allows you to roughly estimate which samples will contain more of that taxon e.g. samples on the left of the plot below, will typically contain more *Escherichia*/*Shigella* than samples on the right, and this taxon contributes heavily to the PC1 axis.
 
-```{r pca loadings}
+```{r}
 ibd %>% 
   tax_transform("clr", rank = "Genus") %>% 
   # when no distance matrix or constraints are supplied, PCA is the default/auto ordination method
@@ -106,7 +106,7 @@ ibd %>%
 
 microViz also allows you directly visualize the sample compositions on a circular barplot or "iris plot" (named because it looks kinda like an eyeball) alongside the PCA plot. The samples on the iris plot are automatically arranged by their rotational position around the center/origin of the PCA plot.
 
-```{r iris, fig.height=8, fig.width=7}
+```{r, fig.height=8, fig.width=7}
 ibd %>% 
   tax_transform("clr", rank = "Genus") %>% 
   # when no distance matrix or constraints are supplied, PCA is the default/auto ordination method
@@ -124,7 +124,7 @@ Principle ***Co-ordinates*** Analysis is also an unconstrained method, but it do
 
 The [Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance) is similar to the distance we humans are familiar with in the physical world. The results of a PCA is practically equivalent to a PCoA with Euclidean distances. The Aitchison distance is a dissimilarity measure calculated as the Euclidean distance between observations (samples) after performing a centred log ratio ("clr") transformation. That is why the Aitchison distance PCoA, below, looks the same as the PCA we made earlier. However, we cannot use plot_taxa, as the taxa loadings are only available for PCA (and related methods like RDA).
 
-```{r aitchison pcoa}
+```{r}
 ibd %>% 
   tax_transform("identity", rank = "Genus") %>% # don't transform!
   dist_calc("aitchison") %>% 
@@ -139,7 +139,7 @@ Note that PCoA is also known as MDS, for (metric) Multi-Dimensional Scaling, hen
 
 Over the years, ecologists have invented numerous ways of quantifying dissimilarity between pairs of ecosystems. One ubiquitous example is the [Bray-Curtis](https://en.wikipedia.org/wiki/Bray–Curtis_dissimilarity) dissimilarity measure, shown below.
 
-```{r bray}
+```{r}
 ibd %>% 
   tax_transform("identity", rank = "Genus") %>% # don't transform!
   dist_calc("bray") %>% 
@@ -150,7 +150,7 @@ ibd %>%
 
 Beyond Bray-Curtis, microViz `dist_calc()` can also help you calculate all the other ecological distances listed in `phyloseq::distanceMethodList` such the Jensen-Shannon Divergence, `"jsd"`, or Jaccard dissimilarity `"jaccard"`. Beware that if you want a binary dissimilarity measure from `vegan::vegdist()` (i.e. only using presence/absence info, and noting all the caveats about sensitivity to low abundance taxa) you will need to pass `binary = TRUE`, as below.
 
-```{r binary jaccard}
+```{r}
 ibd %>% 
   tax_transform("identity", rank = "Genus") %>% 
   dist_calc(dist = "jaccard", binary = TRUE) %>% 
@@ -167,7 +167,7 @@ Below is a Generalised UniFrac example using a different, and tiny, example data
 
 You should **not** aggregate taxa before using a phylogenetic distance measure, but you can and probably should register the choice not to transform or aggregate, as below.
 
-```{r gunifrac}
+```{r}
 data("esophagus", package = "phyloseq")
 esophagus %>%
   phyloseq_validate(verbose = FALSE) %>% 
@@ -180,7 +180,7 @@ esophagus %>%
 
 You can show other dimensions / axes of an ordination than just the first two, by setting the axes argument. You can judge from the variation explained by each successive axis (on a scree plot) whether this is worthwhile information to show, e.g. in the example below, it could be interesting to also show the 3rd axis, but not any others.
 
-```{r scree, fig.width=5, fig.height=3}
+```{r, fig.width=5, fig.height=3}
 ibd %>% 
   tax_transform("identity", rank = "Genus") %>% # don't transform!
   dist_calc("bray") %>% 
@@ -191,7 +191,7 @@ ibd %>%
 
 Let us view the 1st and 3rd axes.
 
-```{r bray 3}
+```{r}
 ibd %>% 
   tax_transform("identity", rank = "Genus") %>% # don't transform!
   dist_calc("bray") %>% 
@@ -210,7 +210,7 @@ Starting from the same phyloseq object `ibd` the code below first creates a coup
 
 Then we aggregate and transform our taxa, and like PCA we skip the dist_calc step.
 
-```{r rda, fig.height=7, fig.width=7}
+```{r, fig.height=7, fig.width=7}
 ibd %>%
   ps_mutate(
     IBD = as.numeric(ibd == "ibd"),
@@ -233,7 +233,7 @@ ibd %>%
 
 The plot above looks okay by default, but it is fairly easy to tweak ord_plot further to get the style just how you want it. The code below has comments to explain which part makes which changes to the plot.
 
-```{r rda custom, fig.width=7, fig.height=8}
+```{r, fig.width=7, fig.height=8}
 # first we make a function that replaces any unwanted "_" in our taxa labels with spaces
 library(stringr) 
 renamer <- function(x) str_replace(x, pattern = "_", replacement = " ")
@@ -290,7 +290,7 @@ using rotated, bold and italic text for the taxa names.
 constraint labels. When rotating labels (not text) the ggtext package must be
 installed.
 
-```{r rda custom 2, fig.width=7, fig.height=6}
+```{r, fig.width=7, fig.height=6}
 ibd %>%
   ps_mutate(
     IBD = as.numeric(ibd == "ibd"),

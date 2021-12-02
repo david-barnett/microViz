@@ -117,7 +117,7 @@ partial_ps %>%
 
 You can also sort sample by microbiome similarity with `ps_seriate()`.
 
-```{r seriate and plot}
+```{r}
 partial_ps %>% 
   tax_agg("Genus") %>% 
   ps_seriate(dist = "bray", method = "OLO_ward") %>% # these are the defaults
@@ -129,7 +129,7 @@ partial_ps %>%
 
 You can also arrange samples by abundance of one of more microbes using `ps_arrange()` with `.target = "otu_table"`. Arranging by taxon can only be done at the current taxonomic rank, so we will aggregate to Genus level first.
 
-```{r arrange by taxon}
+```{r}
 # Arranging by decreasing Bacteroides abundance
 partial_ps %>% 
   tax_agg("Genus") %>% 

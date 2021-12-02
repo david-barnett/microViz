@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# microViz <a href='https://david-barnett.github.io/microViz/index.html'><img src="man/figures/microViz-smaller.png" align="right" height="180" width="156"/></a>
+# microViz <a href='https://david-barnett.github.io/microViz/index.html'><img src="man/figures/logo.png" align="right" height="180" width="156"/></a>
 
 <!-- badges: start -->
 
@@ -292,8 +292,8 @@ aitchison_perm <- aitchison_dists %>%
     n_processes = 1, n_perms = 99, # you should use at least 999!
     variables = "bmi_group"
   )
-#> 2021-12-02 14:11:02 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2021-12-02 14:11:02 - Finished PERMANOVA
+#> 2021-12-02 14:28:31 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2021-12-02 14:28:31 - Finished PERMANOVA
 
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
@@ -324,8 +324,8 @@ your permanova directly using the `ord_plot` function with constraints
 perm2 <- aitchison_dists %>% 
   dist_permanova(variables = c("weight", "african", "sex"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2021-12-02 14:11:02 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2021-12-02 14:11:03 - Finished PERMANOVA
+#> 2021-12-02 14:28:31 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2021-12-02 14:28:32 - Finished PERMANOVA
 ```
 
 We’ll visualise the effect of nationality and bodyweight on sample

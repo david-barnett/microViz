@@ -106,7 +106,7 @@ clr_pca <- ps %>%
 clr_pca
 ```
 
-```{r visualize clr pca}
+```{r}
 clr_pca %>%
   ord_plot(colour = "weight", shape = "DNA_extraction_method", alpha = 0.7, size = 1.5) +
   scale_colour_viridis_c(option = "inferno", direction = -1, end = 0.8) +
@@ -143,13 +143,13 @@ pca <- clr_pca %>%
   coord_fixed(clip = "off", xlim = c(-1.5, 1.5), ylim = c(-1.5, 1.5))
 ```
 
-```{r plot clr pca with tax loading, fig.height=6, fig.width=8}
+```{r, fig.height=6, fig.width=8}
 pca
 ```
 
 What about the actual compositions of these 800 samples?
 
-```{r iris plot, fig.width=8, dpi=120}
+```{r, fig.width=8, dpi=120}
 iris <- clr_pca %>%
   ord_plot_iris(
     tax_level = "Genus", n_taxa = 15,
@@ -163,7 +163,7 @@ iris
 
 You can arrange both plots together with patchwork package.
 
-```{r paired plots, fig.height=10, fig.width=8, dpi=120}
+```{r, fig.height=10, fig.width=8, dpi=120}
 pca / iris 
 ```
 
@@ -217,7 +217,7 @@ constr_ord <- ps %>%
 constr_ord
 ```
 
-```{r constrained ord plot}
+```{r}
 ord_plot(constr_ord, plot_taxa = 10:1, colour = "DNA_extraction_method", shape = 1) +
   scale_color_brewer(palette = "Set2", name = "DNA\nextraction\nmethod")
 ```
@@ -265,7 +265,7 @@ tt_stats <- taxatree_models2stats(tt_models, param = "mu")
 Visualize the results compactly on a microViz taxonomic association
 tree.
 
-```{r taxa tree key, fig.height=6}
+```{r, fig.height=6}
 tt_stats %>% 
   taxatree_plotkey(
     node_size_range = c(2, 8), size_stat = list(mean = mean),
