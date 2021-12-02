@@ -248,7 +248,7 @@
 <span class="co">#&gt; Registered S3 method overwritten by 'seriation':</span>
 <span class="co">#&gt;   method         from </span>
 <span class="co">#&gt;   reorder.hclust vegan</span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-2-1.png"><!-- --></p>
+<p><img src="README_files/figure-gfm/unnamed-chunk-2-1.png"><!-- --></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">htmp</span> <span class="op">&lt;-</span> <span class="va">dietswap</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="reference/ps_mutate.html">ps_mutate</a></span><span class="op">(</span>nationality <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">nationality</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span>
@@ -270,7 +270,7 @@
   object <span class="op">=</span> <span class="va">htmp</span>, annotation_legend_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">htmp</span>, <span class="st">"AnnoLegends"</span><span class="op">)</span>,
   merge_legends <span class="op">=</span> <span class="cn">TRUE</span>
 <span class="op">)</span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-3-1.png"><!-- --></p>
+<p><img src="README_files/figure-gfm/unnamed-chunk-3-1.png"><!-- --></p>
 </div>
 <div class="section level3">
 <h3 id="example-ordination-plot-workflow">Example ordination plot workflow<a class="anchor" aria-label="anchor" href="#example-ordination-plot-workflow"></a>
@@ -319,7 +319,7 @@
 
 <span class="co"># show plot</span>
 <span class="va">customised_plot</span></code></pre></div>
-<p><img src="reference/figures/README-ordination-plot-1.png"><!-- --></p>
+<p><img src="README_files/figure-gfm/ordination-plot-1.png"><!-- --></p>
 </div>
 <div class="section level3">
 <h3 id="permanova">PERMANOVA<a class="anchor" aria-label="anchor" href="#permanova"></a>
@@ -341,8 +341,8 @@
     n_processes <span class="op">=</span> <span class="fl">1</span>, n_perms <span class="op">=</span> <span class="fl">99</span>, <span class="co"># you should use at least 999!</span>
     variables <span class="op">=</span> <span class="st">"bmi_group"</span>
   <span class="op">)</span>
-<span class="co">#&gt; 2021-12-02 14:28:31 - Starting PERMANOVA with 99 perms with 1 processes</span>
-<span class="co">#&gt; 2021-12-02 14:28:31 - Finished PERMANOVA</span>
+<span class="co">#&gt; 2021-12-02 14:48:54 - Starting PERMANOVA with 99 perms with 1 processes</span>
+<span class="co">#&gt; 2021-12-02 14:48:54 - Finished PERMANOVA</span>
 
 <span class="co"># view the permanova results</span>
 <span class="fu"><a href="reference/ps_extra-accessors.html">perm_get</a></span><span class="op">(</span><span class="va">aitchison_perm</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span>
@@ -370,8 +370,8 @@
 <code class="sourceCode R"><span class="va">perm2</span> <span class="op">&lt;-</span> <span class="va">aitchison_dists</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> 
   <span class="fu"><a href="reference/dist_permanova.html">dist_permanova</a></span><span class="op">(</span>variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"african"</span>, <span class="st">"sex"</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">321</span><span class="op">)</span>
 <span class="co">#&gt; Dropping samples with missings: 2</span>
-<span class="co">#&gt; 2021-12-02 14:28:31 - Starting PERMANOVA with 999 perms with 1 processes</span>
-<span class="co">#&gt; 2021-12-02 14:28:32 - Finished PERMANOVA</span></code></pre></div>
+<span class="co">#&gt; 2021-12-02 14:48:54 - Starting PERMANOVA with 999 perms with 1 processes</span>
+<span class="co">#&gt; 2021-12-02 14:48:55 - Finished PERMANOVA</span></code></pre></div>
 <p>We’ll visualise the effect of nationality and bodyweight on sample composition, after first removing the effect of sex.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">perm2</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span>
@@ -394,7 +394,7 @@
 <span class="co">#&gt;  weight</span>
 <span class="co">#&gt;  african</span>
 <span class="co">#&gt;  female</span></code></pre></div>
-<p><img src="reference/figures/README-constrained-ord-plot-1.png"><!-- --></p>
+<p><img src="README_files/figure-gfm/constrained-ord-plot-1.png"><!-- --></p>
 </div>
 <div class="section level3">
 <h3 id="correlation-heatmaps">Correlation Heatmaps<a class="anchor" aria-label="anchor" href="#correlation-heatmaps"></a>
@@ -426,7 +426,7 @@
     Log2 <span class="op">=</span> <span class="fu"><a href="reference/anno_tax_box.html">anno_tax_box</a></span><span class="op">(</span>undetected <span class="op">=</span> <span class="fl">50</span>, trans <span class="op">=</span> <span class="st">"log2"</span>, zero_replace <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
   <span class="op">)</span>
 <span class="op">)</span></code></pre></div>
-<p><img src="reference/figures/README-heatmap-1.png"><!-- --></p>
+<p><img src="README_files/figure-gfm/heatmap-1.png"><!-- --></p>
 </div>
 </div>
 <div class="section level2">
