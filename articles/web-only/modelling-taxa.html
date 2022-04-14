@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.0.9000</span>
       </span>
     </div>
 
@@ -58,7 +58,7 @@
   <a href="../../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -136,13 +136,13 @@
     
     
 <p>This article will give an example of statistical modelling of the abundances of individual taxa, and visual presentation of the results using microViz <em>taxonomic association tree</em> plots.</p>
-<div class="section level2">
-<h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
-</h2>
+<div class="section level3">
+<h3 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
+</h3>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://david-barnett.github.io/microViz">microViz</a></span><span class="op">)</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; microViz version 0.9.0 - Copyright (C) 2021 David Barnett</span>
+<span class="co">#&gt; microViz version 0.9.0.9000 - Copyright (C) 2021 David Barnett</span>
 <span class="co">#&gt; * Website: https://david-barnett.github.io/microViz/</span>
 <span class="co">#&gt; * Useful? For citation info, run: citation('microViz')</span>
 <span class="co">#&gt; * Silence: suppressPackageStartupMessages(library(microViz))</span>
@@ -398,12 +398,12 @@
     age_scaled <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">age</span>, center <span class="op">=</span> <span class="cn">TRUE</span>, scale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
   <span class="op">)</span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="modelling-one-taxon-at-a-time">Modelling one taxon at a time<a class="anchor" aria-label="anchor" href="#modelling-one-taxon-at-a-time"></a>
-</h2>
 <div class="section level3">
-<h3 id="tss-log2-linear-regression">TSS log2 linear regression<a class="anchor" aria-label="anchor" href="#tss-log2-linear-regression"></a>
+<h3 id="modelling-one-taxon-at-a-time">Modelling one taxon at a time<a class="anchor" aria-label="anchor" href="#modelling-one-taxon-at-a-time"></a>
 </h3>
+<div class="section level4">
+<h4 id="tss-log2-linear-regression">TSS log2 linear regression<a class="anchor" aria-label="anchor" href="#tss-log2-linear-regression"></a>
+</h4>
 <p>We will start by creating a linear regression model for one genus, <em>Bacteroides</em>. We will transform the count data by first making it proportions, and then taking the logarithm, with base 2. This is what MaAsLin2 does by default (except they call the compositional transformation “Total Sum Scaling (TSS)”). We will replace the zeros with half the minimum observed abundance proportion (of any taxon) before log2 transformation.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">parabacteroides_lm</span> <span class="op">&lt;-</span> <span class="va">phylo</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> 
@@ -449,9 +449,9 @@
 <span class="co">#&gt; F-statistic: 5.505 on 5 and 61 DF,  p-value: 0.0003018</span></code></pre></div>
 <p>This model suggests <em>Parabacteroides</em> abundances are significantly lower in Ulcerative Colitis patients than controls, on average.</p>
 </div>
-<div class="section level3">
-<h3 id="plotting-tss-log2-data">Plotting TSS log2 data<a class="anchor" aria-label="anchor" href="#plotting-tss-log2-data"></a>
-</h3>
+<div class="section level4">
+<h4 id="plotting-tss-log2-data">Plotting TSS log2 data<a class="anchor" aria-label="anchor" href="#plotting-tss-log2-data"></a>
+</h4>
 <p>Let’s boxplot the transformed data to see what this <em>Parabacteroides</em> association looks like as a crude group difference.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">plot_data</span> <span class="op">&lt;-</span> <span class="va">phylo</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> 
@@ -473,9 +473,9 @@
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="modelling-taxa_files/figure-html/unnamed-chunk-8-1.png" width="480"></p>
 </div>
-<div class="section level3">
-<h3 id="beta-binomial-regression">Beta binomial regression<a class="anchor" aria-label="anchor" href="#beta-binomial-regression"></a>
-</h3>
+<div class="section level4">
+<h4 id="beta-binomial-regression">Beta binomial regression<a class="anchor" aria-label="anchor" href="#beta-binomial-regression"></a>
+</h4>
 <p>You can also use other regression modelling functions that take a formula. For example the beta binomial modelling provided in the corncob package. This approach models both abundance and dispersion, and directly uses untransformed counts. By default, microViz’s <code><a href="../../reference/tax_model.html">tax_model()</a></code> will use the same formula for both abundance and dispersion modelling, but you can override this by setting the <code>phi.formula</code> argument yourself. See <code>vignette("corncob-intro", package = "corncob")</code> for more info on these models.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">parabacteroides_bb</span> <span class="op">&lt;-</span> <span class="va">phylo</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> 
@@ -518,9 +518,9 @@
 <span class="co">#&gt; Log-likelihood: -211.25</span></code></pre></div>
 </div>
 </div>
-<div class="section level2">
-<h2 id="model-all-the-taxa">Model all the taxa!<a class="anchor" aria-label="anchor" href="#model-all-the-taxa"></a>
-</h2>
+<div class="section level3">
+<h3 id="model-all-the-taxa">Model all the taxa!<a class="anchor" aria-label="anchor" href="#model-all-the-taxa"></a>
+</h3>
 <p>Now we will fit a similar model for almost every taxon at every rank. The code for <code>taxatree_models</code> is quite similar to <code>tax_model</code>. However, you might need to run <code>tax_prepend_ranks</code> to ensure that each taxon at each rank is always unique. As an example of the problem, Actinobacteria is the name of both a Phylum and a Class!</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lm_models</span> <span class="op">&lt;-</span> <span class="va">phylo</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> 
@@ -538,11 +538,11 @@
     variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UC"</span>, <span class="st">"female"</span>, <span class="st">"antibiotics"</span>, <span class="st">"steroids"</span>, <span class="st">"age_scaled"</span><span class="op">)</span>
   <span class="op">)</span>
 <span class="co">#&gt; Proportional min_prevalence given: 0.1 --&gt; min 7/67 samples.</span>
-<span class="co">#&gt; 2021-12-02 18:34:11 - modelling at rank: Phylum</span>
-<span class="co">#&gt; 2021-12-02 18:34:12 - modelling at rank: Class</span>
-<span class="co">#&gt; 2021-12-02 18:34:12 - modelling at rank: Order</span>
-<span class="co">#&gt; 2021-12-02 18:34:13 - modelling at rank: Family</span>
-<span class="co">#&gt; 2021-12-02 18:34:14 - modelling at rank: Genus</span></code></pre></div>
+<span class="co">#&gt; 2022-04-14 10:38:49 - modelling at rank: Phylum</span>
+<span class="co">#&gt; 2022-04-14 10:38:49 - modelling at rank: Class</span>
+<span class="co">#&gt; 2022-04-14 10:38:49 - modelling at rank: Order</span>
+<span class="co">#&gt; 2022-04-14 10:38:50 - modelling at rank: Family</span>
+<span class="co">#&gt; 2022-04-14 10:38:51 - modelling at rank: Genus</span></code></pre></div>
 <p>Why filter the taxa? <em>It’s less likely that we are interested in rare taxa, and models of rare taxon abundances are more likely to be unreliable. Reducing the the number of taxa modelled also makes visualising the results easier!</em></p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lm_models</span>
@@ -560,10 +560,10 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $taxatree_models list:</span>
 <span class="co">#&gt; Ranks: Phylum/Class/Order/Family/Genus</span></code></pre></div>
-<div class="section level3">
-<h3 id="getting-stats-from-the-models">Getting stats from the models<a class="anchor" aria-label="anchor" href="#getting-stats-from-the-models"></a>
-</h3>
-<p>Next we will get a data.frame containing the regression coefficient estimates, test statistics and corresponding p values from all these regression models. The function <code><a href="../../reference/taxatree_models2stats.html">taxatree_models2stats()</a></code> can do this for any type of model that has a <code><a href="https://rdrr.io/pkg/generics/man/tidy.html" class="external-link">broom::tidy()</a></code> method, as well as for beta binomial regression models calculated with the <code>corncob</code> package <code><a href="https://rdrr.io/pkg/corncob/man/bbdml.html" class="external-link">bbdml()</a></code> function.</p>
+<div class="section level4">
+<h4 id="getting-stats-from-the-models">Getting stats from the models<a class="anchor" aria-label="anchor" href="#getting-stats-from-the-models"></a>
+</h4>
+<p>Next we will get a data.frame containing the regression coefficient estimates, test statistics and corresponding p values from all these regression models. The function <code><a href="../../reference/taxatree_models2stats.html">taxatree_models2stats()</a></code> can do this for any type of model that has a <code><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">broom::tidy()</a></code> method, as well as for beta binomial regression models calculated with the <code>corncob</code> package <code><a href="https://rdrr.io/pkg/corncob/man/bbdml.html" class="external-link">bbdml()</a></code> function.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lm_stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/taxatree_models2stats.html">taxatree_models2stats</a></span><span class="op">(</span><span class="va">lm_models</span><span class="op">)</span>
 <span class="va">lm_stats</span>
@@ -599,9 +599,9 @@
 <span class="co">#&gt; <span style="color: #BCBCBC;">10</span> age_scaled  P: Bacteroidetes Phylum   -<span style="color: #BB0000;">0.937</span>      1.67    -<span style="color: #BB0000;">0.563</span> 0.576  </span>
 <span class="co">#&gt; <span style="color: #949494;"># … with 660 more rows</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="adjusting-p-values">Adjusting p values<a class="anchor" aria-label="anchor" href="#adjusting-p-values"></a>
-</h3>
+<div class="section level4">
+<h4 id="adjusting-p-values">Adjusting p values<a class="anchor" aria-label="anchor" href="#adjusting-p-values"></a>
+</h4>
 <p>Using the <code><a href="../../reference/taxatree_stats_p_adjust.html">taxatree_stats_p_adjust()</a></code> function, you can correct for multiple testing / control the false discovery rate or family-wise error rate.</p>
 <p>Instead of applying these adjustment methods across all 88 taxa models at all ranks, the default behaviour is to control the family-wise error rate per rank.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
@@ -627,9 +627,9 @@
 <span class="co">#&gt; <span style="color: #949494;"># … with 660 more rows</span></span></code></pre></div>
 </div>
 </div>
-<div class="section level2">
-<h2 id="plot-all-the-taxatree_stats">Plot all the taxatree_stats!<a class="anchor" aria-label="anchor" href="#plot-all-the-taxatree_stats"></a>
-</h2>
+<div class="section level3">
+<h3 id="plot-all-the-taxatree_stats">Plot all the taxatree_stats!<a class="anchor" aria-label="anchor" href="#plot-all-the-taxatree_stats"></a>
+</h3>
 <p><code><a href="../../reference/taxatree_plots.html">taxatree_plots()</a></code> allows you to plot statistics (e.g. point estimates and significance) from all of the taxa models onto a tree layout. The taxon models are organised by rank, radiating out from the central root node from e.g. Phyla around the center to Genera in the outermost ring.</p>
 <p><code><a href="../../reference/taxatree_plots.html">taxatree_plots()</a></code> itself returns a list of plots, which you can arrange into one figure with the <a href="https://patchwork.data-imaginist.com/" class="external-link"><code>patchwork</code></a> package for example (and/or <a href="https://wilkelab.org/cowplot/articles/plot_grid.html" class="external-link"><code>cowplot</code></a>).</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
@@ -640,9 +640,9 @@
     ncol <span class="op">=</span> <span class="fl">2</span>, guides <span class="op">=</span> <span class="st">"collect"</span>
   <span class="op">)</span></code></pre></div>
 <p><img src="modelling-taxa_files/figure-html/unnamed-chunk-15-1.png" width="672"></p>
-<div class="section level3">
-<h3 id="taxatree-key">Taxatree Key<a class="anchor" aria-label="anchor" href="#taxatree-key"></a>
-</h3>
+<div class="section level4">
+<h4 id="taxatree-key">Taxatree Key<a class="anchor" aria-label="anchor" href="#taxatree-key"></a>
+</h4>
 <p>But how do we know which taxa are which nodes? We can create a labelled grey tree with <code>taxatree_plotkey</code>. This labels taxa based on certain conditions.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span> <span class="co"># label position </span>
@@ -658,11 +658,34 @@
 <span class="co"># all phyla are labelled, and all genera with a prevalence of over 0.2</span>
 <span class="co"># except for any taxa whose names (partly) match "Kingdom" </span>
 <span class="co"># (i.e. an unclassified taxon)</span>
-<span class="va">key</span></code></pre></div>
+<span class="va">key</span>
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span></code></pre></div>
 <p><img src="modelling-taxa_files/figure-html/unnamed-chunk-16-1.png" width="576"></p>
-<div class="section level4">
-<h4 id="key-trees">Key + Trees<a class="anchor" aria-label="anchor" href="#key-trees"></a>
-</h4>
+<div class="section level5">
+<h5 id="key-trees">Key + Trees<a class="anchor" aria-label="anchor" href="#key-trees"></a>
+</h5>
 <p>Let’s put the key and some of the trees together in one <code>patchwork</code> figure. Getting the sizing right on these combined plots can be very tricky! Pay attention to the absolute height and width of the plot output.</p>
 <p><code><a href="https://rdrr.io/pkg/gridExtra/man/arrangeGrob.html" class="external-link">gridExtra::grid.arrange()</a></code> or <code><a href="https://wilkelab.org/cowplot/reference/plot_grid.html" class="external-link">cowplot::plot_grid()</a></code> are alternatives you can also try. <code><a href="https://wilkelab.org/cowplot/reference/get_legend.html" class="external-link">cowplot::get_legend()</a></code> can be particularly useful.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
@@ -675,16 +698,39 @@
 
 <span class="va">panel</span> <span class="op">&lt;-</span> <span class="fu">patchwork</span><span class="fu">::</span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html" class="external-link">wrap_plots</a></span><span class="op">(</span><span class="va">key</span>, <span class="va">trees</span>, nrow <span class="op">=</span> <span class="fl">1</span>, widths <span class="op">=</span> <span class="fl">8</span><span class="op">:</span><span class="fl">7</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">111</span><span class="op">)</span>
-<span class="va">panel</span></code></pre></div>
+<span class="va">panel</span>
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span></code></pre></div>
 <p><img src="modelling-taxa_files/figure-html/unnamed-chunk-17-1.png" width="1560"></p>
 <p>You could save the plot with <code><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave()</a></code> like this.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">111</span><span class="op">)</span>
 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span><span class="st">"test.png"</span>, <span class="va">panel</span>, width <span class="op">=</span> <span class="fl">13</span>, height <span class="op">=</span> <span class="fl">5.5</span>, dpi <span class="op">=</span> <span class="fl">120</span>, device <span class="op">=</span> <span class="st">"png"</span><span class="op">)</span></code></pre></div>
 </div>
-<div class="section level4">
-<h4 id="alternative-label-styling">Alternative label styling<a class="anchor" aria-label="anchor" href="#alternative-label-styling"></a>
-</h4>
+<div class="section level5">
+<h5 id="alternative-label-styling">Alternative label styling<a class="anchor" aria-label="anchor" href="#alternative-label-styling"></a>
+</h5>
 <p>You can change the default styling of the labels by first suppressing the automatic drawing of labels with <code>.draw_label = FALSE</code> in <code><a href="../../reference/taxatree_plotkey.html">taxatree_plotkey()</a></code> and then adding your own custom-style labels with <code><a href="../../reference/taxatree_plot_labels.html">taxatree_plot_labels()</a></code>. Here we will draw some yellow labels.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../reference/taxatree_plotkey.html">taxatree_plotkey</a></span><span class="op">(</span>
@@ -703,13 +749,36 @@
     <span class="co"># arguments affecting label positioning</span>
     box.padding <span class="op">=</span> <span class="fl">0.05</span>, x_nudge <span class="op">=</span> <span class="fl">0.4</span>, y_nudge <span class="op">=</span> <span class="fl">0.05</span>,
     hjust <span class="op">=</span> <span class="fl">0.5</span>, seed <span class="op">=</span> <span class="fl">123</span>
-  <span class="op">)</span></code></pre></div>
+  <span class="op">)</span>
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span></code></pre></div>
 <p><img src="modelling-taxa_files/figure-html/unnamed-chunk-19-1.png" width="672"></p>
 </div>
 </div>
-<div class="section level3">
-<h3 id="directly-labelling-taxa">Directly labelling taxa<a class="anchor" aria-label="anchor" href="#directly-labelling-taxa"></a>
-</h3>
+<div class="section level4">
+<h4 id="directly-labelling-taxa">Directly labelling taxa<a class="anchor" aria-label="anchor" href="#directly-labelling-taxa"></a>
+</h4>
 <p>You can directly label taxatree_plots too, but it is better to only do this for a few taxa. You must run <code><a href="../../reference/taxatree_label.html">taxatree_label()</a></code> first to create a “label” indicator variable.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lm_stats</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> 
@@ -724,12 +793,35 @@
   <span class="op">)</span> <span class="op">+</span>
   <span class="co"># the lines below allow expansion and make some space for labels</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_fixed.html" class="external-link">coord_fixed</a></span><span class="op">(</span>clip <span class="op">=</span> <span class="st">"off"</span>, expand <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expansion.html" class="external-link">expansion</a></span><span class="op">(</span>mult <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expansion.html" class="external-link">expansion</a></span><span class="op">(</span>mult <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span></code></pre></div>
 <p><img src="modelling-taxa_files/figure-html/unnamed-chunk-20-1.png" width="624"></p>
 </div>
-<div class="section level3">
-<h3 id="changing-color-palette">Changing color palette<a class="anchor" aria-label="anchor" href="#changing-color-palette"></a>
-</h3>
+<div class="section level4">
+<h4 id="changing-color-palette">Changing color palette<a class="anchor" aria-label="anchor" href="#changing-color-palette"></a>
+</h4>
 <p>Choosing another color palette is easy, just name any diverging palette from colorspace hcl diverging palettes. See your options below.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">colorspace</span><span class="fu">::</span><span class="fu"><a href="https://colorspace.R-Forge.R-project.org//reference/hcl_palettes.html" class="external-link">hcl_palettes</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"diverging"</span>, plot <span class="op">=</span> <span class="cn">TRUE</span>, n <span class="op">=</span> <span class="fl">11</span><span class="op">)</span></code></pre></div>
@@ -753,7 +845,30 @@
   <span class="op">)</span> <span class="op">+</span>
   <span class="co"># the lines below allow expansion and make some space for labels</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_fixed.html" class="external-link">coord_fixed</a></span><span class="op">(</span>clip <span class="op">=</span> <span class="st">"off"</span>, expand <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expansion.html" class="external-link">expansion</a></span><span class="op">(</span>mult <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span><span class="op">)</span> </code></pre></div>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expansion.html" class="external-link">expansion</a></span><span class="op">(</span>mult <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span><span class="op">)</span> 
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span></code></pre></div>
 <p><img src="modelling-taxa_files/figure-html/unnamed-chunk-22-1.png" width="624"></p>
 <p>Palettes like “Berlin” that go through a black midpoint would probably only make sense with a darker background!</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
@@ -777,12 +892,35 @@
     text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span>,
     plot.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"grey30"</span><span class="op">)</span>, 
     plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">20</span>, colour <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span>
-  <span class="op">)</span></code></pre></div>
+  <span class="op">)</span>
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span>
+
+<span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span>
+<span class="co">#&gt; `if_all()`.</span></code></pre></div>
 <p><img src="modelling-taxa_files/figure-html/unnamed-chunk-23-1.png" width="624"></p>
 </div>
-<div class="section level3">
-<h3 id="sorting-taxa-nodes">Sorting taxa nodes<a class="anchor" aria-label="anchor" href="#sorting-taxa-nodes"></a>
-</h3>
+<div class="section level4">
+<h4 id="sorting-taxa-nodes">Sorting taxa nodes<a class="anchor" aria-label="anchor" href="#sorting-taxa-nodes"></a>
+</h4>
 <p>If you like, you can sort the nodes by sorting the taxa in the ps_extra object.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lm_stats</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> 
@@ -800,9 +938,9 @@
   <span class="va">.</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="co"># show only the first plot</span></code></pre></div>
 <p><img src="modelling-taxa_files/figure-html/unnamed-chunk-25-1.png" width="480"></p>
 </div>
-<div class="section level3">
-<h3 id="plotting-adjusted-p-values">Plotting adjusted p values<a class="anchor" aria-label="anchor" href="#plotting-adjusted-p-values"></a>
-</h3>
+<div class="section level4">
+<h4 id="plotting-adjusted-p-values">Plotting adjusted p values<a class="anchor" aria-label="anchor" href="#plotting-adjusted-p-values"></a>
+</h4>
 <p>Remember we made adjusted p values earlier? Let’s plot those instead. Just to show how it’s done, we’ll also change the symbol used to identify the significant sites to a cross, and we’ll also relax the significance threshold to 0.1.</p>
 <p>It looks like only the disease state (having ulcerative colitis) shows any significant associations after this FDR correction.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
@@ -818,9 +956,9 @@
   <span class="op">)</span></code></pre></div>
 <p><img src="modelling-taxa_files/figure-html/unnamed-chunk-26-1.png" width="672"></p>
 </div>
-<div class="section level3">
-<h3 id="plotting-multiple-significance-markers">Plotting multiple significance markers<a class="anchor" aria-label="anchor" href="#plotting-multiple-significance-markers"></a>
-</h3>
+<div class="section level4">
+<h4 id="plotting-multiple-significance-markers">Plotting multiple significance markers<a class="anchor" aria-label="anchor" href="#plotting-multiple-significance-markers"></a>
+</h4>
 <p>You can also plot multiple significance markers. You must start with the strictest threshold. Here we will plot the FDR corrected significance markers at for p.adj &lt; 0.05 (as thick white crosses) and then also unadjusted significance markers for p &lt; 0.05 (as outlined white circles).</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lm_stats</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> 
@@ -837,9 +975,9 @@
 <p><img src="modelling-taxa_files/figure-html/unnamed-chunk-27-1.png" width="672"></p>
 </div>
 </div>
-<div class="section level2">
-<h2 id="beta-binomial-regression-example">Beta-binomial regression example<a class="anchor" aria-label="anchor" href="#beta-binomial-regression-example"></a>
-</h2>
+<div class="section level3">
+<h3 id="beta-binomial-regression-example">Beta-binomial regression example<a class="anchor" aria-label="anchor" href="#beta-binomial-regression-example"></a>
+</h3>
 <p>The corncob package provides beta-binomial regression models. See the paper <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7514055/" class="external-link">here</a>, and the helpful package vignette: <code>vignette("corncob-intro", package = "corncob")</code>.</p>
 <p>We will filter the taxa more strictly (by a higher prevalence threshold) before this type of modelling. We do not need to transform the data, as this approach uses counts.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
@@ -853,10 +991,10 @@
     variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UC"</span>, <span class="st">"female"</span>, <span class="st">"antibiotics"</span>, <span class="st">"steroids"</span>, <span class="st">"age_scaled"</span><span class="op">)</span>
   <span class="op">)</span>
 <span class="co">#&gt; Proportional min_prevalence given: 0.3 --&gt; min 21/67 samples.</span>
-<span class="co">#&gt; 2021-12-02 18:34:54 - modelling at rank: Phylum</span>
-<span class="co">#&gt; 2021-12-02 18:34:54 - modelling at rank: Class</span>
-<span class="co">#&gt; 2021-12-02 18:34:54 - modelling at rank: Order</span>
-<span class="co">#&gt; 2021-12-02 18:34:55 - modelling at rank: Family</span>
+<span class="co">#&gt; 2022-04-14 10:39:30 - modelling at rank: Phylum</span>
+<span class="co">#&gt; 2022-04-14 10:39:30 - modelling at rank: Class</span>
+<span class="co">#&gt; 2022-04-14 10:39:30 - modelling at rank: Order</span>
+<span class="co">#&gt; 2022-04-14 10:39:31 - modelling at rank: Family</span>
 <span class="va">bb_models</span>
 <span class="co">#&gt; ps_extra object - a list with phyloseq and extras:</span>
 <span class="co">#&gt; </span>
@@ -912,9 +1050,9 @@
     ncol <span class="op">=</span> <span class="fl">2</span>, guides <span class="op">=</span> <span class="st">"collect"</span>
   <span class="op">)</span> </code></pre></div>
 <p><img src="modelling-taxa_files/figure-html/unnamed-chunk-30-1.png" width="480"></p>
-<div class="section level3">
-<h3 id="alternative-layouts">Alternative layouts<a class="anchor" aria-label="anchor" href="#alternative-layouts"></a>
-</h3>
+<div class="section level4">
+<h4 id="alternative-layouts">Alternative layouts<a class="anchor" aria-label="anchor" href="#alternative-layouts"></a>
+</h4>
 <p>You do not need to make circular tree plots if you don’t want to!</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">alt_trees</span> <span class="op">&lt;-</span> <span class="va">bb_stats</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> 
@@ -963,163 +1101,162 @@
 <p><img src="modelling-taxa_files/figure-html/unnamed-chunk-33-1.png" width="480"></p>
 </div>
 </div>
-<div class="section level1">
-<h1 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
-</h1>
+<div class="section level2">
+<h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
+</h2>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://r-lib.github.io/sessioninfo/reference/session_info.html" class="external-link">session_info</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">─ Session info  ──────────────────────────────────────────────────────────────</span></span>
-<span class="co">#&gt;  hash: woman singer: dark skin tone, potato, handshake: medium skin tone</span>
-<span class="co">#&gt; </span>
+<span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">─ Session info ───────────────────────────────────────────────────────────────</span></span>
 <span class="co">#&gt;  <span style="color: #555555; font-style: italic;">setting </span> <span style="color: #555555; font-style: italic;">value</span></span>
-<span class="co">#&gt;  version  R version 4.1.2 (2021-11-01)</span>
-<span class="co">#&gt;  os       Ubuntu 20.04.3 LTS</span>
+<span class="co">#&gt;  version  R version 4.1.3 (2022-03-10)</span>
+<span class="co">#&gt;  os       Ubuntu 20.04.4 LTS</span>
 <span class="co">#&gt;  system   x86_64, linux-gnu</span>
 <span class="co">#&gt;  ui       X11</span>
 <span class="co">#&gt;  language en</span>
 <span class="co">#&gt;  collate  C.UTF-8</span>
 <span class="co">#&gt;  ctype    C.UTF-8</span>
 <span class="co">#&gt;  tz       UTC</span>
-<span class="co">#&gt;  date     2021-12-02</span>
+<span class="co">#&gt;  date     2022-04-14</span>
 <span class="co">#&gt;  pandoc   2.7.3 @ /usr/bin/ (via rmarkdown)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">─ Packages ───────────────────────────────────────────────────────────────────</span></span>
 <span class="co">#&gt;  <span style="color: #555555; font-style: italic;">package           </span> <span style="color: #555555; font-style: italic;">*</span> <span style="color: #555555; font-style: italic;">version     </span> <span style="color: #555555; font-style: italic;">date (UTC)</span> <span style="color: #555555; font-style: italic;">lib</span> <span style="color: #555555; font-style: italic;">source</span></span>
-<span class="co">#&gt;  ade4                 1.7-18       <span style="color: #555555;">2021-09-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  ape                  5.5          <span style="color: #555555;">2021-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  backports            1.4.0        <span style="color: #555555;">2021-11-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  base64enc            0.1-3        <span style="color: #555555;">2015-07-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  ade4                 1.7-18       <span style="color: #555555;">2021-09-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  ape                  5.6-2        <span style="color: #555555;">2022-03-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  backports            1.4.1        <span style="color: #555555;">2021-12-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  base64enc            0.1-3        <span style="color: #555555;">2015-07-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
 <span class="co">#&gt;  Biobase              2.54.0       <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
 <span class="co">#&gt;  BiocGenerics         0.40.0       <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
 <span class="co">#&gt;  biomformat           1.22.0       <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
 <span class="co">#&gt;  Biostrings           2.62.0       <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
-<span class="co">#&gt;  bitops               1.0-7        <span style="color: #555555;">2021-04-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  broom                0.7.10       <span style="color: #555555;">2021-10-31</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  bslib                0.3.1        <span style="color: #555555;">2021-10-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  cachem               1.0.6        <span style="color: #555555;">2021-08-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  callr                3.7.0        <span style="color: #555555;">2021-04-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  cli                  3.1.0        <span style="color: #555555;">2021-10-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  cluster              2.1.2        <span style="color: #555555;">2021-04-17</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
-<span class="co">#&gt;  codetools            0.2-18       <span style="color: #555555;">2020-11-04</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
-<span class="co">#&gt;  colorspace           2.0-2        <span style="color: #555555;">2021-06-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  corncob            * 0.2.0        <span style="color: #555555;">2021-03-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  crayon               1.4.2        <span style="color: #555555;">2021-10-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  data.table           1.14.2       <span style="color: #555555;">2021-09-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  desc                 1.4.0        <span style="color: #555555;">2021-09-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  detectseparation     0.2          <span style="color: #555555;">2021-04-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  devtools             2.4.3        <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
-<span class="co">#&gt;  digest               0.6.29       <span style="color: #555555;">2021-12-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
-<span class="co">#&gt;  dplyr              * 1.0.7        <span style="color: #555555;">2021-06-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  ellipsis             0.3.2        <span style="color: #555555;">2021-04-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  evaluate             0.14         <span style="color: #555555;">2019-05-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  fansi                0.5.0        <span style="color: #555555;">2021-05-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  farver               2.1.0        <span style="color: #555555;">2021-02-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  fastmap              1.1.0        <span style="color: #555555;">2021-01-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  foreach              1.5.1        <span style="color: #555555;">2020-10-15</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  fs                   1.5.1        <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
-<span class="co">#&gt;  future               1.23.0       <span style="color: #555555;">2021-10-31</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  future.apply         1.8.1        <span style="color: #555555;">2021-08-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  generics             0.1.1        <span style="color: #555555;">2021-10-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  GenomeInfoDb         1.30.0       <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
-<span class="co">#&gt;  GenomeInfoDbData     1.2.7        <span style="color: #555555;">2021-12-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
-<span class="co">#&gt;  ggforce              0.3.3        <span style="color: #555555;">2021-03-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  ggplot2            * 3.3.5        <span style="color: #555555;">2021-06-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  ggraph               2.0.5        <span style="color: #555555;">2021-02-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  ggrepel              0.9.1        <span style="color: #555555;">2021-01-15</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  globals              0.14.0       <span style="color: #555555;">2020-11-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  glue                 1.5.1        <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
-<span class="co">#&gt;  graphlayouts         0.7.2        <span style="color: #555555;">2021-11-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  gridExtra            2.3          <span style="color: #555555;">2017-09-09</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  gtable               0.3.0        <span style="color: #555555;">2019-03-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  highr                0.9          <span style="color: #555555;">2021-04-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  htmltools            0.5.2        <span style="color: #555555;">2021-08-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  igraph               1.2.9        <span style="color: #555555;">2021-11-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  bitops               1.0-7        <span style="color: #555555;">2021-04-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  brio                 1.1.3        <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  broom                0.8.0        <span style="color: #555555;">2022-04-13</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.3)</span></span>
+<span class="co">#&gt;  bslib                0.3.1        <span style="color: #555555;">2021-10-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  cachem               1.0.6        <span style="color: #555555;">2021-08-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  callr                3.7.0        <span style="color: #555555;">2021-04-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  cli                  3.2.0        <span style="color: #555555;">2022-02-14</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  cluster              2.1.3        <span style="color: #555555;">2022-03-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  codetools            0.2-18       <span style="color: #555555;">2020-11-04</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.3)</span></span>
+<span class="co">#&gt;  colorspace           2.0-3        <span style="color: #555555;">2022-02-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  corncob            * 0.2.0        <span style="color: #555555;">2021-03-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  crayon               1.5.1        <span style="color: #555555;">2022-03-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  data.table           1.14.2       <span style="color: #555555;">2021-09-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  desc                 1.4.1        <span style="color: #555555;">2022-03-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  detectseparation     0.2          <span style="color: #555555;">2021-04-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  devtools             2.4.3        <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  digest               0.6.29       <span style="color: #555555;">2021-12-01</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  dplyr              * 1.0.8        <span style="color: #555555;">2022-02-08</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  ellipsis             0.3.2        <span style="color: #555555;">2021-04-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  evaluate             0.15         <span style="color: #555555;">2022-02-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  fansi                1.0.3        <span style="color: #555555;">2022-03-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  farver               2.1.0        <span style="color: #555555;">2021-02-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  fastmap              1.1.0        <span style="color: #555555;">2021-01-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  foreach              1.5.2        <span style="color: #555555;">2022-02-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  fs                   1.5.2        <span style="color: #555555;">2021-12-08</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  future               1.24.0       <span style="color: #555555;">2022-02-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  future.apply         1.8.1        <span style="color: #555555;">2021-08-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  generics             0.1.2        <span style="color: #555555;">2022-01-31</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  GenomeInfoDb         1.30.1       <span style="color: #555555;">2022-01-30</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
+<span class="co">#&gt;  GenomeInfoDbData     1.2.7        <span style="color: #555555;">2022-04-14</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
+<span class="co">#&gt;  ggforce              0.3.3        <span style="color: #555555;">2021-03-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  ggplot2            * 3.3.5        <span style="color: #555555;">2021-06-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  ggraph               2.0.5        <span style="color: #555555;">2021-02-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  ggrepel              0.9.1        <span style="color: #555555;">2021-01-15</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  globals              0.14.0       <span style="color: #555555;">2020-11-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  glue                 1.6.2        <span style="color: #555555;">2022-02-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  graphlayouts         0.8.0        <span style="color: #555555;">2022-01-03</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  gridExtra            2.3          <span style="color: #555555;">2017-09-09</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  gtable               0.3.0        <span style="color: #555555;">2019-03-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  highr                0.9          <span style="color: #555555;">2021-04-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  htmltools            0.5.2        <span style="color: #555555;">2021-08-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  igraph               1.3.0        <span style="color: #555555;">2022-04-01</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
 <span class="co">#&gt;  IRanges              2.28.0       <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
-<span class="co">#&gt;  iterators            1.0.13       <span style="color: #555555;">2020-10-15</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  jquerylib            0.1.4        <span style="color: #555555;">2021-04-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  jsonlite             1.7.2        <span style="color: #555555;">2020-12-09</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  knitr                1.36         <span style="color: #555555;">2021-09-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  labeling             0.4.2        <span style="color: #555555;">2020-10-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  lattice              0.20-45      <span style="color: #555555;">2021-09-22</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
-<span class="co">#&gt;  lifecycle            1.0.1        <span style="color: #555555;">2021-09-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  listenv              0.8.0        <span style="color: #555555;">2019-12-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  lpSolveAPI           5.5.2.0-17.7 <span style="color: #555555;">2020-06-14</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  magrittr             2.0.1        <span style="color: #555555;">2020-11-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  MASS                 7.3-54       <span style="color: #555555;">2021-05-03</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
-<span class="co">#&gt;  Matrix               1.3-4        <span style="color: #555555;">2021-06-01</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
-<span class="co">#&gt;  memoise              2.0.1        <span style="color: #555555;">2021-11-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  mgcv                 1.8-38       <span style="color: #555555;">2021-10-06</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
+<span class="co">#&gt;  iterators            1.0.14       <span style="color: #555555;">2022-02-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  jquerylib            0.1.4        <span style="color: #555555;">2021-04-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  jsonlite             1.8.0        <span style="color: #555555;">2022-02-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  knitr                1.38         <span style="color: #555555;">2022-03-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  labeling             0.4.2        <span style="color: #555555;">2020-10-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  lattice              0.20-45      <span style="color: #555555;">2021-09-22</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.3)</span></span>
+<span class="co">#&gt;  lifecycle            1.0.1        <span style="color: #555555;">2021-09-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  listenv              0.8.0        <span style="color: #555555;">2019-12-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  lpSolveAPI           5.5.2.0-17.7 <span style="color: #555555;">2020-06-14</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  magrittr             2.0.3        <span style="color: #555555;">2022-03-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  MASS                 7.3-56       <span style="color: #555555;">2022-03-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  Matrix               1.4-1        <span style="color: #555555;">2022-03-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  memoise              2.0.1        <span style="color: #555555;">2021-11-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  mgcv                 1.8-40       <span style="color: #555555;">2022-03-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
 <span class="co">#&gt;  microbiome           1.16.0       <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
-<span class="co">#&gt;  microViz           * 0.9.0        <span style="color: #555555;">2021-12-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">local</span></span>
+<span class="co">#&gt;  microViz           * <span style="color: #BB00BB; font-weight: bold;">0.9.0.9000  </span> <span style="color: #555555;">2022-04-14</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">local</span></span>
 <span class="co">#&gt;  multtest             2.50.0       <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
-<span class="co">#&gt;  munsell              0.5.0        <span style="color: #555555;">2018-06-12</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  nlme                 3.1-153      <span style="color: #555555;">2021-09-07</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
-<span class="co">#&gt;  numDeriv             <span style="color: #BB00BB; font-weight: bold;">2016.8-1.1  </span> <span style="color: #555555;">2019-06-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  parallelly           1.29.0       <span style="color: #555555;">2021-11-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  patchwork            1.1.1        <span style="color: #555555;">2020-12-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  permute              0.9-5        <span style="color: #555555;">2019-03-12</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  munsell              0.5.0        <span style="color: #555555;">2018-06-12</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  nlme                 3.1-157      <span style="color: #555555;">2022-03-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  numDeriv             <span style="color: #BB00BB; font-weight: bold;">2016.8-1.1  </span> <span style="color: #555555;">2019-06-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  parallelly           1.31.0       <span style="color: #555555;">2022-04-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  patchwork            1.1.1        <span style="color: #555555;">2020-12-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  permute              0.9-7        <span style="color: #555555;">2022-01-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
 <span class="co">#&gt;  phyloseq             1.38.0       <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
-<span class="co">#&gt;  pillar               1.6.4        <span style="color: #555555;">2021-10-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  pkgbuild             1.2.1        <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
-<span class="co">#&gt;  pkgconfig            2.0.3        <span style="color: #555555;">2019-09-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  pkgdown              2.0.0        <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  pkgload              1.2.4        <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
-<span class="co">#&gt;  plyr                 1.8.6        <span style="color: #555555;">2020-03-03</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  polyclip             1.10-0       <span style="color: #555555;">2019-03-14</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  prettyunits          1.1.1        <span style="color: #555555;">2020-01-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  processx             3.5.2        <span style="color: #555555;">2021-04-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  ps                   1.6.0        <span style="color: #555555;">2021-02-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  purrr                0.3.4        <span style="color: #555555;">2020-04-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  R6                   2.5.1        <span style="color: #555555;">2021-08-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  ragg                 1.2.0        <span style="color: #555555;">2021-10-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  Rcpp                 1.0.7        <span style="color: #555555;">2021-07-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  RCurl                1.98-1.5     <span style="color: #555555;">2021-09-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  registry             0.5-1        <span style="color: #555555;">2019-03-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  remotes              2.4.2        <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
-<span class="co">#&gt;  repr                 1.1.3        <span style="color: #555555;">2021-01-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  reshape2             1.4.4        <span style="color: #555555;">2020-04-09</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  rhdf5                2.38.0       <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
+<span class="co">#&gt;  pillar               1.7.0        <span style="color: #555555;">2022-02-01</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  pkgbuild             1.3.1        <span style="color: #555555;">2021-12-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  pkgconfig            2.0.3        <span style="color: #555555;">2019-09-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  pkgdown              2.0.2        <span style="color: #555555;">2022-01-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  pkgload              1.2.4        <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  plyr                 1.8.7        <span style="color: #555555;">2022-03-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  polyclip             1.10-0       <span style="color: #555555;">2019-03-14</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  prettyunits          1.1.1        <span style="color: #555555;">2020-01-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  processx             3.5.3        <span style="color: #555555;">2022-03-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  ps                   1.6.0        <span style="color: #555555;">2021-02-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  purrr                0.3.4        <span style="color: #555555;">2020-04-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  R6                   2.5.1        <span style="color: #555555;">2021-08-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  ragg                 1.2.2        <span style="color: #555555;">2022-02-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  Rcpp                 1.0.8.3      <span style="color: #555555;">2022-03-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  RCurl                1.98-1.6     <span style="color: #555555;">2022-02-08</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  registry             0.5-1        <span style="color: #555555;">2019-03-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  remotes              2.4.2        <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  repr                 1.1.4        <span style="color: #555555;">2022-01-04</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  reshape2             1.4.4        <span style="color: #555555;">2020-04-09</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  rhdf5                2.38.1       <span style="color: #555555;">2022-03-10</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
 <span class="co">#&gt;  rhdf5filters         1.6.0        <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
 <span class="co">#&gt;  Rhdf5lib             1.16.0       <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
-<span class="co">#&gt;  rlang                0.4.12       <span style="color: #555555;">2021-10-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  rmarkdown            2.11         <span style="color: #555555;">2021-09-14</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  ROI                  1.0-0        <span style="color: #555555;">2020-08-31</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  ROI.plugin.lpsolve   1.0-1        <span style="color: #555555;">2021-06-15</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  rprojroot            2.0.2        <span style="color: #555555;">2020-11-15</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  Rtsne                0.15         <span style="color: #555555;">2018-11-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  S4Vectors            0.32.3       <span style="color: #555555;">2021-11-21</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
-<span class="co">#&gt;  sass                 0.4.0        <span style="color: #555555;">2021-05-12</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  scales               1.1.1        <span style="color: #555555;">2020-05-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  sessioninfo          1.2.1        <span style="color: #555555;">2021-11-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  skimr                2.1.3        <span style="color: #555555;">2021-03-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  slam                 0.1-49       <span style="color: #555555;">2021-11-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  stringi              1.7.6        <span style="color: #555555;">2021-11-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  stringr              1.4.0        <span style="color: #555555;">2019-02-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  survival             3.2-13       <span style="color: #555555;">2021-08-24</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
-<span class="co">#&gt;  systemfonts          1.0.3        <span style="color: #555555;">2021-10-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  testthat             3.1.0        <span style="color: #555555;">2021-10-04</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  textshaping          0.3.6        <span style="color: #555555;">2021-10-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  tibble               3.1.6        <span style="color: #555555;">2021-11-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  tidygraph            1.2.0        <span style="color: #555555;">2020-05-12</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  tidyr                1.1.4        <span style="color: #555555;">2021-09-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  tidyselect           1.1.1        <span style="color: #555555;">2021-04-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  trust                0.1-8        <span style="color: #555555;">2020-01-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  tweenr               1.0.2        <span style="color: #555555;">2021-03-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  usethis              2.1.3        <span style="color: #555555;">2021-10-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  utf8                 1.2.2        <span style="color: #555555;">2021-07-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  vctrs                0.3.8        <span style="color: #555555;">2021-04-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  vegan                2.5-7        <span style="color: #555555;">2020-11-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  VGAM                 1.1-5        <span style="color: #555555;">2021-01-14</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  viridis              0.6.2        <span style="color: #555555;">2021-10-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  viridisLite          0.4.0        <span style="color: #555555;">2021-04-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
-<span class="co">#&gt;  withr                2.4.3        <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
-<span class="co">#&gt;  xfun                 0.28         <span style="color: #555555;">2021-11-04</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  rlang                1.0.2        <span style="color: #555555;">2022-03-04</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  rmarkdown            2.13         <span style="color: #555555;">2022-03-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  ROI                  1.0-0        <span style="color: #555555;">2020-08-31</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  ROI.plugin.lpsolve   1.0-1        <span style="color: #555555;">2021-06-15</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  rprojroot            2.0.3        <span style="color: #555555;">2022-04-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  Rtsne                0.15         <span style="color: #555555;">2018-11-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  S4Vectors            0.32.4       <span style="color: #555555;">2022-03-24</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
+<span class="co">#&gt;  sass                 0.4.1        <span style="color: #555555;">2022-03-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  scales               1.2.0        <span style="color: #555555;">2022-04-13</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.3)</span></span>
+<span class="co">#&gt;  sessioninfo          1.2.2        <span style="color: #555555;">2021-12-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  skimr                2.1.3        <span style="color: #555555;">2021-03-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  slam                 0.1-50       <span style="color: #555555;">2022-01-08</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  stringi              1.7.6        <span style="color: #555555;">2021-11-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  stringr              1.4.0        <span style="color: #555555;">2019-02-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  survival             3.3-1        <span style="color: #555555;">2022-03-03</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  systemfonts          1.0.4        <span style="color: #555555;">2022-02-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  testthat             3.1.3        <span style="color: #555555;">2022-03-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  textshaping          0.3.6        <span style="color: #555555;">2021-10-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  tibble               3.1.6        <span style="color: #555555;">2021-11-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  tidygraph            1.2.1        <span style="color: #555555;">2022-04-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  tidyr                1.2.0        <span style="color: #555555;">2022-02-01</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  tidyselect           1.1.2        <span style="color: #555555;">2022-02-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  trust                0.1-8        <span style="color: #555555;">2020-01-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  tweenr               1.0.2        <span style="color: #555555;">2021-03-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  usethis              2.1.5        <span style="color: #555555;">2021-12-09</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  utf8                 1.2.2        <span style="color: #555555;">2021-07-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  vctrs                0.4.1        <span style="color: #555555;">2022-04-13</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.3)</span></span>
+<span class="co">#&gt;  vegan                2.5-7        <span style="color: #555555;">2020-11-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  VGAM                 1.1-6        <span style="color: #555555;">2022-02-14</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  viridis              0.6.2        <span style="color: #555555;">2021-10-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  viridisLite          0.4.0        <span style="color: #555555;">2021-04-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  withr                2.5.0        <span style="color: #555555;">2022-03-03</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  xfun                 0.30         <span style="color: #555555;">2022-03-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
 <span class="co">#&gt;  XVector              0.34.0       <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
-<span class="co">#&gt;  yaml                 2.2.1        <span style="color: #555555;">2020-02-01</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  yaml                 2.3.5        <span style="color: #555555;">2022-02-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
 <span class="co">#&gt;  zlibbioc             1.40.0       <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; <span style="color: #555555;"> [1] /home/runner/work/_temp/Library</span></span>
-<span class="co">#&gt; <span style="color: #555555;"> [2] /opt/R/4.1.2/lib/R/library</span></span>
+<span class="co">#&gt; <span style="color: #555555;"> [2] /opt/R/4.1.3/lib/R/library</span></span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">──────────────────────────────────────────────────────────────────────────────</span></span></code></pre></div>
 </div>
@@ -1142,7 +1279,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.0.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>

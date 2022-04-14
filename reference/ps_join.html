@@ -32,7 +32,7 @@ reattaches the modified sample_data to the phyloseq and returns the phyloseq
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.0.9000</span>
       </span>
     </div>
 
@@ -41,7 +41,7 @@ reattaches the modified sample_data to the phyloseq and returns the phyloseq
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -113,7 +113,8 @@ This function simply:</p><ol><li><p>extracts the sample_data from the phyloseq a
 <li><p>reattaches the modified sample_data to the phyloseq and returns the phyloseq</p></li>
 </ol></div>
 
-    <div id="ref-usage">Usage,<div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">ps_join</span><span class="op">(</span>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">ps_join</span><span class="op">(</span>
   <span class="va">x</span>,
   <span class="va">y</span>,
   by <span class="op">=</span> <span class="cn">NULL</span>,
@@ -122,7 +123,8 @@ This function simply:</p><ol><li><p>extracts the sample_data from the phyloseq a
   sample_name_natural_join <span class="op">=</span> <span class="cn">FALSE</span>,
   type <span class="op">=</span> <span class="st">"left"</span>,
   .keep_all_taxa <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div></div>
+<span class="op">)</span></code></pre></div>
+    </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
@@ -304,7 +306,7 @@ This will cause this function to fail, as additional rows cannot be added to the
 <span class="r-out co"><span class="r-pr">#&gt;</span> MH0015           &lt;NA&gt;</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># semi and anti joins keep opposite sets of samples</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/generics/man/setops.html" class="external-link">intersect</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_names-methods.html" class="external-link">sample_names</a></span><span class="op">(</span><span class="va">out2A</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_names-methods.html" class="external-link">sample_names</a></span><span class="op">(</span><span class="va">out2B</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="https://generics.r-lib.org/reference/setops.html" class="external-link">intersect</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_names-methods.html" class="external-link">sample_names</a></span><span class="op">(</span><span class="va">out2A</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_names-methods.html" class="external-link">sample_names</a></span><span class="op">(</span><span class="va">out2B</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> character(0)</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># you can mix and match named and unnamed values in the `by` vector</span></span>
@@ -344,7 +346,7 @@ This will cause this function to fail, as additional rows cannot be added to the
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.0.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer></div>
