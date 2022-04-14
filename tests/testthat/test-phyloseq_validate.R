@@ -3,7 +3,7 @@ data(dietswap, package = "microbiome")
 
 test_that("phyloseq_validate warns about removing all zero taxa", {
   local_edition(3)
-  expect_snapshot(
+  expect_snapshot_warning(
     phyloseq_validate(
       ps = dietswap, remove_undetected = TRUE, verbose = TRUE
     )
