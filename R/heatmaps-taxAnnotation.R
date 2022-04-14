@@ -249,8 +249,8 @@ anno_tax_prev <- function(undetected = 0,
 #' Use this as an argument to taxAnnotation(),
 #' which itself is used by cor_heatmap and comp_heatmap as tax_anno argument.
 #'
-#' @inheritParams anno_tax_prev
 #' @inheritParams ComplexHeatmap::anno_boxplot
+#' @inheritParams anno_tax_prev
 #' @inheritDotParams ComplexHeatmap::anno_boxplot axis_param
 #'
 #' @param only_detected
@@ -262,6 +262,10 @@ anno_tax_prev <- function(undetected = 0,
 #' @param zero_replace
 #' zero_replace value for for tax_transform, ignored if trans is a function
 #' @param pointsize size of outlier points, as grid::unit() object
+#' @param which
+#' OPTIONAL indicating if it is a 'column' or a 'row' annotation,
+#' only set this if providing data argument to override default
+#' @param size width or height as a grid unit object
 #'
 #' @return function or ComplexHeatmap AnnotationFunction object
 #' @export
@@ -363,9 +367,14 @@ anno_tax_box <- function(undetected = 0,
 #' Use this as an argument to taxAnnotation(),
 #' which itself is used by cor_heatmap and comp_heatmap as tax_anno argument.
 #'
-#' @inheritParams anno_tax_box
 #' @inheritParams ComplexHeatmap::anno_density
+#' @inheritParams anno_tax_box
 #' @inheritDotParams ComplexHeatmap::anno_density axis_param
+#'
+#' @param size width or height as a grid unit object
+#' @param which
+#' OPTIONAL indicating if it is a 'column' or a 'row' annotation,
+#' only set this if providing data argument to override default
 #'
 #' @return function or ComplexHeatmap AnnotationFunction object
 #' @export

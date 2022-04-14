@@ -97,13 +97,17 @@ varAnnotation <- function(...,
 #' Use this as an argument to varAnnotation(),
 #' which itself is used by cor_heatmap as var_anno() argument.
 #'
-#' @inheritParams anno_tax_box
 #' @inheritParams ComplexHeatmap::anno_boxplot
+#' @inheritParams anno_tax_box
 #' @inheritDotParams ComplexHeatmap::anno_boxplot axis_param
 #'
 #' @param fun function applied to all variables, with apply()
+#' @param size width or height as a grid unit object
 #' @param vars
 #' OPTIONAL selection vector of variable names,
+#' only set this if providing data argument to override default
+#' @param which
+#' OPTIONAL indicating if it is a 'column' or a 'row' annotation,
 #' only set this if providing data argument to override default
 #'
 #' @return function or ComplexHeatmap AnnotationFunction object

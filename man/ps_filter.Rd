@@ -37,15 +37,15 @@ ps1 <- ps_filter(enterotype, SeqTech != "Sanger")
 ps1
 sample_data(ps1)[1:10, 1:5]
 
-# keep only samples with no NAs in any samples
-ps2 <- enterotype \%>\% ps_filter(across(everything(), ~ !is.na(.)))
+# keep only samples with no NAs in any variables
+ps2 <- enterotype \%>\% ps_filter(!if_any(everything(), is.na))
 ps2
 sample_data(ps2)[1:8, 1:8]
 
 # ps2 is equivalent to dropping samples with incomplete sample_variables and tax_filtering 0s
 ps3 <- enterotype \%>\%
   ps_drop_incomplete() \%>\%
-  tax_filter(prev_detection_threshold = 1e-20, use_counts = FALSE)
+  tax_filter(undetected = 0, use_counts = FALSE)
 # we needed to set a low detection threshold because this example data is proportions
 identical(ps2, ps3) # TRUE
 

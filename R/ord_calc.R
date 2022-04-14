@@ -3,10 +3,10 @@
 #' @description
 #' Used before plotting with ord_plot() or explorating interactively with ord_explore().
 #' Use method = "auto" to automatically pick an appropriate method from:
-#'  - "PCA" (Principle Components Analysis) combines taxa abundances into new dimensions. The first axes display the greatest variation in your microbial data.
+#'  - "PCA" (Principal Components Analysis) combines taxa abundances into new dimensions. The first axes display the greatest variation in your microbial data.
 #'  - "RDA" (Redundancy Analysis) is constrained PCA, roughly speaking. It finds variation in your data that can be explained both by the constraints variables, and the microbial data.
-#'  - "PCoA" (Principle Coordinates Analysis) finds a coordinate system that best preserves the original distances between samples.
-#'  - "CAP" (Constrained Analysis of Principle Coordinates) is also known as distance-based Redundancy Analysis.
+#'  - "PCoA" (Principal Coordinates Analysis) finds a coordinate system that best preserves the original distances between samples.
+#'  - "CAP" (Constrained Analysis of Principal Coordinates) is also known as distance-based Redundancy Analysis.
 #'
 #' Alternatively to leaving method = "auto", you can explicitly specify any of the above methods, or choose one of the following:
 #'  - "CCA" (Canonical Correspondence Analysis) - NOT canonical correlation analysis!

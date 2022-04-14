@@ -1094,8 +1094,8 @@ ord_choices <- function(type) {
   # individual options
   all <- c(
     "auto" = "auto (picks 1 of options below)",
-    "PCA" = "PCA (Principle Components Analysis)",
-    "PCoA" = "PCoA (Principle Co-ordinates Analysis)",
+    "PCA" = "PCA (Principal Components Analysis)",
+    "PCoA" = "PCoA (Principal Co-ordinates Analysis)",
     "RDA" = "RDA (Redundancy Analysis)",
     "CAP" = "CAP (Constrained PCoA)",
     "CCA" = "CCA (Canonical Correspondence Analysis)",

@@ -43,9 +43,9 @@ or a function calling tax_transform, and/or tax_scale,
 
 \item{border}{Wether draw borders of the annotation region?}
 
-\item{gp}{Graphic parameters for points. The length of each graphic parameter can be 1, length of \code{x} if \code{x} is a vector, or number of columns of \code{x} is \code{x} is a matrix.}
+\item{gp}{Graphic parameters for the boxes. The length of the graphic parameters should be one or the number of observations.}
 
-\item{ylim}{Data ranges. By default it is \code{range(x)} if \code{x} is a vector, or \code{range(rowSums(x))} if \code{x} is a matrix.}
+\item{ylim}{Data ranges.}
 
 \item{extend}{The extension to both side of \code{ylim}. The value is a percent value corresponding to \code{ylim[2] - ylim[1]}.}
 
