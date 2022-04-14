@@ -145,7 +145,7 @@
 
     Code
       ord_explore_init(esophagus)
-    Message <simpleMessage>
+    Message
       Note: Replacing missing sample_data with a dataframe of only sample_names.
       Try `ps <- phyloseq_validate(ps, verbose = FALSE)` to avoid this message
       Note: Replacing missing tax_table with a 1-column table of only taxa_names.

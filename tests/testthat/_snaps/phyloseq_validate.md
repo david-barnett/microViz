@@ -2,7 +2,8 @@
 
     Code
       phyloseq_validate(ps = dietswap, remove_undetected = TRUE, verbose = TRUE)
-    Warning <simpleWarning>
+    Condition
+      [1m[33mWarning[39m in [38;5;252m`phyloseq_validate()`[39m:[22m
       Some taxa_sums were zero, removing the following taxa:
       	Aerococcus 
       	Aneurinibacillus 
@@ -26,7 +27,7 @@
 
     Code
       phyloseq_validate(ps = dietswap, verbose = TRUE)
-    Message <simpleMessage>
+    Message
       Note: Replacing missing sample_data with a dataframe of only sample_names.
       Try `ps <- phyloseq_validate(ps, verbose = FALSE)` to avoid this message
     Output
@@ -39,7 +40,7 @@
 
     Code
       phyloseq_validate(soilrep, verbose = TRUE)
-    Message <simpleMessage>
+    Message
       Note: Replacing missing tax_table with a 1-column table of only taxa_names.
       Try `ps <- phyloseq_validate(ps, verbose = FALSE)` to avoid this message
     Output

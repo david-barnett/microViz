@@ -76,8 +76,9 @@
 
     Code
       tax_agg(dietswap, rank = "Genus")
-    Error <simpleError>
-      NAs in tax_table at rank: Genus
+    Condition
+      Error in `tax_agg()`:
+      ! NAs in tax_table at rank: Genus
       
       To fix the problem, try:
         `yourData %>% tax_fix()`
@@ -88,8 +89,9 @@
 
     Code
       tax_agg(dietswap, rank = "Genus")
-    Error <simpleError>
-      zero-length name(s) in tax_table at rank: Genus
+    Condition
+      Error in `tax_agg()`:
+      ! zero-length name(s) in tax_table at rank: Genus
       
       To fix the problem, try:
         `yourData %>% tax_fix()`
@@ -100,7 +102,7 @@
 
     Code
       tax_agg(dietswap, rank = "Genus")
-    Message <simpleMessage>
+    Message
       Problematic Genus values detected in tax_table:
       g__
       -
@@ -112,8 +114,9 @@
       Anaerostipes caccae et rel. / Firmicutes / Clostridium cluster XIVa / g__
       Anaerotruncus colihominis et rel. / Firmicutes / Clostridium cluster IV / g__
       -
-    Error <simpleError>
-      Taxa not unique at rank: Genus
+    Condition
+      Error in `tax_agg()`:
+      ! Taxa not unique at rank: Genus
       See last messages for convergent taxa rows.
       
       To fix the problem, try:
