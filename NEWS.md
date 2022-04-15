@@ -1,5 +1,8 @@
 # microViz (development version)
 
+## Features
+- `tax_sort` can now sort taxa "asis" (i.e. do nothing), which now permits upfront custom sorting of taxa for use in `comp_barplot`
+
 # microViz 0.9.0
 
 ## Heatmaps major changes

@@ -162,21 +162,29 @@ dietswap \%>\%
     label = "subject_timepoint"
   ) + coord_flip()
 
-# how many taxa are in those light grey "other" bars?
-# set merge_other, to find out (& remember to set a bar_outline_colour)
+# Order taxa differently:
+# By default, taxa are ordered by total sum across all samples
+# You can set a different function for calculating the order, e.g. median
 dietswap \%>\%
-  ps_mutate(subject_timepoint = interaction(subject, timepoint)) \%>\%
-  ps_filter(nationality == "AAM", group == "DI", sex == "female") \%>\%
-  ps_arrange(desc(subject), desc(timepoint)) \%>\%
+  ps_filter(timepoint == 1) \%>\%
+  comp_barplot(tax_level = "Genus", tax_order = median) +
+  coord_flip()
+
+# Or you can set the taxa order up front, with tax_sort() and use it as is
+dietswap \%>\%
+  ps_filter(timepoint == 1) \%>\%
+  tax_sort(at = "Genus", by = sum) \%>\%
+  comp_barplot(tax_level = "Genus", tax_order = "asis") +
+  coord_flip()
+
+# how many taxa are in those light grey "other" bars?
+# set merge_other to find out (& remember to set a bar_outline_colour)
+dietswap \%>\%
+  ps_filter(timepoint == 1) \%>\%
   comp_barplot(
-    tax_level = "Genus", n_taxa = 12,
-    sample_order = "default",
-    merge_other = FALSE,
-    bar_width = 0.7,
-    bar_outline_colour = "black",
-    order_with_all_taxa = TRUE,
-    label = "subject_timepoint"
-  ) + coord_flip()
+    tax_level = "Genus", n_taxa = 12, merge_other = FALSE, bar_outline_colour = "grey50",
+  ) +
+  coord_flip()
 
 
 # Often to compare groups, average compositions are presented

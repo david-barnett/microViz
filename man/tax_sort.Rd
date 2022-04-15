@@ -41,6 +41,7 @@ The \code{by} argument must be one of:
 \itemize{
 \item 'rev' to reverse the current order
 \item 'name' (sort alphabetically by \code{at})
+\item 'asis' to keep current order as is
 \item a sample name (descending abundance sorting within that sample)
 \item summary stat. function e.g. \code{sum} or \code{mean}
 }

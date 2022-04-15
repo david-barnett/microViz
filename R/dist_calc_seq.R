@@ -150,27 +150,7 @@ dist_calc_seq <- function(data,
   return(data)
 }
 
-
-
-
 # helpers -----------------------------------------------------------------
-
-# check variable names found in phyloseq and give nice error if not
-psCheckVariables <- function(ps, vars) {
-  varNames <- phyloseq::sample_variables(ps)
-  isVariable <- vars %in% varNames
-  if (any(!isVariable)) {
-    missingVars <- vars[!isVariable]
-    stop(
-      "\n",
-      paste(
-        paste(missingVars, "is not a variable in phyloseq sample_data"),
-        collapse = "\n"
-      )
-    )
-  }
-}
-
 
 # split phyloseq by levels of grouping variable group (in phyloseq sample_data)
 # optionally check for unequal group sizes and error or warn

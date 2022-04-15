@@ -5,6 +5,7 @@
 #' The `by` argument must be one of:
 #'  - 'rev' to reverse the current order
 #'  - 'name' (sort alphabetically by `at`)
+#'  - 'asis' to keep current order as is
 #'  - a sample name (descending abundance sorting within that sample)
 #'  - summary stat. function e.g. `sum` or `mean`
 #'
@@ -107,6 +108,7 @@ tax_sort <- function(data,
   by_is_invalid_error <- paste0(
     "`by` argument must be one of:\n",
     "- 'rev' to reverse the current order\n",
+    "- 'asis' to keep the current order as is\n",
     "- 'name' (alphabetical sorting)\n",
     "- summary stat. function e.g. `sum` or `mean` (don't forget na.rm)\n",
     "- 'prev' or 'prevalence' using value of optional `undetected` arg\n",
@@ -134,6 +136,9 @@ tax_sort <- function(data,
   if (identical(by, "rev")) {
     # rev is special case: ignores `at`
     taxSorted <- rev(phyloseq::taxa_names(ps))
+  } else if (identical(by, "asis")) {
+    # 'asis' is special case: ignores `at`
+    taxSorted <- phyloseq::taxa_names(ps)
   } else if (identical(by, "name")) {
     if (identical(at, "names")) {
       taxSorted <- sort(phyloseq::taxa_names(ps))
