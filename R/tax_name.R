@@ -1,4 +1,4 @@
-#' Set unique taxa_names for phyloseq object
+#' Simple way to set unique taxa_names for phyloseq object
 #'
 #' @description
 #' If your current taxa_names aren't what you want (e.g. they are long DNA sequences),
@@ -11,7 +11,8 @@
 #' - classification information from a chosen taxonomic rank (optional)
 #'
 #' @details
-#' Don't confuse this with the phyloseq function taxa_names().
+#' Don't confuse this with the phyloseq function `taxa_names()` or the newer
+#' microViz function `tax_rename()`.
 #'
 #' @param ps phyloseq object
 #' @param prefix e.g. 'tax', 'asv', or 'otu' (or set your own)
@@ -26,6 +27,7 @@
 #' @return phyloseq object
 #' @export
 #'
+#' @seealso \code{\link{tax_rename}} for a more informative taxon naming tool
 #' @seealso \code{phyloseq::\link[phyloseq]{taxa_names}} for accessing and manually setting names
 #'
 #' @examples

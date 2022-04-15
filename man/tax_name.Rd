@@ -2,7 +2,7 @@
 % Please edit documentation in R/tax_name.R
 \name{tax_name}
 \alias{tax_name}
-\title{Set unique taxa_names for phyloseq object}
+\title{Simple way to set unique taxa_names for phyloseq object}
 \usage{
 tax_name(
   ps,
@@ -40,7 +40,8 @@ It combines:
 }
 }
 \details{
-Don't confuse this with the phyloseq function taxa_names().
+Don't confuse this with the phyloseq function \code{taxa_names()} or the newer
+microViz function \code{tax_rename()}.
 }
 \examples{
 library(phyloseq)
@@ -74,5 +75,7 @@ tax_name(ps, rank = "Genus", sep = "-") \%>\%
   head()
 }
 \seealso{
+\code{\link{tax_rename}} for a more informative taxon naming tool
+
 \code{phyloseq::\link[phyloseq]{taxa_names}} for accessing and manually setting names
 }

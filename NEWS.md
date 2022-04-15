@@ -1,6 +1,7 @@
 # microViz (development version)
 
 ## Features
+- New function `tax_rename` allows renaming of taxa using unique combination of classification at any chosen rank and abundance of that taxon (e.g. ASV145 becomes Bifidobacterium-002, which can be interpreted as the second most abundant Bifidobacterium ASV)
 - `tax_sort` can now sort taxa "asis" (i.e. do nothing), which now permits upfront custom sorting of taxa for use in `comp_barplot`
 
 # microViz 0.9.0
