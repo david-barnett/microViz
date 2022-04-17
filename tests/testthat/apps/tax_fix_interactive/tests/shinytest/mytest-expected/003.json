@@ -280,7 +280,63 @@
     ],
     "view_rows_selected": 1,
     "view_search": "",
-    "view_state": null
+    "view_state": {
+      "start": 0,
+      "length": 243,
+      "order": [
+
+      ],
+      "search": {
+        "search": "",
+        "smart": true,
+        "regex": false,
+        "caseInsensitive": true
+      },
+      "columns": [
+        {
+          "visible": true,
+          "search": {
+            "search": "",
+            "smart": true,
+            "regex": false,
+            "caseInsensitive": true
+          }
+        },
+        {
+          "visible": true,
+          "search": {
+            "search": "",
+            "smart": true,
+            "regex": false,
+            "caseInsensitive": true
+          }
+        },
+        {
+          "visible": true,
+          "search": {
+            "search": "",
+            "smart": true,
+            "regex": false,
+            "caseInsensitive": true
+          }
+        },
+        {
+          "visible": true,
+          "search": {
+            "search": "",
+            "smart": true,
+            "regex": false,
+            "caseInsensitive": true
+          }
+        }
+      ],
+      "scroller": {
+        "topRow": 0,
+        "baseScrollTop": 0,
+        "baseRowTop": 0,
+        "scrollTop": 0
+      }
+    }
   },
   "output": {
     "code": "your_phyloseq %>%\n tax_fix(\n  min_length = 0,\n  unknowns = c(\"Anaerostipes caccae et rel.\"),\n  sep = \" \", anon_unique = TRUE,\n  suffix_rank = \"classified\"\n )",
@@ -298,17 +354,17 @@
           "scrollCollapse": true,
           "scroller": true,
           "deferRender": true,
-          "order": [
-
-          ],
-          "autoWidth": false,
-          "orderClasses": false,
           "columnDefs": [
             {
               "orderable": false,
               "targets": 0
             }
           ],
+          "order": [
+
+          ],
+          "autoWidth": false,
+          "orderClasses": false,
           "rowCallback": "function(row, data, displayNum, displayIndex, dataIndex) {\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'background-color':value == \"NA\" ? \"red\" : value == \"Anaerostipes caccae et rel.\" ? \"red\" : null});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'background-color':value == \"NA\" ? \"red\" : value == \"Anaerostipes caccae et rel.\" ? \"red\" : null});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'background-color':value == \"NA\" ? \"red\" : value == \"Anaerostipes caccae et rel.\" ? \"red\" : null});\n}",
           "ajax": {
             "type": "POST",
@@ -347,9 +403,9 @@
         },
         {
           "name": "dt-core",
-          "version": "1.10.20",
+          "version": "1.11.3",
           "src": {
-            "href": "dt-core-1.10.20"
+            "href": "dt-core-1.11.3"
           },
           "meta": null,
           "script": "js/jquery.dataTables.min.js",
@@ -364,9 +420,9 @@
         },
         {
           "name": "dt-ext-scroller",
-          "version": "1.10.20",
+          "version": "1.11.3",
           "src": {
-            "href": "dt-ext-scroller-1.10.20"
+            "href": "dt-ext-scroller-1.11.3"
           },
           "meta": null,
           "script": "js/dataTables.scroller.min.js",
@@ -378,9 +434,9 @@
         },
         {
           "name": "dt-plugin-scrolling",
-          "version": "1.10.20",
+          "version": "1.11.3",
           "src": {
-            "href": "dt-plugin-scrolling-1.10.20"
+            "href": "dt-plugin-scrolling-1.11.3"
           },
           "meta": null,
           "script": "source.js",
