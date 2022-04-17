@@ -22,7 +22,7 @@ test_that("ibd_phylo names are as expected, and are replaced consistently", {
   )
   expect_error(
     object = tax_rename(ps, rank = "Gebus"),
-    regexp = "rank must be the name of a valid rank"
+    regexp = "`rank` must be the name of a valid rank"
   )
   expect_error(
     object = tax_rename(ps, rank = "Genus", pad_digits = TRUE),
