@@ -19,7 +19,9 @@
 #' @param formula
 #' (alternative to variables arg) right hand side of a formula,
 #' as a formula object or character value
-#' @param verbose message about progress
+#' @param verbose
+#' message about progress: "rank" only notifies which rank is being processed;
+#' TRUE notifies you about each taxon being processed; FALSE for no messages.
 #' @param ... extra arguments are passed directly to modelling function
 #'
 #' @export
