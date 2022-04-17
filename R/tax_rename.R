@@ -67,7 +67,7 @@
 #'     tax_level = "Taxon", n_taxa = 12,other_name = "Other",
 #'     merge_other = FALSE, bar_outline_colour = "grey60"
 #'   ) +
-#'   ggplot2::coord_flip() +
+#'   coord_flip() +
 #'   ggtitle("Original taxon names :(")
 #'
 #' # after OTU renaming
@@ -82,7 +82,7 @@
 #'   coord_flip() +
 #'   ggtitle("New taxon names :)", "tax_rename(rank = 'Genus', sort_by = sum)")
 #'
-#' before + after
+#' before + after & theme(legend.text = element_text(size = 8))
 #'
 #' # ordination example
 #' psExample %>%
@@ -96,7 +96,7 @@
 #'     tax_vec_length = 0.5,
 #'     tax_lab_style = tax_lab_style(
 #'       type = "text", max_angle = 90, check_overlap = TRUE,
-#'       size = 3, fontface = "bold"
+#'       size = 2.5, fontface = "bold"
 #'     ),
 #'     tax_vec_style_all = vec_tax_all(alpha = 0.1)
 #'   ) +

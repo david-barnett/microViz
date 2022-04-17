@@ -383,7 +383,7 @@ anno_cat <- function(x,
   return(af)
 }
 
-#' Convenience function for generating levels of convenience.
+#' Convenience function for generating a legend for anno_cat annotations.
 #'
 #' @param col
 #' vector of colors, named by all levels of data (e.g. x) or not named

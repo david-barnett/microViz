@@ -2,7 +2,7 @@
 % Please edit documentation in R/heatmaps-sampleAnnotation.R
 \name{anno_cat_legend}
 \alias{anno_cat_legend}
-\title{Convenience function for generating levels of convenience.}
+\title{Convenience function for generating a legend for anno_cat annotations.}
 \usage{
 anno_cat_legend(col, x = NULL, renamer = identity, title = "", ...)
 }
@@ -38,7 +38,7 @@ anno_cat_legend(col, x = NULL, renamer = identity, title = "", ...)
 a ComplexHeatmap Legend class object
 }
 \description{
-Convenience function for generating levels of convenience.
+Convenience function for generating a legend for anno_cat annotations.
 }
 \examples{
 grid::grid.newpage()
