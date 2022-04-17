@@ -1,6 +1,7 @@
 # microViz (development version)
 
 ## Features
+- New convenience function `ps_calc_diversity` to calculate diversity index and add to phyloseq sample data 
 - New function `tax_rename` allows renaming of taxa using unique combination of classification at any chosen rank and abundance of that taxon (e.g. ASV145 becomes Bifidobacterium-002, which can be interpreted as the second most abundant Bifidobacterium ASV)
 - `tax_sort` can now sort taxa "asis" (i.e. do nothing), which now permits upfront custom sorting of taxa for use in `comp_barplot`
 
@@ -13,7 +14,6 @@ For guidance, see the new website article on heatmaps.
 - `taxAnnotation` and `varAnnotation` annotation helper functions replace the deprecated `tax_anno` and `var_anno` functions
 - `sampleAnnotation` is added for coordinating sample annotations on `comp_heatmap`
 - various `anno_*` helpers for each of the annotation coordinating functions above
-- arguments for 
 
 # microViz 0.8.2
 

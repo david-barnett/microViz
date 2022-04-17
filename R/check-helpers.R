@@ -8,15 +8,18 @@
 #' @param ps phyloseq object
 #' @param rank rank to check
 #' @param varname variable name from enclosing function (providing rank)
+#' @param or NULL or alternatives also allowed? e.g. "unique"
 #'
 #' @return nothing
 #' @noRd
-psCheckRanks <- function(ps, rank, varname) {
+psCheckRanks <- function(ps, rank, varname, or = NULL) {
   rankNames <- phyloseq::rank_names(ps)
-  if (!is.character(rank) || length(rank) != 1 || !rank %in% rankNames) {
+  or <- or[!or %in% rankNames] # avoid printing duplicate if `or` already there
+  if (!is.character(rank) || length(rank) != 1 || !rank %in% c(rankNames, or)) {
     stop(
-      paste(varname, "must be the name of a valid rank:\n"),
-      paste(rankNames, collapse = " / ")
+      paste0("\n`", varname, "` must be the name of a valid rank:\n"),
+      paste(rankNames, collapse = " / "),
+      ifelse(length(or) == 0, "", paste0("\nor: ", paste(or, collapse = " / ")))
     )
   }
 }
