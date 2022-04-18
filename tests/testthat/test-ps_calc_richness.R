@@ -1,5 +1,6 @@
 
 test_that("ps_calc_richness supported plot doesn't change", {
+
   p <- corncob::ibd_phylo %>%
     ps_filter(abx == "abx") %>%
     tax_fix() %>%
@@ -8,8 +9,9 @@ test_that("ps_calc_richness supported plot doesn't change", {
     tax_transform(rank = "Genus", transform = "clr") %>%
     ord_calc("PCA") %>%
     ord_plot(
-      colour = "observed_Genus", size = "chao1_Family"
+      size = "observed_Genus", colour = "chao1_Family"
     ) +
+    ggplot2::scale_radius(range = c(1, 6)) +
     ggplot2::scale_colour_viridis_c() +
     ggplot2::theme_test()
 

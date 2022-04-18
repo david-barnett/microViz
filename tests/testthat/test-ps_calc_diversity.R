@@ -31,7 +31,7 @@ or: unique"
 
   expect_error(
     object = psTest %>% ps_calc_diversity(rank = "Genus", index = "lol"),
-    regexp = 'must be one of "inverse_simpson", "gini_simpson", '
+    regexp = 'must be one of "inverse_simpson", "gini_simpson",'
   )
 
   expect_warning(

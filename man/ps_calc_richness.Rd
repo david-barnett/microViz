@@ -54,3 +54,8 @@ ibd_phylo \%>\%
   ggplot2::scale_colour_viridis_c()
 
 }
+\seealso{
+\code{\link{ps_calc_diversity}}
+
+\code{microbiome::\link[microbiome]{richness}}
+}
