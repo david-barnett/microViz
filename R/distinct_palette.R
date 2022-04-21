@@ -49,6 +49,8 @@
 #' greenArmytage <- distinct_palette(pal = "greenArmytage")
 #' scales::show_col(greenArmytage)
 distinct_palette <- function(n = NA, pal = "brewerPlus", add = "lightgrey") {
+  stopifnot(length(pal) == 1 && is.character(pal))
+  stopifnot(length(n) == 1 && is.numeric(n) || identical(n, NA))
 
   # define valid palettes matched to retrieval functions
   palList <- list(
@@ -56,9 +58,9 @@ distinct_palette <- function(n = NA, pal = "brewerPlus", add = "lightgrey") {
     kelly = palKelly,
     greenArmytage = palGreenArmytage
   )
-  if (!pal %in% names(palList)) {
-    stop("pal must be one of: ", paste(names(palList), collapse = "/"))
-  }
+
+  # match palette request
+  pal <- rlang::arg_match0(arg = pal, values = names(palList))
 
   # get full palette
   palFun <- palList[[pal]]
