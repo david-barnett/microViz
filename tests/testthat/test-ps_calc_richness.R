@@ -32,7 +32,7 @@ test_that("ps_calc_richness results don't change", {
     ps_calc_richness("Family", index = "chao1")
 
   testthat::expect_snapshot_output(
-    samdat_tbl(ps)[, c(".sample_name", "observed_Genus", "chao1_Family")]
+    phyloseq::sample_data(ps)[, c("observed_Genus", "chao1_Family")]
   )
 })
 
