@@ -11,6 +11,7 @@ tax_sort(
   ...,
   tree_warn = TRUE,
   verbose = TRUE,
+  trans = "identity",
   use_counts = TRUE
 )
 }
@@ -21,7 +22,8 @@ tax_sort(
 
 \item{at}{"names" or a taxonomic rank to apply sorting method to, as specified in \code{by}.}
 
-\item{...}{used if summary function given, or pass \code{undetected} arg for tax_transform("binary") if by = "prev" or "prevalence"}
+\item{...}{used if summary function given, or pass \code{undetected} arg
+for tax_transform("binary") if by = "prev" or "prevalence"}
 
 \item{tree_warn}{If phylogenetic tree is present in phyloseq phy_tree slot, taxa cannot be reordered.
 Default behaviour of tax_sort is to remove the phylogenetic tree and warn about this.
@@ -29,6 +31,8 @@ tree_warn = FALSE will suppress the warning message, but still remove the tree!}
 
 \item{verbose}{passed to phyloseq_validate verbose
 (if TRUE: message about suspicious values in tax_table, and how to fix)}
+
+\item{trans}{name of transformation to apply to taxa before sorting (taxa are returned un-transformed)}
 
 \item{use_counts}{use count data if available, instead of transformed data}
 }
@@ -81,9 +85,16 @@ dietswap \%>\%
   tax_table() \%>\%
   head(30)
 
-# sort by function e.g. median abundance
+# sort by function e.g. total sum or median abundance
 dietswap \%>\%
-  tax_sort(by = median) \%>\%
+  tax_sort(by = sum) \%>\%
+  taxa_names() \%>\%
+  head(20)
+
+# transform to compositional data (proportions) before sorting
+# note that abundances are returned untransformed
+dietswap \%>\%
+  tax_sort(by = sum, trans = "compositional") \%>\%
   taxa_names() \%>\%
   head(20)
 
@@ -102,7 +113,8 @@ dietswap \%>\%
   head(20)
 
 # if your phyloseq object has a phylogenetic tree,
-# tax_sort will remove the tree, and warn you about this.
+# tax_sort will remove the tree, and warn you about this
+# unless you disable that warning with tree_warn = FALSE
 
 # You can sort by abundance at higher taxonomic ranks,
 # without losing lower rank info
@@ -112,7 +124,7 @@ dietswap \%>\%
   tax_table() \%>\%
   head()
 
-# You can sort by ascending abundance by reversing afterwards
+# You can sort by ascending abundance (or prevalence etc) by reversing after
 dietswap \%>\%
   tax_sort(by = "prev", at = "Phylum") \%>\%
   tax_sort(by = "rev") \%>\%

@@ -6,12 +6,17 @@
 #'
 #' e.g. "Bacteroides 003" for the third most abundant Bacteroides OTU or ASV.
 #'
+#' Taxa are returned in original order, and otu_table is returned un-transformed.
+#'
 #' @param ps phyloseq object
 #' @param rank name of rank to use in new taxa names
 #' @param sort_by
 #' how to sort taxa for numbering within rank-based groups (a tax_sort option)
 #' @param pad_digits how long should the numeric suffixes be? see details
 #' @param sep character to separate the rank prefixes from numeric suffixes
+#' @param transform_for_sort
+#' named of transformation to apply to taxa before sorting
+#' @param ... additional arguments passed to tax_sort
 #'
 #' @details
 #' pad_digits options:
@@ -107,18 +112,25 @@
 tax_rename <- function(ps,
                        rank,
                        sort_by = sum,
+                       transform_for_sort = "identity",
                        pad_digits = "auto",
-                       sep = " ") {
+                       sep = " ",
+                       ... # for tax_sort
+                       ) {
   # check inputs #
   if (!inherits(ps, "phyloseq")) stop("ps must be a phyloseq object")
   psCheckRanks(ps = ps, rank = rank, varname = "rank")
-  if (length(pad_digits) != 1 || !pad_digits %in% c("auto", "max", 0:10)) {
+  if (!rlang::is_string(x = pad_digits, string = c("auto", "max", 0:10))) {
     stop("pad_digits must be 'auto', 'max', or a number from 0 to 10")
   }
-  stopifnot(length(sep) == 1)
+  stopifnot(rlang::is_string(sep))
+  stopifnot(rlang::is_string(transform_for_sort))
   # end of input checks #
 
-  psSorted <- tax_sort(ps, by = sort_by, at = "names", tree_warn = FALSE)
+  psSorted <- tax_sort(
+    data = ps, by = sort_by, at = "names", trans = transform_for_sort,
+    tree_warn = FALSE, ...
+  )
   ttSorted <- as.data.frame.matrix(tt_get(psSorted))
   ttList <- split.data.frame(x = ttSorted, f = ttSorted[, rank, drop = TRUE])
 

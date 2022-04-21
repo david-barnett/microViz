@@ -528,7 +528,7 @@ checkValidEllipsesOrdPlot <- function(..., ps) {
         !is.null(v) && !inherits(v, c("logical", "numeric", "integer")) &&
           !(v %in% c(variables, grDevices::colors(), ggplot2_shapes()))
       ) {
-        stop(v, " is not a variable in the sample metadata")
+        stop(v, " is not a variable in the sample metadata (or color / shape)")
       }
     }
   }

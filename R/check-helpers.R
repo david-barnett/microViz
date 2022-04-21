@@ -13,9 +13,10 @@
 #' @return nothing
 #' @noRd
 psCheckRanks <- function(ps, rank, varname, or = NULL) {
+  stopifnot(is.null(or) || is.character(or))
   rankNames <- phyloseq::rank_names(ps)
   or <- or[!or %in% rankNames] # avoid printing duplicate if `or` already there
-  if (!is.character(rank) || length(rank) != 1 || !rank %in% c(rankNames, or)) {
+  if (!rlang::is_string(rank) || !rank %in% c(rankNames, or)) {
     stop(
       paste0("\n`", varname, "` must be the name of a valid rank:\n"),
       paste(rankNames, collapse = " / "),

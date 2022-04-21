@@ -4,6 +4,7 @@
 - New convenience functions `ps_calc_diversity` and `ps_calc_richness` to calculate a diversity or richness index (using microbiome package functions) and add to phyloseq sample data 
 - New function `tax_rename` allows renaming of taxa using unique combination of classification at any chosen rank and abundance of that taxon (e.g. ASV145 becomes Bifidobacterium-002, which can be interpreted as the second most abundant Bifidobacterium ASV)
 - `tax_sort` can now sort taxa "asis" (i.e. do nothing), which now permits upfront custom sorting of taxa for use in `comp_barplot`
+- `tax_sort` can now transform taxa temporarily for sorting e.g. to sort by mean compositional (%) relative abundance
 
 # microViz 0.9.0
 

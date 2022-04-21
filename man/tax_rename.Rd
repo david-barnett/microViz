@@ -4,7 +4,15 @@
 \alias{tax_rename}
 \title{Make new phyloseq taxa names from classification and taxon abundance info}
 \usage{
-tax_rename(ps, rank, sort_by = sum, pad_digits = "auto", sep = " ")
+tax_rename(
+  ps,
+  rank,
+  sort_by = sum,
+  transform_for_sort = "identity",
+  pad_digits = "auto",
+  sep = " ",
+  ...
+)
 }
 \arguments{
 \item{ps}{phyloseq object}
@@ -13,9 +21,13 @@ tax_rename(ps, rank, sort_by = sum, pad_digits = "auto", sep = " ")
 
 \item{sort_by}{how to sort taxa for numbering within rank-based groups (a tax_sort option)}
 
+\item{transform_for_sort}{named of transformation to apply to taxa before sorting}
+
 \item{pad_digits}{how long should the numeric suffixes be? see details}
 
 \item{sep}{character to separate the rank prefixes from numeric suffixes}
+
+\item{...}{additional arguments passed to tax_sort}
 }
 \value{
 phyloseq object
@@ -27,6 +39,8 @@ to automatically create informative taxa names.
 }
 \details{
 e.g. "Bacteroides 003" for the third most abundant Bacteroides OTU or ASV.
+
+Taxa are returned in original order, and otu_table is returned un-transformed.
 
 pad_digits options:
 \itemize{

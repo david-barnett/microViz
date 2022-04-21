@@ -20,7 +20,9 @@
 #' @param data ps_extra or phyloseq
 #' @param by how to sort, see description
 #' @param at "names" or a taxonomic rank to apply sorting method to, as specified in `by`.
-#' @param ... used if summary function given, or pass `undetected` arg for tax_transform("binary") if by = "prev" or "prevalence"
+#' @param ...
+#' used if summary function given, or pass `undetected` arg
+#' for tax_transform("binary") if by = "prev" or "prevalence"
 #' @param tree_warn
 #' If phylogenetic tree is present in phyloseq phy_tree slot, taxa cannot be reordered.
 #' Default behaviour of tax_sort is to remove the phylogenetic tree and warn about this.
@@ -28,6 +30,8 @@
 #' @param verbose
 #' passed to phyloseq_validate verbose
 #' (if TRUE: message about suspicious values in tax_table, and how to fix)
+#' @param trans
+#' name of transformation to apply to taxa before sorting (taxa are returned un-transformed)
 #' @param use_counts use count data if available, instead of transformed data
 #'
 #' @return sorted phyloseq or ps_extra
@@ -60,9 +64,16 @@
 #'   tax_table() %>%
 #'   head(30)
 #'
-#' # sort by function e.g. median abundance
+#' # sort by function e.g. total sum or median abundance
 #' dietswap %>%
-#'   tax_sort(by = median) %>%
+#'   tax_sort(by = sum) %>%
+#'   taxa_names() %>%
+#'   head(20)
+#'
+#' # transform to compositional data (proportions) before sorting
+#' # note that abundances are returned untransformed
+#' dietswap %>%
+#'   tax_sort(by = sum, trans = "compositional") %>%
 #'   taxa_names() %>%
 #'   head(20)
 #'
@@ -81,7 +92,8 @@
 #'   head(20)
 #'
 #' # if your phyloseq object has a phylogenetic tree,
-#' # tax_sort will remove the tree, and warn you about this.
+#' # tax_sort will remove the tree, and warn you about this
+#' # unless you disable that warning with tree_warn = FALSE
 #'
 #' # You can sort by abundance at higher taxonomic ranks,
 #' # without losing lower rank info
@@ -91,7 +103,7 @@
 #'   tax_table() %>%
 #'   head()
 #'
-#' # You can sort by ascending abundance by reversing afterwards
+#' # You can sort by ascending abundance (or prevalence etc) by reversing after
 #' dietswap %>%
 #'   tax_sort(by = "prev", at = "Phylum") %>%
 #'   tax_sort(by = "rev") %>%
@@ -103,9 +115,15 @@ tax_sort <- function(data,
                      ...,
                      tree_warn = TRUE,
                      verbose = TRUE,
+                     trans = "identity",
                      use_counts = TRUE) {
-  if (!inherits(at, "character")) stop("`at` must be 'names' or a tax rank")
-  by_is_invalid_error <- paste0(
+
+  # checks, and get phyloseq--------------------------------------------------
+  stopifnot(rlang::is_bool(use_counts))
+  stopifnot(rlang::is_bool(tree_warn))
+  if (!rlang::is_string(trans)) stop("`trans` must be a transformation name")
+  if (!rlang::is_string(at)) stop("`at` must be 'names' or a tax rank")
+  byIsInvalidError <- paste0(
     "`by` argument must be one of:\n",
     "- 'rev' to reverse the current order\n",
     "- 'asis' to keep the current order as is\n",
@@ -114,60 +132,77 @@ tax_sort <- function(data,
     "- 'prev' or 'prevalence' using value of optional `undetected` arg\n",
     "- a sample name (abundance sorting within that sample)\n"
   )
-  if (!inherits(by, "character") &&
-    !inherits(by, "function") ||
-    length(by) != 1
-  ) {
-    stop(by_is_invalid_error)
-    # TODO allow numeric or character vector sorting by subsetting?
-  }
-  # get components that are always required
-  if (isTRUE(use_counts)) {
-    ps <- ps_counts(data = data, warn = TRUE)
-  } else {
-    ps <- ps_get(data)
-  }
-  ps <- phyloseq_validate(
-    ps = ps, remove_undetected = FALSE, verbose = verbose
-  )
+  if (!rlang::is_string(by) && !rlang::is_function(by)) stop(byIsInvalidError)
+  # TODO ?allow numeric or character vector sorting by subsetting?
 
-  # apply sorting rules that don't require otu table, for calculation
-  # generate taxSorted (vector of taxa names)
-  if (identical(by, "rev")) {
-    # rev is special case: ignores `at`
-    taxSorted <- rev(phyloseq::taxa_names(ps))
-  } else if (identical(by, "asis")) {
-    # 'asis' is special case: ignores `at`
-    taxSorted <- phyloseq::taxa_names(ps)
-  } else if (identical(by, "name")) {
-    if (identical(at, "names")) {
-      taxSorted <- sort(phyloseq::taxa_names(ps))
-    } else if (length(at) == 1 && at %in% phyloseq::rank_names(ps)) {
-      tt <- unclass(phyloseq::tax_table(ps))
-      new_order <- order(unname(tt[, at])) # ordering named character -> wrong
-      taxSorted <- phyloseq::taxa_names(ps)[new_order]
-    } else {
-      stop("`at` must be 'names' or one of phyloseq::rank_names(ps)\n")
+  # get and check phyloseq (of counts?)
+  ps <- if (use_counts) ps_counts(data, warn = TRUE) else ps_get(data)
+  ps <- phyloseq_validate(ps, remove_undetected = FALSE, verbose = verbose)
+
+  # check `by` string options including sample names
+  if (rlang::is_string(by)) {
+    sampleNames <- phyloseq::sample_names(ps)
+    byValidStrings <- c("asis", "rev", "name", "prev", "prevalence")
+    if (!by %in% byValidStrings && !by %in% sampleNames) stop(byIsInvalidError)
+    # check `by` is not both a sample name and other string option!
+    if (by %in% byValidStrings && by %in% sampleNames) {
+      stop("Unclear how to sort, because there is a sample named: ", by)
     }
-  } else {
-    if (identical(at, "names")) {
-      # sort phyloseq, return reordered taxa (character vector)
-      taxSorted <- tax_sort_by_otu(ps, by = by, err = by_is_invalid_error, ...)
-    } else if (at %in% phyloseq::rank_names(ps)) {
-      psAgg <- tax_agg(ps = ps, rank = at)[["ps"]]
-      psAgg <- tax_sort(data = psAgg, by = by, at = "names", ...)
-      # make taxTable of original ps as df
-      tt <- unclass(phyloseq::tax_table(ps)) %>%
-        as.data.frame.matrix(optional = TRUE, make.names = FALSE)
-      tt[, at] <- factor(tt[, at], levels = phyloseq::taxa_names(psAgg))
+  }
+
+  if (!identical(by, "asis") && !identical(by, "rev")) {
+    # check `at` options including rank names
+    psCheckRanks(ps, rank = at, varname = "at", or = c("unique", "names"))
+  }
+
+  # generate taxSorted (vector of taxa names) --------------------------------
+
+  # apply sorting rules that don't require otu table or tax table
+  if (identical(by, "asis")) taxSorted <- phyloseq::taxa_names(ps)
+  if (identical(by, "rev")) taxSorted <- rev(phyloseq::taxa_names(ps))
+
+  # sort by "name" --> aggregation of taxa not required regardless of `at`
+  if (identical(by, "name")) {
+    if (at %in% phyloseq::rank_names(ps)) {
+      if (at == "names") warning("Using the taxa names, not the rank 'names'!")
+      tt <- unclass(phyloseq::tax_table(ps))
+      new_order <- order(unname(tt[, at])) # ordering named character -> wrong!
+      taxSorted <- phyloseq::taxa_names(ps)[new_order]
+    }
+    if (at == "names") taxSorted <- sort(phyloseq::taxa_names(ps))
+  }
+
+  # sorting methods that use otu_table (a function, or abundance in 1 sample)
+  if (rlang::is_function(by) || by %in% c("prev", "prevalence", sampleNames)) {
+    if (at == "names") {
+      # aggregation not required
+      if ("names" %in% phyloseq::rank_names(ps)) {
+        warning("Using unaggregated taxa, not the rank 'names'!")
+      }
+      if (trans != "identity") {
+        ps <- tax_transform(ps, trans = trans, rank = NA)[["ps"]]
+      }
+      taxSorted <- tax_sort_by_otu(ps, by = by, err = byIsInvalidError, ...)
+    } else {
+      # it was checked already that it must otherwise be a rank name
+      # --> aggregation required
+      psAg <- tax_agg(ps = ps, rank = at)[["ps"]]
+      psAg <- tax_sort(data = psAg, by = by, at = "names", trans = trans, ...)
+
+      # the aggregated tax_table has different dimensions to the un-aggregated
+      # make tax table of un-aggregated phyloseq as dataframe
+      tt <- as.data.frame.matrix(
+        x = unclass(phyloseq::tax_table(ps)),
+        optional = TRUE, make.names = FALSE
+      )
+      # sort un-aggregated data based on order of taxa in aggregated phyloseq
+      tt[, at] <- factor(tt[, at], levels = phyloseq::taxa_names(psAg))
       tt <- dplyr::arrange(tt, dplyr::across(dplyr::all_of(at)))
       taxSorted <- rownames(tt)
-    } else {
-      stop("`at` must be 'names' or one of phyloseq::rank_names(ps)\n")
     }
   }
 
-  # reorder taxa in phyloseq with taxSorted vector
+  # use taxSorted vector to reorder taxa in ORIGINAL phyloseq -----------------
   ps <- tax_reorder(
     ps = ps_get(data), tax_order = taxSorted, tree_warn = tree_warn
   )
@@ -189,7 +224,10 @@ tax_sort <- function(data,
 # names can then be used to order original unnaggregated ps if desired
 # or if ps was not aggregated, just use this on original otu_table
 tax_sort_by_otu <- function(ps, by, err, ...) {
-  if (identical(by, "prev") || identical(by, "prevalence")) {
+  # check (again) argument types
+  if (!rlang::is_string(by) && !rlang::is_function(by)) stop(err)
+
+  if (rlang::is_string(by, string = c("prev", "prevalence"))) {
     ps <- tax_transform(ps, trans = "binary", ...)
     by <- base::sum # sum of binary transformed otu_table is prevalence!
   }
@@ -197,18 +235,16 @@ tax_sort_by_otu <- function(ps, by, err, ...) {
   otu <- unclass(otu_get(ps))
   tax_names_in <- colnames(otu)
 
-  if (inherits(by, "character") && length(by) == 1) {
-    if (by %in% phyloseq::sample_names(ps)) {
-      new_order <- order(otu[by, ], decreasing = TRUE)
-    } else {
-      stop(err, "`by` is: ", by)
-    }
-  } else if (inherits(by, "function")) {
+  if (rlang::is_string(by)) {
+    if (!by %in% phyloseq::sample_names(ps)) stop(err, "`by` is: ", by)
+    new_order <- order(otu[by, ], decreasing = TRUE)
+  }
+  if (rlang::is_function(by)) {
     result <- apply(X = otu, MARGIN = 2, FUN = by, ...)
     new_order <- order(result, decreasing = TRUE)
-  } else {
-    stop(err, "`by` is: ", by)
   }
+  # double check all taxa will be returned
+  stopifnot(length(new_order) == length(tax_names_in))
   tax_names_out <- tax_names_in[new_order]
   return(tax_names_out)
 }
