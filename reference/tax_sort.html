@@ -34,7 +34,7 @@ at is ignored when by is &quot;rev&quot;."><meta property="og:image" content="ht
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.0.9006</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.0.9008</span>
       </span>
     </div>
 
@@ -125,6 +125,7 @@ or a rank name, for sorting at that rank.
   <span class="va">...</span>,
   tree_warn <span class="op">=</span> <span class="cn">TRUE</span>,
   verbose <span class="op">=</span> <span class="cn">TRUE</span>,
+  trans <span class="op">=</span> <span class="st">"identity"</span>,
   use_counts <span class="op">=</span> <span class="cn">TRUE</span>
 <span class="op">)</span></code></pre></div>
     </div>
@@ -138,7 +139,8 @@ or a rank name, for sorting at that rank.
 <dt>at</dt>
 <dd><p>"names" or a taxonomic rank to apply sorting method to, as specified in <code>by</code>.</p></dd>
 <dt>...</dt>
-<dd><p>used if summary function given, or pass <code>undetected</code> arg for tax_transform("binary") if by = "prev" or "prevalence"</p></dd>
+<dd><p>used if summary function given, or pass <code>undetected</code> arg
+for tax_transform("binary") if by = "prev" or "prevalence"</p></dd>
 <dt>tree_warn</dt>
 <dd><p>If phylogenetic tree is present in phyloseq phy_tree slot, taxa cannot be reordered.
 Default behaviour of tax_sort is to remove the phylogenetic tree and warn about this.
@@ -146,6 +148,8 @@ tree_warn = FALSE will suppress the warning message, but still remove the tree!<
 <dt>verbose</dt>
 <dd><p>passed to phyloseq_validate verbose
 (if TRUE: message about suspicious values in tax_table, and how to fix)</p></dd>
+<dt>trans</dt>
+<dd><p>name of transformation to apply to taxa before sorting (taxa are returned un-transformed)</p></dd>
 <dt>use_counts</dt>
 <dd><p>use count data if available, instead of transformed data</p></dd>
 </dl></div>
@@ -380,31 +384,58 @@ if using a summary stat function in <code>by</code></p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Bacillus                           "Bacillus"                          </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Enterococcus                       "Enterococcus"                      </span>
 <span class="r-in"></span>
-<span class="r-in"><span class="co"># sort by function e.g. median abundance</span></span>
+<span class="r-in"><span class="co"># sort by function e.g. total sum or median abundance</span></span>
 <span class="r-in"><span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">tax_sort</span><span class="op">(</span>by <span class="op">=</span> <span class="va">median</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
+<span class="r-in">  <span class="fu">tax_sort</span><span class="op">(</span>by <span class="op">=</span> <span class="va">sum</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html" class="external-link">taxa_names</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "Prevotella melaninogenica et rel."   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2] "Oscillospira guillermondii et rel."  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "Bacteroides vulgatus et rel."        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "Prevotella oralis et rel."           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "Faecalibacterium prausnitzii et rel."</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [6] "Clostridium cellulosi et rel."       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "Clostridium cellulosi et rel."       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "Prevotella oralis et rel."           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [6] "Faecalibacterium prausnitzii et rel."</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "Sporobacter termitidis et rel."      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "Clostridium symbiosum et rel."       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "Clostridium orbiscindens et rel."    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [10] "Ruminococcus obeum et rel."          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "Allistipes et rel."                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [10] "Clostridium orbiscindens et rel."    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [11] "Subdoligranulum variable at rel."    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [12] "Butyrivibrio crossotus et rel."      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "Allistipes et rel."                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [12] "Ruminococcus obeum et rel."          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "Butyrivibrio crossotus et rel."      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [14] "Bacteroides fragilis et rel."        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [15] "Parabacteroides distasonis et rel."  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16] "Dorea formicigenerans et rel."       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17] "Clostridium sphenoides et rel."      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18] "Clostridium leptum et rel."          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [19] "Bacteroides ovatus et rel."          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [20] "Bryantella formatexigens et rel."    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [15] "Akkermansia"                         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16] "Bacteroides ovatus et rel."          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [17] "Parabacteroides distasonis et rel."  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18] "Dorea formicigenerans et rel."       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19] "Bacteroides uniformis et rel."       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [20] "Dialister"                           </span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># transform to compositional data (proportions) before sorting</span></span>
+<span class="r-in"><span class="co"># note that abundances are returned untransformed</span></span>
+<span class="r-in"><span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
+<span class="r-in">  <span class="fu">tax_sort</span><span class="op">(</span>by <span class="op">=</span> <span class="va">sum</span>, trans <span class="op">=</span> <span class="st">"compositional"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
+<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html" class="external-link">taxa_names</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
+<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "Prevotella melaninogenica et rel."   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [2] "Oscillospira guillermondii et rel."  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "Bacteroides vulgatus et rel."        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "Clostridium cellulosi et rel."       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "Prevotella oralis et rel."           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [6] "Faecalibacterium prausnitzii et rel."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "Sporobacter termitidis et rel."      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "Allistipes et rel."                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "Clostridium symbiosum et rel."       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [10] "Clostridium orbiscindens et rel."    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [11] "Ruminococcus obeum et rel."          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [12] "Subdoligranulum variable at rel."    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "Bacteroides fragilis et rel."        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [14] "Butyrivibrio crossotus et rel."      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [15] "Akkermansia"                         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16] "Parabacteroides distasonis et rel."  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [17] "Bacteroides ovatus et rel."          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18] "Bacteroides uniformis et rel."       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19] "Dialister"                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [20] "Dorea formicigenerans et rel."       </span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># order by descending abundance in a single named sample</span></span>
 <span class="r-in"><span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
@@ -461,7 +492,8 @@ if using a summary stat function in <code>by</code></p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [20] "Dialister"                           </span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># if your phyloseq object has a phylogenetic tree,</span></span>
-<span class="r-in"><span class="co"># tax_sort will remove the tree, and warn you about this.</span></span>
+<span class="r-in"><span class="co"># tax_sort will remove the tree, and warn you about this</span></span>
+<span class="r-in"><span class="co"># unless you disable that warning with tree_warn = FALSE</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># You can sort by abundance at higher taxonomic ranks,</span></span>
 <span class="r-in"><span class="co"># without losing lower rank info</span></span>
@@ -486,7 +518,7 @@ if using a summary stat function in <code>by</code></p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Bacteroides plebeius et rel.     "Bacteroides plebeius et rel."    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Bacteroides splachnicus et rel.  "Bacteroides splachnicus et rel." </span>
 <span class="r-in"></span>
-<span class="r-in"><span class="co"># You can sort by ascending abundance by reversing afterwards</span></span>
+<span class="r-in"><span class="co"># You can sort by ascending abundance (or prevalence etc) by reversing after</span></span>
 <span class="r-in"><span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">tax_sort</span><span class="op">(</span>by <span class="op">=</span> <span class="st">"prev"</span>, at <span class="op">=</span> <span class="st">"Phylum"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">tax_sort</span><span class="op">(</span>by <span class="op">=</span> <span class="st">"rev"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>

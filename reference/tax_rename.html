@@ -25,7 +25,7 @@ to automatically create informative taxa names."><meta property="og:image" conte
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.0.9006</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.0.9008</span>
       </span>
     </div>
 
@@ -103,7 +103,15 @@ to automatically create informative taxa names.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">tax_rename</span><span class="op">(</span><span class="va">ps</span>, <span class="va">rank</span>, sort_by <span class="op">=</span> <span class="va">sum</span>, pad_digits <span class="op">=</span> <span class="st">"auto"</span>, sep <span class="op">=</span> <span class="st">" "</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">tax_rename</span><span class="op">(</span>
+  <span class="va">ps</span>,
+  <span class="va">rank</span>,
+  sort_by <span class="op">=</span> <span class="va">sum</span>,
+  transform_for_sort <span class="op">=</span> <span class="st">"identity"</span>,
+  pad_digits <span class="op">=</span> <span class="st">"auto"</span>,
+  sep <span class="op">=</span> <span class="st">" "</span>,
+  <span class="va">...</span>
+<span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -114,10 +122,14 @@ to automatically create informative taxa names.</p>
 <dd><p>name of rank to use in new taxa names</p></dd>
 <dt>sort_by</dt>
 <dd><p>how to sort taxa for numbering within rank-based groups (a tax_sort option)</p></dd>
+<dt>transform_for_sort</dt>
+<dd><p>named of transformation to apply to taxa before sorting</p></dd>
 <dt>pad_digits</dt>
 <dd><p>how long should the numeric suffixes be? see details</p></dd>
 <dt>sep</dt>
 <dd><p>character to separate the rank prefixes from numeric suffixes</p></dd>
+<dt>...</dt>
+<dd><p>additional arguments passed to tax_sort</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
@@ -126,6 +138,7 @@ to automatically create informative taxa names.</p>
     <div id="details">
     <h2>Details</h2>
     <p>e.g. "Bacteroides 003" for the third most abundant Bacteroides OTU or ASV.</p>
+<p>Taxa are returned in original order, and otu_table is returned un-transformed.</p>
 <p>pad_digits options:</p><ul><li><p>"auto" --&gt; minimum digits to have equal length numbers within groups</p></li>
 <li><p>"max" --&gt; minimum digits to have equal length numbers across all groups</p></li>
 <li><p>A number: e.g.</p><ul><li><p>3 --&gt; 001, 002, ..., 042, ..., 180, ...</p></li>
