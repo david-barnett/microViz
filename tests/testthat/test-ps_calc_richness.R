@@ -1,7 +1,28 @@
 library(dplyr)
 
+test_that("microbiome chao1 results don't change", {
+  local_edition(3)
+
+  skip_if(packageVersion("microbiome") < 1.16)
+
+  # see https://github.com/microbiome/microbiome/issues/150
+  # change seems to occur between bioconductor 3.13 and 3.14
+  ps <-
+    corncob::ibd_phylo %>%
+    ps_filter(abx == "abx") %>%
+    tax_fix() %>%
+    tax_agg("Family") %>%
+    ps_get()
+
+  testthat::expect_snapshot_output(microbiome::richness(ps, "chao1"))
+
+})
+
+
 test_that("ps_calc_richness results don't change", {
   local_edition(3)
+
+  skip_if(packageVersion("microbiome") < 1.16)
 
   ps <-
     corncob::ibd_phylo %>%
@@ -16,24 +37,26 @@ test_that("ps_calc_richness results don't change", {
 })
 
 #
-# test_that("ps_calc_richness supported plot doesn't change", {
-#
-#   p <- corncob::ibd_phylo %>%
-#     ps_filter(abx == "abx") %>%
-#     tax_fix() %>%
-#     ps_calc_richness("Genus", index = "observed") %>%
-#     ps_calc_richness("Family", index = "chao1") %>%
-#     tax_transform(rank = "Genus", transform = "clr") %>%
-#     ord_calc("PCA") %>%
-#     ord_plot(
-#       size = "observed_Genus", colour = "chao1_Family"
-#     ) +
-#     ggplot2::scale_radius(range = c(1, 6)) +
-#     ggplot2::scale_colour_viridis_c() +
-#     ggplot2::theme_test()
-#
-#   vdiffr::expect_doppelganger(title = "richness-pca", fig = p)
-# })
+test_that("ps_calc_richness supported plot doesn't change", {
+
+  skip_if(packageVersion("microbiome") < 1.16)
+
+  p <- corncob::ibd_phylo %>%
+    ps_filter(abx == "abx") %>%
+    tax_fix() %>%
+    ps_calc_richness("Genus", index = "observed") %>%
+    ps_calc_richness("Family", index = "chao1") %>%
+    tax_transform(rank = "Genus", transform = "clr") %>%
+    ord_calc("PCA") %>%
+    ord_plot(
+      size = "observed_Genus", colour = "chao1_Family"
+    ) +
+    ggplot2::scale_radius(range = c(1, 6)) +
+    ggplot2::scale_colour_viridis_c() +
+    ggplot2::theme_test()
+
+  vdiffr::expect_doppelganger(title = "richness-pca", fig = p)
+})
 
 test_that("ps_calc_richness errors work", {
   psTest <- corncob::ibd_phylo %>%
