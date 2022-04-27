@@ -25,7 +25,7 @@ tax_palette(
 
 \item{pal}{palette name from distinct_palette function}
 
-\item{add}{name = value pairs appended to end of output}
+\item{add}{name = value pairs appended to end of output, or NA for none}
 
 \item{...}{other args are passed to tax_sort}
 }

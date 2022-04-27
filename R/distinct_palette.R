@@ -49,8 +49,9 @@
 #' greenArmytage <- distinct_palette(pal = "greenArmytage")
 #' scales::show_col(greenArmytage)
 distinct_palette <- function(n = NA, pal = "brewerPlus", add = "lightgrey") {
-  stopifnot(length(pal) == 1 && is.character(pal))
-  stopifnot(length(n) == 1 && is.numeric(n) || identical(n, NA))
+  stopifnot(rlang::is_string(pal))
+  stopifnot(rlang::is_scalar_integerish(n) || identical(n, NA))
+  stopifnot(rlang::is_na(add) || is.character(add) || is.numeric(add))
 
   # define valid palettes matched to retrieval functions
   palList <- list(
@@ -67,7 +68,7 @@ distinct_palette <- function(n = NA, pal = "brewerPlus", add = "lightgrey") {
   palCols <- palFun()
 
   # get n colors
-  if (!identical(n, NA)) {
+  if (!rlang::is_na(n)) {
     if (n > length(palCols)) {
       stop("Palette '", pal, "' has ", length(palCols), " colors, not ", n)
     }
@@ -75,7 +76,10 @@ distinct_palette <- function(n = NA, pal = "brewerPlus", add = "lightgrey") {
   }
 
   # add last colour e.g. lightgrey default if requested
-  if (!identical(add, NA)) palCols <- c(palCols, add)
+  if (!identical(add, NA)) {
+    col2rgb(add)
+    palCols <- c(palCols, add)
+  }
   return(palCols)
 }
 

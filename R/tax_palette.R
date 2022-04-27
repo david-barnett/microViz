@@ -1,4 +1,3 @@
-#
 #' Make a fixed taxa colour palette e.g. for comp_barplot
 #'
 #' Makes a named palette vector from your phyloseq dataset
@@ -9,7 +8,7 @@
 #' @param n number of colours / taxa (not including "other")
 #' @param by tax sorting method for tax_sort e.g. sum
 #' @param pal palette name from distinct_palette function
-#' @param add name = value pairs appended to end of output
+#' @param add name = value pairs appended to end of output, or NA for none
 #' @param ... other args are passed to tax_sort
 #'
 #' @return named character vector
@@ -50,14 +49,14 @@ tax_palette <- function(data, # phyloseq or ps_extra
 ) {
   # input checks
   if (!rlang::is_character(add) || !rlang::is_named2(add)) {
-    stop("`add` must be null or named vector of colours")
+    if (!rlang::is_na(add)) stop("`add` must be NA or named vector of colours")
   }
 
   taxa <- tax_top(data = data, rank = rank, n = n, by = by, ...)
-  taxColours <- distinct_palette(n = n, pal = pal, add = NA)
+  if (length(taxa) < n) n <- length(taxa)
+  taxColours <- distinct_palette(n = n, pal = pal, add = add)
 
-  names(taxColours) <- taxa
-  taxColours <- c(taxColours, add)
+  names(taxColours) <- c(taxa, names(add))
   return(taxColours)
 }
 
