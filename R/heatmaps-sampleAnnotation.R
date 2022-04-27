@@ -365,22 +365,29 @@ anno_cat <- function(x,
     grid::grid.rect(gp = border_gp)
   }
 
-  af <- ComplexHeatmap::AnnotationFunction(
-    fun = fun,
-    var_import = list(x, colorMap, gp, border_gp),
-    which = which, width = width, height = height,
-    subsetable = TRUE,
-    n = length(x)
-  )
+  # breaking "subsettable" argument name change
+  annoFun <- if (packageVersion("ComplexHeatmap") > 2.11) {
+    ComplexHeatmap::AnnotationFunction(
+      fun = fun, var_import = list(x, colorMap, gp, border_gp),
+      which = which, width = width, height = height,
+      subsettable = TRUE, n = length(x)
+    )
+  } else {
+    ComplexHeatmap::AnnotationFunction(
+      fun = fun, var_import = list(x, colorMap, gp, border_gp),
+      which = which, width = width, height = height,
+      subsetable = TRUE, n = length(x)
+    )
+  }
 
   # create legend and attach as an attribute (shouldn't interfere with class)
   if (isTRUE(legend)) {
-    attr(af, which = "Legend") <- anno_cat_legend(
+    attr(annoFun, which = "Legend") <- anno_cat_legend(
       col = col, legend_gp = gp, title = legend_title
     )
   }
 
-  return(af)
+  return(annoFun)
 }
 
 #' Convenience function for generating a legend for anno_cat annotations.

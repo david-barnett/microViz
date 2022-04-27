@@ -77,7 +77,7 @@
         items: 30 
         width: 15mm 
         height: 1npc 
-        this object is  subsetable
+        this object is  subsettable
         8.94924444444444mm extension on the bottom 
       
       $abund
@@ -88,7 +88,7 @@
         items: 30 
         width: 15mm 
         height: 1npc 
-        this object is  subsetable
+        this object is  subsettable
         8.94924444444444mm extension on the bottom 
       
 
@@ -251,7 +251,7 @@
         items: 30 
         width: 15mm 
         height: 1npc 
-        this object is  subsetable
+        this object is  subsettable
         8.94924444444444mm extension on the bottom 
       
       $abund
@@ -262,7 +262,7 @@
         items: 30 
         width: 15mm 
         height: 1npc 
-        this object is  subsetable
+        this object is  subsettable
         8.94924444444444mm extension on the bottom 
       
 
@@ -279,7 +279,7 @@
         items: 5 
         width: 1npc 
         height: 10mm 
-        this object is  subsetable
+        this object is  subsettable
         3.56915555555556mm extension on the left 
         2.56915555555556mm extension on the right 
       
@@ -291,7 +291,7 @@
         items: 5 
         width: 1npc 
         height: 20mm 
-        this object is  subsetable
+        this object is  subsettable
         5.92288888888889mm extension on the left 
         15.0377333333333mm extension on the right 
       
@@ -455,7 +455,7 @@
         items: 30 
         width: 15mm 
         height: 1npc 
-        this object is  subsetable
+        this object is  subsettable
         8.94924444444444mm extension on the bottom 
       
       $abund
@@ -466,7 +466,7 @@
         items: 30 
         width: 15mm 
         height: 1npc 
-        this object is  subsetable
+        this object is  subsettable
         8.94924444444444mm extension on the bottom 
       
 
