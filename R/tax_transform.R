@@ -113,21 +113,34 @@ tax_transform <- function(data,
     # warning("`transformation` argument deprecated, use `trans` instead.")
     trans <- transformation
   }
+  if (!rlang::is_na(rank) && !rlang::is_string(rank)) {
+    stop("`rank` must be NA or a character string")
+  }
+  if (!rlang::is_string(trans)) stop("`trans` must be a character string")
+  if (!rlang::is_scalar_double(add)) stop("`add` must be a double, length 1")
+  if (!rlang::is_scalar_double(zero_replace)) {
+    if (!identical(zero_replace, "halfmin"))
+      stop("`zero_replace` must be a number, or 'halfmin'")
+  }
+  stopifnot(rlang::is_bool(keep_counts))
+  stopifnot(rlang::is_bool(chain))
 
   # check input data object class, validate options, and record ps_extra info
+  if (!inherits(data, "ps_extra") && !inherits(data, "phyloseq")) {
+    stop("data is wrong class, should be ps_extra from tax_agg, or a phyloseq")
+  }
+
   if (inherits(data, "ps_extra")) {
     info <- tax_transformInfoUpdate(
       info = info_get(data), trans = trans, rank = rank, chain = chain
     )
-  } else if (methods::is(data, "phyloseq")) {
-    if (identical(rank, NA)) rank <- "unique"
+  } else if (inherits(data, "phyloseq")) {
+    if (is.na(rank)) rank <- "unique"
     info <- new_ps_extra_info(tax_transform = trans, tax_agg = rank)
-  } else {
-    stop("data is wrong class, should be ps_extra from tax_agg, or a phyloseq")
   }
 
   # aggregate data if rank now available
-  if (!identical(rank, NA)) data <- tax_agg(ps = ps_get(data), rank = rank)
+  if (!is.na(rank)) data <- tax_agg(ps = ps_get(data), rank = rank)
 
   # store otu table prior to transformation (for if keep_counts == TRUE)
   counts_otu <- otu_get(ps_counts(data = data))

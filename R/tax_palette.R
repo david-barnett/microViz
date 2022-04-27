@@ -49,8 +49,8 @@ tax_palette <- function(data, # phyloseq or ps_extra
                         ... # other args passed to tax_sort
 ) {
   # input checks
-  if (!is.null(add) && !is.character(add) || !rlang::is_named2(add)) {
-    stop("add must be null or named vector of colours")
+  if (!rlang::is_character(add) || !rlang::is_named2(add)) {
+    stop("`add` must be null or named vector of colours")
   }
 
   taxa <- tax_top(data = data, rank = rank, n = n, by = by, ...)

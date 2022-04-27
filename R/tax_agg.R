@@ -110,13 +110,15 @@ tax_agg <- function(ps,
     )
     ps <- ps_get(ps)
   }
+  if (!inherits(ps, "phyloseq")) stop("`ps` must be a phyloseq, or ps_extra")
+
   # store taxa orientation info for restoration to original setup before return
   taxa_were_rows <- phyloseq::taxa_are_rows(ps)
 
   # only do most things if rank is not NA/unique
   if (identical(rank, NA)) rank <- "unique"
   if (identical(rank, "unique")) {
-    # any sorting and/or creation of "top" rank is done
+    # any sorting and/or creation of "top" rank is still done later
     ps_agg <- ps
   } else {
 

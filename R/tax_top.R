@@ -25,13 +25,13 @@
 #' tax_top(dietswap)
 #' tax_top(dietswap, n = 4, by = "prev", rank = "Phylum", undetected = 30)
 tax_top <- function(data, n = 10, by = sum, rank = "unique", ...) {
+  if (!rlang::is_na(n) && (!rlang::is_scalar_integerish(n) || n < 1)) {
+    stop("`n` must be a single number, greater than zero")
+  }
   ps <- ps_get(data)
   ps <- tax_agg(ps, rank = rank)[["ps"]]
   ps <- tax_sort(ps, by = by, ...)
   taxnames <- phyloseq::taxa_names(physeq = ps)
-  if (identical(n, NA)) {
-    return(taxnames)
-  } else {
-    return(utils::head(x = taxnames, n = n))
-  }
+  if (is.na(n) || n > length(taxnames)) n <- length(taxnames)
+  return(taxnames[seq_len(n)])
 }
