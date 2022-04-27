@@ -1,11 +1,10 @@
 
 test_that("tax_palette throws appropriate errors", {
-
   ps <- tax_filter(corncob::ibd_phylo, min_prevalence = 10)
   ps <- tax_fix(ps)
 
   expect_error(
-    tax_palette(ps, rank = function(){}, n = 10),
+    tax_palette(ps, rank = function() {}, n = 10),
     regexp = "`rank` must be the name of a valid rank:
 Kingdom / Phylum / Class / Order / Family / Genus / Species
 or: unique / NA"
@@ -24,7 +23,7 @@ or: unique / NA"
   )
   expect_error(
     tax_palette(
-      data = ps, rank = "Genus",  n = 10,
+      data = ps, rank = "Genus", n = 10,
       add = c(other = "red", fail = "redd")
     ),
     regexp = "invalid color name 'redd'"
@@ -33,7 +32,6 @@ or: unique / NA"
   expect_match(
     er$message, 'of \"brewerPlus\", \"kelly\", or \"greenArmytage\", not \"b\"'
   )
-
 })
 
 test_that("tax_palette works", {
@@ -64,7 +62,6 @@ test_that("tax_palette works", {
     tax_palette(ps, rank = "Genus", n = 1, add = c("OTHER" = "white")),
     expected = c("Bacteroides" = "#A6CEE3", "OTHER" = "white")
   )
-
 })
 
 test_that("tax_palette_plot works", {
@@ -74,6 +71,9 @@ test_that("tax_palette_plot works", {
   ps <- tax_fix(ps)
   vdiffr::expect_doppelganger(
     "tax_palette_plot",
-    tax_palette_plot(tax_palette(ps, rank = "Genus", n = 35))
+    tax_palette_plot(
+      tax_palette(ps, rank = "Genus", n = 35)
+    ) +
+      ggplot2::theme_test()
   )
 })
