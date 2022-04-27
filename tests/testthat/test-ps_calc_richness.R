@@ -15,7 +15,6 @@ test_that("microbiome chao1 results don't change", {
     ps_get()
 
   testthat::expect_snapshot_output(microbiome::richness(ps, "chao1"))
-
 })
 
 
@@ -38,7 +37,6 @@ test_that("ps_calc_richness results don't change", {
 
 #
 test_that("ps_calc_richness supported plot doesn't change", {
-
   skip_if(packageVersion("microbiome") < 1.16)
 
   p <- corncob::ibd_phylo %>%

@@ -45,7 +45,7 @@ myPal \%>\% tax_palette_plot() # just to check the palette
 
 # plot one subset of data
 dietswap \%>\%
-ps_filter(nationality == "AFR", timepoint == 1, sex == "male") \%>\%
+  ps_filter(nationality == "AFR", timepoint == 1, sex == "male") \%>\%
   comp_barplot(
     tax_level = "Genus", n_taxa = 15,
     bar_outline_colour = NA, bar_width = 0.7,
@@ -54,7 +54,7 @@ ps_filter(nationality == "AFR", timepoint == 1, sex == "male") \%>\%
 
 # plot a different subset of data (top taxa differ but colours are the same)
 dietswap \%>\%
-ps_filter(nationality != "AFR", timepoint == 1, sex == "male") \%>\%
+  ps_filter(nationality != "AFR", timepoint == 1, sex == "male") \%>\%
   comp_barplot(
     tax_level = "Genus", n_taxa = 15,
     bar_outline_colour = NA, bar_width = 0.7,

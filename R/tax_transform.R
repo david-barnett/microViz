@@ -119,8 +119,9 @@ tax_transform <- function(data,
   if (!rlang::is_string(trans)) stop("`trans` must be a character string")
   if (!rlang::is_scalar_double(add)) stop("`add` must be a double, length 1")
   if (!rlang::is_scalar_double(zero_replace)) {
-    if (!identical(zero_replace, "halfmin"))
+    if (!identical(zero_replace, "halfmin")) {
       stop("`zero_replace` must be a number, or 'halfmin'")
+    }
   }
   stopifnot(rlang::is_bool(keep_counts))
   stopifnot(rlang::is_bool(chain))

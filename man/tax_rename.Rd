@@ -91,7 +91,7 @@ before <- psExample \%>\%
   ps_filter(activity == "inactive") \%>\%
   tax_names2rank("Taxon") \%>\%
   comp_barplot(
-    tax_level = "Taxon", n_taxa = 12,other_name = "Other",
+    tax_level = "Taxon", n_taxa = 12, other_name = "Other",
     merge_other = FALSE, bar_outline_colour = "grey60"
   ) +
   coord_flip() +

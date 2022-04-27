@@ -38,8 +38,12 @@
 #' @export
 #' @rdname ps_extra-accessors
 ps_get <- function(ps_extra) {
-  if (inherits(ps_extra, "ps_extra")) return(ps_extra[["ps"]])
-  if (inherits(ps_extra, "phyloseq")) return(ps_extra)
+  if (inherits(ps_extra, "ps_extra")) {
+    return(ps_extra[["ps"]])
+  }
+  if (inherits(ps_extra, "phyloseq")) {
+    return(ps_extra)
+  }
   stop(
     'class of argument should be "ps_extra" or "phyloseq"',
     "\nargument is class: ", paste(class(ps_extra), collapse = " ")

@@ -200,7 +200,6 @@ cor_heatmap <- function(data,
                         anno_tax = NULL,
                         anno_vars = NULL,
                         ...) {
-
   taxa_which <- annoWhichFromAnnoSide(taxa_side, argName = "taxa_side")
   vars_which <- annoWhichFromAnnoSide(vars_side, argName = "vars_side")
 

@@ -23,7 +23,7 @@
 #'
 #' # plot one subset of data
 #' dietswap %>%
-#' ps_filter(nationality == "AFR", timepoint == 1, sex == "male") %>%
+#'   ps_filter(nationality == "AFR", timepoint == 1, sex == "male") %>%
 #'   comp_barplot(
 #'     tax_level = "Genus", n_taxa = 15,
 #'     bar_outline_colour = NA, bar_width = 0.7,
@@ -32,7 +32,7 @@
 #'
 #' # plot a different subset of data (top taxa differ but colours are the same)
 #' dietswap %>%
-#' ps_filter(nationality != "AFR", timepoint == 1, sex == "male") %>%
+#'   ps_filter(nationality != "AFR", timepoint == 1, sex == "male") %>%
 #'   comp_barplot(
 #'     tax_level = "Genus", n_taxa = 15,
 #'     bar_outline_colour = NA, bar_width = 0.7,
@@ -80,7 +80,6 @@ tax_palette <- function(data, # phyloseq or ps_extra
 #' myPal %>% tax_palette_plot() # just to check the palette
 #'
 tax_palette_plot <- function(named_pal_vec, max_n = NA) {
-
   stopifnot(rlang::is_named(named_pal_vec)) # all colours need names
   stopifnot(identical(max_n, NA) || rlang::is_scalar_integerish(max_n))
   if (!is.na(max_n)) named_pal_vec <- utils::head(named_pal_vec, max_n)

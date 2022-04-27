@@ -69,7 +69,7 @@
 #'   ps_filter(activity == "inactive") %>%
 #'   tax_names2rank("Taxon") %>%
 #'   comp_barplot(
-#'     tax_level = "Taxon", n_taxa = 12,other_name = "Other",
+#'     tax_level = "Taxon", n_taxa = 12, other_name = "Other",
 #'     merge_other = FALSE, bar_outline_colour = "grey60"
 #'   ) +
 #'   coord_flip() +
@@ -116,7 +116,7 @@ tax_rename <- function(ps,
                        pad_digits = "auto",
                        sep = " ",
                        ... # for tax_sort
-                       ) {
+) {
   # check inputs #
   if (!inherits(ps, "phyloseq")) stop("ps must be a phyloseq object")
   psCheckRanks(ps = ps, rank = rank, varname = "rank")
