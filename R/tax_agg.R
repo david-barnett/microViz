@@ -111,6 +111,12 @@ tax_agg <- function(ps,
     ps <- ps_get(ps)
   }
   if (!inherits(ps, "phyloseq")) stop("`ps` must be a phyloseq, or ps_extra")
+  psCheckRanks(ps = ps, rank = rank, varname = "rank", or = c("unique", NA))
+  if (!rlang::is_na(top_N)) {
+    if (!rlang::is_scalar_integerish(top_N) || top_N < 1) {
+      stop("`top_N` must be NA or a number > 0")
+    }
+  }
 
   # store taxa orientation info for restoration to original setup before return
   taxa_were_rows <- phyloseq::taxa_are_rows(ps)

@@ -4,6 +4,8 @@ data("dietswap", package = "microbiome")
 options(width = 80)
 local_edition(3)
 
+
+
 test_that("microbiome's dietswap data hasn't changed", {
   expect_snapshot(dietswap)
   tt_df <- data.frame(tax_table(dietswap), check.names = FALSE)
@@ -12,6 +14,19 @@ test_that("microbiome's dietswap data hasn't changed", {
   expect_snapshot_csv(name = "otu", object = otu_df)
 })
 
+test_that("tax_agg gives appropriate errors", {
+  local_edition(3)
+  expect_snapshot_output(tax_agg(dietswap, rank = NA)) # works
+  rankErr <- "`rank` must be the name of a valid rank:
+Phylum / Family / Genus
+or: unique / NA"
+  expect_error(tax_agg(dietswap, rank = "nope"), regexp = rankErr)
+  expect_error(tax_agg(dietswap, rank = 1), regexp = rankErr)
+  expect_error(
+    tax_agg(dietswap, rank = NA, top_N = 1.1),
+    regexp = "`top_N` must be NA or a number > 0"
+  )
+})
 
 agg_level_test <- c("Phylum", "Family")
 # tax_agg not expected to be the same at Genus for dietswap
