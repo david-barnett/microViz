@@ -77,7 +77,7 @@ distinct_palette <- function(n = NA, pal = "brewerPlus", add = "lightgrey") {
 
   # add last colour e.g. lightgrey default if requested
   if (!identical(add, NA)) {
-    col2rgb(add)
+    grDevices::col2rgb(add)
     palCols <- c(palCols, add)
   }
   return(palCols)
