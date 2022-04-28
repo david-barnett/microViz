@@ -1,4 +1,4 @@
-# microViz (development version)
+# microViz 0.9.1
 
 ## Features
 - New function `tax_palette` allows easy creation of a fixed colour palette for taxa, to use with e.g. comp_barplot
