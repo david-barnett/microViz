@@ -4,29 +4,65 @@
 \alias{ps_dedupe}
 \title{De-duplicate phyloseq samples}
 \usage{
-ps_dedupe(ps, vars, method = "readcount", verbose = TRUE)
+ps_dedupe(
+  ps,
+  vars,
+  method = "readcount",
+  verbose = TRUE,
+  n = 1,
+  .keep_group_var = FALSE,
+  .keep_readcount = FALSE,
+  .message_IDs = FALSE,
+  .label_only = FALSE,
+  .keep_all_taxa = FALSE
+)
 }
 \arguments{
-\item{ps}{phyloseq with sample data}
+\item{ps}{phyloseq object}
 
-\item{vars}{names of variables, whose (combined) levels identify groups from which only 1 sample is desired}
+\item{vars}{names of variables, whose (combined) levels identify groups
+from which only 1 sample is desired}
 
-\item{method}{keep 1 sample with max "readcount" or the "first" or "last" samples encountered in given sample_data order for each dupe group}
+\item{method}{keep sample with max "readcount" or the "first" or "last" or "random"
+samples encountered in given sample_data order for each duplicate group}
 
-\item{verbose}{message names of samples removed if TRUE (or "debug" for more info, when method = "readcount")}
+\item{verbose}{message about number of groups, and number of samples dropped?}
+
+\item{n}{number of 'duplicates' to keep per group, defaults to 1}
+
+\item{.keep_group_var}{keep grouping variable .GROUP. in phyloseq object?}
+
+\item{.keep_readcount}{keep readcount variable .READCOUNT. in phyloseq object?}
+
+\item{.message_IDs}{message sample names of dropped variables?}
+
+\item{.label_only}{if TRUE, the samples will NOT be filtered, just labelled with a new logical
+variable .KEEP_SAMPLE.}
+
+\item{.keep_all_taxa}{keep all taxa after removing duplicates?
+If FALSE, the default, taxa are removed if they never occur in any of
+the retained samples}
 }
 \value{
 phyloseq object
 }
 \description{
-Use 1 or more variables in the sample_data to identify and remove duplicate samples (leaving 1 per category).
+Use one or more variables in the sample_data to identify and
+remove duplicate samples (leaving one sample per group).
 
 \strong{methods:}
 \itemize{
-\item method = "readcount" keeps the one sample in each duplicate group with the highest total number of reads according to sample_sums
-\item method = "first" keeps the first sample in each duplicate group encountered in the row order of the sample_data
-\item method = "last" keeps the last sample in each duplicate group encountered in the row order of the sample_data
+\item method = "readcount" keeps the one sample in each duplicate group
+with the highest total number of reads (phyloseq::sample_sums)
+\item method = "first" keeps the first sample in each duplicate group
+encountered in the row order of the sample_data
+\item method = "last" keeps the last sample in each duplicate group
+encountered in the row order of the sample_data
+\item method = "random" keeps a random sample from each duplicate group
+(set.seed for reproducibility)
 }
+
+More than one "duplicate" sample can be kept per group by setting \code{n} samples > 1.
 }
 \details{
 What happens when duplicated samples have exactly equal readcounts in method = "readcount"?

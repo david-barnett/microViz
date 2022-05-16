@@ -1,22 +1,44 @@
 #' De-duplicate phyloseq samples
 #'
 #' @description
-#' Use 1 or more variables in the sample_data to identify and remove duplicate samples (leaving 1 per category).
+#' Use one or more variables in the sample_data to identify and
+#' remove duplicate samples (leaving one sample per group).
 #'
 #' __methods:__
-#' - method = "readcount" keeps the one sample in each duplicate group with the highest total number of reads according to sample_sums
-#' - method = "first" keeps the first sample in each duplicate group encountered in the row order of the sample_data
-#' - method = "last" keeps the last sample in each duplicate group encountered in the row order of the sample_data
+#' - method = "readcount" keeps the one sample in each duplicate group
+#' with the highest total number of reads (phyloseq::sample_sums)
+#' - method = "first" keeps the first sample in each duplicate group
+#' encountered in the row order of the sample_data
+#' - method = "last" keeps the last sample in each duplicate group
+#' encountered in the row order of the sample_data
+#' - method = "random" keeps a random sample from each duplicate group
+#' (set.seed for reproducibility)
+#'
+#' More than one "duplicate" sample can be kept per group by setting `n` samples > 1.
 #'
 #' @details
 #' What happens when duplicated samples have exactly equal readcounts in method = "readcount"?
 #' The first encountered maximum is kept (in sample_data row order, like method = "first")
 #'
-#' @param ps phyloseq with sample data
-#' @param vars names of variables, whose (combined) levels identify groups from which only 1 sample is desired
+#' @param ps phyloseq object
+#' @param vars
+#' names of variables, whose (combined) levels identify groups
+#' from which only 1 sample is desired
 #' @param method
-#' keep 1 sample with max "readcount" or the "first" or "last" samples encountered in given sample_data order for each dupe group
-#' @param verbose message names of samples removed if TRUE (or "debug" for more info, when method = "readcount")
+#' keep sample with max "readcount" or the "first" or "last" or "random"
+#' samples encountered in given sample_data order for each duplicate group
+#' @param verbose message about number of groups, and number of samples dropped?
+#' @param n number of 'duplicates' to keep per group, defaults to 1
+#' @param .keep_group_var keep grouping variable .GROUP. in phyloseq object?
+#' @param .keep_readcount keep readcount variable .READCOUNT. in phyloseq object?
+#' @param .message_IDs message sample names of dropped variables?
+#' @param .label_only
+#' if TRUE, the samples will NOT be filtered, just labelled with a new logical
+#' variable .KEEP_SAMPLE.
+#' @param .keep_all_taxa
+#' keep all taxa after removing duplicates?
+#' If FALSE, the default, taxa are removed if they never occur in any of
+#' the retained samples
 #'
 #' @return phyloseq object
 #' @export
@@ -46,80 +68,78 @@
 ps_dedupe <- function(ps,
                       vars,
                       method = "readcount",
-                      verbose = TRUE) {
-  ps_df <- samdatAsDataframe(ps)
+                      verbose = TRUE,
+                      n = 1,
+                      .keep_group_var = FALSE,
+                      .keep_readcount = FALSE,
+                      .message_IDs = FALSE,
+                      .label_only = FALSE,
+                      .keep_all_taxa = FALSE
+){
+  # Check inputs
+  if (!inherits(ps, "phyloseq")) stop("ps must be a phyloseq object")
+  if (!rlang::is_character(vars)) stop("vars must be character")
+  psCheckVariables(ps = ps, vars = vars)
+  method <- rlang::arg_match(method, values = c("readcount", "first", "last", "random"))
+  if (!rlang::is_scalar_integerish(n) || n < 1) stop('n must be a positive number')
+  if (!rlang::is_bool(verbose)) stop("verbose must be TRUE or FALSE")
+  if (!rlang::is_bool(.keep_group_var)) stop(".keep_group_var must be TRUE or FALSE")
+  if (!rlang::is_bool(.keep_readcount)) stop(".keep_readcount must be TRUE or FALSE")
+  if (!rlang::is_bool(.message_IDs)) stop(".message_IDs must be TRUE or FALSE")
+  if (!rlang::is_bool(.label_only)) stop(".label_only must be TRUE or FALSE")
+  if (!rlang::is_bool(.keep_all_taxa)) stop(".keep_all_taxa must be TRUE or FALSE")
 
-  ps_df[[".temp_grouping_var"]] <- interaction(ps_df[, vars])
+  # End of input checks
 
-  dupe_names <- unique(
-    ps_df[[".temp_grouping_var"]][duplicated(ps_df[, ".temp_grouping_var"])]
+  # get sample data and compute new (temporary?) variables
+  df <- samdat_tbl(ps, sample_names_col = "._ID_.")
+  df[[".GROUP."]] <- purrr::pmap_chr(
+    .l = df[, vars, drop = FALSE], .f = function(...) paste(..., sep = "_")
   )
-  no_dupe_samples <-
-    rownames(ps_df)[!ps_df[[".temp_grouping_var"]] %in% dupe_names]
+  if (.keep_group_var) phyloseq::sample_data(ps)[[".GROUP."]] <- df[[".GROUP."]]
 
-  rejects_message <- function(rejects) {
-    message(
-      length(rejects), " samples being removed:\n",
-      paste0(rejects, collapse = "; ")
-    )
+  if (method == "readcount") {
+    ps <- ps_counts(data = ps, warn = "error") # stop if data are not counts
+    df[[".READCOUNT."]] <- phyloseq::sample_sums(x = ps)
+    if (.keep_readcount) {
+      phyloseq::sample_data(ps)[[".READCOUNT."]] <- df[[".READCOUNT."]]
+    }
   }
 
-  keepers <- switch(
+  # deduplicate data
+  df <- dplyr::group_by(.data = df, .data[[".GROUP."]])
+  if (verbose) {
+    nDup <- dplyr::count(df)[["n"]]
+    nPerGroup <- paste(unique(range(nDup)), collapse = " to ")
+    message(length(nDup), " groups: with ", nPerGroup, " samples each")
+  }
+
+  dfDedupe <- switch(
     EXPR = method,
     "readcount" = {
-      ps_df[[".temp_readcount_var"]] <- phyloseq::sample_sums(ps)
-      ps_df[[".temp_sample_id_var"]] <- rownames(ps_df)
-      ps_df <-
-        dplyr::filter(ps_df, .data[[".temp_grouping_var"]] %in% dupe_names)
-      ps_df <- dplyr::group_by(ps_df, .data[[".temp_grouping_var"]])
-      df_sum <-
-        dplyr::summarise(ps_df, max = max(.data[[".temp_readcount_var"]]))
-
-      keepers <- unlist(
-        sapply(dupe_names, function(dn) {
-          dupe_group <- ps_df[ps_df$.temp_grouping_var == dn, ]
-          max_reads <- df_sum$max[df_sum$.temp_grouping_var == dn][[1]]
-          keepers <- dupe_group$.temp_sample_id_var[
-            dupe_group$.temp_readcount_var == max_reads
-          ]
-          if (identical(verbose, "debug")) {
-            to_drop <- dupe_group$.temp_sample_id_var != keepers[[1]]
-            message(
-              "\ngroup = ", dn, "\n",
-              nrow(dupe_group), " dupes", "\nmax_reads = ", max_reads,
-              "\nmatches = ",
-              paste(keepers, collapse = "; "), "\nkeeping: ", keepers[[1]],
-              "\ndropping: ",
-              paste(dupe_group$.temp_sample_id_var[to_drop], collapse = "; ")
-            )
-          }
-          keepers[[1]]
-        })
+      dplyr::slice_max(
+        .data = df, order_by = .data[[".READCOUNT."]], with_ties = FALSE, n = n
       )
-
-      if (!isFALSE(verbose)) {
-        rejects <-
-          ps_df$.temp_sample_id_var[!ps_df$.temp_sample_id_var %in% keepers]
-        rejects_message(rejects)
-      }
-      union(keepers, no_dupe_samples)
     },
-    "first" = {
-      keepers <- !duplicated(ps_df[[".temp_grouping_var"]])
-      if (!isFALSE(verbose)) {
-        rejects_message(rownames(ps_df)[!keepers])
-      }
-      keepers
-    },
-    "last" = {
-      keepers <- !duplicated(ps_df[[".temp_grouping_var"]], fromLast = TRUE)
-      if (!isFALSE(verbose)) {
-        rejects_message(rownames(ps_df)[!keepers])
-      }
-      keepers
-    }
+    "first" = dplyr::slice_head(df, n = n),
+    "last" = dplyr::slice_tail(df, n = n),
+    "random" = dplyr::slice_sample(df, n = n, replace = FALSE, weight_by = NULL)
   )
 
-  # prune phyloseq object samples
-  phyloseq::prune_samples(x = ps, samples = keepers)
+  # message about progress
+  if (verbose) message("Dropped ", nrow(df) - nrow(dfDedupe), " samples.")
+  if (.message_IDs) {
+    message(paste(dplyr::setdiff(df$._ID_., dfDedupe$._ID_.), collapse = ", "))
+  }
+
+  # label samples to keep
+  phyloseq::sample_data(ps)[['.KEEP_SAMPLE.']] <- df$._ID_. %in% dfDedupe$._ID_.
+  if (.label_only) return(ps) # early exit without filtering
+
+  # filter samples
+  ps <- ps_filter(ps, .data$.KEEP_SAMPLE., .keep_all_taxa = .keep_all_taxa)
+  phyloseq::sample_data(ps)[['.KEEP_SAMPLE.']] <- NULL
+
+  return(ps)
 }
+
