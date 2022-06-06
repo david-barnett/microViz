@@ -1,3 +1,8 @@
+# microViz (development version)
+
+## Bug fix
+- lmer works in tax_model (EXPERIMENTAL, PROCEED WITH CAUTION)
+
 # microViz 0.9.1
 
 ## Features

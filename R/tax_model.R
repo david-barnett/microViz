@@ -184,7 +184,7 @@ tax_model <- function(ps,
       res <- do.call(type, args = args)
       # replace junk call slot with something informative
       # (albeit not actually a call)
-      res[["call"]] <- f
+      if (!isS4(res)) res[["call"]] <- f
       return(res)
     }
   )
