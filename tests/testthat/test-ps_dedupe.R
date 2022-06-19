@@ -63,17 +63,23 @@ test_that("ps_dedupe methods all gives same nsamples", {
   expect_equal(nsamples(ps5), 36)
 
   # check messages
-  expect_message(
-    ps_dedupe(dietswap, verbose = TRUE, vars = v),
-    regexp = "18 groups: with 8 to 15 samples"
+  suppressMessages(
+    expect_message(
+      ps_dedupe(dietswap, verbose = TRUE, vars = v),
+      regexp = "18 groups: with 8 to 15 samples"
+    )
   )
-  expect_message(
-    ps_dedupe(dietswap, verbose = TRUE, vars = v),
-    regexp = "Dropped 204 samples."
+  suppressMessages(
+    expect_message(
+      ps_dedupe(dietswap, verbose = TRUE, vars = v),
+      regexp = "Dropped 204 samples."
+    )
   )
-  expect_message(
-    ps_dedupe(dietswap, verbose = TRUE, vars = c("subject", "timepoint")),
-    regexp = "Dropped 0 samples."
+  suppressMessages(
+    expect_message(
+      ps_dedupe(dietswap, verbose = TRUE, vars = c("subject", "timepoint")),
+      regexp = "Dropped 0 samples."
+    )
   )
   expect_message(
     ps_dedupe(
