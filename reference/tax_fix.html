@@ -33,7 +33,7 @@ https://david-barnett.github.io/microViz/articles/web-only/tax-fixing.html'><met
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.1.9001</span>
       </span>
     </div>
 
@@ -131,26 +131,41 @@ It is up to the user to specify sensible values in <code>unknowns</code> if thei
     <h2>Arguments</h2>
     <dl><dt>ps</dt>
 <dd><p>phyloseq or tax_table (taxonomyTable)</p></dd>
+
+
 <dt>min_length</dt>
 <dd><p>replace strings shorter than this</p></dd>
+
+
 <dt>unknowns</dt>
 <dd><p>also replace strings matching any in this vector, NA default vector shown in details!</p></dd>
+
+
 <dt>suffix_rank</dt>
 <dd><p>"classified" (default) or "current", when replacing an entry, should the suffix be taken from the lowest classified rank
 for that taxon, "classified", or the "current" unclassified rank?</p></dd>
+
+
 <dt>sep</dt>
 <dd><p>character(s) separating new name and taxonomic rank level suffix (see suffix_rank)</p></dd>
+
+
 <dt>anon_unique</dt>
 <dd><p>make anonymous taxa unique by replacing unknowns with taxa_name?
 otherwise they are replaced with paste("unknown", first_rank_name),
 which is therefore the same for every anonymous taxon, meaning they will be merged if tax_agg is used.
 (anonymous taxa are taxa with all unknown values in their tax_table row, i.e. cannot be classified even at highest rank available)</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>emit warnings when cannot replace with informative name?</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>object same class as ps</p>
+    
+
+<p>object same class as ps</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -948,7 +963,7 @@ which is therefore the same for every anonymous taxon, meaning they will be merg
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

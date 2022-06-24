@@ -34,7 +34,7 @@ at is ignored when by is &quot;rev&quot;."><meta property="og:image" content="ht
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.1.9001</span>
       </span>
     </div>
 
@@ -134,28 +134,45 @@ or a rank name, for sorting at that rank.
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>ps_extra or phyloseq</p></dd>
+
+
 <dt>by</dt>
 <dd><p>how to sort, see description</p></dd>
+
+
 <dt>at</dt>
 <dd><p>"names" or a taxonomic rank to apply sorting method to, as specified in <code>by</code>.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>used if summary function given, or pass <code>undetected</code> arg
 for tax_transform("binary") if by = "prev" or "prevalence"</p></dd>
+
+
 <dt>tree_warn</dt>
 <dd><p>If phylogenetic tree is present in phyloseq phy_tree slot, taxa cannot be reordered.
 Default behaviour of tax_sort is to remove the phylogenetic tree and warn about this.
 tree_warn = FALSE will suppress the warning message, but still remove the tree!</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>passed to phyloseq_validate verbose
 (if TRUE: message about suspicious values in tax_table, and how to fix)</p></dd>
+
+
 <dt>trans</dt>
 <dd><p>name of transformation to apply to taxa before sorting (taxa are returned un-transformed)</p></dd>
+
+
 <dt>use_counts</dt>
 <dd><p>use count data if available, instead of transformed data</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>sorted phyloseq or ps_extra</p>
+    
+
+<p>sorted phyloseq or ps_extra</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -553,7 +570,7 @@ if using a summary stat function in <code>by</code></p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

@@ -31,7 +31,7 @@ https://sites.google.com/site/mb3gustame/hypothesis-tests/manova/npmanova"><meta
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.1.9001</span>
       </span>
     </div>
 
@@ -133,28 +133,49 @@ and a microbiota distance matrix you have already calculated with dist_calc().</
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>ps_extra output from dist_calc()</p></dd>
+
+
 <dt>variables</dt>
 <dd><p>character vector of variables to include in model or character representation of the right-hand side of a formula, e.g "varA + varB + varA:varB"</p></dd>
+
+
 <dt>interactions</dt>
 <dd><p>optional argument to define any interactions between variables, written in the style of e.g. "var_a * var_b"</p></dd>
+
+
 <dt>complete_cases</dt>
 <dd><p>if TRUE, drops observations if they contain missing values (otherwise stops if missings are detected)</p></dd>
+
+
 <dt>n_processes</dt>
 <dd><p>how many parallel processes to use? (on windows this uses parallel::makePSOCKcluster())</p></dd>
+
+
 <dt>n_perms</dt>
 <dd><p>how many permutations? e.g. 9999. Less is faster but more is better!</p></dd>
+
+
 <dt>seed</dt>
 <dd><p>set a random number generator seed to ensure you get the same results each run</p></dd>
+
+
 <dt>by</dt>
 <dd><p>passed to vegan::adonis2() <code>by</code> argument: what type of sums of squares to calculate? "margin" or "terms"</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>sends messages about progress if TRUE</p></dd>
+
+
 <dt>...</dt>
 <dd><p>additional arguments are passed directly to vegan::adonis2() (e.g. strata, add, sqrt.dist etc.)</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>ps_extra list containing permanova results and (filtered) input objects</p>
+    
+
+<p>ps_extra list containing permanova results and (filtered) input objects</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -192,8 +213,8 @@ you should rename the offending variable (e.g. avoid any of "+" "\*" "|" or ":" 
 <span class="r-in">    n_perms <span class="op">=</span> <span class="fl">99</span> <span class="co"># only 99 perms used in examples for speed (use 9999+!)</span></span>
 <span class="r-in">  <span class="op">)</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Dropping samples with missings: 4</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022-04-28 13:09:18 - Starting PERMANOVA with 99 perms with 1 processes</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022-04-28 13:09:18 - Finished PERMANOVA</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022-06-24 09:13:21 - Starting PERMANOVA with 99 perms with 1 processes</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022-06-24 09:13:22 - Finished PERMANOVA</span>
 <span class="r-in"><span class="va">PERM</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ps_extra object - a list with phyloseq and extras:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -251,8 +272,8 @@ you should rename the offending variable (e.g. avoid any of "+" "\*" "|" or ":" 
 <span class="r-in">    n_processes <span class="op">=</span> <span class="fl">1</span>, n_perms <span class="op">=</span> <span class="fl">99</span></span>
 <span class="r-in">  <span class="op">)</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Dropping samples with missings: 4</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022-04-28 13:09:18 - Starting PERMANOVA with 99 perms with 1 processes</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022-04-28 13:09:18 - Finished PERMANOVA</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022-06-24 09:13:22 - Starting PERMANOVA with 99 perms with 1 processes</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022-06-24 09:13:22 - Finished PERMANOVA</span>
 <span class="r-in"><span class="va">PERM2</span><span class="op">$</span><span class="va">permanova</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Permutation test for adonis under reduced model</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Marginal effects of terms</span>
@@ -277,8 +298,8 @@ you should rename the offending variable (e.g. avoid any of "+" "\*" "|" or ":" 
 <span class="r-in">    n_processes <span class="op">=</span> <span class="fl">1</span>, n_perms <span class="op">=</span> <span class="fl">99</span></span>
 <span class="r-in">  <span class="op">)</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Dropping samples with missings: 4</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022-04-28 13:09:18 - Starting PERMANOVA with 99 perms with 1 processes</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022-04-28 13:09:19 - Finished PERMANOVA</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022-06-24 09:13:22 - Starting PERMANOVA with 99 perms with 1 processes</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022-06-24 09:13:23 - Finished PERMANOVA</span>
 <span class="r-in"><span class="va">PERM3</span><span class="op">$</span><span class="va">permanova</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Permutation test for adonis under reduced model</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Marginal effects of terms</span>
@@ -319,7 +340,7 @@ you should rename the offending variable (e.g. avoid any of "+" "\*" "|" or ":" 
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

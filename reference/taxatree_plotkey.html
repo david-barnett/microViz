@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.1.9001</span>
       </span>
     </div>
 
@@ -128,59 +128,102 @@
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>ps_extra (or phyloseq)</p></dd>
+
+
 <dt>...</dt>
 <dd><p>logical conditions for labelling
 e.g. rank == "Phylum", p.value &lt; 0.1 | taxon %in% listOfTaxa</p></dd>
+
+
 <dt>size_stat</dt>
 <dd><p>named list of length 1, giving function calculated for each taxon,
 to determine the size of nodes (and edges). Name used as size legend title.</p></dd>
+
+
 <dt>node_size_range</dt>
 <dd><p>min and max node sizes, decrease to avoid node overlap</p></dd>
+
+
 <dt>edge_width_range</dt>
 <dd><p>min and max edge widths</p></dd>
+
+
 <dt>size_guide</dt>
 <dd><p>guide for node sizes, try "none", "legend" or ggplot2::guide_legend()</p></dd>
+
+
 <dt>size_trans</dt>
 <dd><p>transformation for size scale
 you can use (the name of) any transformer from the scales package,
 such as "identity", "log1p", or "sqrt"</p></dd>
+
+
 <dt>colour</dt>
 <dd><p>fixed colour and fill of nodes and edges</p></dd>
+
+
 <dt>edge_alpha</dt>
 <dd><p>fixed alpha value for edges</p></dd>
+
+
 <dt>title</dt>
 <dd><p>title of plot (NULL for none)</p></dd>
+
+
 <dt>title_size</dt>
 <dd><p>font size of title</p></dd>
+
+
 <dt>taxon_renamer</dt>
 <dd><p>function that takes taxon names and returns modified names for labels</p></dd>
+
+
 <dt>.combine_label</dt>
 <dd><p>all or any: function to combine multiple logical "label" values for a taxon
 (relevant if taxatree_stats already present in data)</p></dd>
+
+
 <dt>.draw_label</dt>
 <dd><p>should labels be drawn, or just the bare tree, set this to FALSE if you want
 to draw customised labels with taxatree_plot_labels afterwards</p></dd>
+
+
 <dt>.calc_label</dt>
 <dd><p>if you already set labels with taxatree_label:
 set this to FALSE to use / avoid overwriting that data
 (ignores <code>...</code> if FALSE)</p></dd>
+
+
 <dt>layout</dt>
 <dd><p>any ggraph layout, default is "tree"</p></dd>
+
+
 <dt>layout_seed</dt>
 <dd><p>any numeric, required if a stochastic igraph layout is named</p></dd>
+
+
 <dt>circular</dt>
 <dd><p>should the layout be circular?</p></dd>
+
+
 <dt>node_sort</dt>
 <dd><p>sort nodes by "increasing" or "decreasing" size? NULL for no sorting.
 Use <code><a href="tax_sort.html">tax_sort()</a></code> before <code><a href="taxatree_plots.html">taxatree_plots()</a></code> for finer control.</p></dd>
+
+
 <dt>add_circles</dt>
 <dd><p>add faint concentric circles to plot, behind each rank?</p></dd>
+
+
 <dt>drop_ranks</dt>
 <dd><p>drop ranks from tree if not included in stats dataframe</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>ggplot</p>
+    
+
+<p>ggplot</p>
     </div>
 
     <div id="ref-examples">
@@ -201,7 +244,7 @@ Use <code><a href="tax_sort.html">tax_sort()</a></code> before <code><a href="ta
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

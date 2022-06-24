@@ -30,7 +30,7 @@ You can adjust p-values with taxatree_stats_p_adjust()
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.1.9001</span>
       </span>
     </div>
 
@@ -149,79 +149,142 @@ You can adjust p-values with taxatree_stats_p_adjust()
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>ps_extra with taxatree_stats, e.g. output of <code><a href="taxatree_models2stats.html">taxatree_models2stats()</a></code></p></dd>
+
+
 <dt>colour_stat</dt>
 <dd><p>name of variable to scale colour/fill of nodes and edges</p></dd>
+
+
 <dt>palette</dt>
 <dd><p>diverging hcl colour palette name from <code>colorspace::hcl_palettes("diverging")</code></p></dd>
+
+
 <dt>reverse_palette</dt>
 <dd><p>reverse direction of colour palette?</p></dd>
+
+
 <dt>colour_lims</dt>
 <dd><p>limits of colour and fill scale, NULL will infer lims from range of all data</p></dd>
+
+
 <dt>colour_oob</dt>
 <dd><p>scales function to handle colour_stat values outside of colour_lims
 (default simply squishes "out of bounds" values into the given range)</p></dd>
+
+
 <dt>colour_trans</dt>
 <dd><p>name of transformation for colour scale:
 default is "abs_sqrt", the square-root of absolute values,
 but you can use the name of any transformer from the <code>scales</code> package,
 such as "identity" or "exp"</p></dd>
+
+
 <dt>size_stat</dt>
 <dd><p>named list of length 1, giving function calculated for each taxon,
 to determine the size of nodes (and edges). Name used as size legend title.</p></dd>
+
+
 <dt>node_size_range</dt>
 <dd><p>min and max node sizes, decrease to avoid node overlap</p></dd>
+
+
 <dt>edge_width_range</dt>
 <dd><p>min and max edge widths</p></dd>
+
+
 <dt>size_guide</dt>
 <dd><p>guide for node sizes, try "none", "legend" or ggplot2::guide_legend()</p></dd>
+
+
 <dt>size_trans</dt>
 <dd><p>transformation for size scale
 you can use (the name of) any transformer from the scales package,
 such as "identity", "log1p", or "sqrt"</p></dd>
+
+
 <dt>sig_stat</dt>
 <dd><p>name of variable indicating statistical significance</p></dd>
+
+
 <dt>sig_threshold</dt>
 <dd><p>value of sig_stat variable indicating statistical significance (below this)</p></dd>
+
+
 <dt>sig_shape</dt>
 <dd><p>fixed shape for significance marker</p></dd>
+
+
 <dt>sig_size</dt>
 <dd><p>fixed size for significance marker</p></dd>
+
+
 <dt>sig_stroke</dt>
 <dd><p>fixed stroke width for significance marker</p></dd>
+
+
 <dt>sig_colour</dt>
 <dd><p>fixed colour for significance marker (used as fill for filled shapes)</p></dd>
+
+
 <dt>edge_alpha</dt>
 <dd><p>fixed alpha value for edges</p></dd>
+
+
 <dt>vars</dt>
 <dd><p>name of column indicating terms in models (one plot made per term)</p></dd>
+
+
 <dt>var_renamer</dt>
 <dd><p>function to rename variables for plot titles</p></dd>
+
+
 <dt>title_size</dt>
 <dd><p>font size of title</p></dd>
+
+
 <dt>layout</dt>
 <dd><p>any ggraph layout, default is "tree"</p></dd>
+
+
 <dt>layout_seed</dt>
 <dd><p>any numeric, required if a stochastic igraph layout is named</p></dd>
+
+
 <dt>circular</dt>
 <dd><p>should the layout be circular?</p></dd>
+
+
 <dt>node_sort</dt>
 <dd><p>sort nodes by "increasing" or "decreasing" size? NULL for no sorting.
 Use <code><a href="tax_sort.html">tax_sort()</a></code> before <code>taxatree_plots()</code> for finer control.</p></dd>
+
+
 <dt>add_circles</dt>
 <dd><p>add faint concentric circles to plot, behind each rank?</p></dd>
+
+
 <dt>drop_ranks</dt>
 <dd><p>drop ranks from tree if not included in stats dataframe</p></dd>
+
+
 <dt>l1</dt>
 <dd><p>Luminance value at the scale endpoints, NULL for palette's default</p></dd>
+
+
 <dt>l2</dt>
 <dd><p>Luminance value at the scale midpoint, NULL for palette's default</p></dd>
+
+
 <dt>colour_na</dt>
 <dd><p>colour for NA values in tree.
 (if unused ranks are not dropped, they will have NA values for colour_stat)</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>list of ggraph ggplots</p>
+    
+
+<p>list of ggraph ggplots</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -279,10 +342,10 @@ a shape value for each of them.</p>
 <span class="r-in">  ps <span class="op">=</span> <span class="va">ps</span>, type <span class="op">=</span> <span class="fu">corncob</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/corncob/man/bbdml.html" class="external-link">bbdml</a></span>, ranks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Phylum"</span>, <span class="st">"Genus"</span><span class="op">)</span>,</span>
 <span class="r-in">  formula <span class="op">=</span> <span class="op">~</span> <span class="va">female</span> <span class="op">+</span> <span class="va">african</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span class="r-in"><span class="op">)</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022-04-28 13:11:20 - modelling at rank: Phylum</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022-06-24 09:14:54 - modelling at rank: Phylum</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Modelling: P: Bacteroidetes</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Modelling: P: Firmicutes</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022-04-28 13:11:21 - modelling at rank: Genus</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022-06-24 09:14:55 - modelling at rank: Genus</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Modelling: G: Allistipes et rel.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Modelling: G: Bacteroides vulgatus et rel.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Modelling: G: Butyrivibrio crossotus et rel.</span>
@@ -377,7 +440,7 @@ a shape value for each of them.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

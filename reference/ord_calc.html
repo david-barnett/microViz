@@ -37,7 +37,7 @@ the "GUide to STatistical Analysis in Microbial Ecology": https://sites.google.c
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.1.9001</span>
       </span>
     </div>
 
@@ -136,27 +136,42 @@ the "GUide to STatistical Analysis in Microbial Ecology": <a href="https://sites
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>ps_extra list object: output from dist_calc(), or tax_transform() if no distance calculation required for method e.g. for RDA</p></dd>
+
+
 <dt>method</dt>
 <dd><p>which ordination method to use? "auto" means automatically determined from ps_extra and other args.
 If you really know what you want: manually set one of 'PCoA', 'PCA', 'CCA', 'CAP' or 'RDA'</p></dd>
+
+
 <dt>constraints</dt>
 <dd><p>(a vector of) valid sample_data name(s) to constrain analyses, or leave as NULL for unconstrained ordination.
 Non-NULL values are compatible with method = "auto"/"RDA"/"CAP"</p></dd>
+
+
 <dt>conditions</dt>
 <dd><p>(a vector of) valid sample_data name(s) to partial these out of analyses with Condition(), or leave as NULL</p></dd>
+
+
 <dt>scale_cc</dt>
 <dd><p>If TRUE (default) ensures any constraints and conditions variables are scaled before use, to ensure their effects are comparable.
 If set to FALSE you must ensure you have already set the variables on a similar scale yourself!
 If there are no constraints or conditions, scale_cc does nothing.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>If TRUE or "max", show any warnings and messages about constraint and conditions scaling and missings etc.
 FALSE suppresses warnings!</p></dd>
+
+
 <dt>...</dt>
 <dd><p>optional arguments passed on to phyloseq::ordinate()</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>ps_extra list object</p>
+    
+
+<p>ps_extra list object</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -272,7 +287,7 @@ You can extract the ordination object for other analyses with ord_get()</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

@@ -25,7 +25,7 @@ or more conservative family-wise error rate controlling methods such as "holm" o
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.1.9001</span>
       </span>
     </div>
 
@@ -116,19 +116,30 @@ or more conservative family-wise error rate controlling methods such as "holm" o
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>ps_extra with taxatree_stats dataframe, or just the dataframe</p></dd>
+
+
 <dt>method</dt>
 <dd><p>any method from <code><a href="https://rdrr.io/r/stats/p.adjust.html" class="external-link">stats::p.adjust.methods</a></code></p></dd>
+
+
 <dt>grouping</dt>
 <dd><p>defines grouping of p-values into families for adjustment, see details.</p></dd>
+
+
 <dt>p</dt>
 <dd><p>name of variable containing p values for adjustment</p></dd>
+
+
 <dt>new_var</dt>
 <dd><p>name of new variable created for adjusted p values
 (automatically inferred by default)</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>ps_extra with dataframe of statistics, or just the data.frame</p>
+    
+
+<p>ps_extra with dataframe of statistics, or just the data.frame</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -190,9 +201,9 @@ Or even group by a combination of rank and term with c("rank", "term")</p>
 <span class="r-in">    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UC"</span>, <span class="st">"female"</span>, <span class="st">"antibiotics"</span>, <span class="st">"steroids"</span>, <span class="st">"age_scaled"</span><span class="op">)</span></span>
 <span class="r-in">  <span class="op">)</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Proportional min_prevalence given: 0.3 --&gt; min 21/67 samples.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022-04-28 13:11:28 - modelling at rank: Phylum</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022-04-28 13:11:28 - modelling at rank: Class</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022-04-28 13:11:29 - modelling at rank: Order</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022-06-24 09:15:00 - modelling at rank: Phylum</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022-06-24 09:15:01 - modelling at rank: Class</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022-06-24 09:15:01 - modelling at rank: Order</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">bb_stats</span> <span class="op">&lt;-</span> <span class="va">bb_models</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="taxatree_models2stats.html">taxatree_models2stats</a></span><span class="op">(</span>param <span class="op">=</span> <span class="st">"mu"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
@@ -271,7 +282,7 @@ Or even group by a combination of rank and term with c("rank", "term")</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

@@ -32,7 +32,7 @@ reattaches the modified sample_data to the phyloseq and returns the phyloseq
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.1.9001</span>
       </span>
     </div>
 
@@ -130,24 +130,41 @@ This function simply:</p><ol><li><p>extracts the sample_data from the phyloseq a
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>phyloseq (or dataframe)</p></dd>
+
+
 <dt>y</dt>
 <dd><p>dataframe (or phyloseq for e.g. type = "right")</p></dd>
+
+
 <dt>by</dt>
 <dd><p>A character vector of variables to join by (col must be present in both x and y or paired via a named vector like c("xname" = "yname", etc.))</p></dd>
+
+
 <dt>match_sample_names</dt>
 <dd><p>match against the phyloseq sample_names by naming a variable in the additional dataframe (this is in addition to any variables named in by)</p></dd>
+
+
 <dt>keep_sample_name_col</dt>
 <dd><p>should the column named in match_sample_names be kept in the returned phyloseq's sample_data? (only relevant if match_sample_names is not NULL)</p></dd>
+
+
 <dt>sample_name_natural_join</dt>
 <dd><p>if TRUE, use sample_name AND all shared colnames to match rows (only relevant if match_sample_names is not NULL, this arg takes precedence over anything also entered in <code>by</code> arg)</p></dd>
+
+
 <dt>type</dt>
 <dd><p>name of type of join e.g. "left", "right", "inner", "semi" (see dplyr help pages)</p></dd>
+
+
 <dt>.keep_all_taxa</dt>
 <dd><p>if FALSE (the default), remove taxa which are no longer present in the dataset after filtering</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>phyloseq with modified sample_data (and possibly filtered)</p>
+    
+
+<p>phyloseq with modified sample_data (and possibly filtered)</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -346,7 +363,7 @@ This will cause this function to fail, as additional rows cannot be added to the
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

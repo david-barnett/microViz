@@ -26,7 +26,7 @@ and requires count input for some sample_order methods!'><meta property="og:imag
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.1.9001</span>
       </span>
     </div>
 
@@ -136,70 +136,117 @@ and requires count input for some sample_order methods!</p>
     <h2>Arguments</h2>
     <dl><dt>ps</dt>
 <dd><p>phyloseq object</p></dd>
+
+
 <dt>tax_level</dt>
 <dd><p>taxonomic aggregation level (from rank_names(ps))</p></dd>
+
+
 <dt>n_taxa</dt>
 <dd><p>how many taxa to show distinct colours for (all others grouped into "Other")</p></dd>
+
+
 <dt>tax_order</dt>
 <dd><p>order of taxa within the bars, either a function for tax_sort (e.g. sum),
 or a vector of (all) taxa names at tax_level to set order manually</p></dd>
+
+
 <dt>merge_other</dt>
 <dd><p>if FALSE, taxa coloured/filled as "other" remain distinct,
 and so can have bar outlines drawn around them</p></dd>
+
+
 <dt>taxon_renamer</dt>
 <dd><p>function that takes taxon names and returns modified names for legend</p></dd>
+
+
 <dt>sample_order</dt>
 <dd><p>vector of sample names;
 or any distance measure in dist_calc that doesn't require phylogenetic tree;
 or "default" for the order returned by phyloseq::sample_names(ps)</p></dd>
+
+
 <dt>order_with_all_taxa</dt>
 <dd><p>if TRUE, this will always use all taxa (not just the top n_taxa)
 to calculate distances for sample ordering</p></dd>
+
+
 <dt>label</dt>
 <dd><p>sample label variable name</p></dd>
+
+
 <dt>group_by</dt>
 <dd><p>splits dataset by this variable (must be categorical)</p><ul><li><p>resulting in a list of plots, one for each level of the group_by variable.</p></li>
 </ul></dd>
+
+
 <dt>facet_by</dt>
 <dd><p>facets plots by this variable (must be categorical). If group_by is also set
 the faceting will occur separately in the plot for each group.</p></dd>
+
+
 <dt>bar_width</dt>
 <dd><p>default 1 avoids random gapping otherwise seen with many samples
 (set to something less than 1 to introduce gaps between fewer samples)</p></dd>
+
+
 <dt>bar_outline_colour</dt>
 <dd><p>line colour separating taxa and samples
 (use NA for none)</p></dd>
+
+
 <dt>bar_outline_width</dt>
 <dd><p>width of line separating taxa and samples
 (for no outlines set bar_outline_colour = NA)</p></dd>
+
+
 <dt>palette</dt>
 <dd><p>palette for taxa fill colours</p></dd>
+
+
 <dt>tax_transform_for_ordering</dt>
 <dd><p>transformation of taxa values used before ordering samples by similarity</p></dd>
+
+
 <dt>tax_transform_for_plot</dt>
 <dd><p>default "compositional" draws proportions of total counts per sample,
 but you could reasonably use another transformation,
 e.g. "identity", if you have truly quantitative microbiome profiling data</p></dd>
+
+
 <dt>seriate_method</dt>
 <dd><p>name of any ordering method suitable for distance matrices
 (see ?seriation::seriate)</p></dd>
+
+
 <dt>keep_all_vars</dt>
 <dd><p>FALSE may speed up internal melting with ps_melt for large phyloseq objects
 but TRUE is required for some post-hoc plot customisation</p></dd>
+
+
 <dt>interactive</dt>
 <dd><p>creates plot suitable for use with ggiraph</p></dd>
+
+
 <dt>max_taxa</dt>
 <dd><p>maximum distinct taxa groups to show
 (only really useful for limiting complexity of interactive plots
 e.g. within ord_explore)</p></dd>
+
+
 <dt>other_name</dt>
 <dd><p>name for other taxa after N</p></dd>
+
+
 <dt>...</dt>
 <dd><p>extra arguments passed to facet_wrap() (if facet_by is not NA)</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>ggplot or list of harmonised ggplots</p>
+    
+
+<p>ggplot or list of harmonised ggplots</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -361,7 +408,7 @@ e.g. within ord_explore)</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

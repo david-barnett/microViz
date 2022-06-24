@@ -26,7 +26,7 @@ and you can pass any other argument from ComplexHeatmap::Heatmap() too."><meta p
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.1.9001</span>
       </span>
     </div>
 
@@ -135,54 +135,96 @@ and you can pass any other argument from <code><a href="https://rdrr.io/pkg/Comp
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>phyloseq or phyloseq extra</p></dd>
+
+
 <dt>taxa</dt>
 <dd><p>list of taxa to include, or NA for all</p></dd>
+
+
 <dt>tax_anno</dt>
 <dd><p>NULL or annotation function for taxa: taxAnnotation() output.</p></dd>
+
+
 <dt>taxon_renamer</dt>
 <dd><p>function to rename taxa before plotting</p></dd>
+
+
 <dt>vars</dt>
 <dd><p>selection of variable names from sample_data</p></dd>
+
+
 <dt>var_anno</dt>
 <dd><p>NULL or annotation function for variables: varAnnotation() output.</p></dd>
+
+
 <dt>cor</dt>
 <dd><p>correlation coefficient. pearson/kendall/spearman,
 can be abbreviated (used as legend title)</p></dd>
+
+
 <dt>cor_use</dt>
 <dd><p>passed to cor(use = cor_use)</p></dd>
+
+
 <dt>colors</dt>
 <dd><p>output of heat_palette() to set heatmap fill color scheme</p></dd>
+
+
 <dt>numbers</dt>
 <dd><p>output of heat_numbers() to draw numbers on heatmap cells</p></dd>
+
+
 <dt>taxa_side</dt>
 <dd><p>"top"/"right"/"bottom"/"left": controls heatmap orientation and where any
 annotations specified in tax_anno are placed</p></dd>
+
+
 <dt>vars_side</dt>
 <dd><p>which side to place any variable annotations specified in var_anno,
 must be an adjacent side to taxa_side</p></dd>
+
+
 <dt>seriation_method</dt>
 <dd><p>method to order the rows (in seriation::seriate)</p></dd>
+
+
 <dt>seriation_dist</dt>
 <dd><p>distance to use in seriation_method (if needed)</p></dd>
+
+
 <dt>seriation_method_col</dt>
 <dd><p>method to order the columns (in seriation::seriate)</p></dd>
+
+
 <dt>seriation_dist_col</dt>
 <dd><p>distance to use in seriation_method_col (if needed)</p></dd>
+
+
 <dt>var_fun</dt>
 <dd><p>a function (or name of) to be applied to columns of a matrix of vars
 before correlating (but not used in any variable annotations)</p></dd>
+
+
 <dt>grid_col</dt>
 <dd><p>colour of gridlines, or NA for none</p></dd>
+
+
 <dt>grid_lwd</dt>
 <dd><p>width of gridlines</p></dd>
+
+
 <dt>anno_tax</dt>
 <dd><p>DEPRECATED:
 optional annotation of taxa distributions: tax_anno() list output,
 or a pre-made ComplexHeatmap HeatmapAnnotation</p></dd>
+
+
 <dt>anno_vars</dt>
 <dd><p>DEPRECATED: use var_anno argument instead.
 Optional annotation of variable distributions:
 var_anno() list output, or a pre-made ComplexHeatmap HeatmapAnnotation</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Arguments passed on to <code><a href="https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html" class="external-link">ComplexHeatmap::Heatmap</a></code></p><dl><dt><code>row_dend_width</code></dt>
 <dd><p>Width of the row dendrogram, should be a <code><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></code> object.</p></dd>
@@ -210,6 +252,7 @@ var_anno() list output, or a pre-made ComplexHeatmap HeatmapAnnotation</p></dd>
 
   
 </dl></dd>
+
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -364,7 +407,7 @@ with each other, and all arguments relating to taxa will be ignored.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

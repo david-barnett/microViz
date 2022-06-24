@@ -37,7 +37,7 @@ The tax_table produced when using top_N is otherwise INVALID FOR MOST OTHER ANAL
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.1.9001</span>
       </span>
     </div>
 
@@ -141,13 +141,21 @@ The tax_table produced when using top_N is otherwise INVALID FOR MOST OTHER ANAL
     <h2>Arguments</h2>
     <dl><dt>ps</dt>
 <dd><p>phyloseq object</p></dd>
+
+
 <dt>rank</dt>
 <dd><p>NA (for tax_names level) or name of valid taxonomic rank (try phyloseq::rank_names(ps)) or "unique"</p></dd>
+
+
 <dt>sort_by</dt>
 <dd><p>if not NA, how should the taxa be sorted, uses tax_sort(), takes same options as <code>by</code> arg</p></dd>
+
+
 <dt>top_N</dt>
 <dd><p>NA does nothing, but if top_N is a number, it creates an extra tax_table column called top,
 which is the same as the unique column for the first top_N number of taxa, and "other" otherwise.</p></dd>
+
+
 <dt>force</dt>
 <dd><p>If TRUE, this forces aggregation at chosen rank to occur regardless of if the output will be sensible!
 This avoids the "Taxa not unique at rank: ..." error, but may allow very inappropriate aggregation to occur.
@@ -155,12 +163,17 @@ Do not use force = TRUE unless you know why you are doing this, and what the res
 If you are getting an error with force = FALSE, it is almost certainly better to examine the tax_table and fix the problem.
 force = TRUE is similar to microbiome::aggregate_taxa,
 which also does not check that the taxa are uniquely defined by only the aggregation level.</p></dd>
+
+
 <dt>add_unique</dt>
 <dd><p>if TRUE, adds a rank named unique, identical to the rownames after aggregation</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>ps_extra list object including phyloseq and tax_agg rank info</p>
+    
+
+<p>ps_extra list object including phyloseq and tax_agg rank info</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -297,7 +310,7 @@ which should then result in (much) shorter unique names at the aggregation rank.
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

@@ -36,7 +36,7 @@ and do not affect ordering.'><meta property="og:image" content="https://david-ba
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.1.9001</span>
       </span>
     </div>
 
@@ -161,64 +161,116 @@ and do not affect ordering.</p>
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>phyloseq or phyloseq extra</p></dd>
+
+
 <dt>taxa</dt>
 <dd><p>list of taxa to include, or NA for all</p></dd>
+
+
 <dt>taxa_side</dt>
 <dd><p>"top"/"right"/"bottom"/"left": controls heatmap orientation and where any
 annotations specified in tax_anno are placed</p></dd>
+
+
 <dt>tax_anno</dt>
 <dd><p>NULL or annotation function for taxa: taxAnnotation() output.</p></dd>
+
+
 <dt>taxon_renamer</dt>
 <dd><p>function to rename taxa before plotting</p></dd>
+
+
 <dt>samples</dt>
 <dd><p>list of samples to include on plot</p></dd>
+
+
 <dt>sample_side</dt>
 <dd><p>which side to show any sample annotation on, must be adjacent to taxa_side</p></dd>
+
+
 <dt>sample_anno</dt>
 <dd><p>NULL or annotation function for samples: sampleAnnotation() output.</p></dd>
+
+
 <dt>sample_names_show</dt>
 <dd><p>show sample names? (you can control side and rotation of names with
 other ComplexHeatmap::Heatmap arguments)</p></dd>
+
+
 <dt>colors</dt>
 <dd><p>output of heat_palette() to set heatmap fill color scheme</p></dd>
+
+
 <dt>numbers</dt>
 <dd><p>output of heat_numbers() to draw numbers on heatmap cells</p></dd>
+
+
 <dt>sample_seriation</dt>
 <dd><p>name of method used to order the samples (from seriation::seriate)</p></dd>
+
+
 <dt>sample_ser_dist</dt>
 <dd><p>name of distance to use with sample_seriation method (if needed)</p></dd>
+
+
 <dt>sample_ser_counts</dt>
 <dd><p>insist on using count data for sample seriation?</p></dd>
+
+
 <dt>sample_ser_trans</dt>
 <dd><p>function for transformation of data used for sample seriation
 (such as a call to <code><a href="tax_transform.html">tax_transform()</a></code>)</p></dd>
+
+
 <dt>tax_seriation</dt>
 <dd><p>name of method used to order the taxa (from seriation::seriate)</p></dd>
+
+
 <dt>tax_ser_dist</dt>
 <dd><p>name of distance to use with tax_seriation method (if needed)</p></dd>
+
+
 <dt>tax_ser_counts</dt>
 <dd><p>insist on using count data for taxa seriation?</p></dd>
+
+
 <dt>tax_ser_trans</dt>
 <dd><p>function for transformation of data used for taxa seriation
 (such as a call to <code><a href="tax_transform.html">tax_transform()</a></code>)</p></dd>
+
+
 <dt>numbers_trans</dt>
 <dd><p>name of tax_transform transformation, or a function
 for transformation of data used for drawing numbers on cells</p></dd>
+
+
 <dt>numbers_zero_replace</dt>
 <dd><p>zero replacement method used if named transformation given to number_trans</p></dd>
+
+
 <dt>numbers_use_counts</dt>
 <dd><p>insist on using count data for number drawing?
 (if TRUE, any numbers_trans transformation would be applied to count data)</p></dd>
+
+
 <dt>grid_col</dt>
 <dd><p>colour of gridlines, or NA for none</p></dd>
+
+
 <dt>grid_lwd</dt>
 <dd><p>width of gridlines</p></dd>
+
+
 <dt>name</dt>
 <dd><p>used as legend title (colourbar)</p></dd>
+
+
 <dt>anno_tax</dt>
 <dd><p>DEPRECATED:
 optional annotation of taxa distributions: tax_anno() list output,
 or a pre-made ComplexHeatmap HeatmapAnnotation</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Arguments passed on to <code><a href="https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html" class="external-link">ComplexHeatmap::Heatmap</a></code></p><dl><dt><code>row_dend_side</code></dt>
 <dd><p>Should the row dendrogram be put on the left or right of the heatmap?</p></dd>
@@ -246,6 +298,7 @@ or a pre-made ComplexHeatmap HeatmapAnnotation</p></dd>
 
   
 </dl></dd>
+
 </dl></div>
     <div id="see-also">
     <h2>See also</h2>
@@ -356,7 +409,7 @@ or a pre-made ComplexHeatmap HeatmapAnnotation</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

@@ -25,7 +25,7 @@ Best paired with ordination plot made from same ord_calc output."><meta property
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.1.9001</span>
       </span>
     </div>
 
@@ -126,40 +126,71 @@ Best paired with ordination plot made from same <code>ord_calc</code> output.</p
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>ps_extra list output of ord_calc</p></dd>
+
+
 <dt>tax_level</dt>
 <dd><p>taxonomic aggregation level (from rank_names(ps))</p></dd>
+
+
 <dt>axes</dt>
 <dd><p>which 2 axes of ordination to use for ordering bars</p></dd>
+
+
 <dt>n_taxa</dt>
 <dd><p>how many taxa to colour show distinct colours for (all other taxa grouped into "other").</p></dd>
+
+
 <dt>ord_plot</dt>
 <dd><p>add a matching ordination plot to your iris plot
 ('list' returns separate plots in a list, 'above'/'below' uses patchwork to pair plots together into one)</p></dd>
+
+
 <dt>taxon_renamer</dt>
 <dd><p>function to rename taxa in the legend</p></dd>
+
+
 <dt>palette</dt>
 <dd><p>colour palette</p></dd>
+
+
 <dt>anno_colour</dt>
 <dd><p>name of sample_data variable to use for colouring geom_segment annotation ring</p></dd>
+
+
 <dt>anno_colour_style</dt>
 <dd><p>list of further arguments passed to geom_segment e.g. size</p></dd>
+
+
 <dt>anno_binary</dt>
 <dd><p>name(s) of binary sample_data variable(s) (levels T/F or 1/0) to use for filtered geom_point annotation ring(s) (annotates at TRUE values)</p></dd>
+
+
 <dt>anno_binary_style</dt>
 <dd><p>list of further arguments passed to geom_point e.g. colour, size, y, etc.</p></dd>
+
+
 <dt>keep_all_vars</dt>
 <dd><p>slows down processing but is required for any post-hoc plot customisation options</p></dd>
+
+
 <dt>scaling</dt>
 <dd><p>Type 2, or type 1 scaling. For more info, see <a href="https://sites.google.com/site/mb3gustame/constrained-analyses/rda" class="external-link">https://sites.google.com/site/mb3gustame/constrained-analyses/rda</a>.
 Either "species" or "site" scores are scaled by (proportional) eigenvalues, and the other set of scores is left unscaled (from ?vegan::scores.cca)</p></dd>
+
+
 <dt>count_warn</dt>
 <dd><p>warn if count data are not available? i.e. phyloseq otu_table is not positive integers and ps_extra counts slot is NULL</p></dd>
+
+
 <dt>...</dt>
 <dd><p>extra args passed to comp_barplot e.g. bar_width</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>ggplot</p>
+    
+
+<p>ggplot</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -313,7 +344,7 @@ as the fill is used for the taxonomic composition bars</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>
