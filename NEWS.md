@@ -3,6 +3,8 @@
 ## Features
 - `ps_dedupe` now allows keeping a specified number of samples per group, not just one, which could be useful for e.g. keeping the first 2 samples per participant or site.
 
+- shao19 dataset now included in microViz for use in the "Learn microbiome analysis with microViz" tutorial
+
 ## Fixes 
 - `ps_dedupe` now deduplicates samples correctly when duplicates are specified with multiple variables, and provides a labelling-only mode to check duplicate identification result before removal.
 

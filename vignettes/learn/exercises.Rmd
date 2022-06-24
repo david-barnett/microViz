@@ -1,0 +1,1506 @@
+---
+title: "Learn microbiome analysis with microViz"
+author: "David Barnett"
+date: "31st May 2022"
+output: 
+  html_document:
+    theme: paper
+    toc: true
+    toc_depth: 4
+    toc_float: 
+      collapsed: true
+---
+
+# Overview
+
+The first version of this material was developed as part of the 2022 Evomics workshop on Genomics.
+
+Some accompanying slides are also available via the Evomics workshop's website: 
+<http://evomics.org/2022-workshop-on-genomics-cesky-krumlov/>
+
+You can follow along with the exercises in your own R markdown notebook (or script).
+
+- [**Part 1**](#intro-diversity) will introduce you to: phyloseq objects for microbiome data; basic bar charts for visualizing microbiome compositions; and alpha diversity indices.
+
+- [**Part 2**](#dissimilarity-ordination-filtering) will introduce you to: ecological distances and dissimilarity measures; the use of PCoA plots and PERMANOVA; and how/why/when to filter your microbiome data (taxa/samples).
+
+- [**Part 3**](#transformations-pca-da) will introduce you to: the Euclidean distance; log and CLR transformations; heatmaps for microbiome abundance data; Principal Components Analysis (PCA); and Differential Abundance (DA) testing methods.
+
+
+Refer to the [microViz website]() to see help pages for every function, as well as further tutorials.
+
+---
+
+# Setup
+
+```{r setup, include=TRUE}
+knitr::opts_chunk$set(echo = TRUE, fig.width = 6, fig.height = 4, dpi = 120)
+```
+
+Loading required packages and getting example data. 
+
+```{r message=FALSE}
+library(seriation)
+library(dplyr)
+library(purrr)
+library(ggplot2)
+library(phyloseq)
+library(microViz)
+library(shiny)
+```
+
+```{r}
+mice <- readRDS(url("https://github.com/david-barnett/evomics-material/raw/898766166ce151f837b8d668bdc0bf0f859a6dd3/data/mice.rds"))
+data("shao19", package = "microViz")
+```
+
+We'll primarily use two datasets in these exercises, both are data on the gut microbiome.
+The first is from a study of antibiotic administration in mice, and the second is from a large birth cohort study in human infants.
+
+Each dataset was generated using different sequencing techniques, and different sequence data processing approaches.
+But the analyses approaches we will learn in these exercises can be readily applied to both methods.
+(The approaches are also appropriate for microbiome data other than the gut microbiota!)
+
+-   `mice` is 16S rRNA gene amplicon sequencing data, from the mouse antibiotics study
+    -   They used Illumina MiSeq and processed the data into ASVs using DADA2
+
+-   `shao19` is shotgun metagenomic data, from a 2019 study of infants born vaginally or by C-section.
+    -   They used Illumina HiSeq and the abundance of species-like features was inferred with metaphlan3.
+
+    <!-- (note: not metaphlan3 in the original paper, but available from curatedMetagenomicData package/project) -->
+
+So the data has already been processed from fastq files into counts per taxon.
+This is the exciting bit, you get to explore and visualize the data, and do statistics (yay!).
+
+---
+
+# 1: Intro & Diversity
+
+This section will introduce you to: phyloseq objects for microbiome data; basic bar charts for visualizing microbiome compositions; and alpha diversity indices.
+
+---
+
+## Intro to phyloseq
+
+This is a `phyloseq` S4 object, containing processed microbiota data from the mouse study.
+
+<details>
+
+<summary>
+
+**Click here for more details about the mice dataset:**
+
+</summary>
+
+**The mice data**
+
+The data originate from a study on the effects of oral antibiotic administration on flavivirus infection (<https://www.ncbi.nlm.nih.gov/pubmed/29590614>).
+Sequence data was generated from extracted nucleic acid from stool samples collected from individually caged mice and amplified using primers specific for the V4 region using primers 515F/806R.
+
+The study followed flavivirus infection after the following treatments:
+
+1)  Koolaid: Antibiotics are provided to the mice via their drinking water. As many of the antibiotics taste bad, koolaid is added as a sweetener. Therefore, the appropriate control is water spiked and labelled *koolaid*.
+2)  Ampicillin (Amp): <https://en.wikipedia.org/wiki/Ampicillin>
+3)  Metronidazole (Met): <https://en.wikipedia.org/wiki/Metronidazole>
+4)  Ampicillin + Metronidazole (Amp+Metro)
+
+Treatments were supplied ad libitum for 2 weeks prior to viral infection and maintained for 2 weeks post-infection.
+Primary outcome was mouse survival.
+Each treatment group had two subgroups of mice that were either a) left uninfected as controls or b) infected with West Nile Virus via a subcutaneous foot pad injection.
+
+</details>
+
+Get a little familiar with the object.
+What does it have in it?
+Can you look at each part?
+
+The printed object shows you functions you can use to access the data inside.
+
+You can also use the `@` symbol.
+
+```{r}
+mice
+# View(mice)
+```
+
+```{r}
+tax_table(mice) %>% head()
+```
+
+```{r}
+rank_names(mice)
+```
+
+```{r}
+otu_table(mice)[1:15, 1:8] 
+# mice@otu_table[1:15, 1:10] # the same result
+```
+
+```{r}
+sample_variables(mice)
+```
+
+```{r}
+sample_data(mice)[1:15, 1:5]
+```
+
+```{r}
+sample_names(mice) %>% head(10) 
+```
+
+
+---
+
+## Looking at microbiome data
+
+Okay, so how do we look at the microbiota abundance data?
+To do this, we're going to use the R package `microViz`
+
+### Barcharts: bad to better
+
+Lets take a very small subset of this data to get started.
+Just the control group (vehicle treatment) at day 13.
+
+```{r}
+# We can filter the samples like this, using the sample_data information
+mice %>% 
+  ps_filter(treatment_days == 'D13', virus == 'WNV2000', treatment == 'Vehicle')
+```
+
+
+#### Bad bars
+
+```{r}
+mice %>% 
+  ps_filter(treatment_days == 'D13', virus == 'WNV2000', treatment == 'Vehicle') %>%
+  comp_barplot(
+    tax_level = 'unique', n_taxa = 12, bar_width = 0.7,
+    sample_order = 'asis', tax_transform_for_plot = 'identity'
+  ) +
+  coord_flip() 
+```
+
+What is going on here??
+The unique taxa have uninformative IDs, and we also got a message about problems with the taxonomy table.
+
+The total number of reads also varies a lot between samples!
+The total number of reads for each sample is NOT a reliable indicator of the biomass or bacterial load of each sample.
+So for now we will just consider the relative abundance of each taxon, as proportions of the total counts for that sample.
+
+#### Compositions (%)
+
+```{r}
+mice %>% 
+  ps_filter(treatment_days == 'D13', virus == 'WNV2000', treatment == 'Vehicle') %>%
+  comp_barplot(
+    tax_level = 'unique', n_taxa = 12, sample_order = 'asis', bar_width = 0.7
+  ) +
+  coord_flip()
+```
+
+#### Fixing the tax_table 
+
+Let's look at the taxonomy table interactively
+
+```{r}
+# tax_fix_interactive(mice) # run this in the R Console for an interactive look
+```
+
+Looks like we just need to fill in some blank cells when a sequence was not classified at genus or family.
+`tax_fix` can do this, it just copies down info from a higher rank classification.
+Let's update our `mice` phyloseq object with this fix.
+
+```{r}
+mice <- tax_fix(mice, verbose = FALSE)
+```
+
+We can also rename the unique taxa with a more informative name, according to their classification at the rank of Family (and how common they are).
+
+```{r}
+mice %>% taxa_names() %>% head
+mice <- tax_rename(mice, rank = 'Family')
+mice %>% taxa_names() %>% head
+```
+
+Let's try again with the better names.
+
+```{r}
+mice %>% 
+  ps_filter(treatment_days == 'D13', virus == 'WNV2000', treatment == 'Vehicle') %>%
+  comp_barplot(
+    tax_level = 'unique', n_taxa = 12, sample_order = 'asis', bar_width = 0.7
+    ) +
+  coord_flip()
+```
+
+Sadly we don't have enough distinct colours to show all the unique taxa.
+
+```{r}
+mice %>% 
+  ps_filter(treatment_days == 'D13', virus == 'WNV2000', treatment == 'Vehicle') %>%
+  comp_barplot(
+    tax_level = 'unique', n_taxa = 12, sample_order = 'asis', bar_width = 0.7,
+    merge_other = FALSE
+    ) +
+  coord_flip()
+```
+
+#### Aggregating taxa
+
+So let's "aggregate" all the counts into family-level groups.
+For each family, this adds together all the counts from every ASV that belongs to that family. We can do that by changing the `tax_level` argument to "Family".
+
+```{r}
+mice %>% 
+  ps_filter(treatment_days == 'D13', virus == 'WNV2000', treatment == 'Vehicle') %>%
+  comp_barplot(
+    tax_level = "Family", n_taxa = 10, bar_width = 0.7, sample_order = 'asis'
+  ) +
+  coord_flip()
+```
+
+By aggregating at family level, we have sacrificed taxonomic resolution, compared to using ASVs.
+But this way we can get an idea of which families are the most abundant, and how variable the communities are.
+
+Try making some similar plots aggregated at different taxonomic ranks.
+
+```{r}
+# rank_names(mice)
+# mice %>%
+#   ps_filter(treatment_days == 'D13', virus == 'WNV2000', treatment == 'Vehicle') %>%
+#   comp_barplot(tax_level = , n_taxa = 10, sample_order = 'asis', merge_other = FALSE)
+```
+
+```{r}
+mice %>% 
+  ps_filter(treatment_days == 'D13', virus == 'WNV2000', treatment == 'Vehicle') %>% 
+  comp_barplot(
+    tax_level = "Genus", n_taxa = 12, bar_width = 0.7,
+    sample_order = 'asis', merge_other = FALSE
+  ) +
+  coord_flip()
+```
+
+Many of the ASVs in this mice data, the *Porphyromonadaceae*, could not be classified at genus level.
+
+```{r}
+mice %>% 
+  ps_filter(treatment_days == 'D13', virus == 'WNV2000', treatment == 'Vehicle') %>% 
+  comp_barplot(
+    tax_level = "Phylum", n_taxa = 7, bar_width = 0.7, sample_order = 'asis'
+  ) +
+  coord_flip()
+```
+
+
+#### Fickle Phyla
+
+A note on phylum names!
+There have been major changes this year and some of these are now old names.
+Most published research is of course with the old names (and still probably will be for a year or so).
+
+---
+
+## Fun with barcharts
+
+More examples/tutorial of visualizing microbiome data using stacked barcharts can be found here:
+<https://david-barnett.github.io/microViz/articles/web-only/compositions.html>
+
+Try it out for yourself a bit!
+
+Bar charts often look better when you sort the samples by similarity.
+The webpage mentions using Bray-Curtis distances and hierarchical clustering to 
+sort samples. We haven't discussed dissimilarity or distances yet, but we will in the next set of exercises!
+
+For now, just appreciate that it can make the bar charts easier to read!
+
+```{r}
+
+```
+
+
+---
+
+## Alpha diversity
+
+How diverse is the bacterial microbiome of each sample?
+
+### Why is this interesting?
+
+#### Biologically
+
+-   Lower gut microbiome diversity is related to worse health in adult humans.
+-   Higher diversity ecosystems are often considered healthier, more mature, and more resilient to perturbation.
+-   BUT: diverse == healthy does not hold for all ecosystems, e.g. early infant gut microbiome, so consider your own data and hypotheses carefully.
+
+#### Practically
+
+Diversity indices provide a simple one number summary of each ecosystem: easy to compare and do stats with.
+
+### Richness
+
+The more the merrier.
+The simplest measure is just counting, aka "Observed Richness".
+Let's compute the observed richness and label each sample with it.
+
+```{r}
+mice %>% 
+  ps_filter(treatment_days == 'D13', virus == 'WNV2000', treatment == 'Vehicle') %>% 
+  ps_calc_richness(rank = 'Genus', index = 'observed', varname = 'N genera') %>%
+  comp_barplot(
+    tax_level = "Genus", n_taxa = 12, label = 'N genera', bar_width = 0.7,
+    sample_order = 'asis', merge_other = FALSE#, tax_transform_for_plot = 'identity'
+  ) +
+  coord_flip()
+```
+
+### Diversity
+
+Richness and evenness matter in the calculation of true diversity indices.
+
+```{r}
+mice %>% 
+  ps_filter(treatment_days == 'D13', virus == 'WNV2000', treatment == 'Vehicle') %>% 
+  ps_calc_diversity(rank = 'Genus', index = 'shannon') %>%
+  ps_mutate(shannon_Genus = round(shannon_Genus, digits = 2)) %>% 
+  comp_barplot(
+    tax_level = "Genus", n_taxa = 12, label = 'shannon_Genus', bar_width = 0.7,
+    sample_order = 'asis', merge_other = FALSE
+  ) +
+  coord_flip()
+```
+
+### Statistics with alpha diversity
+
+So we have our alpha diversity values for this small subset of mice.
+
+```{r, fig.width=3, fig.height=1}
+mice %>% 
+  ps_filter(treatment_days == 'D13', virus == 'WNV2000', treatment == 'Vehicle') %>% 
+  ps_calc_diversity(rank = 'Genus', index = 'shannon') %>%
+  samdat_tbl() %>% 
+  ggplot(aes(x = shannon_Genus, y = "Day 13\ncontrols")) + 
+  geom_point(position = position_jitter(height = 0.2), alpha = 0.5) +
+  labs(x = 'Shannon diversity (Genus)', y = NULL) +
+  xlim(1, 2.5) +
+  theme_bw() 
+```
+
+Let's calculate alpha diversity for all mice after antibiotic or control treatment, and make a comparison.
+I suspect that the average gut microbiota diversity of the antibiotic exposed mice will differ from the control group's at day 3.
+
+```{r}
+# First compute a new variable aggregating all the control mice together
+mice <- mice %>% 
+  ps_mutate(antibiotics = treatment %in% c("Amp", "Metro", "AmpMetro"))
+```
+
+```{r, fig.width=4, fig.height=2.5}
+mice %>% 
+  ps_filter(treatment_days == 'D13') %>% 
+  ps_calc_diversity(rank = 'Genus', index = 'shannon') %>%
+  samdat_tbl() %>% 
+  ggplot(aes(y = antibiotics, x = shannon_Genus)) +
+  geom_boxplot(width = 0.3) + 
+  geom_point(position = position_jitter(height = 0.2), alpha = 0.5) +
+  theme_bw()
+```
+
+It looks like the antibiotics treated mice have lower gut microbiota diversity on average.
+A simple statistical test supports this.
+
+```{r}
+mice %>% 
+  ps_filter(treatment_days == 'D13') %>% 
+  ps_calc_diversity(rank = 'Genus', index = 'shannon') %>%
+  samdat_tbl() %>% 
+  wilcox.test(formula = shannon_Genus ~ antibiotics, data = .)
+```
+
+You can apply more complex statistical tests as you like, e.g. adjusting for covariates with linear regression, using `lm()`
+
+```{r}
+mice %>% 
+  ps_filter(treatment_days == 'D13') %>% 
+  ps_calc_diversity(rank = 'Genus', index = 'shannon') %>%
+  samdat_tbl() %>% 
+  lm(formula = shannon_Genus ~ antibiotics + virus, data = .) %>% 
+  summary()
+```
+
+Try it out for yourself at other time points?
+Practice making plots and doing simple statistical tests.
+
+What about richness?
+
+---
+
+## Extension exercises for part 1 
+
+<details>
+
+<summary>
+
+**Click here for an extension activity with an IBD dataset:**
+
+</summary>
+
+This is an extension exercise, for those who are moving quickly.
+
+**Inflammatory Bowel Disease study**
+
+```{r}
+ibd <- corncob::ibd_phylo %>% 
+  tax_mutate(Species = NULL) %>% # ibd_phylo Species column was blank -> deleted
+  ps_mutate(disease = ibd == 'ibd', ibd = NULL) # adds disease state indicator variable
+```
+
+`ibd` is another phyloseq object containing 16S rRNA gene amplicon sequencing data, from a 2012 study of Inflammatory Bowel Disease in children and young adults.
+
+It's "old" data: they used 454 Pyrosequencing, and clustered the raw sequences into "OTUs".
+
+Have a look at the data, like we did before for the `mice` dataset.
+
+```{r}
+ibd
+```
+
+```{r}
+#
+```
+
+You can perform alpha diversity analysis: Try comparing the alpha diversity of the IBD patients against the healthy controls.
+
+```{r}
+#
+```
+
+You can also try this stuff out on the Shao 2019 Birth cohort data.
+Don't worry if you don't try this now, as we will look at Shao 2019 dataset in 
+the next part of the lab.
+
+```{r}
+shao19
+```
+
+
+</details>
+
+<details>
+
+<summary>
+
+**Click here for additional notes on richness and readcount**
+
+</summary>
+
+**Additional notes on richness and readcount**
+
+Simple approaches like Observed Richness are sensitive to what ecologists call "sampling effort".
+For macroecologists, this is actually how much time/effort you spent trying to count all the organisms present in an ecosystem.
+In our case, the amount of total reads obtained represents the sampling effort: more reads, more effort.
+Indeed we can see that the samples with a much lower readcount have lower observed richness.
+
+(Furthermore, as this richness estimate is based on a sample, and not the actual ecosystem, the richness estimate actually has quantifiable uncertainty too.)
+
+```{r}
+mice %>% 
+  ps_filter(treatment_days == 'D13', virus == 'WNV2000', treatment == 'Amp') %>%
+  ps_calc_richness(rank = 'Genus', index = 'observed', varname = 'N genera') %>%
+  comp_barplot(
+    tax_level = "Genus", n_taxa = 12, label = 'N genera', bar_width = 0.7,
+    sample_order = 'asis', merge_other = FALSE, tax_transform_for_plot = 'identity'
+  )
+```
+
+```{r, fig.width=5, fig.height=3}
+mice %>% 
+  ps_calc_richness(rank = 'Genus', index = 'observed', varname = 'genera') %>%
+  ps_mutate(readcount = sample_sums(mice)) %>% 
+  samdat_tbl() %>% 
+  ggplot(aes(readcount, genera)) + 
+  geom_point(alpha = 0.4, size = 2.5) +
+  theme_bw(14)
+```
+
+**What to do:**
+
+1)  **Simple solution**: Ignore the problem. Whilst you can't interpret the richness of any individual sample as being correct, it is still usually valid to compare richness across groups of samples, as the readcount variation is only random noise, and should be uncorrelated with your grouping variable (but do check this).
+2)  **Harder solution**: Explore more rigorous methods like `breakaway` by Amy Willis and team. <https://www.frontiersin.org/articles/10.3389/fmicb.2019.02407/full>
+
+</details>
+
+---
+
+# 2: Dissimilarity, ordination, & filtering
+
+This section will introduce you to ecological distances and dissimilarity measures; the use of PCoA plots and PERMANOVA; and how/why/when to filter your microbiome data (taxa/samples).
+
+---
+
+Part 1 was relatively straightforward, at least conceptually.
+But there is a lot more interesting stuff we can do with microbiome data.
+
+We've looked at one sample at a time and calculated and compared simple summary measures of sample alpha-diversity.
+
+Alpha diversity is sometimes referred to as "within sample" diversity.
+
+Now we're going to look at "beta diversity", or "between sample" diversity.
+
+For this part we're going to swap to another dataset.
+So you get a little bit more practice examining a phyloseq object.
+Look at the rank names, sample data variables etc.
+
+```{r}
+shao19 # this object has another part!
+```
+
+```{r}
+#
+```
+
+---
+
+### Filtering
+
+First, we need to talk about filtering.
+
+#### Sample filtering
+
+You should check if any of your samples have a surprisingly low total number of (classified) reads.
+This can suggest that something went wrong in the lab (or during sample collection) and the data from this sample might be unreliable.
+
+You might already do this check for total reads and remove poor quality samples during the fastq file processing.
+
+```{r, fig.height=3, fig.width=6}
+shao19 %>% 
+  ps_mutate(reads = sample_sums(shao19)) %>% 
+  samdat_tbl() %>% 
+  ggplot(aes(x = reads)) + 
+  geom_freqpoly(bins = 500) +
+  geom_rug(alpha = 0.5) +
+  scale_x_log10(labels = scales::label_number()) +
+  labs(x = 'Number of classified reads', y = NULL) +
+  theme_bw()
+```
+
+How many is enough?
+There is no easy answer.
+
+These samples have great depth.
+There are a few with much less reads than the rest, and a few with under a million.
+You might consider dropping the samples with under a million reads, to see if it affects your results, but in this case we won't.
+
+But 100,000 is still a lot, compared to what older sequencing machines produced: 1000 reads might have been considered very good.
+So look at the distribution for your data, in case there are obvious outliers, and look at recent papers using a similar sequencing technique for what kind of threshold they used.
+
+There might also be relevant information for the type of sequencer you used on e.g.
+Illumina website.
+e.g. for this type of sequencing Illumina suggests you should expect at least a million reads (and this is good for RNA seq analyses).
+<https://support.illumina.com/bulletins/2017/04/considerations-for-rna-seq-read-length-and-coverage-.html>
+
+If you are interested, go back and recreate this plot with the 16S sequencing dataset `mice`.
+
+```{r, fig.height=3, fig.width=6}
+# mice %>%
+#   ps_mutate(reads = sample_sums(mice)) %>%
+#   samdat_tbl() %>%
+#   ggplot(aes(x = reads)) +
+#   geom_freqpoly(bins = 30) +
+#   ... 
+```
+
+#### Taxon filtering
+
+Okay, so we might remove "bad" samples, but how can a taxon be "bad"?
+
+We probably want to filter out **rare** taxa, before performing some kinds of analysis.
+
+##### Why remove rare taxa?
+
+**Rare taxa might be:**
+
+1.  Sequencing errors
+2.  Statistically problematic
+3.  Biologically irrelevant
+
+**More elaboration for presentation/discussion**
+
+1.  Rare taxa might be erroneous: sequencing errors (DADA2 isn't perfect), chimeric sequences...
+
+2.  Statistical challenges:
+
+    -   There are often A LOT of different rare taxa
+        -   Sparsity, lots of zeros
+        -   Low precision in very low abundance taxa (integer counts)
+        -   Multiple comparisons (we'll get to that later)
+    -   Having many many taxa in your dataset can really slow down some analyses!
+
+3.  Biological (ir)relevance:
+
+    -   For many (most?) microbiome research questions, rare taxa are less likely to be relevant
+    -   For common host health problems and the human/animal microbiome, if a taxon only occurs in every 100th person, it is less likely to be relevant to risk common disease outcomes (?)
+
+I'm sure one can think of many cases where rare taxa are biologically relevant, but problems 1 and 2 are still there.
+
+##### How to remove rare taxa?
+
+**What is rare?** Two main concepts.
+
+-   Low **prevalence** - taxon only detected in a small number of samples in your dataset.
+-   Low **abundance** - relatively few reads assigned to that taxon (on average or in total)
+
+Consider the impact of issues 1, 2, and 3.
+Let's say we are not interested in unique taxa that occur in fewer than 2% of samples, and they have to have at least 10,000 reads in total across all samples.
+
+```{r}
+# before filtering
+ntaxa(shao19)
+
+# after filtering
+shao19 %>% 
+  tax_filter(min_prevalence = 2 / 100, min_total_abundance = 10000) %>% 
+  ntaxa()
+```
+
+Wow so that would remove **most** of our unique taxa!
+What is going on?
+Let's make some plots!
+
+```{r}
+# make table of summary statistics for the unique taxa in shao19
+shaoTaxaStats <- tibble(
+  taxon = taxa_names(shao19),
+  prevalence = microbiome::prevalence(shao19),
+  total_abundance = taxa_sums(shao19)
+)
+```
+
+```{r}
+p <- shaoTaxaStats %>%
+  ggplot(aes(total_abundance, prevalence)) +
+  geom_point(alpha = 0.5) +
+  geom_rug(alpha = 0.1) +
+  scale_x_continuous(
+    labels = scales::label_number(), name = "Total Abundance"
+  ) +
+  scale_y_continuous(
+    labels = scales::label_percent(), breaks = scales::breaks_pretty(n = 9),
+    name = "Prevalence (%)",
+    sec.axis = sec_axis(
+      trans = ~ . * nsamples(shao19), breaks = scales::breaks_pretty(n = 9),
+      name = "Prevalence (N samples)"
+    )
+  ) +
+  theme_bw()
+p
+```
+
+So most taxa have a low prevalence, and handful have way more reads than most.
+
+Let's label those points to check which taxa are the big time players.
+
+```{r}
+p + ggrepel::geom_text_repel(
+  data = function(df) filter(df, total_abundance > 1e9 | prevalence > 0.6),
+  mapping = aes(label = taxon), size = 2.5, min.segment.length = 0, force = 15
+)
+```
+
+Those taxa make sense for this dataset of mostly infant gut microbiome samples.
+
+Now let's zoom in on the less abundant taxa by log-transforming the axes.
+We'll also add lines indicating the thresholds of 2% prevalence and 10000 reads abundance.
+
+```{r}
+shaoTaxaStats %>%
+  ggplot(aes(x = total_abundance, y = prevalence)) +
+  geom_vline(xintercept = 10000, color = "red", linetype = "dotted") +
+  geom_hline(yintercept = 2 / 100, color = "red", linetype = "dotted") +
+  geom_point(alpha = 0.5) +
+  geom_rug(alpha = 0.1) +
+  scale_x_log10(labels = scales::label_number(), name = "Total Abundance") +
+  scale_y_log10(
+    labels = scales::label_percent(), breaks = scales::breaks_log(n = 9),
+    name = "Prevalence (%)",
+    sec.axis = sec_axis(
+      trans = ~ . * nsamples(shao19), breaks = scales::breaks_log(n = 9),
+      name = "Prevalence (N samples)"
+    )
+  ) +
+  theme_bw()
+```
+
+We can break this down by phylum if we add the taxonomic table information.
+
+```{r, fig.height = 5, fig.width=8}
+# don't worry about this code if it's confusing, just focus on the plot output
+shao19 %>%
+  tax_table() %>%
+  as.data.frame() %>%
+  as_tibble(rownames = "taxon") %>%
+  left_join(shaoTaxaStats, by = "taxon") %>%
+  add_count(phylum, name = "phylum_count", sort = TRUE) %>%
+  mutate(phylum = factor(phylum, levels = unique(phylum))) %>% # to fix facet order
+  mutate(phylum = forcats::fct_lump_n(phylum, n = 5)) %>%
+  mutate(phylum = forcats::fct_explicit_na(phylum, na_level = "Other")) %>%
+  ggplot(aes(total_abundance, prevalence)) +
+  geom_vline(xintercept = 10000, color = "red", linetype = "dotted") +
+  geom_hline(yintercept = 2 / 100, color = "red", linetype = "dotted") +
+  geom_point(alpha = 0.5, size = 1) +
+  geom_rug(alpha = 0.2) +
+  scale_x_log10(
+    labels = scales::label_log(), breaks = scales::breaks_log(n = 5),
+    name = "Total Abundance"
+  ) +
+  scale_y_log10(
+    labels = scales::label_percent(), breaks = scales::breaks_log(n = 9),
+    name = "Prevalence (%)",
+    sec.axis = sec_axis(
+      trans = ~ . * nsamples(shao19), breaks = scales::breaks_log(n = 9),
+      name = "Prevalence (N samples)"
+    )
+  ) +
+  facet_wrap("phylum") +
+  theme_bw(10)
+```
+
+**How to pick a threshold?**
+
+Depends on what analysis method you are filtering for!
+
+-   alpha diversity = DO NOT FILTER
+-   beta diversity = relevance of threshold depends on your distance measure (next topic!)
+-   differential abundance testing = stringent filtering, prevalence \>5%, \>10%? (last topic!)
+
+---
+
+### Dissimilarity measures
+
+What are we doing?
+Calculating the dissimilarity of two samples' compositions.
+We talked about these dissimilarity measures in the lecture.
+
+-   Binary Jaccard - presence-absence only
+-   Bray-Curtis - abundance weighted
+-   UniFrac distances (unweighted, weighted, generalised)
+
+To simplify and speed up the analyses, we're going to take a smaller part of the dataset.
+We'll only look at the 300 infant fecal samples from 4 days of age.
+
+```{r}
+shao4 <- shao19 %>% ps_filter(family_role == "child", infant_age == 4)
+```
+
+We're going to filter out rare taxa quite strictly, for similar reasons.
+But we won't overwrite our smaller dataset: we'll do the filtering per analysis.
+
+```{r}
+shao4 %>%
+  tax_filter(min_prevalence = 2.5 / 100) %>%
+  tax_agg(rank = "genus") %>%
+  tax_transform("binary") %>% # converts counts to absence/presence: 0/1
+  dist_calc(dist = "jaccard")
+```
+
+So we get our pairwise dissimilarities, in a distance matrix 
+attached as an extra part on the original phyloseq object, as part of a container object 
+(a "ps_extra" class object created by microViz, which also stores info about the aggregation and transformations you performed)
+
+```{r}
+distances <- shao4 %>%
+  tax_filter(min_prevalence = 2.5 / 100, verbose = FALSE) %>%
+  tax_agg(rank = "genus") %>%
+  tax_transform("binary") %>%
+  dist_calc(dist = "jaccard") %>%
+  dist_get()
+```
+
+You can extract the dissimilarities or distances with dist_get. 
+
+```{r}
+as.matrix(distances)[1:5, 1:5]
+```
+
+The Binary Jaccard dissimilarities range between zero (identical) and one (no shared genera).
+
+```{r}
+range(distances)
+```
+
+---
+
+### Ordination
+
+What can we do with these distances or dissimilarities?
+We can make an ordination.
+
+Ordination refers to the process of ordering things (in our case: samples), so that similar things (samples) are closer to each other, and dissimilar things (samples) are further away.
+
+#### PCoA
+
+Principal Co-ordinates Analysis is one kind of ordination.
+
+Takes distance matrix and finds new dimensions (a co-ordinate system if you like).
+The new dimensions are created with the aim to preserve the original distances between samples, but to capture the majority of this distance information in the first few dimensions.
+We like this because it makes it easier to visualize the patterns in your data (in 2D or 3D).
+
+There is helpful info about ordination methods including PCoA on
+the GUide to STatistical Analysis in Microbial Ecology (GUSTA ME) website.
+<https://sites.google.com/site/mb3gustame/dissimilarity-based-methods/principal-coordinates-analysis>
+This website covers a lot of topics, we'll cover PCoA now, and PCA in the next session.
+The other topics may be interesting for you to read at a later date if you'll work on microbiome analysis.
+
+```{r}
+shao4 %>%
+  tax_filter(min_prevalence = 2.5 / 100, verbose = FALSE) %>%
+  tax_agg(rank = "genus") %>%
+  dist_calc(dist = "bray") %>%
+  ord_calc(method = "PCoA") %>%
+  ord_plot(alpha = 0.6, size = 2) +
+  theme_classic(12) +
+  coord_fixed(0.7)
+```
+
+To get a little insight into what has happened here, we can colour each sample according to its dominant (most abundant) genus.
+
+```{r}
+shao4 %>%
+  tax_filter(min_prevalence = 2.5 / 100, verbose = FALSE) %>%
+  ps_calc_dominant(rank = "genus", none = "Mixed", other = "Other") %>%
+  tax_agg(rank = "genus") %>%
+  dist_calc(dist = "bray") %>%
+  ord_calc(method = "PCoA") %>%
+  ord_plot(color = "dominant_genus", alpha = 0.6, size = 2) +
+  scale_color_brewer(name = "Dominant Genus", palette = "Dark2") +
+  theme_classic(12) +
+  coord_fixed(0.7)
+```
+
+
+#### Interactive ordination!
+
+`microViz` provides a Shiny app `ord_explore` to interactively create and explore PCoA plots and other ordinations.
+See the code below to get started. But read the instructions first.
+
+**Here are a few things to try:**
+
+-   Colour the samples using the variables in the sample data
+-   Select a few samples to view their composition on barplots!
+-   Change some ordination options:
+    -   Different rank of taxonomic aggregation
+    -   Different distances we've discussed
+-   Copy the automatically generated code
+    -   Exit the app (press escape or click red button in R console!)
+    -   Paste and run the code to recreate the ordination plot
+    -   Customise the plot: change colour scheme, title, etc.
+-   Launch the app again with a different subset of the data
+    -   Practice using `ps_filter` etc.
+    -   e.g. plot the data of the mothers' gut microbiomes!
+    -   compute one or more alpha diversity measures
+
+
+**Beware:**
+
+-   UniFrac distances can be quite slow (over a minute) to calculate!
+    -   Filter to fewer samples and fewer taxa to speed it up (Before launching the app)
+-   There are many distances available, feel free to try out ones we haven't talked about
+    -   BUT:
+        -   You shouldn't use a distance that you don't understand in your actual work, even if the plot looks nice! ;)
+        -   Some of them might not work...
+            -   They are mostly implemented in the package `vegan` and I haven't tested them all
+            -   Errors will appear in the RStudio R console
+            -   You can report to me any distances that don't work if you're feeling helpful!
+-   There are other ordination methods available in `ord_explore`, which we haven't discussed
+    -   We will discuss PCA and various transformations after dinner!
+    -   Some things we won't have time to cover, but you can look here for info on topics like constrained ordination --\> TODO: insert gusta me ecology website link
+
+``` r
+# fire up the shiny app
+# run these lines in your console (don't keep in script/notebook)
+shao4 %>%
+  tax_filter(min_prevalence = 2.5 / 100, verbose = FALSE) %>%
+  # calculate new sample variables with dominant taxon (optional)
+  ps_calc_dominant(rank = "genus", none = "Mixed", other = "Other") %>%
+  # launch a Shiny app in your web browser!
+  ord_explore()
+```
+
+``` r
+# different options
+# run this line in your console
+shao19 %>%
+  ps_filter(family_role == "mother") %>%
+  tax_filter(min_prevalence = 2.5 / 100, verbose = FALSE) %>%
+  # calculate a few sample variables for interest (optional)
+  ps_calc_dominant(rank = "genus", none = "Mixed", other = "Other") %>%
+  ps_calc_diversity(rank = "genus", index = "shannon") %>%
+  ps_calc_richness(rank = "genus", index = "observed") %>%
+  # launch a Shiny app in your web browser!
+  ord_explore()
+```
+
+---
+
+### PERMANOVA
+
+Permutational multivariate analysis of variance.
+
+-   ANOVA - analysis of variance (statistical modelling approach)
+-   Multivariate - more than one dependent variable (multiple taxa!)
+-   Permutational - statistical significance estimates obtained by shuffling the data many times
+
+For more details. See this excellent book chapter by Marti Anderson on PERMANOVA: <https://onlinelibrary.wiley.com/doi/full/10.1002/9781118445112.stat07841>
+
+Sometimes also called NP-MANOVA (non-parametric MANOVA) e.g. on the
+GUide to STatistical Analysis in Microbial Ecology [website.](https://sites.google.com/site/mb3gustame/hypothesis-tests/manova/npmanova)
+
+**TLDR:** Are those groups on the PCoA actually different??
+
+```{r}
+shao4 %>%
+  tax_filter(min_prevalence = 2.5 / 100, verbose = FALSE) %>%
+  tax_agg(rank = "genus") %>%
+  dist_calc(dist = "bray") %>%
+  ord_calc(method = "PCoA") %>%
+  ord_plot(alpha = 0.6, size = 2, color = "birth_mode") +
+  theme_classic(12) +
+  coord_fixed(0.7) +
+  stat_ellipse(aes(color = birth_mode)) +
+  scale_color_brewer(palette = "Set1")
+```
+
+```{r}
+shao4 %>%
+  tax_filter(min_prevalence = 2.5 / 100, verbose = FALSE) %>%
+  tax_agg(rank = "genus") %>%
+  dist_calc(dist = "bray") %>%
+  dist_permanova(variables = "birth_mode", n_perms = 99, seed = 123) %>%
+  perm_get()
+# Use more permutations for a more reliable p.value in your real work (slower)
+# Set a random seed number for reproducibility of this stochastic method
+```
+
+You can see from the model output that the p value, Pr(\>F) is below 0.05.
+So there is good statistical evidence that the bacterial gut microbiota composition of c-section delivered infants has a different composition than vaginally delivered infants at 4 days of age.
+
+You should also report that you used Bray-Curtis dissimilarities, calculated on genera.
+(after keeping only unique taxa with a prevalence of at least 2.5%!)
+
+It's probably a good idea to decide on a couple of appropriate distance measures up front for these tests, and report both (at least in supplementary material), as the choice of distance measure can affect results and conclusions!
+
+You can also adjust for covariates in PERMANOVA, and often should, depending on your study design.
+Let's fit a more complex model, adjusting for infant sex, birth weight, and the total number of assigned reads.
+
+```{r}
+shao4 %>%
+  tax_filter(min_prevalence = 2.5 / 100, verbose = FALSE) %>%
+  tax_agg(rank = "genus") %>%
+  dist_calc(dist = "bray") %>%
+  dist_permanova(
+    variables = c("birth_mode", "sex", "birth_weight", "number_reads"),
+    n_perms = 99, seed = 111
+  ) %>%
+  perm_get()
+# Use more permutations for a more reliable p.value in your real work (slower)
+# Set a random seed number for reproducibility of this stochastic method
+```
+
+
+---
+
+# 3: Transformations, PCA & DA
+
+This section will introduce you to: the Euclidean distance; log and CLR transformations; heatmaps for microbiome abundance data; Principal Components Analysis (PCA); and Differential Abundance (DA) testing methods.
+
+---
+
+## Euclidean distances
+
+What about Euclidean distances?
+What are those?
+
+Euclidean distances are essentially a generalization of Pythagoras' theorem to more dimensions.
+In our data every taxon is a feature, a dimension, on which we calculate Euclidean distances.  
+
+- Pythagoras: $c = \sqrt{a^2 + b^2}$ 
+
+- Euclidean distance: 
+
+$$d\left(p, q\right) = \sqrt{\sum _{i=1}^{n_{taxa}} \left( p_{i}-q_{i}\right)^2 }$$
+
+**Issues**
+
+-   Sensitive to sparsity (double-zero problem) --\> filter rare taxa
+-   Excessive emphasis on high-abundance taxa --\> transform features first
+-   The PCoA looks weird! most samples bunched in the middle with spindly projections..
+
+```{r}
+shao4 %>%
+  tax_filter(min_prevalence = 2.5 / 100, verbose = FALSE) %>%
+  tax_agg(rank = "genus") %>%
+  dist_calc(dist = "euclidean") %>%
+  ord_calc(method = "PCoA") %>%
+  ord_plot(alpha = 0.6, size = 2) +
+  theme_classic(12) +
+  coord_fixed(0.7) +
+  geom_rug(alpha = 0.1)
+```
+
+
+---
+
+## Abundance transformation
+
+We already did two transformations with `tax_transform()`: binary (for Binary Jaccard distances) and compositional (for barplots).
+
+Now we need log transformations, and the centered-log-ratio, CLR, transformation.
+
+### Log transformations
+
+First let's look at the abundance again, this time with heatmaps.
+
+```{r}
+# Getting the taxa in abundance order up front
+# to keep it consistent across multiple plots
+shao4_sorted <- shao4 %>% 
+  tax_sort(by = sum, at = "genus", trans = "compositional", tree_warn = FALSE)
+```
+
+Each column is a sample (from an infant), and each row is a taxon.
+
+```{r, fig.height=3, fig.width=6}
+shao4_sorted %>%
+  tax_transform(trans = "identity", rank = "genus") %>%
+  comp_heatmap(
+    samples = 1:20, taxa = 1:20, grid_lwd = 2, name = "Counts",
+    tax_seriation = "Identity", sample_seriation = "Identity"
+  )
+```
+
+```{r, fig.height=3, fig.width=6}
+shao4_sorted %>%
+  tax_transform(trans = "compositional", rank = "genus") %>%
+  comp_heatmap(
+    samples = 1:20, taxa = 1:20, grid_lwd = 2, name = "Prop.",
+    tax_seriation = "Identity", sample_seriation = "Identity"
+  )
+```
+
+We can add the proportions on this small subset of data as numbers. 
+
+```{r, fig.height=3, fig.width=6}
+shao4_sorted %>%
+  tax_transform(trans = "compositional", rank = "genus") %>%
+  comp_heatmap(
+    numbers = heat_numbers(fmt = "%.1f"), numbers_use_counts = FALSE,
+    samples = 1:20, taxa = 1:20, grid_lwd = 2, name = "Prop.",
+    tax_seriation = "Identity", sample_seriation = "Identity"
+  )
+```
+
+Even though we have picked the top 20 most abundant genera, there are still a lot of zeros, We need to deal with the zeros, because `log(0)` is undefined.
+The solution is to add a small amount to every value (or just every zero), before applying the log transformation.
+This small value is often called a pseudo-count.
+
+What value should we use for the pseudo-count?
+
+One option is to just add 1, and another popular option is to add half of the smallest observed real value (from across the whole dataset).
+
+```{r, fig.height=3, fig.width=6}
+shao4_sorted %>%
+  tax_transform(rank = "genus", trans = "log10", zero_replace = 1) %>%
+  comp_heatmap(
+    samples = 1:20, taxa = 1:20, grid_lwd = 2, name = "log10\n(x+1)",
+    tax_seriation = "Identity", sample_seriation = "Identity"
+  )
+```
+
+```{r, fig.height=3, fig.width=6}
+shao4_sorted %>%
+  tax_agg(rank = "genus") %>%
+  # tax_transform(trans = 'compositional') %>% # compositional also possible
+  tax_transform(trans = "log10", zero_replace = "halfmin", chain = TRUE) %>%
+  comp_heatmap(
+    samples = 1:20, taxa = 1:20, grid_lwd = 2, name = "log10\nhalfmin",
+    tax_seriation = "Identity", sample_seriation = "Identity"
+  )
+```
+
+In general, for zero replacement, keep it simple and **record your approach**.
+
+### Centered Log Ratio transformation:
+
+Compositionality problem is improved by the centered-log-ratio transformation. 
+
+The centered log-ratio (clr) transformation uses the geometric mean of the sample vector as the reference. 
+
+```{r, fig.height=3, fig.width=6}
+shao4_sorted %>%
+  tax_agg(rank = "genus") %>%
+  # tax_transform(trans = 'compositional') %>% # compositional also possible
+  tax_transform(trans = "clr", zero_replace = "halfmin", chain = TRUE) %>%
+  comp_heatmap(
+    samples = 1:20, taxa = 1:20, grid_lwd = 2, name = "CLR\nhalfmin",
+    colors = heat_palette(sym = TRUE),
+    tax_seriation = "Identity", sample_seriation = "Identity"
+  )
+```
+
+<details>
+
+<summary>
+**Overview of CoDa problem.**
+</summary>
+
+The sequencing data gives us relative abundances, not absolute abundances.
+The total number of reads sequenced per sample is an arbitrary total.
+
+If one taxon blooms, whilst everything else stays stable, the relative abundance of all other taxa must (appear to) go down.
+
+This leads to two main types of problem:
+
+-   interpretation caveats: see differential abundance section later
+-   statistical issues: taxon abundances are not independent, but (weakly?) negatively correlated
+
+This is worse with simpler ecosystems.
+There is the same problem in theory with RNAseq data, but I suspect it is less bothersome because there are many more competing "species" of RNA transcript than there are bacterial species in even a very complex microbiome.
+
+The centered-log-ratio transformation (along with some other similar ratio transformations) are claimed to help with the statistical issues by transforming the abundances from the simplex to the real space.
+
+Practically, the CLR transformation involves finding the geometric mean of each sample, and then dividing abundance of each taxon in that sample by this geometric mean.
+Finally you take the natural log of this ratio.
+
+For more details, check out Gloor 2017.
+[Microbiome Datasets are Compositional: and this is not optional](https://doi.org/10.3389/fmicb.2017.02224)
+
+</details>
+
+---
+
+## Fun with Heatmaps
+
+Heatmaps look much better when you sort the rows by similarity (using distances and hierarchical clustering!).
+
+More examples/tutorial of visualizing microbiome data using heatmaps can be found here:
+
+<https://david-barnett.github.io/microViz/articles/web-only/heatmaps.html>
+
+```{r}
+#
+```
+
+
+---
+
+## PCA
+
+Principal Components Analysis.
+
+Quite similar to Principal Co-ordinates Analysis.
+
+In fact, PCA produces equivalent results to PCoA with euclidean distances.
+So let's perform the CLR-transform first and check PCA and euclidean PCoA are the same.
+
+```{r}
+shao4 %>%
+  tax_filter(min_prevalence = 2.5 / 100, verbose = FALSE) %>%
+  tax_transform(rank = "genus", trans = "clr", zero_replace = "halfmin") %>%
+  dist_calc(dist = "euclidean") %>%
+  ord_calc(method = "PCoA") %>%
+  ord_plot(alpha = 0.6, size = 2, color = "birth_mode") +
+  theme_classic(12) +
+  coord_fixed(0.7) +
+  scale_y_reverse()
+```
+
+```{r}
+shao4 %>%
+  tax_filter(min_prevalence = 2.5 / 100, verbose = FALSE) %>%
+  tax_transform(rank = "genus", trans = "clr", zero_replace = "halfmin") %>%
+  ord_calc(method = "PCA") %>%
+  ord_plot(alpha = 0.6, size = 2, color = "birth_mode") +
+  theme_classic(12) +
+  coord_fixed(0.7)
+```
+
+So why is PCA interesting for us?
+Because the Principal components are built directly from a (linear) combination of the original features.
+
+That means we know how much each taxon contributes to each PC axis, and we can plot this information (loadings) as arrows, alongside the sample points.
+
+```{r}
+pca <- shao4 %>%
+  tax_filter(min_prevalence = 2.5 / 100, verbose = FALSE) %>%
+  tax_transform(rank = "genus", trans = "clr", zero_replace = "halfmin") %>%
+  ord_calc(method = "PCA") %>%
+  ord_plot(
+    alpha = 0.6, size = 2, color = "birth_mode",
+    plot_taxa = 1:6, tax_vec_length = 0.275,
+    tax_lab_style = tax_lab_style(
+      type = "text", max_angle = 90, aspect_ratio = 0.7,
+      size = 3, fontface = "bold"
+    ),
+  ) +
+  theme_classic(12) +
+  coord_fixed(0.7, clip = "off")
+pca
+```
+
+How to interpret the taxa loading vectors?
+Cautiously.
+
+There are caveats and nuance to the interpretation of these plots, which are called PCA bi-plots, and you can read more about here: <https://sites.google.com/site/mb3gustame/indirect-gradient-analysis/pca>
+
+The relative length and direction of an arrow indicates how much that taxon contributes to the variation on each visible PC axis, e.g.
+Variation in Enterococcus contributes quite a lot to variation along the PC2 axis.
+
+This allows you to infer that samples positioned at the bottom of the plot will tend to have higher relative abundance of Enterococcus than samples at the top of the plot.
+
+Interestingly, samples on the right of the plot (which tend to be vaginally-delivered infants) seem to have relatively more Bifidobacterium, Bacteroides and Escherichia, whilst the C-section born infants have relatively more Veillonella.
+
+
+*(Side note, Phocaeicola were considered part of Bacteroides until this year!)*
+
+You might have already noticed this pattern, when exploring and making barplots interactively with `ord_explore` earlier.
+
+### Iris plot
+
+We can make another kind of barplot now, using the PCA information to order our samples in a circular layout.
+
+```{r}
+iris <- shao4 %>%
+  tax_filter(min_prevalence = 2.5 / 100, verbose = FALSE) %>%
+  tax_transform(rank = "genus", trans = "clr", zero_replace = "halfmin") %>%
+  ord_calc(method = "PCA") %>%
+  ord_plot_iris(
+    tax_level = "genus", n_taxa = 12, other = "Other",
+    anno_colour = "birth_mode", 
+    anno_colour_style = list(alpha = 0.6, size = 0.6, show.legend = FALSE)
+  )
+iris
+```
+
+```{r, fig.height=5, fig.width=10}
+patchwork::wrap_plots(pca, iris, nrow = 1, guides = "collect")
+```
+
+
+---
+
+## Taxon stats
+
+From the PCA loadings and barplots above, we have some strong suspicions about which taxa have a higher relative abundance in vaginally delivered infants than in c-section delivered infants, and vice versa, but we can also statistically test this.
+This is often called "differential abundance" (DA) testing, in the style of "differential expression" (DE) testing from the transcriptomics field.
+
+```{r}
+shao4 %>%
+  comp_barplot(
+    tax_level = "genus", n_taxa = 12, facet_by = "birth_mode",
+    label = NULL, bar_outline_colour = NA
+  ) +
+  coord_flip() +
+  theme(axis.ticks.y = element_blank())
+```
+
+
+### Model one taxon
+
+We will start by creating a linear regression model for one genus, Bacteroides.
+We will transform the count data by first making it proportions, and then taking the binary logarithm, log2, after adding a pseudocount.
+
+```{r}
+bacteroidesRegression1 <- shao4 %>%
+  tax_transform("compositional", rank = "genus") %>%
+  tax_transform("log2", zero_replace = "halfmin", chain = TRUE) %>%
+  tax_model(type = "lm", rank = "genus", taxa = "Bacteroides", variables = "birth_mode") %>%
+  pluck(1)
+
+# looking at the regression results
+summary(bacteroidesRegression1)
+confint(bacteroidesRegression1)
+broom::tidy(bacteroidesRegression1, conf.int = TRUE)
+```
+
+
+<details>
+
+<summary>
+
+**Click here for optional `ggplot2` extension exercise:**
+
+</summary>
+
+Starting from a dataframe like the one produced by the code below, plot:
+
+1.  Easy: The percentage prevalence of Bacteroides in each birth_mode group
+2.  Medium: The distribution of relative abundance of Bacteroides in each birth_mode group, omitting zeros, on a log2 scale
+3.  Hard: Do task 1 or 2 for for several taxa in one plot - (hint: `pivot_longer`)
+
+``` r
+shao4 %>%
+  tax_transform("compositional", rank = "genus") %>%
+  ps_get() %>%
+  ps_otu2samdat(taxa = "Bacteroides") %>%
+  samdat_tbl()
+```
+
+</details>
+
+We can fit a model with covariates, as we did for PERMANOVA.
+We are going to convert the categorical variables into indicator (dummy) variables, and scale the continuous covariates to 0 mean and SD 1 (z-scores).
+You'll see this will make our subsequent plots easier to interpret later.
+
+```{r}
+shao4 <- shao4 %>%
+  ps_mutate(
+    C_section = if_else(birth_mode == "c_section", true = 1, false = 0),
+    Female = if_else(sex == "female", true = 1, false = 0),
+    Birth_weight_Z = scale(birth_weight, center = TRUE, scale = TRUE),
+    Reads_Z = scale(number_reads, center = TRUE, scale = TRUE)
+  )
+```
+
+```{r}
+bacteroidesRegression2 <- shao4 %>%
+  tax_transform("compositional", rank = "genus") %>%
+  tax_transform("log2", zero_replace = "halfmin", chain = TRUE) %>%
+  tax_model(
+    type = "lm", rank = "genus", taxa = "Bacteroides",
+    variables = c("C_section", "Female", "Birth_weight_Z", "Reads_Z")
+  ) %>%
+  pluck(1)
+
+# looking at the regression results
+summary(bacteroidesRegression2)
+broom::tidy(bacteroidesRegression2, conf.int = TRUE)
+```
+
+
+#### Many DA methods
+
+This method is what MaAsLin2 does by default (except they call the compositional transformation "Total Sum Scaling (TSS)"). This is quite a straightforward method, so we will stick with this for today, but many statistical methods have been developed for differential abundance analyses.
+
+Microbiome abundance data are quite awkward, statistically speaking, due to their sparseness and compositionality.
+Each successive method claims to handle some aspect of this awkwardness "better" than previous methods.
+
+The aim is to have a method with adequate power to detect true associations, whilst controlling the type 1 error rate, the "false positive" reporting of associations that are not "truly" present.
+
+Results are surprisingly inconsistent across the different methods, as demonstrated this year in a [fascinating analysis by Jacob Nearing and colleagues](https://www.nature.com/articles/s41467-022-28034-z).
+
+**What to do?**
+
+-   Filter out the noise & interpret results with caution! use multiple testing corrections
+-   Remember it's all relative (abundance)
+-   Try multiple methods and/or use same method as previous study if replicating 
+    - Avoid Lefse and edgeR? 
+    - Beware: Not all methods allow covariate adjustment & few allow random effects (for time-series)
+
+
+### Model all the taxa!
+
+We're not normally interested in just one taxon!
+And often it's also hard to decide which taxonomic rank we are most interested in modelling!
+
+
+*Lower ranks like species or ASVs give better resolution but also more sparsity and classification uncertainty...* *Higher ranks e.g. classes, could also be more powerful if you think most taxa within that class will follow a similar pattern.*
+
+
+So now we will fit a similar model for almost\* every taxon at every rank we have available, from phylum down to species.
+
+\*We'll actually filter out species with a prevalence of less than 10%.
+
+```{r}
+# The code for `taxatree_models` is quite similar to tax_model. 
+# However, you might need to run `tax_prepend_ranks` to ensure that each taxon at each rank is always unique. 
+shaoModels <- shao4 %>% 
+  tax_prepend_ranks() %>%
+  tax_transform("compositional", rank = "species", keep_counts = TRUE) %>% 
+  tax_filter(min_prevalence = 0.1, undetected = 0, use_counts = TRUE) %>% 
+  tax_transform(trans = "log2", chain = TRUE, zero_replace = "halfmin") %>% 
+  taxatree_models(
+    type = lm, 
+    ranks = c("phylum", "class", "order", "family", "genus", "species"), 
+    variables = c('C_section', 'Female', 'Birth_weight_Z', 'Reads_Z')
+  )
+shaoModels
+```
+
+*Why filter the taxa? It's less likely that we are interested in rare taxa, and models of rare taxon abundances are more likely to be unreliable. Reducing the the number of taxa modelled also makes the process faster and makes visualizing the results easier!*
+
+
+#### Getting stats from the models
+
+Next we will get a data.frame containing the regression coefficient estimates, test statistics and corresponding p values from all these regression models.
+
+```{r}
+shaoStats <- taxatree_models2stats(shaoModels)
+shaoStats
+shaoStats$taxatree_stats
+```
+
+#### Adjusting p values
+
+As we have performed a lot of statistical tests here, it is quite possible that could we find some significant p-values by chance alone.
+
+So we should correct for multiple testing / control the false discovery rate or family-wise error rate.
+
+Instead of applying these adjustment methods across all 86 taxa models at all ranks, the default behaviour is to control the family-wise error rate per taxonomic rank.
+
+```{r}
+shaoStats <- shaoStats %>% taxatree_stats_p_adjust(method = "BH", grouping = "rank")
+# notice the new variable
+shaoStats$taxatree_stats
+```
+
+
+### Plot all the taxatree_stats!
+
+`taxatree_plots()` allows you to plot statistics (e.g. point estimates and significance) from all of the taxa models onto a tree layout.
+The taxon models are organised by rank, radiating out from the central root node from e.g.
+Phyla around the center to Species in the outermost ring.
+
+`taxatree_plots()` itself returns a list of plots, which you can arrange into one figure with the [`patchwork`](https://patchwork.data-imaginist.com/) package for example (and/or [`cowplot`](https://wilkelab.org/cowplot/articles/plot_grid.html)).
+
+```{r, fig.width=6, fig.height=5}
+shaoStats %>% 
+  taxatree_plots(node_size_range = c(1, 3), sig_stat = 'p.adj.BH.rank') %>% 
+  patchwork::wrap_plots(ncol = 2, guides = "collect")
+```
+
+
+#### Taxatree Key
+
+But how do we know which taxa are which nodes?
+We can create a labelled grey tree with `taxatree_plotkey()`.
+This labels only some of the taxa based on certain conditions that we specify.
+
+```{r fig.height=4, fig.width=4.5, warning=FALSE}
+set.seed(123) # label position 
+key <- shaoStats %>% 
+  taxatree_plotkey(
+    taxon_renamer = function(x) stringr::str_remove(x, "[pfg]: "),
+    # conditions below, for filtering taxa to be labelled
+    rank == "phylum" | rank == "genus" & prevalence > 0.2
+    # all phyla are labelled, and all genera with a prevalence of over 0.2
+  ) 
+key
+```
+
+You can do more with these trees to customise them to your liking.
+See an extended tutorial [here on the microViz website](https://david-barnett.github.io/microViz/articles/web-only/modelling-taxa.html#plot-all-the-taxatree_stats): including how to directly label taxa on the colored plots, change the layout and style of the trees, and even how to use a different regression modelling approach.
+
+```{r}
+# try it out!
+```
+
+---
+
+# Session info
+
+`session_info` records your package versions etc.
+This is useful for debugging / reproducing analysis.
+
+```{r}
+devtools::session_info()
+```
