@@ -1,4 +1,4 @@
-# microViz (development version)
+# microViz 0.9.2
 
 ## Features
 - `ps_dedupe` now allows keeping a specified number of samples per group, not just one, which could be useful for e.g. keeping the first 2 samples per participant or site.

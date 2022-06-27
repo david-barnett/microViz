@@ -11,14 +11,11 @@ output:
       collapsed: true
 ---
 
-# Overview
+# Introduction
 
-The first version of this material was developed as part of the 2022 Evomics workshop on Genomics.
+### Overview
 
-Some accompanying slides are also available via the Evomics workshop's website: 
-<http://evomics.org/2022-workshop-on-genomics-cesky-krumlov/>
-
-You can follow along with the exercises in your own R markdown notebook (or script).
+These exercises will cover some of the core concepts in microbiome data analysis, using example data. You can follow along by writing code in your own R Markdown notebook (or script).
 
 - [**Part 1**](#intro-diversity) will introduce you to: phyloseq objects for microbiome data; basic bar charts for visualizing microbiome compositions; and alpha diversity indices.
 
@@ -26,18 +23,36 @@ You can follow along with the exercises in your own R markdown notebook (or scri
 
 - [**Part 3**](#transformations-pca-da) will introduce you to: the Euclidean distance; log and CLR transformations; heatmaps for microbiome abundance data; Principal Components Analysis (PCA); and Differential Abundance (DA) testing methods.
 
+### Further resources
 
-Refer to the [microViz website]() to see help pages for every function, as well as further tutorials.
+Refer to the [microViz website](https://david-barnett.github.io/microViz/) to see help pages for every function, as well as further tutorials.
+
+The first version of this material was developed as part of the 2022 Evomics workshop on Genomics.
+
+Some accompanying slides are available via the Evomics workshop's website: 
+<http://evomics.org/2022-workshop-on-genomics-cesky-krumlov/>
+
+
+### Using your own data?
+
+To apply these methods to your own data, you will first need to create a phyloseq object containing your data. You can process your sequencing data into a count table or biom file using e.g. DADA2 for 16S rRNA gene amplicon sequencing data, or e.g. MetaPhlAn3 for shotgun metagenomic data. Then see the article called ["Working with phyloseq objects"](https://david-barnett.github.io/microViz/articles/web-only/phyloseq.html) for more details on creating phyloseq objects.
+
+### Comments or questions?
+
+Something missing or unclear? Spotted a mistake? 
+Let me know on the microViz [GitHub discussions page](https://github.com/david-barnett/microViz/discussions).
 
 ---
 
 # Setup
 
+Set R Markdown chunk output options:
+
 ```{r setup, include=TRUE}
 knitr::opts_chunk$set(echo = TRUE, fig.width = 6, fig.height = 4, dpi = 120)
 ```
 
-Loading required packages and getting example data. 
+Load the R packages we will be using: 
 
 ```{r message=FALSE}
 library(seriation)
@@ -49,17 +64,20 @@ library(microViz)
 library(shiny)
 ```
 
+Get the two example datasets:
+
 ```{r}
 mice <- readRDS(url("https://github.com/david-barnett/evomics-material/raw/898766166ce151f837b8d668bdc0bf0f859a6dd3/data/mice.rds"))
 data("shao19", package = "microViz")
 ```
 
-We'll primarily use two datasets in these exercises, both are data on the gut microbiome.
+
+We'll primarily use these two datasets in these exercises, both are data on the gut microbiome.
 The first is from a study of antibiotic administration in mice, and the second is from a large birth cohort study in human infants.
 
 Each dataset was generated using different sequencing techniques, and different sequence data processing approaches.
-But the analyses approaches we will learn in these exercises can be readily applied to both methods.
-(The approaches are also appropriate for microbiome data other than the gut microbiota!)
+But the analysis approaches we will learn in these exercises can be readily applied to both methods.
+The approaches are also appropriate for microbiome data from other environments, not just gut microbiota!
 
 -   `mice` is 16S rRNA gene amplicon sequencing data, from the mouse antibiotics study
     -   They used Illumina MiSeq and processed the data into ASVs using DADA2
@@ -167,6 +185,7 @@ mice %>%
   ps_filter(treatment_days == 'D13', virus == 'WNV2000', treatment == 'Vehicle')
 ```
 
+We will start by naively plotting the raw data, and then make several improvements to make the bar chart more informative.
 
 #### Bad bars
 
@@ -180,7 +199,7 @@ mice %>%
   coord_flip() 
 ```
 
-What is going on here??
+What is going on here?
 The unique taxa have uninformative IDs, and we also got a message about problems with the taxonomy table.
 
 The total number of reads also varies a lot between samples!
@@ -200,7 +219,7 @@ mice %>%
 
 #### Fixing the tax_table 
 
-Let's look at the taxonomy table interactively
+Let's look at the taxonomy table interactively:
 
 ```{r}
 # tax_fix_interactive(mice) # run this in the R Console for an interactive look
@@ -618,30 +637,12 @@ We probably want to filter out **rare** taxa, before performing some kinds of an
 
 ##### Why remove rare taxa?
 
-**Rare taxa might be:**
+**Rare taxa might sometimes be:**
 
 1.  Sequencing errors
 2.  Statistically problematic
 3.  Biologically irrelevant
 
-**More elaboration for presentation/discussion**
-
-1.  Rare taxa might be erroneous: sequencing errors (DADA2 isn't perfect), chimeric sequences...
-
-2.  Statistical challenges:
-
-    -   There are often A LOT of different rare taxa
-        -   Sparsity, lots of zeros
-        -   Low precision in very low abundance taxa (integer counts)
-        -   Multiple comparisons (we'll get to that later)
-    -   Having many many taxa in your dataset can really slow down some analyses!
-
-3.  Biological (ir)relevance:
-
-    -   For many (most?) microbiome research questions, rare taxa are less likely to be relevant
-    -   For common host health problems and the human/animal microbiome, if a taxon only occurs in every 100th person, it is less likely to be relevant to risk common disease outcomes (?)
-
-I'm sure one can think of many cases where rare taxa are biologically relevant, but problems 1 and 2 are still there.
 
 ##### How to remove rare taxa?
 
