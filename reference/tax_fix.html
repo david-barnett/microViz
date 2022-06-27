@@ -33,16 +33,13 @@ https://david-barnett.github.io/microViz/articles/web-only/tax-fixing.html'><met
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.1.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav"><li>
   <a href="../reference/index.html">Reference</a>
-</li>
-<li>
-  <a href="../articles/learn/exercises.html">Learn</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -78,6 +75,9 @@ https://david-barnett.github.io/microViz/articles/web-only/tax-fixing.html'><met
       <a href="../articles/web-only/atlas1006.html">Example analyses with atlas1006 data</a>
     </li>
   </ul></li>
+<li>
+  <a href="../articles/learn/exercises.html">Learn</a>
+</li>
 <li>
   <a href="../news/index.html">News</a>
 </li>
@@ -119,15 +119,15 @@ It is up to the user to specify sensible values in <code>unknowns</code> if thei
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">tax_fix</span><span class="op">(</span>
-  <span class="va">ps</span>,
-  min_length <span class="op">=</span> <span class="fl">4</span>,
-  unknowns <span class="op">=</span> <span class="cn">NA</span>,
-  suffix_rank <span class="op">=</span> <span class="st">"classified"</span>,
-  sep <span class="op">=</span> <span class="st">" "</span>,
-  anon_unique <span class="op">=</span> <span class="cn">TRUE</span>,
-  verbose <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tax_fix</span><span class="op">(</span></span>
+<span>  <span class="va">ps</span>,</span>
+<span>  min_length <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  unknowns <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  suffix_rank <span class="op">=</span> <span class="st">"classified"</span>,</span>
+<span>  sep <span class="op">=</span> <span class="st">" "</span>,</span>
+<span>  anon_unique <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -187,35 +187,35 @@ which is therefore the same for every anonymous taxon, meaning they will be merg
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://dx.plos.org/10.1371/journal.pone.0061217" class="external-link">phyloseq</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">dietswap</span>, package <span class="op">=</span> <span class="st">"microbiome"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">ps</span> <span class="op">&lt;-</span> <span class="va">dietswap</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># create unknowns to test filling</span></span>
-<span class="r-in"><span class="va">tt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html" class="external-link">tax_table</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">ntax</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/ntaxa-methods.html" class="external-link">ntaxa</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">ntax</span>, <span class="fl">30</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">g</span>, <span class="fl">10</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">f</span>, <span class="fl">3</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">tt</span><span class="op">[</span><span class="va">g</span>, <span class="fl">3</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"g__"</span></span>
-<span class="r-in"><span class="va">tt</span><span class="op">[</span><span class="va">f</span>, <span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"f__"</span></span>
-<span class="r-in"><span class="va">tt</span><span class="op">[</span><span class="va">p</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"p__"</span></span>
-<span class="r-in"><span class="va">tt</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">ntax</span>, <span class="fl">10</span><span class="op">)</span>, <span class="fl">3</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"unknown"</span></span>
-<span class="r-in"><span class="co"># create a row with only NAs</span></span>
-<span class="r-in"><span class="va">tt</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html" class="external-link">tax_table</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html" class="external-link">tax_table</a></span><span class="op">(</span><span class="va">tt</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">ps</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://dx.plos.org/10.1371/journal.pone.0061217" class="external-link">phyloseq</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">dietswap</span>, package <span class="op">=</span> <span class="st">"microbiome"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ps</span> <span class="op">&lt;-</span> <span class="va">dietswap</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># create unknowns to test filling</span></span></span>
+<span class="r-in"><span><span class="va">tt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html" class="external-link">tax_table</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ntax</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/ntaxa-methods.html" class="external-link">ntaxa</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">ntax</span>, <span class="fl">30</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">g</span>, <span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">f</span>, <span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tt</span><span class="op">[</span><span class="va">g</span>, <span class="fl">3</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"g__"</span></span></span>
+<span class="r-in"><span><span class="va">tt</span><span class="op">[</span><span class="va">f</span>, <span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"f__"</span></span></span>
+<span class="r-in"><span><span class="va">tt</span><span class="op">[</span><span class="va">p</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"p__"</span></span></span>
+<span class="r-in"><span><span class="va">tt</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">ntax</span>, <span class="fl">10</span><span class="op">)</span>, <span class="fl">3</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"unknown"</span></span></span>
+<span class="r-in"><span><span class="co"># create a row with only NAs</span></span></span>
+<span class="r-in"><span><span class="va">tt</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html" class="external-link">tax_table</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html" class="external-link">tax_table</a></span><span class="op">(</span><span class="va">tt</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">ps</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> phyloseq-class experiment-level object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> otu_table()   OTU Table:         [ 130 taxa and 222 samples ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sample_data() Sample Data:       [ 222 samples by 8 sample variables ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]</span>
-<span class="r-in"><span class="co"># tax_fix with defaults should solve most problems</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html" class="external-link">tax_table</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">50</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co"># tax_fix with defaults should solve most problems</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html" class="external-link">tax_table</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">50</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Taxonomy Table:     [50 taxa by 3 taxonomic ranks]:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                    Phylum           </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Actinomycetaceae                   NA               </span>
@@ -370,11 +370,11 @@ which is therefore the same for every anonymous taxon, meaning they will be merg
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coprobacillus catenaformis et rel. "Coprobacillus catenaformis et rel."</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coprococcus eutactus et rel.       "Coprococcus eutactus et rel."      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Corynebacterium                    "g__"                               </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># this will replace "unknown"s as well as short values including "g__" and "f__"</span></span>
-<span class="r-in"><span class="fu">tax_fix</span><span class="op">(</span><span class="va">ps</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html" class="external-link">tax_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">50</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># this will replace "unknown"s as well as short values including "g__" and "f__"</span></span></span>
+<span class="r-in"><span><span class="fu">tax_fix</span><span class="op">(</span><span class="va">ps</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html" class="external-link">tax_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">50</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Row named: Actinomycetaceae</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> contains no non-unknown values, returning:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 'Actinomycetaceae' for all replaced levels.</span>
@@ -545,12 +545,12 @@ which is therefore the same for every anonymous taxon, meaning they will be merg
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coprobacillus catenaformis et rel. "Coprobacillus catenaformis et rel."</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coprococcus eutactus et rel.       "Coprococcus eutactus et rel."      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Corynebacterium                    "Actinobacteria Family"             </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># This will only replace short entries, and so won't replace literal "unknown" values</span></span>
-<span class="r-in"><span class="va">ps</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">tax_fix</span><span class="op">(</span>unknowns <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html" class="external-link">tax_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">50</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># This will only replace short entries, and so won't replace literal "unknown" values</span></span></span>
+<span class="r-in"><span><span class="va">ps</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">tax_fix</span><span class="op">(</span>unknowns <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html" class="external-link">tax_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">50</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Row named: Actinomycetaceae</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> contains no non-unknown values, returning:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 'Actinomycetaceae' for all replaced levels.</span>
@@ -721,11 +721,11 @@ which is therefore the same for every anonymous taxon, meaning they will be merg
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coprobacillus catenaformis et rel. "Coprobacillus catenaformis et rel."</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coprococcus eutactus et rel.       "Coprococcus eutactus et rel."      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Corynebacterium                    "Actinobacteria Family"             </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Change rank suffix and separator settings</span></span>
-<span class="r-in"><span class="fu">tax_fix</span><span class="op">(</span><span class="va">ps</span>, suffix_rank <span class="op">=</span> <span class="st">"current"</span>, sep <span class="op">=</span> <span class="st">" - "</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html" class="external-link">tax_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">50</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Change rank suffix and separator settings</span></span></span>
+<span class="r-in"><span><span class="fu">tax_fix</span><span class="op">(</span><span class="va">ps</span>, suffix_rank <span class="op">=</span> <span class="st">"current"</span>, sep <span class="op">=</span> <span class="st">" - "</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html" class="external-link">tax_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">50</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Row named: Actinomycetaceae</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> contains no non-unknown values, returning:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 'Actinomycetaceae' for all replaced levels.</span>
@@ -896,15 +896,15 @@ which is therefore the same for every anonymous taxon, meaning they will be merg
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coprobacillus catenaformis et rel. "Coprobacillus catenaformis et rel."</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coprococcus eutactus et rel.       "Coprococcus eutactus et rel."      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Corynebacterium                    "Actinobacteria - Genus"            </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># by default, completely unclassified (anonymous) taxa are named by their</span></span>
-<span class="r-in"><span class="co"># taxa_names / rownames at all ranks.</span></span>
-<span class="r-in"><span class="co"># This makes anonymous taxa distinct from each other,</span></span>
-<span class="r-in"><span class="co"># and so they won't be merged on aggregation with tax_agg.</span></span>
-<span class="r-in"><span class="co"># If you think your anonymous taxa should merge on tax_agg,</span></span>
-<span class="r-in"><span class="co"># or you just want them to be named the all same for another reason,</span></span>
-<span class="r-in"><span class="co"># set anon_unique = FALSE (compare the warning messages)</span></span>
-<span class="r-in"><span class="fu">tax_fix</span><span class="op">(</span><span class="va">ps</span>, anon_unique <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># by default, completely unclassified (anonymous) taxa are named by their</span></span></span>
+<span class="r-in"><span><span class="co"># taxa_names / rownames at all ranks.</span></span></span>
+<span class="r-in"><span><span class="co"># This makes anonymous taxa distinct from each other,</span></span></span>
+<span class="r-in"><span><span class="co"># and so they won't be merged on aggregation with tax_agg.</span></span></span>
+<span class="r-in"><span><span class="co"># If you think your anonymous taxa should merge on tax_agg,</span></span></span>
+<span class="r-in"><span><span class="co"># or you just want them to be named the all same for another reason,</span></span></span>
+<span class="r-in"><span><span class="co"># set anon_unique = FALSE (compare the warning messages)</span></span></span>
+<span class="r-in"><span><span class="fu">tax_fix</span><span class="op">(</span><span class="va">ps</span>, anon_unique <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Row named: Actinomycetaceae</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> contains no non-unknown values, returning:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 'unclassified Phylum' for all replaced levels.</span>
@@ -925,7 +925,7 @@ which is therefore the same for every anonymous taxon, meaning they will be merg
 <span class="r-out co"><span class="r-pr">#&gt;</span> otu_table()   OTU Table:         [ 130 taxa and 222 samples ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sample_data() Sample Data:       [ 222 samples by 8 sample variables ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]</span>
-<span class="r-in"><span class="fu">tax_fix</span><span class="op">(</span><span class="va">ps</span>, anon_unique <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">tax_fix</span><span class="op">(</span><span class="va">ps</span>, anon_unique <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Row named: Actinomycetaceae</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> contains no non-unknown values, returning:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 'Actinomycetaceae' for all replaced levels.</span>
@@ -946,12 +946,12 @@ which is therefore the same for every anonymous taxon, meaning they will be merg
 <span class="r-out co"><span class="r-pr">#&gt;</span> otu_table()   OTU Table:         [ 130 taxa and 222 samples ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sample_data() Sample Data:       [ 222 samples by 8 sample variables ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># here's a larger example tax_table shows its still fast with 1000s rows,</span></span>
-<span class="r-in"><span class="co"># from microbiomeutilities package</span></span>
-<span class="r-in"><span class="co"># library(microbiomeutilities)</span></span>
-<span class="r-in"><span class="co"># data("hmp2")</span></span>
-<span class="r-in"><span class="co"># system.time(tax_fix(hmp2, min_length = 1))</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># here's a larger example tax_table shows its still fast with 1000s rows,</span></span></span>
+<span class="r-in"><span><span class="co"># from microbiomeutilities package</span></span></span>
+<span class="r-in"><span><span class="co"># library(microbiomeutilities)</span></span></span>
+<span class="r-in"><span><span class="co"># data("hmp2")</span></span></span>
+<span class="r-in"><span><span class="co"># system.time(tax_fix(hmp2, min_length = 1))</span></span></span>
 </code></pre></div>
     </div>
   </div>

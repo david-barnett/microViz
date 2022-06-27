@@ -26,16 +26,13 @@ This function is designed to work with counts. otu_table must contain counts par
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.1.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav"><li>
   <a href="../reference/index.html">Reference</a>
-</li>
-<li>
-  <a href="../articles/learn/exercises.html">Learn</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -71,6 +68,9 @@ This function is designed to work with counts. otu_table must contain counts par
       <a href="../articles/web-only/atlas1006.html">Example analyses with atlas1006 data</a>
     </li>
   </ul></li>
+<li>
+  <a href="../articles/learn/exercises.html">Learn</a>
+</li>
 <li>
   <a href="../news/index.html">News</a>
 </li>
@@ -108,18 +108,18 @@ This function is designed to work with counts. otu_table must contain counts par
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">tax_filter</span><span class="op">(</span>
-  <span class="va">ps</span>,
-  min_prevalence <span class="op">=</span> <span class="fl">1</span>,
-  prev_detection_threshold <span class="op">=</span> <span class="fl">1</span>,
-  min_total_abundance <span class="op">=</span> <span class="fl">0</span>,
-  min_sample_abundance <span class="op">=</span> <span class="fl">0</span>,
-  tax_level <span class="op">=</span> <span class="cn">NA</span>,
-  names_only <span class="op">=</span> <span class="cn">FALSE</span>,
-  use_counts <span class="op">=</span> <span class="cn">TRUE</span>,
-  undetected <span class="op">=</span> <span class="cn">NULL</span>,
-  verbose <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tax_filter</span><span class="op">(</span></span>
+<span>  <span class="va">ps</span>,</span>
+<span>  min_prevalence <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  prev_detection_threshold <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  min_total_abundance <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  min_sample_abundance <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  tax_level <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  names_only <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  use_counts <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  undetected <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -179,14 +179,14 @@ If set, this overrides prev_detection_threshold.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"dietswap"</span>, package <span class="op">=</span> <span class="st">"microbiome"</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># Dropping rare and low abundance taxa #</span></span>
-<span class="r-in"><span class="co"># Filter at unique taxa level, keeping only those with a prevalence of 10% or more</span></span>
-<span class="r-in"><span class="co"># and at least 10 thousand reads when summed across all samples.</span></span>
-<span class="r-in"><span class="co"># Then aggregate to Family level taxonomy.</span></span>
-<span class="r-in"><span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">tax_filter</span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">0.1</span>, min_total_abundance <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Family"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"dietswap"</span>, package <span class="op">=</span> <span class="st">"microbiome"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Dropping rare and low abundance taxa #</span></span></span>
+<span class="r-in"><span><span class="co"># Filter at unique taxa level, keeping only those with a prevalence of 10% or more</span></span></span>
+<span class="r-in"><span><span class="co"># and at least 10 thousand reads when summed across all samples.</span></span></span>
+<span class="r-in"><span><span class="co"># Then aggregate to Family level taxonomy.</span></span></span>
+<span class="r-in"><span><span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">tax_filter</span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">0.1</span>, min_total_abundance <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Family"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Proportional min_prevalence given: 0.1 --&gt; min 23/222 samples.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ps_extra object - a list with phyloseq and extras:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -197,16 +197,16 @@ If set, this overrides prev_detection_threshold.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ps_extra info:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> tax_agg = Family tax_transform = NA</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Keeping ubiquitous families #</span></span>
-<span class="r-in"><span class="co"># keep only families that have at least 1000 counts present in 90% of samples</span></span>
-<span class="r-in"><span class="co"># then aggregate the remaining taxa at 'Genus' level</span></span>
-<span class="r-in"><span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">tax_filter</span><span class="op">(</span></span>
-<span class="r-in">    tax_level <span class="op">=</span> <span class="st">"Family"</span>, min_prevalence <span class="op">=</span> <span class="fl">0.90</span>,</span>
-<span class="r-in">    prev_detection_threshold <span class="op">=</span> <span class="fl">1000</span></span>
-<span class="r-in">  <span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Genus"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Keeping ubiquitous families #</span></span></span>
+<span class="r-in"><span><span class="co"># keep only families that have at least 1000 counts present in 90% of samples</span></span></span>
+<span class="r-in"><span><span class="co"># then aggregate the remaining taxa at 'Genus' level</span></span></span>
+<span class="r-in"><span><span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">tax_filter</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    tax_level <span class="op">=</span> <span class="st">"Family"</span>, min_prevalence <span class="op">=</span> <span class="fl">0.90</span>,</span></span>
+<span class="r-in"><span>    prev_detection_threshold <span class="op">=</span> <span class="fl">1000</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Genus"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Proportional min_prevalence given: 0.9 --&gt; min 200/222 samples.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ps_extra object - a list with phyloseq and extras:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>

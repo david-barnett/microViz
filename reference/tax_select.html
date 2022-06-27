@@ -24,16 +24,13 @@ Takes a phyloseq with tax table and a (partial) taxonomic name, or a list/vector
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.1.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav"><li>
   <a href="../reference/index.html">Reference</a>
-</li>
-<li>
-  <a href="../articles/learn/exercises.html">Learn</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -70,6 +67,9 @@ Takes a phyloseq with tax table and a (partial) taxonomic name, or a list/vector
     </li>
   </ul></li>
 <li>
+  <a href="../articles/learn/exercises.html">Learn</a>
+</li>
+<li>
   <a href="../news/index.html">News</a>
 </li>
 <li class="dropdown-header">
@@ -104,14 +104,14 @@ Takes a phyloseq with tax table and a (partial) taxonomic name, or a list/vector
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">tax_select</span><span class="op">(</span>
-  <span class="va">ps</span>,
-  <span class="va">tax_list</span>,
-  ranks_searched <span class="op">=</span> <span class="st">"all"</span>,
-  strict_matches <span class="op">=</span> <span class="cn">FALSE</span>,
-  n_typos <span class="op">=</span> <span class="fl">1</span>,
-  deselect <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tax_select</span><span class="op">(</span></span>
+<span>  <span class="va">ps</span>,</span>
+<span>  <span class="va">tax_list</span>,</span>
+<span>  ranks_searched <span class="op">=</span> <span class="st">"all"</span>,</span>
+<span>  strict_matches <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  n_typos <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  deselect <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -158,37 +158,37 @@ Takes a phyloseq with tax table and a (partial) taxonomic name, or a list/vector
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Get example phyloseq object data</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"dietswap"</span>, package <span class="op">=</span> <span class="st">"microbiome"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">pSeq</span> <span class="op">&lt;-</span> <span class="va">dietswap</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># SELECTION EXAMPLES #</span></span>
-<span class="r-in"><span class="va">a</span> <span class="op">&lt;-</span> <span class="va">pSeq</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">tax_select</span><span class="op">(</span>tax_list <span class="op">=</span> <span class="st">"Bif"</span>, n_typos <span class="op">=</span> <span class="fl">0</span>, ranks_searched <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">b</span> <span class="op">&lt;-</span> <span class="va">pSeq</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">tax_select</span><span class="op">(</span>tax_list <span class="op">=</span> <span class="st">"Bifidobacterium"</span>, n_typos <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">c</span> <span class="op">&lt;-</span> <span class="va">pSeq</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">tax_select</span><span class="op">(</span>tax_list <span class="op">=</span> <span class="st">"Bif"</span>, n_typos <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span><span class="op">)</span> <span class="co"># TRUE</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Get example phyloseq object data</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"dietswap"</span>, package <span class="op">=</span> <span class="st">"microbiome"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">pSeq</span> <span class="op">&lt;-</span> <span class="va">dietswap</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># SELECTION EXAMPLES #</span></span></span>
+<span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="va">pSeq</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">tax_select</span><span class="op">(</span>tax_list <span class="op">=</span> <span class="st">"Bif"</span>, n_typos <span class="op">=</span> <span class="fl">0</span>, ranks_searched <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">b</span> <span class="op">&lt;-</span> <span class="va">pSeq</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">tax_select</span><span class="op">(</span>tax_list <span class="op">=</span> <span class="st">"Bifidobacterium"</span>, n_typos <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">c</span> <span class="op">&lt;-</span> <span class="va">pSeq</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">tax_select</span><span class="op">(</span>tax_list <span class="op">=</span> <span class="st">"Bif"</span>, n_typos <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span><span class="op">)</span> <span class="co"># TRUE</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">c</span><span class="op">)</span> <span class="co"># FALSE</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">c</span><span class="op">)</span> <span class="co"># FALSE</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">pSeq</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">tax_select</span><span class="op">(</span>tax_list <span class="op">=</span> <span class="st">"Bifidobactrium"</span><span class="op">)</span> <span class="co"># default 1 typo allowed</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">pSeq</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">tax_select</span><span class="op">(</span>tax_list <span class="op">=</span> <span class="st">"Bifidobactrium"</span><span class="op">)</span> <span class="co"># default 1 typo allowed</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> phyloseq-class experiment-level object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> otu_table()   OTU Table:         [ 1 taxa and 222 samples ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sample_data() Sample Data:       [ 222 samples by 8 sample variables ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> tax_table()   Taxonomy Table:    [ 1 taxa by 3 taxonomic ranks ]</span>
-<span class="r-in"><span class="va">one</span> <span class="op">&lt;-</span> <span class="va">pSeq</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">tax_select</span><span class="op">(</span>tax_list <span class="op">=</span> <span class="st">"Akkarmensia"</span>, n_typos <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">two</span> <span class="op">&lt;-</span> <span class="va">pSeq</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">tax_select</span><span class="op">(</span>tax_list <span class="op">=</span> <span class="st">"Akkermansia"</span>, n_typos <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">one</span>, <span class="va">two</span><span class="op">)</span> <span class="co"># TRUE</span></span>
+<span class="r-in"><span><span class="va">one</span> <span class="op">&lt;-</span> <span class="va">pSeq</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">tax_select</span><span class="op">(</span>tax_list <span class="op">=</span> <span class="st">"Akkarmensia"</span>, n_typos <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">two</span> <span class="op">&lt;-</span> <span class="va">pSeq</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">tax_select</span><span class="op">(</span>tax_list <span class="op">=</span> <span class="st">"Akkermansia"</span>, n_typos <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">one</span>, <span class="va">two</span><span class="op">)</span> <span class="co"># TRUE</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># DESELECTION EXAMPLE # #</span></span>
-<span class="r-in"><span class="va">pSeq</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">tax_select</span><span class="op">(</span>tax_list <span class="op">=</span> <span class="st">"Bif"</span>, strict_matches <span class="op">=</span> <span class="cn">FALSE</span>, deselect <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># DESELECTION EXAMPLE # #</span></span></span>
+<span class="r-in"><span><span class="va">pSeq</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">tax_select</span><span class="op">(</span>tax_list <span class="op">=</span> <span class="st">"Bif"</span>, strict_matches <span class="op">=</span> <span class="cn">FALSE</span>, deselect <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> phyloseq-class experiment-level object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> otu_table()   OTU Table:         [ 125 taxa and 222 samples ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sample_data() Sample Data:       [ 222 samples by 8 sample variables ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> tax_table()   Taxonomy Table:    [ 125 taxa by 3 taxonomic ranks ]</span>
-<span class="r-in"><span class="co"># Incorrect example</span></span>
-<span class="r-in"><span class="co"># pSeq %&gt;% tax_select(tax_list = "Bif", strict_matches = TRUE) # fails</span></span>
+<span class="r-in"><span><span class="co"># Incorrect example</span></span></span>
+<span class="r-in"><span><span class="co"># pSeq %&gt;% tax_select(tax_list = "Bif", strict_matches = TRUE) # fails</span></span></span>
 </code></pre></div>
     </div>
   </div>

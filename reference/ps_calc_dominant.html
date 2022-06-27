@@ -31,16 +31,13 @@ including "none") the dominant taxon will be "other" for those samples
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.1.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav"><li>
   <a href="../reference/index.html">Reference</a>
-</li>
-<li>
-  <a href="../articles/learn/exercises.html">Learn</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -76,6 +73,9 @@ including "none") the dominant taxon will be "other" for those samples
       <a href="../articles/web-only/atlas1006.html">Example analyses with atlas1006 data</a>
     </li>
   </ul></li>
+<li>
+  <a href="../articles/learn/exercises.html">Learn</a>
+</li>
 <li>
   <a href="../news/index.html">News</a>
 </li>
@@ -115,15 +115,15 @@ including "none") the dominant taxon will be "other" for those samples</p></li>
 </ul></div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">ps_calc_dominant</span><span class="op">(</span>
-  <span class="va">ps</span>,
-  <span class="va">rank</span>,
-  threshold <span class="op">=</span> <span class="fl">0.3</span>,
-  n_max <span class="op">=</span> <span class="fl">6</span>,
-  var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"dominant"</span>, <span class="va">rank</span>, sep <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span>,
-  none <span class="op">=</span> <span class="st">"none"</span>,
-  other <span class="op">=</span> <span class="st">"other"</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ps_calc_dominant</span><span class="op">(</span></span>
+<span>  <span class="va">ps</span>,</span>
+<span>  <span class="va">rank</span>,</span>
+<span>  threshold <span class="op">=</span> <span class="fl">0.3</span>,</span>
+<span>  n_max <span class="op">=</span> <span class="fl">6</span>,</span>
+<span>  var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"dominant"</span>, <span class="va">rank</span>, sep <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span>,</span>
+<span>  none <span class="op">=</span> <span class="st">"none"</span>,</span>
+<span>  other <span class="op">=</span> <span class="st">"other"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -169,40 +169,40 @@ including "none") the dominant taxon will be "other" for those samples</p></li>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="va">ps</span> <span class="op">&lt;-</span> <span class="fu">corncob</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/corncob/man/ibd_phylo.html" class="external-link">ibd_phylo</a></span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="tax_fix.html">tax_fix</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="phyloseq_validate.html">phyloseq_validate</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">ps</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">DiseaseState</span> <span class="op">==</span> <span class="st">"CD"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">ps_calc_dominant</span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="comp_barplot.html">comp_barplot</a></span><span class="op">(</span>tax_level <span class="op">=</span> <span class="st">"Genus"</span>, label <span class="op">=</span> <span class="st">"dominant_Genus"</span>, n_taxa <span class="op">=</span> <span class="fl">12</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ps</span> <span class="op">&lt;-</span> <span class="fu">corncob</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/corncob/man/ibd_phylo.html" class="external-link">ibd_phylo</a></span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="tax_fix.html">tax_fix</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="phyloseq_validate.html">phyloseq_validate</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">ps</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">DiseaseState</span> <span class="op">==</span> <span class="st">"CD"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">ps_calc_dominant</span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="comp_barplot.html">comp_barplot</a></span><span class="op">(</span>tax_level <span class="op">=</span> <span class="st">"Genus"</span>, label <span class="op">=</span> <span class="st">"dominant_Genus"</span>, n_taxa <span class="op">=</span> <span class="fl">12</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ps_calc_dominant-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">ps</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">ps_calc_dominant</span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="tax_transform.html">tax_transform</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"Genus"</span>, trans <span class="op">=</span> <span class="st">"clr"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="ord_calc.html">ord_calc</a></span><span class="op">(</span><span class="st">"PCA"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="ord_plot.html">ord_plot</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"dominant_Genus"</span>, size <span class="op">=</span> <span class="fl">3</span>, alpha <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_colour_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Dark2"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">ps</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">ps_calc_dominant</span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="tax_transform.html">tax_transform</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"Genus"</span>, trans <span class="op">=</span> <span class="st">"clr"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="ord_calc.html">ord_calc</a></span><span class="op">(</span><span class="st">"PCA"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="ord_plot.html">ord_plot</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"dominant_Genus"</span>, size <span class="op">=</span> <span class="fl">3</span>, alpha <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_colour_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Dark2"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ps_calc_dominant-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># customise function options</span></span>
-<span class="r-in"><span class="va">ps</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">ps_calc_dominant</span><span class="op">(</span></span>
-<span class="r-in">    rank <span class="op">=</span> <span class="st">"Family"</span>, other <span class="op">=</span> <span class="st">"Other"</span>, none <span class="op">=</span> <span class="st">"Not dominated"</span>,</span>
-<span class="r-in">    threshold <span class="op">=</span> <span class="fl">0.4</span>, n_max <span class="op">=</span> <span class="fl">3</span></span>
-<span class="r-in">  <span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="tax_transform.html">tax_transform</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"Genus"</span>, trans <span class="op">=</span> <span class="st">"clr"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="ord_calc.html">ord_calc</a></span><span class="op">(</span><span class="st">"PCA"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="ord_plot.html">ord_plot</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"dominant_Family"</span>, size <span class="op">=</span> <span class="fl">3</span>, alpha <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_colour_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span class="r-in">    Bacteroidaceae <span class="op">=</span> <span class="st">"forestgreen"</span>, Lachnospiraceae <span class="op">=</span> <span class="st">"darkblue"</span>,</span>
-<span class="r-in">    Ruminococcaceae <span class="op">=</span> <span class="st">"darkorange"</span>, Other <span class="op">=</span> <span class="st">"red"</span>, <span class="st">"Not dominated"</span> <span class="op">=</span> <span class="st">"grey"</span></span>
-<span class="r-in">  <span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># customise function options</span></span></span>
+<span class="r-in"><span><span class="va">ps</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">ps_calc_dominant</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    rank <span class="op">=</span> <span class="st">"Family"</span>, other <span class="op">=</span> <span class="st">"Other"</span>, none <span class="op">=</span> <span class="st">"Not dominated"</span>,</span></span>
+<span class="r-in"><span>    threshold <span class="op">=</span> <span class="fl">0.4</span>, n_max <span class="op">=</span> <span class="fl">3</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="tax_transform.html">tax_transform</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"Genus"</span>, trans <span class="op">=</span> <span class="st">"clr"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="ord_calc.html">ord_calc</a></span><span class="op">(</span><span class="st">"PCA"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="ord_plot.html">ord_plot</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"dominant_Family"</span>, size <span class="op">=</span> <span class="fl">3</span>, alpha <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_colour_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    Bacteroidaceae <span class="op">=</span> <span class="st">"forestgreen"</span>, Lachnospiraceae <span class="op">=</span> <span class="st">"darkblue"</span>,</span></span>
+<span class="r-in"><span>    Ruminococcaceae <span class="op">=</span> <span class="st">"darkorange"</span>, Other <span class="op">=</span> <span class="st">"red"</span>, <span class="st">"Not dominated"</span> <span class="op">=</span> <span class="st">"grey"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ps_calc_dominant-3.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>

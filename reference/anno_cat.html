@@ -23,16 +23,13 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.1.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav"><li>
   <a href="../reference/index.html">Reference</a>
-</li>
-<li>
-  <a href="../articles/learn/exercises.html">Learn</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -69,6 +66,9 @@
     </li>
   </ul></li>
 <li>
+  <a href="../articles/learn/exercises.html">Learn</a>
+</li>
+<li>
   <a href="../news/index.html">News</a>
 </li>
 <li class="dropdown-header">
@@ -102,20 +102,20 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">anno_cat</span><span class="op">(</span>
-  <span class="va">x</span>,
-  <span class="va">which</span>,
-  renamer <span class="op">=</span> <span class="va">identity</span>,
-  col <span class="op">=</span> <span class="fu"><a href="distinct_palette.html">distinct_palette</a></span><span class="op">(</span><span class="op">)</span>,
-  width <span class="op">=</span> <span class="cn">NULL</span>,
-  height <span class="op">=</span> <span class="cn">NULL</span>,
-  box_col <span class="op">=</span> <span class="st">"white"</span>,
-  box_lwd <span class="op">=</span> <span class="fl">0.5</span>,
-  border_col <span class="op">=</span> <span class="cn">NA</span>,
-  border_lwd <span class="op">=</span> <span class="fl">1</span>,
-  legend <span class="op">=</span> <span class="cn">TRUE</span>,
-  legend_title <span class="op">=</span> <span class="st">""</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">anno_cat</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  <span class="va">which</span>,</span>
+<span>  renamer <span class="op">=</span> <span class="va">identity</span>,</span>
+<span>  col <span class="op">=</span> <span class="fu"><a href="distinct_palette.html">distinct_palette</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  width <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  height <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  box_col <span class="op">=</span> <span class="st">"white"</span>,</span>
+<span>  box_lwd <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  border_col <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  border_lwd <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  legend <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  legend_title <span class="op">=</span> <span class="st">""</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -178,7 +178,7 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jokergoo/ComplexHeatmap" class="external-link">ComplexHeatmap</a></span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jokergoo/ComplexHeatmap" class="external-link">ComplexHeatmap</a></span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: grid</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ========================================</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ComplexHeatmap version 2.12.0</span>
@@ -196,39 +196,39 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> This message can be suppressed by:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   suppressPackageStartupMessages(library(ComplexHeatmap))</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ========================================</span>
-<span class="r-in"><span class="co"># draw the annotation without a heatmap, you will never normally do this!</span></span>
-<span class="r-in"><span class="va">vp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grid/viewport.html" class="external-link">viewport</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">0.75</span>, height <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/grid.newpage.html" class="external-link">grid.newpage</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/grid/viewports.html" class="external-link">pushViewport</a></span><span class="op">(</span><span class="va">vp</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">cats</span> <span class="op">&lt;-</span> <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html" class="external-link">draw</a></span><span class="op">(</span><span class="fu">anno_cat</span><span class="op">(</span><span class="va">cats</span>, which <span class="op">=</span> <span class="st">"row"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co"># draw the annotation without a heatmap, you will never normally do this!</span></span></span>
+<span class="r-in"><span><span class="va">vp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grid/viewport.html" class="external-link">viewport</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">0.75</span>, height <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/grid.newpage.html" class="external-link">grid.newpage</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/grid/viewports.html" class="external-link">pushViewport</a></span><span class="op">(</span><span class="va">vp</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cats</span> <span class="op">&lt;-</span> <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html" class="external-link">draw</a></span><span class="op">(</span><span class="fu">anno_cat</span><span class="op">(</span><span class="va">cats</span>, which <span class="op">=</span> <span class="st">"row"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="anno_cat-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/grid.newpage.html" class="external-link">grid.newpage</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/grid/viewports.html" class="external-link">pushViewport</a></span><span class="op">(</span><span class="va">vp</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html" class="external-link">draw</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="fu">anno_cat</span><span class="op">(</span></span>
-<span class="r-in">    x <span class="op">=</span> <span class="va">cats</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/structure.html" class="external-link">structure</a></span><span class="op">(</span>names <span class="op">=</span> <span class="va">cats</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>, which <span class="op">=</span> <span class="st">"column"</span>,</span>
-<span class="r-in">    box_col <span class="op">=</span> <span class="st">"black"</span>, box_lwd <span class="op">=</span> <span class="fl">5</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/grid.newpage.html" class="external-link">grid.newpage</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/grid/viewports.html" class="external-link">pushViewport</a></span><span class="op">(</span><span class="va">vp</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html" class="external-link">draw</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu">anno_cat</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    x <span class="op">=</span> <span class="va">cats</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/structure.html" class="external-link">structure</a></span><span class="op">(</span>names <span class="op">=</span> <span class="va">cats</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>, which <span class="op">=</span> <span class="st">"column"</span>,</span></span>
+<span class="r-in"><span>    box_col <span class="op">=</span> <span class="st">"black"</span>, box_lwd <span class="op">=</span> <span class="fl">5</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="anno_cat-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># developer note #</span></span>
-<span class="r-in"><span class="co"># list of annotations can be split and ordered (adding NULL makes a list)</span></span>
-<span class="r-in"><span class="co"># https://jokergoo.github.io/ComplexHeatmap-reference/book/a-list-of-heatmaps.html</span></span>
-<span class="r-in"><span class="co"># (section #4.8 concatenate-only-the-annotations)</span></span>
-<span class="r-in"><span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/grid.newpage.html" class="external-link">grid.newpage</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/grid/viewports.html" class="external-link">pushViewport</a></span><span class="op">(</span><span class="va">vp</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># developer note #</span></span></span>
+<span class="r-in"><span><span class="co"># list of annotations can be split and ordered (adding NULL makes a list)</span></span></span>
+<span class="r-in"><span><span class="co"># https://jokergoo.github.io/ComplexHeatmap-reference/book/a-list-of-heatmaps.html</span></span></span>
+<span class="r-in"><span><span class="co"># (section #4.8 concatenate-only-the-annotations)</span></span></span>
+<span class="r-in"><span><span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/grid.newpage.html" class="external-link">grid.newpage</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/grid/viewports.html" class="external-link">pushViewport</a></span><span class="op">(</span><span class="va">vp</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="anno_cat-3.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="va">annoList</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/rowAnnotation.html" class="external-link">rowAnnotation</a></span><span class="op">(</span></span>
-<span class="r-in">  hi <span class="op">=</span> <span class="fu">anno_cat</span><span class="op">(</span><span class="va">cats</span>, which <span class="op">=</span> <span class="st">"row"</span>, border_col <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="cn">NULL</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html" class="external-link">draw</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">annoList</span>, row_split <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>, row_order <span class="op">=</span> <span class="fl">4</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/grid/viewports.html" class="external-link">pushViewport</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grid/viewport.html" class="external-link">viewport</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html" class="external-link">draw</a></span><span class="op">(</span><span class="fu">anno_cat</span><span class="op">(</span><span class="va">cats</span>, <span class="st">"row"</span>, legend_title <span class="op">=</span> <span class="st">"abcd"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="st">"Legend"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">annoList</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/rowAnnotation.html" class="external-link">rowAnnotation</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  hi <span class="op">=</span> <span class="fu">anno_cat</span><span class="op">(</span><span class="va">cats</span>, which <span class="op">=</span> <span class="st">"row"</span>, border_col <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="cn">NULL</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html" class="external-link">draw</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">annoList</span>, row_split <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>, row_order <span class="op">=</span> <span class="fl">4</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/grid/viewports.html" class="external-link">pushViewport</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grid/viewport.html" class="external-link">viewport</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html" class="external-link">draw</a></span><span class="op">(</span><span class="fu">anno_cat</span><span class="op">(</span><span class="va">cats</span>, <span class="st">"row"</span>, legend_title <span class="op">=</span> <span class="st">"abcd"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="st">"Legend"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="anno_cat-4.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>

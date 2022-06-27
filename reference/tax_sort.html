@@ -34,16 +34,13 @@ at is ignored when by is &quot;rev&quot;."><meta property="og:image" content="ht
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.1.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav"><li>
   <a href="../reference/index.html">Reference</a>
-</li>
-<li>
-  <a href="../articles/learn/exercises.html">Learn</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -79,6 +76,9 @@ at is ignored when by is &quot;rev&quot;."><meta property="og:image" content="ht
       <a href="../articles/web-only/atlas1006.html">Example analyses with atlas1006 data</a>
     </li>
   </ul></li>
+<li>
+  <a href="../articles/learn/exercises.html">Learn</a>
+</li>
 <li>
   <a href="../news/index.html">News</a>
 </li>
@@ -121,16 +121,16 @@ or a rank name, for sorting at that rank.
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">tax_sort</span><span class="op">(</span>
-  <span class="va">data</span>,
-  by <span class="op">=</span> <span class="st">"name"</span>,
-  at <span class="op">=</span> <span class="st">"names"</span>,
-  <span class="va">...</span>,
-  tree_warn <span class="op">=</span> <span class="cn">TRUE</span>,
-  verbose <span class="op">=</span> <span class="cn">TRUE</span>,
-  trans <span class="op">=</span> <span class="st">"identity"</span>,
-  use_counts <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tax_sort</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  by <span class="op">=</span> <span class="st">"name"</span>,</span>
+<span>  at <span class="op">=</span> <span class="st">"names"</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  tree_warn <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  trans <span class="op">=</span> <span class="st">"identity"</span>,</span>
+<span>  use_counts <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -185,19 +185,19 @@ if using a summary stat function in <code>by</code></p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://dx.plos.org/10.1371/journal.pone.0061217" class="external-link">phyloseq</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"dietswap"</span>, package <span class="op">=</span> <span class="st">"microbiome"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">dietswap</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://dx.plos.org/10.1371/journal.pone.0061217" class="external-link">phyloseq</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"dietswap"</span>, package <span class="op">=</span> <span class="st">"microbiome"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dietswap</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> phyloseq-class experiment-level object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> otu_table()   OTU Table:         [ 130 taxa and 222 samples ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sample_data() Sample Data:       [ 222 samples by 8 sample variables ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># reverse current order</span></span>
-<span class="r-in"><span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">tax_sort</span><span class="op">(</span><span class="st">"rev"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html" class="external-link">tax_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">30</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># reverse current order</span></span></span>
+<span class="r-in"><span><span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">tax_sort</span><span class="op">(</span><span class="st">"rev"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html" class="external-link">tax_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">30</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Taxonomy Table:     [30 taxa by 3 taxonomic ranks]:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                   Phylum           Family                    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Yersinia et rel.                  "Proteobacteria" "Proteobacteria"          </span>
@@ -261,12 +261,12 @@ if using a summary stat function in <code>by</code></p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Pseudomonas                       "Pseudomonas"                      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Proteus et rel.                   "Proteus et rel."                  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Propionibacterium                 "Propionibacterium"                </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># sort alphabetically by a taxonomic rank (or "names" for taxa_names)</span></span>
-<span class="r-in"><span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">tax_sort</span><span class="op">(</span>by <span class="op">=</span> <span class="st">"name"</span>, at <span class="op">=</span> <span class="st">"Phylum"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html" class="external-link">tax_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">30</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># sort alphabetically by a taxonomic rank (or "names" for taxa_names)</span></span></span>
+<span class="r-in"><span><span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">tax_sort</span><span class="op">(</span>by <span class="op">=</span> <span class="st">"name"</span>, at <span class="op">=</span> <span class="st">"Phylum"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html" class="external-link">tax_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">30</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Taxonomy Table:     [30 taxa by 3 taxonomic ranks]:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                    Phylum           Family                    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Actinomycetaceae                   "Actinobacteria" "Actinobacteria"          </span>
@@ -330,16 +330,16 @@ if using a summary stat function in <code>by</code></p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Anaerostipes caccae et rel.        "Anaerostipes caccae et rel."       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Anaerotruncus colihominis et rel.  "Anaerotruncus colihominis et rel." </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Anaerovorax odorimutans et rel.    "Anaerovorax odorimutans et rel."   </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># sequentially sorting by higher ranks</span></span>
-<span class="r-in"><span class="co"># sets tax_table in nested alphabetical order</span></span>
-<span class="r-in"><span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">tax_sort</span><span class="op">(</span>at <span class="op">=</span> <span class="st">"names"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">tax_sort</span><span class="op">(</span>at <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">tax_sort</span><span class="op">(</span>at <span class="op">=</span> <span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">tax_sort</span><span class="op">(</span>at <span class="op">=</span> <span class="st">"Phylum"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html" class="external-link">tax_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">30</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># sequentially sorting by higher ranks</span></span></span>
+<span class="r-in"><span><span class="co"># sets tax_table in nested alphabetical order</span></span></span>
+<span class="r-in"><span><span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">tax_sort</span><span class="op">(</span>at <span class="op">=</span> <span class="st">"names"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">tax_sort</span><span class="op">(</span>at <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">tax_sort</span><span class="op">(</span>at <span class="op">=</span> <span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">tax_sort</span><span class="op">(</span>at <span class="op">=</span> <span class="st">"Phylum"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html" class="external-link">tax_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">30</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Taxonomy Table:     [30 taxa by 3 taxonomic ranks]:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                    Phylum           Family          </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Actinomycetaceae                   "Actinobacteria" "Actinobacteria"</span>
@@ -403,12 +403,12 @@ if using a summary stat function in <code>by</code></p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Aneurinibacillus                   "Aneurinibacillus"                  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Bacillus                           "Bacillus"                          </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Enterococcus                       "Enterococcus"                      </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># sort by function e.g. total sum or median abundance</span></span>
-<span class="r-in"><span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">tax_sort</span><span class="op">(</span>by <span class="op">=</span> <span class="va">sum</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html" class="external-link">taxa_names</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># sort by function e.g. total sum or median abundance</span></span></span>
+<span class="r-in"><span><span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">tax_sort</span><span class="op">(</span>by <span class="op">=</span> <span class="va">sum</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html" class="external-link">taxa_names</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "Prevotella melaninogenica et rel."   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2] "Oscillospira guillermondii et rel."  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "Bacteroides vulgatus et rel."        </span>
@@ -429,13 +429,13 @@ if using a summary stat function in <code>by</code></p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [18] "Dorea formicigenerans et rel."       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [19] "Bacteroides uniformis et rel."       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [20] "Dialister"                           </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># transform to compositional data (proportions) before sorting</span></span>
-<span class="r-in"><span class="co"># note that abundances are returned untransformed</span></span>
-<span class="r-in"><span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">tax_sort</span><span class="op">(</span>by <span class="op">=</span> <span class="va">sum</span>, trans <span class="op">=</span> <span class="st">"compositional"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html" class="external-link">taxa_names</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># transform to compositional data (proportions) before sorting</span></span></span>
+<span class="r-in"><span><span class="co"># note that abundances are returned untransformed</span></span></span>
+<span class="r-in"><span><span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">tax_sort</span><span class="op">(</span>by <span class="op">=</span> <span class="va">sum</span>, trans <span class="op">=</span> <span class="st">"compositional"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html" class="external-link">taxa_names</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "Prevotella melaninogenica et rel."   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2] "Oscillospira guillermondii et rel."  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "Bacteroides vulgatus et rel."        </span>
@@ -456,12 +456,12 @@ if using a summary stat function in <code>by</code></p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [18] "Bacteroides uniformis et rel."       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [19] "Dialister"                           </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [20] "Dorea formicigenerans et rel."       </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># order by descending abundance in a single named sample</span></span>
-<span class="r-in"><span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">tax_sort</span><span class="op">(</span>by <span class="op">=</span> <span class="st">"Sample-1"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/otu_table-methods.html" class="external-link">otu_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="va">.</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># order by descending abundance in a single named sample</span></span></span>
+<span class="r-in"><span><span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">tax_sort</span><span class="op">(</span>by <span class="op">=</span> <span class="st">"Sample-1"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/otu_table-methods.html" class="external-link">otu_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="va">.</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> OTU Table:          [4 taxa and 8 samples]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                      taxa are columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          Bacteroides vulgatus et rel. Oscillospira guillermondii et rel.</span>
@@ -482,14 +482,14 @@ if using a summary stat function in <code>by</code></p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sample-6                           14                         13</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sample-7                           22                         15</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sample-8                          560                         19</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># sum order should always equal mean order if non-negative abundances</span></span>
-<span class="r-in"><span class="co"># don't forget to add na.rm = TRUE if you expect NAs in otu_table somehow</span></span>
-<span class="r-in"><span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">tax_sort</span><span class="op">(</span>by <span class="op">=</span> <span class="va">sum</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html" class="external-link">taxa_names</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># sum order should always equal mean order if non-negative abundances</span></span></span>
+<span class="r-in"><span><span class="co"># don't forget to add na.rm = TRUE if you expect NAs in otu_table somehow</span></span></span>
+<span class="r-in"><span><span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">tax_sort</span><span class="op">(</span>by <span class="op">=</span> <span class="va">sum</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html" class="external-link">taxa_names</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "Prevotella melaninogenica et rel."   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2] "Oscillospira guillermondii et rel."  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "Bacteroides vulgatus et rel."        </span>
@@ -510,18 +510,18 @@ if using a summary stat function in <code>by</code></p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [18] "Dorea formicigenerans et rel."       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [19] "Bacteroides uniformis et rel."       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [20] "Dialister"                           </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># if your phyloseq object has a phylogenetic tree,</span></span>
-<span class="r-in"><span class="co"># tax_sort will remove the tree, and warn you about this</span></span>
-<span class="r-in"><span class="co"># unless you disable that warning with tree_warn = FALSE</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># You can sort by abundance at higher taxonomic ranks,</span></span>
-<span class="r-in"><span class="co"># without losing lower rank info</span></span>
-<span class="r-in"><span class="co"># e.g. sort (descending) by phyla abundances</span></span>
-<span class="r-in"><span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">tax_sort</span><span class="op">(</span>by <span class="op">=</span> <span class="va">sum</span>, at <span class="op">=</span> <span class="st">"Phylum"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html" class="external-link">tax_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># if your phyloseq object has a phylogenetic tree,</span></span></span>
+<span class="r-in"><span><span class="co"># tax_sort will remove the tree, and warn you about this</span></span></span>
+<span class="r-in"><span><span class="co"># unless you disable that warning with tree_warn = FALSE</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># You can sort by abundance at higher taxonomic ranks,</span></span></span>
+<span class="r-in"><span><span class="co"># without losing lower rank info</span></span></span>
+<span class="r-in"><span><span class="co"># e.g. sort (descending) by phyla abundances</span></span></span>
+<span class="r-in"><span><span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">tax_sort</span><span class="op">(</span>by <span class="op">=</span> <span class="va">sum</span>, at <span class="op">=</span> <span class="st">"Phylum"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html" class="external-link">tax_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Taxonomy Table:     [6 taxa by 3 taxonomic ranks]:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                  Phylum          Family         </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Allistipes et rel.               "Bacteroidetes" "Bacteroidetes"</span>
@@ -537,13 +537,13 @@ if using a summary stat function in <code>by</code></p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Bacteroides ovatus et rel.       "Bacteroides ovatus et rel."      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Bacteroides plebeius et rel.     "Bacteroides plebeius et rel."    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Bacteroides splachnicus et rel.  "Bacteroides splachnicus et rel." </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># You can sort by ascending abundance (or prevalence etc) by reversing after</span></span>
-<span class="r-in"><span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">tax_sort</span><span class="op">(</span>by <span class="op">=</span> <span class="st">"prev"</span>, at <span class="op">=</span> <span class="st">"Phylum"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">tax_sort</span><span class="op">(</span>by <span class="op">=</span> <span class="st">"rev"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html" class="external-link">tax_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># You can sort by ascending abundance (or prevalence etc) by reversing after</span></span></span>
+<span class="r-in"><span><span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">tax_sort</span><span class="op">(</span>by <span class="op">=</span> <span class="st">"prev"</span>, at <span class="op">=</span> <span class="st">"Phylum"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">tax_sort</span><span class="op">(</span>by <span class="op">=</span> <span class="st">"rev"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html" class="external-link">tax_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Taxonomy Table:     [6 taxa by 3 taxonomic ranks]:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                             Phylum          Family         </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Uncultured Chroococcales    "Cyanobacteria" "Cyanobacteria"</span>

@@ -39,16 +39,13 @@ Alternatively you can directly access the distance matrix with dist_get()."><met
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.1.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav"><li>
   <a href="../reference/index.html">Reference</a>
-</li>
-<li>
-  <a href="../articles/learn/exercises.html">Learn</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -84,6 +81,9 @@ Alternatively you can directly access the distance matrix with dist_get()."><met
       <a href="../articles/web-only/atlas1006.html">Example analyses with atlas1006 data</a>
     </li>
   </ul></li>
+<li>
+  <a href="../articles/learn/exercises.html">Learn</a>
+</li>
 <li>
   <a href="../news/index.html">News</a>
 </li>
@@ -130,13 +130,13 @@ Alternatively you can directly access the distance matrix with dist_get().</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">dist_calc</span><span class="op">(</span>
-  <span class="va">data</span>,
-  dist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bray"</span>, <span class="st">"gunifrac"</span>, <span class="st">"unifrac"</span>, <span class="st">"wunifrac"</span>, <span class="st">"va-wunifrac"</span>, <span class="st">"aitchison"</span>,
-    <span class="st">"euclidean"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,
-  gunifrac_alpha <span class="op">=</span> <span class="fl">0.5</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">dist_calc</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  dist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bray"</span>, <span class="st">"gunifrac"</span>, <span class="st">"unifrac"</span>, <span class="st">"wunifrac"</span>, <span class="st">"va-wunifrac"</span>, <span class="st">"aitchison"</span>,</span>
+<span>    <span class="st">"euclidean"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
+<span>  gunifrac_alpha <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -195,12 +195,12 @@ OR pass an additional argument to <code>dist_calc("jaccard", binary = TRUE)</cod
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># bray curtis distance on genera-level features</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"dietswap"</span>, package <span class="op">=</span> <span class="st">"microbiome"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">bc</span> <span class="op">&lt;-</span> <span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">dist_calc</span><span class="op">(</span><span class="st">"bray"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">bc</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># bray curtis distance on genera-level features</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"dietswap"</span>, package <span class="op">=</span> <span class="st">"microbiome"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">bc</span> <span class="op">&lt;-</span> <span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">dist_calc</span><span class="op">(</span><span class="st">"bray"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">bc</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ps_extra object - a list with phyloseq and extras:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> phyloseq-class experiment-level object</span>
@@ -213,18 +213,18 @@ OR pass an additional argument to <code>dist_calc("jaccard", binary = TRUE)</cod
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> bray distance matrix of size 222 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0.7639533 0.7851213 0.6680796 0.7699252 0.80507 ...</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">bc</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">bc</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "ps_extra" "list"    </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># gunifrac distance using phyloseq input</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"esophagus"</span>, package <span class="op">=</span> <span class="st">"phyloseq"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">gunifrac</span> <span class="op">&lt;-</span> <span class="va">esophagus</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">dist_calc</span><span class="op">(</span><span class="st">"gunifrac"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="ps_extra-accessors.html">dist_get</a></span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># gunifrac distance using phyloseq input</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"esophagus"</span>, package <span class="op">=</span> <span class="st">"phyloseq"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">gunifrac</span> <span class="op">&lt;-</span> <span class="va">esophagus</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">dist_calc</span><span class="op">(</span><span class="st">"gunifrac"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="ps_extra-accessors.html">dist_get</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Registered S3 method overwritten by 'rmutil':</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   method         from</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   print.response httr</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">gunifrac</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">gunifrac</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "dist"</span>
 </code></pre></div>
     </div>

@@ -36,16 +36,13 @@ and do not affect ordering.'><meta property="og:image" content="https://david-ba
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.1.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav"><li>
   <a href="../reference/index.html">Reference</a>
-</li>
-<li>
-  <a href="../articles/learn/exercises.html">Learn</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -81,6 +78,9 @@ and do not affect ordering.'><meta property="og:image" content="https://david-ba
       <a href="../articles/web-only/atlas1006.html">Example analyses with atlas1006 data</a>
     </li>
   </ul></li>
+<li>
+  <a href="../articles/learn/exercises.html">Learn</a>
+</li>
 <li>
   <a href="../news/index.html">News</a>
 </li>
@@ -128,36 +128,36 @@ and do not affect ordering.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">comp_heatmap</span><span class="op">(</span>
-  <span class="va">data</span>,
-  taxa <span class="op">=</span> <span class="cn">NA</span>,
-  taxa_side <span class="op">=</span> <span class="st">"right"</span>,
-  tax_anno <span class="op">=</span> <span class="cn">NULL</span>,
-  taxon_renamer <span class="op">=</span> <span class="va">identity</span>,
-  samples <span class="op">=</span> <span class="cn">NA</span>,
-  sample_side <span class="op">=</span> <span class="fu"><a href="adjacent_side.html">adjacent_side</a></span><span class="op">(</span><span class="va">taxa_side</span><span class="op">)</span>,
-  sample_anno <span class="op">=</span> <span class="cn">NULL</span>,
-  sample_names_show <span class="op">=</span> <span class="cn">FALSE</span>,
-  colors <span class="op">=</span> <span class="fu"><a href="heat_palette.html">heat_palette</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Rocket"</span>, rev <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,
-  numbers <span class="op">=</span> <span class="cn">NULL</span>,
-  sample_seriation <span class="op">=</span> <span class="st">"OLO_ward"</span>,
-  sample_ser_dist <span class="op">=</span> <span class="st">"euclidean"</span>,
-  sample_ser_counts <span class="op">=</span> <span class="op">!</span><span class="va">sample_ser_dist</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"euclidean"</span>, <span class="st">"maximum"</span>, <span class="st">"manhattan"</span>,
-    <span class="st">"canberra"</span>, <span class="st">"binary"</span><span class="op">)</span>,
-  sample_ser_trans <span class="op">=</span> <span class="cn">NULL</span>,
-  tax_seriation <span class="op">=</span> <span class="st">"OLO_ward"</span>,
-  tax_ser_dist <span class="op">=</span> <span class="st">"euclidean"</span>,
-  tax_ser_counts <span class="op">=</span> <span class="cn">FALSE</span>,
-  tax_ser_trans <span class="op">=</span> <span class="cn">NULL</span>,
-  numbers_trans <span class="op">=</span> <span class="cn">NULL</span>,
-  numbers_zero_replace <span class="op">=</span> <span class="fl">0</span>,
-  numbers_use_counts <span class="op">=</span> <span class="cn">TRUE</span>,
-  grid_col <span class="op">=</span> <span class="st">"white"</span>,
-  grid_lwd <span class="op">=</span> <span class="fl">0.5</span>,
-  name <span class="op">=</span> <span class="st">"Abd."</span>,
-  anno_tax <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">comp_heatmap</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  taxa <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  taxa_side <span class="op">=</span> <span class="st">"right"</span>,</span>
+<span>  tax_anno <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  taxon_renamer <span class="op">=</span> <span class="va">identity</span>,</span>
+<span>  samples <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  sample_side <span class="op">=</span> <span class="fu"><a href="adjacent_side.html">adjacent_side</a></span><span class="op">(</span><span class="va">taxa_side</span><span class="op">)</span>,</span>
+<span>  sample_anno <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  sample_names_show <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  colors <span class="op">=</span> <span class="fu"><a href="heat_palette.html">heat_palette</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Rocket"</span>, rev <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>  numbers <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  sample_seriation <span class="op">=</span> <span class="st">"OLO_ward"</span>,</span>
+<span>  sample_ser_dist <span class="op">=</span> <span class="st">"euclidean"</span>,</span>
+<span>  sample_ser_counts <span class="op">=</span> <span class="op">!</span><span class="va">sample_ser_dist</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"euclidean"</span>, <span class="st">"maximum"</span>, <span class="st">"manhattan"</span>,</span>
+<span>    <span class="st">"canberra"</span>, <span class="st">"binary"</span><span class="op">)</span>,</span>
+<span>  sample_ser_trans <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  tax_seriation <span class="op">=</span> <span class="st">"OLO_ward"</span>,</span>
+<span>  tax_ser_dist <span class="op">=</span> <span class="st">"euclidean"</span>,</span>
+<span>  tax_ser_counts <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  tax_ser_trans <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  numbers_trans <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  numbers_zero_replace <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  numbers_use_counts <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  grid_col <span class="op">=</span> <span class="st">"white"</span>,</span>
+<span>  grid_lwd <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  name <span class="op">=</span> <span class="st">"Abd."</span>,</span>
+<span>  anno_tax <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -310,7 +310,7 @@ or a pre-made ComplexHeatmap HeatmapAnnotation</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘dplyr’</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:stats’:</span>
@@ -319,84 +319,84 @@ or a pre-made ComplexHeatmap HeatmapAnnotation</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:base’:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>     intersect, setdiff, setequal, union</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"dietswap"</span>, package <span class="op">=</span> <span class="st">"microbiome"</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># create a couple of numerical variables to use</span></span>
-<span class="r-in"><span class="va">psq</span> <span class="op">&lt;-</span> <span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="ps_mutate.html">ps_mutate</a></span><span class="op">(</span></span>
-<span class="r-in">    weight <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/recode.html" class="external-link">recode</a></span><span class="op">(</span><span class="va">bmi_group</span>, obese <span class="op">=</span> <span class="fl">3</span>, overweight <span class="op">=</span> <span class="fl">2</span>, lean <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
-<span class="r-in">    female <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">sex</span> <span class="op">==</span> <span class="st">"female"</span>, true <span class="op">=</span> <span class="fl">1</span>, false <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>,</span>
-<span class="r-in">    african <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">nationality</span> <span class="op">==</span> <span class="st">"AFR"</span>, true <span class="op">=</span> <span class="fl">1</span>, false <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"><span class="va">psq</span> <span class="op">&lt;-</span> <span class="fu"><a href="tax_filter.html">tax_filter</a></span><span class="op">(</span><span class="va">psq</span>, min_prevalence <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">10</span>, min_sample_abundance <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">10</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"dietswap"</span>, package <span class="op">=</span> <span class="st">"microbiome"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># create a couple of numerical variables to use</span></span></span>
+<span class="r-in"><span><span class="va">psq</span> <span class="op">&lt;-</span> <span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="ps_mutate.html">ps_mutate</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    weight <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/recode.html" class="external-link">recode</a></span><span class="op">(</span><span class="va">bmi_group</span>, obese <span class="op">=</span> <span class="fl">3</span>, overweight <span class="op">=</span> <span class="fl">2</span>, lean <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    female <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">sex</span> <span class="op">==</span> <span class="st">"female"</span>, true <span class="op">=</span> <span class="fl">1</span>, false <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    african <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">nationality</span> <span class="op">==</span> <span class="st">"AFR"</span>, true <span class="op">=</span> <span class="fl">1</span>, false <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">psq</span> <span class="op">&lt;-</span> <span class="fu"><a href="tax_filter.html">tax_filter</a></span><span class="op">(</span><span class="va">psq</span>, min_prevalence <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">10</span>, min_sample_abundance <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Proportional min_prevalence given: 0.1 --&gt; min 23/222 samples.</span>
-<span class="r-in"><span class="va">psq</span> <span class="op">&lt;-</span> <span class="fu"><a href="tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="va">psq</span>, <span class="st">"Genus"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># randomly select 20 taxa from the 40 top taxa, and 40 random samples</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">taxa</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="tax_top.html">tax_top</a></span><span class="op">(</span><span class="va">psq</span>, n <span class="op">=</span> <span class="fl">40</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">samples</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">122</span>, size <span class="op">=</span> <span class="fl">40</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">comp_heatmap</span><span class="op">(</span>data <span class="op">=</span> <span class="va">psq</span>, taxa <span class="op">=</span> <span class="va">taxa</span>, samples <span class="op">=</span> <span class="va">samples</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">psq</span> <span class="op">&lt;-</span> <span class="fu"><a href="tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="va">psq</span>, <span class="st">"Genus"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># randomly select 20 taxa from the 40 top taxa, and 40 random samples</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">taxa</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="tax_top.html">tax_top</a></span><span class="op">(</span><span class="va">psq</span>, n <span class="op">=</span> <span class="fl">40</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">samples</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">122</span>, size <span class="op">=</span> <span class="fl">40</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">comp_heatmap</span><span class="op">(</span>data <span class="op">=</span> <span class="va">psq</span>, taxa <span class="op">=</span> <span class="va">taxa</span>, samples <span class="op">=</span> <span class="va">samples</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="comp_heatmap-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># transforming taxon abundances #</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># NOTE: if you plan on transforming taxa (e.g. to compositional data or clr)</span></span>
-<span class="r-in"><span class="co"># but only want to plot a subset of the taxa (e.g. most abundant)</span></span>
-<span class="r-in"><span class="co"># you should NOT subset the original phyloseq before transformation!</span></span>
-<span class="r-in"><span class="co"># Instead, choose the subset of taxa plotted with:</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Note 2, choose a symmetrical palette for clr-transformed data</span></span>
-<span class="r-in"><span class="va">psq</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"clr"</span>, zero_replace <span class="op">=</span> <span class="st">"halfmin"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">comp_heatmap</span><span class="op">(</span></span>
-<span class="r-in">    taxa <span class="op">=</span> <span class="va">taxa</span>, samples <span class="op">=</span> <span class="va">samples</span>, colors <span class="op">=</span> <span class="fu"><a href="heat_palette.html">heat_palette</a></span><span class="op">(</span>sym <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># transforming taxon abundances #</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># NOTE: if you plan on transforming taxa (e.g. to compositional data or clr)</span></span></span>
+<span class="r-in"><span><span class="co"># but only want to plot a subset of the taxa (e.g. most abundant)</span></span></span>
+<span class="r-in"><span><span class="co"># you should NOT subset the original phyloseq before transformation!</span></span></span>
+<span class="r-in"><span><span class="co"># Instead, choose the subset of taxa plotted with:</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Note 2, choose a symmetrical palette for clr-transformed data</span></span></span>
+<span class="r-in"><span><span class="va">psq</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"clr"</span>, zero_replace <span class="op">=</span> <span class="st">"halfmin"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">comp_heatmap</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    taxa <span class="op">=</span> <span class="va">taxa</span>, samples <span class="op">=</span> <span class="va">samples</span>, colors <span class="op">=</span> <span class="fu"><a href="heat_palette.html">heat_palette</a></span><span class="op">(</span>sym <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-plt img"><img src="comp_heatmap-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Almost all the taxa have high values (&gt;&gt; 0) because they are a highly</span></span>
-<span class="r-in"><span class="co"># abundant subset taken after clr transformation was calculated on all taxa</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># See how just taking the first 30 taxa from the dataset gives more balance</span></span>
-<span class="r-in"><span class="va">psq</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"clr"</span>, zero_replace <span class="op">=</span> <span class="st">"halfmin"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">comp_heatmap</span><span class="op">(</span></span>
-<span class="r-in">    taxa <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">30</span>, samples <span class="op">=</span> <span class="va">samples</span>, colors <span class="op">=</span> <span class="fu"><a href="heat_palette.html">heat_palette</a></span><span class="op">(</span>sym <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Almost all the taxa have high values (&gt;&gt; 0) because they are a highly</span></span></span>
+<span class="r-in"><span><span class="co"># abundant subset taken after clr transformation was calculated on all taxa</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># See how just taking the first 30 taxa from the dataset gives more balance</span></span></span>
+<span class="r-in"><span><span class="va">psq</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"clr"</span>, zero_replace <span class="op">=</span> <span class="st">"halfmin"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">comp_heatmap</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    taxa <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">30</span>, samples <span class="op">=</span> <span class="va">samples</span>, colors <span class="op">=</span> <span class="fu"><a href="heat_palette.html">heat_palette</a></span><span class="op">(</span>sym <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-plt img"><img src="comp_heatmap-3.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># annotating taxa #</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Notes:</span></span>
-<span class="r-in"><span class="co"># - Unlike cor_heatmap, taxa are not annotated by default</span></span>
-<span class="r-in"><span class="co"># - Detection threshold set to 50 as HITchip example data seems to have background noise</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">comp_heatmap</span><span class="op">(</span></span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">psq</span>, taxa <span class="op">=</span> <span class="va">taxa</span>, samples <span class="op">=</span> <span class="va">samples</span>,</span>
-<span class="r-in">  tax_anno <span class="op">=</span> <span class="fu"><a href="taxAnnotation.html">taxAnnotation</a></span><span class="op">(</span>Prev <span class="op">=</span> <span class="fu"><a href="anno_tax_prev.html">anno_tax_prev</a></span><span class="op">(</span>undetected <span class="op">=</span> <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># annotating taxa #</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Notes:</span></span></span>
+<span class="r-in"><span><span class="co"># - Unlike cor_heatmap, taxa are not annotated by default</span></span></span>
+<span class="r-in"><span><span class="co"># - Detection threshold set to 50 as HITchip example data seems to have background noise</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">comp_heatmap</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">psq</span>, taxa <span class="op">=</span> <span class="va">taxa</span>, samples <span class="op">=</span> <span class="va">samples</span>,</span></span>
+<span class="r-in"><span>  tax_anno <span class="op">=</span> <span class="fu"><a href="taxAnnotation.html">taxAnnotation</a></span><span class="op">(</span>Prev <span class="op">=</span> <span class="fu"><a href="anno_tax_prev.html">anno_tax_prev</a></span><span class="op">(</span>undetected <span class="op">=</span> <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="comp_heatmap-4.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># annotating samples #</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">htmp</span> <span class="op">&lt;-</span> <span class="va">psq</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"clr"</span>, zero_replace <span class="op">=</span> <span class="st">"halfmin"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">comp_heatmap</span><span class="op">(</span></span>
-<span class="r-in">    taxa <span class="op">=</span> <span class="va">taxa</span>, samples <span class="op">=</span> <span class="va">samples</span>, colors <span class="op">=</span> <span class="fu"><a href="heat_palette.html">heat_palette</a></span><span class="op">(</span>sym <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span class="r-in">    sample_anno <span class="op">=</span> <span class="fu"><a href="sampleAnnotation.html">sampleAnnotation</a></span><span class="op">(</span></span>
-<span class="r-in">      Nation. <span class="op">=</span> <span class="fu"><a href="anno_sample_cat.html">anno_sample_cat</a></span><span class="op">(</span><span class="st">"nationality"</span>, legend_title <span class="op">=</span> <span class="st">"Nation."</span><span class="op">)</span></span>
-<span class="r-in">    <span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># annotating samples #</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">htmp</span> <span class="op">&lt;-</span> <span class="va">psq</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"clr"</span>, zero_replace <span class="op">=</span> <span class="st">"halfmin"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">comp_heatmap</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    taxa <span class="op">=</span> <span class="va">taxa</span>, samples <span class="op">=</span> <span class="va">samples</span>, colors <span class="op">=</span> <span class="fu"><a href="heat_palette.html">heat_palette</a></span><span class="op">(</span>sym <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    sample_anno <span class="op">=</span> <span class="fu"><a href="sampleAnnotation.html">sampleAnnotation</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      Nation. <span class="op">=</span> <span class="fu"><a href="anno_sample_cat.html">anno_sample_cat</a></span><span class="op">(</span><span class="st">"nationality"</span>, legend_title <span class="op">=</span> <span class="st">"Nation."</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>coercing non-character anno_cat annotation data to character</span>
-<span class="r-in"><span class="va">htmp</span></span>
+<span class="r-in"><span><span class="va">htmp</span></span></span>
 <span class="r-plt img"><img src="comp_heatmap-5.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># legends from `anno_sample_cat()` are stored as an attribute of the Heatmap</span></span>
-<span class="r-in"><span class="fu">ComplexHeatmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html" class="external-link">draw</a></span><span class="op">(</span></span>
-<span class="r-in">  object <span class="op">=</span> <span class="va">htmp</span>,</span>
-<span class="r-in">  annotation_legend_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">htmp</span>, <span class="st">"AnnoLegends"</span><span class="op">)</span>, merge_legends <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># legends from `anno_sample_cat()` are stored as an attribute of the Heatmap</span></span></span>
+<span class="r-in"><span><span class="fu">ComplexHeatmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html" class="external-link">draw</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  object <span class="op">=</span> <span class="va">htmp</span>,</span></span>
+<span class="r-in"><span>  annotation_legend_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">htmp</span>, <span class="st">"AnnoLegends"</span><span class="op">)</span>, merge_legends <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="comp_heatmap-6.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
