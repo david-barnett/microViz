@@ -67,9 +67,22 @@
 #'   dist_get()
 #' class(gunifrac)
 dist_calc <- function(data,
-                      dist = c("bray", "gunifrac", "unifrac", "wunifrac", "va-wunifrac", "aitchison", "euclidean")[1],
+                      dist = "bray",
                       gunifrac_alpha = 0.5,
                       ...) {
+
+  # check valid distance name was supplied
+  if (!rlang::is_string(dist)) stop("dist must be name of distance/dissimilarity")
+  rlang::arg_match(
+    arg = dist, multiple = FALSE,
+    values = union(
+      c(
+        "bray", "gunifrac", "unifrac", "wunifrac", "va-wunifrac",
+        "aitchison", "robust.aitchison", "euclidean"
+      ),
+      unlist(phyloseq::distanceMethodList)
+    )
+  )
 
   # check input data object class
   distCalcDataValidate(data)
@@ -84,9 +97,9 @@ dist_calc <- function(data,
   info <- info_get(data)
 
   # calculate distance matrix #
-  if (identical(dist, "aitchison")) {
-    # aitchison distance
-    distMat <- distMatAitchison(ps = ps, info = info)
+  if (identical(dist, "aitchison") || identical(dist, "robust.aitchison")) {
+    # aitchison distance (or robust aitchison)
+    distMat <- distMatAitchison(ps = ps, dist = dist, info = info)
   } else if (grepl(pattern = "unifrac", dist)) {
     # unifrac distances using GUniFrac package
     # define unifrac result ID required by GUniFrac package
@@ -121,18 +134,22 @@ dist_calc <- function(data,
 
 
 
-# calculates aitchison distance matrix from phyloseq: ps
-# (ps_extra info required for transformation check)
-distMatAitchison <- function(ps, info) {
-  if (identical(info[["tax_transform"]], "clr")) {
+# calculates (robust.)aitchison distance matrix from phyloseq: ps
+# (ps_extra `info` required for transformation check)
+#
+distMatAitchison <- function(ps, dist, info) {
+  trInfo <- info[["tax_transform"]]
+  if (identical(trInfo, "clr") || identical(trInfo, "rclr")) {
     stop(
       "dist_calc 'aitchison' distance requires count data\n",
-      " - your data are clr-transformed (according to the ps_extra info)",
+      " - your data are ", trInfo, "-transformed (according to ps_extra info)",
       "\n - see the ?dist_calc details section for more info"
     )
   }
-  distMat <- t(microbiome::abundances(x = ps, transform = "clr")) %>%
-    stats::dist(method = "euclidean")
+  if (dist == "aitchison") trans <- "clr"
+  if (dist == "robust.aitchison") trans <- "rclr"
+  transformedOTUtable <- t(microbiome::abundances(x = ps, transform = trans))
+  distMat <- stats::dist(transformedOTUtable, method = "euclidean")
   return(distMat)
 }
 

@@ -15,6 +15,32 @@ test_that("gunifrac alpha = 1 is wunifrac", {
 })
 
 
+test_that("dist_calc rclr and euclid same as robust aitchison", {
+  local_edition(3)
+  robustAitchVeg <- corncob::soil_phylum_small %>%
+    otu_get() %>%
+    vegan::vegdist(method = "robust.aitchison")
+
+  robustAitchViz <- corncob::soil_phylum_small %>%
+    dist_calc(dist = "robust.aitchison") %>%
+    dist_get()
+
+  expect_equal(
+    object = robustAitchVeg, expected = robustAitchViz,
+    tolerance = 0.0000001, ignore_attr = c("call", "method")
+  )
+
+  rclrEuclid <- corncob::soil_phylum_small %>%
+    tax_transform("rclr") %>%
+    dist_calc(dist = "euclidean") %>%
+    dist_get()
+
+  expect_equal(
+    object = robustAitchVeg, expected = rclrEuclid,
+    tolerance = 0.0000001, ignore_attr = c("call", "method")
+  )
+})
+
 test_that("dist_calc throws errors", {
   expect_error(
     object = dist_calc(
@@ -24,5 +50,15 @@ test_that("dist_calc throws errors", {
     regexp = "dist_calc 'aitchison' distance requires count data"
   )
 
+  expect_error(
+    object = dist_calc(
+      data = tax_transform(corncob::soil_phylum_small, trans = "rclr"),
+      dist = "aitchison"
+    ),
+    regexp = "dist_calc 'aitchison' distance requires count data"
+  )
+
   expect_error(dist_calc(data = 2), regexp = "data is class: numeric")
 })
+
+

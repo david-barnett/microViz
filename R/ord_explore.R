@@ -1130,7 +1130,8 @@ dist_choices <- function(data, type) {
     "none" = "none: no distance used for PCA/RDA/CCA",
     "bray" = "bray: Bray-Curtis",
     "aitchison" = "aitchison: CLR & Euclidean",
-    "euclidean" = "euclidean",
+    "robust.aitchison" = "robust aitchison: rCLR & Euclidean",
+    "euclidean" = "Euclidean",
     "jsd" = "jsd: Jensen-Shannon Divergence",
     "gunifrac" = "gunifrac: Generalised UniFrac, alpha=0.5",
     "unifrac" = "unifrac: unweighted UniFrac",
@@ -1165,9 +1166,10 @@ trans_choices <- function(type) {
   # individual options
   all <- list(
     "identity" = "identity: no transformation",
-    "clr" = "clr: centred log ratio",
+    "clr" = "clr: centered log ratio",
+    "rclr" = "rclr: robust centered log ratio",
     "log10p" = "log10p: log10(x + 1)",
-    "compositional" = "compositional",
+    "compositional" = "compositional: proportions",
     "hellinger" = "hellinger",
     "binary" = "binary: presence-absence"
   )
@@ -1176,7 +1178,7 @@ trans_choices <- function(type) {
     all = names(all),
     identity = "identity",
     nonIdentity = setdiff(names(all), "identity"),
-    log = c("clr", "log10p")
+    log = c("clr", "rclr", "log10p")
   )
   # select choices by name, with value as long description
   choices <- purrr::reduce(l[type], intersect)
