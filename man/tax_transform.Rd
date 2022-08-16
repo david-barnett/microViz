@@ -66,7 +66,7 @@ extra info (used for annotating \code{ord_plot} ordinations):
 
 A few commonly used transformations:
 \itemize{
-\item "clr" performs the centered log ratio transformation using \code{microbiome::transform}
+\item "clr", or "rclr", perform the centered log ratio transformation, or the robust clr, using \code{microbiome::transform}
 \item "compositional" converts the data into proportions, from 0 to 1.
 \item "identity" does not transform the data, and records this choice for \code{ord_plot}
 \item "binary" can be used to transform tax abundances into presence/abundance data.
@@ -74,12 +74,15 @@ A few commonly used transformations:
 (don't forget to set zero_replace if there are any zeros in your data)
 }
 }
-\section{clr transformation note}{
+\section{(r)clr transformation note}{
 
 
 If any values are zero, the clr transform routine first adds a small
 pseudocount of min(relative abundance)/2 to all values. To avoid this, you
 can replace any zeros in advance by setting zero_replace to a number > 0.
+
+The rclr transform does not replace zeros. Instead, only non-zero features
+are transformed, using the geometric mean of non-zero features as denominator.
 }
 
 \section{Binary transformation notes}{

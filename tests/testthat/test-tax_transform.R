@@ -16,6 +16,9 @@ test_that("tax_transform doesn't change", {
   clr <- tax_transform(ps, trans = "clr", rank = "Family")
   expect_snapshot_csv(name = "diet_fam_clr", object = round(otu_get(clr), 4))
 
+  rclr <- tax_transform(ps, trans = "rclr", rank = "Family")
+  expect_snapshot_csv(name = "diet_fam_rclr", object = round(otu_get(rclr), 4))
+
   bin10 <- tax_transform(ps, rank = "Family", trans = "binary", undetected = 10)
   expect_snapshot_csv(name = "diet_fam_bin10", object = otu_get(bin10))
 
@@ -29,6 +32,12 @@ test_that("tax_transform doesn't change", {
   expect_error(object = {
     tax_transform(ps, rank = "Family", trans = "log2", zero_replace = 0)
   }, regexp = "711 zeros detected in otu_table")
+})
+
+test_that("clr and rclr equivalent with no zeros", {
+  testr <- dietswap %>% tax_transform("rclr", rank = "Family", zero_replace = 1) %>% otu_get()
+  testc <- dietswap %>% tax_transform("clr", rank = "Family", zero_replace = 1) %>% otu_get()
+  expect_equal(testr, testc, tolerance = 0.0000000001)
 })
 
 test_that("tax_transform 'maaslin2-default' chaining works", {

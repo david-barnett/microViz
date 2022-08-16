@@ -4,13 +4,7 @@
 \alias{dist_calc}
 \title{Calculate distances between pairs of samples in phyloseq object}
 \usage{
-dist_calc(
-  data,
-  dist = c("bray", "gunifrac", "unifrac", "wunifrac", "va-wunifrac", "aitchison",
-    "euclidean")[1],
-  gunifrac_alpha = 0.5,
-  ...
-)
+dist_calc(data, dist = "bray", gunifrac_alpha = 0.5, ...)
 }
 \arguments{
 \item{data}{ps_extra object, e.g. output from tax_transform()}
