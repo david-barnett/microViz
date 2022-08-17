@@ -1,7 +1,7 @@
-# microViz (development version)
+# microViz 0.9.3
 
 ## Features
-Robust clr and robust aitchison distance are now supported
+Robust clr and robust aitchison distance are now supported following their inclusion in vegan
 - `tax_transform` supports "rclr" (robust centered log ratio)
 - `dist_calc` supports "robust.aitchison" distance (as rclr & euclidean distance)
 
