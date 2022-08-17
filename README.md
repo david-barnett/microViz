@@ -79,7 +79,7 @@ following instructions.
 install.packages("devtools") 
 
 # To install the latest "released" version of this package
-devtools::install_github("david-barnett/microViz@0.9.2") # check 0.9.2 is the latest release
+devtools::install_github("david-barnett/microViz@0.9.3") # check 0.9.3 is the latest release
 
 # To install the very latest version:
 devtools::install_github("david-barnett/microViz")
@@ -295,8 +295,8 @@ aitchison_perm <- aitchison_dists %>%
     n_processes = 1, n_perms = 99, # you should use at least 999!
     variables = "bmi_group"
   )
-#> 2022-06-27 21:21:21 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2022-06-27 21:21:21 - Finished PERMANOVA
+#> 2022-08-17 15:36:11 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2022-08-17 15:36:12 - Finished PERMANOVA
 
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
@@ -327,8 +327,8 @@ your permanova directly using the `ord_plot` function with constraints
 perm2 <- aitchison_dists %>% 
   dist_permanova(variables = c("weight", "african", "sex"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2022-06-27 21:21:21 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2022-06-27 21:21:23 - Finished PERMANOVA
+#> 2022-08-17 15:36:12 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2022-08-17 15:36:13 - Finished PERMANOVA
 ```
 
 We’ll visualise the effect of nationality and bodyweight on sample
@@ -421,12 +421,12 @@ and by participating in this project you agree to abide by its terms.
 ``` r
 sessionInfo()
 #> R version 4.2.0 (2022-04-22)
-#> Platform: x86_64-apple-darwin17.0 (64-bit)
-#> Running under: macOS Big Sur/Monterey 10.16
+#> Platform: aarch64-apple-darwin20 (64-bit)
+#> Running under: macOS Monterey 12.5
 #> 
 #> Matrix products: default
-#> BLAS:   /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRblas.0.dylib
-#> LAPACK: /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRlapack.dylib
+#> BLAS:   /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/lib/libRblas.0.dylib
+#> LAPACK: /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/lib/libRlapack.dylib
 #> 
 #> locale:
 #> [1] en_GB.UTF-8/en_GB.UTF-8/en_GB.UTF-8/C/en_GB.UTF-8/en_GB.UTF-8
@@ -435,8 +435,8 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] ggplot2_3.3.6   dplyr_1.0.9     phyloseq_1.40.0 microViz_0.9.2 
-#> [5] testthat_3.1.4  devtools_2.4.3  usethis_2.1.6  
+#> [1] ggplot2_3.3.6   dplyr_1.0.9     phyloseq_1.40.0 microViz_0.9.3 
+#> [5] testthat_3.1.4  devtools_2.4.3  usethis_2.1.5  
 #> 
 #> loaded via a namespace (and not attached):
 #>   [1] Rtsne_0.16             colorspace_2.0-3       rjson_0.2.21          
@@ -451,29 +451,29 @@ sessionInfo()
 #>  [28] cluster_2.1.3          png_0.1-7              compiler_4.2.0        
 #>  [31] assertthat_0.2.1       Matrix_1.4-1           fastmap_1.1.0         
 #>  [34] cli_3.3.0              htmltools_0.5.2        prettyunits_1.1.1     
-#>  [37] tools_4.2.0            igraph_1.3.2           gtable_0.3.0          
+#>  [37] tools_4.2.0            igraph_1.3.1           gtable_0.3.0          
 #>  [40] glue_1.6.2             GenomeInfoDbData_1.2.8 reshape2_1.4.4        
 #>  [43] Rcpp_1.0.8.3           Biobase_2.56.0         vctrs_0.4.1           
 #>  [46] Biostrings_2.64.0      rhdf5filters_1.8.0     multtest_2.52.0       
 #>  [49] ape_5.6-2              nlme_3.1-157           iterators_1.0.14      
 #>  [52] xfun_0.31              stringr_1.4.0          ps_1.7.0              
 #>  [55] brio_1.1.3             lifecycle_1.0.1        zlibbioc_1.42.0       
-#>  [58] MASS_7.3-56            scales_1.2.0           TSP_1.2-0             
+#>  [58] MASS_7.3-57            scales_1.2.0           TSP_1.2-0             
 #>  [61] parallel_4.2.0         biomformat_1.24.0      rhdf5_2.40.0          
 #>  [64] RColorBrewer_1.1-3     ComplexHeatmap_2.12.0  yaml_2.3.5            
-#>  [67] memoise_2.0.1          gridExtra_2.3          stringi_1.7.6         
+#>  [67] memoise_2.0.1          gridExtra_2.3          stringi_1.7.8         
 #>  [70] highr_0.9              S4Vectors_0.34.0       desc_1.4.1            
-#>  [73] foreach_1.5.2          permute_0.9-7          seriation_1.3.5       
+#>  [73] foreach_1.5.2          permute_0.9-7          seriation_1.3.6       
 #>  [76] BiocGenerics_0.42.0    pkgbuild_1.3.1         shape_1.4.6           
-#>  [79] GenomeInfoDb_1.32.1    rlang_1.0.2            pkgconfig_2.0.3       
+#>  [79] GenomeInfoDb_1.32.1    rlang_1.0.4            pkgconfig_2.0.3       
 #>  [82] bitops_1.0-7           matrixStats_0.62.0     evaluate_0.15         
 #>  [85] lattice_0.20-45        purrr_0.3.4            Rhdf5lib_1.18.0       
 #>  [88] labeling_0.4.2         processx_3.5.3         tidyselect_1.1.2      
 #>  [91] plyr_1.8.7             magrittr_2.0.3         R6_2.5.1              
 #>  [94] magick_2.7.3           IRanges_2.30.0         generics_0.1.2        
-#>  [97] DBI_1.1.3              pillar_1.7.0           withr_2.5.0           
+#>  [97] DBI_1.1.2              pillar_1.8.0           withr_2.5.0           
 #> [100] mgcv_1.8-40            survival_3.3-1         RCurl_1.98-1.6        
-#> [103] tibble_3.1.7           corncob_0.2.0          crayon_1.5.1          
+#> [103] tibble_3.1.8           corncob_0.2.0          crayon_1.5.1          
 #> [106] utf8_1.2.2             microbiome_1.18.0      rmarkdown_2.14        
 #> [109] GetoptLong_1.0.5       viridis_0.6.2          grid_4.2.0            
 #> [112] data.table_1.14.2      callr_3.7.0            vegan_2.6-2           
