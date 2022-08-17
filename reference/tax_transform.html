@@ -25,7 +25,7 @@ or equivalently set the rank argument in tax_transform."><meta property="og:imag
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.3</span>
       </span>
     </div>
 
@@ -180,21 +180,23 @@ See below for notes about some of the available transformations.</p>
 <p><code>tax_transform</code> returns a <code>ps_extra</code> list containing the transformed phyloseq object and
 extra info (used for annotating <code>ord_plot</code> ordinations):</p><ul><li><p>tax_transform (a string recording the transformation),</p></li>
 <li><p>tax_agg (a string recording the taxonomic aggregation rank if specified here or earlier in <code>tax_agg</code>).</p></li>
-</ul><p>A few commonly used transformations:</p><ul><li><p>"clr" performs the centered log ratio transformation using <code><a href="https://rdrr.io/pkg/microbiome/man/transform.html" class="external-link">microbiome::transform</a></code></p></li>
+</ul><p>A few commonly used transformations:</p><ul><li><p>"clr", or "rclr", perform the centered log ratio transformation, or the robust clr, using <code><a href="https://rdrr.io/pkg/microbiome/man/transform.html" class="external-link">microbiome::transform</a></code></p></li>
 <li><p>"compositional" converts the data into proportions, from 0 to 1.</p></li>
 <li><p>"identity" does not transform the data, and records this choice for <code>ord_plot</code></p></li>
 <li><p>"binary" can be used to transform tax abundances into presence/abundance data.</p></li>
 <li><p>"log2" which performs a log base 2 transformation
 (don't forget to set zero_replace if there are any zeros in your data)</p></li>
 </ul></div>
-    <div id="clr-transformation-note">
-    <h2>clr transformation note</h2>
+    <div id="-r-clr-transformation-note">
+    <h2>(r)clr transformation note</h2>
     
 
 
 <p>If any values are zero, the clr transform routine first adds a small
 pseudocount of min(relative abundance)/2 to all values. To avoid this, you
 can replace any zeros in advance by setting zero_replace to a number &gt; 0.</p>
+<p>The rclr transform does not replace zeros. Instead, only non-zero features
+are transformed, using the geometric mean of non-zero features as denominator.</p>
     </div>
     <div id="binary-transformation-notes">
     <h2>Binary transformation notes</h2>
@@ -328,7 +330,7 @@ All abundances above 10 would be converted to 1s.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>
