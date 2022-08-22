@@ -42,7 +42,7 @@
 #' data(dietswap, package = "microbiome")
 #' ps <- dietswap
 #'
-#' # create some binary variables for easy visualisation
+#' # create some binary variables for easy visualization
 #' ps <- ps %>% ps_mutate(
 #'   female = if_else(sex == "female", 1, 0, NaN),
 #'   overweight = if_else(bmi_group == "overweight", 1, 0, NaN),
@@ -94,6 +94,7 @@ tax_model <- function(ps,
                       type = "lm",
                       variables = NULL,
                       formula = NULL,
+                      univariable = FALSE,
                       taxa = NULL,
                       verbose = TRUE,
                       ...) {
@@ -107,90 +108,87 @@ tax_model <- function(ps,
   # aggregate phyloseq at chosen rank level
   ps <- tax_agg(ps, rank = rank)[["ps"]]
 
-  # default to modelling all taxa
-  if (identical(taxa, NULL)) taxa <- TRUE
+  # check actual phyloseq taxa_names match this level after aggregating as
+  # sometimes the names are not changed by tax_agg (when no aggregation occurs)
+  ps <- taxEnsureNamesMatchRank(ps = ps, rank = rank, verbose = verbose)
 
-  # get taxon names "at this level"
-  possible_taxa <- unclass(phyloseq::tax_table(ps))[, rank, drop = TRUE]
-
-  # define which taxa to model
-  if (class(taxa) %in% c("numeric", "integer", "logical")) {
-
-    # get (subset of) taxon names "at this level"
-    taxons <- possible_taxa[taxa]
-    tt_names <- phyloseq::taxa_names(ps)[taxa]
-  } else if (any(!taxa %in% possible_taxa)) {
+  # get numeric index of taxa_names (taxa) in (aggregated) phyloseq (ps)
+  taxIndex <- taxIndexGet(ps, taxa)
+  if (anyNA(taxIndex)) {
     stop(
-      "The following taxon names are not present at this aggregation rank:\n",
-      paste(taxa[!taxa %in% possible_taxa], collapse = "\n")
+      "The following taxon names are not present at rank ", rank,
+      "\n", paste(taxa[is.na(taxIndex)], collapse = "\n")
     )
-  } else {
-    taxons <- taxa
-    taxa <- which(possible_taxa %in% taxa)
-    tt_names <- phyloseq::taxa_names(ps)[taxa]
   }
+  if (max(taxIndex) > phyloseq::ntaxa(ps)) {
+    stop(
+      "There are only ", phyloseq::ntaxa(ps),
+      " taxa at rank of ", rank, ", not ", max(taxIndex)
+    )
+  }
+  # do i need taxon names in addition or instead of taxIndex???
+  taxNames <- phyloseq::taxa_names(ps)[taxIndex]
 
-  # ensure actual taxa names match this level
-  not_matching <- tt_names != taxons
-  if (any(not_matching)) {
-    if (!isFALSE(verbose)) {
-      message(
-        "Changing ", sum(not_matching),
-        " taxa_names that don't match taxa found at level of ", rank
-      )
-      for (non_match in which(not_matching)) {
-        message(tt_names[non_match], " --> ", taxons[non_match])
-      }
-    }
-    phyloseq::taxa_names(ps)[taxa] <- taxons
-  }
-
-  # handle formula or variables
-  # defines right hand side of formula (which is same for all taxa)
-  if (
-    (identical(formula, NULL) && identical(variables, NULL)) ||
-      (!identical(formula, NULL) && !identical(variables, NULL))
-  ) {
-    stop("Provide EITHER formula (rhs) OR character vector of variables!")
-  } else if (!identical(formula, NULL)) {
-    rhs <- stats::as.formula(formula)
-  } else {
-    rhs <- stats::as.formula(paste(" ~", paste(variables, collapse = " + ")))
-  }
+  # make a string representing a formula
+  # can be a vector result if univariable = TRUE
+  fstring_rhs <- formulaMakerRHSstring(
+    formula = formula, variables = variables, univariable = univariable
+  )
 
   # define specific formulas and model each taxon individually
-  taxon_models <- future.apply::future_lapply(
-    future.seed = TRUE,
-    X = taxons,
-    FUN = function(taxon) {
-      if (isTRUE(verbose)) message("Modelling: ", taxon)
-      # combine lhs and rhs formula
-      f <- stats::update.formula(
-        rhs, stats::as.formula(paste0("`", taxon, "`", " ~ ."))
-      )
-      args <- list(formula = f, data = ps, ...)
-
-      if (identical(type, "bbdml")) {
-        type <- corncob::bbdml
-        # setup for corncob
-        # phi.formula is for modelling dispersion (doesn't take a response var)
-        phi <- args[["phi.formula"]]
-        if (identical(phi, NULL)) args[["phi.formula"]] <- rhs
-      } else {
-        # setup for all other models (in future, add more supported types?)
-        ps <- ps_otu2samdat(ps = ps, taxa = taxon)
-        args[["data"]] <- samdatAsDataframe(ps)
-      }
-      res <- do.call(type, args = args)
-      # replace junk call slot with something informative
-      # (albeit not actually a call)
-      res[["call"]] <- f
-      return(res)
-    }
-  )
-  names(taxon_models) <- taxons
+  taxon_models <- lapply(X = taxNames, FUN = function(taxon) {
+    if (isTRUE(verbose)) message("Modelling: ", taxon)
+    # loop over fstring_rhs in case this is a vector, i.e. in univariable mode
+    mods <- lapply(fstring_rhs, function(f) {
+      taxModel(ps = ps, type = type, taxon = taxon, fstring_rhs = f, ...)
+    })
+    names(mods) <- gsub(x = fstring_rhs, pattern = "^ ?~ ?", replacement = "")
+    if (length(mods) == 1) mods <- mods[[1]] # collapse in case of only 1 model
+    return(mods)
+  })
+  names(taxon_models) <- taxNames
   return(taxon_models)
 }
+
+# helper to actually model taxa
+# takes:
+# - ps: phyloseq at correct aggregation level
+# - type: (name of) modelling function
+# - taxon is name of taxon
+# - fstring_rhs is model formula right hand side as string
+# - verbose logical
+# - any other args, passed from tax_model
+taxModel <- function(ps, type, taxon, fstring_rhs, ...) {
+  # combine lhs and rhs formula
+  fstring <- paste0("`", taxon, "`", fstring_rhs)
+
+  # start argument list to be passed to modelling function
+  args <- list(formula = stats::as.formula(fstring), ...)
+
+  # set appropriate data arg for modelling type
+  if (identical(type, "bbdml") || identical(type, "ps_cor_test")) {
+    args[["data"]] <- ps
+  } else {
+    args[["data"]] <- ps_otu2samdat(ps, taxa = taxon) %>% samdatAsDataframe()
+  }
+
+  # additional setup for corncob
+  if (identical(type, "bbdml")) {
+    type <- corncob::bbdml
+    # phi.formula is for modelling dispersion (doesn't take a response var)
+    if (identical(args[["phi.formula"]], NULL)) {
+      args[["phi.formula"]] <- stats::as.formula(fstring_rhs)
+    }
+  }
+
+  # actually do the modelling
+  res <- do.call(type, args = args)
+  # replace junk call slot with something informative
+  # (albeit not actually a call)
+  res[["call"]] <- fstring
+  return(res)
+}
+
 
 # helper to safely check if corncob is installed and requested
 # and return type value safe for later if else constructs: "bbdml"
@@ -202,4 +200,79 @@ tax_modelTypeCorncob <- function(type) {
     stop("you must install corncob package to use 'bbdml' models")
   }
   return(type)
+}
+
+
+# Internal helper function for tax_model:
+# check actual phyloseq taxa_names match this level after aggregating as
+# sometimes the names are not changed by tax_agg
+# (i.e. when no aggregation occurs when rank = "unique")
+taxEnsureNamesMatchRank <- function(ps, rank, verbose){
+  taxaAtRank <- unname(unclass(phyloseq::tax_table(ps))[, rank, drop = TRUE])
+  if (!isTRUE(all.equal(phyloseq::taxa_names(ps), taxaAtRank))) {
+    not_matching <- phyloseq::taxa_names(ps) != taxaAtRank
+    if (!isFALSE(verbose)) {
+      message(
+        "After aggregation at rank of ", rank, ", ", sum(not_matching),
+        " taxa_names do not match their tax_table entries at ", rank, " level.",
+        "\nThe tax_table entries will be used in the modelling results."
+      )
+      for (i in which(not_matching)) {
+        message(
+          "Renaming: ",  phyloseq::taxa_names(ps)[i], " -> ", taxaAtRank[i]
+        )
+      }
+    }
+    phyloseq::taxa_names(ps) <- taxaAtRank
+  }
+  return(ps)
+}
+
+# internal helper to tax_model
+# get numeric index of taxa_names (taxa arg) in (aggregated) phyloseq (ps arg)
+taxIndexGet <- function(ps, taxa) {
+  if (any(is.na(taxa))) stop("taxa argument contains one or more NAs")
+
+  # default behaviour is to use all taxa
+  if (is.null(taxa)) return(seq_len(phyloseq::ntaxa(ps)))
+
+  # convert logical or character selections to numeric indices
+  if (is.logical(taxa)) return(which(taxa))
+  if (is.character(taxa)) return(match(unique(taxa), phyloseq::taxa_names(ps)))
+
+  # check bad numeric options
+  if (identical(taxa, 0) || identical(taxa, 0L)) stop("taxa cannot be 0")
+  if (!rlang::is_integerish(taxa)) stop("taxa cannot be non-integer numbers")
+  if (is.numeric(taxa)) return(unique(taxa))
+}
+
+
+# make string representing rhs of formula from a formula or vector of variables
+formulaMakerRHSstring <- function(formula, variables, univariable = FALSE) {
+  if (isTRUE(univariable) && is.null(variables)) {
+    stop("To fit one or more univariable models, use the variables argument")
+  }
+  if (!xor(is.null(formula), is.null(variables))) {
+    stop("Provide EITHER formula (rhs) OR character vector of variables!")
+  }
+  if (is.null(formula)) {
+    if (!is.character(variables)) stop("variables must be NULL or character")
+    if (anyNA(variables)) stop("variables argument must not contain NAs")
+    if (isTRUE(univariable)) {
+      return(paste(" ~", variables)) # return vector with no further checking
+    } else {
+      formula <- paste(" ~", paste(variables, collapse = " + "))
+      # proceed to further checks that this made a valid one-sided formula
+    }
+  }
+  if (!is.character(formula) && !inherits(formula, "formula")) {
+    stop("formula arg must be: NULL; a formula; or a string of a formula")
+  }
+  f <- stats::as.formula(formula)
+  if (length(f) != 2L) { # test idea from stats::asOneSidedFormula
+    stop("formula argument must include only right-hand side, e.g '~ a + b'")
+  }
+  # ref: https://stackoverflow.com/a/14671300/9005116
+  fstring <- paste(deparse(f, width.cutoff = 500), collapse = "")
+  return(fstring)
 }

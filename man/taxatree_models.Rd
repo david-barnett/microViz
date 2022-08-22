@@ -10,6 +10,7 @@ taxatree_models(
   type = "lm",
   variables = NULL,
   formula = NULL,
+  univariable = FALSE,
   verbose = "rank",
   ...
 )
