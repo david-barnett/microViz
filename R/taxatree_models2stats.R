@@ -106,12 +106,9 @@ taxatree_models2stats <- function(data,
   }
 
   # get stats
-  stats <- lapply(
-    X = names(taxon_models),
-    FUN = function(rank) {
-      models2stats(models = taxon_models[[rank]], rank = rank, fun = fun, ...)
-    }
-  )
+  stats <- lapply(X = names(taxon_models), FUN = function(rank) {
+    tax_models2stats(models = taxon_models[[rank]], rank = rank, fun = fun, ...)
+  })
   stats <- purrr::reduce(stats, rbind.data.frame)
   stats <- dplyr::mutate(
     .data = stats,
@@ -128,43 +125,68 @@ taxatree_models2stats <- function(data,
   return(data)
 }
 
+# runs model2stats on a simple list, using names of list items as taxon name
+tax_models2stats <- function(models, rank, fun = "auto", ...) {
+  # if univariable mode was on then this layer is a list e.g. v1:tax1;tax2;...
+  if (identical(class(models[[1]]), "list")) models <- purrr::flatten(models)
 
-model2stats <- function(model, name, rank, fun = "auto", ...) {
+  # map2 to avoid indexing by names, which are duplicated in univariable mode
+  out_list <- purrr::map2(
+    .x = seq_along(models), .y = names(models), .f = function(x, y) {
+      taxModel2stats(models[[x]], taxon = y, rank = rank, fun = fun, ...)
+    }
+  )
+  out <- purrr::reduce(out_list, rbind.data.frame)
+  return(out)
+}
+
+
+# fun: a function (not a string), to compute stats from model, or "auto"
+#
+taxModel2stats <- function(model,
+                           taxon,
+                           rank,
+                           fun = "auto",
+                           dropTerms = "(Intercept)",
+                           ...) {
   # infer tidying function from model type if "auto" fun
   if (identical(fun, "auto")) {
-    if (inherits(model, "bbdml")) {
-      # special tidying for corncob bbdml models
-      fun <- model2stats_bbdml
-    } else {
-      # for other models, assume broom::tidy has an appropriate method
-      fun <- broom::tidy
-    }
+    # for most models, assume broom::tidy has an appropriate method
+    fun <- broom::tidy
+    # special tidying for corncob bbdml models
+    if (inherits(model, "bbdml")) fun <- tidy_bbdml
   }
   # run tidying function, with any extra arguments
   df <- fun(model, ...)
+  # check result is actually a dataframe
   if (!inherits(df, "data.frame")) {
     stop(
       "`fun` function must return a data.frame or tibble.\n",
       "It returned an object of class: ", paste(class(df), collapse = " / ")
     )
   }
-  # add taxon name and rank and clean up dataframe
-  df <- dplyr::mutate(df, taxon = name, rank = rank)
-  df <- dplyr::relocate(df, dplyr::all_of(c("term", "taxon", "rank")))
-  df <- dplyr::filter(df, !grepl("(Intercept)", .data[["term"]]))
+
+  # add taxon name and clean up dataframe
+  df[["formula"]] <- attr(x = model, which = "formula_string", exact = TRUE)
+  df[["taxon"]] <- taxon
+  df[["rank"]] <- rank
+  df <- dplyr::relocate(df, dplyr::all_of(c("term", "taxon", "rank", "formula")))
+  df <- dplyr::filter(df, !.data[["term"]] %in% dropTerms)
   return(tibble::as_tibble(df))
 }
 
+
 # gets stats from corncob::bbdml model
-model2stats_bbdml <- function(model,
-                              param = "mu",
-                              method = corncob::waldt,
-                              ...) {
+tidy_bbdml <- function(model,
+                       param = "mu",
+                       method = corncob::waldt,
+                       ...) {
 
   # get stats from model
   stats <- method(model, ...)
   df <- as.data.frame(stats, optional = TRUE)
   df <- tibble::rownames_to_column(df, var = "rownames")
+  # standardise names in accordance with vibe of broom tidy guidelines
   df <- dplyr::rename(
     .data = df,
     p.value = "Pr(>|t|)", t.statistic = "t value",
@@ -181,14 +203,3 @@ model2stats_bbdml <- function(model,
   return(df)
 }
 
-# runs model2stats on a simple list, using names of list items as taxon name
-models2stats <- function(models, rank, fun = "auto", ...) {
-  out_list <- lapply(
-    X = names(models),
-    FUN = function(name) {
-      model2stats(models[[name]], name = name, rank = rank, fun = fun, ...)
-    }
-  )
-  out <- purrr::reduce(out_list, rbind.data.frame)
-  return(out)
-}

@@ -126,7 +126,6 @@ tax_model <- function(ps,
       " taxa at rank of ", rank, ", not ", max(taxIndex)
     )
   }
-  # do i need taxon names in addition or instead of taxIndex???
   taxNames <- phyloseq::taxa_names(ps)[taxIndex]
 
   # make a string representing a formula
@@ -147,6 +146,9 @@ tax_model <- function(ps,
     return(mods)
   })
   names(taxon_models) <- taxNames
+  # taxon_models will be nested list of lists if multiple formula strings given
+  # transposing is required to make the ultimate model object names be taxa
+  if (length(fstring_rhs) > 1) taxon_models <- purrr::transpose(taxon_models)
   return(taxon_models)
 }
 
@@ -183,9 +185,9 @@ taxModel <- function(ps, type, taxon, fstring_rhs, ...) {
 
   # actually do the modelling
   res <- do.call(type, args = args)
-  # replace junk call slot with something informative
-  # (albeit not actually a call)
-  res[["call"]] <- fstring
+  # attach formula information as attribute to model object
+  attr(res, which = "formula_string") <- fstring
+  res[["call"]] <- "See formula_string attribute of model."
   return(res)
 }
 

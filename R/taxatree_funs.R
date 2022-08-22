@@ -39,10 +39,9 @@ taxatree_nodes <- function(ps,
   }
 
   # check fun format
-  if (!is.list(fun) || !inherits(fun[[1]], "function") || any(is.null(names(fun)))) {
+  if (!is.list(fun) || !inherits(fun[[1]], "function") || is.null(names(fun))) {
     stop("fun must be a length 1 named list holding a function for a vector")
   }
-
 
   # check if there is more than one value in top level: if so, add a root level
   if (length(unique(unclass(phyloseq::tax_table(ps))[, 1])) > 1) {
