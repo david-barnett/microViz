@@ -28,6 +28,9 @@
 #' @param type name of modelling function to use, or the function itself
 #' @param variables vector of variable names to use in statistical model as right hand side (ignored if formula given)
 #' @param formula (alternative to variables arg) right hand side of a formula, as a formula object or character value
+#' @param univariable
+#' should multiple univariable models be run per taxon?
+#' one for each variable named in variables argument
 #' @param taxa taxa to model (named, numbered, logical selection, or defaulting to all if NULL)
 #' @param verbose message about progress and any taxa name modifications
 #' @param ... extra args passed directly to modelling function

@@ -27,6 +27,9 @@ tax_model(
 
 \item{formula}{(alternative to variables arg) right hand side of a formula, as a formula object or character value}
 
+\item{univariable}{should multiple univariable models be run per taxon?
+one for each variable named in variables argument}
+
 \item{taxa}{taxa to model (named, numbered, logical selection, or defaulting to all if NULL)}
 
 \item{verbose}{message about progress and any taxa name modifications}

@@ -28,6 +28,9 @@ taxatree_models(
 \item{formula}{(alternative to variables arg) right hand side of a formula,
 as a formula object or character value}
 
+\item{univariable}{should multiple univariable models be run per taxon?
+one for each variable named in variables argument}
+
 \item{verbose}{message about progress: "rank" only notifies which rank is being processed;
 TRUE notifies you about each taxon being processed; FALSE for no messages.}
 
