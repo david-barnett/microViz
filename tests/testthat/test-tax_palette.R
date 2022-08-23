@@ -65,8 +65,10 @@ test_that("tax_palette works", {
 })
 
 test_that("tax_palette_plot works", {
-  skip_on_os(c("windows", "mac"))
   local_edition(3)
+  # announcing (with standardised names) avoids deletion on skip
+  announce_snapshot_file(name = "tax-palette-plot.svg")
+  skip_on_os(c("windows", "mac"))
   ps <- tax_filter(corncob::ibd_phylo, min_prevalence = 10)
   ps <- tax_fix(ps)
   vdiffr::expect_doppelganger(

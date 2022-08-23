@@ -65,6 +65,10 @@ test_that("taxatree_plot plotting works", {
   local_edition(3)
   expect_equal(names(lm_plots), c("UC", "female", "age_scaled"))
   expect_s3_class(lm_plots[[1]], "ggplot")
+
+  # announcing (with standardised names) avoids deletion on skip
+  announce_snapshot_file(name = "taxatree-plot-uc.svg")
+  announce_snapshot_file(name = "taxatree-plot-age.svg")
   skip_on_os(c("windows", "mac"))
   vdiffr::expect_doppelganger("taxatree_plot_UC", lm_plots$UC)
   vdiffr::expect_doppelganger("taxatree_plot_age", lm_plots$age_scaled)
@@ -83,6 +87,10 @@ test_that("taxatree_plot plotting works with multiple sig markers", {
   local_edition(3)
   expect_equal(names(lmp_multiSig), c("UC", "female", "age_scaled"))
   expect_s3_class(lmp_multiSig[[1]], "ggplot")
+
+  # announcing (with standardised names) avoids deletion on skip
+  announce_snapshot_file(name = "taxatree-plot-uc-m.svg")
+  announce_snapshot_file(name = "taxatree-plot-age-m.svg")
   skip_on_os(c("windows", "mac"))
   vdiffr::expect_doppelganger("taxatree_plot_UC_m", lmp_multiSig$UC)
   vdiffr::expect_doppelganger("taxatree_plot_age_m", lmp_multiSig$age_scaled)
