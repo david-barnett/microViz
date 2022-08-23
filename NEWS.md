@@ -1,5 +1,8 @@
 # microViz (development version)
 
+## Fixes
+- No more deprecation warnings in taxatree_plot_labels
+
 # microViz 0.9.3
 
 ## Features

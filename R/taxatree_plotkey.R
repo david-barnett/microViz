@@ -248,8 +248,8 @@ taxatree_plot_labelsQuadrant <- function(p,
     data = function(d) {
       dplyr::filter(
         .data = d,
-        dplyr::across(dplyr::all_of(pos), ~ . >= 0),
-        dplyr::across(dplyr::all_of(neg), ~ . < 0),
+        dplyr::if_all(dplyr::all_of(pos), .fns = ~ . >= 0),
+        dplyr::if_all(dplyr::all_of(neg), .fns = ~ . < 0),
         .data[[label_var]]
       )
     },
