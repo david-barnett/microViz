@@ -22,6 +22,10 @@
 #' @param univariable
 #' should multiple univariable models be run per taxon?
 #' one for each variable named in variables argument
+#' @param use_future
+#' if TRUE parallel processing with future is possible, see details of ?tax_model.
+#' @param checkVars check variance of variables?
+#' @param checkNA check variables for NAs?
 #' @param verbose
 #' message about progress: "rank" only notifies which rank is being processed;
 #' TRUE notifies you about each taxon being processed; FALSE for no messages.
@@ -34,6 +38,9 @@ taxatree_models <- function(ps,
                             variables = NULL,
                             formula = NULL,
                             univariable = FALSE,
+                            use_future = FALSE,
+                            checkVars = TRUE,
+                            checkNA = "warning",
                             verbose = "rank",
                             ...) {
   data <- as_ps_extra(ps)
@@ -42,12 +49,12 @@ taxatree_models <- function(ps,
   taxatree_modelsCheckDupes(ps = ps, ranks = ranks)
 
   tax_models_list <- lapply(
-    X = ranks,
-    function(r) {
+    X = ranks, FUN = function(r) {
       if (!isFALSE(verbose)) message(Sys.time(), " - modelling at rank: ", r)
       models <- tax_model(
-        ps = ps, rank = r, type = type, variables = variables,
-        formula = formula, univariable = univariable, verbose = verbose, ...
+        ps = ps, rank = r, type = type, variables = variables, formula = formula,
+        univariable = univariable, checkVars = checkVars, checkNA = checkNA,
+        verbose = verbose, use_future = use_future, ...
       )
       return(models)
     }

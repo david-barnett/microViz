@@ -20,22 +20,36 @@
 #'
 #' @details
 #' `tax_model` and `taxatree_models` can use parallel processing with the `future` package.
-#' This can speed up analysis if you have many taxa to model.
-#' Run a line like this beforehand: `future::plan(future::multisession, workers = 3)`
+#' This can speed up analysis if you have many taxa to model. Set use_future = TRUE and
+#' run a line like this before doing your modelling: `future::plan(future::multisession, workers = 3)`
+#' (This requires the future and future.apply packages to be installed.)
 #'
 #' @param ps phyloseq object
 #' @param rank name of taxonomic rank to aggregate to and model taxa at
 #' @param type name of modelling function to use, or the function itself
-#' @param variables vector of variable names to use in statistical model as right hand side (ignored if formula given)
-#' @param formula (alternative to variables arg) right hand side of a formula, as a formula object or character value
+#' @param variables
+#' vector of variable names to use in statistical model as right hand side
+#' (ignored if formula given)
+#' @param formula
+#' (alternative to variables arg) right hand side of a formula,
+#' as a formula object or character value
 #' @param univariable
 #' should multiple univariable models be run per taxon?
 #' one for each variable named in variables argument
-#' @param taxa taxa to model (named, numbered, logical selection, or defaulting to all if NULL)
+#' @param taxa
+#' taxa to model (named, numbered, logical selection, or defaulting to all if NULL)
+#' @param use_future
+#' if TRUE parallel processing with future is possible, see details.
+#' @param return_psx if TRUE result will be returned attached to ps_extra object
+#' @param checkVars should the predictor variables be checked for zero variance?
+#' @param checkNA
+#' One of "stop", "warning", "message", or "allow", which
+#' indicates whether to check predictor variables for NAs, and how to report any NAs if present?
 #' @param verbose message about progress and any taxa name modifications
 #' @param ... extra args passed directly to modelling function
 #'
-#' @return named list of model objects or list of lists
+#' @return
+#' Named list of model objects or list of lists. Or, if return_psx is TRUE, a ps_extra.
 #' @seealso \code{\link{taxatree_plots}} for how to plot the output of `taxatree_models`
 #'
 #' @examples
@@ -99,10 +113,25 @@ tax_model <- function(ps,
                       formula = NULL,
                       univariable = FALSE,
                       taxa = NULL,
+                      use_future = FALSE,
+                      return_psx = FALSE,
+                      checkVars = TRUE,
+                      checkNA = "warning",
                       verbose = TRUE,
                       ...) {
-  # check if corncob models are requested/possible & converts bbdml to "bbdml"
-  type <- tax_modelTypeCorncob(type)
+  if (!rlang::is_string(type) && !rlang::is_function(type)) {
+    stop("`type` must be a string naming a modelling function, or a function")
+  }
+  if (!rlang::is_bool(univariable)) stop("univariable must be TRUE or FALSE")
+  if (!rlang::is_bool(checkVars)) stop("checkVars must be TRUE or FALSE")
+  if (!univariable) {
+    if (identical(type, "ps_cor_test") || identical(type, ps_cor_test)) {
+      stop("univariable must be TRUE when model type is 'ps_cor_test'")
+    }
+  }
+
+  # store input data as ps_extra if user wants result returned as attachment
+  if (isTRUE(return_psx)) data <- as_ps_extra(ps)
 
   ps <- ps_get(ps)
   # check phyloseq for common problems (and fix or message about this)
@@ -137,12 +166,35 @@ tax_model <- function(ps,
     formula = formula, variables = variables, univariable = univariable
   )
 
+  # check variables
+  if (checkVars || checkNA != "allow") {
+    df <- samdatAsDataframe(ps)
+    vars <- all.vars(as.formula(fstring_rhs))
+    if (checkNA != "allow") {
+      lapply(vars, function(v) checkNAs(df[[v]], name = v, fun = checkNA))
+    }
+    if (checkVars) {
+      lapply(vars, function(v) checkVariance(df[[v]], name = v))
+    }
+  }
+
+  # set lapply function to future.apply version if requested
+  if (isTRUE(use_future)) {
+    checkPackageAvailable(
+      packages = c("future", "future.apply"),
+      message = " package is required when use_future is set to TRUE"
+    )
+    LAPPLY <- future.apply::future_lapply
+  } else {
+    LAPPLY <- lapply
+  }
+
   # define specific formulas and model each taxon individually
-  taxon_models <- lapply(X = taxNames, FUN = function(taxon) {
+  taxon_models <- LAPPLY(X = taxNames, FUN = function(taxon) {
     if (isTRUE(verbose)) message("Modelling: ", taxon)
     # loop over fstring_rhs in case this is a vector, i.e. in univariable mode
     mods <- lapply(fstring_rhs, function(f) {
-      taxModel(ps = ps, type = type, taxon = taxon, fstring_rhs = f, ...)
+      taxonModel(ps = ps, type = type, taxon = taxon, fstring_rhs = f, ...)
     })
     names(mods) <- gsub(x = fstring_rhs, pattern = "^ ?~ ?", replacement = "")
     if (length(mods) == 1) mods <- mods[[1]] # collapse in case of only 1 model
@@ -152,7 +204,16 @@ tax_model <- function(ps,
   # taxon_models will be nested list of lists if multiple formula strings given
   # transposing is required to make the ultimate model object names be taxa
   if (length(fstring_rhs) > 1) taxon_models <- purrr::transpose(taxon_models)
-  return(taxon_models)
+
+  if (isTRUE(return_psx)) {
+    # attach models list to ps_extra
+    data[["tax_models"]] <- list(x = taxon_models)
+    names(data[["tax_models"]]) <- rank
+    return(data)
+  } else {
+    return(taxon_models)
+  }
+
 }
 
 # helper to actually model taxa
@@ -163,7 +224,9 @@ tax_model <- function(ps,
 # - fstring_rhs is model formula right hand side as string
 # - verbose logical
 # - any other args, passed from tax_model
-taxModel <- function(ps, type, taxon, fstring_rhs, ...) {
+taxonModel <- function(ps, type, taxon, fstring_rhs, ...) {
+  stopifnot(rlang::is_string(fstring_rhs))
+
   # combine lhs and rhs formula
   fstring <- paste0("`", taxon, "`", fstring_rhs)
 
@@ -171,14 +234,14 @@ taxModel <- function(ps, type, taxon, fstring_rhs, ...) {
   args <- list(formula = stats::as.formula(fstring), ...)
 
   # set appropriate data arg for modelling type
-  if (identical(type, "bbdml") || identical(type, "ps_cor_test")) {
+  if (isType_bbdml(type)) {
     args[["data"]] <- ps
   } else {
-    args[["data"]] <- ps_otu2samdat(ps, taxa = taxon) %>% samdatAsDataframe()
+    args[["data"]] <- samdatAsDataframe(ps_otu2samdat(ps = ps, taxa = taxon))
   }
 
   # additional setup for corncob
-  if (identical(type, "bbdml")) {
+  if (isType_bbdml(type)) {
     type <- corncob::bbdml
     # phi.formula is for modelling dispersion (doesn't take a response var)
     if (identical(args[["phi.formula"]], NULL)) {
@@ -195,18 +258,22 @@ taxModel <- function(ps, type, taxon, fstring_rhs, ...) {
 }
 
 
-# helper to safely check if corncob is installed and requested
-# and return type value safe for later if else constructs: "bbdml"
-tax_modelTypeCorncob <- function(type) {
+# helper to safely check if corncob bbdml model is request
+# first checking if corncob installed, before checking function equality
+isType_bbdml <- function(type) {
   hasCorncob <- requireNamespace("corncob", quietly = TRUE)
-  if (hasCorncob && identical(type, corncob::bbdml)) {
-    type <- "bbdml"
-  } else if (!hasCorncob && identical(type, "bbdml")) {
+  if (hasCorncob && identical(type, corncob::bbdml)) return(TRUE)
+  if (identical(type, "bbdml")) {
+    if (hasCorncob) return(TRUE)
     stop("you must install corncob package to use 'bbdml' models")
   }
-  return(type)
+  return(FALSE)
 }
 
+# helper to check if ps_cor_test requested in tax_model
+isType_ps_cor_test <- function(type) {
+  identical(type, "ps_cor_test") | identical(type, ps_cor_test)
+}
 
 # Internal helper function for tax_model:
 # check actual phyloseq taxa_names match this level after aggregating as
@@ -280,4 +347,14 @@ formulaMakerRHSstring <- function(formula, variables, univariable = FALSE) {
   # ref: https://stackoverflow.com/a/14671300/9005116
   fstring <- paste(deparse(f, width.cutoff = 500), collapse = "")
   return(fstring)
+}
+
+# check if package(s) is/are available, and stop if not, explaining why needed
+checkPackageAvailable <- function(
+    packages = c("package", "names"),
+    message = " package is required to use this functionality."
+) {
+  for (p in packages) {
+    if (!requireNamespace("p", quietly = TRUE)) stop(p, message)
+  }
 }

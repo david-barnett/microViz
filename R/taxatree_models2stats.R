@@ -90,9 +90,10 @@ taxatree_models2stats <- function(data,
                                   ...,
                                   .keep_models = FALSE) {
   if (inherits(data, "ps_extra") && is.list(data[["taxatree_models"]])) {
-    taxon_models <- data[["taxatree_models"]]
+    models <- data[["taxatree_models"]]
+    stopifnot(all(names(models) %in% phyloseq::rank_names(ps_get(data))))
   } else if (inherits(data, "list")) {
-    taxon_models <- data
+    models <- data
   } else {
     stop("data must be a ps_extra with taxatree_models list, or just the list")
   }
@@ -106,8 +107,8 @@ taxatree_models2stats <- function(data,
   }
 
   # get stats
-  stats <- lapply(X = names(taxon_models), FUN = function(rank) {
-    tax_models2stats(models = taxon_models[[rank]], rank = rank, fun = fun, ...)
+  stats <- lapply(X = names(models), FUN = function(rank) {
+    tax_models2stats(models = models[[rank]], rank = rank, fun = fun, ...)
   })
   stats <- purrr::reduce(stats, rbind.data.frame)
   stats <- dplyr::mutate(
@@ -126,7 +127,7 @@ taxatree_models2stats <- function(data,
 }
 
 # runs model2stats on a simple list, using names of list items as taxon name
-tax_models2stats <- function(models, rank, fun = "auto", ...) {
+tax_models2stats <- function(models, rank = NULL, fun = "auto", ...) {
   # if univariable mode was on then this layer is a list e.g. v1:tax1;tax2;...
   if (identical(class(models[[1]]), "list")) models <- purrr::flatten(models)
 
@@ -168,9 +169,14 @@ taxModel2stats <- function(model,
 
   # add taxon name and clean up dataframe
   df[["formula"]] <- attr(x = model, which = "formula_string", exact = TRUE)
+  if (is.null(df[["term"]])) {
+    # in univariable mode with cor.test etc, the term is not added by broom tidy
+    # but we can retrieve it from the formula again
+    df[["term"]] <- all.vars(stats::as.formula(df$formula[1]), unique = FALSE)[2]
+  }
   df[["taxon"]] <- taxon
   df[["rank"]] <- rank
-  df <- dplyr::relocate(df, dplyr::all_of(c("term", "taxon", "rank", "formula")))
+  df <- dplyr::relocate(df, dplyr::any_of(c("term", "taxon", "rank", "formula")))
   df <- dplyr::filter(df, !.data[["term"]] %in% dropTerms)
   return(tibble::as_tibble(df))
 }

@@ -12,6 +12,10 @@ tax_model(
   formula = NULL,
   univariable = FALSE,
   taxa = NULL,
+  use_future = FALSE,
+  return_psx = FALSE,
+  checkVars = TRUE,
+  checkNA = "warning",
   verbose = TRUE,
   ...
 )
@@ -23,21 +27,32 @@ tax_model(
 
 \item{type}{name of modelling function to use, or the function itself}
 
-\item{variables}{vector of variable names to use in statistical model as right hand side (ignored if formula given)}
+\item{variables}{vector of variable names to use in statistical model as right hand side
+(ignored if formula given)}
 
-\item{formula}{(alternative to variables arg) right hand side of a formula, as a formula object or character value}
+\item{formula}{(alternative to variables arg) right hand side of a formula,
+as a formula object or character value}
 
 \item{univariable}{should multiple univariable models be run per taxon?
 one for each variable named in variables argument}
 
 \item{taxa}{taxa to model (named, numbered, logical selection, or defaulting to all if NULL)}
 
+\item{use_future}{if TRUE parallel processing with future is possible, see details.}
+
+\item{return_psx}{if TRUE result will be returned attached to ps_extra object}
+
+\item{checkVars}{should the predictor variables be checked for zero variance?}
+
+\item{checkNA}{One of "stop", "warning", "message", or "allow", which
+indicates whether to check predictor variables for NAs, and how to report any NAs if present?}
+
 \item{verbose}{message about progress and any taxa name modifications}
 
 \item{...}{extra args passed directly to modelling function}
 }
 \value{
-named list of model objects or list of lists
+Named list of model objects or list of lists. Or, if return_psx is TRUE, a ps_extra.
 }
 \description{
 \code{tax_model} provides a simple framework to statistically model the abundance
@@ -59,8 +74,9 @@ abundance and dispersion parameters.
 }
 \details{
 \code{tax_model} and \code{taxatree_models} can use parallel processing with the \code{future} package.
-This can speed up analysis if you have many taxa to model.
-Run a line like this beforehand: \code{future::plan(future::multisession, workers = 3)}
+This can speed up analysis if you have many taxa to model. Set use_future = TRUE and
+run a line like this before doing your modelling: \code{future::plan(future::multisession, workers = 3)}
+(This requires the future and future.apply packages to be installed.)
 }
 \examples{
 library(corncob)
