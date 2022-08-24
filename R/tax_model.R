@@ -247,6 +247,28 @@ taxonModel <- function(ps, type, taxon, fstring_rhs, ...) {
   return(res)
 }
 
+# simple helper to generate text for a message about number of NAs in a vector
+checkNAs <- function(vec, name, fun = "warning") {
+  if (fun != "allow" && anyNA(vec)) {
+    txt <- paste(sum(is.na(vec)), "/", length(vec), "values are NA in", name)
+    do.call(fun, list(txt))
+  }
+}
+
+# check the variance or variation of a vector
+checkVariance <- function(vec, name) {
+  if (is.numeric(vec)) {
+    if (stats::var(vec, na.rm = TRUE) %in% c(0, NA)) {
+      stop("Variance of variable ", name, " is: ", stats::var(vec, na.rm = TRUE))
+    }
+  } else {
+    uniq <- unique(vec[!is.na(vec)])
+    if (length(uniq) == 1L) {
+      stop(name, " has only one non-NA value: ", uniq)
+    }
+  }
+}
+
 
 # helper to safely check if corncob bbdml model is request
 # first checking if corncob installed, before checking function equality
