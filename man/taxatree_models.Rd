@@ -10,7 +10,6 @@ taxatree_models(
   type = "lm",
   variables = NULL,
   formula = NULL,
-  univariable = FALSE,
   use_future = FALSE,
   checkVars = TRUE,
   checkNA = "warning",
@@ -25,14 +24,11 @@ taxatree_models(
 
 \item{type}{name of regression modelling function, or the function itself}
 
-\item{variables}{vector of variable names, to be used as model formula right hand side
-(ignored if formula given)}
+\item{variables}{vector of variable names, to be used as model formula right hand side.
+If variables is a list, not a vector, a model is fit for each entry in list.}
 
-\item{formula}{(alternative to variables arg) right hand side of a formula,
-as a formula object or character value}
-
-\item{univariable}{should multiple univariable models be run per taxon?
-one for each variable named in variables argument}
+\item{formula}{Right hand side of a formula, as a formula object or character string. Or a list of these.
+(alternative to variables argument, do not provide both)}
 
 \item{use_future}{if TRUE parallel processing with future is possible, see details of ?tax_model.}
 
@@ -54,4 +50,9 @@ One list per rank, one model per taxon at each rank.
 
 The result can then be used with \code{taxatree_models2stats} to extract a
 dataframe of statistics for use with \code{taxatree_plots}.
+}
+\seealso{
+\code{\link{tax_model}} for more details and examples
+
+\code{\link{taxatree_plots}} for how to plot the output of \code{taxatree_models}
 }

@@ -14,14 +14,11 @@
 #' @param ranks vector of rank names at which to aggregate taxa for modelling
 #' @param type name of regression modelling function, or the function itself
 #' @param variables
-#' vector of variable names, to be used as model formula right hand side
-#' (ignored if formula given)
+#' vector of variable names, to be used as model formula right hand side.
+#' If variables is a list, not a vector, a model is fit for each entry in list.
 #' @param formula
-#' (alternative to variables arg) right hand side of a formula,
-#' as a formula object or character value
-#' @param univariable
-#' should multiple univariable models be run per taxon?
-#' one for each variable named in variables argument
+#' Right hand side of a formula, as a formula object or character string. Or a list of these.
+#' (alternative to variables argument, do not provide both)
 #' @param use_future
 #' if TRUE parallel processing with future is possible, see details of ?tax_model.
 #' @param checkVars check variance of variables?
@@ -31,13 +28,15 @@
 #' TRUE notifies you about each taxon being processed; FALSE for no messages.
 #' @param ... extra arguments are passed directly to modelling function
 #'
+#' @seealso \code{\link{tax_model}} for more details and examples
+#' @seealso \code{\link{taxatree_plots}} for how to plot the output of `taxatree_models`
+#'
 #' @export
 taxatree_models <- function(ps,
                             ranks = NULL,
                             type = "lm",
                             variables = NULL,
                             formula = NULL,
-                            univariable = FALSE,
                             use_future = FALSE,
                             checkVars = TRUE,
                             checkNA = "warning",
@@ -53,8 +52,8 @@ taxatree_models <- function(ps,
       if (!isFALSE(verbose)) message(Sys.time(), " - modelling at rank: ", r)
       models <- tax_model(
         ps = ps, rank = r, type = type, variables = variables, formula = formula,
-        univariable = univariable, checkVars = checkVars, checkNA = checkNA,
-        verbose = verbose, use_future = use_future, ...
+        checkVars = checkVars, checkNA = checkNA, verbose = verbose,
+        use_future = use_future, ...
       )
       return(models)
     }

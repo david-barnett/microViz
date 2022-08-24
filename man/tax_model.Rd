@@ -10,7 +10,6 @@ tax_model(
   type = "lm",
   variables = NULL,
   formula = NULL,
-  univariable = FALSE,
   taxa = NULL,
   use_future = FALSE,
   return_psx = FALSE,
@@ -27,14 +26,11 @@ tax_model(
 
 \item{type}{name of modelling function to use, or the function itself}
 
-\item{variables}{vector of variable names to use in statistical model as right hand side
-(ignored if formula given)}
+\item{variables}{vector of variable names, to be used as model formula right hand side.
+If variables is a list, not a vector, a model is fit for each entry in list.}
 
-\item{formula}{(alternative to variables arg) right hand side of a formula,
-as a formula object or character value}
-
-\item{univariable}{should multiple univariable models be run per taxon?
-one for each variable named in variables argument}
+\item{formula}{Right hand side of a formula, as a formula object or character string. Or a list of these.
+(alternative to variables argument, do not provide both)}
 
 \item{taxa}{taxa to model (named, numbered, logical selection, or defaulting to all if NULL)}
 
@@ -133,5 +129,7 @@ models_lm <- ps \%>\%
   tax_model(rank = "Genus", taxa = 1:3, variables = VARS, type = "lm")
 }
 \seealso{
+\code{\link{taxatree_models}} for more details on the underlying approach
+
 \code{\link{taxatree_plots}} for how to plot the output of \code{taxatree_models}
 }
