@@ -2,25 +2,38 @@
 % Please edit documentation in R/taxatree_models2stats.R
 \name{taxatree_models2stats}
 \alias{taxatree_models2stats}
-\title{Extract dataframe of statistics from taxatree_models list}
+\alias{tax_models2stats}
+\title{Extract statistics from taxatree_models or tax_model output}
 \usage{
 taxatree_models2stats(data, fun = "auto", ..., .keep_models = FALSE)
+
+tax_models2stats(data, rank = NULL, fun = "auto", ..., .keep_models = FALSE)
 }
 \arguments{
-\item{data}{ps_extra with taxatree_models, or just the list of models}
+\item{data}{ps_extra with attached tax_models or taxatree_models list, or just the list of models}
 
-\item{fun}{function to assist extraction of stats dataframe from models}
+\item{fun}{function to assist extraction of stats dataframe from models, or "auto"}
 
 \item{...}{extra arguments passed to fun}
 
 \item{.keep_models}{should the models list be kept in the ps_extra output?}
+
+\item{rank}{string naming rank at which tax_model was run (needed if data is a list)}
 }
 \value{
 data.frame, attached to ps_extra
 }
 \description{
-Extract dataframe of statistics from taxatree_models list
+Runs a function e.g. \code{broom::tidy} on a list of models, i.e. the output of
+\code{taxatree_models} or \code{tax_model} (models list may often be attached to ps_extra)
 }
+\section{Functions}{
+\itemize{
+\item \code{taxatree_models2stats}: Extract stats from list or ps_extra output of taxatree_models
+
+\item \code{tax_models2stats}: Extract stats from list or ps_extra output of tax_model
+}}
+
 \examples{
 # This example is an abbreviated excerpt from article on taxon modelling on
 # the microViz documentation website

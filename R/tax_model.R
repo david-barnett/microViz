@@ -282,11 +282,6 @@ isType_bbdml <- function(type) {
   return(FALSE)
 }
 
-# helper to check if ps_cor_test requested in tax_model
-isType_ps_cor_test <- function(type) {
-  identical(type, "ps_cor_test") | identical(type, ps_cor_test)
-}
-
 # Internal helper function for tax_model:
 # check actual phyloseq taxa_names match this level after aggregating as
 # sometimes the names are not changed by tax_agg
@@ -350,8 +345,8 @@ formulaMakerRHSstring <- function(formula = NULL,
     }
     if (is.list(variables)) {
       formula <- sapply(X = variables, USE.NAMES = FALSE, FUN = function(v) {
-        if (!is.character(v)) stop("variables list contents must be character")
         if (anyNA(v)) stop("variables argument must not contain NAs")
+        if (!is.character(v)) stop("variables list contents must be character")
         return(paste("~", paste(v, collapse = " + ")))
       })
     } else {
