@@ -8,9 +8,10 @@
 #' @details
 #' Define how to group the p values for adjustment with the `grouping` argument.
 #' The default is to adjust the p values in groups at each taxonomic rank,
-#' but you could also adjust per "model" / "taxon" or per "term".
+#' but you could also adjust per "taxon" or per "term".
 #' Or even group by a combination of rank and term with c("rank", "term")
-#'
+#' For no grouping, pass NULL to the grouping argument.
+#' Grouping by "model" will group by the "formula" variable.
 #'
 #' @param data ps_extra with taxatree_stats dataframe, or just the dataframe
 #' @param grouping
@@ -107,9 +108,9 @@ taxatree_stats_p_adjust <- function(data,
     )
   }
 
-  if (identical(grouping, "model") || identical(grouping, "taxon_name")) {
-    grouping <- "taxon"
-  }
+  force(new_var) # get name of grouping before changing value
+  if (identical(grouping, "taxon_name")) grouping <- "taxon"
+  if (identical(grouping, "model")) grouping <- "formula"
 
   df <- dplyr::group_by(df, dplyr::across(dplyr::all_of(grouping)))
   df <- dplyr::mutate(

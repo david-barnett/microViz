@@ -35,8 +35,10 @@ or more conservative family-wise error rate controlling methods such as "holm" o
 \details{
 Define how to group the p values for adjustment with the \code{grouping} argument.
 The default is to adjust the p values in groups at each taxonomic rank,
-but you could also adjust per "model" / "taxon" or per "term".
+but you could also adjust per "taxon" or per "term".
 Or even group by a combination of rank and term with c("rank", "term")
+For no grouping, pass NULL to the grouping argument.
+Grouping by "model" will group by the "formula" variable.
 }
 \examples{
 # This example is an abbreviated excerpt from article on taxon modelling on
