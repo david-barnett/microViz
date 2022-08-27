@@ -76,7 +76,7 @@ phylo <- phylo %>%
 ### TSS log2 linear regression
 
 We will start by creating a linear regression model for one genus,
-*Bacteroides*. We will transform the count data by first making it
+*Parabacteroides*. We will transform the count data by first making it
 proportions, and then taking the logarithm, with base 2. This is what
 MaAsLin2 does by default (except they call the compositional
 transformation "Total Sum Scaling (TSS)"). We will replace the zeros
@@ -132,7 +132,7 @@ ggplot(plot_data, aes(x = DiseaseState, y = Parabacteroides)) +
 You can also use other regression modelling functions that take a
 formula. For example the beta binomial modelling provided in the corncob
 package. This approach models both abundance and dispersion, and
-directly uses untransformed counts. By default, microViz's `tax_model()`
+directly uses un-transformed counts. By default, microViz's `tax_model()`
 will use the same formula for both abundance and dispersion modelling,
 but you can override this by setting the `phi.formula` argument
 yourself. See `vignette("corncob-intro", package = "corncob")` for more
@@ -204,15 +204,19 @@ lm_stats$taxatree_stats
 
 Using the `taxatree_stats_p_adjust()` function, you can correct for
 multiple testing / control the false discovery rate or family-wise error
-rate.
+rate. This function simply applies the `p.adjust` function to (groups of) 
+p values from the taxatree_stats dataframe.
 
 Instead of applying these adjustment methods across all 88 taxa models
 at all ranks, the default behaviour is to control the family-wise error
-rate per rank.
+rate per rank. 
 
 ```{r}
 lm_stats <- taxatree_stats_p_adjust(
-  data = lm_stats, method = "BH", grouping = "rank"
+  data = lm_stats, method = "BH", 
+  grouping = "rank", # default setting
+  # grouping = "taxon" # (adjust per taxon, a more relaxed setting)
+  # grouping = NULL # (for no grouping, strictest setting)
 )
 # notice the new variable
 lm_stats$taxatree_stats
@@ -477,6 +481,60 @@ lm_stats %>%
   patchwork::wrap_plots(
     ncol = 2, guides = "collect"
   )
+```
+
+## Multiple simple (regression) models
+
+In the examples above we fit regression models with several predictor variables, 
+e.g. in the form `taxon ~ disease + sex + antibiotics + steroids + age`.
+
+But often we will want to see the results from multiple simple regression models, e.g. 
+`taxon ~ disease`, `taxon ~ sex`, `taxon ~ antibiotics`, `taxon ~ steroids` and `taxon ~ age`
+
+Since microViz version 0.9.4 it is now simple to do this. 
+You need to pass a **list** of variables to the `variables` argument, or a vector of formulae to the `formula` argument.
+
+```{r}
+simple_models <- phylo %>% 
+  tax_fix() %>% 
+  tax_prepend_ranks() %>% 
+  # it makes sense to perform the compositional transformation BEFORE filtering
+  tax_transform("compositional", rank = "Genus", keep_counts = TRUE) %>% 
+  tax_filter(min_prevalence = 0.2, undetected = 0, use_counts = TRUE) %>% 
+  tax_transform(trans = "log2", chain = TRUE, zero_replace = "halfmin") %>% 
+  taxatree_models(
+    type = lm, ranks = NULL, 
+    variables = list("UC", "female", "antibiotics", "steroids", "age_scaled")
+    # or equivalently
+    # formula = paste("~", c("UC", "female", "antibiotics", "steroids", "age_scaled"))
+  )
+```
+
+The structure of the taxatree_models list returned has one extra level of nesting, but you do not need to worry about this. 
+
+```{r}
+simple_models$taxatree_models$Phylum %>% str(max.level = 1)
+simple_models$taxatree_models$Phylum$UC %>% str(max.level = 1)
+```
+
+You can extract a dataframe of statistics from the models in this nested list using `taxatree_models2stats`, in just the same way as before.
+
+```{r}
+simple_models_stats <- simple_models %>% 
+  taxatree_models2stats() %>% 
+  taxatree_stats_p_adjust(method = "BH", grouping = "rank") 
+```
+
+
+```{r, fig.width=7, fig.height=6}
+simple_models_stats %>% 
+  taxatree_plots(
+    node_size_range = c(1, 4), 
+    sig_stat = c("p.adj.BH.rank", "p.value"), sig_shape = c("cross", "circle"), 
+    sig_size = c(1, 0.75), sig_stroke = c(0.5), sig_colour = "white"
+  ) %>% 
+  .[1:4] %>% 
+  patchwork::wrap_plots(ncol = 2, guides = "collect")
 ```
 
 ## Beta-binomial regression example
