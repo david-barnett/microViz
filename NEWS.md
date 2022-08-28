@@ -1,3 +1,8 @@
+# microViz (development version)
+
+## Fixes
+- `otu_get` correctly subsets samples or taxa if requested
+
 # microViz 0.9.3
 
 ## Features
