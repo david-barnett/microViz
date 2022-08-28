@@ -110,9 +110,30 @@ otu_get <- function(data, taxa = NA, samples = NA, counts = FALSE) {
   }
   if (phyloseq::taxa_are_rows(otu)) otu <- phyloseq::t(otu)
 
-  # subset samples and or taxa if requested
-  if (!identical(taxa, NA) || !identical(samples, NA)) {
-    otu <- otu[samples, taxa, drop = FALSE]
+  # subset samples and/or taxa if requested, with slightly more helpful errors
+  if (!identical(taxa, NA)) {
+    stopifnot(is.character(taxa) || is.numeric(taxa) || is.logical(taxa))
+    tmp <- try(expr = otu <- otu[, taxa, drop = FALSE], silent = TRUE)
+    if (inherits(tmp, "try-error")) {
+      if (is.character(taxa)) {
+        wrong <- paste(setdiff(taxa, colnames(otu)), collapse = " / ")
+        stop("The following taxa were not found in the otu table:\n", wrong)
+      } else {
+        stop("Invalid taxa selection")
+      }
+    }
+  }
+  if (!identical(samples, NA)) {
+    stopifnot(is.character(samples) || is.numeric(samples) || is.logical(samples))
+    tmp <- try(expr = otu <- otu[samples, , drop = FALSE], silent = TRUE)
+    if (inherits(tmp, "try-error")) {
+      if (is.character(samples)) {
+        wrong <- paste(setdiff(samples, rownames(otu)), collapse = " / ")
+        stop("The following samples were not found in the otu table:\n", wrong)
+      } else {
+        stop("Invalid sample selection")
+      }
+    }
   }
   return(otu)
 }

@@ -3,12 +3,12 @@
 This version introduces changes around `tax_model` and `taxatree_models` functionality.
 
 ## Features
-
 - `tax_model` and `taxatree_model` can now run multiple models per taxon, by accepting lists for formula or variables arguments. 
 This allows running e.g. three simple regression models per taxon with predictors a, b, and c with variables = list("a", "b", "c")
 - `cor_test` function introduced as simple wrapper around cor.test to allow `tax_model` to be used with correlation tests
 
 ## Fixes
+- `otu_get` correctly subsets samples or taxa if requested
 - No more deprecation warnings in `taxatree_plot_labels`
 
 ## Breaking changes

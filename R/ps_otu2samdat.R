@@ -28,25 +28,20 @@
 #'   )
 ps_otu2samdat <- function(ps, taxa = NULL) {
   # if no taxa were specified, get all taxa
-  if (identical(taxa, NULL)) {
-    taxa <- phyloseq::taxa_names(ps)
-  } else if (any(!taxa %in% phyloseq::taxa_names(ps))) {
-    # check any specified taxa are in phyloseq
-    message("You specified the following taxa that are not present as taxa_names in the phyloseq:")
-    message(paste(taxa[!taxa %in% phyloseq::taxa_names(ps)], collapse = "; "))
-  }
+  if (identical(taxa, NULL)) taxa <- phyloseq::taxa_names(ps)
 
   ps_df <- samdatAsDataframe(ps)
-  otu <- phyloseq::otu_table(ps)
-
-  if (phyloseq::taxa_are_rows(ps)) otu <- phyloseq::t(otu)
-
-  otu <- otu[, taxa]
+  otu <- otu_get(ps, taxa = taxa)
   otu_df <- as.data.frame.matrix(otu)
 
-  ps_df <- cbind.data.frame(ps_df, otu_df)
+  if (any(colnames(otu_df) %in% colnames(ps_df))) {
+    warning(
+      "Overwriting the following sample_data variables:\n",
+      paste(intersect(colnames(otu_df), colnames(ps_df)), collapse = " / ")
+    )
+  }
 
+  ps_df[, colnames(otu_df)] <- otu_df
   phyloseq::sample_data(ps) <- ps_df
-
   return(ps)
 }
