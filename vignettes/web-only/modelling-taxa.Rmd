@@ -630,15 +630,13 @@ force-directed algorithm ("fr"). You must set a layout_seed number for
 these layouts to ensure they are always the same.
 
 ```{r, fig.width=5, fig.height=5}
-bb_stats %>% taxatree_plots(
-  node_size_range = c(1, 4), 
-  colour_trans = "identity", layout = "kk", layout_seed = 321
-) %>% 
-  # keep only first 4 plots
-  .[1:4] %>% 
-  patchwork::wrap_plots(
-    ncol = 2, guides = "collect"
-  )
+bb_stats %>% 
+  taxatree_plots(
+    node_size_range = c(1, 4), colour_trans = "identity", 
+    layout = "kk", layout_seed = 321
+  ) %>% 
+  .[1:4] %>% # keep only first 4 plots
+  patchwork::wrap_plots(ncol = 2, guides = "collect")
 ```
 
 # Session info
