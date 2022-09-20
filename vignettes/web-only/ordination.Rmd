@@ -76,7 +76,7 @@ ibd %>%
 
 Notice that the objects created above are of class "ps_extra". This is just a simple S3 list object that holds your phyloseq object and additional stuff created from this phyloseq object, such as a distance matrix, as well as info on any transformation and aggregation applied to your taxa. microViz uses this to automatically create plot captions, to help you and your collaborators remember how you made each plot! You can access the phyloseq object, distance matrix and other parts of a ps_extra object with `ps_get()`, `dist_get()`, and friends.
 
-## PCA {#pca}
+## PCA - Principal Components Analysis {#pca}
 
 Principal ***Components*** Analysis is an unconstrained method that does not use a distance matrix. PCA directly uses the (transformed) microbial variables, so you do not need `dist_calc()`. `ord_calc` performs the ordination (adding it to the ps_extra object) and `ord_plot()` creates the ggplot2 scatterplot (which you can customise like other ggplot objects).
 
@@ -116,13 +116,13 @@ ibd %>%
 
 Here we created the ordination plot as a quick accompaniment to the circular barchart, but it is more flexible to create and customise the ordination plot and iris plot separately, and then pair them afterwards with patchwork. See the `ord_plot_iris` [docs](https://david-barnett.github.io/microViz/reference/ord_plot_iris.html) for examples.
 
-## PCoA {#pcoa}
+## PCoA - Principal Co-ordinates Analysis {#pcoa}
 
 Principal ***Co-ordinates*** Analysis is also an unconstrained method, but it does require a distance matrix. In an ecological context, a distance (or more generally a "dissimilarity") measure indicates how different a pair of (microbial) ecosystems are. This can be calculated in many ways.
 
 ### Aitchison distance
 
-The [Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance) is similar to the distance we humans are familiar with in the physical world. The results of a PCA is practically equivalent to a PCoA with Euclidean distances. The Aitchison distance is a dissimilarity measure calculated as the Euclidean distance between observations (samples) after performing a centred log ratio ("clr") transformation. That is why the Aitchison distance PCoA, below, looks the same as the PCA we made earlier. However, we cannot use plot_taxa, as the taxa loadings are only available for PCA (and related methods like RDA).
+The [Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance) is similar to the distance we humans are familiar with in the physical world. The results of a PCA is practically equivalent to a PCoA with Euclidean distances. The Aitchison distance is a dissimilarity measure calculated as the Euclidean distance between observations (samples) after performing a centered log ratio ("clr") transformation. That is why the Aitchison distance PCoA, below, looks the same as the PCA we made earlier. However, we cannot use plot_taxa, as the taxa loadings are only available for PCA (and related methods like RDA).
 
 ```{r}
 ibd %>% 
@@ -240,7 +240,8 @@ ibd %>%
   ggside::theme_ggside_void() 
 ```
 
-## RDA {#rda}
+
+## RDA - Redundancy Analysis {#rda}
 
 Redundancy analysis is a constrained ordination method. It displays the microbial variation that can also be explained by selected constraint variables.
 
