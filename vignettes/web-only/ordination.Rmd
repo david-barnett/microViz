@@ -200,6 +200,44 @@ ibd %>%
   scale_colour_brewer(palette = "Dark2") 
 ```
 
+## Use ggside to add univariable distribution plots
+
+As the ordination figures are (pretty much) just standard ggplot objects, 
+integration with other ggplot extensions like `ggside` is typically possible. 
+Below are a couple of examples using the `ggside` package to add univariable 
+distribution plots for each PC, split by the same groups as in the main plot.
+
+### Side panel boxplots
+
+```{r}
+ibd %>% 
+  tax_transform("identity", rank = "Genus") %>% 
+  dist_calc(dist = "aitchison") %>% 
+  ord_calc("PCoA") %>% 
+  ord_plot(color = "ibd", shape = "DiseaseState", size = 2) +
+  scale_colour_brewer(palette = "Dark2", aesthetics = c("fill", "colour")) +
+  theme_bw() +
+  ggside::geom_xsideboxplot(aes(fill = ibd, y = ibd), orientation = "y") +
+  ggside::geom_ysideboxplot(aes(fill = ibd, x = ibd), orientation = "x") +
+  ggside::scale_xsidey_discrete(labels = NULL) +
+  ggside::scale_ysidex_discrete(labels = NULL) +
+  ggside::theme_ggside_void()
+```
+
+### Side panel density plots
+
+```{r}
+ibd %>% 
+  tax_transform("identity", rank = "Genus") %>% 
+  dist_calc(dist = "aitchison") %>% 
+  ord_calc("PCoA") %>% 
+  ord_plot(color = "ibd", shape = "DiseaseState", size = 2) +
+  scale_colour_brewer(palette = "Dark2", aesthetics = c("fill", "colour"), name = "IBD") +
+  theme_bw() +
+  ggside::geom_xsidedensity(aes(fill = ibd), alpha = 0.5, show.legend = FALSE) +
+  ggside::geom_ysidedensity(aes(fill = ibd), alpha = 0.5, show.legend = FALSE) +
+  ggside::theme_ggside_void() 
+```
 ## RDA {#rda}
 
 Redundancy analysis is a constrained ordination method. It displays the microbial variation that can also be explained by selected constraint variables.

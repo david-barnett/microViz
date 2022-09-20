@@ -37,13 +37,13 @@ pseq <- corncob::ibd_phylo %>%
   phyloseq_validate()
 ```
 
-The `comp_barplot` function allows you to visualise the taxonomic
+The `comp_barplot` function allows you to visualize the taxonomic
 compositions of your microbiome samples in a flexible, scalable,
 group-able, and visually appealing way.
 
 ## Quick example barplot
 
-Visualise the top Genera across all the female samples from this
+Visualize the top Genera across all the female samples from this
 inflammatory bowel disease study dataset. The order of the samples is
 automatically set by their "bray"-curtis dissimilarity.
 
@@ -79,7 +79,7 @@ pseq %>%
 **Other notes:**
 
 -   Dissimilarity is calculated using only the visibly distinct taxa, to
-    optimise sorting for visual similarity. You can change this by
+    optimize sorting for visual similarity. You can change this by
     setting `order_with_all_taxa = TRUE`, to always use all taxa for
     similarity sorting.
 -   The colour palette is important, to allow (adjacent) taxa to be
@@ -160,6 +160,7 @@ pseq %>%
     axis.ticks.y = element_blank()
   )
 ```
+
 
 ### Grouping
 
@@ -276,7 +277,81 @@ pseq %>%
   coord_flip()
 ```
 
-### Sorting by metadata
+
+### Sorting by time
+
+Sometimes you have multiple samples from the same individuals/sites at several
+timepoints. You must first order the phyloseq by the time variable and then
+set the comp_barplot sample order to "asis" to keep this preset order.
+
+```{r, fig.height=6, fig.width=6}
+data("shao19")
+
+# prepare data
+ps <- shao19 %>% 
+  ps_mutate(family_id = as.numeric(family_id)) %>% 
+  # take an arbitrary smaller subset of infants and timepoints
+  ps_filter(family_role == "child", family_id < 30, infant_age %in% c(4, 7, 21))
+
+ps %>%   
+  ps_arrange(infant_age) %>% # this step is necessary
+  comp_barplot(
+    sample_order = "asis", # to avoid sorting again by similarity
+    tax_level = "genus", label = "infant_age", bar_width = 0.7
+  ) +
+  facet_wrap(~ family_id, scales = "free_x")
+```
+
+Below is a trick to replace sample with timepoint as the x position mapping, 
+to keep timepoints consistent across infants, even with the missing timepoints
+seen here for some infants.
+
+*Beware this is a bit of non-standard ggplot use, but is the only way to achieve 
+this currently with comp_barplot.*
+
+```{r, fig.height=6, fig.width=6}
+data("shao19")
+shao19 %>% 
+  ps_mutate(family_id = as.numeric(family_id)) %>% 
+  # take an arbitrary smaller subset of infants and timepoints
+  ps_filter(family_role == "child", family_id < 30, infant_age %in% c(4, 7, 21)) %>% 
+  ps_arrange(infant_age) %>% 
+  comp_barplot(
+    tax_level = "genus", sample_order = "asis", label = "infant_age", bar_width = 0.7
+  ) +
+  facet_wrap(
+    facets = vars(family_id), labeller = as_labeller(~ paste("Fam.", .))
+  ) +
+  aes(x = as.factor(infant_age)) +
+  scale_x_discrete(label = identity, name = "Age (days)") +
+  theme_bw() + # slightly clearer axes for facets 
+  scale_y_continuous(expand = expansion(add = c(0, 0.1))) # axis starts exactly at 0
+```
+
+
+```{r, fig.height=6, fig.width=6}
+data("shao19")
+shao19 %>% 
+  ps_mutate(family_id = as.numeric(family_id)) %>% 
+  # take an arbitrary smaller subset of infants and timepoints
+  ps_filter(family_role == "child", family_id < 30, infant_age %in% c(4, 7, 21)) %>% 
+  ps_arrange(infant_age) %>% 
+  comp_barplot(
+    tax_level = "genus", sample_order = "asis", bar_width = 0.7
+  ) +
+  facet_wrap(
+    facets = vars(infant_age), labeller = as_labeller(~ paste("Age", ., "days")),
+    scales = "fixed"
+  ) +
+  coord_flip() +
+  aes(x = as.factor(family_id)) +
+  scale_x_discrete(label = ~ paste("Fam.", .), name = "Family", limits = rev) +
+  scale_y_continuous(expand = expansion(add = c(0, 0.05))) + # axis starts exactly at 0
+  theme_bw() + # slightly clearer axes for facets
+  theme(panel.spacing.x = unit(6, "mm")) # space for non-overlapping axis numbers
+```
+
+### Sorting by other metadata
 
 Sorting across timepoint groups in another dataset, dietswap.
 
