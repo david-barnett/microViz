@@ -200,7 +200,8 @@ ibd %>%
   scale_colour_brewer(palette = "Dark2") 
 ```
 
-## Use ggside to add univariable distribution plots
+
+## Univariable distribution side panels
 
 As the ordination figures are (pretty much) just standard ggplot objects, 
 integration with other ggplot extensions like `ggside` is typically possible. 
@@ -238,6 +239,7 @@ ibd %>%
   ggside::geom_ysidedensity(aes(fill = ibd), alpha = 0.5, show.legend = FALSE) +
   ggside::theme_ggside_void() 
 ```
+
 ## RDA {#rda}
 
 Redundancy analysis is a constrained ordination method. It displays the microbial variation that can also be explained by selected constraint variables.
@@ -267,7 +269,7 @@ ibd %>%
   )
 ```
 
-### Customising your ordination plot
+## Customising your ordination plot
 
 The plot above looks okay by default, but it is fairly easy to tweak ord_plot further to get the style just how you want it. The code below has comments to explain which part makes which changes to the plot.
 
@@ -318,7 +320,7 @@ ibd %>%
   coord_fixed(ratio = 1, clip = "off")
 ```
 
-#### Custom labels
+### Custom labels
 
 `tax_lab_style()` is a helper function that gives you some options for 
 customising the look of the taxa loading labels, including, in this example, 
@@ -368,7 +370,7 @@ ibd %>%
 ```
 
 
-### Partial ordinations
+## Partial ordinations
 
 Tutorial coming soon, for now see `ord_plot()` for examples.
 
