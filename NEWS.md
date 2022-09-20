@@ -1,7 +1,8 @@
-# microViz (development version)
+# microViz 0.9.4
 
 ## Fixes
 - `otu_get` correctly subsets samples or taxa if requested
+- heatmaps with one row or column can be plotted without explicitly suppressing seriation
 
 # microViz 0.9.3
 

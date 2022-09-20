@@ -14,6 +14,19 @@ psq <- tax_agg(psq, "Genus")
 set.seed(123)
 taxa <- sample(microbiome::top_taxa(ps_get(psq))[1:50], size = 30)
 
+test_that("comp_heatmap can make a one taxon or one sample heatmap", {
+  skip_if_not(packageVersion("ComplexHeatmap") > 2.11)
+  onecol <- psq %>% comp_heatmap(taxa = 5, taxa_side = "bottom")
+  onerow <- psq %>% comp_heatmap(taxa = 5, taxa_side = "right")
+  expect_s4_class(onecol, class = "Heatmap")
+  expect_s4_class(onerow, class = "Heatmap")
+
+  onecol2 <- psq %>% comp_heatmap(taxa = taxa, samples = 1, taxa_side = "right")
+  onerow2 <- psq %>% comp_heatmap(taxa = taxa, samples = 1, taxa_side = "bottom")
+  expect_s4_class(onecol2, class = "Heatmap")
+  expect_s4_class(onerow2, class = "Heatmap")
+})
+
 # deprecated cor_heatmap functionality ---------------------------------------
 
 test_that("default taxa_side ('right') is not compatible with taxa column annotations", {
@@ -88,7 +101,6 @@ test_that("cor_heatmap with var_anno doesn't change: ", {
   expect_snapshot_csv(name = "cor_row_order_v", object = v@row_order)
   expect_snapshot_csv(name = "cor_col_order_v", object = v@column_order)
 })
-
 
 
 # deprecated comp_heatmap functionality ---------------------------------------

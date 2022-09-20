@@ -366,7 +366,7 @@ anno_cat <- function(x,
   }
 
   # breaking "subsettable" argument name change
-  annoFun <- if (packageVersion("ComplexHeatmap") > 2.11) {
+  annoFun <- if (utils::packageVersion("ComplexHeatmap") > 2.11) {
     ComplexHeatmap::AnnotationFunction(
       fun = fun, var_import = list(x, colorMap, gp, border_gp),
       which = which, width = width, height = height,
