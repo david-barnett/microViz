@@ -59,7 +59,7 @@ test_that("cor_heatmap doesn't change: ", {
   )
   expect_snapshot_csv(
     name = "cor_heatmap_dietswap",
-    object = p@matrix
+    object = round(p@matrix, digits = 8)
   )
   # note: cell fun environment name always changes, hence excluded
   expect_snapshot(p@matrix_param[names(p@matrix_param) != "cell_fun"])
@@ -89,7 +89,7 @@ test_that("cor_heatmap with var_anno doesn't change: ", {
 
   expect_snapshot_csv(
     name = "cor_heatmap_dietswap",
-    object = v@matrix
+    object = round(v@matrix, digits = 8)
   )
   # note: cell fun environment name always changes, hence excluded
   expect_snapshot(v@matrix_param[names(v@matrix_param) != "cell_fun"])
@@ -116,7 +116,7 @@ test_that("comp_heatmap doesn't change: ", {
   )
   expect_snapshot_csv(
     name = "comp_heatmap_dietswap",
-    object = p@matrix
+    object = round(p@matrix, digits = 9)
   )
   expect_snapshot(p@matrix_param)
   expect_snapshot(p@matrix_color_mapping)
