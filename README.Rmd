@@ -164,7 +164,7 @@ sample_data(dietswap)$african[c(3, 4)] <- NA
 You have quite a few samples in your phyloseq object, and would like to visualize their compositions.
 Perhaps these example data differ participant nationality?
 
-```{r fig.height=5, fig.width=6, dpi=120}
+```{r, bars, fig.height=5, fig.width=6, dpi=120}
 dietswap %>%
   comp_barplot(
     tax_level = "Genus", n_taxa = 15, other_name = "Other",
@@ -178,7 +178,7 @@ dietswap %>%
   theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
 ```
 
-```{r, fig.width=5.5, fig.height=3.5, dpi=120}
+```{r, compheatmap, fig.width=5.5, fig.height=3.5, dpi=120}
 htmp <- dietswap %>%
   ps_mutate(nationality = as.character(nationality)) %>%
   tax_transform("log2", add = 1, chain = TRUE) %>%
@@ -307,7 +307,7 @@ perm2 %>%
 
 microViz heatmaps are powered by `ComplexHeatmap` and annotated with taxa prevalence and/or abundance.
 
-```{r heatmap, dpi=120, fig.width=7, fig.height=5.5}
+```{r, corheatmap, dpi=120, fig.width=7, fig.height=5.5}
 # set up the data with numerical variables and filter to top taxa
 psq <- dietswap %>%
   ps_mutate(
