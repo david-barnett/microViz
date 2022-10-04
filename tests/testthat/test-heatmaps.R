@@ -27,7 +27,7 @@ test_that("comp_heatmap can make a one taxon or one sample heatmap", {
   expect_s4_class(onerow2, class = "Heatmap")
 })
 
-# deprecated cor_heatmap functionality ---------------------------------------
+# deprecated cor_heatmap annotation approach ---------------------------------
 
 test_that("default taxa_side ('right') is not compatible with taxa column annotations", {
   column_tax_anno <- suppressWarnings( # warns about deprecation
@@ -48,15 +48,17 @@ test_that("cor_heatmap error on invalid anno_tax argument", {
   )
 })
 
-test_that("cor_heatmap doesn't change: ", {
+test_that("cor_heatmap doesn't change:", {
   local_edition(3)
   skip_if_not(packageVersion("ComplexHeatmap") > 2.11)
+
   # make simple correlation heatmap with all numeric-like variables
   p <- suppressWarnings(
     cor_heatmap(
       data = psq, taxa = taxa, anno_tax = tax_anno(undetected = 50)
     )
   )
+
   expect_snapshot_csv(
     name = "cor_heatmap_dietswap",
     object = round(p@matrix, digits = 8)
@@ -69,12 +71,8 @@ test_that("cor_heatmap doesn't change: ", {
   expect_snapshot(str(p@row_dend_param$obj))
   expect_snapshot_csv(name = "cor_row_order", object = p@row_order)
   expect_snapshot_csv(name = "cor_col_order", object = p@column_order)
-})
 
-test_that("cor_heatmap with var_anno doesn't change: ", {
-  local_edition(3)
-  skip_if_not(packageVersion("ComplexHeatmap") > 2.11)
-
+  # test cor_heatmap with var_anno doesn't change:
   v <- suppressWarnings(
     cor_heatmap(
       data = psq, taxa = taxa,
@@ -87,8 +85,10 @@ test_that("cor_heatmap with var_anno doesn't change: ", {
     )
   )
 
+  expect_equal(v@matrix, p@matrix)
+
   expect_snapshot_csv(
-    name = "cor_heatmap_dietswap",
+    name = "cor_heatmap_dietswap_v",
     object = round(v@matrix, digits = 8)
   )
   # note: cell fun environment name always changes, hence excluded
@@ -103,7 +103,7 @@ test_that("cor_heatmap with var_anno doesn't change: ", {
 })
 
 
-# deprecated comp_heatmap functionality ---------------------------------------
+# deprecated comp_heatmap annotation approach ---------------------------
 
 test_that("comp_heatmap doesn't change: ", {
   local_edition(3)

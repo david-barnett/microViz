@@ -20,7 +20,15 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/david-barnett/microViz/workflows/R-CMD-check/badge.svg)](https://github.com/david-barnett/microViz/actions) [![codecov](https://codecov.io/gh/david-barnett/microViz/branch/main/graph/badge.svg?token=C1EoVkhnxA)](https://codecov.io/gh/david-barnett/microViz) ![GitHub R package version](https://img.shields.io/github/r-package/v/david-barnett/microViz?label=Latest) ![GitHub release (including pre-releases)](https://img.shields.io/github/v/release/david-barnett/microViz?include_prereleases&label=Release) ![Docker Image Version (latest by date)](https://img.shields.io/docker/v/barnettdavid/microviz-rocker-verse?color=blue&label=Docker) [![r-universe microViz status](https://david-barnett.r-universe.dev/badges/microViz)](https://david-barnett.r-universe.dev/ui#package:microViz) [![JOSS article](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa/status.svg)](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa) [![Zenodo DOI](https://zenodo.org/badge/307119750.svg)](https://zenodo.org/badge/latestdoi/307119750)
+[![R-CMD-check](https://github.com/david-barnett/microViz/workflows/R-CMD-check/badge.svg)](https://github.com/david-barnett/microViz/actions) 
+[![codecov](https://codecov.io/gh/david-barnett/microViz/branch/main/graph/badge.svg?token=C1EoVkhnxA)](https://codecov.io/gh/david-barnett/microViz) 
+![GitHub R package version](https://img.shields.io/github/r-package/v/david-barnett/microViz?label=Latest) 
+![GitHub release (including pre-releases)](https://img.shields.io/github/v/release/david-barnett/microViz?include_prereleases&label=Release) 
+![Docker Image Version (latest by date)](https://img.shields.io/docker/v/barnettdavid/microviz-rocker-verse?color=blue&label=Docker) 
+[![r-universe microViz status](https://david-barnett.r-universe.dev/badges/microViz)](https://david-barnett.r-universe.dev/ui#package:microViz) 
+[![JOSS article](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa/status.svg)](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa)
+[![Citations](https://img.shields.io/endpoint?color=g&label=Citations&url=https%3A%2F%2Fgsch-with-serpapi-1560bu5idqdd.runkit.sh%2F)](https://scholar.google.com/scholar?oi=bibs&hl=en&cites=5439940108464463894) 
+[![Zenodo DOI](https://zenodo.org/badge/307119750.svg)](https://zenodo.org/badge/latestdoi/307119750)
 
 <!-- badges: end -->
 
@@ -63,39 +71,53 @@ knitr::opts_chunk$set(
 
 ## Installation
 
-You can install the latest available microViz package version using the following instructions.
+microViz is not (yet) available from CRAN.
+You can install microViz from R Universe, or from GitHub.
+
+I recommend you first install the Bioconductor dependencies using the code below.
+
+``` r
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+BiocManager::install(c("phyloseq", "microbiome", "ComplexHeatmap"), update = FALSE)
+```
+
+### Installation of microViz from R Universe
+
+``` r
+install.packages(
+  "microViz",
+  repos = c(davidbarnett = "https://david-barnett.r-universe.dev", getOption("repos"))
+)
+```
+
+### Installation of microViz from GitHub
 
 ``` r
 # Installing from github requires the devtools package
-install.packages("devtools") 
-
-# To install the latest "released" version of this package
-devtools::install_github("david-barnett/microViz@0.9.4") # check 0.9.4 is the latest release
+install.packages("devtools")
+# Windows users will also need to have RTools installed! http://jtleek.com/modules/01_DataScientistToolbox/02_10_rtools/
 
 # To install the very latest version:
 devtools::install_github("david-barnett/microViz")
-# If you encounter a bug please try the latest version & let me know if the bug persists!
 
-# If the Bioconductor dependencies don't automatically install you can install
-# them yourself like this:
-if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager") 
-BiocManager::install(c("phyloseq", "microbiome", "ComplexHeatmap"))
+# To install a specific "release" version of this package
+devtools::install_github("david-barnett/microViz@0.9.4") 
 ```
 
-:computer: **Windows users** - will need to have RTools installed so that your computer can build this package (follow instructions here: <http://jtleek.com/modules/01_DataScientistToolbox/02_10_rtools/>)
+### Installation notes
 
 **:apple: macOS** **users** - might need to install [xquartz](https://www.xquartz.org/) to make the heatmaps work (to do this with homebrew, run the following command in your mac's Terminal: `brew install --cask xquartz`
 
 :package: I highly recommend using [renv](https://rstudio.github.io/renv/index.html) for managing your R package installations across multiple projects.
 
-:whale: Alternatively, for Docker users an image with the main branch installed is available at: <https://hub.docker.com/r/barnettdavid/microviz-rocker-verse>
+:whale: For Docker users an image with the main branch installed is available at: <https://hub.docker.com/r/barnettdavid/microviz-rocker-verse>
 
 :date: microViz is tested to work with R version 4 on Windows, MacOS, and Ubuntu 18 and 20.
 R version 3.6.\* should probably work, but I don't formally test this.
 
 ## Interactive ordination exploration
 
-```{r load, message=FALSE}
+```{r}
 library(microViz)
 ```
 

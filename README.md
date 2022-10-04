@@ -17,6 +17,7 @@ date)](https://img.shields.io/docker/v/barnettdavid/microviz-rocker-verse?color=
 status](https://david-barnett.r-universe.dev/badges/microViz)](https://david-barnett.r-universe.dev/ui#package:microViz)
 [![JOSS
 article](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa/status.svg)](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa)
+[![Citations](https://img.shields.io/endpoint?color=g&label=Citations&url=https%3A%2F%2Fgsch-with-serpapi-1560bu5idqdd.runkit.sh%2F)](https://scholar.google.com/scholar?oi=bibs&hl=en&cites=5439940108464463894)
 [![Zenodo
 DOI](https://zenodo.org/badge/307119750.svg)](https://zenodo.org/badge/latestdoi/307119750)
 
@@ -79,29 +80,41 @@ examples: <https://david-barnett.github.io/microViz/>
 
 ## Installation
 
-You can install the latest available microViz package version using the
-following instructions.
+microViz is not (yet) available from CRAN. You can install microViz from
+R Universe, or from GitHub.
+
+I recommend you first install the Bioconductor dependencies using the
+code below.
+
+``` r
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+BiocManager::install(c("phyloseq", "microbiome", "ComplexHeatmap"), update = FALSE)
+```
+
+### Installation of microViz from R Universe
+
+``` r
+install.packages(
+  "microViz",
+  repos = c(davidbarnett = "https://david-barnett.r-universe.dev", getOption("repos"))
+)
+```
+
+### Installation of microViz from GitHub
 
 ``` r
 # Installing from github requires the devtools package
-install.packages("devtools") 
-
-# To install the latest "released" version of this package
-devtools::install_github("david-barnett/microViz@0.9.4") # check 0.9.4 is the latest release
+install.packages("devtools")
+# Windows users will also need to have RTools installed! http://jtleek.com/modules/01_DataScientistToolbox/02_10_rtools/
 
 # To install the very latest version:
 devtools::install_github("david-barnett/microViz")
-# If you encounter a bug please try the latest version & let me know if the bug persists!
 
-# If the Bioconductor dependencies don't automatically install you can install
-# them yourself like this:
-if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager") 
-BiocManager::install(c("phyloseq", "microbiome", "ComplexHeatmap"))
+# To install a specific "release" version of this package
+devtools::install_github("david-barnett/microViz@0.9.4") 
 ```
 
-:computer: **Windows users** - will need to have RTools installed so
-that your computer can build this package (follow instructions here:
-<http://jtleek.com/modules/01_DataScientistToolbox/02_10_rtools/>)
+### Installation notes
 
 **:apple: macOS** **users** - might need to install
 [xquartz](https://www.xquartz.org/) to make the heatmaps work (to do
@@ -112,8 +125,8 @@ this with homebrew, run the following command in your mac’s Terminal:
 [renv](https://rstudio.github.io/renv/index.html) for managing your R
 package installations across multiple projects.
 
-:whale: Alternatively, for Docker users an image with the main branch
-installed is available at:
+:whale: For Docker users an image with the main branch installed is
+available at:
 <https://hub.docker.com/r/barnettdavid/microviz-rocker-verse>
 
 :date: microViz is tested to work with R version 4 on Windows, MacOS,
@@ -124,6 +137,11 @@ formally test this.
 
 ``` r
 library(microViz)
+#> 
+#> microViz version 0.9.5 - Copyright (C) 2021 David Barnett
+#> * Website: https://david-barnett.github.io/microViz/
+#> * Useful? For citation info, run: citation('microViz')
+#> * Silence: suppressPackageStartupMessages(library(microViz))
 ```
 
 microViz provides a Shiny app for an easy way to start exploring your
@@ -199,7 +217,7 @@ dietswap %>%
 #>   reorder.hclust vegan
 ```
 
-<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
 
 ``` r
 htmp <- dietswap %>%
@@ -224,7 +242,7 @@ ComplexHeatmap::draw(
 )
 ```
 
-<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
 
 ### Example ordination plot workflow
 
@@ -303,8 +321,8 @@ aitchison_perm <- aitchison_dists %>%
     n_processes = 1, n_perms = 99, # you should use at least 999!
     variables = "bmi_group"
   )
-#> 2022-09-22 15:29:00 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2022-09-22 15:29:00 - Finished PERMANOVA
+#> 2022-10-04 13:58:03 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2022-10-04 13:58:03 - Finished PERMANOVA
 
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
@@ -335,8 +353,8 @@ your permanova directly using the `ord_plot` function with constraints
 perm2 <- aitchison_dists %>% 
   dist_permanova(variables = c("weight", "african", "sex"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2022-09-22 15:29:00 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2022-09-22 15:29:02 - Finished PERMANOVA
+#> 2022-10-04 13:58:03 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2022-10-04 13:58:05 - Finished PERMANOVA
 ```
 
 We’ll visualise the effect of nationality and bodyweight on sample
@@ -443,7 +461,7 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] ggplot2_3.3.6   dplyr_1.0.10    phyloseq_1.40.0 microViz_0.9.4 
+#> [1] ggplot2_3.3.6   dplyr_1.0.10    phyloseq_1.40.0 microViz_0.9.5 
 #> [5] testthat_3.1.4  devtools_2.4.3  usethis_2.1.6  
 #> 
 #> loaded via a namespace (and not attached):
@@ -480,7 +498,7 @@ sessionInfo()
 #>  [91] R6_2.5.1               magick_2.7.3           IRanges_2.30.0        
 #>  [94] generics_0.1.3         DBI_1.1.2              pillar_1.8.1          
 #>  [97] withr_2.5.0            mgcv_1.8-40            survival_3.3-1        
-#> [100] RCurl_1.98-1.8         tibble_3.1.8           corncob_0.2.1         
+#> [100] RCurl_1.98-1.8         tibble_3.1.8           corncob_0.3.0         
 #> [103] crayon_1.5.1           utf8_1.2.2             microbiome_1.18.0     
 #> [106] rmarkdown_2.14         viridis_0.6.2          GetoptLong_1.0.5      
 #> [109] grid_4.2.0             data.table_1.14.2      callr_3.7.0           

@@ -1,4 +1,4 @@
-# cor_heatmap doesn't change: 
+# cor_heatmap doesn't change:
 
     Code
       p@matrix_param[names(p@matrix_param) != "cell_fun"]
@@ -172,7 +172,7 @@
               |     `--leaf "Uncultured Clostridiales II" 
               `--leaf "Prevotella oralis et rel." 
 
-# cor_heatmap with var_anno doesn't change: 
+---
 
     Code
       v@matrix_param[names(v@matrix_param) != "cell_fun"]

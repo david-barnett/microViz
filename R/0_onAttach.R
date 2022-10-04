@@ -3,7 +3,7 @@
 
   msg <- paste0(
     "
-", pkgname, " version ", version, " - Copyright (C) 2021 David Barnett
+", pkgname, " version ", version, " - Copyright (C) 2022 David Barnett
 * Website: https://david-barnett.github.io/microViz/
 * Useful? For citation info, run: citation('microViz')
 * Silence: suppressPackageStartupMessages(library(microViz))
