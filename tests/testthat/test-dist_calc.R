@@ -60,5 +60,3 @@ test_that("dist_calc throws errors", {
 
   expect_error(dist_calc(data = 2), regexp = "data is class: numeric")
 })
-
-

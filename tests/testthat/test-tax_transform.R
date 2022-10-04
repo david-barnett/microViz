@@ -35,8 +35,12 @@ test_that("tax_transform doesn't change", {
 })
 
 test_that("clr and rclr equivalent with no zeros", {
-  testr <- dietswap %>% tax_transform("rclr", rank = "Family", zero_replace = 1) %>% otu_get()
-  testc <- dietswap %>% tax_transform("clr", rank = "Family", zero_replace = 1) %>% otu_get()
+  testr <- dietswap %>%
+    tax_transform("rclr", rank = "Family", zero_replace = 1) %>%
+    otu_get()
+  testc <- dietswap %>%
+    tax_transform("clr", rank = "Family", zero_replace = 1) %>%
+    otu_get()
   expect_equal(testr, testc, tolerance = 0.0000000001)
 })
 

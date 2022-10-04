@@ -47,4 +47,3 @@ test_that("otu_get subsetting works as expected", {
   expect_error(otu_get(shao19, taxa = 1:50000), "Invalid taxa selection")
   expect_error(otu_get(shao19, samples = 1:5000), "Invalid sample selection")
 })
-

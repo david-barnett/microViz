@@ -74,14 +74,13 @@ ps_dedupe <- function(ps,
                       .keep_readcount = FALSE,
                       .message_IDs = FALSE,
                       .label_only = FALSE,
-                      .keep_all_taxa = FALSE
-){
+                      .keep_all_taxa = FALSE) {
   # Check inputs
   if (!inherits(ps, "phyloseq")) stop("ps must be a phyloseq object")
   if (!rlang::is_character(vars)) stop("vars must be character")
   psCheckVariables(ps = ps, vars = vars)
   method <- rlang::arg_match(method, values = c("readcount", "first", "last", "random"))
-  if (!rlang::is_scalar_integerish(n) || n < 1) stop('n must be a positive number')
+  if (!rlang::is_scalar_integerish(n) || n < 1) stop("n must be a positive number")
   if (!rlang::is_bool(verbose)) stop("verbose must be TRUE or FALSE")
   if (!rlang::is_bool(.keep_group_var)) stop(".keep_group_var must be TRUE or FALSE")
   if (!rlang::is_bool(.keep_readcount)) stop(".keep_readcount must be TRUE or FALSE")
@@ -133,13 +132,14 @@ ps_dedupe <- function(ps,
   }
 
   # label samples to keep
-  phyloseq::sample_data(ps)[['.KEEP_SAMPLE.']] <- df$._ID_. %in% dfDedupe$._ID_.
-  if (.label_only) return(ps) # early exit without filtering
+  phyloseq::sample_data(ps)[[".KEEP_SAMPLE."]] <- df$._ID_. %in% dfDedupe$._ID_.
+  if (.label_only) {
+    return(ps)
+  } # early exit without filtering
 
   # filter samples
   ps <- ps_filter(ps, .data$.KEEP_SAMPLE., .keep_all_taxa = .keep_all_taxa)
-  phyloseq::sample_data(ps)[['.KEEP_SAMPLE.']] <- NULL
+  phyloseq::sample_data(ps)[[".KEEP_SAMPLE."]] <- NULL
 
   return(ps)
 }
-
