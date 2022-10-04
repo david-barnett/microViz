@@ -79,6 +79,11 @@ psNewNames2 <- ps \%>\% tax_rename(
 taxa_names(psNewNames2) \%>\% head(15)
 taxa_names(psNewNames2) \%>\% tail(15)
 
+ps \%>\%
+  tax_rename(rank = "Genus", pad_digits = 2) \%>\%
+  taxa_names() \%>\%
+  head(15)
+
 # naming improvement on plots example
 library(ggplot2)
 library(patchwork)

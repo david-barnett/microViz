@@ -57,6 +57,11 @@
 #' taxa_names(psNewNames2) %>% head(15)
 #' taxa_names(psNewNames2) %>% tail(15)
 #'
+#' ps %>%
+#'   tax_rename(rank = "Genus", pad_digits = 2) %>%
+#'   taxa_names() %>%
+#'   head(15)
+#'
 #' # naming improvement on plots example
 #' library(ggplot2)
 #' library(patchwork)
@@ -120,8 +125,10 @@ tax_rename <- function(ps,
   # check inputs #
   if (!inherits(ps, "phyloseq")) stop("ps must be a phyloseq object")
   psCheckRanks(ps = ps, rank = rank, varname = "rank")
-  if (!rlang::is_string(x = pad_digits, string = c("auto", "max", 0:10))) {
-    stop("pad_digits must be 'auto', 'max', or a number from 0 to 10")
+  if (!rlang::is_scalar_integerish(pad_digits) || pad_digits < 0L) {
+    if (!rlang::is_string(x = pad_digits, string = c("auto", "max"))) {
+      stop("pad_digits must be 'auto', 'max', or a positive integer")
+    }
   }
   stopifnot(rlang::is_string(sep))
   stopifnot(rlang::is_string(transform_for_sort))

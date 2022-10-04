@@ -1,3 +1,8 @@
+# microViz (development version)
+
+## Fixes
+- `tax_rename` accepts integerish values for pad_digits argument
+
 # microViz 0.9.4
 
 ## Fixes
