@@ -1,3 +1,8 @@
+# microViz (development version)
+
+## Fixes
+- Bump rlang dependency version to 1.0.0 fixing https://github.com/david-barnett/microViz/issues/69
+
 # microViz 0.9.5
 
 ## Fixes
