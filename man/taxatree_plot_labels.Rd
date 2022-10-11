@@ -74,10 +74,7 @@ corresponding data point. Defaults to 1.}
 Defaults to 0.5.}
     \item{\code{max.iter}}{Maximum number of iterations to try to resolve overlaps.
 Defaults to 10000.}
-    \item{\code{xlim}}{Limits for the x and y axes. Text labels will be constrained
-to these limits. By default, text labels are constrained to the entire plot
-area.}
-    \item{\code{ylim}}{Limits for the x and y axes. Text labels will be constrained
+    \item{\code{xlim,ylim}}{Limits for the x and y axes. Text labels will be constrained
 to these limits. By default, text labels are constrained to the entire plot
 area.}
     \item{\code{direction}}{"both", "x", or "y" -- direction in which to adjust position of labels}

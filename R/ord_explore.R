@@ -1426,7 +1426,7 @@ ord_explore_palet_fun <- function(ps,
 #' @param ggplot a ggplot object with or without a legend
 #' @param rel_widths passed to cowplot::plot_grid
 #'
-#' @return
+#' @return a ggplot and its legend combined with cowplot
 #' @noRd
 legend_separate <- function(ggplot, rel_widths = c(3, 1)) {
   leg <- cowplot::get_legend(ggplot)

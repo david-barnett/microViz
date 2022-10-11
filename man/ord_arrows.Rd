@@ -5,16 +5,14 @@
 \alias{vec_constraint}
 \alias{vec_tax_sel}
 \alias{vec_tax_all}
-\title{Create ordination plot vector styling lists
-
-Used by ord_plot, see examples there.}
+\title{Create ordination plot vector styling lists}
 \usage{
 vec_constraint(
   size = 1,
   alpha = 0.8,
   colour = "brown",
-  arrow = grid::arrow(length = grid::unit(0.005, units = "npc"), type = "closed", angle
-    = 30),
+  arrow = grid::arrow(length = grid::unit(0.005, units = "npc"), type = "closed", angle =
+    30),
   lineend = "round",
   linejoin = "mitre",
   ...
@@ -24,8 +22,8 @@ vec_tax_sel(
   size = 0.5,
   alpha = 1,
   colour = "black",
-  arrow = grid::arrow(length = grid::unit(0.005, units = "npc"), type = "closed", angle
-    = 30),
+  arrow = grid::arrow(length = grid::unit(0.005, units = "npc"), type = "closed", angle =
+    30),
   lineend = "round",
   linejoin = "mitre",
   ...
@@ -52,7 +50,5 @@ vec_tax_all(size = 0.5, alpha = 0.25, arrow = NULL, ...)
 list
 }
 \description{
-Create ordination plot vector styling lists
-
 Used by ord_plot, see examples there.
 }

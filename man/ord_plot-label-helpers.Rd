@@ -33,11 +33,11 @@ See functions section.
 }
 \section{Functions}{
 \itemize{
-\item \code{textAngleCalc}: Calculate rotation of text labels for ordination plot
+\item \code{textAngleCalc()}: Calculate rotation of text labels for ordination plot
 
-\item \code{textHjustCalc}: Calculate hjust of text labels for ordination plot
+\item \code{textHjustCalc()}: Calculate hjust of text labels for ordination plot
+
 }}
-
 \examples{
 library(ggplot2)
 library(dplyr)

@@ -16,8 +16,6 @@
 #' - merge_other: controls whether bar outlines can be drawn around individual (lower abundance) taxa that are grouped in "other" category. If you want to see the diversity of taxa in "other" use merge_taxa = FALSE, or use TRUE if you prefer the cleaner merged look
 #' - palette: Default colouring is consistent across multiple plots if created with the group_by argument, and the defaults scheme retains the colouring of the most abundant taxa irrespective of n_taxa
 #'
-#' @details
-#'
 #' @param ps phyloseq object
 #' @param tax_level taxonomic aggregation level (from rank_names(ps))
 #' @param n_taxa
@@ -234,7 +232,7 @@ comp_barplot <- function(ps,
   }
   if (length(tax_order) == 1) ps <- tax_sort(ps, by = tax_order)
   if (length(tax_order) == phyloseq::ntaxa(ps)) {
-    ps <- tax_reorder(ps, tax_order = tax_order, tree_warn = TRUE)
+    ps <- tax_reorder(ps, tax_order = tax_order, tree_warn = FALSE)
   }
 
   ## unique taxa levels for ordering taxa group factor ------------------------

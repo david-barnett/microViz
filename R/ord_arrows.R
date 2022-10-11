@@ -23,6 +23,7 @@ ord_arrows <- function(p, data, styleList, axesNames, defaultStyles) {
 
 #' @title Create ordination plot vector styling lists
 #'
+#' @description
 #' Used by ord_plot, see examples there.
 #'
 #' @param size width of vector
