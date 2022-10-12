@@ -93,6 +93,7 @@ pseq %>%
     colours generated at <http://medialab.github.io/iwanthue/> (all
     colors, soft k-means).
 
+
 ### Colour palette customisation
 
 You can use the `tax_palette()` function to help create a custom colour
@@ -127,7 +128,8 @@ pseq %>%
   coord_flip()
 ```
 
-### Alternative taxa order
+
+### Alternative taxa ordering
 
 By default taxa are ordered by overall `sum` of their counts across all
 samples in your dataset. You can sort taxa by another function, such as
@@ -140,24 +142,56 @@ pseq %>%
   coord_flip()
 ```
 
-### Custom taxa order
+
+### Customising taxa order
 
 It is easy (since microViz version 0.9.6) to set a custom order of taxa
-to display, using `tax_reorder()`. This can pair nicely with a custom
-colour palette, as you can use the names of the palette to fix the taxa
-order.
+to display with `comp_barplot`. 
+For example you might be particularly interested in the abundance of 
+Proteobacteria genera in your samples, and want them to appear first,
+regardless of their overall abundance.
 
-```{r, fig.height=3, fig.width=4}
-customPal <- tax_palette(
-  data = pseq, rank = "Genus", pal = "kelly", n = 12, add = c(Other = "white")
-)
-customPal <- c(c("Lachnospiraceae Family" = "grey10"), customPal)
-tax_palette_plot(customPal)
+```{r}
+interestingGenera <- pseq %>% 
+  tax_select("Proteobacteria") %>% 
+  tax_top(n = 10, rank = "Genus") 
+interestingGenera
 ```
 
 ```{r}
 pseq %>%
   ps_filter(gender == "male") %>%
+  tax_sort(by = sum, at = "Genus") %>% # put other taxa in a reasonable order
+  comp_barplot(
+    tax_level = "Genus", n_taxa = 10, merge_other = FALSE, other_name = "Other",
+    palette = distinct_palette(10, pal = "kelly", add = "grey90"),
+    tax_order = interestingGenera # this is the reordering magic
+  ) + 
+  coord_flip()
+```
+
+
+### Custom taxa order and colour palette
+
+Customising taxa order and colour palette are often needed together.
+The pair nicely as you can use the names from a custom palette to fix the taxa
+order.
+
+```{r, fig.height=3, fig.width=3, fig.show='hold'}
+customPal <- tax_palette(
+  data = pseq, rank = "Genus", pal = "kelly", n = 20, add = c(Other = "white")
+)
+tax_palette_plot(customPal)
+
+# I'm interested in Prevotella, so let's put that first
+names(customPal) <- c("Prevotella", setdiff(names(customPal), "Prevotella"))
+tax_palette_plot(customPal)
+```
+
+```{r}
+pseq %>%
+  ps_filter(gender == "female") %>%
+  tax_sort(by = sum, at = "Genus", tree_warn = FALSE) %>%
   comp_barplot(
     tax_level = "Genus", merge_other = FALSE, 
     n_taxa = 12,
@@ -168,9 +202,84 @@ pseq %>%
   coord_flip()
 ```
 
-Sometimes you might prefer the top 10 taxa to be shown in alphabetical
-order. You could do this by reordering the names of the custom palette,
-like this.
+Let's look at the abundance of these same genera in a separate dataset.
+
+```{r}
+data("shao19")
+shao19 %>% 
+  ps_filter(family_role == "mother", age == 38) %>%
+  tax_sort(by = sum, at = "genus", tree_warn = FALSE) %>% 
+  comp_barplot(
+    tax_level = "genus", n_taxa = 12, other_name = "Other", merge_other = FALSE,
+    tax_order = names(customPal), palette = customPal
+  ) + 
+  coord_flip()
+```
+
+Not all the genera will be present in the other dataset, so we get a warning.
+Notice also that whilst the genus-colour pairings are the same,
+the legends are not identical, because the taxa that are not in this 2nd set 
+don't appear in its legend. 
+
+### Merging phyloseq objects to compare them
+
+The best way to create harmonised barcharts for two (or more) separate 
+datasets (e.g. your data and a public dataset) is to merge the datasets.
+Often the data generation methods (e.g. primer sets) won't match, making ASV or
+species-level merging impossible (or not advisable).
+
+You can still try merging at a higher taxonomic rank, such as Class, for comparison.
+
+```{r}
+dataset1 <- ps_filter(pseq, gender == "female")
+dataset2 <- ps_filter(shao19, family_role == "mother", age == 38)
+
+# first make sure the rank_names are the same format (e.g. both lowercase)
+colnames(dataset1@tax_table) <- rank_names(dataset1) %>% tolower()
+
+# remove ranks that are not shared
+dataset1 <- dataset1 %>% tax_mutate(kingdom = NULL)
+
+# create a dataset ID variable to distinguish the two datasets after merging
+dataset1 <- dataset1 %>% ps_mutate(dataset = "IBD study")
+dataset2 <- dataset2 %>% ps_mutate(dataset = "Birth cohort mothers")
+
+# aggregate and merge
+combined <- phyloseq::merge_phyloseq(
+  dataset1 %>% tax_agg("class") %>% ps_get(),
+  dataset2 %>% tax_agg("class") %>% ps_get()
+)
+
+combined
+```
+
+
+Now we can plot the two datasets in separate facets of the same plot.
+
+```{r}
+combined %>% 
+  comp_barplot("class", facet_by = 'dataset', n_taxa = 12) +
+  coord_flip()
+```
+
+
+Or we could plot them as separate plots with the group argument.
+
+```{r}
+plots <- combined %>% comp_barplot("class", n_taxa = 12, group_by = 'dataset') 
+
+# combine plots with shared legend
+patchwork::wrap_plots(plots, nrow = 2, guides = "collect") & 
+  theme(axis.ticks.x = element_blank(), axis.text.x = element_blank())
+```
+
+
+
+### Alphabetical top taxa
+
+Sometimes you might prefer the top taxa to be shown in alphabetical
+order. One way to do this is by reordering the names of a custom palette,
+like this:
 
 ```{r, fig.height=3, fig.width=4}
 # don't add an "Other" colour for now
@@ -194,6 +303,7 @@ pseq %>%
   coord_flip()
 ```
 
+
 ### Custom hierarchical sorting and palette
 
 A complex example showing one method for obtaining a hierarchical colour
@@ -201,17 +311,18 @@ palette with hues specified by Phylum (or another high rank) and shades
 of the hue specified by Family (or another low rank).
 
 ```{r}
-# Sort phyloseq at lower, and then higher ranks
-pseq2 <- pseq %>% 
-  ps_filter(gender == "male") %>% 
-  tax_sort(by = sum, at = "Family") %>% 
-  tax_sort(by = sum, at = "Phylum") %>% 
-  tax_agg(rank = "Family") 
-
-# Specify number of hues and shades desired
 hueRank <- "Phylum"
 hueRankPlural <- "Phyla"
 shadeRank <- "Family"
+
+# Sort phyloseq at lower, and then higher ranks
+pseq2 <- pseq %>% 
+  ps_filter(gender == "male") %>% 
+  tax_sort(by = sum, at = shadeRank) %>% 
+  tax_sort(by = sum, at = hueRank) %>% 
+  tax_agg(rank = shadeRank) 
+
+# Specify number of hues and shades desired
 nHues <- 3 # "Other" phyla will be shades of grey
 nShades <- 4 # "Other" families will be the lightest shade of each hue
 
@@ -227,7 +338,7 @@ hierarchicalPalInfo <- hierarchicalPalInfo %>%
       f = hue, keep = unique(hue)[seq_len(nHues)], 
       other_level = paste("Other", hueRankPlural)
     ),
-    nCharHue = nchar(as.character(hue)), padHue = max(nCharHue) - nCharHue
+    nChrHue = nchar(as.character(hue)), padHue = max(nChrHue) - nChrHue
   ) %>% 
   dplyr::group_by(hue) %>%
   dplyr::mutate(
@@ -238,7 +349,7 @@ hierarchicalPalInfo <- hierarchicalPalInfo %>%
   ) %>% 
   dplyr::ungroup() %>% 
   dplyr::mutate(
-    nCharShade = nchar(as.character(shade)), padShade = max(nCharShade) - nCharShade,
+    nChrShade = nchar(as.character(shade)), padShade = max(nChrShade) - nChrShade,
     Taxa = paste0(hue, ": ", strrep(" ", padHue), shade, strrep(" ", padShade))
   ) 
 ```
@@ -265,6 +376,7 @@ tax_palette_plot(hierarchicalPal) +
   theme(axis.text.y.left = element_text(family = "mono"))
 ```
 
+
 ```{r}
 pseq2 %>% 
   ps_get() %>% 
@@ -274,7 +386,7 @@ pseq2 %>%
     tax_order = "asis", palette = hierarchicalPal, bar_width = 0.975
   ) +
   coord_flip() +
-  theme(legend.text = element_text(family = "mono"))
+  theme(legend.text = element_text(family = "mono")) # for text alignment
 ```
 
 
