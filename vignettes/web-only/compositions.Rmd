@@ -59,6 +59,8 @@ pseq %>%
 
 ## Customising this barplot
 
+### comp_barplot arguments
+
 The output of comp_barplot can be customised in several ways. See the
 comment alongside each argument for an explanation of its effect.
 
@@ -67,9 +69,11 @@ pseq %>%
   ps_filter(gender == "female") %>%
   comp_barplot(
     tax_level = "Genus",
-    label = "DiseaseState", # name an alternative variable to label axes
+    label = "DiseaseState", # name an alternative variable to label axis
     n_taxa = 15, # give more taxa unique colours
-    merge_other = FALSE, # split the "other" category to display alpha diversity
+    taxon_renamer = function(x) stringr::str_replace_all(x, "_", " "), # remove underscores
+    other_name = "Other genera", # set custom name for the "other" category
+    merge_other = FALSE, # split the "Other" category to display alpha diversity
     bar_width = 0.7, # reduce the bar width to 70% of one row
     bar_outline_colour = "grey5" # is the default (use NA to remove outlines)
   ) + 
@@ -89,6 +93,191 @@ pseq %>%
     colours generated at <http://medialab.github.io/iwanthue/> (all
     colors, soft k-means).
 
+### Colour palette customisation
+
+You can use the `tax_palette()` function to help create a custom colour
+palette for use in (multiple) barplots. Try to ensure you assign a
+colour for every taxon you expect to see separately on your barplot.
+
+```{r, fig.height=4, fig.width=4}
+myPal <- tax_palette(
+  data = pseq, rank = "Genus", n = 25, pal = "greenArmytage",
+  add = c(Other = "white")
+)
+tax_palette_plot(myPal)
+```
+
+```{r, fig.height=4, fig.width=4}
+# Override existing values
+myPal["Bacteroides"] <- "grey75"
+myPal["Streptococcus"] <- "black"
+myPal["Klebsiella"] <- "darkorange"
+# Add more values
+myPal["Enterobacteriaceae Family"] <- "hotpink"
+tax_palette_plot(myPal)
+```
+
+```{r}
+pseq %>%
+  ps_filter(gender == "female") %>%
+  comp_barplot(
+    tax_level = "Genus", palette = myPal,
+    n_taxa = 12, other_name = "Other", merge_other = FALSE 
+  ) + 
+  coord_flip()
+```
+
+### Alternative taxa order
+
+By default taxa are ordered by overall `sum` of their counts across all
+samples in your dataset. You can sort taxa by another function, such as
+`prev` for prevalence.
+
+```{r}
+pseq %>%
+  ps_filter(gender == "male") %>%
+  comp_barplot(tax_level = "Genus", tax_order = prev, merge_other = FALSE) + 
+  coord_flip()
+```
+
+### Custom taxa order
+
+It is easy (since microViz version 0.9.6) to set a custom order of taxa
+to display, using `tax_reorder()`. This can pair nicely with a custom
+colour palette, as you can use the names of the palette to fix the taxa
+order.
+
+```{r, fig.height=3, fig.width=4}
+customPal <- tax_palette(
+  data = pseq, rank = "Genus", pal = "kelly", n = 12, add = c(Other = "white")
+)
+customPal <- c(c("Lachnospiraceae Family" = "grey10"), customPal)
+tax_palette_plot(customPal)
+```
+
+```{r}
+pseq %>%
+  ps_filter(gender == "male") %>%
+  comp_barplot(
+    tax_level = "Genus", merge_other = FALSE, 
+    n_taxa = 12,
+    other_name = "Other", # must match a name in palette
+    tax_order = names(customPal),
+    palette = customPal
+    ) + 
+  coord_flip()
+```
+
+Sometimes you might prefer the top 10 taxa to be shown in alphabetical
+order. You could do this by reordering the names of the custom palette,
+like this.
+
+```{r, fig.height=3, fig.width=4}
+# don't add an "Other" colour for now
+alphabetPal <- tax_palette(pseq, rank = "Genus", n = 12, add = NA) 
+names(alphabetPal) <- sort(names(alphabetPal)) 
+# now add the "Other" colour to the end
+alphabetPal["Other"] <- "white"
+tax_palette_plot(alphabetPal)
+```
+
+```{r}
+pseq %>%
+  ps_filter(gender == "male") %>%
+  comp_barplot(
+    tax_level = "Genus", merge_other = FALSE, 
+    n_taxa = 12,
+    other_name = "Other", # must match a name in palette
+    tax_order = names(alphabetPal),
+    palette = alphabetPal
+  ) + 
+  coord_flip()
+```
+
+### Custom hierarchical sorting and palette
+
+A complex example showing one method for obtaining a hierarchical colour
+palette with hues specified by Phylum (or another high rank) and shades
+of the hue specified by Family (or another low rank).
+
+```{r}
+# Sort phyloseq at lower, and then higher ranks
+pseq2 <- pseq %>% 
+  ps_filter(gender == "male") %>% 
+  tax_sort(by = sum, at = "Family") %>% 
+  tax_sort(by = sum, at = "Phylum") %>% 
+  tax_agg(rank = "Family") 
+
+# Specify number of hues and shades desired
+hueRank <- "Phylum"
+hueRankPlural <- "Phyla"
+shadeRank <- "Family"
+nHues <- 3 # "Other" phyla will be shades of grey
+nShades <- 4 # "Other" families will be the lightest shade of each hue
+
+hierarchicalPalInfo <- data.frame(
+  hue = as.vector(tt_get(pseq2)[, hueRank]),
+  shade = as.vector(tt_get(pseq2)[, shadeRank]),
+  counts = taxa_sums(otu_get(pseq2))
+) 
+
+hierarchicalPalInfo <- hierarchicalPalInfo %>% 
+  dplyr::mutate(
+    hue = forcats::fct_other(
+      f = hue, keep = unique(hue)[seq_len(nHues)], 
+      other_level = paste("Other", hueRankPlural)
+    ),
+    nCharHue = nchar(as.character(hue)), padHue = max(nCharHue) - nCharHue
+  ) %>% 
+  dplyr::group_by(hue) %>%
+  dplyr::mutate(
+    shade = forcats::fct_other(
+      f = shade, keep = unique(shade)[seq_len(nShades - 1)], 
+      other_level = "Other"
+    )
+  ) %>% 
+  dplyr::ungroup() %>% 
+  dplyr::mutate(
+    nCharShade = nchar(as.character(shade)), padShade = max(nCharShade) - nCharShade,
+    Taxa = paste0(hue, ": ", strrep(" ", padHue), shade, strrep(" ", padShade))
+  ) 
+```
+
+
+```{r}
+hierarchicalPalMatrix <- matrix(
+  data = sapply(
+    X = seq(from = 30, to = 75, length.out = nShades), 
+    FUN = function(l) scales::hue_pal(l = l, h.start = 30)(n = nHues)
+  ),
+  byrow = TRUE, ncol = nHues
+)
+hierarchicalPalMatrix <- cbind(hierarchicalPalMatrix, grey.colors(n = nShades))
+
+hierarchicalPal <- hierarchicalPalMatrix %>% 
+  as.vector() %>% 
+  setNames(unique(hierarchicalPalInfo$Taxa))
+```
+
+
+```{r, fig.height=3, fig.width=4}
+tax_palette_plot(hierarchicalPal) +
+  theme(axis.text.y.left = element_text(family = "mono"))
+```
+
+```{r}
+pseq2 %>% 
+  ps_get() %>% 
+  tax_mutate(`Phylum: Family` = hierarchicalPalInfo$Taxa, .keep = "none") %>% 
+  comp_barplot(
+    tax_level = "Phylum: Family", n_taxa = length(hierarchicalPal),
+    tax_order = "asis", palette = hierarchicalPal, bar_width = 0.975
+  ) +
+  coord_flip() +
+  theme(legend.text = element_text(family = "mono"))
+```
+
+
 ## Averages, faceting or grouping?
 
 ### Averaging compositions
@@ -103,10 +292,7 @@ pseq %>%
   ps_select(age, DiseaseState) %>% # avoids lots of phyloseq::merge_samples warnings
   ps_filter(DiseaseState != "IBDundef") %>% 
   phyloseq::merge_samples(group = "DiseaseState") %>%
-  comp_barplot(
-    tax_level = "Genus", n_taxa = 12,
-    bar_width = 0.8
-  ) +
+  comp_barplot(tax_level = "Genus", n_taxa = 12, bar_width = 0.8) +
   coord_flip() + labs(x = NULL, y = NULL)
 ```
 
@@ -124,8 +310,7 @@ pseq %>%
   ps_filter(DiseaseState != "IBDundef") %>% # only one sample in this group
   # convert DiseaseState into ordered factor to control order of facets
   ps_mutate(
-    DiseaseState = factor(
-      DiseaseState, levels = c("UC", "nonIBD", "CD"), ordered = TRUE)
+    DiseaseState = factor(DiseaseState, levels = c("UC", "nonIBD", "CD"))
   ) %>% 
   comp_barplot(
     tax_level = "Genus", n_taxa = 15,
@@ -143,8 +328,7 @@ pseq %>%
   ps_filter(DiseaseState != "IBDundef") %>% # only one sample in this group
   # convert DiseaseState into ordered factor to control order of facets
   ps_mutate(
-    DiseaseState = factor(
-      DiseaseState, levels = c("UC", "CD", "nonIBD"), ordered = TRUE)
+    DiseaseState = factor(DiseaseState, levels = c("UC", "CD", "nonIBD"))
   ) %>% 
   comp_barplot(
     tax_level = "Genus", n_taxa = 15,
@@ -155,12 +339,8 @@ pseq %>%
     scales = "free", space = "free" # these options are critically important!
   ) +
   coord_flip() + 
-  theme(
-    axis.text.y = element_blank(),
-    axis.ticks.y = element_blank()
-  )
+  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
 ```
-
 
 ### Grouping
 
@@ -180,9 +360,7 @@ samples are separated by facet afterwards.*
 ```{r}
 plot_list <- pseq %>% 
   ps_filter(DiseaseState != "IBDundef") %>% 
-  comp_barplot(
-  n_taxa = 15, tax_level = "Genus", group_by = "DiseaseState"
-)
+  comp_barplot(n_taxa = 15, tax_level = "Genus", group_by = "DiseaseState")
 
 # Plot them side by side with the patchwork package.
 patch <- patchwork::wrap_plots(plot_list, nrow = 1, guides = "collect")
@@ -219,7 +397,7 @@ of the first barplot in this article.
 ```{r}
 pseq %>%
   ps_filter(gender == "female") %>%
-  comp_barplot(tax_level = "Genus", sample_order = "default") + 
+  comp_barplot(tax_level = "Genus", sample_order = "asis") + 
   coord_flip() +
   ggtitle("Unsorted barcharts are hard to read!")
 ```
@@ -273,16 +451,16 @@ pseq %>%
    tax_agg("Phylum") %>% 
    tax_transform("compositional") %>% 
    ps_arrange(desc(Firmicutes), .target = "otu_table") %>% 
-   comp_barplot(tax_level = "Phylum", sample_order = "default") +
+   comp_barplot(tax_level = "Phylum", sample_order = "asis") +
   coord_flip()
 ```
 
-
 ### Sorting by time
 
-Sometimes you have multiple samples from the same individuals/sites at several
-timepoints. You must first order the phyloseq by the time variable and then
-set the comp_barplot sample order to "asis" to keep this preset order.
+Sometimes you have multiple samples from the same individuals/sites at
+several timepoints. You must first order the phyloseq by the time
+variable and then set the comp_barplot sample order to "asis" (as is) to
+keep this pre-set order.
 
 ```{r, fig.height=6, fig.width=6}
 data("shao19")
@@ -302,12 +480,12 @@ ps %>%
   facet_wrap(~ family_id, scales = "free_x")
 ```
 
-Below is a trick to replace sample with timepoint as the x position mapping, 
-to keep timepoints consistent across infants, even with the missing timepoints
-seen here for some infants.
+Below is a trick to replace sample with timepoint as the x position
+mapping, to keep timepoints consistent across infants, even with the
+missing timepoints seen here for some infants.
 
-*Beware this is a bit of non-standard ggplot use, but is the only way to achieve 
-this currently with comp_barplot.*
+*Beware this is a bit of non-standard ggplot use, but is the only way to
+achieve this currently with comp_barplot.*
 
 ```{r, fig.height=6, fig.width=6}
 data("shao19")
@@ -317,7 +495,8 @@ shao19 %>%
   ps_filter(family_role == "child", family_id < 30, infant_age %in% c(4, 7, 21)) %>% 
   ps_arrange(infant_age) %>% 
   comp_barplot(
-    tax_level = "genus", sample_order = "asis", label = "infant_age", bar_width = 0.7
+    tax_level = "genus", sample_order = "asis", 
+    label = "infant_age", bar_width = 0.7
   ) +
   facet_wrap(
     facets = vars(family_id), labeller = as_labeller(~ paste("Fam.", .))
@@ -328,7 +507,6 @@ shao19 %>%
   scale_y_continuous(expand = expansion(add = c(0, 0.1))) # axis starts exactly at 0
 ```
 
-
 ```{r, fig.height=6, fig.width=6}
 data("shao19")
 shao19 %>% 
@@ -336,9 +514,7 @@ shao19 %>%
   # take an arbitrary smaller subset of infants and timepoints
   ps_filter(family_role == "child", family_id < 30, infant_age %in% c(4, 7, 21)) %>% 
   ps_arrange(infant_age) %>% 
-  comp_barplot(
-    tax_level = "genus", sample_order = "asis", bar_width = 0.7
-  ) +
+  comp_barplot(tax_level = "genus", sample_order = "asis", bar_width = 0.7) +
   facet_wrap(
     facets = vars(infant_age), labeller = as_labeller(~ paste("Age", ., "days")),
     scales = "fixed"
@@ -379,7 +555,7 @@ this example.
 times_list <- ps %>%
   ps_arrange(timepoint.within.group, nationality, desc(subject)) %>%
   comp_barplot(
-    tax_level = "Genus", n_taxa = 10, sample_order = "default",
+    tax_level = "Genus", n_taxa = 10, sample_order = "asis",
     group_by = "plot_groups", bar_width = 0.7, label = "subject"
   )
 
@@ -403,7 +579,7 @@ Same grouping, now showing diversity of taxa within other, with
 times_list <- ps %>%
   ps_arrange(timepoint.within.group, nationality, desc(subject)) %>%
   comp_barplot(
-    tax_level = "Genus", n_taxa = 10, sample_order = "default",
+    tax_level = "Genus", n_taxa = 10, sample_order = "asis",
     merge_other = FALSE, bar_outline_colour = "grey10",
     group_by = "plot_groups", bar_width = 0.7, label = "subject"
   )
