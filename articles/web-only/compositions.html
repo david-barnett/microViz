@@ -229,7 +229,7 @@
 <p><img src="compositions_files/figure-html/unnamed-chunk-6-1.png" width="864"></p>
 </div>
 <div class="section level3">
-<h3 id="alternative-taxa-order">Alternative taxa order<a class="anchor" aria-label="anchor" href="#alternative-taxa-order"></a>
+<h3 id="alternative-taxa-ordering">Alternative taxa ordering<a class="anchor" aria-label="anchor" href="#alternative-taxa-ordering"></a>
 </h3>
 <p>By default taxa are ordered by overall <code>sum</code> of their counts across all samples in your dataset. You can sort taxa by another function, such as <code>prev</code> for prevalence.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -240,19 +240,48 @@
 <p><img src="compositions_files/figure-html/unnamed-chunk-7-1.png" width="864"></p>
 </div>
 <div class="section level3">
-<h3 id="custom-taxa-order">Custom taxa order<a class="anchor" aria-label="anchor" href="#custom-taxa-order"></a>
+<h3 id="customising-taxa-order">Customising taxa order<a class="anchor" aria-label="anchor" href="#customising-taxa-order"></a>
 </h3>
-<p>It is easy (since microViz version 0.9.6) to set a custom order of taxa to display, using <code><a href="../../reference/tax_reorder.html">tax_reorder()</a></code>. This can pair nicely with a custom colour palette, as you can use the names of the palette to fix the taxa order.</p>
+<p>It is easy (since microViz version 0.9.6) to set a custom order of taxa to display with <code>comp_barplot</code>. For example you might be particularly interested in the abundance of Proteobacteria genera in your samples, and want them to appear first, regardless of their overall abundance.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">customPal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/tax_palette.html">tax_palette</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">pseq</span>, rank <span class="op">=</span> <span class="st">"Genus"</span>, pal <span class="op">=</span> <span class="st">"kelly"</span>, n <span class="op">=</span> <span class="fl">12</span>, add <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>Other <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">customPal</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Lachnospiraceae Family"</span> <span class="op">=</span> <span class="st">"grey10"</span><span class="op">)</span>, <span class="va">customPal</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../../reference/tax_palette_plot.html">tax_palette_plot</a></span><span class="op">(</span><span class="va">customPal</span><span class="op">)</span></span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-8-1.png" width="384"></p>
+<code class="sourceCode R"><span><span class="va">interestingGenera</span> <span class="op">&lt;-</span> <span class="va">pseq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../../reference/tax_select.html">tax_select</a></span><span class="op">(</span><span class="st">"Proteobacteria"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../../reference/tax_top.html">tax_top</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span>, rank <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> </span>
+<span><span class="va">interestingGenera</span></span>
+<span><span class="co">#&gt;  [1] "Escherichia/Shigella"      "Klebsiella"                "Haemophilus"              </span></span>
+<span><span class="co">#&gt;  [4] "Sutterella"                "Enterobacteriaceae Family" "Parasutterella"           </span></span>
+<span><span class="co">#&gt;  [7] "Cronobacter"               "Comamonadaceae Family"     "Raoultella"               </span></span>
+<span><span class="co">#&gt; [10] "Proteus"</span></span></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pseq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"male"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_sort.html">tax_sort</a></span><span class="op">(</span>by <span class="op">=</span> <span class="va">sum</span>, at <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="co"># put other taxa in a reasonable order</span></span>
+<span>  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span></span>
+<span>    tax_level <span class="op">=</span> <span class="st">"Genus"</span>, n_taxa <span class="op">=</span> <span class="fl">10</span>, merge_other <span class="op">=</span> <span class="cn">FALSE</span>, other_name <span class="op">=</span> <span class="st">"Other"</span>,</span>
+<span>    palette <span class="op">=</span> <span class="fu"><a href="../../reference/distinct_palette.html">distinct_palette</a></span><span class="op">(</span><span class="fl">10</span>, pal <span class="op">=</span> <span class="st">"kelly"</span>, add <span class="op">=</span> <span class="st">"grey90"</span><span class="op">)</span>,</span>
+<span>    tax_order <span class="op">=</span> <span class="va">interestingGenera</span> <span class="co"># this is the reordering magic</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="compositions_files/figure-html/unnamed-chunk-9-1.png" width="864"></p>
+</div>
+<div class="section level3">
+<h3 id="custom-taxa-order-and-colour-palette">Custom taxa order and colour palette<a class="anchor" aria-label="anchor" href="#custom-taxa-order-and-colour-palette"></a>
+</h3>
+<p>Customising taxa order and colour palette are often needed together. The pair nicely as you can use the names from a custom palette to fix the taxa order.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">customPal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/tax_palette.html">tax_palette</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">pseq</span>, rank <span class="op">=</span> <span class="st">"Genus"</span>, pal <span class="op">=</span> <span class="st">"kelly"</span>, n <span class="op">=</span> <span class="fl">20</span>, add <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>Other <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="../../reference/tax_palette_plot.html">tax_palette_plot</a></span><span class="op">(</span><span class="va">customPal</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># I'm interested in Prevotella, so let's put that first</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">customPal</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Prevotella"</span>, <span class="fu"><a href="https://generics.r-lib.org/reference/setops.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">customPal</span><span class="op">)</span>, <span class="st">"Prevotella"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../../reference/tax_palette_plot.html">tax_palette_plot</a></span><span class="op">(</span><span class="va">customPal</span><span class="op">)</span></span></code></pre></div>
+<p><img src="compositions_files/figure-html/unnamed-chunk-10-1.png" width="288"><img src="compositions_files/figure-html/unnamed-chunk-10-2.png" width="288"></p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pseq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"female"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_sort.html">tax_sort</a></span><span class="op">(</span>by <span class="op">=</span> <span class="va">sum</span>, at <span class="op">=</span> <span class="st">"Genus"</span>, tree_warn <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span></span>
 <span>    tax_level <span class="op">=</span> <span class="st">"Genus"</span>, merge_other <span class="op">=</span> <span class="cn">FALSE</span>, </span>
 <span>    n_taxa <span class="op">=</span> <span class="fl">12</span>,</span>
@@ -261,17 +290,81 @@
 <span>    palette <span class="op">=</span> <span class="va">customPal</span></span>
 <span>    <span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-9-1.png" width="864"></p>
-<p>Sometimes you might prefer the top 10 taxa to be shown in alphabetical order. You could do this by reordering the names of the custom palette, like this.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<p><img src="compositions_files/figure-html/unnamed-chunk-11-1.png" width="864"></p>
+<p>Let’s look at the abundance of these same genera in a separate dataset.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"shao19"</span><span class="op">)</span></span>
+<span><span class="va">shao19</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">family_role</span> <span class="op">==</span> <span class="st">"mother"</span>, <span class="va">age</span> <span class="op">==</span> <span class="fl">38</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_sort.html">tax_sort</a></span><span class="op">(</span>by <span class="op">=</span> <span class="va">sum</span>, at <span class="op">=</span> <span class="st">"genus"</span>, tree_warn <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span></span>
+<span>    tax_level <span class="op">=</span> <span class="st">"genus"</span>, n_taxa <span class="op">=</span> <span class="fl">12</span>, other_name <span class="op">=</span> <span class="st">"Other"</span>, merge_other <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>    tax_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">customPal</span><span class="op">)</span>, palette <span class="op">=</span> <span class="va">customPal</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in tax_reorder(ps, tax_order = tax_order, tree_warn = FALSE, ignore = other_name): 5 taxa</span></span>
+<span><span class="co">#&gt; specified in tax_order are not in phyloseq ps: they are ignored</span></span></code></pre></div>
+<p><img src="compositions_files/figure-html/unnamed-chunk-12-1.png" width="864"></p>
+<p>Not all the genera will be present in the other dataset, so we get a warning. Notice also that whilst the genus-colour pairings are the same, the legends are not identical, because the taxa that are not in this 2nd set don’t appear in its legend.</p>
+</div>
+<div class="section level3">
+<h3 id="merging-phyloseq-objects-to-compare-them">Merging phyloseq objects to compare them<a class="anchor" aria-label="anchor" href="#merging-phyloseq-objects-to-compare-them"></a>
+</h3>
+<p>The best way to create harmonised barcharts for two (or more) separate datasets (e.g. your data and a public dataset) is to merge the datasets. Often the data generation methods (e.g. primer sets) won’t match, making ASV or species-level merging impossible (or not advisable).</p>
+<p>You can still try merging at a higher taxonomic rank, such as Class, for comparison.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dataset1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">pseq</span>, <span class="va">gender</span> <span class="op">==</span> <span class="st">"female"</span><span class="op">)</span></span>
+<span><span class="va">dataset2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">shao19</span>, <span class="va">family_role</span> <span class="op">==</span> <span class="st">"mother"</span>, <span class="va">age</span> <span class="op">==</span> <span class="fl">38</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># first make sure the rank_names are the same format (e.g. both lowercase)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">dataset1</span><span class="op">@</span><span class="va">tax_table</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/rank_names.html" class="external-link">rank_names</a></span><span class="op">(</span><span class="va">dataset1</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">tolower</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># remove ranks that are not shared</span></span>
+<span><span class="va">dataset1</span> <span class="op">&lt;-</span> <span class="va">dataset1</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/tax_mutate.html">tax_mutate</a></span><span class="op">(</span>kingdom <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># create a dataset ID variable to distinguish the two datasets after merging</span></span>
+<span><span class="va">dataset1</span> <span class="op">&lt;-</span> <span class="va">dataset1</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/ps_mutate.html">ps_mutate</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="st">"IBD study"</span><span class="op">)</span></span>
+<span><span class="va">dataset2</span> <span class="op">&lt;-</span> <span class="va">dataset2</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/ps_mutate.html">ps_mutate</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="st">"Birth cohort mothers"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># aggregate and merge</span></span>
+<span><span class="va">combined</span> <span class="op">&lt;-</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/merge_phyloseq.html" class="external-link">merge_phyloseq</a></span><span class="op">(</span></span>
+<span>  <span class="va">dataset1</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"class"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/ps_extra-accessors.html">ps_get</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="va">dataset2</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"class"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/ps_extra-accessors.html">ps_get</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">combined</span></span>
+<span><span class="co">#&gt; phyloseq-class experiment-level object</span></span>
+<span><span class="co">#&gt; otu_table()   OTU Table:         [ 28 taxa and 93 samples ]</span></span>
+<span><span class="co">#&gt; sample_data() Sample Data:       [ 93 samples by 26 sample variables ]</span></span>
+<span><span class="co">#&gt; tax_table()   Taxonomy Table:    [ 28 taxa by 2 taxonomic ranks ]</span></span></code></pre></div>
+<p>Now we can plot the two datasets in separate facets of the same plot.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">combined</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span><span class="st">"class"</span>, facet_by <span class="op">=</span> <span class="st">'dataset'</span>, n_taxa <span class="op">=</span> <span class="fl">12</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="compositions_files/figure-html/unnamed-chunk-14-1.png" width="864"></p>
+<p>Or we could plot them as separate plots with the group argument.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">plots</span> <span class="op">&lt;-</span> <span class="va">combined</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span><span class="st">"class"</span>, n_taxa <span class="op">=</span> <span class="fl">12</span>, group_by <span class="op">=</span> <span class="st">'dataset'</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="co"># combine plots with shared legend</span></span>
+<span><span class="fu">patchwork</span><span class="fu">::</span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html" class="external-link">wrap_plots</a></span><span class="op">(</span><span class="va">plots</span>, nrow <span class="op">=</span> <span class="fl">2</span>, guides <span class="op">=</span> <span class="st">"collect"</span><span class="op">)</span> <span class="op">&amp;</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.ticks.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>, axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="compositions_files/figure-html/unnamed-chunk-15-1.png" width="864"></p>
+</div>
+<div class="section level3">
+<h3 id="alphabetical-top-taxa">Alphabetical top taxa<a class="anchor" aria-label="anchor" href="#alphabetical-top-taxa"></a>
+</h3>
+<p>Sometimes you might prefer the top taxa to be shown in alphabetical order. One way to do this is by reordering the names of a custom palette, like this:</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># don't add an "Other" colour for now</span></span>
 <span><span class="va">alphabetPal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/tax_palette.html">tax_palette</a></span><span class="op">(</span><span class="va">pseq</span>, rank <span class="op">=</span> <span class="st">"Genus"</span>, n <span class="op">=</span> <span class="fl">12</span>, add <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> </span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">alphabetPal</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">alphabetPal</span><span class="op">)</span><span class="op">)</span> </span>
 <span><span class="co"># now add the "Other" colour to the end</span></span>
 <span><span class="va">alphabetPal</span><span class="op">[</span><span class="st">"Other"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"white"</span></span>
 <span><span class="fu"><a href="../../reference/tax_palette_plot.html">tax_palette_plot</a></span><span class="op">(</span><span class="va">alphabetPal</span><span class="op">)</span></span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-10-1.png" width="384"></p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<p><img src="compositions_files/figure-html/unnamed-chunk-16-1.png" width="384"></p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pseq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"male"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span></span>
@@ -282,24 +375,25 @@
 <span>    palette <span class="op">=</span> <span class="va">alphabetPal</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-11-1.png" width="864"></p>
+<p><img src="compositions_files/figure-html/unnamed-chunk-17-1.png" width="864"></p>
 </div>
 <div class="section level3">
 <h3 id="custom-hierarchical-sorting-and-palette">Custom hierarchical sorting and palette<a class="anchor" aria-label="anchor" href="#custom-hierarchical-sorting-and-palette"></a>
 </h3>
 <p>A complex example showing one method for obtaining a hierarchical colour palette with hues specified by Phylum (or another high rank) and shades of the hue specified by Family (or another low rank).</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Sort phyloseq at lower, and then higher ranks</span></span>
-<span><span class="va">pseq2</span> <span class="op">&lt;-</span> <span class="va">pseq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"male"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_sort.html">tax_sort</a></span><span class="op">(</span>by <span class="op">=</span> <span class="va">sum</span>, at <span class="op">=</span> <span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_sort.html">tax_sort</a></span><span class="op">(</span>by <span class="op">=</span> <span class="va">sum</span>, at <span class="op">=</span> <span class="st">"Phylum"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"Family"</span><span class="op">)</span> </span>
-<span></span>
-<span><span class="co"># Specify number of hues and shades desired</span></span>
-<span><span class="va">hueRank</span> <span class="op">&lt;-</span> <span class="st">"Phylum"</span></span>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">hueRank</span> <span class="op">&lt;-</span> <span class="st">"Phylum"</span></span>
 <span><span class="va">hueRankPlural</span> <span class="op">&lt;-</span> <span class="st">"Phyla"</span></span>
 <span><span class="va">shadeRank</span> <span class="op">&lt;-</span> <span class="st">"Family"</span></span>
+<span></span>
+<span><span class="co"># Sort phyloseq at lower, and then higher ranks</span></span>
+<span><span class="va">pseq2</span> <span class="op">&lt;-</span> <span class="va">pseq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"male"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../../reference/tax_sort.html">tax_sort</a></span><span class="op">(</span>by <span class="op">=</span> <span class="va">sum</span>, at <span class="op">=</span> <span class="va">shadeRank</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../../reference/tax_sort.html">tax_sort</a></span><span class="op">(</span>by <span class="op">=</span> <span class="va">sum</span>, at <span class="op">=</span> <span class="va">hueRank</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="va">shadeRank</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="co"># Specify number of hues and shades desired</span></span>
 <span><span class="va">nHues</span> <span class="op">&lt;-</span> <span class="fl">3</span> <span class="co"># "Other" phyla will be shades of grey</span></span>
 <span><span class="va">nShades</span> <span class="op">&lt;-</span> <span class="fl">4</span> <span class="co"># "Other" families will be the lightest shade of each hue</span></span>
 <span></span>
@@ -315,7 +409,7 @@
 <span>      f <span class="op">=</span> <span class="va">hue</span>, keep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">hue</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="va">nHues</span><span class="op">)</span><span class="op">]</span>, </span>
 <span>      other_level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Other"</span>, <span class="va">hueRankPlural</span><span class="op">)</span></span>
 <span>    <span class="op">)</span>,</span>
-<span>    nCharHue <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nchar.html" class="external-link">nchar</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">hue</span><span class="op">)</span><span class="op">)</span>, padHue <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">nCharHue</span><span class="op">)</span> <span class="op">-</span> <span class="va">nCharHue</span></span>
+<span>    nChrHue <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nchar.html" class="external-link">nchar</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">hue</span><span class="op">)</span><span class="op">)</span>, padHue <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">nChrHue</span><span class="op">)</span> <span class="op">-</span> <span class="va">nChrHue</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">hue</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
@@ -326,10 +420,10 @@
 <span>  <span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span>    nCharShade <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nchar.html" class="external-link">nchar</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">shade</span><span class="op">)</span><span class="op">)</span>, padShade <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">nCharShade</span><span class="op">)</span> <span class="op">-</span> <span class="va">nCharShade</span>,</span>
+<span>    nChrShade <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nchar.html" class="external-link">nchar</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">shade</span><span class="op">)</span><span class="op">)</span>, padShade <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">nChrShade</span><span class="op">)</span> <span class="op">-</span> <span class="va">nChrShade</span>,</span>
 <span>    Taxa <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">hue</span>, <span class="st">": "</span>, <span class="fu"><a href="https://rdrr.io/r/base/strrep.html" class="external-link">strrep</a></span><span class="op">(</span><span class="st">" "</span>, <span class="va">padHue</span><span class="op">)</span>, <span class="va">shade</span>, <span class="fu"><a href="https://rdrr.io/r/base/strrep.html" class="external-link">strrep</a></span><span class="op">(</span><span class="st">" "</span>, <span class="va">padShade</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> </span></code></pre></div>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">hierarchicalPalMatrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span></span>
 <span>    X <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">30</span>, to <span class="op">=</span> <span class="fl">75</span>, length.out <span class="op">=</span> <span class="va">nShades</span><span class="op">)</span>, </span>
@@ -342,11 +436,11 @@
 <span><span class="va">hierarchicalPal</span> <span class="op">&lt;-</span> <span class="va">hierarchicalPalMatrix</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/vector.html" class="external-link">as.vector</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html" class="external-link">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">hierarchicalPalInfo</span><span class="op">$</span><span class="va">Taxa</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../../reference/tax_palette_plot.html">tax_palette_plot</a></span><span class="op">(</span><span class="va">hierarchicalPal</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.y.left <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>family <span class="op">=</span> <span class="st">"mono"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-14-1.png" width="384"></p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<p><img src="compositions_files/figure-html/unnamed-chunk-20-1.png" width="384"></p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pseq2</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/ps_extra-accessors.html">ps_get</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/tax_mutate.html">tax_mutate</a></span><span class="op">(</span>`Phylum: Family` <span class="op">=</span> <span class="va">hierarchicalPalInfo</span><span class="op">$</span><span class="va">Taxa</span>, .keep <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
@@ -355,8 +449,8 @@
 <span>    tax_order <span class="op">=</span> <span class="st">"asis"</span>, palette <span class="op">=</span> <span class="va">hierarchicalPal</span>, bar_width <span class="op">=</span> <span class="fl">0.975</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>family <span class="op">=</span> <span class="st">"mono"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-15-1.png" width="864"></p>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>family <span class="op">=</span> <span class="st">"mono"</span><span class="op">)</span><span class="op">)</span> <span class="co"># for text alignment</span></span></code></pre></div>
+<p><img src="compositions_files/figure-html/unnamed-chunk-21-1.png" width="864"></p>
 </div>
 </div>
 <div class="section level2">
@@ -366,7 +460,7 @@
 <h3 id="averaging-compositions">Averaging compositions<a class="anchor" aria-label="anchor" href="#averaging-compositions"></a>
 </h3>
 <p>Sometimes, to compare microbial compositions across groups, average compositions are presented. However that “group-averaging” approach hides a lot of within-group variation, as well as any imbalance in group sizes.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pseq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/ps_select.html">ps_select</a></span><span class="op">(</span><span class="va">age</span>, <span class="va">DiseaseState</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="co"># avoids lots of phyloseq::merge_samples warnings</span></span>
 <span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">DiseaseState</span> <span class="op">!=</span> <span class="st">"IBDundef"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
@@ -374,14 +468,14 @@
 <span>  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span>tax_level <span class="op">=</span> <span class="st">"Genus"</span>, n_taxa <span class="op">=</span> <span class="fl">12</span>, bar_width <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in asMethod(object): NAs introduced by coercion</span></span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-16-1.png" width="864"></p>
+<p><img src="compositions_files/figure-html/unnamed-chunk-22-1.png" width="864"></p>
 </div>
 <div class="section level3">
 <h3 id="faceting">Faceting<a class="anchor" aria-label="anchor" href="#faceting"></a>
 </h3>
 <p>Faceting is where you show each group on a small subplot.</p>
 <p>In the plot below can you see that at minority of UC samples have a high abundance of Escherichia/Shigella or Streptococcus. The merged bars above might have misled you into thinking all UC samples had somewhat increased abundances of these taxa.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pseq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">DiseaseState</span> <span class="op">!=</span> <span class="st">"IBDundef"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="co"># only one sample in this group</span></span>
 <span>  <span class="co"># convert DiseaseState into ordered factor to control order of facets</span></span>
@@ -393,9 +487,9 @@
 <span>    bar_outline_colour <span class="op">=</span> <span class="cn">NA</span>, facet_by <span class="op">=</span> <span class="st">"DiseaseState"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span> </span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-17-1.png" width="864"></p>
+<p><img src="compositions_files/figure-html/unnamed-chunk-23-1.png" width="864"></p>
 <p>Instead of using the <code>facet_by</code> argument in <code>comp_barplot</code> you can have more control over faceting by doing it yourself afterwards. You can use facet_grid to create row facets.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pseq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">DiseaseState</span> <span class="op">!=</span> <span class="st">"IBDundef"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="co"># only one sample in this group</span></span>
 <span>  <span class="co"># convert DiseaseState into ordered factor to control order of facets</span></span>
@@ -412,7 +506,7 @@
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>, axis.ticks.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-18-1.png" width="576"></p>
+<p><img src="compositions_files/figure-html/unnamed-chunk-24-1.png" width="576"></p>
 </div>
 <div class="section level3">
 <h3 id="grouping">Grouping<a class="anchor" aria-label="anchor" href="#grouping"></a>
@@ -420,7 +514,7 @@
 <p>For even greater control than faceting, <code>comp_barplot</code> allows you to generate separate ggplot objects for each group, whilst maintaining the same taxa colour scheme.</p>
 <p>You can assemble these plots into one figure with, for example, the <code>patchwork</code> package, or keep them separate.</p>
 <p><em>Note that the ordering of the samples may differ between facet and group_by approaches. In the group_by method, the ordering of the samples by similarity is done separately for each group, whereas in the facet_by method, similarity-based ordering is done with all samples and then the samples are separated by facet afterwards.</em></p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">plot_list</span> <span class="op">&lt;-</span> <span class="va">pseq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">DiseaseState</span> <span class="op">!=</span> <span class="st">"IBDundef"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span>n_taxa <span class="op">=</span> <span class="fl">15</span>, tax_level <span class="op">=</span> <span class="st">"Genus"</span>, group_by <span class="op">=</span> <span class="st">"DiseaseState"</span><span class="op">)</span></span>
@@ -428,10 +522,10 @@
 <span><span class="co"># Plot them side by side with the patchwork package.</span></span>
 <span><span class="va">patch</span> <span class="op">&lt;-</span> <span class="fu">patchwork</span><span class="fu">::</span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html" class="external-link">wrap_plots</a></span><span class="op">(</span><span class="va">plot_list</span>, nrow <span class="op">=</span> <span class="fl">1</span>, guides <span class="op">=</span> <span class="st">"collect"</span><span class="op">)</span></span>
 <span><span class="va">patch</span> <span class="op">&amp;</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># make all plots horizontal (note: use &amp; instead of +)</span></span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-19-1.png" width="864"></p>
+<p><img src="compositions_files/figure-html/unnamed-chunk-25-1.png" width="864"></p>
 <p>Notice how you can theme all plots with the <code>&amp;</code> operator.</p>
 <p>See <a href="https://patchwork.data-imaginist.com/index.html" class="external-link uri">https://patchwork.data-imaginist.com/index.html</a> for more examples of arranging multiple plots.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">patch</span> <span class="op">&amp;</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">&amp;</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">&amp;</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>
@@ -443,7 +537,7 @@
 <span>    caption <span class="op">=</span> <span class="st">"Caption: patchwork is a great package!"</span>,</span>
 <span>    theme <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">14</span>, face <span class="op">=</span> <span class="st">"bold"</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-20-1.png" width="864"></p>
+<p><img src="compositions_files/figure-html/unnamed-chunk-26-1.png" width="864"></p>
 </div>
 </div>
 <div class="section level2">
@@ -453,32 +547,32 @@
 <h3 id="sorting-by-similarity">Sorting by similarity<a class="anchor" aria-label="anchor" href="#sorting-by-similarity"></a>
 </h3>
 <p>Sorting the samples on compositional barplots by similarity can make patterns in the data much easier to see. Check out this unsorted version of the first barplot in this article.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pseq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"female"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span>tax_level <span class="op">=</span> <span class="st">"Genus"</span>, sample_order <span class="op">=</span> <span class="st">"asis"</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Unsorted barcharts are hard to read!"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-21-1.png" width="864"></p>
+<p><img src="compositions_files/figure-html/unnamed-chunk-27-1.png" width="864"></p>
 <p>You can play with the dissimilarity measure (set in <code>sample_order</code> argument) and <code>seriate_method</code> if you like, but the defaults (Bray Curtis and OLO Ward) seem to work pretty well most of the time.</p>
 <p>When sorting samples by similarity, the default is to treat the “other” taxa as one group, i.e. when <code>merge_other = TRUE</code> and <code>order_with_all_taxa = FALSE</code>.</p>
 <p>If you set <code>order_with_all_taxa = TRUE</code>, samples are sorted BEFORE merging taxa. The resulting sample order is then the same as when <code>merge_other = FALSE</code>.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pseq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"female"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span>tax_level <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Samples sorted AFTER merging 'other' taxa"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-22-1.png" width="864"></p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<p><img src="compositions_files/figure-html/unnamed-chunk-28-1.png" width="864"></p>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">pseq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"female"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span>tax_level <span class="op">=</span> <span class="st">"Genus"</span>, order_with_all_taxa <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Samples sorted BEFORE merging 'other' taxa"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-22-2.png" width="864"></p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<p><img src="compositions_files/figure-html/unnamed-chunk-28-2.png" width="864"></p>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span></span>
 <span><span class="va">pseq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
@@ -486,7 +580,7 @@
 <span>  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span>tax_level <span class="op">=</span> <span class="st">"Genus"</span>, merge_other <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"'other' taxa not merged"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-22-3.png" width="864"></p>
+<p><img src="compositions_files/figure-html/unnamed-chunk-28-3.png" width="864"></p>
 </div>
 <div class="section level3">
 <h3 id="sort-by-ordination">Sort by ordination<a class="anchor" aria-label="anchor" href="#sort-by-ordination"></a>
@@ -497,7 +591,7 @@
 <h3 id="sort-by-1-taxon">Sort by 1 taxon<a class="anchor" aria-label="anchor" href="#sort-by-1-taxon"></a>
 </h3>
 <p>To study the distribution of a single taxonomic group across your samples, you can use <code>ps_arrange</code> (with the <code>.target</code> argument set to “otu_table”) and the ‘default’ sample_order setting in <code>comp_barplot</code>.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pseq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>   <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Phylum"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>   <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"compositional"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
@@ -508,13 +602,13 @@
 <span><span class="co">#&gt; Available otu_table contains non-zero values that are less than 1</span></span>
 <span><span class="co">#&gt; Warning in ps_counts(data = data): otu_table of counts is NOT available!</span></span>
 <span><span class="co">#&gt; Available otu_table contains non-zero values that are less than 1</span></span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-23-1.png" width="864"></p>
+<p><img src="compositions_files/figure-html/unnamed-chunk-29-1.png" width="864"></p>
 </div>
 <div class="section level3">
 <h3 id="sorting-by-time">Sorting by time<a class="anchor" aria-label="anchor" href="#sorting-by-time"></a>
 </h3>
 <p>Sometimes you have multiple samples from the same individuals/sites at several timepoints. You must first order the phyloseq by the time variable and then set the comp_barplot sample order to “asis” (as is) to keep this pre-set order.</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"shao19"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># prepare data</span></span>
@@ -530,10 +624,10 @@
 <span>    tax_level <span class="op">=</span> <span class="st">"genus"</span>, label <span class="op">=</span> <span class="st">"infant_age"</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span> <span class="va">family_id</span>, scales <span class="op">=</span> <span class="st">"free_x"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-24-1.png" width="576"></p>
+<p><img src="compositions_files/figure-html/unnamed-chunk-30-1.png" width="576"></p>
 <p>Below is a trick to replace sample with timepoint as the x position mapping, to keep timepoints consistent across infants, even with the missing timepoints seen here for some infants.</p>
 <p><em>Beware this is a bit of non-standard ggplot use, but is the only way to achieve this currently with comp_barplot.</em></p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"shao19"</span><span class="op">)</span></span>
 <span><span class="va">shao19</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/ps_mutate.html">ps_mutate</a></span><span class="op">(</span>family_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">family_id</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
@@ -553,8 +647,8 @@
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expansion.html" class="external-link">expansion</a></span><span class="op">(</span>add <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="co"># axis starts exactly at 0</span></span>
 <span><span class="co">#&gt; Scale for 'x' is already present. Adding another scale for 'x', which will replace the existing</span></span>
 <span><span class="co">#&gt; scale.</span></span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-25-1.png" width="576"></p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<p><img src="compositions_files/figure-html/unnamed-chunk-31-1.png" width="576"></p>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"shao19"</span><span class="op">)</span></span>
 <span><span class="va">shao19</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/ps_mutate.html">ps_mutate</a></span><span class="op">(</span>family_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">family_id</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
@@ -574,13 +668,13 @@
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>panel.spacing.x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">6</span>, <span class="st">"mm"</span><span class="op">)</span><span class="op">)</span> <span class="co"># space for non-overlapping axis numbers</span></span>
 <span><span class="co">#&gt; Scale for 'x' is already present. Adding another scale for 'x', which will replace the existing</span></span>
 <span><span class="co">#&gt; scale.</span></span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-26-1.png" width="576"></p>
+<p><img src="compositions_files/figure-html/unnamed-chunk-32-1.png" width="576"></p>
 </div>
 <div class="section level3">
 <h3 id="sorting-by-other-metadata">Sorting by other metadata<a class="anchor" aria-label="anchor" href="#sorting-by-other-metadata"></a>
 </h3>
 <p>Sorting across timepoint groups in another dataset, dietswap.</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"dietswap"</span>, package <span class="op">=</span> <span class="st">"microbiome"</span><span class="op">)</span></span>
 <span><span class="va">ps</span> <span class="op">&lt;-</span> <span class="va">dietswap</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">group</span> <span class="op">==</span> <span class="st">"DI"</span><span class="op">)</span></span>
 <span></span>
@@ -596,7 +690,7 @@
 <span>  plot_groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/interaction.html" class="external-link">interaction</a></span><span class="op">(</span><span class="va">nationality</span>, <span class="va">timepoint.within.group</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Grouped by both timepoint and another grouping factor, nationality in this example.</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">times_list</span> <span class="op">&lt;-</span> <span class="va">ps</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/ps_arrange.html">ps_arrange</a></span><span class="op">(</span><span class="va">timepoint.within.group</span>, <span class="va">nationality</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">subject</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span></span>
@@ -615,9 +709,9 @@
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="va">times</span></span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-27-1.png" width="960"></p>
+<p><img src="compositions_files/figure-html/unnamed-chunk-33-1.png" width="960"></p>
 <p>Same grouping, now showing diversity of taxa within other, with <code>merge_other = FALSE</code></p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">times_list</span> <span class="op">&lt;-</span> <span class="va">ps</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/ps_arrange.html">ps_arrange</a></span><span class="op">(</span><span class="va">timepoint.within.group</span>, <span class="va">nationality</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">subject</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span></span>
@@ -637,8 +731,8 @@
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="va">times</span></span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-28-1.png" width="960"></p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<p><img src="compositions_files/figure-html/unnamed-chunk-34-1.png" width="960"></p>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://r-lib.github.io/sessioninfo/reference/session_info.html" class="external-link">session_info</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">─ Session info ───────────────────────────────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt;  <span style="color: #555555; font-style: italic;">setting </span> <span style="color: #555555; font-style: italic;">value</span></span></span>
@@ -673,7 +767,7 @@
 <span><span class="co">#&gt;  crayon             1.5.2    <span style="color: #555555;">2022-09-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  data.table         1.14.2   <span style="color: #555555;">2021-09-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  desc               1.4.2    <span style="color: #555555;">2022-09-08</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  devtools           2.4.4    <span style="color: #555555;">2022-07-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  devtools           2.4.5    <span style="color: #555555;">2022-10-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  digest             0.6.29   <span style="color: #555555;">2021-12-01</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  dplyr              1.0.10   <span style="color: #555555;">2022-09-01</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  ellipsis           0.3.2    <span style="color: #555555;">2021-04-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
@@ -764,7 +858,7 @@
 <span><span class="co">#&gt;  usethis            2.1.6    <span style="color: #555555;">2022-05-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  utf8               1.2.2    <span style="color: #555555;">2021-07-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  vctrs              0.4.2    <span style="color: #555555;">2022-09-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  vegan              2.6-4    <span style="color: #555555;">2022-10-11</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
+<span><span class="co">#&gt;  vegan              2.6-4    <span style="color: #555555;">2022-10-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  withr              2.5.0    <span style="color: #555555;">2022-03-03</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  xfun               0.33     <span style="color: #555555;">2022-09-12</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  xtable             1.8-4    <span style="color: #555555;">2019-04-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
