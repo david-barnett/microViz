@@ -69,7 +69,7 @@
 #'   comp_barplot(
 #'     tax_level = "Genus", n_taxa = 12, label = "id",
 #'     order_taxa = ord_order_taxa(ordi, axes = 1),
-#'     sample_order = "default",
+#'     sample_order = "asis"
 #'   ) +
 #'   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 #'

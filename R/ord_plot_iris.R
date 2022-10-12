@@ -200,7 +200,7 @@ ord_plot_iris <- function(data,
     palette = palette,
     n_taxa = n_taxa,
     keep_all_vars = TRUE, # this is already handle by ord_plot_iris
-    sample_order = "default" # uses ps order already set by ps_sort_ord!
+    sample_order = "asis" # uses ps order already set by ps_sort_ord!
   )
 
   # default extra args to barplot still modifiable and extendible

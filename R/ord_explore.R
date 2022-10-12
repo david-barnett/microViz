@@ -1344,7 +1344,7 @@ ggBarplot <- function(selected, ps, facet_by, n_taxa, tax_level, tax_order,
         n_taxa = n_taxa, tax_level = tax_level, tax_order = tax_order,
         palette = palette, label = label,
         max_taxa = max_taxa, merge_other = merge_other,
-        bar_outline_colour = "black", sample_order = "default",
+        bar_outline_colour = "black", sample_order = "asis",
         bar_outline_width = 0.05,
         interactive = TRUE
       )

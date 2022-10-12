@@ -121,7 +121,7 @@ You can also sort sample by microbiome similarity with `ps_seriate()`.
 partial_ps %>% 
   tax_agg("Genus") %>% 
   ps_seriate(dist = "bray", method = "OLO_ward") %>% # these are the defaults
-  comp_barplot(tax_level = "Genus", sample_order = "default", n_taxa = 10)
+  comp_barplot(tax_level = "Genus", sample_order = "asis", n_taxa = 10)
 # note that comp_barplot with sample_order = "bray" will run 
 # this ps_seriate call internally, so you don't have to!
 
@@ -141,7 +141,7 @@ partial_ps %>%
 partial_ps %>% 
   tax_agg("Genus") %>% 
   ps_arrange(desc(Bacteroides), .target = "otu_table") %>% 
-  comp_barplot(tax_level = "Genus", sample_order = "default", n_taxa = 10)
+  comp_barplot(tax_level = "Genus", sample_order = "asis", n_taxa = 10)
 # Notice this is sorted by bacteroides counts 
 # (this doesn't quite match relative abundance % due to sequencing depth variation)
 ```
