@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.6</span>
       </span>
     </div>
 
@@ -102,7 +102,13 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tax_reorder</span><span class="op">(</span><span class="va">ps</span>, <span class="va">tax_order</span>, tree_warn <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tax_reorder</span><span class="op">(</span></span>
+<span>  <span class="va">ps</span>,</span>
+<span>  <span class="va">tax_order</span>,</span>
+<span>  tree_warn <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  unmatched_warn <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  ignore <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"other"</span>, <span class="st">"Other"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -112,14 +118,24 @@
 
 
 <dt>tax_order</dt>
-<dd><p>names or current numerical indices of taxa
-in desired order and same length as taxa_names(ps)</p></dd>
+<dd><p>Names of taxa in desired order; at least some must match.
+(Numerical indices are also possible)</p></dd>
 
 
 <dt>tree_warn</dt>
 <dd><p>If phylogenetic tree is present in phyloseq phy_tree slot, taxa cannot be reordered.
 Default behaviour of tax_sort is to remove the phylogenetic tree and warn about this.
 tree_warn = FALSE will suppress the warning message, but still remove the tree!</p></dd>
+
+
+<dt>unmatched_warn</dt>
+<dd><p>Warn if any names (or indices) given in tax_order are not found within
+(range of) taxa_names(ps) - these will be ignored</p></dd>
+
+
+<dt>ignore</dt>
+<dd><p>Values that you do not want to be used for reordering taxa
+(useful for comp_barplot when custom palette names are used to set tax_order)</p></dd>
 
 </dl></div>
     <div id="value">
@@ -136,15 +152,27 @@ tree_warn = FALSE will suppress the warning message, but still remove the tree!<
 <span class="r-in"><span>  <span class="st">"Fusobacteria"</span>, <span class="st">"Cyanobacteria"</span>, <span class="st">"Verrucomicrobia"</span>, <span class="st">"Spirochaetes"</span>,</span></span>
 <span class="r-in"><span>  <span class="st">"Actinobacteria"</span>, <span class="st">"Firmicutes"</span>, <span class="st">"Proteobacteria"</span>, <span class="st">"Bacteroidetes"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="va">dietswap</span>, rank <span class="op">=</span> <span class="st">"Phylum"</span><span class="op">)</span><span class="op">[[</span><span class="st">"ps"</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="fu"><a href="tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="va">dietswap</span>, rank <span class="op">=</span> <span class="st">"Phylum"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="ps_extra-accessors.html">ps_get</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html" class="external-link">taxa_names</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Actinobacteria"  "Firmicutes"      "Proteobacteria"  "Verrucomicrobia"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [5] "Bacteroidetes"   "Spirochaetes"    "Fusobacteria"    "Cyanobacteria"  </span>
-<span class="r-in"><span><span class="fu"><a href="tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="va">dietswap</span>, rank <span class="op">=</span> <span class="st">"Phylum"</span><span class="op">)</span><span class="op">[[</span><span class="st">"ps"</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu">microViz</span><span class="fu">:::</span><span class="fu">tax_reorder</span><span class="op">(</span>tax_order <span class="op">=</span> <span class="va">new_order</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="va">dietswap</span>, rank <span class="op">=</span> <span class="st">"Phylum"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="ps_extra-accessors.html">ps_get</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">tax_reorder</span><span class="op">(</span>tax_order <span class="op">=</span> <span class="va">new_order</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html" class="external-link">taxa_names</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Fusobacteria"    "Cyanobacteria"   "Verrucomicrobia" "Spirochaetes"   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [5] "Actinobacteria"  "Firmicutes"      "Proteobacteria"  "Bacteroidetes"  </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># partial reordering (of the frontmost positions only) is possible</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="va">dietswap</span>, rank <span class="op">=</span> <span class="st">"Phylum"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="ps_extra-accessors.html">ps_get</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">tax_reorder</span><span class="op">(</span>tax_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Cyanobacteria"</span>, <span class="st">"Bacteroidetes"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html" class="external-link">taxa_names</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Cyanobacteria"   "Bacteroidetes"   "Actinobacteria"  "Firmicutes"     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5] "Proteobacteria"  "Verrucomicrobia" "Spirochaetes"    "Fusobacteria"   </span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
