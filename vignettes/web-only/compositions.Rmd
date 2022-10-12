@@ -31,9 +31,9 @@ knitr::opts_chunk$set(
 
 ```{r example data}
 # get example phyloseq data from corncob package and tidy up
-pseq <- corncob::ibd_phylo %>% 
-  tax_filter(min_prevalence = 2) %>% 
-  tax_fix() %>% 
+pseq <- corncob::ibd_phylo %>%
+  tax_filter(min_prevalence = 2) %>%
+  tax_fix() %>%
   phyloseq_validate()
 ```
 
@@ -53,7 +53,7 @@ total count abundance across all plotted samples.
 ```{r simple}
 pseq %>%
   ps_filter(gender == "female") %>%
-  comp_barplot(tax_level = "Genus") + 
+  comp_barplot(tax_level = "Genus") +
   coord_flip() # horizontal bars are often more readable
 ```
 
@@ -76,7 +76,7 @@ pseq %>%
     merge_other = FALSE, # split the "Other" category to display alpha diversity
     bar_width = 0.7, # reduce the bar width to 70% of one row
     bar_outline_colour = "grey5" # is the default (use NA to remove outlines)
-  ) + 
+  ) +
   coord_flip()
 ```
 
@@ -123,8 +123,8 @@ pseq %>%
   ps_filter(gender == "female") %>%
   comp_barplot(
     tax_level = "Genus", palette = myPal,
-    n_taxa = 12, other_name = "Other", merge_other = FALSE 
-  ) + 
+    n_taxa = 12, other_name = "Other", merge_other = FALSE
+  ) +
   coord_flip()
 ```
 
@@ -138,7 +138,7 @@ samples in your dataset. You can sort taxa by another function, such as
 ```{r}
 pseq %>%
   ps_filter(gender == "male") %>%
-  comp_barplot(tax_level = "Genus", tax_order = prev, merge_other = FALSE) + 
+  comp_barplot(tax_level = "Genus", tax_order = prev, merge_other = FALSE) +
   coord_flip()
 ```
 
@@ -152,9 +152,9 @@ Proteobacteria genera in your samples, and want them to appear first,
 regardless of their overall abundance.
 
 ```{r}
-interestingGenera <- pseq %>% 
-  tax_select("Proteobacteria") %>% 
-  tax_top(n = 10, rank = "Genus") 
+interestingGenera <- pseq %>%
+  tax_select("Proteobacteria") %>%
+  tax_top(n = 10, rank = "Genus")
 interestingGenera
 ```
 
@@ -166,7 +166,7 @@ pseq %>%
     tax_level = "Genus", n_taxa = 10, merge_other = FALSE, other_name = "Other",
     palette = distinct_palette(10, pal = "kelly", add = "grey90"),
     tax_order = interestingGenera # this is the reordering magic
-  ) + 
+  ) +
   coord_flip()
 ```
 
@@ -193,12 +193,12 @@ pseq %>%
   ps_filter(gender == "female") %>%
   tax_sort(by = sum, at = "Genus", tree_warn = FALSE) %>%
   comp_barplot(
-    tax_level = "Genus", merge_other = FALSE, 
+    tax_level = "Genus", merge_other = FALSE,
     n_taxa = 12,
     other_name = "Other", # must match a name in palette
     tax_order = names(customPal),
     palette = customPal
-    ) + 
+  ) +
   coord_flip()
 ```
 
@@ -206,13 +206,13 @@ Let's look at the abundance of these same genera in a separate dataset.
 
 ```{r}
 data("shao19")
-shao19 %>% 
+shao19 %>%
   ps_filter(family_role == "mother", age == 38) %>%
-  tax_sort(by = sum, at = "genus", tree_warn = FALSE) %>% 
+  tax_sort(by = sum, at = "genus", tree_warn = FALSE) %>%
   comp_barplot(
     tax_level = "genus", n_taxa = 12, other_name = "Other", merge_other = FALSE,
     tax_order = names(customPal), palette = customPal
-  ) + 
+  ) +
   coord_flip()
 ```
 
@@ -257,8 +257,8 @@ combined
 Now we can plot the two datasets in separate facets of the same plot.
 
 ```{r}
-combined %>% 
-  comp_barplot("class", facet_by = 'dataset', n_taxa = 12) +
+combined %>%
+  comp_barplot("class", facet_by = "dataset", n_taxa = 12) +
   coord_flip()
 ```
 
@@ -266,10 +266,10 @@ combined %>%
 Or we could plot them as separate plots with the group argument.
 
 ```{r}
-plots <- combined %>% comp_barplot("class", n_taxa = 12, group_by = 'dataset') 
+plots <- combined %>% comp_barplot("class", n_taxa = 12, group_by = "dataset")
 
 # combine plots with shared legend
-patchwork::wrap_plots(plots, nrow = 2, guides = "collect") & 
+patchwork::wrap_plots(plots, nrow = 2, guides = "collect") &
   theme(axis.ticks.x = element_blank(), axis.text.x = element_blank())
 ```
 
@@ -283,8 +283,8 @@ like this:
 
 ```{r, fig.height=3, fig.width=4}
 # don't add an "Other" colour for now
-alphabetPal <- tax_palette(pseq, rank = "Genus", n = 12, add = NA) 
-names(alphabetPal) <- sort(names(alphabetPal)) 
+alphabetPal <- tax_palette(pseq, rank = "Genus", n = 12, add = NA)
+names(alphabetPal) <- sort(names(alphabetPal))
 # now add the "Other" colour to the end
 alphabetPal["Other"] <- "white"
 tax_palette_plot(alphabetPal)
@@ -294,12 +294,12 @@ tax_palette_plot(alphabetPal)
 pseq %>%
   ps_filter(gender == "male") %>%
   comp_barplot(
-    tax_level = "Genus", merge_other = FALSE, 
+    tax_level = "Genus", merge_other = FALSE,
     n_taxa = 12,
     other_name = "Other", # must match a name in palette
     tax_order = names(alphabetPal),
     palette = alphabetPal
-  ) + 
+  ) +
   coord_flip()
 ```
 
@@ -316,11 +316,11 @@ hueRankPlural <- "Phyla"
 shadeRank <- "Family"
 
 # Sort phyloseq at lower, and then higher ranks
-pseq2 <- pseq %>% 
-  ps_filter(gender == "male") %>% 
-  tax_sort(by = sum, at = shadeRank) %>% 
-  tax_sort(by = sum, at = hueRank) %>% 
-  tax_agg(rank = shadeRank) 
+pseq2 <- pseq %>%
+  ps_filter(gender == "male") %>%
+  tax_sort(by = sum, at = shadeRank) %>%
+  tax_sort(by = sum, at = hueRank) %>%
+  tax_agg(rank = shadeRank)
 
 # Specify number of hues and shades desired
 nHues <- 3 # "Other" phyla will be shades of grey
@@ -330,43 +330,43 @@ hierarchicalPalInfo <- data.frame(
   hue = as.vector(tt_get(pseq2)[, hueRank]),
   shade = as.vector(tt_get(pseq2)[, shadeRank]),
   counts = taxa_sums(otu_get(pseq2))
-) 
+)
 
-hierarchicalPalInfo <- hierarchicalPalInfo %>% 
+hierarchicalPalInfo <- hierarchicalPalInfo %>%
   dplyr::mutate(
     hue = forcats::fct_other(
-      f = hue, keep = unique(hue)[seq_len(nHues)], 
+      f = hue, keep = unique(hue)[seq_len(nHues)],
       other_level = paste("Other", hueRankPlural)
     ),
     nChrHue = nchar(as.character(hue)), padHue = max(nChrHue) - nChrHue
-  ) %>% 
+  ) %>%
   dplyr::group_by(hue) %>%
   dplyr::mutate(
     shade = forcats::fct_other(
-      f = shade, keep = unique(shade)[seq_len(nShades - 1)], 
+      f = shade, keep = unique(shade)[seq_len(nShades - 1)],
       other_level = "Other"
     )
-  ) %>% 
-  dplyr::ungroup() %>% 
+  ) %>%
+  dplyr::ungroup() %>%
   dplyr::mutate(
     nChrShade = nchar(as.character(shade)), padShade = max(nChrShade) - nChrShade,
     Taxa = paste0(hue, ": ", strrep(" ", padHue), shade, strrep(" ", padShade))
-  ) 
+  )
 ```
 
 
 ```{r}
 hierarchicalPalMatrix <- matrix(
   data = sapply(
-    X = seq(from = 30, to = 75, length.out = nShades), 
+    X = seq(from = 30, to = 75, length.out = nShades),
     FUN = function(l) scales::hue_pal(l = l, h.start = 30)(n = nHues)
   ),
   byrow = TRUE, ncol = nHues
 )
 hierarchicalPalMatrix <- cbind(hierarchicalPalMatrix, grey.colors(n = nShades))
 
-hierarchicalPal <- hierarchicalPalMatrix %>% 
-  as.vector() %>% 
+hierarchicalPal <- hierarchicalPalMatrix %>%
+  as.vector() %>%
   setNames(unique(hierarchicalPalInfo$Taxa))
 ```
 
@@ -378,9 +378,9 @@ tax_palette_plot(hierarchicalPal) +
 
 
 ```{r}
-pseq2 %>% 
-  ps_get() %>% 
-  tax_mutate(`Phylum: Family` = hierarchicalPalInfo$Taxa, .keep = "none") %>% 
+pseq2 %>%
+  ps_get() %>%
+  tax_mutate(`Phylum: Family` = hierarchicalPalInfo$Taxa, .keep = "none") %>%
   comp_barplot(
     tax_level = "Phylum: Family", n_taxa = length(hierarchicalPal),
     tax_order = "asis", palette = hierarchicalPal, bar_width = 0.975
@@ -402,7 +402,7 @@ sizes.
 ```{r}
 pseq %>%
   ps_select(age, DiseaseState) %>% # avoids lots of phyloseq::merge_samples warnings
-  ps_filter(DiseaseState != "IBDundef") %>% 
+  ps_filter(DiseaseState != "IBDundef") %>%
   phyloseq::merge_samples(group = "DiseaseState") %>%
   comp_barplot(tax_level = "Genus", n_taxa = 12, bar_width = 0.8) +
   coord_flip() + labs(x = NULL, y = NULL)
@@ -423,12 +423,12 @@ pseq %>%
   # convert DiseaseState into ordered factor to control order of facets
   ps_mutate(
     DiseaseState = factor(DiseaseState, levels = c("UC", "nonIBD", "CD"))
-  ) %>% 
+  ) %>%
   comp_barplot(
     tax_level = "Genus", n_taxa = 15,
     bar_outline_colour = NA, facet_by = "DiseaseState"
   ) +
-  coord_flip() 
+  coord_flip()
 ```
 
 Instead of using the `facet_by` argument in `comp_barplot` you can have
@@ -441,16 +441,16 @@ pseq %>%
   # convert DiseaseState into ordered factor to control order of facets
   ps_mutate(
     DiseaseState = factor(DiseaseState, levels = c("UC", "CD", "nonIBD"))
-  ) %>% 
+  ) %>%
   comp_barplot(
     tax_level = "Genus", n_taxa = 15,
     sample_order = "bray", bar_outline_colour = NA,
   ) +
   facet_grid(
-    rows = vars(DiseaseState), 
+    rows = vars(DiseaseState),
     scales = "free", space = "free" # these options are critically important!
   ) +
-  coord_flip() + 
+  coord_flip() +
   theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
 ```
 
@@ -470,8 +470,8 @@ method, similarity-based ordering is done with all samples and then the
 samples are separated by facet afterwards.*
 
 ```{r}
-plot_list <- pseq %>% 
-  ps_filter(DiseaseState != "IBDundef") %>% 
+plot_list <- pseq %>%
+  ps_filter(DiseaseState != "IBDundef") %>%
   comp_barplot(n_taxa = 15, tax_level = "Genus", group_by = "DiseaseState")
 
 # Plot them side by side with the patchwork package.
@@ -509,7 +509,7 @@ of the first barplot in this article.
 ```{r}
 pseq %>%
   ps_filter(gender == "female") %>%
-  comp_barplot(tax_level = "Genus", sample_order = "asis") + 
+  comp_barplot(tax_level = "Genus", sample_order = "asis") +
   coord_flip() +
   ggtitle("Unsorted barcharts are hard to read!")
 ```
@@ -529,23 +529,22 @@ merging taxa. The resulting sample order is then the same as when
 ```{r}
 pseq %>%
   ps_filter(gender == "female") %>%
-  comp_barplot(tax_level = "Genus") + 
+  comp_barplot(tax_level = "Genus") +
   coord_flip() +
   ggtitle("Samples sorted AFTER merging 'other' taxa")
 
 pseq %>%
   ps_filter(gender == "female") %>%
-  comp_barplot(tax_level = "Genus", order_with_all_taxa = TRUE) + 
+  comp_barplot(tax_level = "Genus", order_with_all_taxa = TRUE) +
   coord_flip() +
   ggtitle("Samples sorted BEFORE merging 'other' taxa")
 
 
 pseq %>%
   ps_filter(gender == "female") %>%
-  comp_barplot(tax_level = "Genus", merge_other = FALSE) + 
+  comp_barplot(tax_level = "Genus", merge_other = FALSE) +
   coord_flip() +
   ggtitle("'other' taxa not merged")
-
 ```
 
 ### Sort by ordination
@@ -559,11 +558,11 @@ samples, you can use `ps_arrange` (with the `.target` argument set to
 "otu_table") and the 'default' sample_order setting in `comp_barplot`.
 
 ```{r}
-pseq %>% 
-   tax_agg("Phylum") %>% 
-   tax_transform("compositional") %>% 
-   ps_arrange(desc(Firmicutes), .target = "otu_table") %>% 
-   comp_barplot(tax_level = "Phylum", sample_order = "asis") +
+pseq %>%
+  tax_agg("Phylum") %>%
+  tax_transform("compositional") %>%
+  ps_arrange(desc(Firmicutes), .target = "otu_table") %>%
+  comp_barplot(tax_level = "Phylum", sample_order = "asis") +
   coord_flip()
 ```
 
@@ -578,18 +577,18 @@ keep this pre-set order.
 data("shao19")
 
 # prepare data
-ps <- shao19 %>% 
-  ps_mutate(family_id = as.numeric(family_id)) %>% 
+ps <- shao19 %>%
+  ps_mutate(family_id = as.numeric(family_id)) %>%
   # take an arbitrary smaller subset of infants and timepoints
   ps_filter(family_role == "child", family_id < 30, infant_age %in% c(4, 7, 21))
 
-ps %>%   
+ps %>%
   ps_arrange(infant_age) %>% # this step is necessary
   comp_barplot(
     sample_order = "asis", # to avoid sorting again by similarity
     tax_level = "genus", label = "infant_age", bar_width = 0.7
   ) +
-  facet_wrap(~ family_id, scales = "free_x")
+  facet_wrap(~family_id, scales = "free_x")
 ```
 
 Below is a trick to replace sample with timepoint as the x position
@@ -601,13 +600,13 @@ achieve this currently with comp_barplot.*
 
 ```{r, fig.height=6, fig.width=6}
 data("shao19")
-shao19 %>% 
-  ps_mutate(family_id = as.numeric(family_id)) %>% 
+shao19 %>%
+  ps_mutate(family_id = as.numeric(family_id)) %>%
   # take an arbitrary smaller subset of infants and timepoints
-  ps_filter(family_role == "child", family_id < 30, infant_age %in% c(4, 7, 21)) %>% 
-  ps_arrange(infant_age) %>% 
+  ps_filter(family_role == "child", family_id < 30, infant_age %in% c(4, 7, 21)) %>%
+  ps_arrange(infant_age) %>%
   comp_barplot(
-    tax_level = "genus", sample_order = "asis", 
+    tax_level = "genus", sample_order = "asis",
     label = "infant_age", bar_width = 0.7
   ) +
   facet_wrap(
@@ -615,17 +614,17 @@ shao19 %>%
   ) +
   aes(x = as.factor(infant_age)) +
   scale_x_discrete(label = identity, name = "Age (days)") +
-  theme_bw() + # slightly clearer axes for facets 
+  theme_bw() + # slightly clearer axes for facets
   scale_y_continuous(expand = expansion(add = c(0, 0.1))) # axis starts exactly at 0
 ```
 
 ```{r, fig.height=6, fig.width=6}
 data("shao19")
-shao19 %>% 
-  ps_mutate(family_id = as.numeric(family_id)) %>% 
+shao19 %>%
+  ps_mutate(family_id = as.numeric(family_id)) %>%
   # take an arbitrary smaller subset of infants and timepoints
-  ps_filter(family_role == "child", family_id < 30, infant_age %in% c(4, 7, 21)) %>% 
-  ps_arrange(infant_age) %>% 
+  ps_filter(family_role == "child", family_id < 30, infant_age %in% c(4, 7, 21)) %>%
+  ps_arrange(infant_age) %>%
   comp_barplot(tax_level = "genus", sample_order = "asis", bar_width = 0.7) +
   facet_wrap(
     facets = vars(infant_age), labeller = as_labeller(~ paste("Age", ., "days")),
