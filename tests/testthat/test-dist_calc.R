@@ -27,7 +27,7 @@ test_that("dist_calc rclr and euclid same as robust aitchison", {
 
   expect_equal(
     object = robustAitchVeg, expected = robustAitchViz,
-    tolerance = 0.0000001, ignore_attr = c("call", "method")
+    tolerance = 0.0000001, ignore_attr = c("call", "method", "maxdist")
   )
 
   rclrEuclid <- corncob::soil_phylum_small %>%
@@ -37,7 +37,7 @@ test_that("dist_calc rclr and euclid same as robust aitchison", {
 
   expect_equal(
     object = robustAitchVeg, expected = rclrEuclid,
-    tolerance = 0.0000001, ignore_attr = c("call", "method")
+    tolerance = 0.0000001, ignore_attr = c("call", "method", "maxdist")
   )
 })
 

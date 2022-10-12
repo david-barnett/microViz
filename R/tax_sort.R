@@ -253,12 +253,18 @@ tax_sort_by_otu <- function(ps, by, err, ...) {
 #'
 #' @param ps phyloseq object
 #' @param tax_order
-#' names or current numerical indices of taxa
-#' in desired order and same length as taxa_names(ps)
+#' Names of taxa in desired order; at least some must match.
+#' (Numerical indices are also possible)
 #' @param tree_warn
 #' If phylogenetic tree is present in phyloseq phy_tree slot, taxa cannot be reordered.
 #' Default behaviour of tax_sort is to remove the phylogenetic tree and warn about this.
 #' tree_warn = FALSE will suppress the warning message, but still remove the tree!
+#' @param unmatched_warn
+#' Warn if any names (or indices) given in tax_order are not found within
+#' (range of) taxa_names(ps) - these will be ignored
+#' @param ignore
+#' Values that you do not want to be used for reordering taxa
+#' (useful for comp_barplot when custom palette names are used to set tax_order)
 #'
 #' @return phyloseq object (always without phy_tree)
 #' @examples
@@ -267,32 +273,68 @@ tax_sort_by_otu <- function(ps, by, err, ...) {
 #'   "Fusobacteria", "Cyanobacteria", "Verrucomicrobia", "Spirochaetes",
 #'   "Actinobacteria", "Firmicutes", "Proteobacteria", "Bacteroidetes"
 #' )
-#' tax_agg(dietswap, rank = "Phylum")[["ps"]] %>%
+#' tax_agg(dietswap, rank = "Phylum") %>%
+#'   ps_get() %>%
 #'   phyloseq::taxa_names()
-#' tax_agg(dietswap, rank = "Phylum")[["ps"]] %>%
-#'   microViz:::tax_reorder(tax_order = new_order) %>%
+#'
+#' tax_agg(dietswap, rank = "Phylum") %>%
+#'   ps_get() %>%
+#'   tax_reorder(tax_order = new_order) %>%
 #'   phyloseq::taxa_names()
-tax_reorder <- function(ps, tax_order, tree_warn = TRUE) {
-  stopifnot(identical(length(phyloseq::taxa_names(ps)), length(tax_order)))
-
-  tax_as_rows <- phyloseq::taxa_are_rows(ps)
-
+#'
+#' # partial reordering (of the frontmost positions only) is possible
+#' tax_agg(dietswap, rank = "Phylum") %>%
+#'   ps_get() %>%
+#'   tax_reorder(tax_order = c("Cyanobacteria", "Bacteroidetes")) %>%
+#'   phyloseq::taxa_names()
+#'
+#' @export
+tax_reorder <- function(ps,
+                        tax_order,
+                        tree_warn = TRUE,
+                        unmatched_warn = TRUE,
+                        ignore = c("other", "Other")
+) {
   # can't sort taxa if phylogenetic tree present, as tree fixes order
   if (!identical(phyloseq::phy_tree(ps, errorIfNULL = FALSE), NULL)) {
     if (isTRUE(tree_warn)) {
       warning(
-        "tax_sort is removing phylogenetic tree!\n",
+        "Removing phylogenetic tree!\n",
         "Avoid this warning by either by\n",
-        "\t- running tax_sort with tree_warn = FALSE\n",
-        "\t- or removing tree yourself, e.g. `ps@phy_tree <-- NULL`"
+        "\t- setting tree_warn = FALSE\n",
+        "\t- removing the tree yourself, e.g. `ps@phy_tree <- NULL`"
       )
     }
     ps@phy_tree <- NULL
   }
 
+  # check valid tax_order class
+  if (!rlang::is_character(tax_order) && !rlang::is_integerish(tax_order)) {
+    stop("tax_order arg must be character or numeric (integerish)")
+  }
+  if (!rlang::is_character(ignore)) stop("ignore must be character vector")
+
+  # establish new order in full (as partial rearrangement is possible)
+  if (rlang::is_integerish(tax_order)) {
+    currentOrder <- seq_along(phyloseq::taxa_names(ps))
+  } else {
+    currentOrder <- phyloseq::taxa_names(ps)
+    tax_order <- setdiff(tax_order, ignore)
+  }
+  if (isTRUE(unmatched_warn) && any(!tax_order %in% currentOrder)) {
+    warning(
+      length(setdiff(tax_order, currentOrder)),
+      " taxa specified in tax_order are not in phyloseq ps: they are ignored"
+    )
+  }
+  bring2front <- intersect(tax_order, currentOrder)
+  if (length(bring2front) == 0) stop("tax_order did not match any taxa in ps")
+  keepAsIs <- setdiff(currentOrder, bring2front)
+  newOrder <- c(bring2front, keepAsIs)
+
   # reorder otu_table
   phyloseq::otu_table(ps) <- tax_reorder_otu(
-    otu = otu_get(ps), tax_order = tax_order
+    otu = otu_get(ps), tax_order = newOrder
   )
 
   return(ps)
