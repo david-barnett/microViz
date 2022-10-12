@@ -230,9 +230,10 @@ comp_barplot <- function(ps,
   if (length(tax_order) != 1 && length(tax_order) != phyloseq::ntaxa(ps)) {
     "tax_order must be a suitable input for tax_sort() or a vector of names"
   }
-  if (length(tax_order) == 1) ps <- tax_sort(ps, by = tax_order)
-  if (length(tax_order) == phyloseq::ntaxa(ps)) {
-    ps <- tax_reorder(ps, tax_order = tax_order, tree_warn = FALSE)
+  if (length(tax_order) == 1) {
+    ps <- tax_sort(ps, by = tax_order)
+  } else {
+    ps <- tax_reorder(ps, tax_order = tax_order, tree_warn = FALSE, ignore = other_name)
   }
 
   ## unique taxa levels for ordering taxa group factor ------------------------

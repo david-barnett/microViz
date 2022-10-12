@@ -4,17 +4,29 @@
 \alias{tax_reorder}
 \title{Reorder taxa in phyloseq object using vector of names}
 \usage{
-tax_reorder(ps, tax_order, tree_warn = TRUE)
+tax_reorder(
+  ps,
+  tax_order,
+  tree_warn = TRUE,
+  unmatched_warn = TRUE,
+  ignore = c("other", "Other")
+)
 }
 \arguments{
 \item{ps}{phyloseq object}
 
-\item{tax_order}{names or current numerical indices of taxa
-in desired order and same length as taxa_names(ps)}
+\item{tax_order}{Names of taxa in desired order; at least some must match.
+(Numerical indices are also possible)}
 
 \item{tree_warn}{If phylogenetic tree is present in phyloseq phy_tree slot, taxa cannot be reordered.
 Default behaviour of tax_sort is to remove the phylogenetic tree and warn about this.
 tree_warn = FALSE will suppress the warning message, but still remove the tree!}
+
+\item{unmatched_warn}{Warn if any names (or indices) given in tax_order are not found within
+(range of) taxa_names(ps) - these will be ignored}
+
+\item{ignore}{Values that you do not want to be used for reordering taxa
+(useful for comp_barplot when custom palette names are used to set tax_order)}
 }
 \value{
 phyloseq object (always without phy_tree)
@@ -28,9 +40,19 @@ new_order <- c(
   "Fusobacteria", "Cyanobacteria", "Verrucomicrobia", "Spirochaetes",
   "Actinobacteria", "Firmicutes", "Proteobacteria", "Bacteroidetes"
 )
-tax_agg(dietswap, rank = "Phylum")[["ps"]] \%>\%
+tax_agg(dietswap, rank = "Phylum") \%>\%
+  ps_get() \%>\%
   phyloseq::taxa_names()
-tax_agg(dietswap, rank = "Phylum")[["ps"]] \%>\%
-  microViz:::tax_reorder(tax_order = new_order) \%>\%
+
+tax_agg(dietswap, rank = "Phylum") \%>\%
+  ps_get() \%>\%
+  tax_reorder(tax_order = new_order) \%>\%
   phyloseq::taxa_names()
+
+# partial reordering (of the frontmost positions only) is possible
+tax_agg(dietswap, rank = "Phylum") \%>\%
+  ps_get() \%>\%
+  tax_reorder(tax_order = c("Cyanobacteria", "Bacteroidetes")) \%>\%
+  phyloseq::taxa_names()
+
 }

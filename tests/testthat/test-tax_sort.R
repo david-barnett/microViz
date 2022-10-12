@@ -2,16 +2,53 @@ library(phyloseq)
 data("dietswap", package = "microbiome")
 
 test_that("tax_reorder works", {
+  # sanity check of original order
+  originalOrder <- c(
+    "Actinobacteria", "Firmicutes", "Proteobacteria", "Verrucomicrobia",
+    "Bacteroidetes", "Spirochaetes", "Fusobacteria", "Cyanobacteria"
+  )
+  expect_equal(
+    object = tax_agg(dietswap, rank = "Phylum")[["ps"]] %>%
+      phyloseq::taxa_names(),
+    expected = originalOrder
+  )
+  # set new order (all phyla named)
   new_order <- c(
     "Fusobacteria", "Cyanobacteria", "Verrucomicrobia", "Spirochaetes",
     "Actinobacteria", "Firmicutes", "Proteobacteria", "Bacteroidetes"
   )
   expect_equal(
-    object =
-      tax_agg(dietswap, rank = "Phylum")[["ps"]] %>%
-        microViz:::tax_reorder(tax_order = new_order) %>%
-        phyloseq::taxa_names(),
+    object = tax_agg(dietswap, rank = "Phylum")[["ps"]] %>%
+      tax_reorder(tax_order = new_order) %>%
+      phyloseq::taxa_names(),
     expected = new_order
+  )
+
+  # partial reordering
+  new_order2 <- union(c("Fusobacteria", "Cyanobacteria"), originalOrder)
+
+  expect_equal(
+    object = tax_agg(dietswap, rank = "Phylum")[["ps"]] %>%
+      tax_reorder(tax_order = new_order2[1:2]) %>%
+      phyloseq::taxa_names(),
+    expected = new_order2
+  )
+
+  # partial reordering and some non-matching taxa should throw a warning
+  reordered <- expect_warning(
+    object = tax_agg(dietswap, rank = "Phylum")[["ps"]] %>%
+      tax_reorder(tax_order = c(new_order2[1:2], "extra", "taxa")) %>%
+      phyloseq::taxa_names(),
+    regexp = "2 taxa specified in tax_order are not in phyloseq"
+  )
+  expect_equal(object = reordered, expected = new_order2)
+
+  suppressWarnings(
+    expect_error(
+      object = tax_agg(dietswap, rank = "Phylum")[["ps"]] %>%
+        tax_reorder(tax_order = c("wrong", "taxa")),
+      regexp = "tax_order did not match any taxa in ps"
+    )
   )
 })
 
