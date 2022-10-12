@@ -293,8 +293,7 @@ tax_reorder <- function(ps,
                         tax_order,
                         tree_warn = TRUE,
                         unmatched_warn = TRUE,
-                        ignore = c("other", "Other")
-) {
+                        ignore = c("other", "Other")) {
   # can't sort taxa if phylogenetic tree present, as tree fixes order
   if (!identical(phyloseq::phy_tree(ps, errorIfNULL = FALSE), NULL)) {
     if (isTRUE(tree_warn)) {
