@@ -2,7 +2,7 @@
 % Please edit documentation in R/heatmaps-sampleAnnotation.R
 \name{sampleAnnotation}
 \alias{sampleAnnotation}
-\title{Helper to specify a HeatmapAnnotation for variables in cor_heatmap}
+\title{Helper to specify a HeatmapAnnotation for samples in comp_heatmap}
 \usage{
 sampleAnnotation(
   ...,
@@ -68,7 +68,7 @@ only set this to override default}
 HeatmapAnnotation object
 }
 \description{
-Helper to specify a HeatmapAnnotation for variables in cor_heatmap
+Helper to specify a HeatmapAnnotation for samples in comp_heatmap
 }
 \examples{
 library("ComplexHeatmap")

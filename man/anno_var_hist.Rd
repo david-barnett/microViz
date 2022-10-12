@@ -2,7 +2,7 @@
 % Please edit documentation in R/heatmaps-varAnnotation.R
 \name{anno_var_hist}
 \alias{anno_var_hist}
-\title{Helper to specify heatmap annotation for variable distribution density plot}
+\title{Helper to specify heatmap annotation for variable distribution histograms}
 \usage{
 anno_var_hist(
   fun = identity,

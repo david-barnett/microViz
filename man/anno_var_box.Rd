@@ -2,7 +2,7 @@
 % Please edit documentation in R/heatmaps-varAnnotation.R
 \name{anno_var_box}
 \alias{anno_var_box}
-\title{Helper to specify heatmap annotation for showing variable distributions}
+\title{Helper to specify heatmap annotation for variable distribution boxplots}
 \usage{
 anno_var_box(
   fun = identity,

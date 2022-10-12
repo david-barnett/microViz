@@ -92,7 +92,7 @@ varAnnotation <- function(...,
 }
 
 
-#' Helper to specify heatmap annotation for showing variable distributions
+#' Helper to specify heatmap annotation for variable distribution boxplots
 #'
 #' Use this as an argument to varAnnotation(),
 #' which itself is used by cor_heatmap as var_anno() argument.
@@ -287,7 +287,7 @@ anno_var_density <- function(fun = identity,
   return(o)
 }
 
-#' Helper to specify heatmap annotation for variable distribution density plot
+#' Helper to specify heatmap annotation for variable distribution histograms
 #'
 #' Use this as an argument to varAnnotation(),
 #' which itself is used by cor_heatmap var_anno argument.

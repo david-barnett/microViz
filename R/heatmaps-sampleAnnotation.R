@@ -1,4 +1,4 @@
-#' Helper to specify a HeatmapAnnotation for variables in cor_heatmap
+#' Helper to specify a HeatmapAnnotation for samples in comp_heatmap
 #'
 #' @inheritParams varAnnotation
 #' @inheritParams ComplexHeatmap::HeatmapAnnotation
