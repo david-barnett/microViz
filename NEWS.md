@@ -1,4 +1,8 @@
-# microViz (development version)
+# microViz 0.9.6
+
+## Features
+- Custom reordering of taxa on `comp_barplot` is now easier, just name the taxa you want to see first in the tax_order argument, and they will be brought to the front
+- `tax_reorder` is exported, and now accepts a subset of all available taxa names (powering the improvement in comp_barplot)
 
 ## Fixes
 - Bump rlang dependency version to 1.0.0 fixing https://github.com/david-barnett/microViz/issues/69
