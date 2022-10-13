@@ -277,28 +277,46 @@ patchwork::wrap_plots(plots, nrow = 2, guides = "collect") &
 
 ### Alphabetical top taxa
 
-Sometimes you might prefer the top taxa to be shown in alphabetical
-order. One way to do this is by reordering the names of a custom palette,
+Sometimes you might prefer the top taxa to be shown in alphabetical order. 
+
+```{r}
+# set up for alphabetical sorting
+topTaxa <- pseq %>%
+  ps_filter(gender == "male") %>% 
+  tax_top(n = 9, rank = "Genus") %>% 
+  sort() # this makes them alphabetical
+
+# plot with alphabetical sorting
+pseq %>%
+  ps_filter(gender == "male") %>% 
+  tax_sort(by = sum, at = "Genus") %>% # this orders all genera by abundance
+  comp_barplot(
+    tax_order = topTaxa, # this brings the named taxa to the front
+    tax_level = "Genus", n_taxa = 9, merge_other = FALSE, other_name = "Other"
+  ) +
+  coord_flip()
+```
+
+
+Another way to do this is by reordering the names of a custom palette,
 like this:
 
-```{r, fig.height=3, fig.width=4}
+```{r, fig.height=2.5, fig.width=4}
 # don't add an "Other" colour for now
-alphabetPal <- tax_palette(pseq, rank = "Genus", n = 12, add = NA)
-names(alphabetPal) <- sort(names(alphabetPal))
+alphaPal <- tax_palette(pseq, pal = "kelly", rank = "Genus", n = 12, add = NA)
+names(alphaPal) <- sort(names(alphaPal))
 # now add the "Other" colour to the end
-alphabetPal["Other"] <- "white"
-tax_palette_plot(alphabetPal)
+alphaPal["Other"] <- "white"
+tax_palette_plot(alphaPal)
 ```
 
 ```{r}
 pseq %>%
   ps_filter(gender == "male") %>%
   comp_barplot(
-    tax_level = "Genus", merge_other = FALSE,
-    n_taxa = 12,
+    tax_level = "Genus", n_taxa = 12, merge_other = FALSE,
     other_name = "Other", # must match a name in palette
-    tax_order = names(alphabetPal),
-    palette = alphabetPal
+    tax_order = names(alphaPal), palette = alphaPal
   ) +
   coord_flip()
 ```
