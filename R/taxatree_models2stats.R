@@ -115,7 +115,7 @@ taxatree_models2stats <- function(data,
   stats <- purrr::reduce(stats, rbind.data.frame)
   stats <- dplyr::mutate(
     .data = stats,
-    dplyr::across(c(.data$term, .data$rank), ~ factor(.x, unique(.x)))
+    dplyr::across(dplyr::all_of(c("term", "rank")), ~ factor(.x, unique(.x)))
   )
 
   # return ps_extra or data.frame (based on input data class)
