@@ -117,19 +117,19 @@
     Message
       Problematic Genus values detected in tax_table:
       g__
-      -
-      taxa_name / Phylum / Family / Genus
-      Aeromonas / Proteobacteria / Proteobacteria / g__
-      Akkermansia / Verrucomicrobia / Verrucomicrobia / g__
-      Allistipes et rel. / Bacteroidetes / Bacteroidetes / g__
-      Anaerofustis / Firmicutes / Clostridium cluster XV / g__
-      Anaerostipes caccae et rel. / Firmicutes / Clostridium cluster XIVa / g__
-      Anaerotruncus colihominis et rel. / Firmicutes / Clostridium cluster IV / g__
-      -
+      
+      Convergent rows:
+        `Taxon name`                      Phylum          Family                 Genus
+      1 Aeromonas                         Proteobacteria  Proteobacteria         g__  
+      2 Akkermansia                       Verrucomicrobia Verrucomicrobia        g__  
+      3 Allistipes et rel.                Bacteroidetes   Bacteroidetes          g__  
+      4 Anaerofustis                      Firmicutes      Clostridium cluster XV g__  
+      5 Anaerostipes caccae et rel.       Firmicutes      Clostridium cluster X~ g__  
+      6 Anaerotruncus colihominis et rel. Firmicutes      Clostridium cluster IV g__  
     Condition
-      Error in `tax_agg()`:
-      ! Taxa not unique at rank: Genus
-      See last messages for convergent taxa rows.
+      Error:
+      ! Taxa cannot be aggregated at rank: Genus
+      See last message for convergent taxa rows.
       
       To fix the problem, try:
         `yourData %>% tax_fix(unknowns = c("g__"))`

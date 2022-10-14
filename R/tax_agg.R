@@ -26,7 +26,7 @@
 #'
 #' Comparing aggregate_taxa and tax_agg:
 #'
-#' Except for the ordering of taxa, and the addition of a "unique" rank being optional,
+#' Except for the ordering of taxa, and the addition of a "unique" rank being optional (in tax_agg),
 #' the resulting phyloseq objects are identical for aggregating a phyloseq with no ambiguous taxa.
 #' Taxa are ambiguous when the tax_table converges at a lower rank after branching,
 #' such as if two different genera share the same species (e.g. "s__").
@@ -139,52 +139,41 @@ tax_agg <- function(ps,
     # tax_table ---------------------------------------------------------------
     # get taxtable as dataframe, without ranks below level of rank_index
     tt_df <- getTruncatedTaxTable(ps, rank_index)
-    # check for NAs in chosen rank
-    namesAtRank <- tt_df[, rank_index]
-    # create an ID column, which is later used as new rownames
-    tt_df[[".taxID."]] <- namesAtRank
-    if (anyNA(namesAtRank)) {
+
+    # unique names needed as factor levels
+    # otherwise grouped summarise later reorders otu table to alphabetical...
+    uniqueNamesAtRank <- unique(tt_df[, rank_index])
+
+    if (anyNA(uniqueNamesAtRank)) {
       stop("NAs in tax_table at rank: ", rank, taxFixPrompt())
     }
-    if (purrr::some(.x = namesAtRank, .p = `==`, "")) {
+    if (purrr::some(.x = uniqueNamesAtRank, .p = `==`, "")) {
       stop("zero-length name(s) in tax_table at rank: ", rank, taxFixPrompt())
     }
 
-    # unique names needed as factor levels for .taxID. column
-    # otherwise grouped summarise later reorders otu table to alphabetical...
-    uniqueNamesAtRank <- unique(namesAtRank)
-
-    # deduplicate rows
-    tt_distinct <- dplyr::distinct(tt_df)
-
-    if (!isTRUE(force)) {
-      # checks tt_distinct is also unique at the chosen rank now
-      if (!identical(length(uniqueNamesAtRank), nrow(tt_distinct))) {
-        # get the duplicated taxa and send messages describing them
-        dupeTaxa <- getDuplicatedTaxa(tt_distinct, ranks, rank, rank_index)
-        stop(
-          "Taxa not unique at rank: ", rank,
-          "\nSee last messages for convergent taxa rows.",
-          taxFixPrompt(unknowns = dupeTaxa)
-        )
-      }
-    } else {
-      # FORCED aggregation: doesn't check if unique at chosen rank
-      # keeps first rows encountered
+    if (isTRUE(force)) {
+      # FORCED aggregation: doesn't care/check if higher ranks are not unique
       tt_distinct <- dplyr::distinct(
-        .data = tt_distinct, .keep_all = TRUE, # keeps all ranks
+        .data = tt_df, .keep_all = TRUE, # keeps all ranks (1st rows)
         dplyr::across(dplyr::all_of(rank)) # only uses rank to make distinct
       )
+    } else {
+      # deduplicate rows using all ranks (`rank` and higher)
+      tt_distinct <- dplyr::distinct(tt_df)
+      # check tt_distinct is also unique at the chosen `rank` now
+      if (!identical(length(uniqueNamesAtRank), nrow(tt_distinct))) {
+        errorDuplicatedTaxa(tt_distinct, rank = rank)
+      }
     }
 
     # otu_table --------------------------------------------------------------
-    # get otu table with taxa as rows (like tt)
+    # get otu table with taxa as rows (like the tax table)
     otu <- t(unclass(otu_get(ps)))
     otu_df <- as.data.frame.matrix(
       x = otu, optional = TRUE, make.names = FALSE, stringsAsFactors = FALSE
     )
     otu_df[[".taxID."]] <- factor(
-      x = tt_df[, rank_index], levels = uniqueNamesAtRank
+      x = tt_df[, rank], levels = uniqueNamesAtRank
     )
 
     # aggregate tax abundance values in samples by summing within taxID groups
@@ -200,9 +189,9 @@ tax_agg <- function(ps,
       )
 
     # build new phyloseq -----------------------------------------------------
-    tt_new <- tt_distinct %>%
-      tibble::remove_rownames() %>%
-      tibble::column_to_rownames(var = ".taxID.") %>%
+    tt_new <- tt_distinct
+    rownames(tt_new) <- tt_new[[rank]]
+    tt_new <- tt_new %>%
       as.matrix.data.frame() %>%
       phyloseq::tax_table()
 
@@ -278,11 +267,10 @@ getTruncatedTaxTable <- function(ps, rank_index) {
 #' @return numeric value
 #' @noRd
 getRankIndex <- function(rank, ranks) {
-  bad_rank_message <-
-    paste0(
-      "\nrank should be NA, 'unique' or one of:\n",
-      paste(ranks, collapse = " / ")
-    )
+  bad_rank_message <- paste0(
+    "\nrank should be NA, 'unique' or one of:\n",
+    paste(ranks, collapse = " / ")
+  )
   # check valid rank and get rank index
   if (!identical(length(rank), 1L) && !inherits(rank, "character")) {
     stop(bad_rank_message)
@@ -292,8 +280,9 @@ getRankIndex <- function(rank, ranks) {
   return(rank_index)
 }
 
-#' gets vector of taxa duplicated at rank
+#' Error for when taxa are duplicated when they shouldn't be.
 #'
+#' gets vector of taxa duplicated at rank
 #' messages about these taxa, in a structured way
 #'
 #' @param tt_distinct
@@ -302,26 +291,40 @@ getRankIndex <- function(rank, ranks) {
 #' @param ranks vector of available ranks (character)
 #' @param rank_index pre-calculated position of rank in ranks
 #' @noRd
-getDuplicatedTaxa <- function(tt_distinct, ranks, rank, rank_index) {
-  dupeRowIndices <- which(
-    duplicated(tt_distinct[[rank]]) |
-      duplicated(tt_distinct[[rank]], fromLast = TRUE)
-  )
-  dupeTaxa <- unique(tt_distinct[[rank]][dupeRowIndices])
+errorDuplicatedTaxa <- function(tt_distinct, rank) {
+  # setup for custom tibble printing without modifying options permanently
+  pillarAdvice <- getOption("pillar.advice")
+  on.exit(options(pillar.advice = pillarAdvice), add = TRUE, after = FALSE)
+  options(pillar.advice = FALSE) # removes advice about rows re print(n = ...)
+
+  #
+  tt <- dplyr::arrange(tt_distinct, .data[[rank]])
+  tt <- tt[duplicated(tt[[rank]]) | duplicated(tt[[rank]], fromLast = TRUE), , drop = FALSE]
+  dupeTaxa <- unique(tt[[rank]])
+
   message(
     paste("Problematic", rank, "values detected in tax_table:\n"),
-    paste(dupeTaxa, collapse = " ")
+    paste(dupeTaxa, collapse = " / ")
   )
-  message("-")
-  # create a table-like series of messages, starting with rank names
-  message(paste(c("taxa_name", ranks), collapse = " / "))
-  rowNames <- rownames(tt_distinct)
-  for (ROW in dupeRowIndices) {
-    taxonInfo <- c(rowNames[ROW], tt_distinct[ROW, -(rank_index + 1)])
-    message(paste(taxonInfo, collapse = " / "))
-  }
-  message("-")
-  return(dupeTaxa)
+
+  message("\nConvergent rows:")
+  messageTibble <- tt %>%
+    tibble::rownames_to_column("Taxon name") %>%
+    tibble::as_tibble() %>%
+    print(n = 50) %>%
+    utils::capture.output()
+
+  message(paste(
+    messageTibble[-c(1, 3)], # removes: "A tibble..." and <classes> rows
+    collapse = "\n"
+  ))
+
+  stop(
+    call. = FALSE,
+    "Taxa cannot be aggregated at rank: ", rank,
+    "\nSee last message for convergent taxa rows.",
+    taxFixPrompt(unknowns = dupeTaxa)
+  )
 }
 
 # generate personalised error text to show how to use tax_fix

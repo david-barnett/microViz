@@ -61,7 +61,7 @@ However if \code{microbiome::aggregate_taxa} is used, microViz cannot track this
 
 Comparing aggregate_taxa and tax_agg:
 
-Except for the ordering of taxa, and the addition of a "unique" rank being optional,
+Except for the ordering of taxa, and the addition of a "unique" rank being optional (in tax_agg),
 the resulting phyloseq objects are identical for aggregating a phyloseq with no ambiguous taxa.
 Taxa are ambiguous when the tax_table converges at a lower rank after branching,
 such as if two different genera share the same species (e.g. "s__").
