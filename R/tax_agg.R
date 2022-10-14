@@ -184,7 +184,7 @@ tax_agg <- function(ps,
       x = otu, optional = TRUE, make.names = FALSE, stringsAsFactors = FALSE
     )
     otu_df[[".taxID."]] <- factor(
-      x = tt_df[, rank_index], levels = uniqueNamesAtRank, ordered = TRUE
+      x = tt_df[, rank_index], levels = uniqueNamesAtRank
     )
 
     # aggregate tax abundance values in samples by summing within taxID groups
