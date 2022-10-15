@@ -9,7 +9,8 @@ ps_seriate(
   method = "OLO_ward",
   dist = "bray",
   tax_transform = "identity",
-  add_variable = FALSE
+  add_variable = FALSE,
+  rank = NA
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ ps_seriate(
 \item{tax_transform}{transformation to apply before seriation or any distance calculation}
 
 \item{add_variable}{add a variable to the sample data indicating seriation order}
+
+\item{rank}{taxonomic rank to aggregate at, before seriation, NA for no aggregation}
 }
 \value{
 phyloseq
