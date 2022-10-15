@@ -210,8 +210,12 @@ comp_barplot <- function(ps,
                          max_taxa = 10000,
                          other_name = "other",
                          ...) {
-  stopifnot(max_taxa > n_taxa)
-
+  if (!rlang::is_scalar_integerish(n_taxa) || n_taxa < 1) {
+    stop("n_taxa must a positive integer")
+  }
+  if (!rlang::is_scalar_integerish(max_taxa) || max_taxa < n_taxa) {
+    stop("max_taxa must be a positive integer, and not lower than n_taxa")
+  }
   # check phyloseq for common problems (and fix or message about this)
   ps <- phyloseq_validate(ps, remove_undetected = FALSE, verbose = TRUE)
 
@@ -225,14 +229,11 @@ comp_barplot <- function(ps,
   # include "unique" rank when aggregating
   ps <- tax_agg(ps, rank = tax_level, add_unique = TRUE)[["ps"]]
 
-  # reorder taxa if tax_order given as rule or fixed ordering vector
-
-  if (length(tax_order) != 1 && length(tax_order) != phyloseq::ntaxa(ps)) {
-    "tax_order must be a suitable input for tax_sort() or a vector of names"
-  }
   if (length(tax_order) == 1) {
+    # reorder taxa if tax_order given as a length one rule
     ps <- tax_sort(ps, by = tax_order)
   } else {
+    # reorder taxa if tax_order given as presumably a vector of taxa names
     ps <- tax_reorder(ps, tax_order = tax_order, tree_warn = FALSE, ignore = other_name)
   }
 
@@ -245,13 +246,6 @@ comp_barplot <- function(ps,
   # create "top" rank
   phyloseq::tax_table(ps) <- phyloseq::tax_table(ps) %>%
     tt_add_topN_var(N = n_taxa, other = other_name)
-
-  # fix taxa colour scheme (colours only applied to top taxa)
-  # HERE IS WHERE PALETTE FUNCTIONS COULD BE APPLIED INSTEAD OF FIXED UPFRONT
-  # e.g. HUE GROUPING FUNCTION WOULD NEED TO TAKE A RANK AS GROUP, AND SHADE
-  # WOULD ALWAYS BE "unique" ?
-  topTaxaOrdered <- unique(unclass(phyloseq::tax_table(ps))[, "top"])
-  if (identical(names(palette), NULL)) names(palette) <- topTaxaOrdered
 
   # ordering samples up front? -----------------------------------------------
   if (identical(sample_order, "default") || identical(sample_order, "asis")) {
@@ -268,105 +262,106 @@ comp_barplot <- function(ps,
     ps <- ps_select(ps, dplyr::all_of(keptVars))
   }
 
-  # group_by / splitting entire phyloseq by the group_by variable
-  group_by_var <- phyloseq::sample_data(ps)[[group_by]]
-  if (anyNA(group_by_var)) {
-    message(
-      "Warning: replacing NAs with 'NA's in group_by variable: ", group_by
-    )
-    phyloseq::sample_data(ps)[[group_by]][is.na(group_by_var)] <- "NA"
+  # create a list of phyloseqs, one per group level in group_by, or just one
+  if (is.null(group_by) || rlang::is_na(group_by)) {
+    ps_list <- list(ps) # no names
+  } else {
+    # check grouping variable for NAs and replace with "NA"s
+    group_by_var <- phyloseq::sample_data(ps)[[group_by]]
+    if (anyNA(group_by_var)) {
+      message(
+        "Warning: replacing NAs with 'NA's in group_by variable: ", group_by
+      )
+      phyloseq::sample_data(ps)[[group_by]][is.na(group_by_var)] <- "NA"
+    }
+    LEVELS <- unique(phyloseq::sample_data(ps)[[group_by]])
+    # split phyloseq into multiple phyloseq objects by grouping variable
+    ps_list <- lapply(LEVELS, function(level) {
+      ps_filter(ps, .data[[group_by]] == level, .keep_all_taxa = TRUE)
+      # it is NECESSARY for uniform taxa ordering and colour to keep all taxa.
+    })
+    names(ps_list) <- LEVELS
   }
-  LEVELS <- unique(phyloseq::sample_data(ps)[[group_by]])
 
-  if (isTRUE(is.null(LEVELS))) {
-    # NULL when group_by = NA
+  # modify each phyloseq, sort and merge top taxa if appropriate
+  ps_list <- lapply(ps_list, function(ps) {
+    # possibly calculate sample_order before any merging of "other" category
+    if (isTRUE(order_with_all_taxa) && length(sample_order) == 1) {
+      ps <- ps_seriate(
+        ps = ps, method = seriate_method, dist = sample_order,
+        tax_transform = tax_transform_for_ordering
+      )
+    }
+
+    # merge "top" rank's `other_name` category into one taxon to allow drawing
+    # bar outlines everywhere except within `other_name` category bars
+    if (isTRUE(merge_other)) {
+      ps <- tax_agg(ps, rank = "top", force = TRUE, add_unique = TRUE)[["ps"]]
+    } else {
+      ps <- taxMaxEnforce(ps = ps, maxTaxa = max_taxa, otherName = other_name)
+    }
+
+    # possibly calculate sample_order AFTER any merging of "other" category
+    if (isFALSE(order_with_all_taxa) && length(sample_order) == 1) {
+      ps <- ps_seriate(
+        ps = ps, method = seriate_method, dist = sample_order,
+        tax_transform = tax_transform_for_ordering
+      )
+    }
+    return(ps)
+  })
+
+  # draw a plot per phyloseq in ps_list
+  plots <- lapply(ps_list, function(ps) {
     comp_barplotFixed(
       ps = ps, interactive = interactive,
-      sample_order = sample_order, seriate_method = seriate_method,
-      order_with_all_taxa = order_with_all_taxa,
-      tax_transform_for_ordering = tax_transform_for_ordering,
-      tax_transform_for_plot = tax_transform_for_plot,
       uniqueTaxaOrdered = uniqueTaxaOrdered, topTaxaOrdered = topTaxaOrdered,
-      palette = palette, taxon_renamer = taxon_renamer, max_taxa = max_taxa,
-      merge_other = merge_other, other_name = other_name,
+      tax_transform_for_plot = tax_transform_for_plot,
+      palette = palette, taxon_renamer = taxon_renamer,
       bar_width = bar_width, bar_outline_colour = bar_outline_colour,
       bar_outline_width = bar_outline_width,
       label = label, facet_by = facet_by, tax_level = tax_level, ...
     )
-  } else {
-    plots_list <- lapply(LEVELS, function(level) {
-      this_group <- phyloseq::sample_data(ps)[[group_by]] == level
-      ps <- phyloseq::prune_samples(samples = this_group, x = ps)
-      comp_barplotFixed(
-        ps = ps, interactive = interactive,
-        sample_order = sample_order, seriate_method = seriate_method,
-        order_with_all_taxa = order_with_all_taxa,
-        tax_transform_for_ordering = tax_transform_for_ordering,
-        tax_transform_for_plot = tax_transform_for_plot,
-        uniqueTaxaOrdered = uniqueTaxaOrdered, topTaxaOrdered = topTaxaOrdered,
-        palette = palette, taxon_renamer = taxon_renamer, max_taxa = max_taxa,
-        merge_other = merge_other, other_name = other_name,
-        bar_width = bar_width, bar_outline_colour = bar_outline_colour,
-        bar_outline_width = bar_outline_width,
-        label = label, facet_by = facet_by, tax_level = tax_level, ...
-      )
-    })
-    # set y axis title to group level
-    plots_list <- lapply(seq_along(LEVELS), function(level) {
-      plots_list[[level]] + ggplot2::labs(title = LEVELS[[level]])
-    })
-    names(plots_list) <- LEVELS
-    return(plots_list)
+  })
+
+  # return early if no group_by was provided
+  if (is.null(group_by) || rlang::is_na(group_by)) {
+    return(plots[[1]])
   }
+
+  # otherwise add titles for each group
+  plots <- lapply(seq_along(LEVELS), function(level) {
+    plots[[level]] + ggplot2::labs(title = LEVELS[[level]])
+  })
+  names(plots) <- LEVELS
+  return(plots)
 }
 
 # function to actually create one barplot with fixed taxa levels and palette
 # possibly fixed sample order
 comp_barplotFixed <- function(ps, interactive,
-                              # ordering samples stuff
-                              sample_order, seriate_method, order_with_all_taxa,
-                              tax_transform_for_ordering,
-                              # taxa stuff
-                              tax_transform_for_plot,
+                              # taxa order stuff
                               uniqueTaxaOrdered, topTaxaOrdered,
-                              palette, taxon_renamer,
-                              max_taxa, merge_other, other_name,
                               # plot aesthetic stuff
+                              tax_transform_for_plot, palette, taxon_renamer,
                               bar_width, bar_outline_colour, bar_outline_width,
                               label, facet_by, tax_level, ...) {
 
-  # possibly calculate sample_order before any merging of "other" category
-  if (isTRUE(order_with_all_taxa) && length(sample_order) == 1) {
-    sample_order <- compBarSampleSeriate(
-      ps = ps, dist = sample_order, method = seriate_method,
-      tax_trans = tax_transform_for_ordering
-    )
-  }
-
-  # merge "top" rank's `other_name` category into one taxon to allow drawing
-  # bar outlines everywhere except within `other_name` category bars
-  if (isTRUE(merge_other)) {
-    ps <- tax_agg(ps, rank = "top", force = TRUE, add_unique = TRUE)[["ps"]]
-  }
-  ps <- taxMaxEnforce(ps = ps, maxTaxa = max_taxa, otherName = other_name)
-
-  # possibly calculate sample_order AFTER any merging of "other" category
-  if (isFALSE(order_with_all_taxa) && length(sample_order) == 1) {
-    sample_order <- compBarSampleSeriate(
-      ps = ps, dist = sample_order, method = seriate_method,
-      tax_trans = tax_transform_for_ordering
-    )
-  }
+  # sample order was already fixed, so infer it from phyloseq
+  sample_order <- unique(phyloseq::sample_names(ps))
+  uniqueTaxaOrdered <- unique(phyloseq::tax_table(ps)[, "unique"])
+  topTaxaOrdered <- unique(phyloseq::tax_table(ps)[, "top"])
+  # fix taxa colour scheme (colours only applied to top taxa)
+  if (identical(names(palette), NULL)) names(palette) <- topTaxaOrdered
 
   # setup labelling samples -------------------------------------------------
   # establish a labelling function (for the samples)
   meta <- samdatAsDataframe(ps)
   LABELLER <- function(SAMPLES) {
-    lapply(SAMPLES, function(SAMPLE) {
-      meta[rownames(meta) == SAMPLE, label]
-    })
+    lapply(SAMPLES, function(SAMPLE) meta[rownames(meta) == SAMPLE, label])
   }
 
+  # transform taxa values for display on plot
   ps <- tax_transform(ps, trans = tax_transform_for_plot)[["ps"]]
 
   # prepare dataframe for plot ----------------------------------------------
@@ -409,9 +404,7 @@ comp_barplotFixed <- function(ps, interactive,
       panel.background = ggplot2::element_blank(),
       panel.grid = ggplot2::element_blank()
     ) +
-    ggplot2::scale_x_discrete(
-      breaks = sample_order, labels = LABELLER
-    ) +
+    ggplot2::scale_x_discrete(labels = LABELLER) +
     ggplot2::scale_fill_manual(
       values = palette, labels = taxon_renamer,
       # limits = force is a fix (hopefully temporary) for new ggplot2 behaviour
@@ -494,7 +487,6 @@ checkFixedSampleOrder <- function(ps, sample_order) {
 }
 
 
-
 # enforce max_taxa limit (avoids v.expensive plots in ord_explore)
 taxMaxEnforce <- function(ps, maxTaxa, otherName) {
 
@@ -506,15 +498,4 @@ taxMaxEnforce <- function(ps, maxTaxa, otherName) {
   ps <- tax_agg(ps, rank = "separate", force = TRUE, add_unique = TRUE)[["ps"]]
 
   return(ps)
-}
-
-
-# internal helper to finish sorting samples for barplot
-# for when a distance is named in sample_order
-compBarSampleSeriate <- function(ps, dist, method, tax_trans) {
-  ps_ordered <- ps_seriate(
-    ps = ps, method = method, dist = dist, tax_transform = tax_trans
-  )
-  sample_order <- phyloseq::sample_names(ps_ordered)
-  return(sample_order)
 }
