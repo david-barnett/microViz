@@ -204,20 +204,16 @@ tax_transformInfoUpdate <- function(info, trans, chain, rank) {
 }
 
 # internal helper actually performs transformations on otu table as
-# returned by otu_get() (taxa as columns)
+# returned by otu_get() (taxa as columns!)
 # trans is same as tax_transform trans
 otuTransform <- function(otu, trans, ...) {
   # perform one of several transformations #
-  if (identical(trans, "binary")) {
-    # perform special binary transformation #
+  if (identical(trans, "binary")) { # perform special binary transformation
     dots <- list(...)
     # retrieve or create "undetected" argument
-    if ("undetected" %in% names(dots)) {
-      otu <- otuTransformBinary(otu, undetected = dots[["undetected"]])
-    } else {
-      otu <- otuTransformBinary(otu, undetected = 0)
-    }
-  } else if (identical(trans, "log2")) {
+    if (!"undetected" %in% names(dots)) dots[["undetected"]] <- 0
+    otu <- otuTransformBinary(otu, undetected = dots[["undetected"]])
+  } else if (identical(trans, "log2")) { # perform log2 transformation
     if (any(otu == 0)) {
       stop(
         "\n- ", sum(otu == 0, na.rm = TRUE), " zeros detected in otu_table",
@@ -228,9 +224,8 @@ otuTransform <- function(otu, trans, ...) {
     otu <- log2(otu)
   } else {
     # transform phyloseq with microbiome::transform
-    otu <- microbiome::transform(
-      x = phyloseq::t(otu), transform = trans, target = "OTU", ...
-    )
+    otu <- phyloseq::t(otu)
+    otu <- microbiome::transform(otu, transform = trans, target = "OTU", ...)
     otu <- phyloseq::t(otu) # microbiome::transform uses/returns taxa as rows
   }
   return(otu)
