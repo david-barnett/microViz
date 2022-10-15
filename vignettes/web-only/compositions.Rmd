@@ -650,15 +650,21 @@ shao19 %>%
   ps_mutate(family_id = as.numeric(family_id)) %>%
   # take an arbitrary smaller subset of infants and timepoints
   ps_filter(family_role == "child", family_id < 30, infant_age %in% c(4, 7, 21)) %>%
-  ps_arrange(infant_age) %>%
-  comp_barplot(tax_level = "genus", sample_order = "asis", bar_width = 0.7) +
+  ps_arrange(family_id) %>%
+  ps_mutate(
+    family_id = paste("Fam", family_id),
+    family_id = factor(family_id, rev(unique(family_id)))
+  ) %>% 
+  comp_barplot(
+    tax_level = "genus", sample_order = "asis", bar_width = 0.7,
+    x = "family_id" # x argument is available since microViz 0.9.7
+  ) +
   facet_wrap(
     facets = vars(infant_age), labeller = as_labeller(~ paste("Age", ., "days")),
     scales = "fixed"
   ) +
   coord_flip() +
-  aes(x = as.factor(family_id)) +
-  scale_x_discrete(label = ~ paste("Fam.", .), name = "Family", limits = rev) +
+  labs(x = "Family ID", y = "Relative abundance") +
   scale_y_continuous(expand = expansion(add = c(0, 0.05))) + # axis starts exactly at 0
   theme_bw() + # slightly clearer axes for facets
   theme(panel.spacing.x = unit(6, "mm")) # space for non-overlapping axis numbers

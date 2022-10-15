@@ -392,7 +392,7 @@ comp_barplotFixed <- function(ps, interactive,
     x = .data[[x]], y = .data[["Abundance"]],
     fill = .data[[tax_level]], group = .data[["unique"]]
   ))
-  if (label == "SAMPLE") p <- p + ggplot2::xlab(NULL)
+  if (identical(x, "SAMPLE")) p <- p + ggplot2::xlab(NULL)
 
   if (isTRUE(interactive)) {
     p <- p + ggiraph::geom_col_interactive(
