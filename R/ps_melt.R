@@ -1,7 +1,7 @@
 # Everything in this file is copied (and very slightly modified) from an old version of speedyseq by Michael McLaren @mikemc
 # source available here: https://github.com/mikemc/speedyseq/blob/1bacc47d58549a53f662d4f1c275caab9b3d3b80/R/psmelt.R
 
-# Speedyseq's Attribution note [slighlty modified]:
+# Speedyseq's Attribution note [slightly modified]:
 # The documentation for `ps_melt()` is [mostly] from phyloseq's `psmelt()`
 # https://github.com/joey711/phyloseq/blob/master/R/plot-methods.R
 
