@@ -27,6 +27,7 @@ comp_barplot(
   interactive = FALSE,
   max_taxa = 10000,
   other_name = "other",
+  x = "SAMPLE",
   ...
 )
 }
@@ -47,12 +48,12 @@ and so can have bar outlines drawn around them}
 
 \item{sample_order}{vector of sample names;
 or any distance measure in dist_calc that doesn't require phylogenetic tree;
-or "default" for the order returned by phyloseq::sample_names(ps)}
+or "asis" for the current order as is returned by phyloseq::sample_names(ps)}
 
 \item{order_with_all_taxa}{if TRUE, this will always use all taxa (not just the top n_taxa)
-to calculate distances for sample ordering}
+to calculate any distances needed for sample ordering}
 
-\item{label}{sample label variable name}
+\item{label}{name of variable to use for labelling samples, or "SAMPLE" for sample names}
 
 \item{group_by}{splits dataset by this variable (must be categorical)
 \itemize{
@@ -63,10 +64,9 @@ to calculate distances for sample ordering}
 the faceting will occur separately in the plot for each group.}
 
 \item{bar_width}{default 1 avoids random gapping otherwise seen with many samples
-(set to something less than 1 to introduce gaps between fewer samples)}
+(set to less than 1 to introduce gaps between samples)}
 
-\item{bar_outline_colour}{line colour separating taxa and samples
-(use NA for none)}
+\item{bar_outline_colour}{line colour separating taxa and samples (use NA for no outlines)}
 
 \item{bar_outline_width}{width of line separating taxa and samples
 (for no outlines set bar_outline_colour = NA)}
@@ -92,6 +92,10 @@ but TRUE is required for some post-hoc plot customisation}
 e.g. within ord_explore)}
 
 \item{other_name}{name for other taxa after N}
+
+\item{x}{name of variable to use as x aesthetic:
+it probably only makes sense to change this when also using facets
+(check only one sample is represented per bar!)}
 
 \item{...}{extra arguments passed to facet_wrap() (if facet_by is not NA)}
 }

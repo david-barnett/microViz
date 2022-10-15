@@ -395,7 +395,7 @@ tax_palette_plot(hierarchicalPal) +
 ```{r}
 pseq2 %>%
   ps_get() %>%
-  tax_mutate(`Phylum: Family` = hierarchicalPalInfo$Taxa, .keep = "none") %>%
+  tax_mutate("Phylum: Family" = hierarchicalPalInfo$Taxa, .keep = "none") %>%
   comp_barplot(
     tax_level = "Phylum: Family", n_taxa = length(hierarchicalPal),
     tax_order = "asis", palette = hierarchicalPal, bar_width = 0.975
@@ -547,14 +547,19 @@ pseq %>%
   comp_barplot(tax_level = "Genus") +
   coord_flip() +
   ggtitle("Samples sorted AFTER merging 'other' taxa")
+```
 
+
+```{r}
 pseq %>%
   ps_filter(gender == "female") %>%
   comp_barplot(tax_level = "Genus", order_with_all_taxa = TRUE) +
   coord_flip() +
   ggtitle("Samples sorted BEFORE merging 'other' taxa")
+```
 
 
+```{r}
 pseq %>%
   ps_filter(gender == "female") %>%
   comp_barplot(tax_level = "Genus", merge_other = FALSE) +
@@ -599,11 +604,14 @@ ps <- shao19 %>%
 
 ps %>%
   ps_arrange(infant_age) %>% # this step is necessary
+  ps_mutate(infant_age = factor(infant_age, unique(infant_age))) %>% 
   comp_barplot(
     sample_order = "asis", # to avoid sorting again by similarity
-    tax_level = "genus", label = "infant_age", bar_width = 0.7
+    tax_level = "genus", x = "infant_age", bar_width = 0.7
   ) +
-  facet_wrap(~family_id, scales = "free_x")
+  facet_wrap(~family_id) +
+  theme_bw() +
+  scale_y_continuous(expand = expansion(add = c(0, 0.1)))
 ```
 
 Below is a trick to replace sample with timepoint as the x position
@@ -620,17 +628,20 @@ shao19 %>%
   # take an arbitrary smaller subset of infants and timepoints
   ps_filter(family_role == "child", family_id < 30, infant_age %in% c(4, 7, 21)) %>%
   ps_arrange(infant_age) %>%
+  ps_mutate(infant_age = factor(infant_age, levels = unique(infant_age))) %>% 
   comp_barplot(
-    tax_level = "genus", sample_order = "asis",
-    label = "infant_age", bar_width = 0.7
+    tax_level = "genus", sample_order = "asis", bar_width = 0.7,
+    x = "infant_age" # x argument is available since microViz 0.9.7
   ) +
   facet_wrap(
     facets = vars(family_id), labeller = as_labeller(~ paste("Fam.", .))
   ) +
-  aes(x = as.factor(infant_age)) +
-  scale_x_discrete(label = identity, name = "Age (days)") +
   theme_bw() + # slightly clearer axes for facets
-  scale_y_continuous(expand = expansion(add = c(0, 0.1))) # axis starts exactly at 0
+  labs(x = "Age (days)", y = "Relative Abundance") +
+  scale_y_continuous(
+    expand = expansion(add = c(0, 0.1)), # axis starts exactly at 0
+    labels = scales::label_percent()
+  ) 
 ```
 
 ```{r, fig.height=6, fig.width=6}
