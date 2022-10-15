@@ -177,40 +177,28 @@ tax_agg <- function(ps,
     )
 
     # aggregate tax abundance values in samples by summing within taxID groups
-    otu_grouped <- otu_df %>%
-      dplyr::group_by(dplyr::across(dplyr::all_of(".taxID.")))
-    otu_agg <- otu_grouped %>%
-      dplyr::summarise(
-        dplyr::across(
-          .cols = where(is.numeric), .fns = sum, na.rm = TRUE,
-          .names = "{.col}"
-        ),
-        .groups = "drop"
-      )
+    otu_agg <- otu_df %>%
+      dplyr::group_by(dplyr::across(dplyr::all_of(".taxID."))) %>%
+      dplyr::summarise(dplyr::across(.fns = sum, .names = "{.col}"))
 
     # build new phyloseq -----------------------------------------------------
     tt_new <- tt_distinct
     rownames(tt_new) <- tt_new[[rank]]
-    tt_new <- tt_new %>%
-      as.matrix.data.frame() %>%
-      phyloseq::tax_table()
+    tt_new <- phyloseq::tax_table(as.matrix.data.frame(tt_new))
 
-    otu_new <- otu_agg %>%
-      tibble::remove_rownames() %>%
-      tibble::column_to_rownames(var = ".taxID.") %>%
-      phyloseq::otu_table(taxa_are_rows = TRUE)
-
-    # return the otu_table as it was originally
-    if (!taxa_were_rows) otu_new <- phyloseq::t(otu_new)
+    otu_new <- tibble::remove_rownames(otu_agg)
+    otu_new <- tibble::column_to_rownames(otu_new, var = ".taxID.")
+    otu_new <- phyloseq::otu_table(otu_new, taxa_are_rows = TRUE)
+    if (!taxa_were_rows) otu_new <- phyloseq::t(otu_new) # orient as per input
 
     # create phyloseq from components
     ps_agg <- phyloseq::phyloseq(phyloseq::sample_data(ps), tt_new, otu_new)
   }
 
   if (isTRUE(add_unique) || identical(rank, "unique")) {
-    # add unique rank that matches taxa/rownames
-    # (like how microbiome aggregate_taxa works, in case any fun uses that col)
     ps_agg <- tax_names2rank(ps_agg, colname = "unique")
+    # adds unique rank that matches taxa/rownames
+    # (like how microbiome aggregate_taxa works, in case any fun uses that col)
   }
 
   # if top_N set, set a default sort_by of sum, if necessary
@@ -219,7 +207,7 @@ tax_agg <- function(ps,
     sort_by <- function(x) sum(x, na.rm = TRUE)
   }
 
-  # sort phyloseq taxa
+  # sort phyloseq taxa if requested
   if (!identical(sort_by, NA)) {
     ps_agg <- tax_sort(ps_agg, by = sort_by, at = "names")
   }
@@ -230,10 +218,7 @@ tax_agg <- function(ps,
   }
 
   # ps_extra
-  ps_extra <- new_ps_extra(
-    ps = ps_agg, info = new_ps_extra_info(tax_agg = rank)
-  )
-
+  ps_extra <- new_ps_extra(ps_agg, info = new_ps_extra_info(tax_agg = rank))
   return(ps_extra)
 }
 
