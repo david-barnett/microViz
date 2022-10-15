@@ -45,7 +45,7 @@ such as anno_sample(), or manually specified AnnotationFunction objects}
 
 \item{annotation_label}{Labels for the annotations. By default it is the same as individual annotation names.}
 
-\item{annotation_name_gp}{Graphic parameters for annotation names. Graphic paramters can be vectors.}
+\item{annotation_name_gp}{Graphic parameters for annotation names. Graphic parameters can be vectors.}
 
 \item{annotation_name_offset}{Offset to the annotation names, a \code{\link[grid]{unit}} object. The value can be a vector.}
 

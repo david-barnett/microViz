@@ -20,6 +20,8 @@
 #' @param .side
 #' OPTIONAL string, indicating the side the taxa annotation should be placed:
 #' only set this to override default
+#' @param annotation_name_gp
+#' Graphic parameters for annotation names. Graphic parameters can be vectors.
 #'
 #' @return HeatmapAnnotation object
 #' @export
