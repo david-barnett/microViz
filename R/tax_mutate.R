@@ -55,7 +55,7 @@ tax_mutate <- function(ps, ...) {
   rownames(tt) <- saved_rownames
 
   # check mutation has not introduced non-character columns
-  taxMutateCheckAllChar(tt)
+  taxtabCheckAllChar(tt, fun = "tax_mutate")
 
   # coerce to taxonomy table
   tt <- as.matrix.data.frame(tt)
@@ -72,7 +72,7 @@ tax_mutate <- function(ps, ...) {
 
 
 # helper to check taxtable doesn't contain non-character variables now
-taxMutateCheckAllChar <- function(df) {
+taxtabCheckAllChar <- function(df, fun = "tax_mutate") {
   colNames <- colnames(df)
   if (length(colNames) < 1) stop("you cannot create a tax_table with no ranks")
   classes <- lapply(X = df, FUN = class)
@@ -84,7 +84,7 @@ taxMutateCheckAllChar <- function(df) {
     bad_out <- paste(bad_out, collapse = "\n   * ")
     stop(
       call. = FALSE,
-      "\n - tax_mutate created a non-character rank in taxonomy table\n",
+      paste("\n -", fun, "created a non-character rank in taxonomy table\n"),
       " - ranks in taxonomy table must all be of class 'character'\n",
       " - non-character ranks are:\n",
       paste0("   * ", bad_out)
