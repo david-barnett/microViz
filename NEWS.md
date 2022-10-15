@@ -1,5 +1,8 @@
 # microViz (development version)
 
+## Features
+- `ps_seriate` can now aggregate taxa before seriation (returns unaggregated still)
+
 # microViz 0.9.6
 
 ## Features
