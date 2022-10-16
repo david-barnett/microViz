@@ -184,6 +184,28 @@ tax_fix_interactive <- function(data,
       choices = c("Pick one:" = "", rownames(tt))
     )
 
+    # get short values --------------------------------------------------------
+    too_short <- shiny::reactive({
+      tmp <- unique_tt_vals[nchar(unique_tt_vals) < input$min_char]
+      tmp[!is.na(tmp)]
+    })
+    # Display the too short values
+    output$too_short <- shiny::renderPrint(too_short())
+
+    # find rows where at least one value is bad ------------------------------
+    bad_or_short <- shiny::reactive({
+      union(union(too_short(), "NA"), input$selected)
+    })
+    bad_rows <- shiny::reactive({
+      apply(tt, MARGIN = 1, function(x) any(x %in% bad_or_short() | is.na(x)))
+    })
+    bad_bg_color <- shiny::reactive({
+      DT::styleEqual(
+        levels = bad_or_short(),
+        values = rep_len("red", length(bad_or_short()))
+      )
+    })
+
     # main datatable ----------------------------------------------------------
     output$view <- DT::renderDataTable(
       server = TRUE, # necessary to update highlighting
@@ -220,6 +242,18 @@ tax_fix_interactive <- function(data,
           )
       }
     )
+
+    tt_df_fixed <- shiny::reactive({
+      ps_fixed <- tax_fix(
+        verbose = FALSE,
+        ps = ps_get(data), min_length = input$min_char,
+        unknowns = input$selected, suffix_rank = input$suffix,
+        anon_unique = input$anon_uniq, sep = input$sep
+      )
+      tt_fixed <- unclass(tt_get(ps_fixed))
+      as.data.frame.matrix(tt_fixed, optional = TRUE, make.names = FALSE)
+    })
+
     output$out_tt <- DT::renderDataTable(
       server = TRUE, # necessary to update highlighting
       expr = {
@@ -239,30 +273,7 @@ tax_fix_interactive <- function(data,
           )
       }
     )
-    tt_df_fixed <- shiny::reactive({
-      ps_fixed <- tax_fix(
-        verbose = FALSE,
-        ps = ps_get(data), min_length = input$min_char,
-        unknowns = input$selected, suffix_rank = input$suffix,
-        anon_unique = input$anon_uniq, sep = input$sep
-      )
-      tt_fixed <- unclass(tt_get(ps_fixed))
-      as.data.frame.matrix(tt_fixed, optional = TRUE, make.names = FALSE)
-    })
 
-    # find rows where at least one value matches
-    bad_rows <- shiny::reactive({
-      apply(tt, MARGIN = 1, function(x) any(x %in% bad_or_short() | is.na(x)))
-    })
-    bad_bg_color <- shiny::reactive({
-      DT::styleEqual(
-        levels = bad_or_short(),
-        values = rep_len("red", length(bad_or_short()))
-      )
-    })
-    bad_or_short <- shiny::reactive({
-      union(union(too_short(), "NA"), input$selected)
-    })
 
     # update selected ---------------------------------------------------------
     shiny::observeEvent(
@@ -277,13 +288,6 @@ tax_fix_interactive <- function(data,
       }
     )
 
-    # get short values --------------------------------------------------------
-    too_short <- shiny::reactive({
-      tmp <- unique_tt_vals[nchar(unique_tt_vals) < input$min_char]
-      tmp[!is.na(tmp)]
-    })
-    # Display the too short values
-    output$too_short <- shiny::renderPrint(too_short())
 
     # tax_fix code ------------------------------------------------------------
     # output code needed to fix tax_table
