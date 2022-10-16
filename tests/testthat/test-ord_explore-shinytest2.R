@@ -23,8 +23,9 @@ test_that("ord_explore app works: unconstrained ords", {
 
   app <- suppressWarnings(
     AppDriver$new(
-      app_dir = shinyapp, timeout = 10000,
-      name = "general-ord-explore-test", width = 1619, height = 976
+      app_dir = shinyapp, timeout = 10000, seed = 123,
+      name = "general-ord-explore-test", width = 1600, height = 960,
+      variant = shinytest2::platform_variant()
     )
   )
   # app$view()
