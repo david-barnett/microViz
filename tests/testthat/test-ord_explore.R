@@ -1,4 +1,3 @@
-library(shinytest)
 data("esophagus", package = "phyloseq")
 data("dietswap", package = "microbiome")
 options(width = 80)

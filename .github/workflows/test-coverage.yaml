@@ -29,10 +29,6 @@ jobs:
         if: runner.os == 'macOS'
         run: brew install --cask xquartz
 
-      - name: Install PhantomJS
-        run: |
-          Rscript -e "if (!shinytest::dependenciesInstalled()) shinytest::installDependencies()"
-
       - name: Test coverage
         run: covr::codecov()
         shell: Rscript {0}
