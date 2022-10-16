@@ -3,7 +3,7 @@ library(shinytest2)
 test_that("ord_explore app works: unconstrained ords", {
   # Don't run these tests on the CRAN build servers
   skip_on_cran()
-  skip_if(Sys.info()[['machine']] == "arm64")
+  skip_if(Sys.info()[["machine"]] == "arm64")
   skip_on_os(os = c("windows", "linux"))
   local_edition(3)
   options(width = 80)
@@ -82,4 +82,3 @@ test_that("ord_explore app works: unconstrained ords", {
   app$wait_for_idle()
   app$expect_values()
 })
-

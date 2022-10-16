@@ -900,8 +900,6 @@ ord_explore <- function(data,
         shiny::removeModal(session = session)
       }
     )
-
-
   }
   # Run the application
   shiny::shinyApp(ui = ui, server = server, options = app_options)

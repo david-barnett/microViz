@@ -41,7 +41,6 @@ test_that("fixing tax order of comp_barplot works", {
 # manual sample ordering -----------------------------------------------------
 
 test_that("fixing sample order of comp_barplot works", {
-
   ps_A <- ps_arrange(dietswap, subject, timepoint)
   plotA <- comp_barplot(ps_A, tax_level = "Genus", sample_order = "asis")
 

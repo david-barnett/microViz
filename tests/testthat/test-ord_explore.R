@@ -135,5 +135,3 @@ test_that("ord_explore_palet_fun works", {
     ps = dietswap, tax_level = "Family", top_by = median, other = "colourz"
   ))
 })
-
-
