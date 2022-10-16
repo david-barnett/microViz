@@ -53,6 +53,10 @@
 #' @param plot_widths
 #' widths of plots in inches, including any legends
 #' (first number is ordination, second is composition barplot)
+#' @param modal_fade should the popover menus (modals) have a fade animation?
+#' @param notification_durations
+#' length 2 list giving duration in seconds of short and long notifications
+#' or NULL for notifications that do not disappear automatically
 #' @param ... additional arguments passed to ord_plot
 #'
 #' @return nothing, opens default browser
@@ -145,6 +149,8 @@ ord_explore <- function(data,
                         seriate_method = "OLO_ward", # ordering samples
                         app_options = list(launch.browser = TRUE), # shinyApp()
                         plot_widths = c(7, 9),
+                        modal_fade = TRUE,
+                        notification_durations = list(2, 20),
                         ...) {
   # SETUP -------------------------------------------------------------------
 
@@ -444,7 +450,9 @@ ord_explore <- function(data,
 
   server <- function(input, output, session) {
     if (!isFALSE(init$warn)) {
-      shiny::showNotification(type = "error", duration = 10, ui = init$warn)
+      shiny::showNotification(
+        type = "error", duration = notification_durations[[2]], ui = init$warn
+      )
     }
 
     # initialise ordination choices ------------------------------------------
@@ -550,7 +558,8 @@ ord_explore <- function(data,
     # order taxa using ALL samples (not just selected)
     ordered_taxa <- shiny::reactive({
       shiny::showNotification(
-        ui = " - Sorting taxa", duration = 2, session = session
+        ui = " - Sorting taxa", session = session,
+        duration = notification_durations[[1]]
       )
       tax_top(
         data = phylos$comps, n = NA,
@@ -562,7 +571,8 @@ ord_explore <- function(data,
     # (depends on tax level of composition plot)
     palet <- shiny::reactive({
       shiny::showNotification(
-        ui = " - Setting taxa colour palette", duration = 2, session = session
+        ui = " - Setting taxa colour palette", session = session,
+        duration = notification_durations[[1]]
       )
       ord_explore_palet_fun(
         ps = phylos$comps, tax_level = input$tax_level_comp,
@@ -629,8 +639,9 @@ ord_explore <- function(data,
           if (isFALSE(input$mergeOther)) {
             # warn about lag with too many distinct taxa
             shiny::showNotification(
-              "Interactive bars lag if too many taxa and/or samples shown!",
-              duration = 20, type = "warning", session = session
+              ui = "Interactive bars lag if too many taxa and/or samples shown!",
+              duration = notification_durations[[2]],
+              type = "warning", session = session
             )
           }
         } else {
@@ -726,6 +737,7 @@ ord_explore <- function(data,
     ## modal dialog -----------------------------------------------------------
     settingsModal <- shiny::reactive(
       shiny::modalDialog(
+        fade = modal_fade,
         shiny::h3(shiny::icon("gear"), "Edit Ordination"),
         shiny::helpText("Choose options to modify ordination created:"),
         shiny::hr(),
@@ -796,7 +808,7 @@ ord_explore <- function(data,
     # code modal --------------------------------------------------------------
     codeModal <- shiny::reactive(
       shiny::modalDialog(
-        easyClose = TRUE,
+        easyClose = TRUE, fade = modal_fade,
         shiny::h3(shiny::icon("code"), "Ordination plot code"),
         shiny::hr(),
         shiny::renderPrint({
@@ -847,12 +859,14 @@ ord_explore <- function(data,
               "Invalid combination of options: try again!",
               "See R console for error message(s)."
             ),
-            type = "error", session = session
+            type = "error", session = session,
+            duration = notification_durations[[1]]
           )
         } else {
           shiny::removeModal(session = session)
           shiny::showNotification(
-            ui = "Reordering samples for barplot", type = "warning"
+            ui = "Reordering samples for barplot", type = "warning",
+            duration = notification_durations[[1]]
           )
           phylos$comps <- ps_seriate(
             ps = phylos$comps, method = seriate_method,
@@ -871,7 +885,8 @@ ord_explore <- function(data,
       handlerExpr = {
         phylos$ord1 <- init$data
         shiny::showNotification(
-          ui = "Reordering samples for barplot", type = "warning"
+          ui = "Reordering samples for barplot", type = "warning",
+          duration = notification_durations[[1]]
         )
         # for comp_barplot (samples can be reordered)
         phylos$comps <- ps_seriate(

@@ -10,6 +10,8 @@ ord_explore(
   seriate_method = "OLO_ward",
   app_options = list(launch.browser = TRUE),
   plot_widths = c(7, 9),
+  modal_fade = TRUE,
+  notification_durations = list(2, 20),
   ...
 )
 }
@@ -24,6 +26,11 @@ ord_explore(
 
 \item{plot_widths}{widths of plots in inches, including any legends
 (first number is ordination, second is composition barplot)}
+
+\item{modal_fade}{should the popover menus (modals) have a fade animation?}
+
+\item{notification_durations}{length 2 list giving duration in seconds of short and long notifications
+or NULL for notifications that do not disappear automatically}
 
 \item{...}{additional arguments passed to ord_plot}
 }
