@@ -195,7 +195,7 @@ ord_explore <- function(data,
             shiny::div(
               style = "display:inline-block; width:47.5%",
               shiny::actionButton(
-                inputId = "settings", icon = shiny::icon("cog"),
+                inputId = "settings", icon = shiny::icon("gear"),
                 label = "Edit", class = "btn-secondary", width = "100%"
               )
             ),
@@ -470,7 +470,7 @@ ord_explore <- function(data,
           "Note: replace `your_phyloseq` with the ",
           "object you used for ord_explore's data argument"
         ),
-        footer = shiny::modalButton("Close", icon = shiny::icon("times"))
+        footer = shiny::modalButton("Close", icon = shiny::icon("xmark"))
       )
     )
     # Show code modal when button is clicked.
@@ -482,7 +482,7 @@ ord_explore <- function(data,
     ## modal dialog -----------------------------------------------------------
     settingsModal <- shiny::reactive(
       shiny::modalDialog(
-        shiny::h3(shiny::icon("cog"), "Edit Ordination"),
+        shiny::h3(shiny::icon("gear"), "Edit Ordination"),
         shiny::helpText("Choose options to modify ordination created:"),
         shiny::hr(),
         shiny::selectizeInput(
@@ -519,7 +519,7 @@ ord_explore <- function(data,
           choices = ordChoices$ord, selected = ord1chosen$ord
         ),
         footer = shiny::tagList(
-          shiny::modalButton("Cancel", icon = shiny::icon("times")),
+          shiny::modalButton("Cancel", icon = shiny::icon("xmark")),
           if (!identical(ord_get(init$data), NULL)) {
             shiny::actionButton(
               inputId = "originalOrd", label = "Use original ordination",
