@@ -17,7 +17,7 @@
 #'    - Taxa loading arrows can be added only to PCA, RDA and CCA plots
 #'    - Convex hulls or ellipses can only be drawn if Colour is set to a variable
 #'    - To track individuals over time with the path plotter, your data MUST already be sorted by time (e.g. with ps_arrange)!
-#' 3. Click on or use the lasso tool to select 2 or more samples to view their compositions
+#' 3. Click on or use the lasso tool to select 1 or more samples to view their compositions
 #'    - By default samples can be selected individually
 #'    - Set the "Select" option to another variable to select by level of that variable
 #' 4. Style the taxonomic compositions barplot
@@ -1340,8 +1340,7 @@ markSelectedSamples <- function(ordSel, id, ps) {
 #' @noRd
 ggBarplot <- function(selected, ps, facet_by, n_taxa, tax_level, tax_order,
                       palette, label, max_taxa, merge_other) {
-  if (sum(selected) >= 2) {
-    # TODO fix issue that comp_barplot only works with 2+ samples
+  if (sum(selected) >= 1) {
     # select samples
     psSelected <- phyloseq::prune_samples(x = ps, samples = selected)
 
@@ -1370,7 +1369,7 @@ ggBarplot <- function(selected, ps, facet_by, n_taxa, tax_level, tax_order,
       ggplot2::theme(legend.justification = "left")
   } else {
     plot <- ggmessage(paste0(
-      "Select 2 or more samples on the ordination plot above\n",
+      "Select 1 or more samples on the ordination plot above\n",
       "either by clicking or by using the lasso selection tool"
     ))
   }

@@ -52,7 +52,7 @@ Once the app is running (in your browser), you can:
 \item Convex hulls or ellipses can only be drawn if Colour is set to a variable
 \item To track individuals over time with the path plotter, your data MUST already be sorted by time (e.g. with ps_arrange)!
 }
-\item Click on or use the lasso tool to select 2 or more samples to view their compositions
+\item Click on or use the lasso tool to select 1 or more samples to view their compositions
 \itemize{
 \item By default samples can be selected individually
 \item Set the "Select" option to another variable to select by level of that variable
