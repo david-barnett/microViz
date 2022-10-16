@@ -447,112 +447,8 @@ ord_explore <- function(data,
       shiny::showNotification(type = "error", duration = 10, ui = init$warn)
     }
 
-    # code modal --------------------------------------------------------------
-    codeModal <- shiny::reactive(
-      shiny::modalDialog(
-        easyClose = TRUE,
-        shiny::h3(shiny::icon("code"), "Ordination plot code"),
-        shiny::hr(),
-        shiny::renderPrint({
-          ord_code(
-            rank = ord1chosen$rank, trans = ord1chosen$trans,
-            dist = ord1chosen$dist, ord = ord1chosen$ord,
-            const = ord1chosen$const, conds = ord1chosen$conds,
-            x = input$x1, y = input$y1, colour = input$ord_colour,
-            fill = input$ord_colour, # TODO make fill configurable
-            shape = input$ord_shape, alpha = alpha(), size = size(),
-            plot_taxa = plot_taxa(), ellipses = ellipses(),
-            chulls = chulls(), paths = paths(), shapeIsVar = shapeIsVar()
-          )
-        }),
-        shiny::hr(),
-        shiny::helpText(
-          "Note: replace `your_phyloseq` with the ",
-          "object you used for ord_explore's data argument"
-        ),
-        footer = shiny::modalButton("Close", icon = shiny::icon("xmark"))
-      )
-    )
-    # Show code modal when button is clicked.
-    shiny::observeEvent(input$code, {
-      shiny::showModal(ui = codeModal(), session = session)
-    })
-
-    # settings modal ----------------------------------------------------------
-    ## modal dialog -----------------------------------------------------------
-    settingsModal <- shiny::reactive(
-      shiny::modalDialog(
-        shiny::h3(shiny::icon("gear"), "Edit Ordination"),
-        shiny::helpText("Choose options to modify ordination created:"),
-        shiny::hr(),
-        shiny::selectizeInput(
-          inputId = "rank", label = "Taxonomic Rank",
-          selected = ord1chosen$rank, choices = ordChoices$rank
-        ),
-        shiny::selectizeInput(
-          inputId = "trans", label = "Taxa transformation",
-          choices = ordChoices$trans, selected = ord1chosen$trans
-        ),
-        shiny::selectizeInput(
-          inputId = "dist", label = "Distance / Dissimilarity",
-          choices = ordChoices$dist, selected = ord1chosen$dist
-        ),
-        shiny::checkboxInput(
-          inputId = "isCon", label = "Constrain or condition ordination?",
-          value = ord1chosen$isCon
-        ),
-        shiny::conditionalPanel(
-          condition = "input.isCon == true",
-          shiny::selectizeInput(
-            inputId = "const", label = "Constraints", multiple = TRUE,
-            choices = ordChoices$const, selected = ord1chosen$const,
-            options = list(placeholder = "Select numeric variable(s):")
-          ),
-          shiny::selectizeInput(
-            inputId = "conds", label = "Conditions", multiple = TRUE,
-            choices = ordChoices$conds, selected = ord1chosen$conds,
-            options = list(placeholder = "Select numeric variable(s):")
-          )
-        ),
-        shiny::selectizeInput(
-          inputId = "method", label = "Ordination method",
-          choices = ordChoices$ord, selected = ord1chosen$ord
-        ),
-        footer = shiny::tagList(
-          shiny::modalButton("Cancel", icon = shiny::icon("xmark")),
-          if (!identical(ord_get(init$data), NULL)) {
-            shiny::actionButton(
-              inputId = "originalOrd", label = "Use original ordination",
-              icon = shiny::icon("history"), class = "btn-primary"
-            )
-          },
-          shiny::actionButton(
-            inputId = "build", label = "Build",
-            icon = shiny::icon("play"), class = "btn-success"
-          )
-        )
-      )
-    )
-    ## show modal -------------------------------------------------------------
-    # if data provided to ord_explore has no ordination, open settingsModal
-    shiny::observeEvent(
-      eventExpr = init$data,
-      handlerExpr = {
-        if (identical(ord_get(init$data), NULL)) {
-          shiny::showModal(ui = settingsModal(), session = session)
-        }
-      }
-    )
-
-    # Show settings modal when button is clicked.
-    shiny::observeEvent(input$settings, {
-      shiny::showModal(ui = settingsModal(), session = session)
-    })
-
-    ## modal memory -----------------------------------------------------------
-    ### selected --------------------------------------------------------------
+    # initialise ordination choices ------------------------------------------
     # for remembering selected and possible choices in modal selectize inputs
-    #### initialise selected choices ------------------------------------------
     ord1chosen <- shiny::reactiveValues(
       rank = init$info$rank, trans = init$info$trans,
       # scale = if (is.na(info$scale)) "neither" else info$scale,
@@ -560,6 +456,195 @@ ord_explore <- function(data,
       const = init$info$constraints, conds = init$info$conditions,
       isCon = init$info$isCon # constrained or conditioned (checkbox)
     )
+
+    # initialise reactive data ----------------------------------------------
+    # initialise data reactive values with data provided
+    phylos <- shiny::reactiveValues(
+      ord1 = init$data, # for ord_plot
+      comps = ps_seriate( # for comp_barplot (samples can be reordered)
+        ps = ps_counts(init$data, warn = TRUE),
+        method = seriate_method,
+        tax_transform = shiny::isolate(ord1chosen$trans),
+        dist = setdiff(
+          c(shiny::isolate(ord1chosen$dist), "euclidean"), "none"
+        )[[1]]
+      )
+    )
+
+    # plots -------------------------------------------------------------------
+    ## ord plot ---------------------------------------------------------------
+    ### arg helpers -----------------------------------------------------------
+    shapeIsVar <- shiny::reactive({
+      input$ord_shape %in% init$vars$all
+    })
+    size <- shiny::reactive({
+      if (isTRUE(input$sizeFixed)) {
+        input$ord_size_num
+      } else {
+        shiny::req(input$ord_size_var, cancelOutput = TRUE)
+      }
+    })
+    alpha <- shiny::reactive({
+      if (isTRUE(input$alphaFixed)) {
+        input$ord_alpha_num
+      } else {
+        shiny::req(input$ord_alpha_var, cancelOutput = TRUE)
+      }
+    })
+    plot_taxa <- shiny::reactive({
+      if (input$add != "taxa") {
+        FALSE
+      } else {
+        seq_len(input$nLabels)
+      }
+    })
+    ellipses <- shiny::reactive({
+      input$add == "ellipses" & input$ord_colour %in% init$vars$all
+    })
+    chulls <- shiny::reactive({
+      input$add == "chulls" & input$ord_colour %in% init$vars$all
+    })
+    paths <- shiny::reactive({
+      if (input$add == "paths" && length(input$pathGroupsChosen) > 0) {
+        list(
+          id_var = shiny::isolate(input$pathGroupID),
+          id_values = input$pathGroupsChosen,
+          colour = input$ord_colour,
+          all_vars = init$vars$all
+        )
+      } else {
+        NULL
+      }
+    })
+    # update path group selection choices depending on ID variable selected
+    shiny::observeEvent(
+      eventExpr = input$pathGroupID,
+      handlerExpr = {
+        shiny::updateSelectizeInput(
+          session = session, inputId = "pathGroupsChosen",
+          choices = unique(samdat_tbl(phylos$ord1)[[input$pathGroupID]])
+        )
+      }
+    )
+
+    ### create ord_plot ------------------------------------------------------
+    output$ord_plot <- ggiraph::renderGirafe({
+      # prevent execution if no axes selected
+      shiny::req(input$x1, input$y1, cancelOutput = TRUE)
+      p1 <- ord_ggplot(
+        ord = phylos$ord1, x = input$x1, y = input$y1, shape = input$ord_shape,
+        size = size(), colour = input$ord_colour, alpha = alpha(),
+        id = input$id_var, plot_taxa = plot_taxa(),
+        ellipses = ellipses(), chulls = chulls(), paths = paths(), ...
+      )
+      # (blank) legend in separate plot for consistent sizing of main plot
+      p1 <- legend_separate(p1, rel_widths = c(80, 20))
+      # make ggplot into interactive ggiraph object
+      p1 <- ord_girafe(gg = p1, width = p_width[[1]], height = 4.5)
+      return(p1)
+    })
+
+
+    ## barplot ----------------------------------------------------------------
+    ### set tax order & colour ------------------------------------------------
+    # order taxa using ALL samples (not just selected)
+    ordered_taxa <- shiny::reactive({
+      shiny::showNotification(
+        ui = " - Sorting taxa", duration = 2, session = session
+      )
+      tax_top(
+        data = phylos$comps, n = NA,
+        by = get(input$tax_order),
+        rank = input$tax_level_comp
+      )
+    })
+    # set colour palette using ALL samples
+    # (depends on tax level of composition plot)
+    palet <- shiny::reactive({
+      shiny::showNotification(
+        ui = " - Setting taxa colour palette", duration = 2, session = session
+      )
+      ord_explore_palet_fun(
+        ps = phylos$comps, tax_level = input$tax_level_comp,
+        top_by = get(input$tax_order)
+      )
+    })
+
+    ## build ggplot ----------------------------------------------------------
+
+    # debounce numeric inputs to prevent repeated barplot redrawing
+    n_taxa <- shiny::debounce(shiny::reactive(input$ntaxa), millis = 200)
+    max_taxa <- shiny::debounce(shiny::reactive(input$taxmax), millis = 200)
+
+    comp_plot <- shiny::reactive({
+      # make logical vector indicating whether sample is selected on ord plot
+      isSampleSelected <- markSelectedSamples(
+        ordSel = input$ord_plot_selected, id = input$id_var, ps = phylos$comps
+      )
+
+      # make barplot (or placeholder message plot)
+      barplot <- ggBarplot(
+        selected = isSampleSelected, ps = phylos$comps,
+        facet_by = input$facet_by, n_taxa = n_taxa(),
+        tax_level = input$tax_level_comp, tax_order = ordered_taxa(),
+        palette = palet(), label = input$comp_label,
+        max_taxa = max_taxa(), merge_other = input$mergeOther
+      )
+    })
+
+    ### render ggplot ---------------------------------------------------------
+    # static ggplot version of compositional barplot or placeholder
+    output$comps_gg <- shiny::renderPlot({
+      # tweak sizing of legend text and squares for ggplot output
+      plot <- comp_plot() + ggplot2::theme(
+        legend.text = ggplot2::element_text(size = 9),
+        legend.key.size = ggplot2::unit(8, "mm")
+      )
+      legend_separate(ggplot = plot, rel_widths = c(70, 30))
+    })
+
+    ### render girafe ---------------------------------------------------------
+    # interactive girafe composition plot
+    output$comps_girafe <- ggiraph::renderggiraph({
+      # TODO work out how to match static/interactive sizes properly
+      gg <- comp_plot() + ggplot2::theme(text = ggplot2::element_text(size = 8))
+      gg <- legend_separate(ggplot = gg, rel_widths = c(70, 30))
+      # make interactive html barplot
+      girafeBarplot(gg = gg, width = p_width[[2]], height = 5)
+    })
+
+    ### tabs & notifications for barplot --------------------------------------
+    # handling (de)selection of interactive and "merge other" checkboxes
+    # interactive and static plots exist on two separate tabs
+    shiny::observeEvent(
+      eventExpr = {
+        input$interactive
+        input$mergeOther
+      },
+      handlerExpr = {
+        if (isTRUE(input$interactive)) {
+          shiny::updateTabsetPanel(
+            session = session, inputId = "tabs", selected = "girafe"
+          )
+          if (isFALSE(input$mergeOther)) {
+            # warn about lag with too many distinct taxa
+            shiny::showNotification(
+              "Interactive bars lag if too many taxa and/or samples shown!",
+              duration = 20, type = "warning", session = session
+            )
+          }
+        } else {
+          shiny::updateTabsetPanel(
+            session = session, inputId = "tabs", selected = "ggplot"
+          )
+        }
+      }
+    )
+
+    # settings modal ----------------------------------------------------------
+
+    ## modal memory -----------------------------------------------------------
+    ### selected --------------------------------------------------------------
 
     #### update on build ------------------------------------------------------
     # update selected choices whenever model selection confirmed
@@ -637,21 +722,109 @@ ord_explore <- function(data,
       }
     )
 
-    # Edit Ordination --------------------------------------------------------
 
-    ## initialise reactive data ----------------------------------------------
-    # initialise data reactive values with data provided
-    phylos <- shiny::reactiveValues(
-      ord1 = init$data, # for ord_plot
-      comps = ps_seriate( # for comp_barplot (samples can be reordered)
-        ps = ps_counts(init$data, warn = TRUE),
-        method = seriate_method,
-        tax_transform = shiny::isolate(ord1chosen$trans),
-        dist = setdiff(
-          c(shiny::isolate(ord1chosen$dist), "euclidean"), "none"
-        )[[1]]
+    ## modal dialog -----------------------------------------------------------
+    settingsModal <- shiny::reactive(
+      shiny::modalDialog(
+        shiny::h3(shiny::icon("gear"), "Edit Ordination"),
+        shiny::helpText("Choose options to modify ordination created:"),
+        shiny::hr(),
+        shiny::selectizeInput(
+          inputId = "rank", label = "Taxonomic Rank",
+          selected = ord1chosen$rank, choices = ordChoices$rank
+        ),
+        shiny::selectizeInput(
+          inputId = "trans", label = "Taxa transformation",
+          choices = ordChoices$trans, selected = ord1chosen$trans
+        ),
+        shiny::selectizeInput(
+          inputId = "dist", label = "Distance / Dissimilarity",
+          choices = ordChoices$dist, selected = ord1chosen$dist
+        ),
+        shiny::checkboxInput(
+          inputId = "isCon", label = "Constrain or condition ordination?",
+          value = ord1chosen$isCon
+        ),
+        shiny::conditionalPanel(
+          condition = "input.isCon == true",
+          shiny::selectizeInput(
+            inputId = "const", label = "Constraints", multiple = TRUE,
+            choices = ordChoices$const, selected = ord1chosen$const,
+            options = list(placeholder = "Select numeric variable(s):")
+          ),
+          shiny::selectizeInput(
+            inputId = "conds", label = "Conditions", multiple = TRUE,
+            choices = ordChoices$conds, selected = ord1chosen$conds,
+            options = list(placeholder = "Select numeric variable(s):")
+          )
+        ),
+        shiny::selectizeInput(
+          inputId = "method", label = "Ordination method",
+          choices = ordChoices$ord, selected = ord1chosen$ord
+        ),
+        footer = shiny::tagList(
+          shiny::modalButton("Cancel", icon = shiny::icon("xmark")),
+          if (!identical(ord_get(init$data), NULL)) {
+            shiny::actionButton(
+              inputId = "originalOrd", label = "Use original ordination",
+              icon = shiny::icon("history"), class = "btn-primary"
+            )
+          },
+          shiny::actionButton(
+            inputId = "build", label = "Build",
+            icon = shiny::icon("play"), class = "btn-success"
+          )
+        )
       )
     )
+    ## show modal -------------------------------------------------------------
+    # if data provided to ord_explore has no ordination, open settingsModal
+    shiny::observeEvent(
+      eventExpr = init$data,
+      handlerExpr = {
+        if (identical(ord_get(init$data), NULL)) {
+          shiny::showModal(ui = settingsModal(), session = session)
+        }
+      }
+    )
+
+    # Show settings modal when button is clicked.
+    shiny::observeEvent(input$settings, {
+      shiny::showModal(ui = settingsModal(), session = session)
+    })
+
+    # code modal --------------------------------------------------------------
+    codeModal <- shiny::reactive(
+      shiny::modalDialog(
+        easyClose = TRUE,
+        shiny::h3(shiny::icon("code"), "Ordination plot code"),
+        shiny::hr(),
+        shiny::renderPrint({
+          ord_code(
+            rank = ord1chosen$rank, trans = ord1chosen$trans,
+            dist = ord1chosen$dist, ord = ord1chosen$ord,
+            const = ord1chosen$const, conds = ord1chosen$conds,
+            x = input$x1, y = input$y1, colour = input$ord_colour,
+            fill = input$ord_colour, # TODO make fill configurable
+            shape = input$ord_shape, alpha = alpha(), size = size(),
+            plot_taxa = plot_taxa(), ellipses = ellipses(),
+            chulls = chulls(), paths = paths(), shapeIsVar = shapeIsVar()
+          )
+        }),
+        shiny::hr(),
+        shiny::helpText(
+          "Note: replace `your_phyloseq` with the ",
+          "object you used for ord_explore's data argument"
+        ),
+        footer = shiny::modalButton("Close", icon = shiny::icon("xmark"))
+      )
+    )
+    # Show code modal when button is clicked.
+    shiny::observeEvent(input$code, {
+      shiny::showModal(ui = codeModal(), session = session)
+    })
+
+    # Edit Ordination --------------------------------------------------------
 
     ## Build button event ----------------------------------------------------
     # when build button clicked, update ordination and close modal on success
@@ -713,173 +886,7 @@ ord_explore <- function(data,
       }
     )
 
-    # ord plot ----------------------------------------------------------------
-    output$ord_plot <- ggiraph::renderGirafe({
-      # prevent execution if no axes selected
-      shiny::req(input$x1, input$y1, cancelOutput = TRUE)
-      p1 <- ord_ggplot(
-        ord = phylos$ord1, x = input$x1, y = input$y1, shape = input$ord_shape,
-        size = size(), colour = input$ord_colour, alpha = alpha(),
-        id = input$id_var, plot_taxa = plot_taxa(),
-        ellipses = ellipses(), chulls = chulls(), paths = paths(), ...
-      )
-      # (blank) legend in separate plot for consistent sizing of main plot
-      p1 <- legend_separate(p1, rel_widths = c(80, 20))
-      # make ggplot into interactive ggiraph object
-      p1 <- ord_girafe(gg = p1, width = p_width[[1]], height = 4.5)
-      return(p1)
-    })
 
-    ## arg helpers ------------------------------------------------------------
-    shapeIsVar <- shiny::reactive({
-      input$ord_shape %in% init$vars$all
-    })
-    size <- shiny::reactive({
-      if (isTRUE(input$sizeFixed)) {
-        input$ord_size_num
-      } else {
-        shiny::req(input$ord_size_var, cancelOutput = TRUE)
-      }
-    })
-    alpha <- shiny::reactive({
-      if (isTRUE(input$alphaFixed)) {
-        input$ord_alpha_num
-      } else {
-        shiny::req(input$ord_alpha_var, cancelOutput = TRUE)
-      }
-    })
-    plot_taxa <- shiny::reactive({
-      if (input$add != "taxa") {
-        FALSE
-      } else {
-        seq_len(input$nLabels)
-      }
-    })
-    ellipses <- shiny::reactive({
-      input$add == "ellipses" & input$ord_colour %in% init$vars$all
-    })
-    chulls <- shiny::reactive({
-      input$add == "chulls" & input$ord_colour %in% init$vars$all
-    })
-    paths <- shiny::reactive({
-      if (input$add == "paths" && length(input$pathGroupsChosen) > 0) {
-        list(
-          id_var = shiny::isolate(input$pathGroupID),
-          id_values = input$pathGroupsChosen,
-          colour = input$ord_colour,
-          all_vars = init$vars$all
-        )
-      } else {
-        NULL
-      }
-    })
-    # update path group selection choices depending on ID variable selected
-    shiny::observeEvent(
-      eventExpr = input$pathGroupID,
-      handlerExpr = {
-        shiny::updateSelectizeInput(
-          session = session, inputId = "pathGroupsChosen",
-          choices = unique(samdat_tbl(phylos$ord1)[[input$pathGroupID]])
-        )
-      }
-    )
-
-    # barplot -----------------------------------------------------------------
-
-    ## tax order & colour -----------------------------------------------------
-    # order taxa using ALL samples
-    ordered_taxa <- shiny::reactive({
-      shiny::showNotification(
-        ui = " - Sorting taxa", duration = 2, session = session
-      )
-      tax_top(
-        data = phylos$comps, n = NA,
-        by = get(input$tax_order),
-        rank = input$tax_level_comp
-      )
-    })
-    # set colour palette using ALL samples
-    # (depends on tax level of composition plot)
-    palet <- shiny::reactive({
-      shiny::showNotification(
-        ui = " - Setting taxa colour palette", duration = 2, session = session
-      )
-      ord_explore_palet_fun(
-        ps = phylos$comps, tax_level = input$tax_level_comp,
-        top_by = get(input$tax_order)
-      )
-    })
-
-    ## build ggplot ----------------------------------------------------------
-
-    # debounce numeric inputs to prevent repeated barplot redrawing
-    n_taxa <- shiny::debounce(shiny::reactive(input$ntaxa), millis = 200)
-    max_taxa <- shiny::debounce(shiny::reactive(input$taxmax), millis = 200)
-
-    comp_plot <- shiny::reactive({
-      # make logical vector indicating whether sample is selected on ord plot
-      isSampleSelected <- markSelectedSamples(
-        ordSel = input$ord_plot_selected, id = input$id_var, ps = phylos$comps
-      )
-
-      # make barplot (or placeholder)
-      barplot <- ggBarplot(
-        selected = isSampleSelected, ps = phylos$comps,
-        facet_by = input$facet_by, n_taxa = n_taxa(),
-        tax_level = input$tax_level_comp, tax_order = ordered_taxa(),
-        palette = palet(), label = input$comp_label,
-        max_taxa = max_taxa(), merge_other = input$mergeOther
-      )
-    })
-
-    ## render ggplot ----------------------------------------------------------
-    # static ggplot version of compositional barplot or placeholder
-    output$comps_gg <- shiny::renderPlot({
-      # tweak sizing of legend text and squares for ggplot output
-      plot <- comp_plot() + ggplot2::theme(
-        legend.text = ggplot2::element_text(size = 9),
-        legend.key.size = ggplot2::unit(8, "mm")
-      )
-      legend_separate(ggplot = plot, rel_widths = c(70, 30))
-    })
-
-    ## render girafe ----------------------------------------------------------
-    # interactive girafe composition plot
-    output$comps_girafe <- ggiraph::renderggiraph({
-      # TODO work out how to match static/interactive sizes properly
-      gg <- comp_plot() + ggplot2::theme(text = ggplot2::element_text(size = 8))
-      gg <- legend_separate(ggplot = gg, rel_widths = c(70, 30))
-      # make interactive html barplot
-      girafeBarplot(gg = gg, width = p_width[[2]], height = 5)
-    })
-
-    ## tabs & notifications --------------------------------------------------
-    # handling (de)selection of interactive and "merge other" checkboxes
-    # interactive and static plots exist on two separate tabs
-    shiny::observeEvent(
-      eventExpr = {
-        input$interactive
-        input$mergeOther
-      },
-      handlerExpr = {
-        if (isTRUE(input$interactive)) {
-          shiny::updateTabsetPanel(
-            session = session, inputId = "tabs", selected = "girafe"
-          )
-          if (isFALSE(input$mergeOther)) {
-            # warn about lag with too many distinct taxa
-            shiny::showNotification(
-              "Interactive bars lag if too many taxa and/or samples shown!",
-              duration = 20, type = "warning", session = session
-            )
-          }
-        } else {
-          shiny::updateTabsetPanel(
-            session = session, inputId = "tabs", selected = "ggplot"
-          )
-        }
-      }
-    )
   }
   # Run the application
   shiny::shinyApp(ui = ui, server = server, options = app_options)
