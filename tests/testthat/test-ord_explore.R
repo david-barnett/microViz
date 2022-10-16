@@ -136,16 +136,4 @@ test_that("ord_explore_palet_fun works", {
   ))
 })
 
-# ord_explore ----------------------------------------------------------------
-test_that("ord_explore() works", {
-  testthat::skip_on_cran()
-  testthat::skip_on_bioc()
-  testthat::skip_on_os("windows")
-  testthat::skip_on_os("mac")
 
-  # devel R has Shiny errors fixed in #3625
-  # due to Sys.setenv(`_R_CHECK_LENGTH_1_LOGIC2_`="true")
-  testthat::skip_if(getRversion() > "4.2" && packageVersion("shiny") <= "1.7.1")
-
-  expect_pass(testApp(appDir = "apps/ord_explore/", compareImages = FALSE))
-})
