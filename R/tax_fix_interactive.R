@@ -46,8 +46,10 @@
 #' # tax_fix_interactive(data = ps)
 tax_fix_interactive <- function(data,
                                 app_options = list(launch.browser = TRUE)) {
-  message("------ tax_fix_interactive looks best fullscreen! ------")
-  message("Click red stop button or hit Esc in console to stop app!")
+  message(
+    "------ tax_fix_interactive looks best fullscreen! ------",
+    "\nClick red stop button or hit Esc in console to stop app!"
+  )
   # https://github.com/rstudio/DT/issues/496
   options(htmlwidgets.TOJSON_ARGS = list(na = "string"))
 
