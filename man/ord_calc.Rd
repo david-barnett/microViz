@@ -6,7 +6,7 @@
 \usage{
 ord_calc(
   data,
-  method = c("auto", "PCoA", "PCA", "CCA", "RDA", "CAP", "NMDS")[1],
+  method = "auto",
   constraints = NULL,
   conditions = NULL,
   scale_cc = TRUE,
