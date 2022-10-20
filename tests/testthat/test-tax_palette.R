@@ -65,7 +65,7 @@ test_that("tax_palette works", {
 })
 
 test_that("tax_palette_plot works", {
-  skip_on_os(c("windows", "mac"))
+  skip_on_os("windows")
   local_edition(3)
   ps <- tax_filter(corncob::ibd_phylo, min_prevalence = 10)
   ps <- tax_fix(ps)
