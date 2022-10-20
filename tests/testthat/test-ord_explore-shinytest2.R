@@ -31,6 +31,7 @@ test_that("ord_explore app works: unconstrained ords", {
     )
   )
   # app$view()
+  app$wait_for_idle()
   app$expect_values()
   app$wait_for_idle()
   app$set_inputs(rank = "genus")

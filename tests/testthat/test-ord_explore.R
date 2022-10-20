@@ -5,14 +5,16 @@ options(width = 80)
 # ord_explore_init -----------------------------------------------------------
 test_that("ord_explore_init stays the same", {
   local_edition(3)
-  ord <- dietswap %>%
+  transformed <- dietswap %>%
     ps_mutate(
       weight = dplyr::recode(bmi_group, obese = 3, overweight = 2, lean = 1),
       female = dplyr::if_else(sex == "female", true = 1, false = 0)
     ) %>%
-    tax_transform(trans = "clr", rank = "Genus") %>%
-    ord_calc(constraints = c("weight", "female"))
+    tax_transform(trans = "clr", rank = "Genus")
 
+  suppressMessages(expect_message( # additional messages, one per constraint
+    ord <- ord_calc(transformed, constraints = c("weight", "female"))
+  ))
   expect_snapshot(ord_explore_init(dietswap))
   expect_snapshot(ord_explore_init(ord))
   expect_snapshot(ord_explore_init(esophagus))
