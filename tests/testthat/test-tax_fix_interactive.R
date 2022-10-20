@@ -1,11 +1,19 @@
 library(shinytest2)
 
 test_that("tax_fix_interactive() works", {
+  local_edition(3)
   testthat::skip_on_cran()
   testthat::skip_on_bioc()
   skip_on_os(os = c("windows", "linux"))
   skip_if(Sys.info()[["machine"]] == "arm64")
-  local_edition(3)
+  skip_if(utils::packageVersion("DT") < "0.26")
+  if (utils::packageVersion("DT") != "0.26") {
+    rlang::abort(message = c(
+      "DT has been updated!",
+      i = "DT updates will always break these tests due to the version being recorded in the html",
+      i = "--> check appearance locally and change skip and stop versions"
+    ))
+  }
 
   # in future, see what server function testing can do with shiny::testServer()
   # https://shiny.rstudio.com/articles/server-function-testing.html
@@ -13,6 +21,7 @@ test_that("tax_fix_interactive() works", {
   # devel R has Shiny errors fixed in #3625
   # due to Sys.setenv(`_R_CHECK_LENGTH_1_LOGIC2_`="true")
   testthat::skip_if(getRversion() > "4.2" && packageVersion("shiny") <= "1.7.1")
+
 
   data("dietswap", package = "microbiome")
   expect_snapshot(dietswap)
