@@ -37,7 +37,7 @@ The tax_table produced when using top_N is otherwise INVALID FOR MOST OTHER ANAL
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.7</span>
       </span>
     </div>
 
@@ -183,7 +183,7 @@ which also does not check that the taxa are uniquely defined by only the aggrega
     <p>This function is inspired by <code><a href="https://rdrr.io/pkg/microbiome/man/aggregate_taxa.html" class="external-link">microbiome::aggregate_taxa</a></code>.
 However if <code><a href="https://rdrr.io/pkg/microbiome/man/aggregate_taxa.html" class="external-link">microbiome::aggregate_taxa</a></code> is used, microViz cannot track this aggregation.</p>
 <p>Comparing aggregate_taxa and tax_agg:</p>
-<p>Except for the ordering of taxa, and the addition of a "unique" rank being optional,
+<p>Except for the ordering of taxa, and the addition of a "unique" rank being optional (in tax_agg),
 the resulting phyloseq objects are identical for aggregating a phyloseq with no ambiguous taxa.
 Taxa are ambiguous when the tax_table converges at a lower rank after branching,
 such as if two different genera share the same species (e.g. "s__").

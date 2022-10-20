@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.7</span>
       </span>
     </div>
 
@@ -144,10 +144,7 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://dx.plos.org/10.1371/journal.pone.0061217" class="external-link">phyloseq</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com" class="external-link">patchwork</a></span><span class="op">)</span> <span class="co"># for arranging groups of plots</span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/knitr/man/opts_chunk.html" class="external-link">opts_chunk</a></span><span class="op">$</span><span class="fu">set</span><span class="op">(</span></span>
-<span>  fig.height <span class="op">=</span> <span class="fl">6</span>,</span>
-<span>  fig.width <span class="op">=</span> <span class="fl">9</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/knitr/man/opts_chunk.html" class="external-link">opts_chunk</a></span><span class="op">$</span><span class="fu">set</span><span class="op">(</span>fig.height <span class="op">=</span> <span class="fl">6</span>, fig.width <span class="op">=</span> <span class="fl">9</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get example phyloseq data from corncob package and tidy up</span></span>
 <span><span class="va">pseq</span> <span class="op">&lt;-</span> <span class="fu">corncob</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/corncob/man/ibd_phylo.html" class="external-link">ibd_phylo</a></span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
@@ -359,13 +356,13 @@
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># set up for alphabetical sorting</span></span>
 <span><span class="va">topTaxa</span> <span class="op">&lt;-</span> <span class="va">pseq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"male"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_top.html">tax_top</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">9</span>, rank <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"male"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_top.html">tax_top</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">9</span>, rank <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># this makes them alphabetical</span></span>
 <span></span>
 <span><span class="co"># plot with alphabetical sorting</span></span>
 <span><span class="va">pseq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"male"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"male"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_sort.html">tax_sort</a></span><span class="op">(</span>by <span class="op">=</span> <span class="va">sum</span>, at <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="co"># this orders all genera by abundance</span></span>
 <span>  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span></span>
 <span>    tax_order <span class="op">=</span> <span class="va">topTaxa</span>, <span class="co"># this brings the named taxa to the front</span></span>
@@ -459,7 +456,7 @@
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pseq2</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/ps_extra-accessors.html">ps_get</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../../reference/tax_mutate.html">tax_mutate</a></span><span class="op">(</span>`Phylum: Family` <span class="op">=</span> <span class="va">hierarchicalPalInfo</span><span class="op">$</span><span class="va">Taxa</span>, .keep <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_mutate.html">tax_mutate</a></span><span class="op">(</span><span class="st">"Phylum: Family"</span> <span class="op">=</span> <span class="va">hierarchicalPalInfo</span><span class="op">$</span><span class="va">Taxa</span>, .keep <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span></span>
 <span>    tax_level <span class="op">=</span> <span class="st">"Phylum: Family"</span>, n_taxa <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">hierarchicalPal</span><span class="op">)</span>,</span>
 <span>    tax_order <span class="op">=</span> <span class="st">"asis"</span>, palette <span class="op">=</span> <span class="va">hierarchicalPal</span>, bar_width <span class="op">=</span> <span class="fl">0.975</span></span>
@@ -581,22 +578,19 @@
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Samples sorted AFTER merging 'other' taxa"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="compositions_files/figure-html/unnamed-chunk-29-1.png" width="864"></p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="va">pseq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="va">pseq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"female"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span>tax_level <span class="op">=</span> <span class="st">"Genus"</span>, order_with_all_taxa <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Samples sorted BEFORE merging 'other' taxa"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-29-2.png" width="864"></p>
+<p><img src="compositions_files/figure-html/unnamed-chunk-30-1.png" width="864"></p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span></span>
-<span><span class="va">pseq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="va">pseq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"female"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span>tax_level <span class="op">=</span> <span class="st">"Genus"</span>, merge_other <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"'other' taxa not merged"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-29-3.png" width="864"></p>
+<p><img src="compositions_files/figure-html/unnamed-chunk-31-1.png" width="864"></p>
 </div>
 <div class="section level3">
 <h3 id="sort-by-ordination">Sort by ordination<a class="anchor" aria-label="anchor" href="#sort-by-ordination"></a>
@@ -618,7 +612,7 @@
 <span><span class="co">#&gt; Available otu_table contains non-zero values that are less than 1</span></span>
 <span><span class="co">#&gt; Warning in ps_counts(data = data): otu_table of counts is NOT available!</span></span>
 <span><span class="co">#&gt; Available otu_table contains non-zero values that are less than 1</span></span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-30-1.png" width="864"></p>
+<p><img src="compositions_files/figure-html/unnamed-chunk-32-1.png" width="864"></p>
 </div>
 <div class="section level3">
 <h3 id="sorting-by-time">Sorting by time<a class="anchor" aria-label="anchor" href="#sorting-by-time"></a>
@@ -635,12 +629,15 @@
 <span></span>
 <span><span class="va">ps</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/ps_arrange.html">ps_arrange</a></span><span class="op">(</span><span class="va">infant_age</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="co"># this step is necessary</span></span>
+<span>  <span class="fu"><a href="../../reference/ps_mutate.html">ps_mutate</a></span><span class="op">(</span>infant_age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">infant_age</span>, <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">infant_age</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span></span>
 <span>    sample_order <span class="op">=</span> <span class="st">"asis"</span>, <span class="co"># to avoid sorting again by similarity</span></span>
-<span>    tax_level <span class="op">=</span> <span class="st">"genus"</span>, label <span class="op">=</span> <span class="st">"infant_age"</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span></span>
+<span>    tax_level <span class="op">=</span> <span class="st">"genus"</span>, x <span class="op">=</span> <span class="st">"infant_age"</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">family_id</span>, scales <span class="op">=</span> <span class="st">"free_x"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-31-1.png" width="576"></p>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">family_id</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expansion.html" class="external-link">expansion</a></span><span class="op">(</span>add <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="compositions_files/figure-html/unnamed-chunk-33-1.png" width="576"></p>
 <p>Below is a trick to replace sample with timepoint as the x position mapping, to keep timepoints consistent across infants, even with the missing timepoints seen here for some infants.</p>
 <p><em>Beware this is a bit of non-standard ggplot use, but is the only way to achieve this currently with comp_barplot.</em></p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
@@ -650,41 +647,46 @@
 <span>  <span class="co"># take an arbitrary smaller subset of infants and timepoints</span></span>
 <span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">family_role</span> <span class="op">==</span> <span class="st">"child"</span>, <span class="va">family_id</span> <span class="op">&lt;</span> <span class="fl">30</span>, <span class="va">infant_age</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">7</span>, <span class="fl">21</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/ps_arrange.html">ps_arrange</a></span><span class="op">(</span><span class="va">infant_age</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/ps_mutate.html">ps_mutate</a></span><span class="op">(</span>infant_age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">infant_age</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">infant_age</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span></span>
-<span>    tax_level <span class="op">=</span> <span class="st">"genus"</span>, sample_order <span class="op">=</span> <span class="st">"asis"</span>,</span>
-<span>    label <span class="op">=</span> <span class="st">"infant_age"</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span></span>
+<span>    tax_level <span class="op">=</span> <span class="st">"genus"</span>, sample_order <span class="op">=</span> <span class="st">"asis"</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span>,</span>
+<span>    x <span class="op">=</span> <span class="st">"infant_age"</span> <span class="co"># x argument is available since microViz 0.9.7</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span></span>
 <span>    facets <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">family_id</span><span class="op">)</span>, labeller <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/as_labeller.html" class="external-link">as_labeller</a></span><span class="op">(</span><span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Fam."</span>, <span class="va">.</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">infant_age</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_discrete.html" class="external-link">scale_x_discrete</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">identity</span>, name <span class="op">=</span> <span class="st">"Age (days)"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="co"># slightly clearer axes for facets</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expansion.html" class="external-link">expansion</a></span><span class="op">(</span>add <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="co"># axis starts exactly at 0</span></span>
-<span><span class="co">#&gt; Scale for 'x' is already present. Adding another scale for 'x', which will replace the existing</span></span>
-<span><span class="co">#&gt; scale.</span></span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-32-1.png" width="576"></p>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Age (days)"</span>, y <span class="op">=</span> <span class="st">"Relative Abundance"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span></span>
+<span>    expand <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expansion.html" class="external-link">expansion</a></span><span class="op">(</span>add <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span>, <span class="co"># axis starts exactly at 0</span></span>
+<span>    labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_percent.html" class="external-link">label_percent</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> </span></code></pre></div>
+<p><img src="compositions_files/figure-html/unnamed-chunk-34-1.png" width="576"></p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"shao19"</span><span class="op">)</span></span>
 <span><span class="va">shao19</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/ps_mutate.html">ps_mutate</a></span><span class="op">(</span>family_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">family_id</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="co"># take an arbitrary smaller subset of infants and timepoints</span></span>
 <span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">family_role</span> <span class="op">==</span> <span class="st">"child"</span>, <span class="va">family_id</span> <span class="op">&lt;</span> <span class="fl">30</span>, <span class="va">infant_age</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">7</span>, <span class="fl">21</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../../reference/ps_arrange.html">ps_arrange</a></span><span class="op">(</span><span class="va">infant_age</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span>tax_level <span class="op">=</span> <span class="st">"genus"</span>, sample_order <span class="op">=</span> <span class="st">"asis"</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../../reference/ps_arrange.html">ps_arrange</a></span><span class="op">(</span><span class="va">family_id</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/ps_mutate.html">ps_mutate</a></span><span class="op">(</span></span>
+<span>    family_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Fam"</span>, <span class="va">family_id</span><span class="op">)</span>,</span>
+<span>    family_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">family_id</span>, <span class="fu"><a href="https://rdrr.io/r/base/rev.html" class="external-link">rev</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">family_id</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span></span>
+<span>    tax_level <span class="op">=</span> <span class="st">"genus"</span>, sample_order <span class="op">=</span> <span class="st">"asis"</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span>,</span>
+<span>    x <span class="op">=</span> <span class="st">"family_id"</span> <span class="co"># x argument is available since microViz 0.9.7</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span></span>
 <span>    facets <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">infant_age</span><span class="op">)</span>, labeller <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/as_labeller.html" class="external-link">as_labeller</a></span><span class="op">(</span><span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Age"</span>, <span class="va">.</span>, <span class="st">"days"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    scales <span class="op">=</span> <span class="st">"fixed"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">family_id</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_discrete.html" class="external-link">scale_x_discrete</a></span><span class="op">(</span>label <span class="op">=</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Fam."</span>, <span class="va">.</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"Family"</span>, limits <span class="op">=</span> <span class="va">rev</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Family ID"</span>, y <span class="op">=</span> <span class="st">"Relative abundance"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expansion.html" class="external-link">expansion</a></span><span class="op">(</span>add <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.05</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="co"># axis starts exactly at 0</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="co"># slightly clearer axes for facets</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>panel.spacing.x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">6</span>, <span class="st">"mm"</span><span class="op">)</span><span class="op">)</span> <span class="co"># space for non-overlapping axis numbers</span></span>
-<span><span class="co">#&gt; Scale for 'x' is already present. Adding another scale for 'x', which will replace the existing</span></span>
-<span><span class="co">#&gt; scale.</span></span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-33-1.png" width="576"></p>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>panel.spacing.x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">6</span>, <span class="st">"mm"</span><span class="op">)</span><span class="op">)</span> <span class="co"># space for non-overlapping axis numbers</span></span></code></pre></div>
+<p><img src="compositions_files/figure-html/unnamed-chunk-35-1.png" width="576"></p>
 </div>
 <div class="section level3">
 <h3 id="sorting-by-other-metadata">Sorting by other metadata<a class="anchor" aria-label="anchor" href="#sorting-by-other-metadata"></a>
@@ -725,7 +727,7 @@
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="va">times</span></span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-34-1.png" width="960"></p>
+<p><img src="compositions_files/figure-html/unnamed-chunk-36-1.png" width="960"></p>
 <p>Same grouping, now showing diversity of taxa within other, with <code>merge_other = FALSE</code></p>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">times_list</span> <span class="op">&lt;-</span> <span class="va">ps</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
@@ -747,7 +749,7 @@
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="va">times</span></span></code></pre></div>
-<p><img src="compositions_files/figure-html/unnamed-chunk-35-1.png" width="960"></p>
+<p><img src="compositions_files/figure-html/unnamed-chunk-37-1.png" width="960"></p>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://r-lib.github.io/sessioninfo/reference/session_info.html" class="external-link">session_info</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">─ Session info ───────────────────────────────────────────────────────────────────────────────────</span></span></span>
@@ -760,7 +762,7 @@
 <span><span class="co">#&gt;  collate  C.UTF-8</span></span>
 <span><span class="co">#&gt;  ctype    C.UTF-8</span></span>
 <span><span class="co">#&gt;  tz       UTC</span></span>
-<span><span class="co">#&gt;  date     2022-10-13</span></span>
+<span><span class="co">#&gt;  date     2022-10-20</span></span>
 <span><span class="co">#&gt;  pandoc   2.14.2 @ /usr/bin/ (via rmarkdown)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">─ Packages ───────────────────────────────────────────────────────────────────────────────────────</span></span></span>
@@ -781,10 +783,10 @@
 <span><span class="co">#&gt;  colorspace         2.0-3    <span style="color: #555555;">2022-02-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  corncob            0.3.0    <span style="color: #555555;">2022-09-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  crayon             1.5.2    <span style="color: #555555;">2022-09-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  data.table         1.14.2   <span style="color: #555555;">2021-09-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  data.table         1.14.4   <span style="color: #555555;">2022-10-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  desc               1.4.2    <span style="color: #555555;">2022-09-08</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  devtools           2.4.5    <span style="color: #555555;">2022-10-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  digest             0.6.29   <span style="color: #555555;">2021-12-01</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  digest             0.6.30   <span style="color: #555555;">2022-10-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  dplyr              1.0.10   <span style="color: #555555;">2022-09-01</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  ellipsis           0.3.2    <span style="color: #555555;">2021-04-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  evaluate           0.17     <span style="color: #555555;">2022-10-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
@@ -796,7 +798,7 @@
 <span><span class="co">#&gt;  fs                 1.5.2    <span style="color: #555555;">2021-12-08</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  generics           0.1.3    <span style="color: #555555;">2022-07-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  GenomeInfoDb       1.32.4   <span style="color: #555555;">2022-09-06</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">#&gt;  GenomeInfoDbData   1.2.8    <span style="color: #555555;">2022-10-12</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">#&gt;  GenomeInfoDbData   1.2.8    <span style="color: #555555;">2022-10-20</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">#&gt;  ggplot2          * 3.3.6    <span style="color: #555555;">2022-05-03</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  glue               1.6.2    <span style="color: #555555;">2022-02-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  gtable             0.3.1    <span style="color: #555555;">2022-09-01</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
@@ -820,7 +822,7 @@
 <span><span class="co">#&gt;  memoise            2.0.1    <span style="color: #555555;">2021-11-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  mgcv               1.8-40   <span style="color: #555555;">2022-03-29</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
 <span><span class="co">#&gt;  microbiome         1.18.0   <span style="color: #555555;">2022-04-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">#&gt;  microViz         * 0.9.6    <span style="color: #555555;">2022-10-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">local</span></span></span>
+<span><span class="co">#&gt;  microViz         * 0.9.7    <span style="color: #555555;">2022-10-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">local</span></span></span>
 <span><span class="co">#&gt;  mime               0.12     <span style="color: #555555;">2021-09-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  miniUI             0.1.1.1  <span style="color: #555555;">2018-05-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  multtest           2.52.0   <span style="color: #555555;">2022-04-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
@@ -876,10 +878,10 @@
 <span><span class="co">#&gt;  vctrs              0.4.2    <span style="color: #555555;">2022-09-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  vegan              2.6-4    <span style="color: #555555;">2022-10-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  withr              2.5.0    <span style="color: #555555;">2022-03-03</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  xfun               0.33     <span style="color: #555555;">2022-09-12</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  xfun               0.34     <span style="color: #555555;">2022-10-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  xtable             1.8-4    <span style="color: #555555;">2019-04-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  XVector            0.36.0   <span style="color: #555555;">2022-04-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">#&gt;  yaml               2.3.5    <span style="color: #555555;">2022-02-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  yaml               2.3.6    <span style="color: #555555;">2022-10-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  zlibbioc           1.42.0   <span style="color: #555555;">2022-04-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #555555;"> [1] /home/runner/work/_temp/Library</span></span></span>

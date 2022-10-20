@@ -26,7 +26,7 @@ and requires count input for some sample_order methods!'><meta property="og:imag
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.7</span>
       </span>
     </div>
 
@@ -131,6 +131,7 @@ and requires count input for some sample_order methods!</p>
 <span>  interactive <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  max_taxa <span class="op">=</span> <span class="fl">10000</span>,</span>
 <span>  other_name <span class="op">=</span> <span class="st">"other"</span>,</span>
+<span>  x <span class="op">=</span> <span class="st">"SAMPLE"</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -166,16 +167,16 @@ and so can have bar outlines drawn around them</p></dd>
 <dt>sample_order</dt>
 <dd><p>vector of sample names;
 or any distance measure in dist_calc that doesn't require phylogenetic tree;
-or "default" for the order returned by phyloseq::sample_names(ps)</p></dd>
+or "asis" for the current order as is returned by phyloseq::sample_names(ps)</p></dd>
 
 
 <dt>order_with_all_taxa</dt>
 <dd><p>if TRUE, this will always use all taxa (not just the top n_taxa)
-to calculate distances for sample ordering</p></dd>
+to calculate any distances needed for sample ordering</p></dd>
 
 
 <dt>label</dt>
-<dd><p>sample label variable name</p></dd>
+<dd><p>name of variable to use for labelling samples, or "SAMPLE" for sample names</p></dd>
 
 
 <dt>group_by</dt>
@@ -190,12 +191,11 @@ the faceting will occur separately in the plot for each group.</p></dd>
 
 <dt>bar_width</dt>
 <dd><p>default 1 avoids random gapping otherwise seen with many samples
-(set to something less than 1 to introduce gaps between fewer samples)</p></dd>
+(set to less than 1 to introduce gaps between samples)</p></dd>
 
 
 <dt>bar_outline_colour</dt>
-<dd><p>line colour separating taxa and samples
-(use NA for none)</p></dd>
+<dd><p>line colour separating taxa and samples (use NA for no outlines)</p></dd>
 
 
 <dt>bar_outline_width</dt>
@@ -239,6 +239,12 @@ e.g. within ord_explore)</p></dd>
 
 <dt>other_name</dt>
 <dd><p>name for other taxa after N</p></dd>
+
+
+<dt>x</dt>
+<dd><p>name of variable to use as x aesthetic:
+it probably only makes sense to change this when also using facets
+(check only one sample is represented per bar!)</p></dd>
 
 
 <dt>...</dt>

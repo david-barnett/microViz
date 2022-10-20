@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.7</span>
       </span>
     </div>
 
@@ -191,7 +191,7 @@
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"david-barnett/microViz"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To install a specific "release" version of this package</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"david-barnett/microViz@0.9.4"</span><span class="op">)</span> </span></code></pre></div>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"david-barnett/microViz@0.9.6"</span><span class="op">)</span> </span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="installation-notes">Installation notes<a class="anchor" aria-label="anchor" href="#installation-notes"></a>
@@ -208,7 +208,7 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://david-barnett.github.io/microViz">microViz</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; microViz version 0.9.5 - Copyright (C) 2021 David Barnett</span></span>
+<span><span class="co">#&gt; microViz version 0.9.7 - Copyright (C) 2022 David Barnett</span></span>
 <span><span class="co">#&gt; * Website: https://david-barnett.github.io/microViz/</span></span>
 <span><span class="co">#&gt; * Useful? For citation info, run: citation('microViz')</span></span>
 <span><span class="co">#&gt; * Silence: suppressPackageStartupMessages(library(microViz))</span></span></code></pre></div>
@@ -359,14 +359,14 @@
 <span></span>
 <span><span class="co"># the more permutations you request, the longer it takes</span></span>
 <span><span class="co"># but also the more stable and precise your p-values become</span></span>
-<span><span class="va">aitchison_perm</span> <span class="op">&lt;-</span> <span class="va">aitchison_dists</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> </span>
+<span><span class="va">aitchison_perm</span> <span class="op">&lt;-</span> <span class="va">aitchison_dists</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="reference/dist_permanova.html">dist_permanova</a></span><span class="op">(</span></span>
 <span>    seed <span class="op">=</span> <span class="fl">1234</span>, <span class="co"># for set.seed to ensure reproducibility of random process</span></span>
 <span>    n_processes <span class="op">=</span> <span class="fl">1</span>, n_perms <span class="op">=</span> <span class="fl">99</span>, <span class="co"># you should use at least 999!</span></span>
 <span>    variables <span class="op">=</span> <span class="st">"bmi_group"</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; 2022-10-04 14:23:48 - Starting PERMANOVA with 99 perms with 1 processes</span></span>
-<span><span class="co">#&gt; 2022-10-04 14:23:48 - Finished PERMANOVA</span></span>
+<span><span class="co">#&gt; 2022-10-20 15:20:06 - Starting PERMANOVA with 99 perms with 1 processes</span></span>
+<span><span class="co">#&gt; 2022-10-20 15:20:06 - Finished PERMANOVA</span></span>
 <span></span>
 <span><span class="co"># view the permanova results</span></span>
 <span><span class="fu"><a href="reference/ps_extra-accessors.html">perm_get</a></span><span class="op">(</span><span class="va">aitchison_perm</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -391,11 +391,11 @@
 </h3>
 <p>You could visualise the effect of the (numeric/logical) variables in your permanova directly using the <code>ord_plot</code> function with constraints (and conditions).</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">perm2</span> <span class="op">&lt;-</span> <span class="va">aitchison_dists</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">perm2</span> <span class="op">&lt;-</span> <span class="va">aitchison_dists</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="reference/dist_permanova.html">dist_permanova</a></span><span class="op">(</span>variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"african"</span>, <span class="st">"sex"</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">321</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Dropping samples with missings: 2</span></span>
-<span><span class="co">#&gt; 2022-10-04 14:23:48 - Starting PERMANOVA with 999 perms with 1 processes</span></span>
-<span><span class="co">#&gt; 2022-10-04 14:23:50 - Finished PERMANOVA</span></span></code></pre></div>
+<span><span class="co">#&gt; 2022-10-20 15:20:06 - Starting PERMANOVA with 999 perms with 1 processes</span></span>
+<span><span class="co">#&gt; 2022-10-20 15:20:08 - Finished PERMANOVA</span></span></code></pre></div>
 <p>We’ll visualise the effect of nationality and bodyweight on sample composition, after first removing the effect of sex.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">perm2</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
@@ -414,7 +414,7 @@
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_fixed.html" class="external-link">coord_fixed</a></span><span class="op">(</span>ratio <span class="op">=</span> <span class="fl">0.35</span>, clip <span class="op">=</span> <span class="st">"off"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">0.1</span><span class="op">)</span>, legend.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Centering (mean) and scaling (sd) the constraints and conditions:</span></span>
+<span><span class="co">#&gt; Centering (mean) and scaling (sd) the constraints and/or conditions:</span></span>
 <span><span class="co">#&gt;  weight</span></span>
 <span><span class="co">#&gt;  african</span></span>
 <span><span class="co">#&gt;  female</span></span></code></pre></div>
@@ -470,13 +470,13 @@
 </h2>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; R version 4.2.0 (2022-04-22)</span></span>
-<span><span class="co">#&gt; Platform: aarch64-apple-darwin20 (64-bit)</span></span>
-<span><span class="co">#&gt; Running under: macOS Monterey 12.6</span></span>
+<span><span class="co">#&gt; R version 4.2.1 (2022-06-23)</span></span>
+<span><span class="co">#&gt; Platform: x86_64-apple-darwin17.0 (64-bit)</span></span>
+<span><span class="co">#&gt; Running under: macOS Big Sur ... 10.16</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Matrix products: default</span></span>
-<span><span class="co">#&gt; BLAS:   /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/lib/libRblas.0.dylib</span></span>
-<span><span class="co">#&gt; LAPACK: /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/lib/libRlapack.dylib</span></span>
+<span><span class="co">#&gt; BLAS:   /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRblas.0.dylib</span></span>
+<span><span class="co">#&gt; LAPACK: /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRlapack.dylib</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; locale:</span></span>
 <span><span class="co">#&gt; [1] en_GB.UTF-8/en_GB.UTF-8/en_GB.UTF-8/C/en_GB.UTF-8/en_GB.UTF-8</span></span>
@@ -485,50 +485,52 @@
 <span><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt; [1] ggplot2_3.3.6   dplyr_1.0.10    phyloseq_1.40.0 microViz_0.9.5 </span></span>
+<span><span class="co">#&gt; [1] ggplot2_3.3.6   dplyr_1.0.10    phyloseq_1.40.0 microViz_0.9.7 </span></span>
 <span><span class="co">#&gt; [5] testthat_3.1.4  devtools_2.4.3  usethis_2.1.6  </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
-<span><span class="co">#&gt;   [1] Rtsne_0.16             colorspace_2.0-3       rjson_0.2.21          </span></span>
-<span><span class="co">#&gt;   [4] ellipsis_0.3.2         circlize_0.4.15        markdown_1.1          </span></span>
-<span><span class="co">#&gt;   [7] XVector_0.36.0         GlobalOptions_0.1.2    fs_1.5.2              </span></span>
-<span><span class="co">#&gt;  [10] gridtext_0.1.4         ggtext_0.1.1           clue_0.3-61           </span></span>
-<span><span class="co">#&gt;  [13] rstudioapi_0.13        farver_2.1.1           remotes_2.4.2         </span></span>
-<span><span class="co">#&gt;  [16] fansi_1.0.3            xml2_1.3.3             codetools_0.2-18      </span></span>
-<span><span class="co">#&gt;  [19] splines_4.2.0          doParallel_1.0.17      cachem_1.0.6          </span></span>
-<span><span class="co">#&gt;  [22] knitr_1.39             pkgload_1.3.0          ade4_1.7-19           </span></span>
-<span><span class="co">#&gt;  [25] jsonlite_1.8.0         Cairo_1.5-15           cluster_2.1.3         </span></span>
-<span><span class="co">#&gt;  [28] png_0.1-7              compiler_4.2.0         assertthat_0.2.1      </span></span>
-<span><span class="co">#&gt;  [31] Matrix_1.4-1           fastmap_1.1.0          cli_3.4.0             </span></span>
-<span><span class="co">#&gt;  [34] htmltools_0.5.3        prettyunits_1.1.1      tools_4.2.0           </span></span>
-<span><span class="co">#&gt;  [37] igraph_1.3.4           gtable_0.3.1           glue_1.6.2            </span></span>
-<span><span class="co">#&gt;  [40] GenomeInfoDbData_1.2.8 reshape2_1.4.4         Rcpp_1.0.9            </span></span>
-<span><span class="co">#&gt;  [43] Biobase_2.56.0         vctrs_0.4.1            Biostrings_2.64.0     </span></span>
-<span><span class="co">#&gt;  [46] rhdf5filters_1.8.0     multtest_2.52.0        ape_5.6-2             </span></span>
-<span><span class="co">#&gt;  [49] nlme_3.1-157           iterators_1.0.14       xfun_0.31             </span></span>
-<span><span class="co">#&gt;  [52] stringr_1.4.1          ps_1.7.0               brio_1.1.3            </span></span>
-<span><span class="co">#&gt;  [55] lifecycle_1.0.2        zlibbioc_1.42.0        MASS_7.3-57           </span></span>
-<span><span class="co">#&gt;  [58] scales_1.2.1           TSP_1.2-1              parallel_4.2.0        </span></span>
-<span><span class="co">#&gt;  [61] biomformat_1.24.0      rhdf5_2.40.0           RColorBrewer_1.1-3    </span></span>
-<span><span class="co">#&gt;  [64] ComplexHeatmap_2.12.1  yaml_2.3.5             memoise_2.0.1         </span></span>
-<span><span class="co">#&gt;  [67] gridExtra_2.3          stringi_1.7.8          highr_0.9             </span></span>
-<span><span class="co">#&gt;  [70] S4Vectors_0.34.0       foreach_1.5.2          permute_0.9-7         </span></span>
-<span><span class="co">#&gt;  [73] seriation_1.3.6.9000   BiocGenerics_0.42.0    pkgbuild_1.3.1        </span></span>
-<span><span class="co">#&gt;  [76] shape_1.4.6            GenomeInfoDb_1.32.4    rlang_1.0.5           </span></span>
-<span><span class="co">#&gt;  [79] pkgconfig_2.0.3        bitops_1.0-7           matrixStats_0.62.0    </span></span>
-<span><span class="co">#&gt;  [82] evaluate_0.15          lattice_0.20-45        purrr_0.3.4           </span></span>
-<span><span class="co">#&gt;  [85] Rhdf5lib_1.18.0        labeling_0.4.2         processx_3.5.3        </span></span>
-<span><span class="co">#&gt;  [88] tidyselect_1.1.2       plyr_1.8.7             magrittr_2.0.3        </span></span>
-<span><span class="co">#&gt;  [91] R6_2.5.1               magick_2.7.3           IRanges_2.30.0        </span></span>
-<span><span class="co">#&gt;  [94] generics_0.1.3         DBI_1.1.2              pillar_1.8.1          </span></span>
-<span><span class="co">#&gt;  [97] withr_2.5.0            mgcv_1.8-40            survival_3.3-1        </span></span>
-<span><span class="co">#&gt; [100] RCurl_1.98-1.8         tibble_3.1.8           corncob_0.3.0         </span></span>
-<span><span class="co">#&gt; [103] crayon_1.5.1           utf8_1.2.2             microbiome_1.18.0     </span></span>
-<span><span class="co">#&gt; [106] rmarkdown_2.14         viridis_0.6.2          GetoptLong_1.0.5      </span></span>
-<span><span class="co">#&gt; [109] grid_4.2.0             data.table_1.14.2      callr_3.7.0           </span></span>
-<span><span class="co">#&gt; [112] vegan_2.6-2            digest_0.6.29          tidyr_1.2.1           </span></span>
-<span><span class="co">#&gt; [115] stats4_4.2.0           munsell_0.5.0          registry_0.5-1        </span></span>
-<span><span class="co">#&gt; [118] viridisLite_0.4.1      sessioninfo_1.2.2</span></span></code></pre></div>
+<span><span class="co">#&gt;   [1] circlize_0.4.15        plyr_1.8.7             igraph_1.3.5          </span></span>
+<span><span class="co">#&gt;   [4] selectr_0.4-2          splines_4.2.1          GenomeInfoDb_1.32.4   </span></span>
+<span><span class="co">#&gt;   [7] digest_0.6.30          foreach_1.5.2          htmltools_0.5.3       </span></span>
+<span><span class="co">#&gt;  [10] viridis_0.6.2          magick_2.7.3           fansi_1.0.3           </span></span>
+<span><span class="co">#&gt;  [13] magrittr_2.0.3         memoise_2.0.1          cluster_2.1.3         </span></span>
+<span><span class="co">#&gt;  [16] doParallel_1.0.17      remotes_2.4.2          ComplexHeatmap_2.12.1 </span></span>
+<span><span class="co">#&gt;  [19] Biostrings_2.64.1      matrixStats_0.62.0     prettyunits_1.1.1     </span></span>
+<span><span class="co">#&gt;  [22] colorspace_2.0-3       corncob_0.2.0          rvest_1.0.3           </span></span>
+<span><span class="co">#&gt;  [25] xfun_0.31              callr_3.7.0            crayon_1.5.2          </span></span>
+<span><span class="co">#&gt;  [28] RCurl_1.98-1.9         jsonlite_1.8.2         survival_3.3-1        </span></span>
+<span><span class="co">#&gt;  [31] iterators_1.0.14       ape_5.6-2              glue_1.6.2            </span></span>
+<span><span class="co">#&gt;  [34] registry_0.5-1         gtable_0.3.1           zlibbioc_1.42.0       </span></span>
+<span><span class="co">#&gt;  [37] XVector_0.36.0         GetoptLong_1.0.5       pkgbuild_1.3.1        </span></span>
+<span><span class="co">#&gt;  [40] Rhdf5lib_1.18.2        shape_1.4.6            BiocGenerics_0.42.0   </span></span>
+<span><span class="co">#&gt;  [43] scales_1.2.1           DBI_1.1.3              Rcpp_1.0.9            </span></span>
+<span><span class="co">#&gt;  [46] viridisLite_0.4.1      gridtext_0.1.4         clue_0.3-62           </span></span>
+<span><span class="co">#&gt;  [49] stats4_4.2.1           httr_1.4.3             RColorBrewer_1.1-3    </span></span>
+<span><span class="co">#&gt;  [52] ellipsis_0.3.2         pkgconfig_2.0.3        farver_2.1.1          </span></span>
+<span><span class="co">#&gt;  [55] utf8_1.2.2             tidyselect_1.2.0       labeling_0.4.2        </span></span>
+<span><span class="co">#&gt;  [58] rlang_1.0.6            reshape2_1.4.4         munsell_0.5.0         </span></span>
+<span><span class="co">#&gt;  [61] tools_4.2.1            cachem_1.0.6           cli_3.4.1             </span></span>
+<span><span class="co">#&gt;  [64] generics_0.1.3         ade4_1.7-19            evaluate_0.15         </span></span>
+<span><span class="co">#&gt;  [67] biomformat_1.24.0      stringr_1.4.1          fastmap_1.1.0         </span></span>
+<span><span class="co">#&gt;  [70] yaml_2.3.6             processx_3.5.3         knitr_1.39            </span></span>
+<span><span class="co">#&gt;  [73] fs_1.5.2               purrr_0.3.5            nlme_3.1-157          </span></span>
+<span><span class="co">#&gt;  [76] xml2_1.3.3             brio_1.1.3             compiler_4.2.1        </span></span>
+<span><span class="co">#&gt;  [79] rstudioapi_0.13        curl_4.3.2             png_0.1-7             </span></span>
+<span><span class="co">#&gt;  [82] tibble_3.1.8           stringi_1.7.8          highr_0.9             </span></span>
+<span><span class="co">#&gt;  [85] ps_1.7.0               desc_1.4.1             lattice_0.20-45       </span></span>
+<span><span class="co">#&gt;  [88] Matrix_1.4-1           markdown_1.1           vegan_2.6-4           </span></span>
+<span><span class="co">#&gt;  [91] microbiome_1.18.0      permute_0.9-7          multtest_2.52.0       </span></span>
+<span><span class="co">#&gt;  [94] vctrs_0.4.2            pillar_1.8.1           lifecycle_1.0.3       </span></span>
+<span><span class="co">#&gt;  [97] rhdf5filters_1.8.0     GlobalOptions_0.1.2    data.table_1.14.4     </span></span>
+<span><span class="co">#&gt; [100] bitops_1.0-7           seriation_1.3.6        R6_2.5.1              </span></span>
+<span><span class="co">#&gt; [103] TSP_1.2-1              gridExtra_2.3          IRanges_2.30.1        </span></span>
+<span><span class="co">#&gt; [106] sessioninfo_1.2.2      codetools_0.2-18       MASS_7.3-57           </span></span>
+<span><span class="co">#&gt; [109] assertthat_0.2.1       pkgload_1.2.4          rhdf5_2.40.0          </span></span>
+<span><span class="co">#&gt; [112] rprojroot_2.0.3        rjson_0.2.21           withr_2.5.0           </span></span>
+<span><span class="co">#&gt; [115] S4Vectors_0.34.0       GenomeInfoDbData_1.2.8 mgcv_1.8-40           </span></span>
+<span><span class="co">#&gt; [118] parallel_4.2.1         ggtext_0.1.1           grid_4.2.1            </span></span>
+<span><span class="co">#&gt; [121] tidyr_1.2.1            rmarkdown_2.14         Cairo_1.5-15          </span></span>
+<span><span class="co">#&gt; [124] Rtsne_0.16             Biobase_2.56.0</span></span></code></pre></div>
 </div>
 </div>
   </div>
@@ -577,7 +579,7 @@
 <li><a href="https://codecov.io/gh/david-barnett/microViz" class="external-link"><img src="https://codecov.io/gh/david-barnett/microViz/branch/main/graph/badge.svg?token=C1EoVkhnxA" alt="codecov"></a></li>
 <li><a href="https://david-barnett.r-universe.dev/ui#package:microViz" class="external-link"><img src="https://david-barnett.r-universe.dev/badges/microViz" alt="r-universe microViz status"></a></li>
 <li><a href="https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa" class="external-link"><img src="https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa/status.svg" alt="JOSS article"></a></li>
-<li><a href="https://scholar.google.com/scholar?oi=bibs&amp;hl=en&amp;cites=5439940108464463894" class="external-link"><img src="https://img.shields.io/endpoint?color=g&amp;label=Citations&amp;url=https%3A%2F%2Fgsch-with-serpapi-1560bu5idqdd.runkit.sh%2F" alt="Citations"></a></li>
+<li><a href="https://scholar.google.com/scholar?oi=bibs&amp;hl=en&amp;cites=5439940108464463894" class="external-link"><img src="https://img.shields.io/badge/Citations-~18-blueviolet" alt="Citations"></a></li>
 <li><a href="https://zenodo.org/badge/latestdoi/307119750" class="external-link"><img src="https://zenodo.org/badge/307119750.svg" alt="Zenodo DOI"></a></li>
 </ul>
 </div>

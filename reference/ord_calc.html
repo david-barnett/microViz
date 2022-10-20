@@ -37,7 +37,7 @@ the "GUide to STatistical Analysis in Microbial Ecology": https://sites.google.c
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.7</span>
       </span>
     </div>
 
@@ -126,7 +126,7 @@ the "GUide to STatistical Analysis in Microbial Ecology": <a href="https://sites
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ord_calc</span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
-<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"PCoA"</span>, <span class="st">"PCA"</span>, <span class="st">"CCA"</span>, <span class="st">"RDA"</span>, <span class="st">"CAP"</span>, <span class="st">"NMDS"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
+<span>  method <span class="op">=</span> <span class="st">"auto"</span>,</span>
 <span>  constraints <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  conditions <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  scale_cc <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -212,7 +212,7 @@ You can extract the ordination object for other analyses with ord_get()</p>
 <span class="r-in"><span>  <span class="fu">ord_calc</span><span class="op">(</span>constraints <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"female"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Dropping samples with missings: 2</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Centering (mean) and scaling (sd) the constraints and conditions: </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Centering (mean) and scaling (sd) the constraints and/or conditions: </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	weight</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	female</span>
 <span class="r-in"><span><span class="co"># familiarise yourself with the structure of the returned ps_extra list object</span></span></span>
@@ -255,7 +255,7 @@ You can extract the ordination object for other analyses with ord_get()</p>
 <span class="r-in"><span>  <span class="fu">ord_calc</span><span class="op">(</span>constraints <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"female"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Dropping samples with missings: 2</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Centering (mean) and scaling (sd) the constraints and conditions: </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Centering (mean) and scaling (sd) the constraints and/or conditions: </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	weight</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	female</span>
 <span class="r-in"><span><span class="co"># plot with vegan package graphics to show it returns a standard ordination object</span></span></span>
@@ -272,7 +272,7 @@ You can extract the ordination object for other analyses with ord_get()</p>
 <span class="r-in"><span>  <span class="fu"><a href="ord_plot.html">ord_plot</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Dropping samples with missings: 2</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Centering (mean) and scaling (sd) the constraints and conditions: </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Centering (mean) and scaling (sd) the constraints and/or conditions: </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	weight</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	female</span>
 <span class="r-plt img"><img src="ord_calc-3.png" alt="" width="700" height="433"></span>
