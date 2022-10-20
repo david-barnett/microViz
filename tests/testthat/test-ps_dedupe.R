@@ -5,7 +5,7 @@ test_that("ps_dedupe errors appropriately'", {
   v <- c("timepoint", "group", "bmi_group")
   expect_error(
     ps_dedupe(dietswap, method = "frst", verbose = FALSE, vars = v),
-    regexp = 'must be one of "readcount", "first", "last", or "random"'
+    regexp = '`method` must be one of \"readcount\"'
   )
   expect_error(
     ps_dedupe(dietswap, vars = v, n = 0),
