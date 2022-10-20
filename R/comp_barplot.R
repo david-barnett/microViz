@@ -241,7 +241,7 @@ comp_barplot <- function(ps,
   # taxa: aggregate and order for bar ordering and plotting ------------------
 
   # include "unique" rank when aggregating
-  ps <- tax_agg(ps, rank = tax_level, add_unique = TRUE)[["ps"]]
+  ps <- tax_agg(ps, rank = tax_level, add_unique = TRUE) %>% ps_get()
 
   if (length(tax_order) == 1) {
     # reorder taxa if tax_order given as a length one rule
@@ -305,7 +305,7 @@ comp_barplot <- function(ps,
     # merge ".top" rank's `other_name` category into one taxon to allow drawing
     # bar outlines everywhere except within `other_name` category bars
     if (isTRUE(merge_other)) {
-      ps <- tax_agg(ps, rank = ".top", force = TRUE, add_unique = TRUE)[["ps"]]
+      ps <- tax_agg(ps, rank = ".top", force = TRUE, add_unique = TRUE) %>% ps_get()
     } else {
       ps <- taxMaxEnforce(ps = ps, maxTaxa = max_taxa, otherName = other_name)
     }
@@ -371,7 +371,7 @@ comp_barplotFixed <- function(ps, interactive,
   if (is.null(label)) LABELLER <- NULL # will remove labels
 
   # transform taxa values for display on plot
-  ps <- tax_transform(ps, trans = tax_transform_for_plot)[["ps"]]
+  ps <- tax_transform(ps, trans = tax_transform_for_plot) %>% ps_get()
 
   # prepare dataframe for plot ----------------------------------------------
   # create long dataframe from (compositional) phyloseq
@@ -502,7 +502,7 @@ taxMaxEnforce <- function(ps, maxTaxa, otherName) {
     tt = phyloseq::tax_table(ps), N = maxTaxa - 1,
     other = otherName, varname = "..sep" # temp variable, can't be "unique"
   )
-  ps <- tax_agg(ps, rank = "..sep", force = TRUE, add_unique = TRUE)[["ps"]]
+  ps <- tax_agg(ps, rank = "..sep", force = TRUE, add_unique = TRUE) %>% ps_get()
   ps <- tax_mutate(ps = ps, ..sep = NULL)
   return(ps)
 }

@@ -103,9 +103,9 @@ dist_permanova <- function(data,
 
   # check input data object class
   if (inherits(data, "list")) {
-    ps <- data[["ps"]]
-    distMat <- data[["dist"]]
-    info <- data[["info"]]
+    ps <- ps_get(data)
+    distMat <- dist_get(data)
+    info <- info_get(data)
   } else {
     stop("data argument must be an output object from dist_calc")
   }

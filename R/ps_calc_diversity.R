@@ -54,7 +54,7 @@ ps_calc_diversity <- function(ps,
   ))
 
   # calculate diversity at aggregated level
-  psAgg <- tax_agg(ps = ps, rank = rank, force = TRUE)[["ps"]]
+  psAgg <- tax_agg(ps = ps, rank = rank, force = TRUE) %>% ps_get()
   df <- microbiome::diversity(x = psAgg, index = index)
 
 

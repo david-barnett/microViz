@@ -111,7 +111,7 @@ tax_filter <- function(ps,
     tax_level <- "taxon" # unique
   } else if (tax_level %in% phyloseq::rank_names(ps)) {
     # perform requested taxonomic aggregation
-    ps <- tax_agg(ps = ps, rank = tax_level)[["ps"]]
+    ps <- tax_agg(ps = ps, rank = tax_level) %>% ps_get()
   } else {
     stop("invalid tax_level: ", tax_level)
   }

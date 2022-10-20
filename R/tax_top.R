@@ -29,7 +29,7 @@ tax_top <- function(data, n = 10, by = sum, rank = "unique", ...) {
     stop("`n` must be a single number, greater than zero")
   }
   ps <- ps_get(data)
-  ps <- tax_agg(ps, rank = rank)[["ps"]]
+  ps <- tax_agg(ps, rank = rank) %>% ps_get()
   ps <- tax_sort(ps, by = by, ...)
   taxnames <- phyloseq::taxa_names(physeq = ps)
   if (is.na(n) || n > length(taxnames)) n <- length(taxnames)

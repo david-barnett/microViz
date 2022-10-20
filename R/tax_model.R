@@ -105,7 +105,7 @@ tax_model <- function(ps,
   ps <- phyloseq_validate(ps, remove_undetected = TRUE, verbose = TRUE)
 
   # aggregate phyloseq at chosen rank level
-  ps <- tax_agg(ps, rank = rank)[["ps"]]
+  ps <- tax_agg(ps, rank = rank) %>% ps_get()
 
   # default to modelling all taxa
   if (identical(taxa, NULL)) taxa <- TRUE

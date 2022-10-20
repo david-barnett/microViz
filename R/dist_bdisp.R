@@ -56,8 +56,8 @@ dist_bdisp <- function(data,
 
   # check input data object class
   if (inherits(data, "ps_extra") && !identical(dist_get(data), NULL)) {
-    ps <- data[["ps"]]
-    distMat <- data[["dist"]]
+    ps <- ps_get(data)
+    distMat <- dist_get(data)
   } else {
     stop("data argument must be a ps_extra object from dist_calc")
   }

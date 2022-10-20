@@ -8,7 +8,7 @@ test_that("tax_reorder works", {
     "Bacteroidetes", "Spirochaetes", "Fusobacteria", "Cyanobacteria"
   )
   expect_equal(
-    object = tax_agg(dietswap, rank = "Phylum")[["ps"]] %>%
+    object = tax_agg(dietswap, rank = "Phylum") %>% ps_get() %>%
       phyloseq::taxa_names(),
     expected = originalOrder
   )
@@ -18,7 +18,7 @@ test_that("tax_reorder works", {
     "Actinobacteria", "Firmicutes", "Proteobacteria", "Bacteroidetes"
   )
   expect_equal(
-    object = tax_agg(dietswap, rank = "Phylum")[["ps"]] %>%
+    object = tax_agg(dietswap, rank = "Phylum") %>% ps_get() %>%
       tax_reorder(tax_order = new_order) %>%
       phyloseq::taxa_names(),
     expected = new_order
@@ -28,7 +28,7 @@ test_that("tax_reorder works", {
   new_order2 <- union(c("Fusobacteria", "Cyanobacteria"), originalOrder)
 
   expect_equal(
-    object = tax_agg(dietswap, rank = "Phylum")[["ps"]] %>%
+    object = tax_agg(dietswap, rank = "Phylum") %>% ps_get() %>%
       tax_reorder(tax_order = new_order2[1:2]) %>%
       phyloseq::taxa_names(),
     expected = new_order2
@@ -36,7 +36,7 @@ test_that("tax_reorder works", {
 
   # partial reordering and some non-matching taxa should throw a warning
   reordered <- expect_warning(
-    object = tax_agg(dietswap, rank = "Phylum")[["ps"]] %>%
+    object = tax_agg(dietswap, rank = "Phylum") %>% ps_get() %>%
       tax_reorder(tax_order = c(new_order2[1:2], "extra", "taxa")) %>%
       phyloseq::taxa_names(),
     regexp = "2 taxa specified in tax_order are not in phyloseq"
@@ -45,7 +45,7 @@ test_that("tax_reorder works", {
 
   suppressWarnings(
     expect_error(
-      object = tax_agg(dietswap, rank = "Phylum")[["ps"]] %>%
+      object = tax_agg(dietswap, rank = "Phylum") %>% ps_get() %>%
         tax_reorder(tax_order = c("wrong", "taxa")),
       regexp = "tax_order did not match any taxa in ps"
     )

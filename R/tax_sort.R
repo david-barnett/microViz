@@ -180,13 +180,13 @@ tax_sort <- function(data,
         warning("Using unaggregated taxa, not the rank 'names'!")
       }
       if (trans != "identity") {
-        ps <- tax_transform(ps, trans = trans, rank = NA)[["ps"]]
+        ps <- tax_transform(ps, trans = trans, rank = NA) %>% ps_get()
       }
       taxSorted <- tax_sort_by_otu(ps, by = by, err = byIsInvalidError, ...)
     } else {
       # it was checked already that it must otherwise be a rank name
       # --> aggregation required
-      psAg <- tax_agg(ps = ps, rank = at)[["ps"]]
+      psAg <- tax_agg(ps = ps, rank = at) %>% ps_get()
       psAg <- tax_sort(data = psAg, by = by, at = "names", trans = trans, ...)
 
       # the aggregated tax_table has different dimensions to the un-aggregated

@@ -53,7 +53,7 @@ ps_calc_richness <- function(ps,
   index <- rlang::arg_match0(arg = index, values = c("observed", "chao1"))
 
   # calculate richness at aggregated level
-  psAgg <- tax_agg(ps = ps, rank = rank, force = TRUE)[["ps"]]
+  psAgg <- tax_agg(ps = ps, rank = rank, force = TRUE) %>% ps_get()
   df <- microbiome::richness(x = psAgg, index = index, detection = detection)
 
   # rename richness variable

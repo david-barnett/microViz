@@ -41,7 +41,7 @@ ps_seriate <- function(ps,
   # aggregate taxa for ordering (possibly, as NA is no aggregation)
   psX <- tax_agg(ps, rank = rank)
   # transform taxa for ordering (facilitated primarily for clr for PCA methods)
-  ps_transformed <- tax_transform(psX, trans = tax_transform)[["ps"]]
+  ps_transformed <- tax_transform(psX, trans = tax_transform) %>% ps_get()
 
   if (method %in% seriation::list_seriation_methods(kind = "matrix")) {
     # directly seriate the otu matrix
