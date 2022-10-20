@@ -1,11 +1,11 @@
-# microViz (development version)
+# microViz 0.9.7
 
 ## Features
 
--   `ps_seriate` can now aggregate taxa before seriation (returns unaggregated still)
 -   `comp_barplot` gains x argument, to change default x aesthetic to something other than SAMPLE, 
 which is useful for (faceted) plotting of repeated samples from the same site/individual 
 over time or in different conditions when some samples are missing (see compositions tutorial article)
+-   `ps_seriate` can now aggregate taxa before seriation (returns unaggregated still)
 
 # microViz 0.9.6
 
