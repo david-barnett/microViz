@@ -930,10 +930,12 @@ ord_explore_init <- function(data) {
   }
 
   # create a SAMPLE id variable
-  data$ps <- ps_mutate(data$ps, SAMPLE = phyloseq::sample_names(data$ps))
+  psTemp <- ps_get(data)
+  psTemp <- ps_mutate(psTemp, SAMPLE = phyloseq::sample_names(psTemp))
+  data$ps <- psTemp
 
   # create unique rank if not already present
-  if (!"unique" %in% phyloseq::rank_names(data$ps)) {
+  if (!"unique" %in% phyloseq::rank_names(psTemp)) {
     data <- tax_names2rank(data, colname = "unique")
   }
 

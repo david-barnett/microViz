@@ -42,7 +42,7 @@ dietswap \%>\%
 
 dietswap \%>\%
   tax_agg("Genus") \%>\%
-  .$ps \%>\%
+  ps_get() \%>\%
   ps_seriate(method = "OLO_ward", dist = "bray") \%>\%
   sample_data() \%>\%
   head(8)
