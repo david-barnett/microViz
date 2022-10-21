@@ -1,5 +1,18 @@
 # microViz (development version)
 
+This version introduces changes around `tax_model` and `taxatree_models` functionality.
+
+## Features
+
+- `tax_model` and `taxatree_model` can now run multiple models per taxon, by accepting lists for formula or variables arguments. 
+This allows running e.g. three simple regression models per taxon with predictors a, b, and c with variables = list("a", "b", "c")
+
+## Fixes
+- No more deprecation warnings in `taxatree_plot_labels`
+
+## Breaking changes
+- `tax_model` and `taxatree_model` parallel processing with future and future.apply is off by default, and needs to be enabled with argument use_future = TRUE.
+
 # microViz 0.9.7
 
 ## Features

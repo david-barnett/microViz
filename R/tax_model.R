@@ -28,14 +28,11 @@
 #' @param rank name of taxonomic rank to aggregate to and model taxa at
 #' @param type name of modelling function to use, or the function itself
 #' @param variables
-#' vector of variable names to use in statistical model as right hand side
-#' (ignored if formula given)
+#' vector of variable names, to be used as model formula right hand side.
+#' If variables is a list, not a vector, a model is fit for each entry in list.
 #' @param formula
-#' (alternative to variables arg) right hand side of a formula,
-#' as a formula object or character value
-#' @param univariable
-#' should multiple univariable models be run per taxon?
-#' one for each variable named in variables argument
+#' Right hand side of a formula, as a formula object or character string. Or a list of these.
+#' (alternative to variables argument, do not provide both)
 #' @param taxa
 #' taxa to model (named, numbered, logical selection, or defaulting to all if NULL)
 #' @param use_future
@@ -50,6 +47,7 @@
 #'
 #' @return
 #' Named list of model objects or list of lists. Or, if return_psx is TRUE, a ps_extra.
+#' @seealso \code{\link{taxatree_models}} for more details on the underlying approach
 #' @seealso \code{\link{taxatree_plots}} for how to plot the output of `taxatree_models`
 #'
 #' @examples
@@ -111,7 +109,6 @@ tax_model <- function(ps,
                       type = "lm",
                       variables = NULL,
                       formula = NULL,
-                      univariable = FALSE,
                       taxa = NULL,
                       use_future = FALSE,
                       return_psx = FALSE,
@@ -122,13 +119,7 @@ tax_model <- function(ps,
   if (!rlang::is_string(type) && !rlang::is_function(type)) {
     stop("`type` must be a string naming a modelling function, or a function")
   }
-  if (!rlang::is_bool(univariable)) stop("univariable must be TRUE or FALSE")
   if (!rlang::is_bool(checkVars)) stop("checkVars must be TRUE or FALSE")
-  if (!univariable) {
-    if (identical(type, "ps_cor_test") || identical(type, ps_cor_test)) {
-      stop("univariable must be TRUE when model type is 'ps_cor_test'")
-    }
-  }
 
   # store input data as ps_extra if user wants result returned as attachment
   if (isTRUE(return_psx)) data <- as_ps_extra(ps)
@@ -162,14 +153,13 @@ tax_model <- function(ps,
 
   # make a string representing a formula
   # can be a vector result if univariable = TRUE
-  fstring_rhs <- formulaMakerRHSstring(
-    formula = formula, variables = variables, univariable = univariable
-  )
+  fstring_rhs <- formulaMakerRHSstring(formula = formula, variables = variables)
 
   # check variables
   if (checkVars || checkNA != "allow") {
     df <- samdatAsDataframe(ps)
-    vars <- all.vars(as.formula(fstring_rhs))
+    vars <- lapply(fstring_rhs, function(f) all.vars(stats::as.formula(f)))
+    vars <- unique(simplify2array(vars))
     if (checkNA != "allow") {
       lapply(vars, function(v) checkNAs(df[[v]], name = v, fun = checkNA))
     }
@@ -257,6 +247,28 @@ taxonModel <- function(ps, type, taxon, fstring_rhs, ...) {
   return(res)
 }
 
+# simple helper to generate text for a message about number of NAs in a vector
+checkNAs <- function(vec, name, fun = "warning") {
+  if (fun != "allow" && anyNA(vec)) {
+    txt <- paste(sum(is.na(vec)), "/", length(vec), "values are NA in", name)
+    do.call(fun, list(txt))
+  }
+}
+
+# check the variance or variation of a vector
+checkVariance <- function(vec, name) {
+  if (is.numeric(vec)) {
+    if (stats::var(vec, na.rm = TRUE) %in% c(0, NA)) {
+      stop("Variance of variable ", name, " is: ", stats::var(vec, na.rm = TRUE))
+    }
+  } else {
+    uniq <- unique(vec[!is.na(vec)])
+    if (length(uniq) == 1L) {
+      stop(name, " has only one non-NA value: ", uniq)
+    }
+  }
+}
+
 
 # helper to safely check if corncob bbdml model is request
 # first checking if corncob installed, before checking function equality
@@ -320,33 +332,65 @@ taxIndexGet <- function(ps, taxa) {
 
 
 # make string representing rhs of formula from a formula or vector of variables
-formulaMakerRHSstring <- function(formula, variables, univariable = FALSE) {
-  if (isTRUE(univariable) && is.null(variables)) {
-    stop("To fit one or more univariable models, use the variables argument")
-  }
-  if (!xor(is.null(formula), is.null(variables))) {
+formulaMakerRHSstring <- function(formula = NULL,
+                                  variables = NULL#,
+                                  # univariable = FALSE
+                                  ) {
+  # if (isTRUE(univariable) && is.null(variables)) {
+  #   stop("To fit one or more univariable models, use the variables argument")
+  # }
+  if (!xor(rlang::is_empty(formula), rlang::is_empty(variables))) {
     stop("Provide EITHER formula (rhs) OR character vector of variables!")
   }
-  if (is.null(formula)) {
-    if (!is.character(variables)) stop("variables must be NULL or character")
-    if (anyNA(variables)) stop("variables argument must not contain NAs")
-    if (isTRUE(univariable)) {
-      return(paste(" ~", variables)) # return vector with no further checking
+
+  if (rlang::is_empty(formula)) {
+    # if formula arg not supplied, use variables arg to create formula(e)
+    if (!is.list(variables) && !is.character(variables)) {
+      stop("variables must be NULL, character, or list")
+    }
+    if (is.list(variables)) {
+      formula <- sapply(X = variables, USE.NAMES = FALSE, FUN = function(v) {
+        if (!is.character(v)) stop("variables list contents must be character")
+        if (anyNA(v)) stop("variables argument must not contain NAs")
+        return(paste("~", paste(v, collapse = " + ")))
+      })
     } else {
-      formula <- paste(" ~", paste(variables, collapse = " + "))
-      # proceed to further checks that this made a valid one-sided formula
+      if (anyNA(variables)) stop("variables argument must not contain NAs")
+      formula <- paste("~", paste(variables, collapse = " + "))
     }
   }
-  if (!is.character(formula) && !inherits(formula, "formula")) {
-    stop("formula arg must be: NULL; a formula; or a string of a formula")
+
+  # convert formula(e) to formula, check and convert (back) to string(s)
+  if (!is.list(formula) && !rlang::is_formula(formula) && !is.character(formula)) {
+    stop("formula must be NULL or of class formula, character, or list")
   }
-  f <- stats::as.formula(formula)
-  if (length(f) != 2L) { # test idea from stats::asOneSidedFormula
-    stop("formula argument must include only right-hand side, e.g '~ a + b'")
+  if (is.list(formula) || is.character(formula)) {
+    fstring <- sapply(X = formula, USE.NAMES = FALSE, FUN = function(f) {
+      if (!inherits(f, "formula") && !is.character(f)) {
+        stop("formula arg list must contain only formulae or formulae strings")
+      }
+      f <- stats::as.formula(f)
+      checkFormulaOneSided(f)
+      return(formula2string(f))
+    })
+  } else {
+    checkFormulaOneSided(formula)
+    fstring <- formula2string(formula)
   }
-  # ref: https://stackoverflow.com/a/14671300/9005116
-  fstring <- paste(deparse(f, width.cutoff = 500), collapse = "")
+
   return(fstring)
+}
+
+checkFormulaOneSided <- function(f) {
+  # test idea from stats::asOneSidedFormula
+  if (length(f) != 2L) {
+    stop("formula must include only right-hand side, e.g '~ a + b'")
+  }
+}
+
+formula2string <- function(f) {
+  # ref: https://stackoverflow.com/a/14671300/9005116
+  paste(deparse(f, width.cutoff = 500), collapse = "")
 }
 
 # check if package(s) is/are available, and stop if not, explaining why needed
@@ -355,6 +399,6 @@ checkPackageAvailable <- function(
     message = " package is required to use this functionality."
 ) {
   for (p in packages) {
-    if (!requireNamespace("p", quietly = TRUE)) stop(p, message)
+    if (!requireNamespace(p, quietly = TRUE)) stop(p, message)
   }
 }
