@@ -8,9 +8,7 @@
 #'
 #' @return psExtraOrdInfo S3 class list
 #' @keywords internal
-new_psExtraOrdInfo <- function(
-    method = character(), constraints = character(), conditions = character()
-) {
+new_psExtraOrdInfo <- function(method = character(), constraints = character(), conditions = character()) {
   structure(class = "psExtraOrdInfo", .Data = list(
     method = method, constraints = constraints, conditions = conditions
   ))
@@ -28,64 +26,18 @@ validate_psExtraOrdInfo <- function(psExtraOrdInfo) {
   }
 }
 
-
-# setClass(
-#   Class = "ordInfo",
-#   slots = c(
-#     method = "character", constraints = "character", conditions = "character"
-#   ),
-#   prototype = list(
-#     method = character(), constraints = character(), conditions = character()
-#   )
-# )
-
-
 print.psExtraOrdInfo <- function(psExtraOrdInfo) {
-  cat("Ordination info:\n")
+  lens <- purrr::map(psExtraOrdInfo, length)
+  if (any(lens > 0)) cat("Ordination info:\n")
   for (N in names(psExtraOrdInfo)) {
     v <- psExtraOrdInfo[[N]]
     if (length(v) > 0) cat(N, " = '", paste(v, collapse = "', '"), "'\t", sep = "")
   }
   cat("\n")
 }
-#
-# setMethod("show", "ordInfo", function(object) {
-#   cat("ordination info:\n")
-#   for (s in slotNames(object)) {
-#     x <- slot(object, s)
-#     if (length(x) > 0) cat(s, "=", paste(x, collapse = ", "), "\t")
-#   }
-#   cat("\n")
-# })
+
 
 # psExtraInfo ----------------------------------------------------------------
-
-# #' Info list S4 class used in info slot of psExtra
-# #'
-# #' @slot tax_agg character.
-# #' @slot tax_trans character.
-# #' @slot tax_scale character.
-# #' @slot dist_method character.
-# #' @slot ord_info ordInfo
-# #'
-# #' @export
-# setClass(
-#   Class = "psExtraInfo",
-#   slots = c(
-#     tax_agg = "character",
-#     tax_trans = "character",
-#     tax_scale = "character", # TODO should probably remove this and improve logging of chained transformations as length N tax_trans vector (with a printing/collapsing method for e.g. ord plot captions) # deprecate tax_scale in favour of tax_trans trans = "scale" and trans = "center"
-#     dist_method = "character",
-#     ord_info = "ordInfo"
-#   ),
-#   prototype = list(
-#     tax_agg = character(),
-#     tax_trans = character(),
-#     tax_scale = character(),
-#     dist_method = character(),
-#     ord_info = new("ordInfo")
-#   )
-# )
 
 #' Constructor for psExtraInfo list objects (internal use)
 #'
@@ -103,8 +55,7 @@ new_psExtraInfo <- function(tax_agg = character(),
                             tax_trans = character(),
                             tax_scale = character(),
                             dist_method = character(),
-                            ord_info = new_psExtraOrdInfo()
-) {
+                            ord_info = new_psExtraOrdInfo()) {
   out <- structure(class = "psExtraInfo", .Data = list(
     tax_agg = tax_agg,
     tax_trans = tax_trans,
@@ -126,7 +77,7 @@ validate_psExtraInfo <- function(psExtraInfo) {
       stop(i, " psExtraInfo entry is not character")
     }
   }
-  # validate_psExtraOrdInfo(psExtraInfo[["ord_info"]])
+  validate_psExtraOrdInfo(psExtraInfo[["ord_info"]])
 }
 
 update_psExtraInfo <- function(psExtraInfo, ..., append = FALSE) {
@@ -143,8 +94,7 @@ update_psExtraInfo <- function(psExtraInfo, ..., append = FALSE) {
 }
 
 print.psExtraInfo <- function(psExtraInfo,
-                              which = c("tax_agg", "tax_trans", "tax_scale", "dist_method", "ord_info")
-                              ) {
+                              which = c("tax_agg", "tax_trans", "tax_scale", "dist_method", "ord_info")) {
   which <- rlang::arg_match(which, multiple = TRUE)
   cat("psExtra info:\n")
   vectorElementNames <- setdiff(which, "ord_info") # vector slots
@@ -153,20 +103,8 @@ print.psExtraInfo <- function(psExtraInfo,
     if (length(v) > 0) cat(N, " = '", paste(v, collapse = "', '"), "'\t", sep = "")
   }
   cat("\n")
-  print(psExtraInfo[['ord_info']])
+  print(psExtraInfo[["ord_info"]])
 }
-
-#
-# setMethod("show", "psExtraInfo", function(object) {
-#   cat("psExtra info:\n")
-#   v <- setdiff(slotNames(object), "ord_info") # vector slots
-#   for (s in v) {
-#     x <- slot(object, s)
-#     if (length(x) > 0) cat(s, "=", paste(x, collapse = ", "), "\t")
-#   }
-#   cat("\n")
-#   if (!identical(object@ord_info, new("ordInfo"))) print(object@ord_info)
-# })
 
 
 # psExtra -------------------------------------------------------------------
@@ -263,7 +201,7 @@ setMethod("show", "psExtra", function(object) {
   if (!identical(o, NULL)) {
     cat("\n\nordination of class:", class(o), "\n")
     if (!identical(o[["call"]], NULL)) print(o[["call"]])
-    print(i[['ord_info']])
+    print(i[["ord_info"]])
   }
   # check for and shortly print other possible elements' info
   counts <- x@counts
