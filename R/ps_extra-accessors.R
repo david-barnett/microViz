@@ -187,10 +187,13 @@ samdatAsDataframe <- function(ps) {
 
 # get phyloseq with counts if available
 ps_counts <- function(data, warn = TRUE) {
+  if (!rlang::is_bool(warn) && !rlang::is_string(warn, string = 'error')) {
+    stop("warn argument must be TRUE, FALSE, or 'error'")
+  }
   # always get ps, regardless of ps_extra or phyloseq data or counts presence
   ps <- ps_get(data)
   # checking names of a ps will return NULL (and x %in% NULL returns FALSE)
-  if ("counts" %in% names(data)) {
+  if (inherits(data, 'ps_extra') && "counts" %in% names(data)) {
     # get counts and use them if they exist,
     # and check regardless if otutab returned will be counts
     counts <- data[["counts"]]
@@ -206,13 +209,8 @@ ps_counts <- function(data, warn = TRUE) {
     # now check ps otu_table is counts
     test_matrix <- unclass(otu_get(ps))
     if (any(test_matrix < 1 & test_matrix != 0)) {
-      if (isTRUE(warn)) {
-        warning(mess)
-      } else if (identical(warn, "error")) {
-        stop(mess)
-      } else {
-        stop("warn argument value is invalid: should be T, F or 'error'")
-      }
+      if (isTRUE(warn)) warning(mess)
+      if (identical(warn, "error")) stop(mess)
     }
   }
   return(ps)
