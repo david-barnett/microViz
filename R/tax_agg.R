@@ -103,14 +103,12 @@ tax_agg <- function(ps,
                     top_N = NA,
                     force = FALSE,
                     add_unique = FALSE) {
-  if (inherits(ps, "ps_extra")) {
+  if (is(ps, "psExtra") || inherits(ps, "ps_extra")) {
     # currently just reset info
-    warning(
-      "class of ps is ps_extra: any extra info is lost (transform, dist, etc.)"
-    )
     ps <- ps_get(ps)
+    warning("ps is already a psExtra: any extra info is lost (trans, dist, ...)")
   }
-  if (!inherits(ps, "phyloseq")) stop("`ps` must be a phyloseq, or ps_extra")
+  check_is_phyloseq(ps, argName = "ps")
   psCheckRanks(ps = ps, rank = rank, varname = "rank", or = c("unique", NA))
   if (!rlang::is_na(top_N)) {
     if (!rlang::is_scalar_integerish(top_N) || top_N < 1) {

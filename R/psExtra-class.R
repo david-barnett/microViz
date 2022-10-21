@@ -14,7 +14,6 @@ new_psExtraOrdInfo <- function(method = character(), constraints = character(), 
   ))
 }
 
-setOldClass("psExtraOrdInfo")
 
 validate_psExtraOrdInfo <- function(psExtraOrdInfo) {
   stopifnot(is.list(psExtraOrdInfo))
@@ -26,16 +25,25 @@ validate_psExtraOrdInfo <- function(psExtraOrdInfo) {
   }
 }
 
+#' Print method for psExtraOrdInfo list
+#'
+#' @export
 print.psExtraOrdInfo <- function(psExtraOrdInfo) {
   lens <- purrr::map(psExtraOrdInfo, length)
-  if (any(lens > 0)) cat("Ordination info:\n")
-  for (N in names(psExtraOrdInfo)) {
-    v <- psExtraOrdInfo[[N]]
-    if (length(v) > 0) cat(N, " = '", paste(v, collapse = "', '"), "'\t", sep = "")
+  if (any(lens > 0)) {
+    cat("Ordination info:\n")
+    for (N in names(psExtraOrdInfo)) {
+      v <- psExtraOrdInfo[[N]]
+      if (length(v) > 0) {
+        cat(N, " = '", paste(v, collapse = "', '"), "'\t", sep = "")
+      }
+    }
+    cat("\n")
   }
-  cat("\n")
 }
 
+setOldClass("psExtraOrdInfo")
+setMethod("show", "psExtraOrdInfo", function(object) print.psExtraOrdInfo(object))
 
 # psExtraInfo ----------------------------------------------------------------
 
@@ -67,8 +75,6 @@ new_psExtraInfo <- function(tax_agg = character(),
   return(out)
 }
 
-setOldClass("psExtraInfo")
-
 validate_psExtraInfo <- function(psExtraInfo) {
   stopifnot(is.list(psExtraInfo))
   # check valid classes of list entries
@@ -84,7 +90,7 @@ update_psExtraInfo <- function(psExtraInfo, ..., append = FALSE) {
   new <- list(...)
   stopifnot(rlang::is_named(new))
   stopifnot(
-    !all(names(new) %in% c("tax_agg", "tax_trans", "tax_scale", "dist_method", "ord_info"))
+    all(names(new) %in% c("tax_agg", "tax_trans", "tax_scale", "dist_method", "ord_info"))
   )
   for (n in names(new)) {
     psExtraInfo[n] <- if (append) c(psExtraInfo[n], new[n]) else new[n]
@@ -93,18 +99,30 @@ update_psExtraInfo <- function(psExtraInfo, ..., append = FALSE) {
   return(psExtraInfo)
 }
 
+#' Print method for psExtraInfo object
+#'
+#' @param psExtraInfo psExtraInfo object
+#' @param which which elements of psExtraInfo list to print
+#'
+#' @export
 print.psExtraInfo <- function(psExtraInfo,
                               which = c("tax_agg", "tax_trans", "tax_scale", "dist_method", "ord_info")) {
   which <- rlang::arg_match(which, multiple = TRUE)
-  cat("psExtra info:\n")
   vectorElementNames <- setdiff(which, "ord_info") # vector slots
-  for (N in vectorElementNames) {
-    v <- psExtraInfo[[N]]
-    if (length(v) > 0) cat(N, " = '", paste(v, collapse = "', '"), "'\t", sep = "")
+  lens <- purrr::map(psExtraInfo[vectorElementNames], length)
+  if (any(lens > 0)) {
+    cat("psExtra info:\n")
+    for (N in vectorElementNames) {
+      v <- psExtraInfo[[N]]
+      if (length(v) > 0) cat(N, " = '", paste(v, collapse = "', '"), "'\t", sep = "")
+    }
+    cat("\n")
   }
-  cat("\n")
-  print(psExtraInfo[["ord_info"]])
+  if ("ord_info" %in% which) print(psExtraInfo[["ord_info"]])
 }
+
+setOldClass("psExtraInfo")
+setMethod("show", "psExtraInfo", function(object) print.psExtraInfo(object))
 
 
 # psExtra -------------------------------------------------------------------
@@ -121,6 +139,7 @@ print.psExtraInfo <- function(psExtraInfo,
 #' @slot tax_models list.
 #' @slot tax_stats data.frame.
 #'
+#' @importClassesFrom phyloseq phyloseq
 #' @export
 #'
 #' @examples
@@ -181,47 +200,65 @@ psExtra <- function(ps,
   )
 }
 
+update_psExtra <- function(psExtra, ...) {
+  check_is_psExtra(psExtra, argName = "psExtra")
+  new <- list(...)
+  stopifnot(rlang::is_named(new))
+  # split up phyloseq slots
+  if ('ps' %in% names(new)) {
+    for (s in slotNames(new[['ps']])) new[[s]] <- slot(new[["ps"]], s)
+    new[["ps"]] <- NULL
+  }
+  stopifnot(all(names(new) %in% slotNames(psExtra)))
+  for (n in names(new)) slot(psExtra, n) <- new[[n]]
+  return(psExtra)
+}
+
+## psExtra 'show' method --------
 setMethod("show", "psExtra", function(object) {
   x <- object
   cat("psExtra object - a phyloseq object with extra slots:\n\n")
   show(as(x, "phyloseq"))
   cat("\n")
+
+  counts <- x@counts
+  if (!identical(counts, NULL)) {
+    cat("otu_get(counts = TRUE)\t\t")
+    cat(
+      " [", phyloseq::ntaxa(counts), "taxa and",
+      phyloseq::nsamples(counts), "samples ]\n"
+    )
+    cat("\n")
+  }
   # cat("\n- extra slots:\n")
   i <- x@info
   print.psExtraInfo(i, which = c("tax_agg", "tax_trans", "tax_scale"))
 
+  # check for and shortly print other possible elements' info
   d <- x@dist
   if (!identical(d, NULL)) {
+    cat("\n")
     d_size <- attr(d, "Size")
     cat(i[["dist_method"]], "distance matrix of size", d_size, "\n")
-    cat(d[1:min(5, d_size)], "...")
+    cat(d[1:min(5, d_size)], "...\n")
   }
   # print ordination class and call and constraints + conditions if present
   o <- x@ord
   if (!identical(o, NULL)) {
-    cat("\n\nordination of class:", class(o), "\n")
+    cat("\nordination of class:", class(o), "\n")
     if (!identical(o[["call"]], NULL)) print(o[["call"]])
     print(i[["ord_info"]])
-  }
-  # check for and shortly print other possible elements' info
-  counts <- x@counts
-  if (!identical(counts, NULL)) {
-    cat("\n\n$counts OTU Table:")
-    cat(
-      " [", phyloseq::ntaxa(counts), "taxa and",
-      phyloseq::nsamples(counts), "samples ]"
-    )
   }
   # print permanova if present
   p <- x@permanova
   if (!identical(p, NULL)) {
-    cat("\n\npermanova:\n")
+    cat("\npermanova:\n")
     print(p)
   }
   # print dist_bdisp names if present
   b <- x@bdisp
   if (!identical(b, NULL)) {
-    cat("\n\nbetadisper:\n")
+    cat("\nbetadisper:\n")
     cat(names(b))
   }
   # print info about taxatree_models list if present
@@ -244,3 +281,4 @@ setMethod("show", "psExtra", function(object) {
     tax_stats_summary(x@tax_stats)
   }
 })
+

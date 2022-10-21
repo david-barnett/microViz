@@ -1,9 +1,49 @@
-#' @name ps_extra-accessors
+is_ps_extra <- function(object) {
+  if (inherits(object, "ps_extra")) {
+    ps_extra_deprecation_warning()
+    return(TRUE)
+  }
+  return(FALSE)
+}
+
+ps_extra_deprecation_warning <- function() {
+  rlang::warn(c(
+    "'ps_extra' object class is deprecated",
+    i = "please rerun your code with microViz version 0.10.0 or higher"
+  ))
+}
+
+ps_extra_arg_deprecation_warning <- function() {
+  rlang::warn(c(
+    "ps_extra argument deprecated",
+    i = "use psExtra argument instead"
+  ))
+}
+
+check_is_phyloseq <- function(x, argName = NULL) {
+  if (!is(x, "phyloseq")) {
+    rlang::abort(call = rlang::caller_env(), message = c(
+      paste('argument', argName, 'must be a "phyloseq" or "psExtra" object'),
+      i = paste0("argument is class: ", paste(class(x), collapse = " "))
+    ))
+  }
+}
+
+check_is_psExtra <- function(x, argName = NULL) {
+  if (!is(x, "psExtra")) {
+    rlang::abort(call = rlang::caller_env(), message = c(
+      paste('argument', argName, 'must be a "psExtra" object'),
+      i = paste0("argument is class: ", paste(class(x), collapse = " "))
+    ))
+  }
+}
+
+#' @name psExtra-accessors
 #' @title Extract elements from ps_extra class
 #'
 #' @description
 #' - `ps_get`     returns phyloseq
-#' - `info_get`   returns ps_extra_info object
+#' - `info_get`   returns psExtraInfo object
 #' - `dist_get`   returns distance matrix (or NULL)
 #' - `ord_get`    returns ordination object (or NULL)
 #' - `perm_get`   returns adonis2() permanova model (or NULL)
@@ -13,9 +53,10 @@
 #' - `samdat_tbl` returns phyloseq sample_data as a tibble,
 #' with sample_names as new first column called .sample_name
 #'
-#' @param ps_extra ps_extra class object
+#' @param psExtra psExtra S4 class object
+#' @param ps_extra deprecated! don't use this
 #'
-#' @return element of ps_extra class object (or NULL)
+#' @return element(s) from psExtra object (or NULL)
 #' @export
 #'
 #' @examples
@@ -26,66 +67,89 @@
 #' ps_get(psx)
 #' info_get(psx)
 #'
-#' dist_get(psx) # this ps_extra has no dist_calc result
-#' ord_get(psx) # this ps_extra has no ord_calc result
-#' perm_get(psx) # this ps_extra has no dist_permanova result
-#' bdisp_get(psx) # this ps_extra has no dist_bdisp result
+#' dist_get(psx) # this psExtra has no dist_calc result
+#' ord_get(psx) # this psExtra has no ord_calc result
+#' perm_get(psx) # this psExtra has no dist_permanova result
+#' bdisp_get(psx) # this psExtra has no dist_bdisp result
 #'
 #' # these can be returned from phyloseq objects too
 #' otu_get(psx)[1:6, 1:4]
 #' tt_get(psx) %>% head()
 #' samdat_tbl(psx) %>% head()
 #' @export
-#' @rdname ps_extra-accessors
-ps_get <- function(ps_extra) {
-  if (inherits(ps_extra, "ps_extra")) {
-    return(ps_extra[["ps"]])
+#' @rdname psExtra-accessors
+ps_get <- function(psExtra, ps_extra) {
+  if (!missing(ps_extra)) {
+    ps_extra_arg_deprecation_warning()
+    psExtra <- ps_extra
   }
-  if (inherits(ps_extra, "phyloseq")) {
-    return(ps_extra)
+  if (is_ps_extra(psExtra)) {
+    return(psExtra[["ps"]])
   }
-  stop(
-    'class of argument should be "ps_extra" or "phyloseq"',
-    "\nargument is class: ", paste(class(ps_extra), collapse = " ")
-  )
+  check_is_phyloseq(psExtra)
+  return(as(psExtra, "phyloseq"))
 }
-#' @rdname ps_extra-accessors
+#' @rdname psExtra-accessors
 #' @export
-dist_get <- function(ps_extra) {
-  stopifnot(inherits(ps_extra, "ps_extra"))
-  ps_extra[["dist"]]
+dist_get <- function(psExtra, ps_extra) {
+  if (!missing(ps_extra)) {
+    ps_extra_arg_deprecation_warning()
+    psExtra <- ps_extra
+  }
+  check_is_psExtra(psExtra)
+  psExtra@dist
 }
-#' @rdname ps_extra-accessors
+#' @rdname psExtra-accessors
 #' @export
-ord_get <- function(ps_extra) {
-  stopifnot(inherits(ps_extra, "ps_extra"))
-  ps_extra[["ord"]]
+ord_get <- function(psExtra, ps_extra) {
+  if (!missing(ps_extra)) {
+    ps_extra_arg_deprecation_warning()
+    psExtra <- ps_extra
+  }
+  check_is_psExtra(psExtra)
+  psExtra@ord
 }
-#' @rdname ps_extra-accessors
+#' @rdname psExtra-accessors
 #' @export
-info_get <- function(ps_extra) {
-  if (inherits(ps_extra, "ps_extra")) {
+info_get <- function(psExtra, ps_extra) {
+  if (!missing(ps_extra)) {
+    ps_extra_arg_deprecation_warning()
+    psExtra <- ps_extra
+  }
+  if (is_ps_extra(psExtra)) {
     return(ps_extra[["info"]])
-  } else if (methods::is(ps_extra, "phyloseq")) {
-    return(new_ps_extra_info())
-  } else {
-    stop(
-      "info_get can only get info from a 'ps_extra' class object.",
-      "\nargument is class: ", paste(class(ps_extra), collapse = " ")
-    )
   }
+  check_is_phyloseq(psExtra)
+  if (!methods::is(psExtra, "psExtra")) {
+    return(new_psExtraInfo())
+  }
+  return(psExtra@info)
 }
-#' @rdname ps_extra-accessors
+#' @rdname psExtra-accessors
 #' @export
-perm_get <- function(ps_extra) {
-  stopifnot(inherits(ps_extra, "ps_extra"))
-  ps_extra[["permanova"]]
+perm_get <- function(psExtra, ps_extra) {
+  if (!missing(ps_extra)) {
+    ps_extra_arg_deprecation_warning()
+    psExtra <- ps_extra
+  }
+  if (is_ps_extra(psExtra)) {
+    return(ps_extra[["permanova"]])
+  }
+  check_is_psExtra(psExtra)
+  return(psExtra@permanova)
 }
-#' @rdname ps_extra-accessors
+#' @rdname psExtra-accessors
 #' @export
-bdisp_get <- function(ps_extra) {
-  stopifnot(inherits(ps_extra, "ps_extra"))
-  ps_extra[["bdisp"]]
+bdisp_get <- function(psExtra, ps_extra) {
+  if (!missing(ps_extra)) {
+    ps_extra_arg_deprecation_warning()
+    psExtra <- ps_extra
+  }
+  if (is_ps_extra(psExtra)) {
+    return(ps_extra[["bdisp"]])
+  }
+  check_is_psExtra(psExtra)
+  return(psExtra@bdisp)
 }
 
 
@@ -96,7 +160,7 @@ bdisp_get <- function(ps_extra) {
 #' @param samples subset of samples to return, NA for all (default)
 #' @param counts should otu_get ensure it returns counts? if present in object
 #'
-#' @rdname ps_extra-accessors
+#' @rdname psExtra-accessors
 #' @export
 otu_get <- function(data, taxa = NA, samples = NA, counts = FALSE) {
   # get otu_table from object
@@ -138,15 +202,13 @@ otu_get <- function(data, taxa = NA, samples = NA, counts = FALSE) {
   return(otu)
 }
 
-#' @rdname ps_extra-accessors
+#' @rdname psExtra-accessors
 #' @export
 tt_get <- function(data) {
-  if (!methods::is(data, "taxonomyTable")) {
-    ps <- ps_get(data)
-    tt <- phyloseq::tax_table(ps)
-  } else {
-    tt <- data
+  if (methods::is(data, "taxonomyTable")) {
+    return(data)
   }
+  tt <- phyloseq::tax_table(ps_get(data))
   return(tt)
 }
 
@@ -156,15 +218,15 @@ tt_get <- function(data) {
 #' @param sample_names_col
 #' name of column where sample_names are put.
 #' if NA, return data.frame with rownames (sample_names)
-#' @rdname ps_extra-accessors
+#' @rdname psExtra-accessors
 #' @export
 samdat_tbl <- function(data, sample_names_col = ".sample_name") {
-  if (inherits(data, "ps_extra")) data <- ps_get(data)
-  if (methods::is(data, "phyloseq") || methods::is(data, "sample_data")) {
+  if (is(data, "psExtra") || is_ps_extra(data)) data <- ps_get(data)
+  if (is(data, "phyloseq") || is(data, "sample_data")) {
     df <- samdatAsDataframe(data)
   } else {
     stop(
-      "data must be of class 'phyloseq', 'ps_extra', or 'sample_data', not: ",
+      "data must be of class 'phyloseq', 'psExtra', or 'sample_data', not: ",
       paste(class(data), collapse = " ")
     )
   }
@@ -187,31 +249,39 @@ samdatAsDataframe <- function(ps) {
 
 # get phyloseq with counts if available
 ps_counts <- function(data, warn = TRUE) {
-  if (!rlang::is_bool(warn) && !rlang::is_string(warn, string = 'error')) {
+  if (!is_ps_extra(data)) check_is_phyloseq(data)
+  if (!rlang::is_bool(warn) && !rlang::is_string(warn, string = "error")) {
     stop("warn argument must be TRUE, FALSE, or 'error'")
   }
-  # always get ps, regardless of ps_extra or phyloseq data or counts presence
+  counts <- NULL # check this later, warn if still NULL
+
+  # always get ps, regardless of psExtra or phyloseq data or counts presence
   ps <- ps_get(data)
-  # checking names of a ps will return NULL (and x %in% NULL returns FALSE)
-  if (inherits(data, 'ps_extra') && "counts" %in% names(data)) {
-    # get counts and use them if they exist,
-    # and check regardless if otutab returned will be counts
-    counts <- data[["counts"]]
-    # maintain existing taxa_are_rows status for consistency
-    if (phyloseq::taxa_are_rows(ps)) counts <- phyloseq::t(counts)
-    phyloseq::otu_table(ps) <- counts
+
+  # get counts and use them if they exist,
+  # and check regardless if otutab returned will be counts
+  if (is_ps_extra(data) && "counts" %in% names(data)) counts <- data[["counts"]]
+  if (is(data, "psExtra")) counts <- data@counts
+
+  # maintain existing taxa_are_rows status for consistency
+  if (phyloseq::taxa_are_rows(ps) && !is.null(counts)) counts <- phyloseq::t(counts)
+  # put non-null counts table in otu table slot
+  if (!is.null(counts)) phyloseq::otu_table(ps) <- counts
+
+  if (isFALSE(warn)) {
+    return(ps)
   }
-  if (!isFALSE(warn)) {
-    mess <- paste0(
-      "otu_table of counts is NOT available!\n",
-      "Available otu_table contains non-zero values that are less than 1"
-    )
-    # now check ps otu_table is counts
-    test_matrix <- unclass(otu_get(ps))
-    if (any(test_matrix < 1 & test_matrix != 0)) {
-      if (isTRUE(warn)) warning(mess)
-      if (identical(warn, "error")) stop(mess)
-    }
+
+  mess <- paste0(
+    "otu_table of counts is NOT available!\n",
+    "Available otu_table contains non-zero values that are less than 1"
+  )
+
+  # lastly check ps otu_table is counts
+  test_matrix <- unclass(otu_get(ps))
+  if (any(test_matrix < 1 & test_matrix != 0)) {
+    if (identical(warn, "error")) stop(mess)
+    if (isTRUE(warn)) warning(mess)
   }
   return(ps)
 }
@@ -223,49 +293,65 @@ methods::setOldClass("ps_extra")
 methods::setMethod(
   f = phyloseq::otu_table, signature = c(object = "ps_extra"),
   definition = function(object) {
-    warning(
-      "Using otu_table() with ps_extra objects is not recommended.\n\t",
-      "Use otu_get() instead, which always returns taxa as columns."
-    )
+    ps_extra_deprecation_warning()
     return(phyloseq::otu_table(ps_get(object)))
   }
 )
 
 methods::setMethod(
   f = phyloseq::sample_data, signature = c(object = "ps_extra"),
-  definition = function(object) phyloseq::sample_data(ps_get(object))
+  definition = function(object) {
+    ps_extra_deprecation_warning()
+    phyloseq::sample_data(ps_get(object))
+  }
 )
 
 methods::setMethod(
   f = phyloseq::tax_table, signature = c(object = "ps_extra"),
   definition = function(object) {
+    ps_extra_deprecation_warning()
     return(phyloseq::tax_table(ps_get(object)))
   }
 )
 
 methods::setMethod(
   f = phyloseq::sample_names, signature = c(physeq = "ps_extra"),
-  definition = function(physeq) phyloseq::sample_names(ps_get(physeq))
+  definition = function(physeq) {
+    ps_extra_deprecation_warning()
+    phyloseq::sample_names(ps_get(physeq))
+  }
 )
 
 methods::setMethod(
   f = phyloseq::taxa_names, signature = c(physeq = "ps_extra"),
-  definition = function(physeq) phyloseq::taxa_names(ps_get(physeq))
+  definition = function(physeq) {
+    ps_extra_deprecation_warning()
+    phyloseq::taxa_names(ps_get(physeq))
+  }
 )
 
 methods::setMethod(
   f = phyloseq::phy_tree, signature = c(physeq = "ps_extra"),
-  definition = function(physeq) phyloseq::phy_tree(ps_get(physeq))
+  definition = function(physeq) {
+    ps_extra_deprecation_warning()
+    phyloseq::phy_tree(ps_get(physeq))
+  }
 )
 
 methods::setMethod(
   f = phyloseq::refseq, signature = c(physeq = "ps_extra"),
-  definition = function(physeq) phyloseq::refseq(ps_get(physeq))
+  definition = function(physeq) {
+    ps_extra_deprecation_warning()
+    phyloseq::refseq(ps_get(physeq))
+  }
 )
 
 # rank names is not a generic in phyloseq
 methods::setGeneric(name = "rank_names", def = phyloseq::rank_names)
 methods::setMethod(
   f = "rank_names", signature = c(physeq = "ps_extra"),
-  definition = function(physeq) phyloseq::rank_names(ps_get(physeq))
+  definition = function(physeq) {
+    ps_extra_deprecation_warning()
+    phyloseq::rank_names(ps_get(physeq))
+  }
 )
