@@ -150,6 +150,14 @@ taxModel2stats <- function(model,
                            fun = "auto",
                            dropTerms = "(Intercept)",
                            ...) {
+  # check `fun` argument
+  if (!inherits(fun, "function") && !identical(fun, "auto")) {
+    stop(
+      'fun must be a function or "auto", it is class: ',
+      paste(class(fun), collapse = " / ")
+    )
+  }
+
   # infer tidying function from model type if "auto" fun
   if (identical(fun, "auto")) {
     # for most models, assume broom::tidy has an appropriate method
