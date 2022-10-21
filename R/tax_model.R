@@ -159,7 +159,7 @@ tax_model <- function(ps,
   if (checkVars || checkNA != "allow") {
     df <- samdatAsDataframe(ps)
     vars <- lapply(fstring_rhs, function(f) all.vars(stats::as.formula(f)))
-    vars <- unique(simplify2array(vars))
+    vars <- unique(unlist(vars))
     if (checkNA != "allow") {
       lapply(vars, function(v) checkNAs(df[[v]], name = v, fun = checkNA))
     }
