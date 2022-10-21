@@ -62,10 +62,19 @@ print.ps_extra <- function(x, ...) {
     cat("\n\n$taxatree_models list:\n")
     cat("Ranks:", paste(names(x[["taxatree_models"]]), collapse = "/"))
   }
-  # print info about taxatree_models list if present
+  # print info about taxatree_stats list if present
   if (!identical(x[["taxatree_stats"]], NULL)) {
     cat("\n\n$taxatree_stats dataframe:\n")
     taxatree_stats_summary(x[["taxatree_stats"]])
+  }
+  # print info about tax_models list if present
+  if (!identical(x[["tax_models"]], NULL)) {
+    cat("\n\n$tax_models list at rank: ", names(x[["tax_models"]]), "\n")
+  }
+  # print info about tax_stats list if present
+  if (!identical(x[["tax_stats"]], NULL)) {
+    cat("\n\n$tax_stats dataframe:\n")
+    tax_stats_summary(x[["tax_stats"]])
   }
   cat("\n")
 }
@@ -76,6 +85,13 @@ taxatree_stats_summary <- function(df) {
   r <- unique(df[["rank"]])
   t <- levels(df[["term"]])
   cat(n, "taxa at", length(r), "ranks:", paste(r, collapse = ", "), "\n")
+  cat(length(t), "terms:", paste(t, collapse = ", "))
+}
+# helper for summarising tax_stats objects
+tax_stats_summary <- function(df) {
+  n <- length(unique(df[["taxon"]]))
+  t <- unique(df[["term"]])
+  cat(n, "taxa at rank of", df[["rank"]][1], "\n")
   cat(length(t), "terms:", paste(t, collapse = ", "))
 }
 

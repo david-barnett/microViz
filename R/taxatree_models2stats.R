@@ -1,29 +1,21 @@
-#
-#
-# models2stats is used inside taxatree_plots, with the output of `tax_model()`.
-# It can extract the statistical results from various models and labels
-# them by the independent variable name that they refer to.
-#
-# Rows for one model_var from this df can then be joined to the output of
-# taxatree_nodes to prepare for taxonomic heat tree graph visualisation of
-# taxon-variable associations.
-#
-# Use `split.data.frame(taxon_stats_df, taxon_stats_df[["model_var"]])`
-# to split into variable-specific dataframes
-#
-# @param taxon_models named list output of `tax_model`
-# @return
-
-#' Extract dataframe of statistics from taxatree_models list
+#' @title
+#' Extract statistics from taxatree_models or tax_model output
 #'
-#' @param data ps_extra with taxatree_models, or just the list of models
-#' @param fun function to assist extraction of stats dataframe from models
+#' @description
+#' Runs a function e.g. `broom::tidy` on a list of models, i.e. the output of
+#' `taxatree_models` or `tax_model` (models list may often be attached to ps_extra)
+#'
+#' @param data
+#' ps_extra with attached tax_models or taxatree_models list, or just the list of models
+#' @param fun function to assist extraction of stats dataframe from models, or "auto"
 #' @param ... extra arguments passed to fun
 #' @param .keep_models should the models list be kept in the ps_extra output?
 #'
 #' @return data.frame, attached to ps_extra
 #' @export
-#'
+#' @describeIn
+#' models2stats
+#' Extract stats from list or ps_extra output of taxatree_models
 #' @examples
 #' # This example is an abbreviated excerpt from article on taxon modelling on
 #' # the microViz documentation website
@@ -89,7 +81,10 @@ taxatree_models2stats <- function(data,
                                   fun = "auto",
                                   ...,
                                   .keep_models = FALSE) {
-  if (inherits(data, "ps_extra") && is.list(data[["taxatree_models"]])) {
+  if (inherits(data, "ps_extra")) {
+    if (!is.list(data[["taxatree_models"]])) {
+      stop("data arg ps_extra must have 'taxatree_models' list attached")
+    }
     models <- data[["taxatree_models"]]
     stopifnot(all(names(models) %in% phyloseq::rank_names(ps_get(data))))
   } else if (inherits(data, "list")) {
@@ -98,17 +93,9 @@ taxatree_models2stats <- function(data,
     stop("data must be a ps_extra with taxatree_models list, or just the list")
   }
 
-  # check `fun` argument
-  if (!inherits(fun, "function") && !identical(fun, "auto")) {
-    stop(
-      'fun must be a function or "auto", it is class: ',
-      paste(class(fun), collapse = " / ")
-    )
-  }
-
   # get stats
   stats <- lapply(X = names(models), FUN = function(rank) {
-    tax_models2stats(models = models[[rank]], rank = rank, fun = fun, ...)
+    tax_models2stats(data = models[[rank]], rank = rank, fun = fun, ...)
   })
   stats <- purrr::reduce(stats, rbind.data.frame)
   stats <- dplyr::mutate(
@@ -120,25 +107,60 @@ taxatree_models2stats <- function(data,
   if (inherits(data, "ps_extra")) {
     data[["taxatree_stats"]] <- stats
     if (isFALSE(.keep_models)) data[["taxatree_models"]] <- NULL
-  } else if (inherits(data, "list")) {
-    data <- stats
+    return(data)
+  } else {
+    return(stats)
   }
-  return(data)
 }
 
-# runs model2stats on a simple list, using names of list items as taxon name
-tax_models2stats <- function(models, rank = NULL, fun = "auto", ...) {
+#' @param rank
+#' string naming rank at which tax_model was run (needed if data is a list)
+#'
+#' @export
+#' @describeIn
+#' models2stats
+#' Extract stats from list or ps_extra output of tax_model
+tax_models2stats <- function(data,
+                             rank = NULL,
+                             fun = "auto",
+                             ...,
+                             .keep_models = FALSE) {
+  if (inherits(data, "ps_extra")) {
+    if (!is.list(data[["tax_models"]])) {
+      stop("data arg ps_extra must have 'tax_models' list attached")
+    }
+    models <- data[["tax_models"]]
+    rank <- names(models)
+    if (!rlang::is_string(rank, string = phyloseq::rank_names(ps_get(data)))) {
+      stop("tax_models list must be length 1 & have name of a rank in ps_extra")
+    }
+    models <- models[[rank]] # remove one layer of nesting
+  } else if (inherits(data, "list")) {
+    if (is.null(rank)) stop("if `data` is just a list, `rank` must not be NULL")
+    models <- data
+  } else {
+    stop("data must be a ps_extra with tax_models list, or just the list")
+  }
+
   # if univariable mode was on then this layer is a list e.g. v1:tax1;tax2;...
   if (identical(class(models[[1]]), "list")) models <- purrr::flatten(models)
 
   # map2 to avoid indexing by names, which are duplicated in univariable mode
-  out_list <- purrr::map2(
+  stat_list <- purrr::map2(
     .x = seq_along(models), .y = names(models), .f = function(x, y) {
       taxModel2stats(models[[x]], taxon = y, rank = rank, fun = fun, ...)
     }
   )
-  out <- purrr::reduce(out_list, rbind.data.frame)
-  return(out)
+  stats <- purrr::reduce(stat_list, rbind.data.frame)
+
+  # return ps_extra or data.frame (based on input data class)
+  if (inherits(data, "ps_extra")) {
+    data[["tax_stats"]] <- stats
+    if (isFALSE(.keep_models)) data[["tax_models"]] <- NULL
+    return(data)
+  } else {
+    return(stats)
+  }
 }
 
 
@@ -216,4 +238,3 @@ tidy_bbdml <- function(model,
   df <- dplyr::filter(df, .data$parameter %in% param)
   return(df)
 }
-
