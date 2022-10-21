@@ -1,3 +1,25 @@
+test_that("formulaMakerRHSstring throws appropriate errors", {
+  expect_error(
+    object = microViz:::formulaMakerRHSstring(formula = y ~ a),
+    regexp = "formula must include only right-hand side, e.g"
+  )
+  expect_error(
+    object = microViz:::formulaMakerRHSstring(variables = list(2, "hi")),
+    regexp = "variables list contents must be character"
+  )
+  expect_error(
+    object = microViz:::formulaMakerRHSstring(variables = c(NA, "hi")),
+    regexp = "variables argument must not contain NAs"
+  )
+  expect_error(
+    object = microViz:::formulaMakerRHSstring(variables = list(NA, "hi")),
+    regexp = "variables argument must not contain NAs"
+  )
+  expect_error(
+    object = microViz:::formulaMakerRHSstring(formula = 2),
+    regexp = "formula must be NULL or of class formula, character, or list"
+  )
+})
 
 test_that("formulaMakerRHSstring handles lists of variables and formulae", {
   expect_identical(
@@ -76,3 +98,12 @@ test_that("formula and variable arg alternatives can be equivalent", {
   expect_equal(models5, models4)
 })
 
+test_that("checkPackageAvailable works", {
+  expect_silent(checkPackageAvailable(c("dplyr", "tidyr"), message = " test"))
+  expect_error(checkPackageAvailable("lol", message = " test"), "lol test")
+})
+
+test_that("isType_bbdml works", {
+  expect_true(isType_bbdml("bbdml"))
+  expect_false(isType_bbdml("other"))
+})
