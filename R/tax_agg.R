@@ -217,9 +217,11 @@ tax_agg <- function(ps,
       tt_add_topN_var(phyloseq::tax_table(ps_agg), N = top_N, other = "other")
   }
 
-  # ps_extra
-  ps_extra <- new_ps_extra(ps_agg, info = new_ps_extra_info(tax_agg = rank))
-  return(ps_extra)
+  psX <- psExtra(ps = ps_agg, info = new_psExtraInfo(tax_agg = rank))
+  return(psX)
+  # # ps_extra
+  # ps_extra <- new_ps_extra(ps_agg, info = new_ps_extra_info(tax_agg = rank))
+  # return(ps_extra)
 }
 
 # https://github.com/r-lib/tidyselect/issues/201
