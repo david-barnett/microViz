@@ -241,9 +241,10 @@ taxonModel <- function(ps, type, taxon, fstring_rhs, ...) {
 
   # actually do the modelling
   res <- do.call(type, args = args)
-  # attach formula information as attribute to model object
+  # overwrite existing uninformative call if appropriate
+  if (!isS4(res) && !is.null(res[["call"]])) res[["call"]] <- str2lang(fstring)
+  # attach formula information as attribute to all model objects
   attr(res, which = "formula_string") <- fstring
-  res[["call"]] <- "See formula_string attribute of model."
   return(res)
 }
 
