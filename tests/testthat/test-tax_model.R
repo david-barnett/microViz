@@ -26,17 +26,20 @@ ps <- ps %>% tax_filter(min_prevalence = 0.1, min_total_abundance = 10000)
 VARS <- c("female", "overweight", "obese")
 
 models <- tax_model(
-  ps,
-  type = "bbdml", rank = "Genus", taxa = 1:5, variables = VARS
+  ps = ps, type = "bbdml", rank = "Genus", taxa = 1:5, variables = VARS
 )
-# Alternative method using formula arg instead of variables to produce identical results
+# Alternative method using formula arg instead of vars for identical results
 models2 <- tax_model(
-  ps,
-  type = "bbdml", rank = "Genus", taxa = 1:5,
+  ps = ps, type = "bbdml", rank = "Genus", taxa = 1:5,
   formula = ~ female + overweight + obese
 )
-all.equal(models, models2) # should be TRUE
+# Alternative method using formula arg as string to produce identical results
+models3 <- tax_model(
+  ps = ps, type = "bbdml", rank = "Genus", taxa = 1:5,
+  formula = "~ female + overweight + obese"
+)
 
 test_that("formula and variable arg alternatives can be equivalent", {
   expect_equal(models, models2)
+  expect_equal(models, models3)
 })

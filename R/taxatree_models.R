@@ -30,6 +30,7 @@ taxatree_models <- function(ps,
                             type = "lm",
                             variables = NULL,
                             formula = NULL,
+                            univariable = FALSE,
                             verbose = "rank",
                             ...) {
   data <- as_ps_extra(ps)
@@ -43,7 +44,7 @@ taxatree_models <- function(ps,
       if (!isFALSE(verbose)) message(Sys.time(), " - modelling at rank: ", r)
       models <- tax_model(
         ps = ps, rank = r, type = type, variables = variables,
-        formula = formula, verbose = verbose, ...
+        formula = formula, univariable = univariable, verbose = verbose, ...
       )
       return(models)
     }

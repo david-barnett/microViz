@@ -10,6 +10,7 @@ tax_model(
   type = "lm",
   variables = NULL,
   formula = NULL,
+  univariable = FALSE,
   taxa = NULL,
   verbose = TRUE,
   ...
@@ -65,7 +66,7 @@ library(dplyr)
 data(dietswap, package = "microbiome")
 ps <- dietswap
 
-# create some binary variables for easy visualisation
+# create some binary variables for easy visualization
 ps <- ps \%>\% ps_mutate(
   female = if_else(sex == "female", 1, 0, NaN),
   overweight = if_else(bmi_group == "overweight", 1, 0, NaN),
