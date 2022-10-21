@@ -11,6 +11,9 @@ taxatree_models(
   variables = NULL,
   formula = NULL,
   univariable = FALSE,
+  use_future = FALSE,
+  checkVars = TRUE,
+  checkNA = "warning",
   verbose = "rank",
   ...
 )
@@ -27,6 +30,12 @@ taxatree_models(
 
 \item{formula}{(alternative to variables arg) right hand side of a formula,
 as a formula object or character value}
+
+\item{use_future}{if TRUE parallel processing with future is possible, see details of ?tax_model.}
+
+\item{checkVars}{check variance of variables?}
+
+\item{checkNA}{check variables for NAs?}
 
 \item{verbose}{message about progress: "rank" only notifies which rank is being processed;
 TRUE notifies you about each taxon being processed; FALSE for no messages.}
