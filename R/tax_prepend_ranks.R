@@ -20,6 +20,7 @@
 #'   phyloseq::tax_table() %>%
 #'   head()
 tax_prepend_ranks <- function(ps, sep = ": ", nchar = 1) {
+  ps <- ps_get(ps)
   ntax <- phyloseq::ntaxa(ps)
   tt <- unclass(phyloseq::tax_table(ps))
   tt <- vapply(
