@@ -173,7 +173,7 @@ tax_filter <- function(ps,
   }
 
   out <- input
-  if (is(out, "psExtra")) update_psExtra(psExtra = out, ps = psOut)
+  if (is(out, "psExtra")) out <- modify_psExtra(psExtra = out, ps = psOut)
   if (inherits(out, "ps_extra")) out$ps <- psOut
   if (isTRUE(use_counts)) {
     if (is(out, "psExtra")) {

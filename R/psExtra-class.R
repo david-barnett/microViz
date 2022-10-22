@@ -86,7 +86,7 @@ validate_psExtraInfo <- function(psExtraInfo) {
   validate_psExtraOrdInfo(psExtraInfo[["ord_info"]])
 }
 
-update_psExtraInfo <- function(psExtraInfo, ..., append = FALSE) {
+modify_psExtraInfo <- function(psExtraInfo, ..., append = FALSE) {
   new <- list(...)
   stopifnot(rlang::is_named(new))
   stopifnot(
@@ -200,7 +200,7 @@ psExtra <- function(ps,
   )
 }
 
-update_psExtra <- function(psExtra, ...) {
+modify_psExtra <- function(psExtra, ...) {
   check_is_psExtra(psExtra, argName = "psExtra")
   new <- list(...)
   stopifnot(rlang::is_named(new))

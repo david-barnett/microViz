@@ -214,7 +214,7 @@ tax_sort <- function(data,
       data$counts <- tax_reorder_otu(data$counts, tax_order = taxSorted)
     }
   } else if (is(data, "psExtra")) {
-    data <- update_psExtra(data, ps = ps)
+    data <- modify_psExtra(data, ps = ps)
     if (!identical(data@counts, NULL)) {
       data@counts <- tax_reorder_otu(data@counts, tax_order = taxSorted)
     }

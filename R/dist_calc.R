@@ -114,7 +114,7 @@ dist_calc <- function(data,
   }
 
   if (!is(data, "psExtra")) data <- psExtra(data, info = new_psExtraInfo())
-  info <- update_psExtraInfo(info, dist_method = dist)
+  info <- modify_psExtraInfo(info, dist_method = dist)
 
   data@dist <- distMat
   data@info <- info
