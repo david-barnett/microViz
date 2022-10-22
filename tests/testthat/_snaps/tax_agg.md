@@ -10,15 +10,15 @@
 
 # tax_agg gives appropriate errors
 
-    ps_extra object - a list with phyloseq and extras:
+    psExtra object - a phyloseq object with extra slots:
     
     phyloseq-class experiment-level object
     otu_table()   OTU Table:         [ 130 taxa and 222 samples ]
     sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
     tax_table()   Taxonomy Table:    [ 130 taxa by 4 taxonomic ranks ]
     
-    ps_extra info:
-    tax_agg = unique tax_transform = NA
+    psExtra info:
+    tax_agg = 'unique'	
 
 # microbiome::aggregate_taxa output hasn't changed: Phylum
 

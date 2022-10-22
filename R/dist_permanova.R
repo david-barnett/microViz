@@ -102,13 +102,9 @@ dist_permanova <- function(data,
                            ...) {
 
   # check input data object class
-  if (inherits(data, "list")) {
-    ps <- ps_get(data)
-    distMat <- dist_get(data)
-    info <- info_get(data)
-  } else {
-    stop("data argument must be an output object from dist_calc")
-  }
+  if (!is_ps_extra(data)) check_is_psExtra(data, argName = "data")
+  ps <- ps_get(data)
+  distMat <- dist_get(data)
 
   # Build the formula if supplied as a string
   formula <- paste0("~ ", paste(variables, collapse = " + "))
@@ -144,10 +140,13 @@ dist_permanova <- function(data,
   }
   ps <- ps_drop_incomplete(ps, vars = split_vars, verbose = verbose)
 
+
   # drop samples from pre-existing distMat
   # if no longer in ps after dropping incomplete
   keepers <- phyloseq::sample_names(ps)
   distMat <- stats::as.dist(as.matrix(distMat)[keepers, keepers])
+  # drop samples from any existing count matrix
+  if (!is.null(data@counts)) data@counts <- data@counts[keepers, ]
 
   # extract sample metadata from phyloseq object
   metadata <- samdatAsDataframe(ps)[, split_vars, drop = FALSE]
@@ -182,10 +181,10 @@ dist_permanova <- function(data,
   )
   if (!isFALSE(verbose)) message(Sys.time(), " - Finished PERMANOVA")
 
-  data[["ps"]] <- ps
-  data[["info"]] <- info
-  data[["permanova"]] <- results
-  data[["dist"]] <- distMat
-
+  psExtra(
+    ps = ps, info = info_get(data), counts = data@counts,
+    dist = distMat, # might have been filtered
+    permanova = results
+  )
   return(data)
 }

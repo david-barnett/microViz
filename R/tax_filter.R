@@ -163,18 +163,23 @@ tax_filter <- function(ps,
 
   # if names_only is true (default = false) return only (row)names of taxa
   if (names_only) {
-    out <- rownames(original_taxtab)[tax_selection_vec]
-  } else {
-    psOut <- ps_get(input)
-    psOut <- phyloseq::prune_taxa(tax_selection_vec, x = psOut)
-    if (inherits(input, "ps_extra")) {
-      out <- input
-      out$ps <- psOut
-      if (isTRUE(use_counts)) {
-        out$counts <- phyloseq::prune_taxa(tax_selection_vec, x = out$counts)
-      }
+    return(rownames(original_taxtab)[tax_selection_vec])
+  }
+
+  psOut <- ps_get(input)
+  psOut <- phyloseq::prune_taxa(tax_selection_vec, x = psOut)
+  if (!is_ps_extra(input) && !is(input, "psExtra")) {
+    return(psOut)
+  }
+
+  out <- input
+  if (is(out, "psExtra")) update_psExtra(psExtra = out, ps = psOut)
+  if (inherits(out, "ps_extra")) out$ps <- psOut
+  if (isTRUE(use_counts)) {
+    if (is(out, "psExtra")) {
+      out@counts <- phyloseq::prune_taxa(tax_selection_vec, x = out@counts)
     } else {
-      out <- psOut
+      out$counts <- phyloseq::prune_taxa(tax_selection_vec, x = out$counts)
     }
   }
   return(out)

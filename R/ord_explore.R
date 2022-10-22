@@ -6,7 +6,7 @@
 #'
 #' The `ord_explore()` data argument takes either:
 #'
-#' - the output of `ord_calc()` (i.e. a ps_extra with an ordination)
+#' - the output of `ord_calc()` (i.e. a psExtra with an ordination)
 #' - a plain phyloseq object: `ord_explore()` will help you build an ordination
 #'
 #' Once the app is running (in your browser), you can:
@@ -45,8 +45,9 @@
 #' As a workaround, click the box and type a number or use the arrow keys.
 #' This problem occurs in all Shiny apps, not just microViz.
 #'
-#' @param data ps_extra list output of ord_calc, or phyloseq
-#' @param sample_id name of sample ID variable to use as default for selecting samples
+#' @param data a phyloseq, or the psExtra output of ord_calc
+#' @param sample_id
+#' name of sample ID variable to use as default for selecting samples
 #' @param seriate_method
 #' seriation method to order phyloseq samples by similarity
 #' @param app_options passed to shinyApp() options argument
@@ -924,18 +925,22 @@ ord_explore <- function(data,
 #' @noRd
 ord_explore_init <- function(data) {
 
-  # if data is plain phyloseq, validate and convert to ps_extra
-  if (methods::is(data, "phyloseq")) {
+  if (!is_ps_extra(data)) check_is_phyloseq(data, argName = "data")
+
+  # if data is plain phyloseq, validate and convert to psExtra
+  if (!is(data, "psExtra") && is(data, "phyloseq")) {
     data <- tax_transform(phyloseq_validate(data), "identity", rank = "unique")
   }
 
   # create a SAMPLE id variable
-  psTemp <- ps_get(data)
-  psTemp <- ps_mutate(psTemp, SAMPLE = phyloseq::sample_names(psTemp))
-  data$ps <- psTemp
+  if (inherits(data, "ps_extra")) {
+    data$ps <- ps_mutate(data$ps, SAMPLE = phyloseq::sample_names(data$ps))
+  } else {
+    data@sam_data$SAMPLE <- phyloseq::sample_names(data)
+  }
 
   # create unique rank if not already present
-  if (!"unique" %in% phyloseq::rank_names(psTemp)) {
+  if (!"unique" %in% phyloseq::rank_names(ps_get(data))) {
     data <- tax_names2rank(data, colname = "unique")
   }
 
@@ -943,12 +948,12 @@ ord_explore_init <- function(data) {
   # get info about input data to initialise settings modal choices
   info <- list(
     rank = info_get(data)[["tax_agg"]],
-    trans = info_get(data)[["tax_transform"]],
+    trans = info_get(data)$tax_trans,
     scale = info_get(data)[["tax_scale"]],
-    dist = info_get(data)[["distMethod"]],
-    ord = info_get(data)[["ordMethod"]],
-    constraints = read_cons(info_get(data)[["constraints"]]),
-    conditions = read_cons(info_get(data)[["conditions"]])
+    dist = info_get(data)[["dist_method"]],
+    ord = info_get(data)$ord_info[["method"]],
+    constraints = read_cons(info_get(data)$ord_info[["constraints"]]),
+    conditions = read_cons(info_get(data)$ord_info[["conditions"]])
   )
   # read_cons returns NULL if no constraints / conditions found
   info$isCon <- length(c(info$constraints, info$conditions)) > 0
@@ -976,8 +981,8 @@ ord_explore_init <- function(data) {
     warn <- FALSE
   }
   # scale = if (is.na(info$scale)) "neither" else info$scale,
-  if (is.na(info$dist)) info$dist <- "none"
-  if (is.na(info$ord)) info$ord <- "auto"
+  if (length(info$dist) == 0 || rlang::is_na(info$dist)) info$dist <- "none"
+  if (length(info$ord) == 0 || rlang::is_na(info$ord)) info$ord <- "auto"
 
   # variables and ranks -------------------------------------------------------
   # get list of certain types of variables for populating selectize lists
@@ -1007,7 +1012,7 @@ ord_explore_init <- function(data) {
 # simple helper function that takes string representing constraints or
 # conditions stored in ps_extra info and splits by "+" or returns NULL if NA
 read_cons <- function(cons_string) {
-  if (is.na(cons_string)) {
+  if (length(cons_string) == 0 || rlang::is_na(cons_string)) {
     return(NULL)
   } else {
     return(unlist(strsplit(x = cons_string, split = "+", fixed = TRUE)))

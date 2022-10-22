@@ -12,8 +12,8 @@
 #'  - Aitchison distance (Euclidean distance after centered log ratio transform clr, see details)
 #'  - Euclidean distance
 #'
-#' Use dist_calc with ps_extra output of tax_transform (or tax_agg).
-#' It returns a ps_extra object containing the phyloseq and the name of the distance used
+#' Use dist_calc with psExtra output of tax_transform (or tax_agg).
+#' It returns a psExtra object containing the phyloseq and the name of the distance used
 #' in addition to the distance matrix itself.
 #' The resulting object is intended to be piped into ord_calc or dist_permanova functions.
 #' Alternatively you can directly access the distance matrix with dist_get().
@@ -34,14 +34,14 @@
 #' first perform a "binary" transformation with `tax_transform("binary")`,
 #' OR pass an additional argument to `dist_calc("jaccard", binary = TRUE)`
 #'
-#' @param data ps_extra object, e.g. output from tax_transform()
+#' @param data psExtra object, e.g. output from tax_transform()
 #' @param dist name of distance to calculate between pairs of samples
 #' @param gunifrac_alpha
 #' setting alpha value only relevant if gunifrac distance used
 #' @param ...
 #' optional distance-specific named arguments passed to phyloseq::distance()
 #'
-#' @return list with distance matrix, phyloseq object, and name of distance used
+#' @return psExtra object including distance matrix and name of distance used
 #' @export
 #'
 #' @seealso \code{\link{tax_transform}} for the function to use before dist_calc
@@ -73,24 +73,13 @@ dist_calc <- function(data,
 
   # check valid distance name was supplied
   if (!rlang::is_string(dist)) stop("dist must be name of distance/dissimilarity")
-  rlang::arg_match(
-    arg = dist, multiple = FALSE,
-    values = union(
-      c(
-        "bray", "gunifrac", "unifrac", "wunifrac", "va-wunifrac",
-        "aitchison", "robust.aitchison", "euclidean"
-      ),
-      unlist(phyloseq::distanceMethodList)
-    )
-  )
+  rlang::arg_match(arg = dist, multiple = FALSE, values = union(c(
+    "bray", "gunifrac", "unifrac", "wunifrac", "va-wunifrac",
+    "aitchison", "robust.aitchison", "euclidean"
+  ), unlist(phyloseq::distanceMethodList)))
 
   # check input data object class
   distCalcDataValidate(data)
-
-  # create ps_extra from phyloseq if phyloseq given
-  if (methods::is(data, "phyloseq")) {
-    data <- new_ps_extra(ps = data, info = new_ps_extra_info())
-  }
 
   # get components
   ps <- ps_get(data)
@@ -124,11 +113,11 @@ dist_calc <- function(data,
     stop(paste("Invalid distance measure named in dist argument:", dist))
   }
 
-  # return object
-  info[["distMethod"]] <- dist
-  data[["dist"]] <- distMat
-  data[["info"]] <- info
+  if (!is(data, "psExtra")) data <- psExtra(data, info = new_psExtraInfo())
+  info <- update_psExtraInfo(info, dist_method = dist)
 
+  data@dist <- distMat
+  data@info <- info
   return(data)
 }
 
@@ -138,13 +127,15 @@ dist_calc <- function(data,
 # (ps_extra `info` required for transformation check)
 #
 distMatAitchison <- function(ps, dist, info) {
-  trInfo <- info[["tax_transform"]]
-  if (identical(trInfo, "clr") || identical(trInfo, "rclr")) {
-    stop(
-      "dist_calc 'aitchison' distance requires count data\n",
-      " - your data are ", trInfo, "-transformed (according to ps_extra info)",
-      "\n - see the ?dist_calc details section for more info"
-    )
+  if (identical(info$tax_trans, "clr") || identical(info$tax_trans, "rclr")) {
+    rlang::abort(call = rlang::caller_env(1), message = c(
+      "dist_calc 'aitchison' distance requires count data",
+      i = paste0(
+        "your data are ", info$tax_trans,
+        "-transformed (according to ps_extra info)"
+      ),
+      i = "see the ?dist_calc details section for more info"
+    ))
   }
   if (dist == "aitchison") trans <- "clr"
   if (dist == "robust.aitchison") trans <- "rclr"
@@ -182,9 +173,9 @@ distMatUnifrac <- function(ps, gunifrac_alpha, uniID) {
 
 # data class checker, also used in dist_calc_seq()
 distCalcDataValidate <- function(data) {
-  if (!inherits(data, "ps_extra") && !methods::is(data, "phyloseq")) {
+  if (!is_ps_extra(data) && !methods::is(data, "phyloseq")) {
     stop(
-      "data for dist_calc must be of class 'ps_extra'\n",
+      "data for dist_calc must be of class 'psExtra'\n",
       " - e.g. output of tax_agg or tax_transform\n",
       " - data is class: ", paste(class(data), collapse = " ")
     )

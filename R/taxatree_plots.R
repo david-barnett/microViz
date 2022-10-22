@@ -181,7 +181,8 @@ taxatree_plots <- function(data,
                            l2 = if (palette == "Green-Brown") 85 else NULL,
                            colour_na = "grey35") {
   # get variable-specific stats for joining to node data
-  stats <- data[["taxatree_stats"]]
+  if (is_ps_extra(data)) stats <- data[["taxatree_stats"]]
+  if (is(data, "psExtra")) stats <- data@taxatree_stats
   taxatree_plots_statsCheck(
     stats = stats, vars = vars, colour_stat = colour_stat, sig_stat = sig_stat
   )

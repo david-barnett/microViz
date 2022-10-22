@@ -30,7 +30,7 @@ ord_plot(
 )
 }
 \arguments{
-\item{data}{ps_extra list object, output from ord_calc}
+\item{data}{psExtra object with ordination attached, i.e. output from ord_calc}
 
 \item{axes}{which axes to plot: numerical vector of length 2, e.g. 1:2 or c(3,5)}
 
@@ -63,8 +63,10 @@ NA = auto-scaling, or provide a numeric multiplier yourself.}
 
 \item{plot_samples}{if TRUE, plot sample points with geom_point}
 
-\item{scaling}{Type 2, or type 1 scaling. For more info, see \url{https://sites.google.com/site/mb3gustame/constrained-analyses/rda}.
-Either "species" or "site" scores are scaled by (proportional) eigenvalues, and the other set of scores is left unscaled (from ?vegan::scores.cca)}
+\item{scaling}{Type 2, or type 1 scaling. For more info,
+see \url{https://sites.google.com/site/mb3gustame/constrained-analyses/rda}.
+Either "species" or "site" scores are scaled by (proportional) eigenvalues,
+and the other set of scores is left unscaled (from ?vegan::scores.cca)}
 
 \item{auto_caption}{size of caption with info about the ordination, NA for none}
 
@@ -83,7 +85,7 @@ drawn with geom_point using aes_string}
 ggplot
 }
 \description{
-Draw ordination plot. Utilises results of \code{\link{ord_calc}}.
+Draw ordination plot. Utilises psExtra object produced by of \code{\link{ord_calc}}.
 \itemize{
 \item For an extensive tutorial see \href{https://david-barnett.github.io/microViz/articles/web-only/ordination.html}{the ordination vignette}.
 \item For interpretation see the the relevant pages on PCA, PCoA, RDA, or CCA on the GUide to STatistical Analysis in Microbial Ecology (GUSTA ME) website: \url{https://sites.google.com/site/mb3gustame/}

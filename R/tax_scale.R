@@ -75,16 +75,18 @@ tax_scale <- function(data, center = TRUE, scale = TRUE, do = NA, keep_counts = 
   scaling <- paste(c("centered", "scaled")[c(center, scale)], collapse = "&")
 
   # check input data object class
-  if (inherits(data, "ps_extra")) {
+  if (is_ps_extra(data) || is(data, "psExtra")) {
 
     # check and update pre-existing info
-    if (!is.na(data$info[["tax_scale"]])) {
-      warning("data were already scaled: ", data$info[["tax_scale"]])
+    info <- info_get(data)
+    if (length(info[["tax_scale"]]) > 0 && !rlang::is_na(info[["tax_scale"]])) {
+      warning("data were already scaled: ", info[["tax_scale"]])
     }
-    info <- data$info
-    info[!names(info) %in% c("tax_agg", "tax_transform")] <- NA_character_
-    info[["tax_scale"]] <- scaling
-    data$info <- info
+    newInfo <- new_psExtraInfo(
+      tax_agg = info$tax_agg, tax_trans = info$tax_trans, tax_scale = scaling
+    )
+    if (inherits(data, "ps_extra")) data$info <- newInfo
+    if (is(data, "psExtra")) data@info <- newInfo
 
     # retain counts if requested
     if (isTRUE(keep_counts)) {

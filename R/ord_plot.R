@@ -1,6 +1,6 @@
 #' Customisable ggplot2 ordination plot
 #'
-#' Draw ordination plot. Utilises results of \code{\link{ord_calc}}.
+#' Draw ordination plot. Utilises psExtra object produced by of \code{\link{ord_calc}}.
 #' - For an extensive tutorial see \href{https://david-barnett.github.io/microViz/articles/web-only/ordination.html}{the ordination vignette}.
 #' - For interpretation see the the relevant pages on PCA, PCoA, RDA, or CCA on the GUide to STatistical Analysis in Microbial Ecology (GUSTA ME) website: \url{https://sites.google.com/site/mb3gustame/}
 #'
@@ -10,32 +10,49 @@
 #' - single numeric value e.g. 0.75 --> plot labels for taxa with line length > 0.75
 #' - character vector e.g. c('g__Bacteroides', 'g__Veillonella') --> plot labels for the exactly named taxa
 #'
-#' @param data ps_extra list object, output from ord_calc
-#' @param axes which axes to plot: numerical vector of length 2, e.g. 1:2 or c(3,5)
-#' @param plot_taxa if ord_calc method was "PCA/RDA" draw the taxa loading vectors (see details)
+#' @param data
+#' psExtra object with ordination attached, i.e. output from ord_calc
+#' @param axes
+#'  which axes to plot: numerical vector of length 2, e.g. 1:2 or c(3,5)
+#' @param plot_taxa
+#' if ord_calc method was "PCA/RDA" draw the taxa loading vectors (see details)
 #' @param tax_vec_length taxon arrow vector scale multiplier.
 #' NA = auto-scaling, or provide a numeric multiplier yourself.
-#' @param tax_vec_style_all list of named aesthetic attributes for all (background) taxon vectors
-#' @param tax_vec_style_sel list of named aesthetic attributes for taxon vectors for the taxa selected by plot_taxa
-#' @param tax_lab_length scale multiplier for label distance/position for any selected taxa
-#' @param tax_lab_style list of style options for the taxon labels, see tax_lab_style() function.
-#' @param taxon_renamer function that takes any plotted taxon names and returns modified names for labels
-#' @param plot_samples if TRUE, plot sample points with geom_point
-#' @param constraint_vec_length constraint arrow vector scale multiplier.
+#' @param tax_vec_style_all
+#' list of named aesthetic attributes for all (background) taxon vectors
+#' @param tax_vec_style_sel
+#' list of named aesthetic attributes for taxon vectors for the taxa selected by plot_taxa
+#' @param tax_lab_length
+#' scale multiplier for label distance/position for any selected taxa
+#' @param tax_lab_style
+#' list of style options for the taxon labels, see tax_lab_style() function.
+#' @param taxon_renamer
+#' function that takes any plotted taxon names and returns modified names for labels
+#' @param plot_samples
+#' if TRUE, plot sample points with geom_point
+#' @param constraint_vec_length
+#' constraint arrow vector scale multiplier.
 #' NA = auto-scaling, or provide a numeric multiplier yourself.
-#' @param constraint_vec_style list of aesthetics/arguments (colour, alpha etc) for the constraint vectors
+#' @param constraint_vec_style
+#' list of aesthetics/arguments (colour, alpha etc) for the constraint vectors
 #' @param constraint_lab_length label distance/position for any constraints
 #' (relative to default position which is proportional to correlations with each axis)
-#' @param constraint_lab_style list of aesthetics/arguments (colour, size etc) for the constraint labels
-#' @param var_renamer function to rename constraining variables for plotting their labels
+#' @param constraint_lab_style
+#' list of aesthetics/arguments (colour, size etc) for the constraint labels
+#' @param var_renamer
+#' function to rename constraining variables for plotting their labels
 #' @param scaling
-#' Type 2, or type 1 scaling. For more info, see \url{https://sites.google.com/site/mb3gustame/constrained-analyses/rda}.
-#' Either "species" or "site" scores are scaled by (proportional) eigenvalues, and the other set of scores is left unscaled (from ?vegan::scores.cca)
-#' @param auto_caption size of caption with info about the ordination, NA for none
+#' Type 2, or type 1 scaling. For more info,
+#' see \url{https://sites.google.com/site/mb3gustame/constrained-analyses/rda}.
+#' Either "species" or "site" scores are scaled by (proportional) eigenvalues,
+#' and the other set of scores is left unscaled (from ?vegan::scores.cca)
+#' @param auto_caption
+#' size of caption with info about the ordination, NA for none
 #' @param center expand plot limits to center around origin point (0,0)
 #' @param clip clipping of labels that extend outside plot limits?
 #' @param expand expand plot limits a little bit further than data range?
-#' @param interactive creates plot suitable for use with ggiraph (used in ord_explore)
+#' @param interactive
+#' creates plot suitable for use with ggiraph (used in ord_explore)
 #' @param ...
 #' pass aesthetics arguments for sample points,
 #' drawn with geom_point using aes_string
@@ -188,11 +205,12 @@ ord_plot <-
     stopifnot(stats::nobs(ordination) == phyloseq::nsamples(ps))
 
     # check input data object class and extract the most used objects to function env
-    if (inherits(data, "ps_extra") && !identical(ordination, NULL)) {
-      info <- info_get(data)
-    } else {
-      stop("data argument should be a ps_extra list, i.e. output of ord_calc")
-    }
+    if (!is_ps_extra(data)) check_is_psExtra(data, argName = "data")
+    if (identical(ordination, NULL)) stop("data must be psExtra output of ord_calc")
+    info <- info_get(data)
+    ordInfo <- info[["ord_info"]]
+    constrs <- ordInfo$constraints
+    isConstrained <- length(constrs) > 0 && !rlang::is_na(constrs)
 
     # return named list of arguments matching either phyloseq variable names or
     # numbers/colors/ggplot2_shapes (throws error if any are invalid)
@@ -225,7 +243,7 @@ ord_plot <-
       siteScoresDf <- as.data.frame(
         vegan::scores(ordination, display = "sites", choices = axes)
       )
-      axeslabels <- axesNames <- colnames(siteScoresDf)
+      axesLabs <- axesNames <- colnames(siteScoresDf)
     } else {
 
       # compute summary of ordination object to ensure
@@ -236,23 +254,20 @@ ord_plot <-
       siteScoresDf <- as.data.frame(ordsum[["sites"]][, axes, drop = FALSE])
 
       # if RDA/PCA method: get species scores (aka feature loadings)
-      if (info[["ordMethod"]] %in% c("RDA", "PCA", "CCA")) {
-        speciesScoresDf <-
-          as.data.frame(ordsum[["species"]][, axes, drop = FALSE])
+      if (info$ord_info$method %in% c("RDA", "PCA", "CCA")) {
+        speciesScoresDf <- as.data.frame(ordsum[["species"]][, axes, drop = FALSE])
       }
 
       # if constrained model: get constraints coordinates for plotting
-      if (!identical(info[["constraints"]], NA_character_)) {
-        constraintDf <-
-          as.data.frame(ordsum[["biplot"]][, axes, drop = FALSE])
+      if (isConstrained) {
+        constraintDf <- as.data.frame(ordsum[["biplot"]][, axes, drop = FALSE])
       }
 
       # extract "explained variation" for labelling axes
-      explainedVar <-
-        vegan::eigenvals(ordination)[axes] / sum(vegan::eigenvals(ordination))
+      eigVals <- vegan::eigenvals(ordination)
+      explainedVar <- eigVals[axes] / sum(eigVals)
       axesNames <- colnames(siteScoresDf)
-      axeslabels <-
-        paste0(axesNames, " [", sprintf("%.1f", 100 * explainedVar), "%]")
+      axesLabs <- paste0(axesNames, " [", sprintf("%.1f", 100 * explainedVar), "%]")
     }
     # bind ordination axes vectors to metadata subset for plotting
     df <- dplyr::bind_cols(siteScoresDf, meta)
@@ -265,7 +280,7 @@ ord_plot <-
       mapping = ggplot2::aes_string(x = axesNames[1], y = axesNames[2])
     ) +
       ggplot2::theme_minimal() +
-      ggplot2::labs(x = axeslabels[1], y = axeslabels[2]) +
+      ggplot2::labs(x = axesLabs[1], y = axesLabs[2]) +
       ggplot2::coord_cartesian(clip = clip, default = TRUE, expand = expand)
 
     # set geom_point variable aesthetics
@@ -285,7 +300,7 @@ ord_plot <-
 
     ## taxa -------------------------------------------------------------------
     # add loadings/ species-scores arrows for RDA/PCA methods
-    if (info[["ordMethod"]] %in% c("RDA", "CCA", "PCA")) {
+    if (ordInfo[["method"]] %in% c("RDA", "CCA", "PCA")) {
 
       # return subselection of taxa for which to draw labels on plot
       selectSpeciesScoresDf <- subsetTaxaDfLabel(
@@ -328,7 +343,7 @@ ord_plot <-
 
     ## constraints -----------------------------------------------------------
     # if constrained ordination, plot constraints
-    if (!identical(info[["constraints"]], NA_character_)) {
+    if (isConstrained) {
 
       # automatic constraint length setting
       if (identical(constraint_vec_length, NA)) {
@@ -382,31 +397,35 @@ ord_caption <- function(p, ps, cap_size, info, scaling) {
   if (identical(NA, cap_size)) {
     return(p) # return unchanged
   } else {
-    o <- info[["ordMethod"]]
+    o <- info$ord_info$method
 
     # some ordinations should have scaling type reported, when not the default
     if (o %in% c("PCA", "RDA", "CCA", "CAP") && scaling != 2) {
       o <- paste0(o, " (scaling=", scaling, ")")
     }
-    if (!is.na(info[["constraints"]])) {
-      o <- paste0(o, " constraints=", info[["constraints"]])
+    cstrs <- info$ord_info$constraints
+    if (length(cstrs) > 0 && !rlang::is_na(cstrs)) {
+      o <- paste0(o, " constraints=", cstrs)
     }
-    if (!is.na(info[["conditions"]])) {
-      o <- paste0(o, " conditions=", info[["conditions"]])
+    cnds <- info$ord_info$conditions
+    if (length(cnds) > 0 && !rlang::is_na(cnds)) {
+      o <- paste0(o, " conditions=", cnds)
     }
 
     # caption gets n taxa and samples info
     caption <- paste0(
       nrow(p[["data"]]), " samples & ", phyloseq::ntaxa(ps),
-      " taxa (", info[["tax_agg"]], "). ", o
+      " taxa (", info$tax_agg, "). ", o
     )
 
     # any transformations and distances should be listed
-    if (!is.na(info[["tax_transform"]])) {
-      caption <- paste0(caption, " tax_transform=", info[["tax_transform"]])
+    trnsf <- info$tax_trans
+    if (length(trnsf) > 0 && !rlang::is_na(trnsf)) {
+      caption <- paste0(caption, " tax_transform=", trnsf)
     }
-    if (!is.na(info[["distMethod"]])) {
-      caption <- paste0(caption, " dist=", info[["distMethod"]])
+    dstMth <- info$dist_method
+    if (length(dstMth) > 0 && !rlang::is_na(dstMth)) {
+      caption <- paste0(caption, " dist=", dstMth)
     }
 
     # add the caption
@@ -423,9 +442,7 @@ center_plot <- function(plot, clip = "off", expand = TRUE) {
   plot + ggplot2::coord_cartesian(
     xlim = c(-max(abs(lims$x)), max(abs(lims$x))),
     ylim = c(-max(abs(lims$y)), max(abs(lims$y))),
-    default = TRUE,
-    clip = clip,
-    expand = expand
+    default = TRUE, clip = clip, expand = expand
   )
 }
 
@@ -478,32 +495,32 @@ subsetTaxaDfLabel <- function(speciesScoresDf, plot_taxa) {
   # return subselection of taxa for which to draw labels on plot
   selectSpeciesScoresDf <-
     switch(class(plot_taxa[[1]]),
-      # default plot_taxa == TRUE --> line length > 1
-      "logical" = {
-        if (isTRUE(plot_taxa)) {
-          speciesScoresDf[speciesLineLength > 1, , drop = FALSE]
-        } else {
-          NULL
-        }
-      },
-      # integer e.g. 1:3 --> plot labels for top 3 taxa (by line length)
-      "integer" = {
-        speciesScoresDf[
-          rev(order(speciesLineLength)),
-        ][plot_taxa, , drop = FALSE]
-      },
-      # numeric e.g. 0.75 --> plot labels for taxa with line length > 0.75
-      "numeric" = {
-        speciesScoresDf[speciesLineLength > plot_taxa[[1]], , drop = FALSE]
-      },
-      # character e.g. c('g__Bacteroides', 'g__Veillonella')
-      # --> plot labels for exactly named taxa
-      "character" = {
-        speciesScoresDf[
-          rownames(speciesScoresDf) %in% plot_taxa, ,
-          drop = FALSE
-        ]
-      }
+           # default plot_taxa == TRUE --> line length > 1
+           "logical" = {
+             if (isTRUE(plot_taxa)) {
+               speciesScoresDf[speciesLineLength > 1, , drop = FALSE]
+             } else {
+               NULL
+             }
+           },
+           # integer e.g. 1:3 --> plot labels for top 3 taxa (by line length)
+           "integer" = {
+             speciesScoresDf[
+               rev(order(speciesLineLength)),
+             ][plot_taxa, , drop = FALSE]
+           },
+           # numeric e.g. 0.75 --> plot labels for taxa with line length > 0.75
+           "numeric" = {
+             speciesScoresDf[speciesLineLength > plot_taxa[[1]], , drop = FALSE]
+           },
+           # character e.g. c('g__Bacteroides', 'g__Veillonella')
+           # --> plot labels for exactly named taxa
+           "character" = {
+             speciesScoresDf[
+               rownames(speciesScoresDf) %in% plot_taxa, ,
+               drop = FALSE
+             ]
+           }
     )
 
   return(selectSpeciesScoresDf)
@@ -526,7 +543,7 @@ checkValidEllipsesOrdPlot <- function(..., ps) {
     for (v in ellipses) {
       if (
         !is.null(v) && !inherits(v, c("logical", "numeric", "integer")) &&
-          !(v %in% c(variables, grDevices::colors(), ggplot2_shapes()))
+        !(v %in% c(variables, grDevices::colors(), ggplot2_shapes()))
       ) {
         stop(v, " is not a variable in the sample metadata (or color / shape)")
       }

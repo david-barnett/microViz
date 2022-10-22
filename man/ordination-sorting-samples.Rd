@@ -16,8 +16,10 @@ ord_order_samples(ord, axes = 1:2, scaling = 2)
 
 \item{axes}{which axes to use for sorting? numerical vector of length 1 or 2}
 
-\item{scaling}{Type 2, or type 1 scaling. For more info, see \url{https://sites.google.com/site/mb3gustame/constrained-analyses/rda}.
-Either "species" or "site" scores are scaled by (proportional) eigenvalues, and the other set of scores is left unscaled (from ?vegan::scores.cca)}
+\item{scaling}{Type 2, or type 1 scaling. For more info,
+see \url{https://sites.google.com/site/mb3gustame/constrained-analyses/rda}.
+Either "species" or "site" scores are scaled by (proportional) eigenvalues,
+and the other set of scores is left unscaled (from ?vegan::scores.cca)}
 }
 \value{
 \code{ps_sort_ord} returns a phyloseq

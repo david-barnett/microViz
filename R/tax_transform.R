@@ -10,7 +10,7 @@
 #' same transformations, including many from `vegan::decostand` (where the default MARGIN = 2).
 #' See below for notes about some of the available transformations.
 #'
-#' `tax_transform` returns a `ps_extra` list containing the transformed phyloseq object and
+#' `tax_transform` returns a `psExtra` containing the transformed phyloseq object and
 #' extra info (used for annotating `ord_plot` ordinations):
 #'
 #' - tax_transform (a string recording the transformation),
@@ -70,7 +70,7 @@
 #' `zero_replace` does nothing. Either a numeric, or "halfmin".
 #' Beware: this choice is not tracked in the ps_extra output.
 #'
-#' @return `ps_extra` list including phyloseq object and info
+#' @return `psExtra` object including phyloseq and extra info
 #' @export
 #' @seealso \code{microbiome::\link[microbiome]{transform}} for some more info on available transformations
 #' @seealso \code{vegan::\link[vegan]{decostand}} for even more transformation options
@@ -85,7 +85,7 @@
 #' # this is equivalent to the two-step method (agg then transform)
 #' tax_agg(dietswap, rank = "Phylum") %>% tax_transform("clr")
 #'
-#' # does nothing except record tax_agg as "unique" and tax_transform as "identity" in ps_extra info
+#' # does nothing except record tax_agg as "unique" and tax_transform as "identity" in psExtra info
 #' dietswap %>% tax_transform("identity", rank = NA)
 #'
 #' # binary transformation (convert abundances to presence/absence or detected/undetected)
@@ -111,9 +111,8 @@ tax_transform <- function(data,
                           transformation = NULL,
                           ...) {
 
-  # temporary
   if (!identical(transformation, NULL)) {
-    # warning("`transformation` argument deprecated, use `trans` instead.")
+    warning("`transformation` argument deprecated, use `trans` instead.")
     trans <- transformation
   }
   if (!rlang::is_na(rank) && !rlang::is_string(rank)) {
@@ -129,18 +128,16 @@ tax_transform <- function(data,
   stopifnot(rlang::is_bool(keep_counts))
   stopifnot(rlang::is_bool(chain))
 
-  # check input data object class, validate options, and record ps_extra info
-  if (!inherits(data, "ps_extra") && !inherits(data, "phyloseq")) {
-    stop("data is wrong class, should be ps_extra from tax_agg, or a phyloseq")
-  }
+  # check input data object class, validate options, and record psExtra info
+  if (!is_ps_extra(data)) check_is_phyloseq(data, argName = "data")
 
-  if (inherits(data, "ps_extra")) {
+  if (is_ps_extra(data) || is(data, "psExtra")) {
     info <- tax_transformInfoUpdate(
       info = info_get(data), trans = trans, rank = rank, chain = chain
     )
-  } else if (inherits(data, "phyloseq")) {
-    if (is.na(rank)) rank <- "unique"
-    info <- new_ps_extra_info(tax_transform = trans, tax_agg = rank)
+  } else if (is(data, "phyloseq")) {
+    if (rlang::is_na(rank)) rank <- "unique"
+    info <- new_psExtraInfo(tax_trans = trans, tax_agg = rank)
   }
 
   # aggregate data if rank now available
@@ -170,9 +167,9 @@ tax_transform <- function(data,
   )
 
   # assemble ps_extra for return
-  data <- new_ps_extra(ps = ps, info = info)
+  data <- psExtra(ps = ps, info = info)
   if (isTRUE(keep_counts) && !identical(trans, "identity")) {
-    data[["counts"]] <- counts_otu
+    data@counts <- counts_otu
   }
   return(data)
 }
@@ -180,12 +177,12 @@ tax_transform <- function(data,
 # internal helper: checks and updates ps_extra info
 tax_transformInfoUpdate <- function(info, trans, chain, rank) {
   # check if already transformed
-  if (!is.na(info[["tax_transform"]])) {
+  if (length(info$tax_trans) > 0 && !rlang::is_na(info$tax_trans)) {
     if (!isTRUE(chain)) {
       # disallow further transformation by default
       stop(
         call. = FALSE,
-        "data were already transformed by: ", info[["tax_transform"]], "\n",
+        "data were already transformed by: ", info$tax_trans, "\n",
         "--> set argument chain = TRUE if you want to chain another transform"
       )
     } else if (isTRUE(chain)) {
@@ -193,12 +190,11 @@ tax_transformInfoUpdate <- function(info, trans, chain, rank) {
         stop("rank must be NA/'unique' if chaining another transformation!")
       }
       # append name of this transformation onto ps_extra info
-      info[["tax_transform"]] <-
-        paste(info[["tax_transform"]], trans, sep = "&")
+      info$tax_trans <- paste(info$tax_trans, trans, sep = "&")
     }
   } else {
     # log name of transformation in ps_extra info
-    info[["tax_transform"]] <- trans
+    info$tax_trans <- trans
   }
   return(info)
 }

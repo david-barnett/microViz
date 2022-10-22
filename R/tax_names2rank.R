@@ -25,18 +25,21 @@ tax_names2rank <- function(data, colname = "unique") {
   new <- matrix(data = rownames(tt), ncol = 1, dimnames = list(NULL, colname))
   tt <- cbind(tt, new)
   tt <- phyloseq::tax_table(tt)
+
   # return object
-  if (methods::is(data, "taxonomyTable")) {
+  if (is(data, "taxonomyTable")) {
     return(tt)
   }
-  if (methods::is(data, "phyloseq")) {
+  if (is(data, "psExtra")) {
+    data@tax_table <- tt
+  } else if (is(data, "phyloseq")) {
     phyloseq::tax_table(data) <- tt
-    return(data)
-  }
-  if (inherits(data, "ps_extra")) {
+  } else if (inherits(data, "ps_extra")) {
     phyloseq::tax_table(data$ps) <- tt
-    return(data)
+  } else {
+    stop("Bad data - should never reach this line")
   }
+  return(data)
 }
 
 #' @export

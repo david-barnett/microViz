@@ -55,12 +55,12 @@ dist_bdisp <- function(data,
                        verbose = TRUE) {
 
   # check input data object class
-  if (inherits(data, "ps_extra") && !identical(dist_get(data), NULL)) {
-    ps <- ps_get(data)
-    distMat <- dist_get(data)
-  } else {
-    stop("data argument must be a ps_extra object from dist_calc")
-  }
+  if (!is_ps_extra(data)) check_is_psExtra(data, argName = "data")
+  if (identical(dist_get(data), NULL))
+    stop("data argument must be a psExtra object from dist_calc")
+
+  ps <- ps_get(data)
+  distMat <- dist_get(data)
 
   if (isFALSE(complete_cases)) {
     if (anyNA(phyloseq::sample_data(ps)[, variables])) {
@@ -76,6 +76,8 @@ dist_bdisp <- function(data,
   if (exists("distMat") && !identical(distMat, NULL)) {
     keepers <- phyloseq::sample_names(ps)
     distMat <- stats::as.dist(as.matrix(distMat)[keepers, keepers])
+    # drop samples from any existing count matrix
+    if (!is.null(data@counts)) data@counts <- data@counts[keepers, ]
   }
 
   # extract sample metadata from phyloseq object
@@ -99,7 +101,8 @@ dist_bdisp <- function(data,
   })
 
   names(bdisp) <- variables
-  data[["dist"]] <- distMat
-  data[["bdisp"]] <- bdisp
+  data@bdisp <- bdisp
+  data@dist <- distMat # might be filtered
+  data@counts <- data@counts  # might be filtered
   return(data)
 }

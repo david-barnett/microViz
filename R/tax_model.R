@@ -122,7 +122,7 @@ tax_model <- function(ps,
   if (!rlang::is_bool(checkVars)) stop("checkVars must be TRUE or FALSE")
 
   # store input data as ps_extra if user wants result returned as attachment
-  if (isTRUE(return_psx)) data <- as_ps_extra(ps)
+  if (isTRUE(return_psx) && is(data, "phyloseq")) data <- as(data, "psExtra")
 
   ps <- ps_get(ps)
   # check phyloseq for common problems (and fix or message about this)
@@ -196,9 +196,11 @@ tax_model <- function(ps,
   if (length(fstring_rhs) > 1) taxon_models <- purrr::transpose(taxon_models)
 
   if (isTRUE(return_psx)) {
-    # attach models list to ps_extra
-    data[["tax_models"]] <- list(x = taxon_models)
-    names(data[["tax_models"]]) <- rank
+    # attach models list to psExtra
+    mods_list <- list(x = taxon_models)
+    names(mods_list) <- rank
+    if (is_ps_extra(data)) data[["tax_models"]] <- mods_list
+    if (is(data, "psExtra")) data@tax_models <- mods_list
     return(data)
   } else {
     return(taxon_models)

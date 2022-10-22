@@ -42,7 +42,8 @@ taxatree_models <- function(ps,
                             checkNA = "warning",
                             verbose = "rank",
                             ...) {
-  data <- as_ps_extra(ps)
+
+  data <- if (is(ps, "phyloseq")) as(ps, "psExtra") else as_ps_extra(ps)
   ps <- ps_get(ps)
   ranks <- taxatree_modelsGetRanks(ps = ps, ranks = ranks)
   taxatree_modelsCheckDupes(ps = ps, ranks = ranks)
@@ -60,8 +61,9 @@ taxatree_models <- function(ps,
   )
   names(tax_models_list) <- ranks
 
-  # attach models list to ps_extra
-  data[["taxatree_models"]] <- tax_models_list
+  # attach models list to psExtra
+  if (is_ps_extra(data)) data[["taxatree_models"]] <- tax_models_list
+  if (is(data, "psExtra")) data@taxatree_models <- tax_models_list
   return(data)
 }
 

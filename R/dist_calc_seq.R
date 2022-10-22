@@ -146,7 +146,9 @@ dist_calc_seq <- function(data,
   phyloseq::sample_data(ps)[[var_name]] <- sequentialDists
 
   # return data
-  data[["ps"]] <- ps
+  if (!is(data, "psExtra") && is(data, "phyloseq")) return(ps)
+  if (is(data, "psExtra")) data <- update_psExtra(data, ps = ps)
+  if (is_ps_extra(data)) data[["ps"]] <- ps
   return(data)
 }
 

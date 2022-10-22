@@ -7,7 +7,7 @@
 dist_calc(data, dist = "bray", gunifrac_alpha = 0.5, ...)
 }
 \arguments{
-\item{data}{ps_extra object, e.g. output from tax_transform()}
+\item{data}{psExtra object, e.g. output from tax_transform()}
 
 \item{dist}{name of distance to calculate between pairs of samples}
 
@@ -16,7 +16,7 @@ dist_calc(data, dist = "bray", gunifrac_alpha = 0.5, ...)
 \item{...}{optional distance-specific named arguments passed to phyloseq::distance()}
 }
 \value{
-list with distance matrix, phyloseq object, and name of distance used
+psExtra object including distance matrix and name of distance used
 }
 \description{
 Can compute various sample-sample distances using the microbiota composition of your samples:
@@ -33,8 +33,8 @@ Can compute various sample-sample distances using the microbiota composition of 
 \item Euclidean distance
 }
 
-Use dist_calc with ps_extra output of tax_transform (or tax_agg).
-It returns a ps_extra object containing the phyloseq and the name of the distance used
+Use dist_calc with psExtra output of tax_transform (or tax_agg).
+It returns a psExtra object containing the phyloseq and the name of the distance used
 in addition to the distance matrix itself.
 The resulting object is intended to be piped into ord_calc or dist_permanova functions.
 Alternatively you can directly access the distance matrix with dist_get().

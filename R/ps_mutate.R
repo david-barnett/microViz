@@ -5,7 +5,6 @@
 #'
 #' @param ps phyloseq object with sample data
 #' @param ... passed straight to dplyr::mutate (see examples and dplyr::mutate help)
-#' @param .target DEPRECATED. See tax_mutate for manipulation of tax_table
 #'
 #' @return phyloseq object with modified sample_data
 #' @export
@@ -39,26 +38,18 @@
 #'   )
 #'
 #' head(sample_data(ps))
-ps_mutate <- function(ps, ..., .target) {
-  if (!missing(.target)) {
-    if (!identical(.target, "sample_data")) {
-      stop("Use of .target argument is deprecated.")
-    } else {
-      warning("Use of .target argument is deprecated.")
-    }
-  }
+ps_mutate <- function(ps, ...) {
 
-  if (inherits(ps, "ps_extra")) {
+  if (is_ps_extra(ps)) {
     warning("ps argument is a ps_extra, but only a phyloseq will be returned")
     ps <- ps_get(ps)
   }
-
 
   df <- samdatAsDataframe(ps)
   saved_rownames <- rownames(df)
   df <- dplyr::mutate(df, ...)
   rownames(df) <- saved_rownames
-  phyloseq::sample_data(ps) <- df
+  ps@sam_data <- phyloseq::sample_data(df) # should work for psExtra and phyloseq
 
   return(ps)
 }

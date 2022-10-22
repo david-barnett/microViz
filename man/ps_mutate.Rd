@@ -4,14 +4,12 @@
 \alias{ps_mutate}
 \title{Modify or compute new sample_data in phyloseq object}
 \usage{
-ps_mutate(ps, ..., .target)
+ps_mutate(ps, ...)
 }
 \arguments{
 \item{ps}{phyloseq object with sample data}
 
 \item{...}{passed straight to dplyr::mutate (see examples and dplyr::mutate help)}
-
-\item{.target}{DEPRECATED. See tax_mutate for manipulation of tax_table}
 }
 \value{
 phyloseq object with modified sample_data

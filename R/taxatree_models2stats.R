@@ -81,16 +81,16 @@ taxatree_models2stats <- function(data,
                                   fun = "auto",
                                   ...,
                                   .keep_models = FALSE) {
-  if (inherits(data, "ps_extra")) {
-    if (!is.list(data[["taxatree_models"]])) {
-      stop("data arg ps_extra must have 'taxatree_models' list attached")
-    }
-    models <- data[["taxatree_models"]]
-    stopifnot(all(names(models) %in% phyloseq::rank_names(ps_get(data))))
-  } else if (inherits(data, "list")) {
+  if (!is.list(data) && !is_ps_extra(data)) check_is_psExtra(x = data, argName = "data")
+  if (inherits(data, "ps_extra")) models <- data[["taxatree_models"]]
+  if (is(data, "psExtra")) models <- data@taxatree_models
+  if (!is.list(models)) {
+    stop("data arg psExtra must have 'taxatree_models' list attached")
+  }
+  if (inherits(data, "list")) {
     models <- data
   } else {
-    stop("data must be a ps_extra with taxatree_models list, or just the list")
+    stopifnot(all(names(models) %in% phyloseq::rank_names(ps_get(data))))
   }
 
   # get stats
@@ -107,10 +107,13 @@ taxatree_models2stats <- function(data,
   if (inherits(data, "ps_extra")) {
     data[["taxatree_stats"]] <- stats
     if (isFALSE(.keep_models)) data[["taxatree_models"]] <- NULL
-    return(data)
+  } else if (is(data, "psExtra")) {
+    data@taxatree_stats <- stats
+    if (isFALSE(.keep_models)) data@taxatree_models <- NULL
   } else {
-    return(stats)
+    data <- stats
   }
+  return(data)
 }
 
 #' @param rank
@@ -119,27 +122,35 @@ taxatree_models2stats <- function(data,
 #' @export
 #' @describeIn
 #' models2stats
-#' Extract stats from list or ps_extra output of tax_model
+#' Extract stats from list or psExtra output of tax_model
 tax_models2stats <- function(data,
                              rank = NULL,
                              fun = "auto",
                              ...,
                              .keep_models = FALSE) {
-  if (inherits(data, "ps_extra")) {
-    if (!is.list(data[["tax_models"]])) {
-      stop("data arg ps_extra must have 'tax_models' list attached")
-    }
-    models <- data[["tax_models"]]
+
+
+  if (inherits(data, "list")) {
+    models <- data
+  } else {
+    stopifnot(all(names(models) %in% phyloseq::rank_names(ps_get(data))))
+  }
+
+  if (!is.list(data) && !is_ps_extra(data)) check_is_psExtra(data, "data")
+  if (inherits(data, "ps_extra")) models <- data[["tax_models"]]
+  if (is(data, "psExtra")) models <- data@tax_models
+  if (!is.list(models)) {
+    stop("data arg psExtra must have 'tax_models' list attached")
+  }
+  if (inherits(data, "list")) {
+    if (is.null(rank)) stop("if `data` is just a list, `rank` must not be NULL")
+    models <- data
+  } else {
     rank <- names(models)
     if (!rlang::is_string(rank, string = phyloseq::rank_names(ps_get(data)))) {
       stop("tax_models list must be length 1 & have name of a rank in ps_extra")
     }
     models <- models[[rank]] # remove one layer of nesting
-  } else if (inherits(data, "list")) {
-    if (is.null(rank)) stop("if `data` is just a list, `rank` must not be NULL")
-    models <- data
-  } else {
-    stop("data must be a ps_extra with tax_models list, or just the list")
   }
 
   # if univariable mode was on then this layer is a list e.g. v1:tax1;tax2;...
@@ -157,10 +168,13 @@ tax_models2stats <- function(data,
   if (inherits(data, "ps_extra")) {
     data[["tax_stats"]] <- stats
     if (isFALSE(.keep_models)) data[["tax_models"]] <- NULL
-    return(data)
+  } else if (is(data, "psExtra")) {
+    data@tax_stats <- stats
+    if (isFALSE(.keep_models)) data@tax_models <- NULL
   } else {
-    return(stats)
+    data <- stats
   }
+  return(data)
 }
 
 

@@ -23,11 +23,11 @@ test_that("tax_mutate returns phyloseq with new ranks", {
 })
 
 
-test_that("tax_mutate warns when ps is ps_extra", {
+test_that("tax_mutate warns when ps is psExtra", {
   ps2 <- dietswap %>% tax_agg("Genus")
   expect_warning(
     object = tax_mutate(ps2, new = "abc"),
-    regexp = "ps argument is a ps_extra, but only a phyloseq will be returned"
+    regexp = "ps argument is a psExtra, but only a phyloseq will be returned"
   )
   expect_s4_class(suppressWarnings(tax_mutate(ps2, new = "abc")), "phyloseq")
 })

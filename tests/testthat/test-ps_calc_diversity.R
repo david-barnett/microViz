@@ -5,7 +5,7 @@ test_that("ps_calc_diversity supported plot doesn't change", {
     tax_fix() %>%
     ps_calc_diversity("Genus", index = "shannon", exp = TRUE) %>%
     ps_calc_diversity("Family", index = "inverse_simpson") %>%
-    tax_transform(rank = "Genus", transform = "clr") %>%
+    tax_transform(rank = "Genus", trans = "clr") %>%
     ord_calc("PCA") %>%
     ord_plot(
       colour = "exp_shannon_Genus", size = "inverse_simpson_Family"

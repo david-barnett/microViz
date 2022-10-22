@@ -51,7 +51,7 @@ test_that("taxatree_plots throw informative errors", {
   )
   # remove required columns
   lm_stats_wrong <- lm_stats
-  lm_stats_wrong$taxatree_stats[c("taxon", "rank")] <- NULL
+  lm_stats_wrong@taxatree_stats[c("taxon", "rank")] <- NULL
   expect_error(
     object = lm_stats_wrong %>% taxatree_plots(),
     regexp = " - it is missing the column\\(s\\): taxon & rank"

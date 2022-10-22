@@ -208,15 +208,20 @@ tax_sort <- function(data,
   )
 
   # return ps_extra if given one
-  if (inherits(data, "ps_extra")) {
+  if (is_ps_extra(data)) {
     data$ps <- ps
     if (!identical(data$counts, NULL)) {
       data$counts <- tax_reorder_otu(data$counts, tax_order = taxSorted)
     }
-    return(data)
+  } else if (is(data, "psExtra")) {
+    data <- update_psExtra(data, ps = ps)
+    if (!identical(data@counts, NULL)) {
+      data@counts <- tax_reorder_otu(data@counts, tax_order = taxSorted)
+    }
   } else {
     return(ps)
   }
+  return(data)
 }
 
 # internal helper function does main sorting of phyloseq object

@@ -45,7 +45,7 @@ Beware: this choice is not tracked in the ps_extra output.}
 undetected = \verb{a number} when using trans = "binary"}
 }
 \value{
-\code{ps_extra} list including phyloseq object and info
+\code{psExtra} object including phyloseq and extra info
 }
 \description{
 Transform taxa features, and optionally aggregate at specified taxonomic rank beforehand.
@@ -57,7 +57,7 @@ This function often uses \code{microbiome::transform} internally and can perform
 same transformations, including many from \code{vegan::decostand} (where the default MARGIN = 2).
 See below for notes about some of the available transformations.
 
-\code{tax_transform} returns a \code{ps_extra} list containing the transformed phyloseq object and
+\code{tax_transform} returns a \code{psExtra} containing the transformed phyloseq object and
 extra info (used for annotating \code{ord_plot} ordinations):
 \itemize{
 \item tax_transform (a string recording the transformation),
@@ -106,7 +106,7 @@ tax_transform(dietswap, trans = "clr", rank = "Phylum")
 # this is equivalent to the two-step method (agg then transform)
 tax_agg(dietswap, rank = "Phylum") \%>\% tax_transform("clr")
 
-# does nothing except record tax_agg as "unique" and tax_transform as "identity" in ps_extra info
+# does nothing except record tax_agg as "unique" and tax_transform as "identity" in psExtra info
 dietswap \%>\% tax_transform("identity", rank = NA)
 
 # binary transformation (convert abundances to presence/absence or detected/undetected)

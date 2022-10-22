@@ -16,7 +16,7 @@ ord_explore(
 )
 }
 \arguments{
-\item{data}{ps_extra list output of ord_calc, or phyloseq}
+\item{data}{a phyloseq, or the psExtra output of ord_calc}
 
 \item{sample_id}{name of sample ID variable to use as default for selecting samples}
 
@@ -43,7 +43,7 @@ You can select samples on an ordination plot to view their composition with stac
 
 The \code{ord_explore()} data argument takes either:
 \itemize{
-\item the output of \code{ord_calc()} (i.e. a ps_extra with an ordination)
+\item the output of \code{ord_calc()} (i.e. a psExtra with an ordination)
 \item a plain phyloseq object: \code{ord_explore()} will help you build an ordination
 }
 

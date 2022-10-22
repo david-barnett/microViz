@@ -31,7 +31,7 @@ Runs a function e.g. \code{broom::tidy} on a list of models, i.e. the output of
 \itemize{
 \item \code{taxatree_models2stats()}: Extract stats from list or ps_extra output of taxatree_models
 
-\item \code{tax_models2stats()}: Extract stats from list or ps_extra output of tax_model
+\item \code{tax_models2stats()}: Extract stats from list or psExtra output of tax_model
 
 }}
 \examples{

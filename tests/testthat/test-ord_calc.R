@@ -23,7 +23,7 @@ test_that("(constrained) ordination gives correct warnings etc", {
   ## Start of tests
   expect_warning(
     ord_calc(dietswap, method = "PCA"),
-    "data provided to ord_calc is a phyloseq object, not a ps_extra"
+    "data provided to ord_calc is a phyloseq object, not a psExtra"
   )
   expect_warning(
     ord_calc(ord_calc(tmpNoDist, method = "PCA")),
@@ -31,7 +31,7 @@ test_that("(constrained) ordination gives correct warnings etc", {
   )
   expect_error(
     ord_calc(mtcars),
-    "data should be ps_extra list output of dist_calc or tax_transform"
+    'argument data must be a "phyloseq" or "psExtra" object'
   )
   expect_error(
     ord_calc(tmpDist, conditions = 3:4),

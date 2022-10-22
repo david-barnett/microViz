@@ -96,8 +96,15 @@ ord_calc <- function(data,
   isConstrained <- ordCheckConstraints(constraints)
   isConditioned <- ordCheckConditions(conditions)
 
-  # check class of data is ps_extra and if phyloseq, convert to ps_extra
-  data <- ordCheckData(data)
+  # check class of data is ps_extra and if phyloseq, convert to psExtra
+  if (!is_ps_extra(data)) check_is_phyloseq(data, argName = "data")
+  if (!is(data, "psExtra")) {
+    warning(
+      "* data provided to ord_calc is a phyloseq object, not a psExtra.\n",
+      "* Consider using tax_agg and/or tax_transform before ordinating."
+    )
+    data <- psExtra(ps = data, info = new_psExtraInfo())
+  }
 
   # get data elements
   ps <- ps_get(data)
@@ -107,7 +114,7 @@ ord_calc <- function(data,
   if (!identical(ord_get(data), NULL) && !isFALSE(verbose)) {
     warning(
       "You already calculated an ordination (with ",
-      info[["ordMethod"]], ") --> overwriting"
+      info$ord_info$method, ") --> overwriting that ordination"
     )
   }
 
@@ -175,15 +182,15 @@ ord_calc <- function(data,
   }
 
   # build return object
-  info[["ordMethod"]] <- method
-  if (isConstrained) info[["constraints"]] <- paste(constraints, collapse = "+")
-  if (isConditioned) info[["conditions"]] <- paste(conditions, collapse = "+")
 
-  data[["ps"]] <- ps
-  data[["info"]] <- info
-  data[["dist"]] <- distMat
-  data[["ord"]] <- ORD
+  ordI <- new_psExtraOrdInfo(method = method)
+  if (isConstrained) ordI[["constraints"]] <- paste(constraints, collapse = "+")
+  if (isConditioned) ordI[["conditions"]] <- paste(conditions, collapse = "+")
 
+  info[["ord_info"]] <- ordI
+  data <- psExtra(
+    ps = ps, info = info, counts = data@counts, dist = distMat, ord = ORD
+  )
   return(data)
 }
 
@@ -228,27 +235,6 @@ ps_conScale <- function(ps, constraints, conditions, verbose, scale_cc) {
   return(ps)
 }
 
-# check class of data is ps_extra and if phyloseq, convert to ps_extra
-ordCheckData <- function(data) {
-  # if input is a phyloseq, convert to ps_extra
-  if (inherits(data, "phyloseq")) {
-    warning(
-      call. = FALSE,
-      "* data provided to ord_calc is a phyloseq object, not a ps_extra.\n",
-      "* Consider using tax_agg and/or tax_transform before ordinating."
-    )
-    data <- new_ps_extra(ps = data)
-  }
-  # check class of data is (or at least now is) ps_extra
-  if (!inherits(data, "ps_extra")) {
-    stop(
-      "* data should be ps_extra list output of dist_calc or tax_transform",
-      "\n* data is class: ", class(data)
-    )
-  }
-  return(data)
-}
-
 # check if constraints given are valid (or 1, meaning not constrained)
 # and return logical indicating if constrained
 ordCheckConstraints <- function(constraints) {
@@ -282,7 +268,7 @@ ordCheckConditions <- function(conditions) {
 #' @noRd
 ordCheckDist <- function(distMat, method, verbose) {
   if (!identical(distMat, NULL) && method %in% c("PCA", "RDA", "CCA")) {
-    distMat <- NULL # so output ps_extra will get NULL distance matrix
+    distMat <- NULL # so output psExtra will get NULL distance matrix
     if (!isFALSE(verbose)) {
       rlang::warn(message = c(
         "!" = paste("Distance matrix is not used for", method),

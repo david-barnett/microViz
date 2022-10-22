@@ -209,7 +209,7 @@ cor_heatmap <- function(data,
   if (inherits(data, "data.frame")) {
     otu_mat <- NULL # causes cor to only use x (meta_mat)
     meta_mat <- df_to_numeric_matrix(data, vars = vars, trans_fun = var_fun)
-  } else if (methods::is(data, "phyloseq") || inherits(data, "ps_extra")) {
+  } else if (methods::is(data, "phyloseq") || is_ps_extra(data)) {
     if (identical(taxa_which, vars_which)) {
       stop("vars and taxa sides must be adjacent, not the same or opposite")
     }

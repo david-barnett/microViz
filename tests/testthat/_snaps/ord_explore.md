@@ -4,15 +4,15 @@
       ord_explore_init(dietswap)
     Output
       $data
-      ps_extra object - a list with phyloseq and extras:
+      psExtra object - a phyloseq object with extra slots:
       
       phyloseq-class experiment-level object
       otu_table()   OTU Table:         [ 130 taxa and 222 samples ]
       sample_data() Sample Data:       [ 222 samples by 9 sample variables ]
       tax_table()   Taxonomy Table:    [ 130 taxa by 4 taxonomic ranks ]
       
-      ps_extra info:
-      tax_agg = unique tax_transform = identity
+      psExtra info:
+      tax_agg = 'unique'	tax_trans = 'identity'	
       
       $info
       $info$rank
@@ -22,7 +22,7 @@
       [1] "identity"
       
       $info$scale
-      [1] NA
+      character(0)
       
       $info$dist
       [1] "none"
@@ -71,21 +71,22 @@
       ord_explore_init(ord)
     Output
       $data
-      ps_extra object - a list with phyloseq and extras:
+      psExtra object - a phyloseq object with extra slots:
       
       phyloseq-class experiment-level object
       otu_table()   OTU Table:         [ 130 taxa and 222 samples ]
       sample_data() Sample Data:       [ 222 samples by 11 sample variables ]
       tax_table()   Taxonomy Table:    [ 130 taxa by 4 taxonomic ranks ]
       
-      ps_extra info:
-      tax_agg = Genus tax_transform = clr
+      otu_get(counts = TRUE)		 [ 130 taxa and 222 samples ]
+      
+      psExtra info:
+      tax_agg = 'Genus'	tax_trans = 'clr'	
       
       ordination of class: rda cca 
       rda(formula = OTU ~ weight + female, data = data)
-      constraints: weight+female
-      
-      $counts OTU Table: [ 130 taxa and 222 samples ]
+      Ordination info:
+      method = 'RDA'	constraints = 'weight+female'	
       
       $info
       $info$rank
@@ -95,7 +96,7 @@
       [1] "clr"
       
       $info$scale
-      [1] NA
+      character(0)
       
       $info$dist
       [1] "none"
@@ -152,7 +153,7 @@
       Try `ps <- phyloseq_validate(ps, verbose = FALSE)` to avoid this message
     Output
       $data
-      ps_extra object - a list with phyloseq and extras:
+      psExtra object - a phyloseq object with extra slots:
       
       phyloseq-class experiment-level object
       otu_table()   OTU Table:         [ 58 taxa and 3 samples ]
@@ -160,8 +161,8 @@
       tax_table()   Taxonomy Table:    [ 58 taxa by 1 taxonomic ranks ]
       phy_tree()    Phylogenetic Tree: [ 58 tips and 57 internal nodes ]
       
-      ps_extra info:
-      tax_agg = unique tax_transform = identity
+      psExtra info:
+      tax_agg = 'unique'	tax_trans = 'identity'	
       
       $info
       $info$rank
@@ -171,7 +172,7 @@
       [1] "identity"
       
       $info$scale
-      [1] NA
+      character(0)
       
       $info$dist
       [1] "none"
@@ -595,22 +596,23 @@
       ord_build(data = dietswap, rank = "Genus", trans = "identity", dist = "bray",
         method = "PCoA", constraints = NULL, conditions = NULL)
     Output
-      ps_extra object - a list with phyloseq and extras:
+      psExtra object - a phyloseq object with extra slots:
       
       phyloseq-class experiment-level object
       otu_table()   OTU Table:         [ 130 taxa and 222 samples ]
       sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
       tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]
       
-      ps_extra info:
-      tax_agg = Genus tax_transform = identity
+      psExtra info:
+      tax_agg = 'Genus'	tax_trans = 'identity'	
       
       bray distance matrix of size 222 
       0.7639533 0.7851213 0.6680796 0.7699252 0.80507 ...
       
       ordination of class: capscale rda cca 
       capscale(formula = distance ~ 1, data = data)
-      
+      Ordination info:
+      method = 'PCoA'	
 
 ---
 
@@ -618,21 +620,22 @@
       ord_build(data = dietswap, rank = "Genus", trans = "clr", dist = NA, method = "auto",
         constraints = NULL, conditions = NULL)
     Output
-      ps_extra object - a list with phyloseq and extras:
+      psExtra object - a phyloseq object with extra slots:
       
       phyloseq-class experiment-level object
       otu_table()   OTU Table:         [ 130 taxa and 222 samples ]
       sample_data() Sample Data:       [ 222 samples by 8 sample variables ]
       tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]
       
-      ps_extra info:
-      tax_agg = Genus tax_transform = clr
+      otu_get(counts = TRUE)		 [ 130 taxa and 222 samples ]
+      
+      psExtra info:
+      tax_agg = 'Genus'	tax_trans = 'clr'	
       
       ordination of class: rda cca 
       rda(formula = OTU ~ 1, data = data)
-      
-      
-      $counts OTU Table: [ 130 taxa and 222 samples ]
+      Ordination info:
+      method = 'PCA'	
 
 # ord_explore_palet_fun works
 
