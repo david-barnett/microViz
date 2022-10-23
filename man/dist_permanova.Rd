@@ -92,7 +92,7 @@ PERM2 <- testDist \%>\%
     variables = "nationality + sex * bmi_group",
     n_processes = 1, n_perms = 99
   )
-PERM2$permanova
+perm_get(PERM2)
 
 # specify the same model in alternative way
 PERM3 <- testDist \%>\%
@@ -102,7 +102,7 @@ PERM3 <- testDist \%>\%
     interactions = "sex * bmi_group",
     n_processes = 1, n_perms = 99
   )
-PERM3$permanova
+perm_get(PERM3)
 
 identical(PERM3, PERM2) # TRUE
 
