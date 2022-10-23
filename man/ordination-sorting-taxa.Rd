@@ -12,7 +12,7 @@ ord_order_taxa(ord, axes = 1:2, scaling = 2)
 \arguments{
 \item{ps}{phyloseq object to be sorted}
 
-\item{ord}{ps_extra with ordination object}
+\item{ord}{psExtra with ordination object}
 
 \item{axes}{which axes to use for sorting? numerical vector of length 1 or 2}
 
@@ -26,7 +26,7 @@ and the other set of scores is left unscaled (from ?vegan::scores.cca)}
 length of their taxa scores / "loading" vector lengths on 1 or 2 ordination axes.
 
 \code{ord_order_taxa} gets the taxa names in order from the ordination
-contained in a ps_extra list. This is used internally by \code{tax_sort_ord}.
+contained in a psExtra object. This is used internally by \code{tax_sort_ord}.
 }
 \seealso{
 \itemize{

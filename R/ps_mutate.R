@@ -39,11 +39,7 @@
 #'
 #' head(sample_data(ps))
 ps_mutate <- function(ps, ...) {
-
-  if (is_ps_extra(ps)) {
-    warning("ps argument is a ps_extra, but only a phyloseq will be returned")
-    ps <- ps_get(ps)
-  }
+  check_is_phyloseq(ps, argName = "ps")
 
   df <- samdatAsDataframe(ps)
   saved_rownames <- rownames(df)

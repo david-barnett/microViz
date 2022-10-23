@@ -5,7 +5,7 @@
 #' it is treated as an absolute minimum number of samples/reads. If <1, it is treated as proportion of all samples/reads.
 #' This function is designed to work with counts. otu_table must contain counts particularly if you want to set a non-zero value for min_total_abundance.
 #'
-#' @param ps phyloseq or ps_extra (ideally with count data available)
+#' @param ps phyloseq or psExtra (ideally with count data available)
 #' @param min_prevalence
 #' number or proportion of samples that a taxon must be present in
 #' @param prev_detection_threshold
@@ -64,6 +64,7 @@ tax_filter <- function(ps,
                        use_counts = TRUE,
                        undetected = NULL,
                        verbose = TRUE) {
+  stopif_ps_extra(ps, argName = "ps")
   # save original data
   input <- ps
 
@@ -125,7 +126,7 @@ tax_filter <- function(ps,
 
   # alternative way of specifying prev_detection_threshold.
   if (!identical(undetected, NULL)) {
-    prev_detection_threshold <- undetected + 1e-300
+    prev_detection_threshold <- undetected + 1e-100
   }
 
   # calculate taxonwise stats
@@ -168,19 +169,15 @@ tax_filter <- function(ps,
 
   psOut <- ps_get(input)
   psOut <- phyloseq::prune_taxa(tax_selection_vec, x = psOut)
-  if (!is_ps_extra(input) && !is(input, "psExtra")) {
+  if (!is(input, "psExtra")) {
     return(psOut)
   }
 
-  out <- input
-  if (is(out, "psExtra")) out <- modify_psExtra(psExtra = out, ps = psOut)
-  if (inherits(out, "ps_extra")) out$ps <- psOut
-  if (isTRUE(use_counts)) {
-    if (is(out, "psExtra")) {
-      out@counts <- phyloseq::prune_taxa(tax_selection_vec, x = out@counts)
-    } else {
-      out$counts <- phyloseq::prune_taxa(tax_selection_vec, x = out$counts)
-    }
+  out <- modify_psExtra(psExtra = input, ps = psOut)
+  if (isTRUE(use_counts)) { # TODO won't be necessary if modify_psExtra propagates changes itself!
+    out <- modify_psExtra(psExtra = out, counts = phyloseq::prune_taxa(
+      taxa = tax_selection_vec, x = out@counts
+    ))
   }
   return(out)
 }

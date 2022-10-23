@@ -3,7 +3,7 @@
 #' Makes a named palette vector from your phyloseq dataset
 #' considering overall abundance to assign colours (or some other sorting)
 #'
-#' @param data phyloseq or ps_extra
+#' @param data phyloseq or psExtra
 #' @param rank taxonomic rank name or "unique"
 #' @param n number of colours / taxa (not including "other")
 #' @param by tax sorting method for tax_sort e.g. sum
@@ -39,13 +39,13 @@
 #'     palette = myPal, label = NULL
 #'   )
 #'
-tax_palette <- function(data, # phyloseq or ps_extra
-                        rank, # e.g. "Genus"
-                        n, # n colours / taxa not including other
-                        by = sum, # method for tax_sort
-                        pal = "brewerPlus", # palette name from distinct_palette
-                        add = c(other = "lightgrey"), # name = value pairs appended to end of output
-                        ... # other args passed to tax_sort
+tax_palette <- function(data,
+                        rank,
+                        n,
+                        by = sum,
+                        pal = "brewerPlus",
+                        add = c(other = "lightgrey"),
+                        ...
 ) {
   # input checks
   if (!rlang::is_character(add) || !rlang::is_named2(add)) {

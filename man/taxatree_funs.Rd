@@ -17,7 +17,7 @@ taxatree_nodes(
 taxatree_edges(nodes_df)
 }
 \arguments{
-\item{ps}{phyloseq object or ps_extra}
+\item{ps}{phyloseq object or psExtra}
 
 \item{fun}{function to calculate for each taxon/node}
 
@@ -34,7 +34,7 @@ Mostly you will not have to use these functions directly:
 instead call \code{taxatree_plots} with the output of \code{taxatree_stats}
 \itemize{
 \item \code{taxatree_nodes} creates taxon nodes and calculates a summary statistic
-about each taxon (given by \code{fun}). Takes a ps_extra or phyloseq object.
+about each taxon (given by \code{fun}). Takes a psExtra or phyloseq object.
 \item \code{taxatree_edges} uses the output of \code{taxatree_nodes} to create a
 dataframe of edges.
 }

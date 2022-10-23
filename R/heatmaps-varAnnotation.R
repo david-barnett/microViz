@@ -166,13 +166,13 @@ anno_var_box <- function(fun = identity,
   # create AnnotationFunction-making function
   FN <- function(data, vars, which, size = .size, boxplotArgs = boxArgs) {
     # extract (sample)data to matrix
-    if (methods::is(data, "phyloseq") || inherits(data, "ps_extra")) {
+    if (methods::is(data, "phyloseq")) {
       data <- samdatAsDataframe(ps_get(data))
     }
     if (inherits(data, "data.frame") || inherits(data, "matrix")) {
       x <- df_to_numeric_matrix(data, vars = vars, trans_fun = fun)
     } else {
-      stop("data must be phyloseq/ps_extra or data.frame/matrix")
+      stop("data must be phyloseq/psExtra or data.frame/matrix")
     }
 
     if (identical(which, "row")) x <- t(x)
@@ -258,13 +258,13 @@ anno_var_density <- function(fun = identity,
   FN <- function(data, vars, which, size = .size, args = densityArgs) {
 
     # extract (sample)data to matrix
-    if (methods::is(data, "phyloseq") || inherits(data, "ps_extra")) {
+    if (methods::is(data, "phyloseq")) {
       data <- samdatAsDataframe(ps_get(data))
     }
     if (inherits(data, "data.frame") || inherits(data, "matrix")) {
       x <- df_to_numeric_matrix(data, vars = vars, trans_fun = fun)
     } else {
-      stop("data must be phyloseq/ps_extra or data.frame/matrix")
+      stop("data must be phyloseq/psExtra or data.frame/matrix")
     }
 
     if (identical(which, "row")) x <- t(x)
@@ -344,13 +344,13 @@ anno_var_hist <- function(fun = identity,
   FN <- function(data, vars, which, size = .size, args = histArgs) {
 
     # extract (sample)data to matrix
-    if (methods::is(data, "phyloseq") || inherits(data, "ps_extra")) {
+    if (methods::is(data, "phyloseq")) {
       data <- samdatAsDataframe(ps_get(data))
     }
     if (inherits(data, "data.frame") || inherits(data, "matrix")) {
       x <- df_to_numeric_matrix(data, vars = vars, trans_fun = fun)
     } else {
-      stop("data must be phyloseq/ps_extra or data.frame/matrix")
+      stop("data must be phyloseq/psExtra or data.frame/matrix")
     }
 
     if (identical(which, "row")) x <- t(x)

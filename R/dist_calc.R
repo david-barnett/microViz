@@ -72,21 +72,20 @@ dist_calc <- function(data,
                       ...) {
 
   # check valid distance name was supplied
-  if (!rlang::is_string(dist)) stop("dist must be name of distance/dissimilarity")
   rlang::arg_match(arg = dist, multiple = FALSE, values = union(c(
     "bray", "gunifrac", "unifrac", "wunifrac", "va-wunifrac",
     "aitchison", "robust.aitchison", "euclidean"
   ), unlist(phyloseq::distanceMethodList)))
 
   # check input data object class
-  distCalcDataValidate(data)
+  isDistCalcDataPhyloseq(data)
 
   # get components
   ps <- ps_get(data)
   info <- info_get(data)
 
   # calculate distance matrix #
-  if (identical(dist, "aitchison") || identical(dist, "robust.aitchison")) {
+  if (dist %in% c("aitchison", "robust.aitchison")) {
     # aitchison distance (or robust aitchison)
     distMat <- distMatAitchison(ps = ps, dist = dist, info = info)
   } else if (grepl(pattern = "unifrac", dist)) {
@@ -110,7 +109,7 @@ dist_calc <- function(data,
     # calculate distance matrix if distance is supported in phyloseq
     distMat <- phyloseq::distance(ps, method = dist, type = "samples", ...)
   } else {
-    stop(paste("Invalid distance measure named in dist argument:", dist))
+    stop("Invalid distance measure named in dist argument: ", dist)
   }
 
   if (!is(data, "psExtra")) data <- psExtra(data, info = new_psExtraInfo())
@@ -124,7 +123,7 @@ dist_calc <- function(data,
 
 
 # calculates (robust.)aitchison distance matrix from phyloseq: ps
-# (ps_extra `info` required for transformation check)
+# (psExtra `info` required for transformation check)
 #
 distMatAitchison <- function(ps, dist, info) {
   if (identical(info$tax_trans, "clr") || identical(info$tax_trans, "rclr")) {
@@ -132,7 +131,7 @@ distMatAitchison <- function(ps, dist, info) {
       "dist_calc 'aitchison' distance requires count data",
       i = paste0(
         "your data are ", info$tax_trans,
-        "-transformed (according to ps_extra info)"
+        "-transformed (according to psExtra info)"
       ),
       i = "see the ?dist_calc details section for more info"
     ))
@@ -154,9 +153,7 @@ distMatUnifrac <- function(ps, gunifrac_alpha, uniID) {
       "unifrac distances require un-aggregated taxa and a phylogenetic tree."
     )
   }
-  if (!requireNamespace("GUniFrac", quietly = TRUE)) {
-    stop("You need to install package 'GUniFrac' to use unifrac distances.")
-  }
+  rlang::check_installed("GUniFrac", reason = "to use unifrac distances")
 
   # GUniFrac is much faster than phyloseq version of unifrac measures
   # and results are the same (to floating point precision)
@@ -172,12 +169,12 @@ distMatUnifrac <- function(ps, gunifrac_alpha, uniID) {
 }
 
 # data class checker, also used in dist_calc_seq()
-distCalcDataValidate <- function(data) {
-  if (!is_ps_extra(data) && !methods::is(data, "phyloseq")) {
-    stop(
-      "data for dist_calc must be of class 'psExtra'\n",
-      " - e.g. output of tax_agg or tax_transform\n",
-      " - data is class: ", paste(class(data), collapse = " ")
-    )
+isDistCalcDataPhyloseq <- function(data) {
+  if (!methods::is(data, "phyloseq")) {
+    rlang::abort(call = rlang::caller_env(), message = c(
+      "data for dist_calc must be of class 'psExtra'",
+      " " = "e.g. output of tax_agg or tax_transform",
+      "x" = paste("data is class:", paste(class(data), collapse = " "))
+    ))
   }
 }

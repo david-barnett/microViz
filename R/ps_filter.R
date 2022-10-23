@@ -1,7 +1,11 @@
 #' Filter phyloseq samples by sample_data variables
 #'
 #' Keep only samples with sample_data matching one or more conditions.
-#' Use this function as you would use use dplyr::filter(), but with a phyloseq object!
+#' By default this function also removes taxa which never appear in any of
+#' the remaining samples, by running tax_filter(min_prevalence = 1). You can
+#' prevent this taxa filtering with .keep_all_taxa = TRUE.
+#'
+#' Use ps_filter as you would use use dplyr::filter(), but with a phyloseq object!
 #'
 #' @param ps phyloseq object
 #' @param ...
@@ -54,9 +58,7 @@ ps_filter <- function(ps,
                       ...,
                       .target = "sample_data",
                       .keep_all_taxa = FALSE) {
-  if (!inherits(ps, "phyloseq")) {
-    stop("ps must be a phyloseq object. It is of class: ", class(ps))
-  }
+  check_is_phyloseq(ps, argName = "ps")
 
   if (!identical(.target, "sample_data")) {
     stop("Only .target = 'sample_data', has been implemented so far.")

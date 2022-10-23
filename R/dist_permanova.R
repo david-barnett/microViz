@@ -22,7 +22,7 @@
 #' Watch out, if any of your variable names contain characters that would normally separate variables in a formula then
 #' you should rename the offending variable (e.g. avoid any of "+" "\*" "|" or ":" ) otherwise permanova will split that variable into pieces.
 #'
-#' @param data ps_extra output from dist_calc()
+#' @param data psExtra output from dist_calc()
 #' @param variables character vector of variables to include in model or character representation of the right-hand side of a formula, e.g "varA + varB + varA:varB"
 #' @param interactions optional argument to define any interactions between variables, written in the style of e.g. "var_a * var_b"
 #' @param n_processes how many parallel processes to use? (on windows this uses parallel::makePSOCKcluster())
@@ -33,7 +33,7 @@
 #' @param verbose sends messages about progress if TRUE
 #' @param ... additional arguments are passed directly to vegan::adonis2() (e.g. strata, add, sqrt.dist etc.)
 #'
-#' @return ps_extra list containing permanova results and (filtered) input objects
+#' @return psExtra list containing permanova results and (filtered) input objects
 #' @export
 #'
 #' @seealso \code{\link{dist_calc}} for calculating the required distance matrix input
@@ -102,7 +102,7 @@ dist_permanova <- function(data,
                            ...) {
 
   # check input data object class
-  if (!is_ps_extra(data)) check_is_psExtra(data, argName = "data")
+  check_is_psExtra(data, argName = "data")
   ps <- ps_get(data)
   distMat <- dist_get(data)
 
@@ -181,7 +181,7 @@ dist_permanova <- function(data,
   )
   if (!isFALSE(verbose)) message(Sys.time(), " - Finished PERMANOVA")
 
-  psExtra(
+  data <- psExtra(
     ps = ps, info = info_get(data), counts = data@counts,
     dist = distMat, # might have been filtered
     permanova = results

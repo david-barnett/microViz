@@ -18,7 +18,7 @@ taxatree_models(
 )
 }
 \arguments{
-\item{ps}{phyloseq object or ps_extra}
+\item{ps}{phyloseq object or psExtra}
 
 \item{ranks}{vector of rank names at which to aggregate taxa for modelling}
 
@@ -45,7 +45,7 @@ TRUE notifies you about each taxon being processed; FALSE for no messages.}
 \code{taxatree_models} runs \code{tax_model} on every taxon at multiple taxonomic
 ranks (you choose which ranks with the plural \code{ranks} argument).
 It returns the results as a named nested list of models
-attached to a ps_extra object.
+attached to a psExtra object.
 One list per rank, one model per taxon at each rank.
 
 The result can then be used with \code{taxatree_models2stats} to extract a

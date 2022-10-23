@@ -209,7 +209,7 @@ cor_heatmap <- function(data,
   if (inherits(data, "data.frame")) {
     otu_mat <- NULL # causes cor to only use x (meta_mat)
     meta_mat <- df_to_numeric_matrix(data, vars = vars, trans_fun = var_fun)
-  } else if (methods::is(data, "phyloseq") || is_ps_extra(data)) {
+  } else if (methods::is(data, "phyloseq")) {
     if (identical(taxa_which, vars_which)) {
       stop("vars and taxa sides must be adjacent, not the same or opposite")
     }
@@ -234,7 +234,7 @@ cor_heatmap <- function(data,
     }
   } else {
     stop(
-      "data must be phyloseq, ps_extra, or data.frame, not: ",
+      "data must be phyloseq, psExtra, or data.frame, not: ",
       paste(class(data), collapse = " ")
     )
   }
@@ -844,7 +844,7 @@ annoWhichMatchCheck <- function(which, anno, context = "taxa") {
 # * list output of tax_anno() --> HeatmapAnnotation object,
 # * HeatmapAnnotation object --> HeatmapAnnotation object (checked)
 #
-# ps is phyloseq extracted from heatmap data arg, if phyloseq or ps_extra
+# ps is phyloseq extracted from heatmap data arg, if phyloseq or psExtra
 # side takes taxa_side argument as passed to heatmap function
 #
 # used inside cor_heatmap (when given phyloseq as data) and comp_heatmap (always)

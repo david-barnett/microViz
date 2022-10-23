@@ -4,13 +4,13 @@
 #' Runs betadisper for all categorical variables in variables argument.
 #' See help('betadisper', package = 'vegan').
 #'
-#' @param data ps_extra output from dist_calc
+#' @param data psExtra output from dist_calc
 #' @param variables list of variables to use as group
 #' @param method centroid or median
 #' @param complete_cases drop samples with NAs in any of the variables listed
 #' @param verbose sends messages about progress if true
 #'
-#' @return ps_extra list containing betadisper results
+#' @return psExtra containing betadisper results
 #' @export
 #'
 #' @examples
@@ -53,9 +53,8 @@ dist_bdisp <- function(data,
                        method = c("centroid", "median")[[1]],
                        complete_cases = TRUE,
                        verbose = TRUE) {
-
   # check input data object class
-  if (!is_ps_extra(data)) check_is_psExtra(data, argName = "data")
+  check_is_psExtra(data, argName = "data")
   if (identical(dist_get(data), NULL))
     stop("data argument must be a psExtra object from dist_calc")
 

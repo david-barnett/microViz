@@ -23,7 +23,7 @@ ord_plot_iris(
 )
 }
 \arguments{
-\item{data}{ps_extra list output of ord_calc}
+\item{data}{psExtra output of ord_calc}
 
 \item{tax_level}{taxonomic aggregation level (from rank_names(ps))}
 
@@ -53,7 +53,7 @@ see \url{https://sites.google.com/site/mb3gustame/constrained-analyses/rda}.
 Either "species" or "site" scores are scaled by (proportional) eigenvalues,
 and the other set of scores is left unscaled (from ?vegan::scores.cca)}
 
-\item{count_warn}{warn if count data are not available? i.e. phyloseq otu_table is not positive integers and ps_extra counts slot is NULL}
+\item{count_warn}{warn if count data are not available? i.e. phyloseq otu_table is not positive integers and psExtra counts slot is NULL}
 
 \item{...}{extra args passed to comp_barplot e.g. bar_width}
 }

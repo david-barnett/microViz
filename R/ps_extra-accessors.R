@@ -1,38 +1,45 @@
-is_ps_extra <- function(object) {
-  if (inherits(object, "ps_extra")) {
-    ps_extra_deprecation_warning()
-    return(TRUE)
-  }
-  return(FALSE)
-}
+# is_ps_extra <- function(object) {
+#   if (inherits(object, "ps_extra")) {
+#     ps_extra_deprecation_warning()
+#     return(TRUE)
+#   }
+#   return(FALSE)
+# }
+#
+# ps_extra_deprecation_warning <- function() {
+#   rlang::warn(c(
+#     "'ps_extra' object class is deprecated",
+#     i = "please rerun your code with microViz version 0.10.0 or higher"
+#   ))
+# }
 
-ps_extra_deprecation_warning <- function() {
-  rlang::warn(c(
-    "'ps_extra' object class is deprecated",
-    i = "please rerun your code with microViz version 0.10.0 or higher"
-  ))
-}
-
-ps_extra_arg_deprecation_warning <- function() {
-  rlang::warn(c(
+ps_extra_arg_deprecation_warning <- function(ps_extra) {
+  rlang::warn(call = rlang::caller_env(1), message = c(
     "ps_extra argument deprecated",
     i = "use psExtra argument instead"
   ))
+  return(ps_extra)
 }
 
-check_is_phyloseq <- function(x, argName = NULL) {
-  if (!is(x, "phyloseq")) {
+check_is_phyloseq <- function(x, argName = NULL, allow_psExtra = TRUE) {
+  stopif_ps_extra(x, argName = argName, Ncallers = 2)
+  isPhyloseq <- is(x, "phyloseq") && (allow_psExtra || !is(x, "psExtra"))
+
+  if (!isPhyloseq) {
+    CLASSES <- if (allow_psExtra) '"phyloseq" or "psExtra"' else '"phyloseq"'
+
     rlang::abort(call = rlang::caller_env(), message = c(
-      paste('argument', argName, 'must be a "phyloseq" or "psExtra" object'),
+      paste("argument", argName, "must be a", CLASSES, "object"),
       i = paste0("argument is class: ", paste(class(x), collapse = " "))
     ))
   }
 }
 
 check_is_psExtra <- function(x, argName = NULL) {
+  stopif_ps_extra(x, argName = argName, Ncallers = 2)
   if (!is(x, "psExtra")) {
     rlang::abort(call = rlang::caller_env(), message = c(
-      paste('argument', argName, 'must be a "psExtra" object'),
+      paste("argument", argName, 'must be a "psExtra" object'),
       i = paste0("argument is class: ", paste(class(x), collapse = " "))
     ))
   }
@@ -79,46 +86,28 @@ check_is_psExtra <- function(x, argName = NULL) {
 #' @export
 #' @rdname psExtra-accessors
 ps_get <- function(psExtra, ps_extra) {
-  if (!missing(ps_extra)) {
-    ps_extra_arg_deprecation_warning()
-    psExtra <- ps_extra
-  }
-  if (is_ps_extra(psExtra)) {
-    return(psExtra[["ps"]])
-  }
+  if (!missing(ps_extra)) psExtra <- ps_extra_arg_deprecation_warning(ps_extra)
   check_is_phyloseq(psExtra)
   return(as(psExtra, "phyloseq"))
 }
 #' @rdname psExtra-accessors
 #' @export
 dist_get <- function(psExtra, ps_extra) {
-  if (!missing(ps_extra)) {
-    ps_extra_arg_deprecation_warning()
-    psExtra <- ps_extra
-  }
+  if (!missing(ps_extra)) psExtra <- ps_extra_arg_deprecation_warning(ps_extra)
   check_is_psExtra(psExtra)
   psExtra@dist
 }
 #' @rdname psExtra-accessors
 #' @export
 ord_get <- function(psExtra, ps_extra) {
-  if (!missing(ps_extra)) {
-    ps_extra_arg_deprecation_warning()
-    psExtra <- ps_extra
-  }
+  if (!missing(ps_extra)) psExtra <- ps_extra_arg_deprecation_warning(ps_extra)
   check_is_psExtra(psExtra)
   psExtra@ord
 }
 #' @rdname psExtra-accessors
 #' @export
 info_get <- function(psExtra, ps_extra) {
-  if (!missing(ps_extra)) {
-    ps_extra_arg_deprecation_warning()
-    psExtra <- ps_extra
-  }
-  if (is_ps_extra(psExtra)) {
-    return(ps_extra[["info"]])
-  }
+  if (!missing(ps_extra)) psExtra <- ps_extra_arg_deprecation_warning(ps_extra)
   check_is_phyloseq(psExtra)
   if (!methods::is(psExtra, "psExtra")) {
     return(new_psExtraInfo())
@@ -128,26 +117,14 @@ info_get <- function(psExtra, ps_extra) {
 #' @rdname psExtra-accessors
 #' @export
 perm_get <- function(psExtra, ps_extra) {
-  if (!missing(ps_extra)) {
-    ps_extra_arg_deprecation_warning()
-    psExtra <- ps_extra
-  }
-  if (is_ps_extra(psExtra)) {
-    return(ps_extra[["permanova"]])
-  }
+  if (!missing(ps_extra)) psExtra <- ps_extra_arg_deprecation_warning(ps_extra)
   check_is_psExtra(psExtra)
   return(psExtra@permanova)
 }
 #' @rdname psExtra-accessors
 #' @export
 bdisp_get <- function(psExtra, ps_extra) {
-  if (!missing(ps_extra)) {
-    ps_extra_arg_deprecation_warning()
-    psExtra <- ps_extra
-  }
-  if (is_ps_extra(psExtra)) {
-    return(ps_extra[["bdisp"]])
-  }
+  if (!missing(ps_extra)) psExtra <- ps_extra_arg_deprecation_warning(ps_extra)
   check_is_psExtra(psExtra)
   return(psExtra@bdisp)
 }
@@ -212,7 +189,7 @@ tt_get <- function(data) {
   return(tt)
 }
 
-#' @param data phyloseq or ps_extra
+#' @param data phyloseq or psExtra
 # @return phyloseq sample_data as a tibble,
 # with sample_names as new first column called .sample_name
 #' @param sample_names_col
@@ -221,20 +198,19 @@ tt_get <- function(data) {
 #' @rdname psExtra-accessors
 #' @export
 samdat_tbl <- function(data, sample_names_col = ".sample_name") {
-  if (is(data, "psExtra") || is_ps_extra(data)) data <- ps_get(data)
-  if (is(data, "phyloseq") || is(data, "sample_data")) {
-    df <- samdatAsDataframe(data)
+  if (is(data, "sample_data") || is(data, "phyloseq")) {
+    df <- samdatAsDataframe(data) # also works for psExtra
   } else {
-    stop(
-      "data must be of class 'phyloseq', 'psExtra', or 'sample_data', not: ",
-      paste(class(data), collapse = " ")
-    )
+    rlang::abort(message = c(
+      "data must be of class 'phyloseq', 'psExtra', or 'sample_data'",
+      i = paste("It is class:", paste(class(data), collapse = " "))
+    ))
   }
   if (identical(sample_names_col, NA)) {
     return(df)
   } else {
     df <- tibble::rownames_to_column(df, var = sample_names_col)
-    return(tibble::as_tibble(df))
+    return(tibble::as_tibble(df, .name_repair = "check_unique"))
   }
 }
 
@@ -249,7 +225,7 @@ samdatAsDataframe <- function(ps) {
 
 # get phyloseq with counts if available
 ps_counts <- function(data, warn = TRUE) {
-  if (!is_ps_extra(data)) check_is_phyloseq(data)
+  check_is_phyloseq(data)
   if (!rlang::is_bool(warn) && !rlang::is_string(warn, string = "error")) {
     stop("warn argument must be TRUE, FALSE, or 'error'")
   }
@@ -260,7 +236,6 @@ ps_counts <- function(data, warn = TRUE) {
 
   # get counts and use them if they exist,
   # and check regardless if otutab returned will be counts
-  if (is_ps_extra(data) && "counts" %in% names(data)) counts <- data[["counts"]]
   if (is(data, "psExtra")) counts <- data@counts
 
   # maintain existing taxa_are_rows status for consistency
@@ -292,66 +267,42 @@ methods::setOldClass("ps_extra")
 # methods::setGeneric("otu_table", def = phyloseq::otu_table)
 methods::setMethod(
   f = phyloseq::otu_table, signature = c(object = "ps_extra"),
-  definition = function(object) {
-    ps_extra_deprecation_warning()
-    return(phyloseq::otu_table(ps_get(object)))
-  }
+  definition = function(object) phyloseq::otu_table(ps_get(object))
 )
 
 methods::setMethod(
   f = phyloseq::sample_data, signature = c(object = "ps_extra"),
-  definition = function(object) {
-    ps_extra_deprecation_warning()
-    phyloseq::sample_data(ps_get(object))
-  }
+  definition = function(object) phyloseq::sample_data(ps_get(object))
 )
 
 methods::setMethod(
   f = phyloseq::tax_table, signature = c(object = "ps_extra"),
-  definition = function(object) {
-    ps_extra_deprecation_warning()
-    return(phyloseq::tax_table(ps_get(object)))
-  }
+  definition = function(object) phyloseq::tax_table(ps_get(object))
 )
 
 methods::setMethod(
   f = phyloseq::sample_names, signature = c(physeq = "ps_extra"),
-  definition = function(physeq) {
-    ps_extra_deprecation_warning()
-    phyloseq::sample_names(ps_get(physeq))
-  }
+  definition = function(physeq) phyloseq::sample_names(ps_get(physeq))
 )
 
 methods::setMethod(
   f = phyloseq::taxa_names, signature = c(physeq = "ps_extra"),
-  definition = function(physeq) {
-    ps_extra_deprecation_warning()
-    phyloseq::taxa_names(ps_get(physeq))
-  }
+  definition = function(physeq) phyloseq::taxa_names(ps_get(physeq))
 )
 
 methods::setMethod(
   f = phyloseq::phy_tree, signature = c(physeq = "ps_extra"),
-  definition = function(physeq) {
-    ps_extra_deprecation_warning()
-    phyloseq::phy_tree(ps_get(physeq))
-  }
+  definition = function(physeq) phyloseq::phy_tree(ps_get(physeq))
 )
 
 methods::setMethod(
   f = phyloseq::refseq, signature = c(physeq = "ps_extra"),
-  definition = function(physeq) {
-    ps_extra_deprecation_warning()
-    phyloseq::refseq(ps_get(physeq))
-  }
+  definition = function(physeq) phyloseq::refseq(ps_get(physeq))
 )
 
 # rank names is not a generic in phyloseq
 methods::setGeneric(name = "rank_names", def = phyloseq::rank_names)
 methods::setMethod(
   f = "rank_names", signature = c(physeq = "ps_extra"),
-  definition = function(physeq) {
-    ps_extra_deprecation_warning()
-    phyloseq::rank_names(ps_get(physeq))
-  }
+  definition = function(physeq) phyloseq::rank_names(ps_get(physeq))
 )

@@ -4,10 +4,7 @@
 #' of your taxa, e.g. ASVs, that is not otherwise represented in the tax_table itself.
 #' This function fixes that, and allows you to include this level in taxatree_plots for example.
 #'
-#' `tax_names2tt` is the old name of `tax_names2rank`.
-#' The use of `tax_names2tt` is deprecated.
-#'
-#' @param data phyloseq object, or ps_extra or tax_table (taxonomyTable)
+#' @param data phyloseq object, or psExtra or tax_table (taxonomyTable)
 #' @param colname name of new rank to add at right side of tax_table
 #'
 #' @return same class object as passed in to data
@@ -30,22 +27,11 @@ tax_names2rank <- function(data, colname = "unique") {
   if (is(data, "taxonomyTable")) {
     return(tt)
   }
-  if (is(data, "psExtra")) {
+  if (is(data, "phyloseq")) {
     data@tax_table <- tt
-  } else if (is(data, "phyloseq")) {
-    phyloseq::tax_table(data) <- tt
-  } else if (inherits(data, "ps_extra")) {
-    phyloseq::tax_table(data$ps) <- tt
   } else {
     stop("Bad data - should never reach this line")
   }
   return(data)
 }
 
-#' @export
-#' @rdname tax_names2rank
-tax_names2tt <- function(data, colname = "unique") {
-  .Deprecated(new = "tax_names2rank")
-  out <- tax_names2rank(data, colname = colname)
-  return(out)
-}

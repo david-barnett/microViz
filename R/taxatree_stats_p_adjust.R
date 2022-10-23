@@ -12,7 +12,7 @@
 #' Or even group by a combination of rank and term with c("rank", "term")
 #'
 #'
-#' @param data ps_extra with taxatree_stats dataframe, or just the dataframe
+#' @param data psExtra with taxatree_stats dataframe, or just the dataframe
 #' @param grouping
 #' defines grouping of p-values into families for adjustment, see details.
 #' @param method any method from `stats::p.adjust.methods`
@@ -21,7 +21,7 @@
 #' name of new variable created for adjusted p values
 #' (automatically inferred by default)
 #'
-#' @return ps_extra with dataframe of statistics, or just the data.frame
+#' @return psExtra with dataframe of statistics, or just the data.frame
 #' @export
 #'
 #' @seealso \code{\link{taxatree_models2stats}}
@@ -97,13 +97,13 @@ taxatree_stats_p_adjust <- function(data,
                                     new_var = paste0(
                                       "p.adj.", method, ".", grouping
                                     )) {
-  if (inherits(data, "ps_extra") && is.data.frame(data[["taxatree_stats"]])) {
-    df <- data[["taxatree_stats"]]
+  if (is(data, "psExtra") && is.data.frame(data@taxatree_stats)) {
+    df <- data@taxatree_stats
   } else if (inherits(data, "data.frame")) {
     df <- data
   } else {
     stop(
-      "data must be a ps_extra with taxatree_stats or just the stats dataframe"
+      "data must be a psExtra with taxatree_stats or just the stats dataframe"
     )
   }
 
@@ -120,10 +120,10 @@ taxatree_stats_p_adjust <- function(data,
     )
   )
 
-  # return ps_extra or data.frame (based on input data class)
-  if (inherits(data, "ps_extra")) {
-    data[["taxatree_stats"]] <- df
-  } else if (inherits(data, "data.frame")) {
+  # return psExtra or data.frame (based on input data class)
+  if (is(data, "psExtra")) {
+    data@taxatree_stats <- df
+  } else {
     data <- df
   }
   return(data)

@@ -199,18 +199,18 @@ ord_plot <-
            expand = !center,
            interactive = FALSE,
            ...) {
+    check_is_psExtra(data, argName = "data")
+
     ps <- ps_get(data)
     ordination <- ord_get(data)
     # check ordination and phyloseq size (should never fail if ord_calc used)
     stopifnot(stats::nobs(ordination) == phyloseq::nsamples(ps))
 
     # check input data object class and extract the most used objects to function env
-    if (!is_ps_extra(data)) check_is_psExtra(data, argName = "data")
     if (identical(ordination, NULL)) stop("data must be psExtra output of ord_calc")
     info <- info_get(data)
     ordInfo <- info[["ord_info"]]
-    constrs <- ordInfo$constraints
-    isConstrained <- length(constrs) > 0 && !rlang::is_na(constrs)
+    isConstrained <- length(ordInfo$constraints) > 0
 
     # return named list of arguments matching either phyloseq variable names or
     # numbers/colors/ggplot2_shapes (throws error if any are invalid)
@@ -388,7 +388,7 @@ ord_plot <-
 #' @param p ggplot
 #' @param ps phyloseq object to assess dimensions
 #' @param cap_size caption font size (or NA for no caption addition)
-#' @param info ps_extra info list containing most info for caption
+#' @param info psExtraInfo list containing most info for caption
 #' @param scaling type of scaling used
 #'
 #' @return ggplot
@@ -403,13 +403,11 @@ ord_caption <- function(p, ps, cap_size, info, scaling) {
     if (o %in% c("PCA", "RDA", "CCA", "CAP") && scaling != 2) {
       o <- paste0(o, " (scaling=", scaling, ")")
     }
-    cstrs <- info$ord_info$constraints
-    if (length(cstrs) > 0 && !rlang::is_na(cstrs)) {
-      o <- paste0(o, " constraints=", cstrs)
+    if (length(info$ord_info$constraints) > 0) {
+      o <- paste0(o, " constraints=", info$ord_info$constraints)
     }
-    cnds <- info$ord_info$conditions
-    if (length(cnds) > 0 && !rlang::is_na(cnds)) {
-      o <- paste0(o, " conditions=", cnds)
+    if (length(info$ord_info$conditions) > 0) {
+      o <- paste0(o, " conditions=", info$ord_info$conditions)
     }
 
     # caption gets n taxa and samples info
@@ -419,13 +417,11 @@ ord_caption <- function(p, ps, cap_size, info, scaling) {
     )
 
     # any transformations and distances should be listed
-    trnsf <- info$tax_trans
-    if (length(trnsf) > 0 && !rlang::is_na(trnsf)) {
-      caption <- paste0(caption, " tax_transform=", trnsf)
+    if (length(info$tax_trans) > 0) {
+      caption <- paste0(caption, " tax_transform=", info$tax_trans)
     }
-    dstMth <- info$dist_method
-    if (length(dstMth) > 0 && !rlang::is_na(dstMth)) {
-      caption <- paste0(caption, " dist=", dstMth)
+    if (length(info$dist_method) > 0) {
+      caption <- paste0(caption, " dist=", info$dist_method)
     }
 
     # add the caption

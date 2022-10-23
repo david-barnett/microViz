@@ -42,17 +42,17 @@
 #' example, in which case all abundances of 10 or below would be converted to 0.
 #' All abundances above 10 would be converted to 1s.
 #'
-#' Beware that the choice of detection threshold is not tracked in the ps_extra.
+#' Beware that the choice of detection threshold is not tracked in the psExtra.
 #'
-#' @param data a phyloseq object or `ps_extra` list output from `tax_agg`
+#' @param data a phyloseq object or psExtra output from `tax_agg`
 #' @param trans
 #' any valid taxa transformation (e.g. from `microbiome::transform`)
 #' @param rank
 #' If data is phyloseq: data are aggregated at this rank before transforming.
 #' If NA, runs tax_agg(data, rank = NA).
-#' If rank is NA and data is already ps_extra, any preceding aggregation is left as is.
+#' If rank is NA and data is already psExtra, any preceding aggregation is left as is.
 #' @param keep_counts
-#' if TRUE, store the pre-transformation count data in ps_extra counts slot
+#' if TRUE, store the pre-transformation count data in psExtra counts slot
 #' @param transformation deprecated, use `trans` instead!
 #' @param ...
 #' any extra arguments passed to `microbiome::transform` or pass
@@ -64,11 +64,11 @@
 #' Replace any zeros with this value before transforming. Either a numeric, or
 #' "halfmin" which replaces zeros with half of the smallest value across the
 #' entire dataset.
-#' Beware: the choice of zero replacement is not tracked in the ps_extra output.
+#' Beware: the choice of zero replacement is not tracked in the psExtra output.
 #' @param add
 #' Add this value to the otu_table before transforming. If `add` != 0,
 #' `zero_replace` does nothing. Either a numeric, or "halfmin".
-#' Beware: this choice is not tracked in the ps_extra output.
+#' Beware: this choice is not tracked in the psExtra output.
 #'
 #' @return `psExtra` object including phyloseq and extra info
 #' @export
@@ -110,7 +110,6 @@ tax_transform <- function(data,
                           add = 0,
                           transformation = NULL,
                           ...) {
-
   if (!identical(transformation, NULL)) {
     warning("`transformation` argument deprecated, use `trans` instead.")
     trans <- transformation
@@ -129,13 +128,13 @@ tax_transform <- function(data,
   stopifnot(rlang::is_bool(chain))
 
   # check input data object class, validate options, and record psExtra info
-  if (!is_ps_extra(data)) check_is_phyloseq(data, argName = "data")
+  check_is_phyloseq(data, argName = "data")
 
-  if (is_ps_extra(data) || is(data, "psExtra")) {
+  if (is(data, "psExtra")) {
     info <- tax_transformInfoUpdate(
       info = info_get(data), trans = trans, rank = rank, chain = chain
     )
-  } else if (is(data, "phyloseq")) {
+  } else {
     if (rlang::is_na(rank)) rank <- "unique"
     info <- new_psExtraInfo(tax_trans = trans, tax_agg = rank)
   }
@@ -146,7 +145,7 @@ tax_transform <- function(data,
   # store otu table prior to transformation (for if keep_counts == TRUE)
   counts_otu <- otu_get(ps_counts(data = data))
 
-  # get plain phyloseq from aggregated ps_extra data
+  # get plain phyloseq from aggregated psExtra data
   ps <- ps_get(data)
   # extract otu
   otu <- otu_get(ps)
@@ -166,7 +165,7 @@ tax_transform <- function(data,
     object = otu, taxa_are_rows = phyloseq::taxa_are_rows(ps)
   )
 
-  # assemble ps_extra for return
+  # assemble psExtra for return
   data <- psExtra(ps = ps, info = info)
   if (isTRUE(keep_counts) && !identical(trans, "identity")) {
     data@counts <- counts_otu
@@ -174,27 +173,27 @@ tax_transform <- function(data,
   return(data)
 }
 
-# internal helper: checks and updates ps_extra info
+# internal helper: checks and updates psExtra info
 tax_transformInfoUpdate <- function(info, trans, chain, rank) {
   # check if already transformed
-  if (length(info$tax_trans) > 0 && !rlang::is_na(info$tax_trans)) {
+  if (length(info$tax_trans) == 0) {
+    # log name of (1st) transformation in psExtra info
+    info$tax_trans <- trans
+  } else {
     if (!isTRUE(chain)) {
       # disallow further transformation by default
-      stop(
-        call. = FALSE,
-        "data were already transformed by: ", info$tax_trans, "\n",
-        "--> set argument chain = TRUE if you want to chain another transform"
-      )
-    } else if (isTRUE(chain)) {
-      if (!identical(rank, NA) && !identical(rank, "unique")) {
-        stop("rank must be NA/'unique' if chaining another transformation!")
-      }
-      # append name of this transformation onto ps_extra info
-      info$tax_trans <- paste(info$tax_trans, trans, sep = "&")
+      rlang::abort(call = rlang::caller_env(), message = c(
+        paste("data were already transformed by:", info$tax_trans),
+        ">" = "set argument chain = TRUE if you want to chain another transform"
+      ))
     }
-  } else {
-    # log name of transformation in ps_extra info
-    info$tax_trans <- trans
+    if (!identical(rank, NA) && !identical(rank, "unique")) {
+      rlang::abort(call = rlang::caller_env(), message = c(
+        "rank must be NA or 'unique' when chaining another transformation!"
+      ))
+    }
+    # append name of this transformation onto psExtra info
+    info$tax_trans <- paste(info$tax_trans, trans, sep = "&")
   }
   return(info)
 }

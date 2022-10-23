@@ -15,7 +15,7 @@
 #' but you should probably not use this option.
 #' This is used internally for efficiency inside `taxatree_plotkey()`
 #'
-#' @param data ps_extra (or phyloseq)
+#' @param data psExtra (or phyloseq)
 #' @param ...
 #' REQUIRED logical conditions for labelling
 #' e.g. rank == "Phylum", p.value < 0.1 | taxon %in% listOfTaxa
@@ -26,7 +26,7 @@
 #' If you change this, beware that taxatree_plotkey will not work, you will
 #' need to called taxatree_plot_label with
 #'
-#' @return ps_extra with (modified) taxatree_stats dataframe
+#' @return psExtra with (modified) taxatree_stats dataframe
 #' @export
 #'
 #' @examples
@@ -40,7 +40,7 @@
 #' # because it is created by `taxatree_nodes()` using the named function
 #' # provided to the `node_fun` argument
 #'
-#' # ps_Extra is returned
+#' # psExtra is returned
 #' labelled
 #'
 #' # notice how both conditions must be met for label column to be TRUE
@@ -58,8 +58,8 @@ taxatree_label <- function(data,
   }
 
   # get taxatree_stats if present
-  if (inherits(data, "ps_extra") && !identical(data$taxatree_stats, NULL)) {
-    stats <- data[["taxatree_stats"]]
+  if (is(data, "psExtra") && !identical(data@taxatree_stats, NULL)) {
+    stats <- data@taxatree_stats
     stats <- dplyr::left_join(stats, treeNodes, by = c("taxon", "rank"))
   } else {
     stats <- treeNodes
@@ -72,13 +72,9 @@ taxatree_label <- function(data,
   stats[["..ROW.ID.."]] <- NULL
   stats <- dplyr::as_tibble(stats)
 
-  # modify or create ps_extra
-  if (inherits(data, "ps_extra")) {
-    data[["taxatree_stats"]] <- stats
-  } else {
-    data <- new_ps_extra(data)
-    data[["taxatree_stats"]] <- stats
-  }
+  # modify or create psExtra
+  if (!is(data, "psExtra")) data <- psExtra(data, info = new_psExtraInfo())
+  data@taxatree_stats <- stats
 
   return(data)
 }

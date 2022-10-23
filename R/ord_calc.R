@@ -26,8 +26,8 @@
 #' @seealso \code{phyloseq \link[phyloseq]{ordinate}}
 #'
 #'
-#' @param data ps_extra list object: output from dist_calc(), or tax_transform() if no distance calculation required for method e.g. for RDA
-#' @param method which ordination method to use? "auto" means automatically determined from ps_extra and other args.
+#' @param data psExtra object: output from dist_calc(), or tax_transform() if no distance calculation required for method e.g. for RDA
+#' @param method which ordination method to use? "auto" means automatically determined from psExtra and other args.
 #' If you really know what you want: manually set one of 'PCoA', 'PCA', 'CCA', 'CAP' or 'RDA'
 #' @param constraints (a vector of) valid sample_data name(s) to constrain analyses, or leave as NULL for unconstrained ordination.
 #' Non-NULL values are compatible with method = "auto"/"RDA"/"CAP"
@@ -41,7 +41,7 @@
 #' FALSE suppresses warnings!
 #' @param ... optional arguments passed on to phyloseq::ordinate()
 #'
-#' @return ps_extra list object
+#' @return psExtra object
 #' @export
 #'
 #' @examples
@@ -64,7 +64,8 @@
 #'   tax_agg("Genus") %>%
 #'   dist_calc("bray") %>%
 #'   ord_calc(constraints = c("weight", "female"))
-#' # familiarise yourself with the structure of the returned ps_extra list object
+#'
+#' # familiarise yourself with the structure of the returned psExtra object
 #' test
 #' str(test, max.level = 1)
 #'
@@ -73,10 +74,12 @@
 #'   tax_agg("Genus") %>%
 #'   tax_transform("clr") %>%
 #'   ord_calc(constraints = c("weight", "female"))
+#'
 #' # plot with vegan package graphics to show it returns a standard ordination object
 #' ord_get(test2) %>% vegan::ordiplot()
-#' ord_plot(test2, plot_taxa = 8:1)
+#'
 #' # This is equivalent to CAP with "aitchison" distance
+#' ord_plot(test2, plot_taxa = 8:1)
 #' # but the latter (below) doesn't allow plotting taxa loadings with ord_plot
 #' dietswap %>%
 #'   tax_agg("Genus") %>%
@@ -96,8 +99,8 @@ ord_calc <- function(data,
   isConstrained <- ordCheckConstraints(constraints)
   isConditioned <- ordCheckConditions(conditions)
 
-  # check class of data is ps_extra and if phyloseq, convert to psExtra
-  if (!is_ps_extra(data)) check_is_phyloseq(data, argName = "data")
+  # check class of data is psExtra and if phyloseq, convert to psExtra
+  check_is_phyloseq(data, argName = "data")
   if (!is(data, "psExtra")) {
     warning(
       "* data provided to ord_calc is a phyloseq object, not a psExtra.\n",
@@ -182,7 +185,6 @@ ord_calc <- function(data,
   }
 
   # build return object
-
   ordI <- new_psExtraOrdInfo(method = method)
   if (isConstrained) ordI[["constraints"]] <- paste(constraints, collapse = "+")
   if (isConditioned) ordI[["conditions"]] <- paste(conditions, collapse = "+")
@@ -272,7 +274,7 @@ ordCheckDist <- function(distMat, method, verbose) {
     if (!isFALSE(verbose)) {
       rlang::warn(message = c(
         "!" = paste("Distance matrix is not used for", method),
-        "!" = "Ignoring distance matrix and removing it from ps_extra output",
+        "!" = "Ignoring distance matrix and removing it from psExtra output",
         i = "Did you mean to use PCoA or CAP? (or try method = 'auto')"
       ))
     }

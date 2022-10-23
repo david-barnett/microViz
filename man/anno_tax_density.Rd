@@ -31,7 +31,7 @@ anno_tax_density(
 
 \item{trans}{name of transformation suitable for tax_transform,
 or a function calling tax_transform, and/or tax_scale,
-(a function must take a phyloseq or ps_extra, and return one)}
+(a function must take a phyloseq or psExtra, and return one)}
 
 \item{zero_replace}{zero_replace value for for tax_transform, ignored if trans is a function}
 
@@ -59,7 +59,7 @@ or a function calling tax_transform, and/or tax_scale,
     \item{\code{axis_param}}{parameters for controlling axis. See \code{\link[ComplexHeatmap]{default_axis_param}} for all possible settings and default parameters.}
   }}
 
-\item{data}{OPTIONAL phyloseq or ps_extra,
+\item{data}{OPTIONAL phyloseq or psExtra,
 only set this to override use of same data as in heatmap}
 
 \item{taxa}{OPTIONAL selection vector of taxa (names, numbers or logical),

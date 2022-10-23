@@ -27,6 +27,8 @@ validate_psExtraOrdInfo <- function(psExtraOrdInfo) {
 
 #' Print method for psExtraOrdInfo list
 #'
+#' @param psExtraOrdInfo psExtraOrdInfo list
+#'
 #' @export
 print.psExtraOrdInfo <- function(psExtraOrdInfo) {
   lens <- purrr::map(psExtraOrdInfo, length)
@@ -43,7 +45,7 @@ print.psExtraOrdInfo <- function(psExtraOrdInfo) {
 }
 
 setOldClass("psExtraOrdInfo")
-setMethod("show", "psExtraOrdInfo", function(object) print.psExtraOrdInfo(object))
+# setMethod("show", "psExtraOrdInfo", function(object) print.psExtraOrdInfo(object))
 
 # psExtraInfo ----------------------------------------------------------------
 
@@ -122,7 +124,7 @@ print.psExtraInfo <- function(psExtraInfo,
 }
 
 setOldClass("psExtraInfo")
-setMethod("show", "psExtraInfo", function(object) print.psExtraInfo(object))
+# setMethod("show", "psExtraInfo", function(object) print.psExtraInfo(object))
 
 
 # psExtra -------------------------------------------------------------------
@@ -210,6 +212,9 @@ modify_psExtra <- function(psExtra, ...) {
     new[["ps"]] <- NULL
   }
   stopifnot(all(names(new) %in% slotNames(psExtra)))
+
+  # TODO check for sample changes and update/remove any other affected slots
+
   for (n in names(new)) slot(psExtra, n) <- new[[n]]
   return(psExtra)
 }

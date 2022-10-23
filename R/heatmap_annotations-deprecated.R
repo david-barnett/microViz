@@ -253,7 +253,7 @@ varAnnotate <- function(data, # from heatmap fun # converted to df
 ) {
   dots <- list(...)
   # extract data if phyloseq
-  if (methods::is(data, "phyloseq") || inherits(data, "ps_extra")) {
+  if (methods::is(data, "phyloseq")) {
     data <- samdatAsDataframe(ps_get(data))
   }
   mat <- df_to_numeric_matrix(data, vars = vars)
@@ -316,7 +316,7 @@ old_anno_var_hist <- function(data, vars = NA, which = "column", size = 15, ...)
   dots <- list(...)
 
   # extract (sample)data to matrix
-  if (methods::is(data, "phyloseq") || inherits(data, "ps_extra")) {
+  if (methods::is(data, "phyloseq")) {
     data <- samdatAsDataframe(ps_get(data))
   } else if (inherits(data, "data.frame") || inherits(data, "matrix")) {
     mat <- df_to_numeric_matrix(data, vars = vars)
@@ -347,7 +347,7 @@ old_anno_var_box <- function(data, vars = NA, which = "column", size = 15, ...) 
   dots <- list(...)
 
   # extract (sample)data to matrix
-  if (methods::is(data, "phyloseq") || inherits(data, "ps_extra")) {
+  if (methods::is(data, "phyloseq")) {
     data <- samdatAsDataframe(ps_get(data))
   } else if (inherits(data, "data.frame") || inherits(data, "matrix")) {
     mat <- df_to_numeric_matrix(data, vars = vars)

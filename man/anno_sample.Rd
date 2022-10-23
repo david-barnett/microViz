@@ -11,7 +11,7 @@ anno_sample(var, fun = identity, data = NULL, samples = NULL)
 
 \item{fun}{function to transform variable \code{var}}
 
-\item{data}{OPTIONAL phyloseq or ps_extra,
+\item{data}{OPTIONAL phyloseq or psExtra,
 only set this to override use of same data as in heatmap}
 
 \item{samples}{OPTIONAL selection vector of sample names,

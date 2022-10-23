@@ -216,6 +216,7 @@ comp_barplot <- function(ps,
                          other_name = "other",
                          x = "SAMPLE",
                          ...) {
+  ps <- ps_get(ps)
   if (!rlang::is_scalar_integerish(n_taxa) || n_taxa < 1) {
     stop("n_taxa must a positive integer")
   }

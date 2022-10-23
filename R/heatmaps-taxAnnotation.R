@@ -12,7 +12,7 @@
 #' @param .side
 #'
 #' @param .data
-#' OPTIONAL phyloseq or ps_extra,
+#' OPTIONAL phyloseq or psExtra,
 #' only set this to override use of same data as in heatmap
 #' @param .taxa
 #' OPTIONAL selection vector of taxa (names, numbers or logical),
@@ -149,7 +149,7 @@ taxAnnotation <- function(...,
 #' @param use_counts try to retrieve counts from data object?
 #' @param size width or height as a grid unit object
 #' @param data
-#' OPTIONAL phyloseq or ps_extra,
+#' OPTIONAL phyloseq or psExtra,
 #' only set this to override use of same data as in heatmap
 #' @param taxa
 #' OPTIONAL selection vector of taxa (names, numbers or logical),
@@ -260,7 +260,7 @@ anno_tax_prev <- function(undetected = 0,
 #' @param trans
 #' name of transformation suitable for tax_transform,
 #' or a function calling tax_transform, and/or tax_scale,
-#' (a function must take a phyloseq or ps_extra, and return one)
+#' (a function must take a phyloseq or psExtra, and return one)
 #' @param zero_replace
 #' zero_replace value for for tax_transform, ignored if trans is a function
 #' @param pointsize size of outlier points, as grid::unit() object
@@ -482,7 +482,7 @@ anno_tax_density <- function(undetected = 0,
 #'
 #' Get taxon abundance matrix (with undetected replaced with NaN, optionally)
 #'
-#' @param data ps_extra or phyloseq
+#' @param data psExtra or phyloseq
 #' @param use_counts use count data from data if possible
 #' @param taxa vector of taxa to return abundances for
 #' @param trans transformation for tax_transform

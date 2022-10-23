@@ -13,7 +13,7 @@ dist_bdisp(
 )
 }
 \arguments{
-\item{data}{ps_extra output from dist_calc}
+\item{data}{psExtra output from dist_calc}
 
 \item{variables}{list of variables to use as group}
 
@@ -24,7 +24,7 @@ dist_bdisp(
 \item{verbose}{sends messages about progress if true}
 }
 \value{
-ps_extra list containing betadisper results
+psExtra containing betadisper results
 }
 \description{
 Takes the output of dist_calc function. Or use with the result of the permanova function to ensure the results correspond to exactly the same input data.

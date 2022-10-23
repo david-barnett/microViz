@@ -15,7 +15,7 @@ tax_palette(
 )
 }
 \arguments{
-\item{data}{phyloseq or ps_extra}
+\item{data}{phyloseq or psExtra}
 
 \item{rank}{taxonomic rank name or "unique"}
 

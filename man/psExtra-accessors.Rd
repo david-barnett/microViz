@@ -36,7 +36,7 @@ samdat_tbl(data, sample_names_col = ".sample_name")
 
 \item{ps_extra}{deprecated! don't use this}
 
-\item{data}{phyloseq or ps_extra}
+\item{data}{phyloseq or psExtra}
 
 \item{taxa}{subset of taxa to return, NA for all (default)}
 

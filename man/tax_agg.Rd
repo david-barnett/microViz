@@ -2,7 +2,7 @@
 % Please edit documentation in R/tax_agg.R
 \name{tax_agg}
 \alias{tax_agg}
-\title{Aggregate taxa and create ps_extra}
+\title{Aggregate taxa and track aggregation in psExtra}
 \usage{
 tax_agg(
   ps,
@@ -33,17 +33,17 @@ which also does not check that the taxa are uniquely defined by only the aggrega
 \item{add_unique}{if TRUE, adds a rank named unique, identical to the rownames after aggregation}
 }
 \value{
-ps_extra list object including phyloseq and tax_agg rank info
+psExtra object including phyloseq and tax_agg rank info
 }
 \description{
 \code{tax_agg} sums the abundances of the phyloseq taxa at the given rank.
-It records the tax_agg rank argument in the info of the ps_extra object output.
-This ps_extra object tracks aggregation, and any further transformations and scaling,
+It records the tax_agg rank argument in the info of the psExtra object output.
+This psExtra object tracks aggregation, and any further transformations and scaling,
 to help you keep track of what you have done with your phyloseq object and automatically caption ordination plots.
 
 Instead of tax_agg, consider using \code{tax_transform()} with a rank argument instead, to both aggregate and transform the taxa.
 This is also useful when you want to aggregate but not transform the taxa,
-and yet still log the "identity" transformation in ps_extra for captioning your ordination plots.
+and yet still log the "identity" transformation in psExtra for captioning your ordination plots.
 e.g. \code{tax_transform(rank = "Genus", trans = "identity")}
 
 tax_agg allows you to pass NA or "unique" to the rank argument which will NOT aggregate the taxa.

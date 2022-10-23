@@ -1,7 +1,7 @@
 
 #' Calculate distances between sequential samples in ps_extra/phyloseq object
 #'
-#' @param data ps_extra object, e.g. output from tax_transform()
+#' @param data psExtra object, e.g. output from tax_transform()
 #' @param dist
 #' name of distance to calculate between pairs of sequential samples
 #' @param group
@@ -14,13 +14,13 @@
 #' @param start_value value returned for the first sample in each group, which
 #' has no preceding sample in the group's sequence, and so has no obvious value
 #' @param return
-#' format of return object: "data" returns ps_extra with sorted samples and
+#' format of return object: "data" returns psExtra with sorted samples and
 #' additional variable. "vector" returns only named vector of sequential
 #' distances.
-#' @param var_name name of variable created in ps_extra if return arg = "data"
+#' @param var_name name of variable created in psExtra if return arg = "data"
 #'
 #' @return
-#' ps_extra object sorted and with new sequential distance variable
+#' psExtra object sorted and with new sequential distance variable
 #' or a named vector of that variable
 #' @export
 #'
@@ -110,7 +110,7 @@ dist_calc_seq <- function(data,
                           var_name = paste0(dist, "_DistFromLast")) {
 
   # check input data object class
-  distCalcDataValidate(data)
+  isDistCalcDataPhyloseq(data)
 
   # get phyloseq and info from data
   ps <- ps_get(data)
@@ -125,8 +125,8 @@ dist_calc_seq <- function(data,
   # split ps by grouping variable
   psSubgroups <- ps_split(ps, group = group, unequal = unequal)
 
-  # re-attach ps_extra info to all subgroup phyloseqs
-  psSubgroups <- lapply(psSubgroups, function(p) new_ps_extra(p, info = info))
+  # re-attach psExtra info to all subgroup phyloseqs
+  psSubgroups <- lapply(psSubgroups, function(p) psExtra(p, info = info))
 
   # dist_calc on each of the subgroup phyloseqs
   psSubgroups <- lapply(psSubgroups, dist_calc, dist = dist)
@@ -146,10 +146,10 @@ dist_calc_seq <- function(data,
   phyloseq::sample_data(ps)[[var_name]] <- sequentialDists
 
   # return data
-  if (!is(data, "psExtra") && is(data, "phyloseq")) return(ps)
-  if (is(data, "psExtra")) data <- modify_psExtra(data, ps = ps)
-  if (is_ps_extra(data)) data[["ps"]] <- ps
-  return(data)
+  if (!is(data, "psExtra")) {
+    return(ps)
+  }
+  return(modify_psExtra(psExtra = data, ps = ps))
 }
 
 # helpers -----------------------------------------------------------------
@@ -159,6 +159,7 @@ dist_calc_seq <- function(data,
 ps_split <- function(ps, group, unequal = "ignore") {
   groupLevels <- unique(phyloseq::sample_data(ps)[[group]])
 
+  warning("ps_split may drop different taxa per group with ps_filter")
   psSubgroups <- lapply(
     X = groupLevels,
     FUN = function(level) ps_filter(ps, .data[[group]] == level)
@@ -182,11 +183,11 @@ ps_split <- function(ps, group, unequal = "ignore") {
   return(psSubgroups)
 }
 
-# takes ps_extra object with distance matrix already calculated
+# takes psExtra object with distance matrix already calculated
 # gets named vector of distances representing distance of a sample from the
 # preceding sample in the (presumably ordered) phyloseq
-distGetSeq <- function(ps_extra, start_value = NaN) {
-  d <- dist_get(ps_extra = ps_extra)
+distGetSeq <- function(psExtra, start_value = NaN) {
+  d <- dist_get(psExtra)
   m <- as.matrix(d)
   # get subset of matrix representing distances between sequential samples
   # NaN, [2, 1], [3, 2], [4, 3] ... = c(NaN, mat[row(mat) - col(mat) == 1]])

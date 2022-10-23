@@ -12,7 +12,7 @@ ord_order_samples(ord, axes = 1:2, scaling = 2)
 \arguments{
 \item{ps}{phyloseq object to be sorted}
 
-\item{ord}{ps_extra with ordination object}
+\item{ord}{psExtra with ordination object}
 
 \item{axes}{which axes to use for sorting? numerical vector of length 1 or 2}
 
@@ -31,7 +31,7 @@ and the other set of scores is left unscaled (from ?vegan::scores.cca)}
 position on 1 or 2 ordination axes.
 
 \code{ord_order_samples} gets the sample_names in order from the ordination
-contained in a ps_extra list. This is used internally by \code{ps_sort_ord}
+contained in a psExtra. This is used internally by \code{ps_sort_ord}
 
 If 2 axes given, the samples are sorted by anticlockwise rotation around the
 selected ordination axes, starting on first axis given, upper right quadrant.

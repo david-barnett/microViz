@@ -915,7 +915,7 @@ ord_explore <- function(data,
 #'
 #' Take input data and return list with:
 #'
-#' - processed ps_extra data (added SAMPLE variable)
+#' - processed psExtra data (added SAMPLE variable)
 #' - ordination builder modal default options
 #' - sample variable lists for input choices
 #'
@@ -925,19 +925,15 @@ ord_explore <- function(data,
 #' @noRd
 ord_explore_init <- function(data) {
 
-  if (!is_ps_extra(data)) check_is_phyloseq(data, argName = "data")
+  check_is_phyloseq(data, argName = "data")
 
   # if data is plain phyloseq, validate and convert to psExtra
-  if (!is(data, "psExtra") && is(data, "phyloseq")) {
+  if (!is(data, "psExtra")) {
     data <- tax_transform(phyloseq_validate(data), "identity", rank = "unique")
   }
 
   # create a SAMPLE id variable
-  if (inherits(data, "ps_extra")) {
-    data$ps <- ps_mutate(data$ps, SAMPLE = phyloseq::sample_names(data$ps))
-  } else {
-    data@sam_data$SAMPLE <- phyloseq::sample_names(data)
-  }
+  data@sam_data$SAMPLE <- phyloseq::sample_names(data)
 
   # create unique rank if not already present
   if (!"unique" %in% phyloseq::rank_names(ps_get(data))) {
@@ -946,14 +942,15 @@ ord_explore_init <- function(data) {
 
   # ordination info -----------------------------------------------------------
   # get info about input data to initialise settings modal choices
+  psXinfo <- info_get(data)
+  validate_psExtraInfo(psXinfo)
   info <- list(
-    rank = info_get(data)[["tax_agg"]],
-    trans = info_get(data)$tax_trans,
-    scale = info_get(data)[["tax_scale"]],
-    dist = info_get(data)[["dist_method"]],
-    ord = info_get(data)$ord_info[["method"]],
-    constraints = read_cons(info_get(data)$ord_info[["constraints"]]),
-    conditions = read_cons(info_get(data)$ord_info[["conditions"]])
+    rank = psXinfo[["tax_agg"]], trans = psXinfo$tax_trans,
+    scale = psXinfo[["tax_scale"]],
+    dist = psXinfo[["dist_method"]],
+    ord = psXinfo$ord_info[["method"]],
+    constraints = read_cons(psXinfo$ord_info[["constraints"]]),
+    conditions = read_cons(psXinfo$ord_info[["conditions"]])
   )
   # read_cons returns NULL if no constraints / conditions found
   info$isCon <- length(c(info$constraints, info$conditions)) > 0
@@ -961,13 +958,13 @@ ord_explore_init <- function(data) {
   # handle missing ordination info --------------------------------------------
   # Set up a warning (and shiny notification) if information is complete
   # TODO fix ps_seriate so this info isn't necessary
-  if (is.na(info$rank) || is.na(info$trans)) {
+  if (length(info$rank) == 0 || length(info$trans) == 0) {
     warn <- NULL # initialise
-    if (is.na(info$rank)) {
+    if (length(info$rank) == 0) {
       info$rank <- "unique"
       warn <- "tax rank is 'unique'"
     }
-    if (is.na(info$trans)) {
+    if (length(info$trans) == 0) {
       info$trans <- "identity"
       warn <- paste(warn, "transformation is 'identity'", sep = " and ")
     }
@@ -981,8 +978,8 @@ ord_explore_init <- function(data) {
     warn <- FALSE
   }
   # scale = if (is.na(info$scale)) "neither" else info$scale,
-  if (length(info$dist) == 0 || rlang::is_na(info$dist)) info$dist <- "none"
-  if (length(info$ord) == 0 || rlang::is_na(info$ord)) info$ord <- "auto"
+  if (length(info$dist) == 0) info$dist <- "none"
+  if (length(info$ord) == 0) info$ord <- "auto"
 
   # variables and ranks -------------------------------------------------------
   # get list of certain types of variables for populating selectize lists
@@ -1010,13 +1007,12 @@ ord_explore_init <- function(data) {
 }
 
 # simple helper function that takes string representing constraints or
-# conditions stored in ps_extra info and splits by "+" or returns NULL if NA
+# conditions stored in psExtraInfo and splits by "+" or returns NULL if NA
 read_cons <- function(cons_string) {
-  if (length(cons_string) == 0 || rlang::is_na(cons_string)) {
+  if (length(cons_string) == 0) {
     return(NULL)
-  } else {
-    return(unlist(strsplit(x = cons_string, split = "+", fixed = TRUE)))
   }
+  return(unlist(strsplit(x = cons_string, split = "+", fixed = TRUE)))
 }
 
 # Create ordination from data, bundling several steps
@@ -1144,7 +1140,7 @@ ord_choices <- function(type) {
   return(out)
 }
 
-# data must be ps_extra/phyloseq input as to ord_explore
+# data must be psExtra/phyloseq input as to ord_explore
 # type can be all or noTree, but data without phy_tree also adds noTree to type
 dist_choices <- function(data, type) {
   ps <- ps_get(data)

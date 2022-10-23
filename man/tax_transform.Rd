@@ -17,15 +17,15 @@ tax_transform(
 )
 }
 \arguments{
-\item{data}{a phyloseq object or \code{ps_extra} list output from \code{tax_agg}}
+\item{data}{a phyloseq object or psExtra output from \code{tax_agg}}
 
 \item{trans}{any valid taxa transformation (e.g. from \code{microbiome::transform})}
 
 \item{rank}{If data is phyloseq: data are aggregated at this rank before transforming.
 If NA, runs tax_agg(data, rank = NA).
-If rank is NA and data is already ps_extra, any preceding aggregation is left as is.}
+If rank is NA and data is already psExtra, any preceding aggregation is left as is.}
 
-\item{keep_counts}{if TRUE, store the pre-transformation count data in ps_extra counts slot}
+\item{keep_counts}{if TRUE, store the pre-transformation count data in psExtra counts slot}
 
 \item{chain}{if TRUE, transforming again is possible when data are already transformed
 i.e. multiple transformations can be chained with multiple tax_transform calls}
@@ -33,11 +33,11 @@ i.e. multiple transformations can be chained with multiple tax_transform calls}
 \item{zero_replace}{Replace any zeros with this value before transforming. Either a numeric, or
 "halfmin" which replaces zeros with half of the smallest value across the
 entire dataset.
-Beware: the choice of zero replacement is not tracked in the ps_extra output.}
+Beware: the choice of zero replacement is not tracked in the psExtra output.}
 
 \item{add}{Add this value to the otu_table before transforming. If \code{add} != 0,
 \code{zero_replace} does nothing. Either a numeric, or "halfmin".
-Beware: this choice is not tracked in the ps_extra output.}
+Beware: this choice is not tracked in the psExtra output.}
 
 \item{transformation}{deprecated, use \code{trans} instead!}
 
@@ -94,7 +94,7 @@ You can set a different threshold, by passing e.g. undetected = 10, for
 example, in which case all abundances of 10 or below would be converted to 0.
 All abundances above 10 would be converted to 1s.
 
-Beware that the choice of detection threshold is not tracked in the ps_extra.
+Beware that the choice of detection threshold is not tracked in the psExtra.
 }
 
 \examples{

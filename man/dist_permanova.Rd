@@ -18,7 +18,7 @@ dist_permanova(
 )
 }
 \arguments{
-\item{data}{ps_extra output from dist_calc()}
+\item{data}{psExtra output from dist_calc()}
 
 \item{variables}{character vector of variables to include in model or character representation of the right-hand side of a formula, e.g "varA + varB + varA:varB"}
 
@@ -39,7 +39,7 @@ dist_permanova(
 \item{...}{additional arguments are passed directly to vegan::adonis2() (e.g. strata, add, sqrt.dist etc.)}
 }
 \value{
-ps_extra list containing permanova results and (filtered) input objects
+psExtra list containing permanova results and (filtered) input objects
 }
 \description{
 \code{dist_permanova} runs a Permutational Multivariate ANOVA (aka Non-parametric MANOVA).

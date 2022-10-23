@@ -213,14 +213,14 @@ anno_sample_cat <- function(var,
   # create AnnotationFunction-making function
   FN <- function(data, samples, which, args = Args) {
     # extract (sample)data to matrix
-    if (methods::is(data, "phyloseq") || inherits(data, "ps_extra")) {
+    if (methods::is(data, "phyloseq")) {
       data <- samdatAsDataframe(ps_get(data))
     }
     if (inherits(data, "data.frame") || inherits(data, "matrix")) {
       if (!var %in% colnames(data)) stop(var, " is not a variable in data")
       x <- data[samples, var, drop = TRUE]
     } else {
-      stop("data must be phyloseq/ps_extra or data.frame/matrix")
+      stop("data must be phyloseq/psExtra or data.frame/matrix")
     }
 
     args[c("x", "which")] <- list(x, which)
@@ -490,13 +490,13 @@ anno_sample <- function(var,
   # create AnnotationFunction-making function
   FN <- function(data, samples, ...) {
     # extract (sample)data to matrix
-    if (methods::is(data, "phyloseq") || inherits(data, "ps_extra")) {
+    if (methods::is(data, "phyloseq")) {
       data <- samdatAsDataframe(ps_get(data))
     }
     if (inherits(data, "data.frame") || inherits(data, "matrix")) {
       x <- fun(data[, var, drop = TRUE])
     } else {
-      stop("data must be phyloseq/ps_extra or data.frame/matrix")
+      stop("data must be phyloseq/psExtra or data.frame/matrix")
     }
     return(x)
   }

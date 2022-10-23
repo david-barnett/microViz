@@ -4,13 +4,13 @@
 #' `taxatree_models` runs `tax_model` on every taxon at multiple taxonomic
 #' ranks (you choose which ranks with the plural `ranks` argument).
 #' It returns the results as a named nested list of models
-#' attached to a ps_extra object.
+#' attached to a psExtra object.
 #' One list per rank, one model per taxon at each rank.
 #'
 #' The result can then be used with `taxatree_models2stats` to extract a
 #' dataframe of statistics for use with `taxatree_plots`.
 #'
-#' @param ps phyloseq object or ps_extra
+#' @param ps phyloseq object or psExtra
 #' @param ranks vector of rank names at which to aggregate taxa for modelling
 #' @param type name of regression modelling function, or the function itself
 #' @param variables
@@ -43,7 +43,8 @@ taxatree_models <- function(ps,
                             verbose = "rank",
                             ...) {
 
-  data <- if (is(ps, "phyloseq")) as(ps, "psExtra") else as_ps_extra(ps)
+  check_is_phyloseq(ps, argName = "ps")
+  data <- as(ps, "psExtra")
   ps <- ps_get(ps)
   ranks <- taxatree_modelsGetRanks(ps = ps, ranks = ranks)
   taxatree_modelsCheckDupes(ps = ps, ranks = ranks)
@@ -62,8 +63,7 @@ taxatree_models <- function(ps,
   names(tax_models_list) <- ranks
 
   # attach models list to psExtra
-  if (is_ps_extra(data)) data[["taxatree_models"]] <- tax_models_list
-  if (is(data, "psExtra")) data@taxatree_models <- tax_models_list
+  data@taxatree_models <- tax_models_list
   return(data)
 }
 
@@ -75,10 +75,10 @@ taxatree_modelsGetRanks <- function(ps, ranks) {
   } else if (class(ranks) %in% c("numeric", "integer", "logical")) {
     ranks <- ranknames[ranks]
   } else if (any(!ranks %in% ranknames)) {
-    stop(
+    rlang::abort(call = rlang::caller_env(), message = c(
       "One of more of these ranks are not in rank_names(ps): ",
-      paste(ranks, collapse = " ")
-    )
+      ">" = paste(ranks, collapse = " ")
+    ))
   }
   return(ranks)
 }
@@ -89,10 +89,10 @@ taxatree_modelsCheckDupes <- function(ps, ranks) {
   tt <- phyloseq::tax_table(ps)[, ranks, drop = FALSE]
   uniques <- apply(tt, MARGIN = 2, unique)
   if (anyDuplicated(unlist(uniques))) {
-    stop(
+    rlang::abort(call = rlang::caller_env(), message = c(
       "Some elements in tax_table(ps) are in >1 of the selected ranks.",
-      "\nConsider using tax_prepend_ranks(ps) first, to fix this problem.",
-      "\nOr run `taxatree_nodes(ps)` for a more informative error."
-    )
+      ">" = "Consider using tax_prepend_ranks(ps) first, to fix this problem.",
+      i = "Or run `taxatree_nodes(ps)` for a more informative error."
+    ))
   }
 }

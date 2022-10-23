@@ -12,7 +12,7 @@ taxatree_label(
 )
 }
 \arguments{
-\item{data}{ps_extra (or phyloseq)}
+\item{data}{psExtra (or phyloseq)}
 
 \item{...}{REQUIRED logical conditions for labelling
 e.g. rank == "Phylum", p.value < 0.1 | taxon \%in\% listOfTaxa}
@@ -25,7 +25,7 @@ need to called taxatree_plot_label with}
 (name of list iterm is available for use in ...)}
 }
 \value{
-ps_extra with (modified) taxatree_stats dataframe
+psExtra with (modified) taxatree_stats dataframe
 }
 \description{
 \code{taxatree_label} is used internally by \code{taxatree_plotkey}, but
@@ -53,7 +53,7 @@ labelled <- dietswap \%>\%
 # because it is created by `taxatree_nodes()` using the named function
 # provided to the `node_fun` argument
 
-# ps_Extra is returned
+# psExtra is returned
 labelled
 
 # notice how both conditions must be met for label column to be TRUE

@@ -3,19 +3,19 @@
 #'
 #' @description
 #' Runs a function e.g. `broom::tidy` on a list of models, i.e. the output of
-#' `taxatree_models` or `tax_model` (models list may often be attached to ps_extra)
+#' `taxatree_models` or `tax_model` (models list may often be attached to psExtra)
 #'
 #' @param data
-#' ps_extra with attached tax_models or taxatree_models list, or just the list of models
+#' psExtra with attached tax_models or taxatree_models list, or just the list of models
 #' @param fun function to assist extraction of stats dataframe from models, or "auto"
 #' @param ... extra arguments passed to fun
-#' @param .keep_models should the models list be kept in the ps_extra output?
+#' @param .keep_models should the models list be kept in the psExtra output?
 #'
-#' @return data.frame, attached to ps_extra
+#' @return data.frame, attached to psExtra
 #' @export
 #' @describeIn
 #' models2stats
-#' Extract stats from list or ps_extra output of taxatree_models
+#' Extract stats from list or psExtra output of taxatree_models
 #' @examples
 #' # This example is an abbreviated excerpt from article on taxon modelling on
 #' # the microViz documentation website
@@ -65,13 +65,13 @@
 #'
 #' lm_stats <- lm_models %>% taxatree_models2stats()
 #'
-#' # inspect the ps_extra returned, now with taxatree_stats dataframe added
+#' # inspect the psExtra returned, now with taxatree_stats dataframe added
 #' lm_stats
 #'
 #' # inspect the dataframe itself
 #' lm_stats$taxatree_stats
 #'
-#' # keep the models on the ps_extra object
+#' # keep the models on the psExtra object
 #' lm_models %>% taxatree_models2stats(.keep_models = TRUE)
 #'
 #' # you can adjust the p values with taxatree_stats_p_adjust
@@ -81,8 +81,7 @@ taxatree_models2stats <- function(data,
                                   fun = "auto",
                                   ...,
                                   .keep_models = FALSE) {
-  if (!is.list(data) && !is_ps_extra(data)) check_is_psExtra(x = data, argName = "data")
-  if (inherits(data, "ps_extra")) models <- data[["taxatree_models"]]
+  if (!is.list(data)) check_is_psExtra(x = data, argName = "data")
   if (is(data, "psExtra")) models <- data@taxatree_models
   if (!is.list(models)) {
     stop("data arg psExtra must have 'taxatree_models' list attached")
@@ -103,17 +102,14 @@ taxatree_models2stats <- function(data,
     dplyr::across(dplyr::all_of(c("term", "rank")), ~ factor(.x, unique(.x)))
   )
 
-  # return ps_extra or data.frame (based on input data class)
-  if (inherits(data, "ps_extra")) {
-    data[["taxatree_stats"]] <- stats
-    if (isFALSE(.keep_models)) data[["taxatree_models"]] <- NULL
-  } else if (is(data, "psExtra")) {
+  # return psExtra (based on input data class)
+  if (is(data, "psExtra")) {
     data@taxatree_stats <- stats
     if (isFALSE(.keep_models)) data@taxatree_models <- NULL
-  } else {
-    data <- stats
+    return(data)
   }
-  return(data)
+  # otherwise return data frame
+  return(stats)
 }
 
 #' @param rank
@@ -136,8 +132,7 @@ tax_models2stats <- function(data,
     stopifnot(all(names(models) %in% phyloseq::rank_names(ps_get(data))))
   }
 
-  if (!is.list(data) && !is_ps_extra(data)) check_is_psExtra(data, "data")
-  if (inherits(data, "ps_extra")) models <- data[["tax_models"]]
+  if (!is.list(data)) check_is_psExtra(data, "data")
   if (is(data, "psExtra")) models <- data@tax_models
   if (!is.list(models)) {
     stop("data arg psExtra must have 'tax_models' list attached")
@@ -148,7 +143,7 @@ tax_models2stats <- function(data,
   } else {
     rank <- names(models)
     if (!rlang::is_string(rank, string = phyloseq::rank_names(ps_get(data)))) {
-      stop("tax_models list must be length 1 & have name of a rank in ps_extra")
+      stop("tax_models list must be length 1 & have name of a rank in psExtra")
     }
     models <- models[[rank]] # remove one layer of nesting
   }
@@ -164,17 +159,13 @@ tax_models2stats <- function(data,
   )
   stats <- purrr::reduce(stat_list, rbind.data.frame)
 
-  # return ps_extra or data.frame (based on input data class)
-  if (inherits(data, "ps_extra")) {
-    data[["tax_stats"]] <- stats
-    if (isFALSE(.keep_models)) data[["tax_models"]] <- NULL
-  } else if (is(data, "psExtra")) {
+  # return psExtra or data.frame (based on input data class)
+  if (is(data, "psExtra")) {
     data@tax_stats <- stats
     if (isFALSE(.keep_models)) data@tax_models <- NULL
-  } else {
-    data <- stats
+    return(data)
   }
-  return(data)
+  return(stats)
 }
 
 

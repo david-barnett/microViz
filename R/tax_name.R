@@ -68,9 +68,9 @@ tax_name <- function(ps,
   if (!inherits(prefix, "character")) {
     stop("prefix must be a character string, not: ", class(prefix))
   }
-  if (inherits(ps, "ps_extra")) {
+  if (is(ps, "psExtra")) {
     warning(
-      "ps is class ps_extra, returning only phyloseq!",
+      "ps is class psExtra, returning only phyloseq!",
       "\nNaming should be done on phyloseq before starting analyses."
     )
   }

@@ -39,7 +39,8 @@
 #' # this is an error as ranks can't be any other class than character
 #' # tax_mutate(dietswap, Genus = 1:ntaxa(dietswap))
 tax_mutate <- function(ps, ...) {
-  if (is_ps_extra(ps) || is(ps, "psExtra")) {
+  stopif_ps_extra(ps, argName = "ps")
+  if (is(ps, "psExtra")) {
     warning("ps argument is a psExtra, but only a phyloseq will be returned")
     ps <- ps_get(ps)
   }

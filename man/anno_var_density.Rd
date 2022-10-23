@@ -45,7 +45,7 @@ anno_var_density(
     \item{\code{axis_param}}{parameters for controlling axis. See \code{\link[ComplexHeatmap]{default_axis_param}} for all possible settings and default parameters.}
   }}
 
-\item{data}{OPTIONAL phyloseq or ps_extra,
+\item{data}{OPTIONAL phyloseq or psExtra,
 only set this to override use of same data as in heatmap}
 
 \item{vars}{OPTIONAL selection vector of variable names,

@@ -8,7 +8,7 @@
 #'  instead call `taxatree_plots` with the output of `taxatree_stats`
 #'
 #' - `taxatree_nodes` creates taxon nodes and calculates a summary statistic
-#'  about each taxon (given by `fun`). Takes a ps_extra or phyloseq object.
+#'  about each taxon (given by `fun`). Takes a psExtra or phyloseq object.
 #'
 #' - `taxatree_edges` uses the output of `taxatree_nodes` to create a
 #' dataframe of edges.
@@ -17,7 +17,7 @@
 #' `taxatree_nodes` makes nodes for taxa at all ranks or for a list of
 #' consecutive ranks (plus a root rank if tree is not rooted).
 #'
-#' @param ps phyloseq object or ps_extra
+#' @param ps phyloseq object or psExtra
 #' @param ranks
 #' selection of taxonomic ranks to make nodes for ("all", or names)
 #' @param fun function to calculate for each taxon/node

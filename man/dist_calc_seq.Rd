@@ -16,7 +16,7 @@ dist_calc_seq(
 )
 }
 \arguments{
-\item{data}{ps_extra object, e.g. output from tax_transform()}
+\item{data}{psExtra object, e.g. output from tax_transform()}
 
 \item{dist}{name of distance to calculate between pairs of sequential samples}
 
@@ -31,14 +31,14 @@ by group argument, are of unequal size}
 \item{start_value}{value returned for the first sample in each group, which
 has no preceding sample in the group's sequence, and so has no obvious value}
 
-\item{return}{format of return object: "data" returns ps_extra with sorted samples and
+\item{return}{format of return object: "data" returns psExtra with sorted samples and
 additional variable. "vector" returns only named vector of sequential
 distances.}
 
-\item{var_name}{name of variable created in ps_extra if return arg = "data"}
+\item{var_name}{name of variable created in psExtra if return arg = "data"}
 }
 \value{
-ps_extra object sorted and with new sequential distance variable
+psExtra object sorted and with new sequential distance variable
 or a named vector of that variable
 }
 \description{

@@ -47,7 +47,7 @@ tax_select <- function(ps,
                        strict_matches = FALSE,
                        n_typos = 1,
                        deselect = FALSE) {
-  if (inherits(ps, "ps_extra")) ps <- ps_get(ps)
+  ps <- ps_get(ps)
 
   # collapse tax_list to a string of regex OR patterns
   taxaString <- paste(tax_list, collapse = "|")

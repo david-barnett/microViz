@@ -2,15 +2,12 @@
 % Please edit documentation in R/tax_names2rank.R
 \name{tax_names2rank}
 \alias{tax_names2rank}
-\alias{tax_names2tt}
 \title{Add taxa_names as last column in phyloseq tax_table}
 \usage{
 tax_names2rank(data, colname = "unique")
-
-tax_names2tt(data, colname = "unique")
 }
 \arguments{
-\item{data}{phyloseq object, or ps_extra or tax_table (taxonomyTable)}
+\item{data}{phyloseq object, or psExtra or tax_table (taxonomyTable)}
 
 \item{colname}{name of new rank to add at right side of tax_table}
 }
@@ -21,8 +18,4 @@ same class object as passed in to data
 The taxa names in your phyloseq may specify a further unique classification
 of your taxa, e.g. ASVs, that is not otherwise represented in the tax_table itself.
 This function fixes that, and allows you to include this level in taxatree_plots for example.
-}
-\details{
-\code{tax_names2tt} is the old name of \code{tax_names2rank}.
-The use of \code{tax_names2tt} is deprecated.
 }

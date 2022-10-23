@@ -39,7 +39,7 @@ taxatree_plots(
 )
 }
 \arguments{
-\item{data}{ps_extra with taxatree_stats, e.g. output of \code{taxatree_models2stats()}}
+\item{data}{psExtra with taxatree_stats, e.g. output of \code{taxatree_models2stats()}}
 
 \item{colour_stat}{name of variable to scale colour/fill of nodes and edges}
 
@@ -115,8 +115,8 @@ list of ggraph ggplots
 }
 \description{
 \itemize{
-\item Uses a ps_extra object to make a tree graph structure from the taxonomic table.
-\item Then adds statistical results stored in "taxatree_stats" of ps_extra data
+\item Uses a psExtra object to make a tree graph structure from the taxonomic table.
+\item Then adds statistical results stored in "taxatree_stats" of psExtra data
 \item You must use \code{taxatree_models()} first to generate statistical model results.
 \item You can adjust p-values with \code{taxatree_stats_p_adjust()}
 }
@@ -169,7 +169,7 @@ models <- taxatree_models(
   ps = ps, type = corncob::bbdml, ranks = c("Phylum", "Genus"),
   formula = ~ female + african, verbose = TRUE
 )
-# models list stored as attachment in ps_extra
+# models list stored as attachment in psExtra
 models
 
 # get stats from models

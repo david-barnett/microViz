@@ -8,7 +8,7 @@
 #' @seealso \code{\link{tax_agg}} for more info on taxonomic aggregation
 #' @seealso \code{\link{tax_sort}} for more info on sorting taxa
 #'
-#' @param data phyloseq object or ps_extra
+#' @param data phyloseq object or psExtra
 #' @param n how many taxa names to return, or NA for all
 #' (can return fewer than n values, if there are fewer to return)
 #' @param by how to sort taxa (see `?tax_sort()`),

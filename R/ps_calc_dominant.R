@@ -70,7 +70,7 @@ ps_calc_dominant <- function(ps,
                              none = "none",
                              other = "other") {
 
-  # get count phyloseq if ps_extra
+  # get count phyloseq if psExtra
   ps <- ps_counts(data = ps)
 
   # aggregate taxa at chosen rank for calculation

@@ -2,7 +2,7 @@
 #'
 #' @inheritParams taxatree_plots
 #'
-#' @param data ps_extra (or phyloseq)
+#' @param data psExtra (or phyloseq)
 #' @param ...
 #' logical conditions for labelling
 #' e.g. rank == "Phylum", p.value < 0.1 | taxon %in% listOfTaxa
@@ -49,11 +49,8 @@ taxatree_plotkey <- function(data,
                              drop_ranks = TRUE) {
 
   # make basic nodes
-  if (isTRUE(drop_ranks) &&
-    inherits(data, "ps_extra") &&
-    !identical(data$taxatree_stats, NULL)
-  ) {
-    ranks <- unique(data[["taxatree_stats"]][["rank"]])
+  if (isTRUE(drop_ranks) && is(data, "psExtra") && !is.null(data@taxatree_stats, NULL)) {
+    ranks <- unique(data@taxatree_stats[["rank"]])
   } else {
     ranks <- "all"
   }
@@ -65,7 +62,7 @@ taxatree_plotkey <- function(data,
   if (isTRUE(.calc_label)) {
     # make labels
     data <- taxatree_label(data = data, ..., .node_fun = treeNodes)
-    label_data <- data$taxatree_stats[, c("taxon", "label")]
+    label_data <- data@taxatree_stats[, c("taxon", "label")]
     label_data <- dplyr::summarise(
       .data = dplyr::group_by(.data = label_data, .data$taxon),
       label = .combine_label(.data$label)

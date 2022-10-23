@@ -6,6 +6,9 @@
 \usage{
 \method{print}{psExtraOrdInfo}(psExtraOrdInfo)
 }
+\arguments{
+\item{psExtraOrdInfo}{psExtraOrdInfo list}
+}
 \description{
 Print method for psExtraOrdInfo list
 }

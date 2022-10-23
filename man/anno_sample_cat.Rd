@@ -43,7 +43,7 @@ anno_sample_cat(
 
 \item{border_lwd}{line width of border around all cells}
 
-\item{data}{OPTIONAL phyloseq or ps_extra,
+\item{data}{OPTIONAL phyloseq or psExtra,
 only set this to override use of same data as in heatmap}
 
 \item{samples}{OPTIONAL selection vector of sample names,

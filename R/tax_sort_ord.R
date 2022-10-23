@@ -6,7 +6,7 @@
 #' length of their taxa scores / "loading" vector lengths on 1 or 2 ordination axes.
 #'
 #' `ord_order_taxa` gets the taxa names in order from the ordination
-#' contained in a ps_extra list. This is used internally by `tax_sort_ord`.
+#' contained in a psExtra object. This is used internally by `tax_sort_ord`.
 #'
 #' @seealso
 #' - These functions were created to support ordering of taxa bars on `ord_plot_iris`

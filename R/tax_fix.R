@@ -105,6 +105,7 @@ tax_fix <- function(ps,
                     sep = " ",
                     anon_unique = TRUE,
                     verbose = TRUE) {
+  if (is(ps, "psExtra")) stop("ps is a psExtra, run tax_fix BEFORE tax_agg etc")
   if (methods::is(ps, "phyloseq")) {
     tt <- unclass(phyloseq::tax_table(ps))
   } else if (inherits(ps, "taxonomyTable")) {
@@ -182,17 +183,15 @@ tax_fix <- function(ps,
 
   # preserve any columns not listed in levels
   preserved <- !ranknames %in% levels
-  if (any(preserved)) {
-    tt_out[, preserved] <- tt[, preserved]
-  }
+  if (any(preserved)) tt_out[, preserved] <- tt[, preserved]
 
   # return phyloseq or tax table (same as input)
   if (inherits(ps, "phyloseq")) {
     phyloseq::tax_table(ps) <- tt_out
+    return(ps)
   } else {
-    ps <- phyloseq::tax_table(tt_out)
+    return(phyloseq::tax_table(tt_out))
   }
-  return(ps)
 }
 
 #' internal helper for tax_fix

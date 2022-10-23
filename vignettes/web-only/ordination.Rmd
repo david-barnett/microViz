@@ -72,13 +72,13 @@ ibd %>%
 
 -   Some dissimilarity measures, such as unweighted UniFrac, do not consider the abundance of each taxon when calculating dissimilarity, and so may be (overly) sensitive to differences in rare/low-abundance taxa. So you might want to filter out very rare taxa, with `tax_filter()` before using `dist_calc(ps, dist = "unifrac")`. Distances that are (implicitly) abundance weighted, including Generalised UniFrac, Bray-Curtis and Aitchison distance, should be less sensitive to rare taxa / filtering threshold choices.
 
-### ps_extra
+### psExtra
 
-Notice that the objects created above are of class "ps_extra". This is just a simple S3 list object that holds your phyloseq object and additional stuff created from this phyloseq object, such as a distance matrix, as well as info on any transformation and aggregation applied to your taxa. microViz uses this to automatically create plot captions, to help you and your collaborators remember how you made each plot! You can access the phyloseq object, distance matrix and other parts of a ps_extra object with `ps_get()`, `dist_get()`, and friends.
+Notice that the objects created above are of class "psExtra". This is an S4 class object that holds your phyloseq object with additional slots for stuff created from this phyloseq object, such as a distance matrix, as well as info on any transformation and aggregation applied to your taxa. microViz uses this to automatically create plot captions, to help you and your collaborators remember how you made each plot! You can access the phyloseq object, distance matrix and other parts of a ps_extra object with `ps_get()`, `dist_get()`, and friends.
 
 ## PCA - Principal Components Analysis {#pca}
 
-Principal ***Components*** Analysis is an unconstrained method that does not use a distance matrix. PCA directly uses the (transformed) microbial variables, so you do not need `dist_calc()`. `ord_calc` performs the ordination (adding it to the ps_extra object) and `ord_plot()` creates the ggplot2 scatterplot (which you can customise like other ggplot objects).
+Principal ***Components*** Analysis is an unconstrained method that does not use a distance matrix. PCA directly uses the (transformed) microbial variables, so you do not need `dist_calc()`. `ord_calc` performs the ordination (adding it to the psExtra object) and `ord_plot()` creates the ggplot2 scatterplot (which you can customise like other ggplot objects).
 
 Each point is a sample, and samples that appear closer together are typically more similar to each other than samples which are further apart. So by colouring the points by IBD status you can see that the microbiota from people with IBD is often, but not always, highly distinct from people without IBD.
 

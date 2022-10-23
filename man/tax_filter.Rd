@@ -18,7 +18,7 @@ tax_filter(
 )
 }
 \arguments{
-\item{ps}{phyloseq or ps_extra (ideally with count data available)}
+\item{ps}{phyloseq or psExtra (ideally with count data available)}
 
 \item{min_prevalence}{number or proportion of samples that a taxon must be present in}
 

@@ -15,9 +15,9 @@ ord_calc(
 )
 }
 \arguments{
-\item{data}{ps_extra list object: output from dist_calc(), or tax_transform() if no distance calculation required for method e.g. for RDA}
+\item{data}{psExtra object: output from dist_calc(), or tax_transform() if no distance calculation required for method e.g. for RDA}
 
-\item{method}{which ordination method to use? "auto" means automatically determined from ps_extra and other args.
+\item{method}{which ordination method to use? "auto" means automatically determined from psExtra and other args.
 If you really know what you want: manually set one of 'PCoA', 'PCA', 'CCA', 'CAP' or 'RDA'}
 
 \item{constraints}{(a vector of) valid sample_data name(s) to constrain analyses, or leave as NULL for unconstrained ordination.
@@ -35,7 +35,7 @@ FALSE suppresses warnings!}
 \item{...}{optional arguments passed on to phyloseq::ordinate()}
 }
 \value{
-ps_extra list object
+psExtra object
 }
 \description{
 Used before plotting with ord_plot() or explorating interactively with ord_explore().
@@ -81,7 +81,8 @@ test <- dietswap \%>\%
   tax_agg("Genus") \%>\%
   dist_calc("bray") \%>\%
   ord_calc(constraints = c("weight", "female"))
-# familiarise yourself with the structure of the returned ps_extra list object
+
+# familiarise yourself with the structure of the returned psExtra object
 test
 str(test, max.level = 1)
 
@@ -90,10 +91,12 @@ test2 <- dietswap \%>\%
   tax_agg("Genus") \%>\%
   tax_transform("clr") \%>\%
   ord_calc(constraints = c("weight", "female"))
+
 # plot with vegan package graphics to show it returns a standard ordination object
 ord_get(test2) \%>\% vegan::ordiplot()
-ord_plot(test2, plot_taxa = 8:1)
+
 # This is equivalent to CAP with "aitchison" distance
+ord_plot(test2, plot_taxa = 8:1)
 # but the latter (below) doesn't allow plotting taxa loadings with ord_plot
 dietswap \%>\%
   tax_agg("Genus") \%>\%

@@ -1,14 +1,14 @@
-#' Aggregate taxa and create ps_extra
+#' Aggregate taxa and track aggregation in psExtra
 #'
 #' @description
 #' `tax_agg` sums the abundances of the phyloseq taxa at the given rank.
-#' It records the tax_agg rank argument in the info of the ps_extra object output.
-#' This ps_extra object tracks aggregation, and any further transformations and scaling,
+#' It records the tax_agg rank argument in the info of the psExtra object output.
+#' This psExtra object tracks aggregation, and any further transformations and scaling,
 #' to help you keep track of what you have done with your phyloseq object and automatically caption ordination plots.
 #'
 #' Instead of tax_agg, consider using `tax_transform()` with a rank argument instead, to both aggregate and transform the taxa.
 #' This is also useful when you want to aggregate but not transform the taxa,
-#' and yet still log the "identity" transformation in ps_extra for captioning your ordination plots.
+#' and yet still log the "identity" transformation in psExtra for captioning your ordination plots.
 #' e.g. `tax_transform(rank = "Genus", trans = "identity")`
 #'
 #' tax_agg allows you to pass NA or "unique" to the rank argument which will NOT aggregate the taxa.
@@ -51,7 +51,7 @@
 #' which also does not check that the taxa are uniquely defined by only the aggregation level.
 #' @param add_unique if TRUE, adds a rank named unique, identical to the rownames after aggregation
 #'
-#' @return ps_extra list object including phyloseq and tax_agg rank info
+#' @return psExtra object including phyloseq and tax_agg rank info
 #' @export
 #'
 #' @seealso \code{\link{tax_fix}}
@@ -103,12 +103,13 @@ tax_agg <- function(ps,
                     top_N = NA,
                     force = FALSE,
                     add_unique = FALSE) {
-  if (is(ps, "psExtra") || inherits(ps, "ps_extra")) {
+  stopif_ps_extra(ps, argName = "ps")
+  check_is_phyloseq(ps, argName = "ps")
+  if (is(ps, "psExtra")) {
     # currently just reset info
     ps <- ps_get(ps)
     warning("ps is already a psExtra: any extra info is lost (trans, dist, ...)")
   }
-  check_is_phyloseq(ps, argName = "ps")
   psCheckRanks(ps = ps, rank = rank, varname = "rank", or = c("unique", NA))
   if (!rlang::is_na(top_N)) {
     if (!rlang::is_scalar_integerish(top_N) || top_N < 1) {

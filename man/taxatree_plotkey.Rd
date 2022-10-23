@@ -29,7 +29,7 @@ taxatree_plotkey(
 )
 }
 \arguments{
-\item{data}{ps_extra (or phyloseq)}
+\item{data}{psExtra (or phyloseq)}
 
 \item{...}{logical conditions for labelling
 e.g. rank == "Phylum", p.value < 0.1 | taxon \%in\% listOfTaxa}

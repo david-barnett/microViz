@@ -43,7 +43,7 @@ lm_stats <- taxatree_models2stats(lm_models)
 test_that("taxatree_plots throw informative errors", {
   expect_error(
     object = lm_models %>% taxatree_plots(),
-    regexp = "data must be a ps_extra object with taxatree_stats data.frame"
+    regexp = "data must be a psExtra object with taxatree_stats data.frame"
   )
   expect_error(
     object = lm_stats %>% taxatree_plots(colour_stat = "wrong"),
@@ -54,7 +54,7 @@ test_that("taxatree_plots throw informative errors", {
   lm_stats_wrong@taxatree_stats[c("taxon", "rank")] <- NULL
   expect_error(
     object = lm_stats_wrong %>% taxatree_plots(),
-    regexp = " - it is missing the column\\(s\\): taxon & rank"
+    regexp = "It is missing the column\\(s\\): taxon & rank"
   )
 })
 

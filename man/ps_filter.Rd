@@ -22,7 +22,12 @@ phyloseq object (with filtered sample_data)
 }
 \description{
 Keep only samples with sample_data matching one or more conditions.
-Use this function as you would use use dplyr::filter(), but with a phyloseq object!
+By default this function also removes taxa which never appear in any of
+the remaining samples, by running tax_filter(min_prevalence = 1). You can
+prevent this taxa filtering with .keep_all_taxa = TRUE.
+}
+\details{
+Use ps_filter as you would use use dplyr::filter(), but with a phyloseq object!
 }
 \examples{
 library(phyloseq)

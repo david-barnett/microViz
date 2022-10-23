@@ -1,7 +1,7 @@
 #' Plot statistical model results for all taxa on a taxonomic tree
 #'
-#' - Uses a ps_extra object to make a tree graph structure from the taxonomic table.
-#' - Then adds statistical results stored in "taxatree_stats" of ps_extra data
+#' - Uses a psExtra object to make a tree graph structure from the taxonomic table.
+#' - Then adds statistical results stored in "taxatree_stats" of psExtra data
 #' - You must use `taxatree_models()` first to generate statistical model results.
 #' - You can adjust p-values with `taxatree_stats_p_adjust()`
 #'
@@ -19,7 +19,7 @@
 #' order of severity, e.g. sig_threshold = c(0.001, 0.01, 0.1) and you must provide
 #' a shape value for each of them.
 #'
-#' @param data ps_extra with taxatree_stats, e.g. output of `taxatree_models2stats()`
+#' @param data psExtra with taxatree_stats, e.g. output of `taxatree_models2stats()`
 #' @param colour_stat name of variable to scale colour/fill of nodes and edges
 #' @param palette
 #' diverging hcl colour palette name from `colorspace::hcl_palettes("diverging")`
@@ -116,7 +116,7 @@
 #'   ps = ps, type = corncob::bbdml, ranks = c("Phylum", "Genus"),
 #'   formula = ~ female + african, verbose = TRUE
 #' )
-#' # models list stored as attachment in ps_extra
+#' # models list stored as attachment in psExtra
 #' models
 #'
 #' # get stats from models
@@ -180,9 +180,9 @@ taxatree_plots <- function(data,
                            l1 = if (palette == "Green-Brown") 10 else NULL,
                            l2 = if (palette == "Green-Brown") 85 else NULL,
                            colour_na = "grey35") {
+  check_is_psExtra(data, argName = "data")
   # get variable-specific stats for joining to node data
-  if (is_ps_extra(data)) stats <- data[["taxatree_stats"]]
-  if (is(data, "psExtra")) stats <- data@taxatree_stats
+  stats <- data@taxatree_stats
   taxatree_plots_statsCheck(
     stats = stats, vars = vars, colour_stat = colour_stat, sig_stat = sig_stat
   )
@@ -191,10 +191,11 @@ taxatree_plots <- function(data,
 
   # make basic nodes
   if (isTRUE(drop_ranks)) {
-    ranks <- unique(stats[["rank"]])
+    ranks <- unique(data@taxatree_stats[["rank"]])
   } else {
     ranks <- "all"
   }
+
   treeNodes <- taxatree_nodes(
     ps = data, fun = size_stat, .sort = node_sort,
     ranks = ranks, .use_counts = TRUE
@@ -614,40 +615,40 @@ abs_sqrt <- function() {
 # helper function checks presence of variables in taxatree_stats dataframe
 taxatree_plots_statsCheck <- function(stats, vars, colour_stat, sig_stat) {
   if (identical(stats, NULL) || !inherits(stats, "data.frame")) {
-    stop(
-      "data must be a ps_extra object with taxatree_stats data.frame attached",
-      "\nDid you forget to run taxatree_models2stats first?"
-    )
+    rlang::abort(call = rlang::caller_env(), message = c(
+      "data must be a psExtra object with taxatree_stats data.frame attached",
+      "*" = "Did you forget to run taxatree_models2stats first?"
+    ))
   }
   # missing required taxon or rank columns?
   if (any(!c("taxon", "rank") %in% colnames(stats))) {
     missing <- setdiff(c("taxon", "rank"), colnames(stats))
     missing <- paste(missing, collapse = " & ")
-    stop(
+    rlang::abort(call = rlang::caller_env(), message = c(
       "taxatree_stats df attached to data must have 'taxon' & 'rank' columns",
-      "\n - it is missing the column(s): ", missing,
-      "\n - did you make the data object with taxatree_models2stats?"
-    )
+      i = paste("It is missing the column(s):", missing),
+      i = "Did you make the data object with taxatree_models2stats?"
+    ))
   }
   # check user-supplied arguments
   toCheck <- list(vars = vars, colour_stat = colour_stat)
   for (n in names(toCheck)) {
     arg <- toCheck[[n]]
     if (n != "sig_stat" && identical(arg, NULL)) { # sig_stat can be null
-      stop(
-        n, " must be a column in the taxatree_stats data.frame, not NULL"
-      )
+      rlang::abort(call = rlang::caller_env(), message = c(
+        paste(n, "must be a column in the taxatree_stats data.frame, not NULL")
+      ))
     }
-    if (length(arg) != 1 || !inherits(arg, "character") || is.na(arg)) {
-      stop(
-        n, " must be the name of a column in the taxatree_stats data.frame"
-      )
+    if (length(arg) != 1 || !inherits(arg, "character") || rlang::is_na(arg)) {
+      rlang::abort(call = rlang::caller_env(), message = c(
+        paste(n, "must be the name of a column in the taxatree_stats data.frame")
+      ))
     }
     if (!arg %in% colnames(stats)) {
-      stop(
-        n, " must be the name of a column in the taxatree_stats data.frame",
-        "\n - '", arg, "' is not in the taxatree_stats data.frame"
-      )
+      rlang::abort(call = rlang::caller_env(), message = c(
+        paste(n, "must be the name of a column in the taxatree_stats data.frame"),
+        i = paste0("'", arg, "' is not in the taxatree_stats data.frame")
+      ))
     }
   }
 }

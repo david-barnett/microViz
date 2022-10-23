@@ -13,7 +13,7 @@ taxatree_stats_p_adjust(
 )
 }
 \arguments{
-\item{data}{ps_extra with taxatree_stats dataframe, or just the dataframe}
+\item{data}{psExtra with taxatree_stats dataframe, or just the dataframe}
 
 \item{method}{any method from \code{stats::p.adjust.methods}}
 
@@ -25,7 +25,7 @@ taxatree_stats_p_adjust(
 (automatically inferred by default)}
 }
 \value{
-ps_extra with dataframe of statistics, or just the data.frame
+psExtra with dataframe of statistics, or just the data.frame
 }
 \description{
 Apply a p value adjustment method from \code{stats::p.adjust.methods},

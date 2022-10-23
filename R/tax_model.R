@@ -37,7 +37,7 @@
 #' taxa to model (named, numbered, logical selection, or defaulting to all if NULL)
 #' @param use_future
 #' if TRUE parallel processing with future is possible, see details.
-#' @param return_psx if TRUE result will be returned attached to ps_extra object
+#' @param return_psx if TRUE result will be returned attached to psExtra object
 #' @param checkVars should the predictor variables be checked for zero variance?
 #' @param checkNA
 #' One of "stop", "warning", "message", or "allow", which
@@ -46,7 +46,7 @@
 #' @param ... extra args passed directly to modelling function
 #'
 #' @return
-#' Named list of model objects or list of lists. Or, if return_psx is TRUE, a ps_extra.
+#' Named list of model objects or list of lists. Or, if return_psx is TRUE, a psExtra.
 #' @seealso \code{\link{taxatree_models}} for more details on the underlying approach
 #' @seealso \code{\link{taxatree_plots}} for how to plot the output of `taxatree_models`
 #'
@@ -116,13 +116,14 @@ tax_model <- function(ps,
                       checkNA = "warning",
                       verbose = TRUE,
                       ...) {
+  check_is_phyloseq(ps, argName = "ps")
   if (!rlang::is_string(type) && !rlang::is_function(type)) {
     stop("`type` must be a string naming a modelling function, or a function")
   }
   if (!rlang::is_bool(checkVars)) stop("checkVars must be TRUE or FALSE")
 
-  # store input data as ps_extra if user wants result returned as attachment
-  if (isTRUE(return_psx) && is(data, "phyloseq")) data <- as(data, "psExtra")
+  # coerce input data is psExtra if user wants result returned as attachment
+  if (isTRUE(return_psx)) data <- as(ps, "psExtra")
 
   ps <- ps_get(ps)
   # check phyloseq for common problems (and fix or message about this)
@@ -199,13 +200,11 @@ tax_model <- function(ps,
     # attach models list to psExtra
     mods_list <- list(x = taxon_models)
     names(mods_list) <- rank
-    if (is_ps_extra(data)) data[["tax_models"]] <- mods_list
-    if (is(data, "psExtra")) data@tax_models <- mods_list
+    data@tax_models <- mods_list
     return(data)
   } else {
     return(taxon_models)
   }
-
 }
 
 # helper to actually model taxa

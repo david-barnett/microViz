@@ -10,26 +10,26 @@ taxatree_models2stats(data, fun = "auto", ..., .keep_models = FALSE)
 tax_models2stats(data, rank = NULL, fun = "auto", ..., .keep_models = FALSE)
 }
 \arguments{
-\item{data}{ps_extra with attached tax_models or taxatree_models list, or just the list of models}
+\item{data}{psExtra with attached tax_models or taxatree_models list, or just the list of models}
 
 \item{fun}{function to assist extraction of stats dataframe from models, or "auto"}
 
 \item{...}{extra arguments passed to fun}
 
-\item{.keep_models}{should the models list be kept in the ps_extra output?}
+\item{.keep_models}{should the models list be kept in the psExtra output?}
 
 \item{rank}{string naming rank at which tax_model was run (needed if data is a list)}
 }
 \value{
-data.frame, attached to ps_extra
+data.frame, attached to psExtra
 }
 \description{
 Runs a function e.g. \code{broom::tidy} on a list of models, i.e. the output of
-\code{taxatree_models} or \code{tax_model} (models list may often be attached to ps_extra)
+\code{taxatree_models} or \code{tax_model} (models list may often be attached to psExtra)
 }
 \section{Functions}{
 \itemize{
-\item \code{taxatree_models2stats()}: Extract stats from list or ps_extra output of taxatree_models
+\item \code{taxatree_models2stats()}: Extract stats from list or psExtra output of taxatree_models
 
 \item \code{tax_models2stats()}: Extract stats from list or psExtra output of tax_model
 
@@ -83,13 +83,13 @@ lm_models <- phylo \%>\%
 
 lm_stats <- lm_models \%>\% taxatree_models2stats()
 
-# inspect the ps_extra returned, now with taxatree_stats dataframe added
+# inspect the psExtra returned, now with taxatree_stats dataframe added
 lm_stats
 
 # inspect the dataframe itself
 lm_stats$taxatree_stats
 
-# keep the models on the ps_extra object
+# keep the models on the psExtra object
 lm_models \%>\% taxatree_models2stats(.keep_models = TRUE)
 
 # you can adjust the p values with taxatree_stats_p_adjust

@@ -7,7 +7,7 @@
 tax_scale(data, center = TRUE, scale = TRUE, do = NA, keep_counts = TRUE)
 }
 \arguments{
-\item{data}{phyloseq or ps_extra or otu_table}
+\item{data}{phyloseq or psExtra or otu_table}
 
 \item{center}{if TRUE: center each taxon by subtracting its mean}
 
@@ -15,7 +15,7 @@ tax_scale(data, center = TRUE, scale = TRUE, do = NA, keep_counts = TRUE)
 
 \item{do}{alternative argument that overrides center and scale options! takes "both", "scale", "center" or "neither"}
 
-\item{keep_counts}{if TRUE, retain the original count data in ps_extra counts slot}
+\item{keep_counts}{if TRUE, retain the original count data in psExtra counts slot}
 }
 \description{
 Wrapper for applying base scale function to phyloseq otu_table
@@ -45,7 +45,7 @@ tax_scale(ps, do = "center") \%>\%
 # preserves existing info
 tax_transform(ps, "compositional", rank = "Genus") \%>\% tax_scale()
 
-# drop other ps_extra objects previously calculated with unscaled data
+# drops other psExtra objects previously calculated with unscaled data
 psxDist <- tax_agg(ps, "Genus") \%>\% dist_calc()
 psxDist
 psxDist \%>\% tax_scale()

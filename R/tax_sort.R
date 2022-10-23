@@ -17,7 +17,7 @@
 #' Don't forget to pass `na.rm = TRUE` to `...`
 #' if using a summary stat function in `by`
 #'
-#' @param data ps_extra or phyloseq
+#' @param data psExtra or phyloseq
 #' @param by how to sort, see description
 #' @param at "names" or a taxonomic rank to apply sorting method to, as specified in `by`.
 #' @param ...
@@ -34,7 +34,7 @@
 #' name of transformation to apply to taxa before sorting (taxa are returned un-transformed)
 #' @param use_counts use count data if available, instead of transformed data
 #'
-#' @return sorted phyloseq or ps_extra
+#' @return sorted phyloseq or psExtra
 #' @export
 #'
 #' @examples
@@ -207,14 +207,9 @@ tax_sort <- function(data,
     ps = ps_get(data), tax_order = taxSorted, tree_warn = tree_warn
   )
 
-  # return ps_extra if given one
-  if (is_ps_extra(data)) {
-    data$ps <- ps
-    if (!identical(data$counts, NULL)) {
-      data$counts <- tax_reorder_otu(data$counts, tax_order = taxSorted)
-    }
-  } else if (is(data, "psExtra")) {
-    data <- modify_psExtra(data, ps = ps)
+  # return psExtra if given one
+  if (is(data, "psExtra")) {
+    data <- modify_psExtra(psExtra = data, ps = ps)
     if (!identical(data@counts, NULL)) {
       data@counts <- tax_reorder_otu(data@counts, tax_order = taxSorted)
     }

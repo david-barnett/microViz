@@ -55,7 +55,7 @@ such as anno_sample(), or manually specified AnnotationFunction objects}
 
 \item{annotation_name_side}{Side of the annotation names.}
 
-\item{.data}{OPTIONAL phyloseq or ps_extra,
+\item{.data}{OPTIONAL phyloseq or psExtra,
 only set this to override use of same data as in heatmap}
 
 \item{.samples}{OPTIONAL selection vector of sample names,

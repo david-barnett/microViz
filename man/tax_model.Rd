@@ -36,7 +36,7 @@ If variables is a list, not a vector, a model is fit for each entry in list.}
 
 \item{use_future}{if TRUE parallel processing with future is possible, see details.}
 
-\item{return_psx}{if TRUE result will be returned attached to ps_extra object}
+\item{return_psx}{if TRUE result will be returned attached to psExtra object}
 
 \item{checkVars}{should the predictor variables be checked for zero variance?}
 
@@ -48,7 +48,7 @@ indicates whether to check predictor variables for NAs, and how to report any NA
 \item{...}{extra args passed directly to modelling function}
 }
 \value{
-Named list of model objects or list of lists. Or, if return_psx is TRUE, a ps_extra.
+Named list of model objects or list of lists. Or, if return_psx is TRUE, a psExtra.
 }
 \description{
 \code{tax_model} provides a simple framework to statistically model the abundance

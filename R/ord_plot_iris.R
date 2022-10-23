@@ -12,7 +12,7 @@
 #' You cannot set a variable fill aesthetic (only fixed) for the annotation points,
 #' as the fill is used for the taxonomic composition bars
 #'
-#' @param data ps_extra list output of ord_calc
+#' @param data psExtra output of ord_calc
 #' @param tax_level taxonomic aggregation level (from rank_names(ps))
 #' @param axes which 2 axes of ordination to use for ordering bars
 #' @param n_taxa how many taxa to colour show distinct colours for (all other taxa grouped into "other").
@@ -26,7 +26,7 @@
 #' @param anno_binary_style list of further arguments passed to geom_point e.g. colour, size, y, etc.
 #' @param keep_all_vars slows down processing but is required for any post-hoc plot customisation options
 #' @inheritParams ord_plot
-#' @param count_warn warn if count data are not available? i.e. phyloseq otu_table is not positive integers and ps_extra counts slot is NULL
+#' @param count_warn warn if count data are not available? i.e. phyloseq otu_table is not positive integers and psExtra counts slot is NULL
 #' @param ... extra args passed to comp_barplot e.g. bar_width
 #'
 #' @return ggplot

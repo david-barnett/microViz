@@ -24,7 +24,7 @@ heatmapMakeCellFun <- function(numbers, numbers_mat) {
   return(cell_fun)
 }
 
-#' @param data phyloseq or ps_Extra
+#' @param data phyloseq or psExtra
 #' @param taxa selection vector of taxa (names, numbers or logical)
 #' @param undetected the value above which taxa are classed as detected/present in a sample
 #
@@ -55,7 +55,7 @@ prev <- function(x, undetected = 0) {
   sum(x > undetected) / length(x)
 }
 
-#' @param data phyloseq or ps_Extra
+#' @param data phyloseq or psExtra
 #' @param taxa selection vector of taxa (names, numbers or logical)
 #' @param undetected the value above which taxa are classed as detected/present in a sample
 #

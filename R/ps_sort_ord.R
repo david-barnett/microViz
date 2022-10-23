@@ -5,7 +5,7 @@
 #' position on 1 or 2 ordination axes.
 #'
 #' `ord_order_samples` gets the sample_names in order from the ordination
-#' contained in a ps_extra list. This is used internally by `ps_sort_ord`
+#' contained in a psExtra. This is used internally by `ps_sort_ord`
 #'
 #' If 2 axes given, the samples are sorted by anticlockwise rotation around the
 #' selected ordination axes, starting on first axis given, upper right quadrant.
@@ -16,7 +16,7 @@
 #' appearance along a parallel axis of a paired ordination plot.
 #'
 #' @param ps phyloseq object to be sorted
-#' @param ord ps_extra with ordination object
+#' @param ord psExtra with ordination object
 #' @param axes which axes to use for sorting? numerical vector of length 1 or 2
 #' @inheritParams ord_plot
 #' @rdname  ordination-sorting-samples

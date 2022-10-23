@@ -16,7 +16,7 @@ tax_sort(
 )
 }
 \arguments{
-\item{data}{ps_extra or phyloseq}
+\item{data}{psExtra or phyloseq}
 
 \item{by}{how to sort, see description}
 
@@ -37,7 +37,7 @@ tree_warn = FALSE will suppress the warning message, but still remove the tree!}
 \item{use_counts}{use count data if available, instead of transformed data}
 }
 \value{
-sorted phyloseq or ps_extra
+sorted phyloseq or psExtra
 }
 \description{
 Multiple ways of sorting taxa are possible and determined by the \code{by} argument.
