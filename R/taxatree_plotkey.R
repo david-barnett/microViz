@@ -49,7 +49,7 @@ taxatree_plotkey <- function(data,
                              drop_ranks = TRUE) {
 
   # make basic nodes
-  if (isTRUE(drop_ranks) && is(data, "psExtra") && !is.null(data@taxatree_stats, NULL)) {
+  if (isTRUE(drop_ranks) && is(data, "psExtra") && !is.null(data@taxatree_stats)) {
     ranks <- unique(data@taxatree_stats[["rank"]])
   } else {
     ranks <- "all"
