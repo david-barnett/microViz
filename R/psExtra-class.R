@@ -268,21 +268,21 @@ setMethod("show", "psExtra", function(object) {
   }
   # print info about taxatree_models list if present
   if (!identical(x@taxatree_models, NULL)) {
-    cat("\n\n$taxatree_models list:\n")
+    cat("\n\ntaxatree_models list:\n")
     cat("Ranks:", paste(names(x@taxatree_models), collapse = "/"))
   }
   # print info about taxatree_stats list if present
   if (!identical(x@taxatree_stats, NULL)) {
-    cat("\n\n$taxatree_stats dataframe:\n")
+    cat("\n\ntaxatree_stats dataframe:\n")
     taxatree_stats_summary(x@taxatree_stats)
   }
   # print info about tax_models list if present
   if (!identical(x@tax_models, NULL)) {
-    cat("\n\n$tax_models list at rank: ", names(x@tax_models), "\n")
+    cat("\n\ntax_models list at rank: ", names(x@tax_models), "\n")
   }
   # print info about tax_stats list if present
   if (!identical(x@tax_stats, NULL)) {
-    cat("\n\n$tax_stats dataframe:\n")
+    cat("\n\ntax_stats dataframe:\n")
     tax_stats_summary(x@tax_stats)
   }
 })

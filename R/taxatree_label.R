@@ -44,7 +44,7 @@
 #' labelled
 #'
 #' # notice how both conditions must be met for label column to be TRUE
-#' labelled$taxatree_stats
+#' labelled %>% taxatree_stats_get()
 taxatree_label <- function(data,
                            ...,
                            .label_var = "label",

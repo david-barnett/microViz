@@ -87,7 +87,7 @@ lm_stats <- lm_models \%>\% taxatree_models2stats()
 lm_stats
 
 # inspect the dataframe itself
-lm_stats$taxatree_stats
+lm_stats \%>\% taxatree_stats_get()
 
 # keep the models on the psExtra object
 lm_models \%>\% taxatree_models2stats(.keep_models = TRUE)

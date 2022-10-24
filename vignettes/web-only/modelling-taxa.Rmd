@@ -197,7 +197,7 @@ lm_stats
 ```
 
 ```{r}
-lm_stats$taxatree_stats
+lm_stats %>% taxatree_stats_get()
 ```
 
 ### Adjusting p values
@@ -215,7 +215,7 @@ lm_stats <- taxatree_stats_p_adjust(
   data = lm_stats, method = "BH", grouping = "rank"
 )
 # notice the new variable
-lm_stats$taxatree_stats
+lm_stats %>% taxatree_stats_get()
 ```
 
 ## Plot all the taxatree_stats!
@@ -510,7 +510,7 @@ abundance, or "phi" for differential variability or overdispersion.
 ```{r}
 bb_stats <- taxatree_models2stats(bb_models, param = "mu")
 bb_stats
-bb_stats$taxatree_stats
+bb_stats %>% taxatree_stats_get()
 ```
 
 ```{r, fig.width=5, fig.height=5}

@@ -1437,7 +1437,7 @@ Next we will get a data.frame containing the regression coefficient estimates, t
 ```{r}
 shaoStats <- taxatree_models2stats(shaoModels)
 shaoStats
-shaoStats$taxatree_stats
+shaoStats %>% taxatree_stats_get()
 ```
 
 #### Adjusting p values
@@ -1451,7 +1451,7 @@ Instead of applying these adjustment methods across all 86 taxa models at all ra
 ```{r}
 shaoStats <- shaoStats %>% taxatree_stats_p_adjust(method = "BH", grouping = "rank")
 # notice the new variable
-shaoStats$taxatree_stats
+shaoStats %>% taxatree_stats_get()
 ```
 
 

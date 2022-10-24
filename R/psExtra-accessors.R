@@ -130,6 +130,34 @@ bdisp_get <- function(psExtra, ps_extra) {
 }
 
 
+#' @rdname psExtra-accessors
+#' @export
+tax_models_get <- function(psExtra) {
+  check_is_psExtra(psExtra, argName = "psExtra")
+  return(psExtra@tax_models)
+}
+
+#' @rdname psExtra-accessors
+#' @export
+tax_stats_get <- function(psExtra) {
+  check_is_psExtra(psExtra, argName = "psExtra")
+  return(psExtra@tax_stats)
+}
+
+#' @rdname psExtra-accessors
+#' @export
+taxatree_models_get <- function(psExtra) {
+  check_is_psExtra(psExtra, argName = "psExtra")
+  return(psExtra@taxatree_models)
+}
+
+#' @rdname psExtra-accessors
+#' @export
+taxatree_stats_get <- function(psExtra) {
+  check_is_psExtra(psExtra, argName = "psExtra")
+  return(psExtra@taxatree_stats)
+}
+
 #' @param data phyloseq or ps_extra
 # @return phyloseq otu_table matrix with taxa as columns
 #'
@@ -145,8 +173,7 @@ otu_get <- function(data, taxa = NA, samples = NA, counts = FALSE) {
     if (isTRUE(counts)) warning("data is otu_table: ignoring `counts = TRUE`")
     otu <- data
   } else {
-    if (isTRUE(counts)) ps <- ps_counts(data)
-    if (!isTRUE(counts)) ps <- ps_get(data)
+    ps <- if (isTRUE(counts)) ps_counts(data) else ps_get(data)
     otu <- phyloseq::otu_table(ps)
   }
   if (phyloseq::taxa_are_rows(otu)) otu <- phyloseq::t(otu)
@@ -260,49 +287,3 @@ ps_counts <- function(data, warn = TRUE) {
   }
   return(ps)
 }
-
-# ps_extra methods for phyloseq accessors -------------------------------------
-methods::setOldClass("ps_extra")
-
-# methods::setGeneric("otu_table", def = phyloseq::otu_table)
-methods::setMethod(
-  f = phyloseq::otu_table, signature = c(object = "ps_extra"),
-  definition = function(object) phyloseq::otu_table(ps_get(object))
-)
-
-methods::setMethod(
-  f = phyloseq::sample_data, signature = c(object = "ps_extra"),
-  definition = function(object) phyloseq::sample_data(ps_get(object))
-)
-
-methods::setMethod(
-  f = phyloseq::tax_table, signature = c(object = "ps_extra"),
-  definition = function(object) phyloseq::tax_table(ps_get(object))
-)
-
-methods::setMethod(
-  f = phyloseq::sample_names, signature = c(physeq = "ps_extra"),
-  definition = function(physeq) phyloseq::sample_names(ps_get(physeq))
-)
-
-methods::setMethod(
-  f = phyloseq::taxa_names, signature = c(physeq = "ps_extra"),
-  definition = function(physeq) phyloseq::taxa_names(ps_get(physeq))
-)
-
-methods::setMethod(
-  f = phyloseq::phy_tree, signature = c(physeq = "ps_extra"),
-  definition = function(physeq) phyloseq::phy_tree(ps_get(physeq))
-)
-
-methods::setMethod(
-  f = phyloseq::refseq, signature = c(physeq = "ps_extra"),
-  definition = function(physeq) phyloseq::refseq(ps_get(physeq))
-)
-
-# rank names is not a generic in phyloseq
-methods::setGeneric(name = "rank_names", def = phyloseq::rank_names)
-methods::setMethod(
-  f = "rank_names", signature = c(physeq = "ps_extra"),
-  definition = function(physeq) phyloseq::rank_names(ps_get(physeq))
-)
