@@ -45,8 +45,7 @@ tax_palette <- function(data,
                         by = sum,
                         pal = "brewerPlus",
                         add = c(other = "lightgrey"),
-                        ...
-) {
+                        ...) {
   # input checks
   if (!rlang::is_character(add) || !rlang::is_named2(add)) {
     if (!rlang::is_na(add)) stop("`add` must be NA or named vector of colours")

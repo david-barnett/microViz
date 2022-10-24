@@ -40,11 +40,11 @@ test_that("formulaMakerRHSstring handles lists of variables and formulae", {
   )
   expect_identical(
     expected = c("~a + b", "~a"),
-    object = microViz:::formulaMakerRHSstring(formula = list(~a + b, ~ a))
+    object = microViz:::formulaMakerRHSstring(formula = list(~ a + b, ~a))
   )
   expect_identical(
     expected = c("~a + b", "~a"),
-    object = microViz:::formulaMakerRHSstring(formula = list(~a + b, "~a"))
+    object = microViz:::formulaMakerRHSstring(formula = list(~ a + b, "~a"))
   )
 })
 
@@ -89,7 +89,7 @@ test_that("formula and variable arg alternatives can be equivalent", {
   # try some univariable models
   models4 <- tax_model(
     ps = ps, type = "lm", rank = "Genus", taxa = 1:3,
-    formula = c(~ female, "~ overweight", "~ obese")
+    formula = c(~female, "~ overweight", "~ obese")
   )
   models5 <- tax_model(
     ps = ps, type = "lm", rank = "Genus", taxa = 1:3,

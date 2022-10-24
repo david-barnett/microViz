@@ -207,8 +207,8 @@ modify_psExtra <- function(psExtra, ...) {
   new <- list(...)
   stopifnot(rlang::is_named(new))
   # split up phyloseq slots
-  if ('ps' %in% names(new)) {
-    for (s in slotNames(new[['ps']])) new[[s]] <- slot(new[["ps"]], s)
+  if ("ps" %in% names(new)) {
+    for (s in slotNames(new[["ps"]])) new[[s]] <- slot(new[["ps"]], s)
     new[["ps"]] <- NULL
   }
   stopifnot(all(names(new) %in% slotNames(psExtra)))
@@ -286,4 +286,3 @@ setMethod("show", "psExtra", function(object) {
     tax_stats_summary(x@tax_stats)
   }
 })
-

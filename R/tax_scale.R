@@ -90,7 +90,6 @@ tax_scale <- function(data, center = TRUE, scale = TRUE, do = NA, keep_counts = 
     # retain counts if requested
     if (isTRUE(keep_counts)) data@counts <- otu_get(data, counts = TRUE)
     data@otu_table <- otu
-
   } else if (methods::is(data, "phyloseq")) {
     data <- psExtra(data, info = new_psExtraInfo(tax_scale = scaling))
   }

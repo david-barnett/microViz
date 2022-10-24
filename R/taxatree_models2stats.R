@@ -124,8 +124,6 @@ tax_models2stats <- function(data,
                              fun = "auto",
                              ...,
                              .keep_models = FALSE) {
-
-
   if (inherits(data, "list")) {
     models <- data
   } else {

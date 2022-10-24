@@ -83,7 +83,8 @@
 #'
 #' # you can also directly modify the dataframe,
 #' # and choose a different variable name
-#' bb_stats %>% taxatree_stats_get() %>%
+#' bb_stats %>%
+#'   taxatree_stats_get() %>%
 #'   taxatree_stats_p_adjust(
 #'     method = "holm", grouping = "taxon", new_var = "p_adj_holm"
 #'   )

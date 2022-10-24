@@ -42,7 +42,6 @@ taxatree_models <- function(ps,
                             checkNA = "warning",
                             verbose = "rank",
                             ...) {
-
   check_is_phyloseq(ps, argName = "ps")
   data <- as(ps, "psExtra")
   ps <- ps_get(ps)

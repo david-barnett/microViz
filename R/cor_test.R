@@ -20,7 +20,6 @@
 #'   rank = "family", variables = list("age", "number_reads"), type = cor_test
 #' )
 #'
-#'
 cor_test <- function(formula,
                      data,
                      ...) {

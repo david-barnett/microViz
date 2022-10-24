@@ -55,8 +55,9 @@ dist_bdisp <- function(data,
                        verbose = TRUE) {
   # check input data object class
   check_is_psExtra(data, argName = "data")
-  if (identical(dist_get(data), NULL))
+  if (identical(dist_get(data), NULL)) {
     stop("data argument must be a psExtra object from dist_calc")
+  }
 
   ps <- ps_get(data)
   distMat <- dist_get(data)
@@ -102,6 +103,6 @@ dist_bdisp <- function(data,
   names(bdisp) <- variables
   data@bdisp <- bdisp
   data@dist <- distMat # might be filtered
-  data@counts <- data@counts  # might be filtered
+  data@counts <- data@counts # might be filtered
   return(data)
 }

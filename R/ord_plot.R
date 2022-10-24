@@ -489,35 +489,30 @@ subsetTaxaDfLabel <- function(speciesScoresDf, plot_taxa) {
   speciesLineLength <- rowVecNorms(df = speciesScoresDf, cols = 1:2)
 
   # return subselection of taxa for which to draw labels on plot
-  selectSpeciesScoresDf <-
-    switch(class(plot_taxa[[1]]),
-           # default plot_taxa == TRUE --> line length > 1
-           "logical" = {
-             if (isTRUE(plot_taxa)) {
-               speciesScoresDf[speciesLineLength > 1, , drop = FALSE]
-             } else {
-               NULL
-             }
-           },
-           # integer e.g. 1:3 --> plot labels for top 3 taxa (by line length)
-           "integer" = {
-             speciesScoresDf[
-               rev(order(speciesLineLength)),
-             ][plot_taxa, , drop = FALSE]
-           },
-           # numeric e.g. 0.75 --> plot labels for taxa with line length > 0.75
-           "numeric" = {
-             speciesScoresDf[speciesLineLength > plot_taxa[[1]], , drop = FALSE]
-           },
-           # character e.g. c('g__Bacteroides', 'g__Veillonella')
-           # --> plot labels for exactly named taxa
-           "character" = {
-             speciesScoresDf[
-               rownames(speciesScoresDf) %in% plot_taxa, ,
-               drop = FALSE
-             ]
-           }
-    )
+  selectSpeciesScoresDf <- switch(
+    EXPR = class(plot_taxa[[1]]),
+    # default plot_taxa == TRUE --> line length > 1
+    "logical" = {
+      if (isTRUE(plot_taxa)) {
+        speciesScoresDf[speciesLineLength > 1, , drop = FALSE]
+      } else {
+        NULL
+      }
+    },
+    # integer e.g. 1:3 --> plot labels for top 3 taxa (by line length)
+    "integer" = {
+      speciesScoresDf[rev(order(speciesLineLength)), ][plot_taxa, , drop = FALSE]
+    },
+    # numeric e.g. 0.75 --> plot labels for taxa with line length > 0.75
+    "numeric" = {
+      speciesScoresDf[speciesLineLength > plot_taxa[[1]], , drop = FALSE]
+    },
+    # character e.g. c('g__Bacteroides', 'g__Veillonella')
+    # --> plot labels for exactly named taxa
+    "character" = {
+      speciesScoresDf[rownames(speciesScoresDf) %in% plot_taxa, , drop = FALSE]
+    }
+  )
 
   return(selectSpeciesScoresDf)
 }
@@ -539,7 +534,7 @@ checkValidEllipsesOrdPlot <- function(..., ps) {
     for (v in ellipses) {
       if (
         !is.null(v) && !inherits(v, c("logical", "numeric", "integer")) &&
-        !(v %in% c(variables, grDevices::colors(), ggplot2_shapes()))
+          !(v %in% c(variables, grDevices::colors(), ggplot2_shapes()))
       ) {
         stop(v, " is not a variable in the sample metadata (or color / shape)")
       }

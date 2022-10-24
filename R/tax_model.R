@@ -276,9 +276,13 @@ checkVariance <- function(vec, name) {
 # first checking if corncob installed, before checking function equality
 isType_bbdml <- function(type) {
   hasCorncob <- requireNamespace("corncob", quietly = TRUE)
-  if (hasCorncob && identical(type, corncob::bbdml)) return(TRUE)
+  if (hasCorncob && identical(type, corncob::bbdml)) {
+    return(TRUE)
+  }
   if (identical(type, "bbdml")) {
-    if (hasCorncob) return(TRUE)
+    if (hasCorncob) {
+      return(TRUE)
+    }
     stop("you must install corncob package to use 'bbdml' models")
   }
   return(FALSE)
@@ -288,7 +292,7 @@ isType_bbdml <- function(type) {
 # check actual phyloseq taxa_names match this level after aggregating as
 # sometimes the names are not changed by tax_agg
 # (i.e. when no aggregation occurs when rank = "unique")
-taxEnsureNamesMatchRank <- function(ps, rank, verbose){
+taxEnsureNamesMatchRank <- function(ps, rank, verbose) {
   taxaAtRank <- unname(unclass(phyloseq::tax_table(ps))[, rank, drop = TRUE])
   if (!isTRUE(all.equal(phyloseq::taxa_names(ps), taxaAtRank))) {
     not_matching <- phyloseq::taxa_names(ps) != taxaAtRank
@@ -300,7 +304,7 @@ taxEnsureNamesMatchRank <- function(ps, rank, verbose){
       )
       for (i in which(not_matching)) {
         message(
-          "Renaming: ",  phyloseq::taxa_names(ps)[i], " -> ", taxaAtRank[i]
+          "Renaming: ", phyloseq::taxa_names(ps)[i], " -> ", taxaAtRank[i]
         )
       }
     }
@@ -315,24 +319,32 @@ taxIndexGet <- function(ps, taxa) {
   if (any(is.na(taxa))) stop("taxa argument contains one or more NAs")
 
   # default behaviour is to use all taxa
-  if (is.null(taxa)) return(seq_len(phyloseq::ntaxa(ps)))
+  if (is.null(taxa)) {
+    return(seq_len(phyloseq::ntaxa(ps)))
+  }
 
   # convert logical or character selections to numeric indices
-  if (is.logical(taxa)) return(which(taxa))
-  if (is.character(taxa)) return(match(unique(taxa), phyloseq::taxa_names(ps)))
+  if (is.logical(taxa)) {
+    return(which(taxa))
+  }
+  if (is.character(taxa)) {
+    return(match(unique(taxa), phyloseq::taxa_names(ps)))
+  }
 
   # check bad numeric options
   if (identical(taxa, 0) || identical(taxa, 0L)) stop("taxa cannot be 0")
   if (!rlang::is_integerish(taxa)) stop("taxa cannot be non-integer numbers")
-  if (is.numeric(taxa)) return(unique(taxa))
+  if (is.numeric(taxa)) {
+    return(unique(taxa))
+  }
 }
 
 
 # make string representing rhs of formula from a formula or vector of variables
 formulaMakerRHSstring <- function(formula = NULL,
-                                  variables = NULL#,
+                                  variables = NULL # ,
                                   # univariable = FALSE
-                                  ) {
+) {
   # if (isTRUE(univariable) && is.null(variables)) {
   #   stop("To fit one or more univariable models, use the variables argument")
   # }
@@ -391,10 +403,8 @@ formula2string <- function(f) {
 }
 
 # check if package(s) is/are available, and stop if not, explaining why needed
-checkPackageAvailable <- function(
-    packages = c("package", "names"),
-    message = " package is required to use this functionality."
-) {
+checkPackageAvailable <- function(packages = c("package", "names"),
+                                  message = " package is required to use this functionality.") {
   for (p in packages) {
     if (!requireNamespace(p, quietly = TRUE)) stop(p, message)
   }

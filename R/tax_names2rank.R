@@ -34,4 +34,3 @@ tax_names2rank <- function(data, colname = "unique") {
   }
   return(data)
 }
-

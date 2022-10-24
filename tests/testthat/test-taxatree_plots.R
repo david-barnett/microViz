@@ -91,5 +91,3 @@ test_that("taxatree_plot plotting works with multiple sig markers", {
   vdiffr::expect_doppelganger("taxatree_plot_UC_m", lmp_multiSig$UC)
   vdiffr::expect_doppelganger("taxatree_plot_age_m", lmp_multiSig$age_scaled)
 })
-
-
