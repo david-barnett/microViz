@@ -25,7 +25,7 @@ data.frame, attached to psExtra
 }
 \description{
 Runs a function e.g. \code{broom::tidy} on a list of models, i.e. the output of
-\code{taxatree_models} or \code{tax_model} (models list may often be attached to psExtra)
+\code{taxatree_models} or \code{tax_model}
 }
 \section{Functions}{
 \itemize{

@@ -125,20 +125,14 @@ tax_models2stats <- function(data,
                              ...,
                              .keep_models = FALSE) {
   if (inherits(data, "list")) {
+    if (is.null(rank)) stop("If `data` is just a list, `rank` must not be NULL")
     models <- data
   } else {
-    stopifnot(all(names(models) %in% phyloseq::rank_names(ps_get(data))))
-  }
-
-  if (!is.list(data)) check_is_psExtra(data, "data")
-  if (is(data, "psExtra")) models <- data@tax_models
-  if (!is.list(models)) {
-    stop("data arg psExtra must have 'tax_models' list attached")
-  }
-  if (inherits(data, "list")) {
-    if (is.null(rank)) stop("if `data` is just a list, `rank` must not be NULL")
-    models <- data
-  } else {
+    check_is_psExtra(data, "data")
+    models <- tax_models_get(data)
+    if (!is.list(models)) {
+      stop("psExtra must have tax_models list attached, did you use tax_model()?")
+    }
     rank <- names(models)
     if (!rlang::is_string(rank, string = phyloseq::rank_names(ps_get(data)))) {
       stop("tax_models list must be length 1 & have name of a rank in psExtra")

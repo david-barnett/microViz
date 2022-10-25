@@ -106,7 +106,7 @@ models <- tax_model(ps, type = "bbdml", rank = "Genus", taxa = 1:3, variables = 
 # Alternative method using formula arg instead of variables to produce identical results
 models2 <- tax_model(
   ps = ps, rank = "Genus", type = "bbdml",
-  taxa = 1:3, formula = ~ female + overweight + obese
+  taxa = 1:3, formula = ~ female + overweight + obese, return_psx = FALSE
 )
 all.equal(models, models2) # should be TRUE
 
