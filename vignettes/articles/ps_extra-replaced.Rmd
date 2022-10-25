@@ -29,13 +29,13 @@ packageVersion("microViz")
 
     -   **Description**: using the `$` operator to access parts of the old "ps_extra" S3 class list (e.g. `yourData$ps` or `yourData$dist)` will no longer work in microViz 0.10.0 or later
 
-    -   **Solution:** You must replace the use of the `$` operator with [accessor](https://david-barnett.github.io/microViz/reference/psExtra-accessors.html) functions, e.g. [`ps_get(yourData)`](https://david-barnett.github.io/microViz/reference/ps_extra-accessors.html) or [`dist_get(yourData)`](https://david-barnett.github.io/microViz/reference/ps_extra-accessors.html)
+    -   **Solution:** You must replace the use of the `$` operator with [accessor](https://david-barnett.github.io/microViz/reference/psExtra-accessors.html) functions, e.g. `ps_get()` or `dist_get()`
 
 -   **Breaking change 2:**
 
     -   **Description**: if you have a saved "ps_extra" object generated with an older version of microViz, this will not be compatible with microViz version 0.10.0 and later versions
 
-    -   **Solution**: you can convert old "ps_extra" objects to the new "psExtra" S4 objects with the new function [`upgrade_ps_extra_to_psExtra(yourData)`](docs/reference/upgrade_ps_extra_to_psExtra.html)
+    -   **Solution**: you can convert old "ps_extra" objects to the new "psExtra" S4 objects with the new function `upgrade_ps_extra_to_psExtra()`
 
 -   **Need more help?**
 
