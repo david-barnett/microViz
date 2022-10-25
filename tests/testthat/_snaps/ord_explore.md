@@ -682,7 +682,7 @@
                                  "#773a27"                            "#7cb9cb" 
             Mitsuokella multiacida et rel. Outgrouping clostridium cluster XIVa 
                                  "#594e50"                            "#d3c4a8" 
-                Clostridium nexile et rel.                                other 
+                Clostridium nexile et rel.                                Other 
                                  "#c17e7f"                             "grey90" 
 
 ---
@@ -705,6 +705,6 @@
                       "#7570B3"                 "#E7298A"                 "#66A61E" 
        Clostridium cluster XVII            Asteroleplasma              Spirochaetes 
                       "#E6AB02"                 "#A6761D"                 "#666666" 
-                  Cyanobacteria                     other 
+                  Cyanobacteria                     Other 
                       "#4b6a53"                 "colourz" 
 

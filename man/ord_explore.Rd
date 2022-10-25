@@ -67,7 +67,7 @@ Once the app is running (in your browser), you can:
 \item Style the taxonomic compositions barplot
 \itemize{
 \item The samples are ordered using the seriate_method argument and the same transformation and distance as used in the ordination plot
-\item The app may lag if you select 100s of samples and ungroup the "other" category
+\item The app may lag if you select 100s of samples and ungroup the "Other" category
 \item To avoid this lag: either reduce the number of taxa or samples, or deselect "Interactive" barplot
 }
 \item Stop the app by clicking the red stop button in the R console
@@ -170,7 +170,7 @@ if (interactive()) {
   # test auto creation of SAMPLE var
   ps <- soilrep \%>\% ps_select(-Sample)
   # The barplot is actually quite useless with the 16000+ anonymous OTUs
-  # in this dataset, but the 1000s of unmerged "other" categories do render
+  # in this dataset, but the 1000s of unmerged "Other" categories do render
   phyloseq_validate(ps) \%>\%
     tax_fix() \%>\%
     dist_calc("aitchison") \%>\%

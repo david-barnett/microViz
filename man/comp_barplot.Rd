@@ -26,7 +26,7 @@ comp_barplot(
   keep_all_vars = TRUE,
   interactive = FALSE,
   max_taxa = 10000,
-  other_name = "other",
+  other_name = "Other",
   x = "SAMPLE",
   ...
 )

@@ -22,7 +22,7 @@
 #'    - Set the "Select" option to another variable to select by level of that variable
 #' 4. Style the taxonomic compositions barplot
 #'    - The samples are ordered using the seriate_method argument and the same transformation and distance as used in the ordination plot
-#'    - The app may lag if you select 100s of samples and ungroup the "other" category
+#'    - The app may lag if you select 100s of samples and ungroup the "Other" category
 #'    - To avoid this lag: either reduce the number of taxa or samples, or deselect "Interactive" barplot
 #' 5. Stop the app by clicking the red stop button in the R console
 #'    - Closing the web browser window doesn't stop the app,
@@ -138,7 +138,7 @@
 #'   # test auto creation of SAMPLE var
 #'   ps <- soilrep %>% ps_select(-Sample)
 #'   # The barplot is actually quite useless with the 16000+ anonymous OTUs
-#'   # in this dataset, but the 1000s of unmerged "other" categories do render
+#'   # in this dataset, but the 1000s of unmerged "Other" categories do render
 #'   phyloseq_validate(ps) %>%
 #'     tax_fix() %>%
 #'     dist_calc("aitchison") %>%
@@ -392,7 +392,7 @@ ord_explore <- function(data,
                 inputId = "interactive", label = "Interactive", value = TRUE
               ),
               shiny::checkboxInput(
-                inputId = "mergeOther", label = "Merge other", value = TRUE
+                inputId = "mergeOther", label = "Merge Other", value = TRUE
               )
             ),
             shiny::conditionalPanel(
@@ -625,7 +625,7 @@ ord_explore <- function(data,
     })
 
     ### tabs & notifications for barplot --------------------------------------
-    # handling (de)selection of interactive and "merge other" checkboxes
+    # handling (de)selection of interactive and "merge Other" checkboxes
     # interactive and static plots exist on two separate tabs
     shiny::observeEvent(
       eventExpr = {
@@ -1349,7 +1349,7 @@ markSelectedSamples <- function(ordSel, id, ps) {
 #' @param palette to colour taxa
 #' @param label variable name to label samples with
 #' @param max_taxa maximum number of distinct taxa (relevant if merge is FALSE)
-#' @param merge_other merge grey coloured taxa into "other"?
+#' @param merge_other merge grey coloured taxa into "Other"?
 #'
 #' @return ggplot barplot
 #' @noRd
@@ -1420,7 +1420,7 @@ girafeBarplot <- function(gg, width, height) {
 #'
 #' @param ps phyloseq object
 #' @param tax_level tax_level at which to create fixed palette
-#' @param other colour of "other" category
+#' @param other colour of "Other" category
 #'
 #' @return named vector of colours
 #' @noRd
@@ -1428,13 +1428,13 @@ ord_explore_palet_fun <- function(ps,
                                   tax_level,
                                   top_by = sum,
                                   other = "grey90") {
-  # set up colour palette and link to common taxa names and "other"
+  # set up colour palette and link to common taxa names and "Other"
   palet <- distinct_palette(n = NA, add = NA)
   top_tax <- tax_top(ps, n = NA, by = top_by, rank = tax_level)
   numberOfColors <- min(length(top_tax), length(palet))
   palet <- palet[seq_len(numberOfColors)]
   names(palet) <- top_tax[seq_len(numberOfColors)]
-  palet <- c(palet, c(other = other))
+  palet <- c(palet, c(Other = other))
   return(palet)
 }
 
