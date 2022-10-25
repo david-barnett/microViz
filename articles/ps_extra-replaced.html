@@ -164,14 +164,14 @@
 <p><strong>Breaking change 1:</strong></p>
 <ul>
 <li><p><strong>Description</strong>: using the <code>$</code> operator to access parts of the old “ps_extra” S3 class list (e.g. <code>yourData$ps</code> or <code>yourData$dist)</code> will no longer work in microViz 0.10.0 or later</p></li>
-<li><p><strong>Solution:</strong> You must replace the use of the <code>$</code> operator with <a href="https://david-barnett.github.io/microViz/reference/psExtra-accessors.html">accessor</a> functions, e.g. <a href="https://david-barnett.github.io/microViz/reference/ps_extra-accessors.html"><code>ps_get(yourData)</code></a> or <a href="https://david-barnett.github.io/microViz/reference/ps_extra-accessors.html"><code>dist_get(yourData)</code></a></p></li>
+<li><p><strong>Solution:</strong> You must replace the use of the <code>$</code> operator with <a href="https://david-barnett.github.io/microViz/reference/psExtra-accessors.html">accessor</a> functions, e.g. <code><a href="../reference/psExtra-accessors.html">ps_get()</a></code> or <code><a href="../reference/psExtra-accessors.html">dist_get()</a></code></p></li>
 </ul>
 </li>
 <li>
 <p><strong>Breaking change 2:</strong></p>
 <ul>
 <li><p><strong>Description</strong>: if you have a saved “ps_extra” object generated with an older version of microViz, this will not be compatible with microViz version 0.10.0 and later versions</p></li>
-<li><p><strong>Solution</strong>: you can convert old “ps_extra” objects to the new “psExtra” S4 objects with the new function <a href="docs/reference/upgrade_ps_extra_to_psExtra.html"><code>upgrade_ps_extra_to_psExtra(yourData)</code></a></p></li>
+<li><p><strong>Solution</strong>: you can convert old “ps_extra” objects to the new “psExtra” S4 objects with the new function <code><a href="../reference/upgrade_ps_extra_to_psExtra.html">upgrade_ps_extra_to_psExtra()</a></code></p></li>
 </ul>
 </li>
 <li>
