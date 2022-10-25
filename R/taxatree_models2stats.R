@@ -3,7 +3,7 @@
 #'
 #' @description
 #' Runs a function e.g. `broom::tidy` on a list of models, i.e. the output of
-#' `taxatree_models` or `tax_model` (models list may often be attached to psExtra)
+#' `taxatree_models` or `tax_model`
 #'
 #' @param data
 #' psExtra with attached tax_models or taxatree_models list, or just the list of models

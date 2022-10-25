@@ -90,7 +90,8 @@ parabacteroides_lm <- phylo %>%
   tax_transform("log2", zero_replace = "halfmin", chain = TRUE) %>% 
   tax_model(
     type = "lm", rank = "Genus", taxa = "Parabacteroides", 
-    variables = c("UC", "female", "antibiotics", "steroids", "age_scaled")
+    variables = c("UC", "female", "antibiotics", "steroids", "age_scaled"),
+    return_psx = FALSE
   ) 
 parabacteroides_lm$Parabacteroides
 ```
@@ -143,7 +144,8 @@ parabacteroides_bb <- phylo %>%
   tax_fix() %>% 
   tax_model(
     type = corncob::bbdml, rank = "Genus", taxa = "Parabacteroides", 
-    variables = c("UC", "female", "antibiotics", "steroids", "age_scaled")
+    variables = c("UC", "female", "antibiotics", "steroids", "age_scaled"),
+    return_psx = FALSE
   ) 
 parabacteroides_bb$Parabacteroides
 ```

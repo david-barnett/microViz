@@ -64,7 +64,7 @@ test_that("formula and variable arg alternatives can be equivalent", {
 
   models <- tax_model(
     ps = ps, type = "lm", rank = "Genus", taxa = 1:3,
-    variables = c("female", "overweight", "obese")
+    variables = c("female", "overweight", "obese"), return_psx = FALSE
   )
 
   expect_equal(
@@ -75,12 +75,12 @@ test_that("formula and variable arg alternatives can be equivalent", {
   # Alternative method using formula arg instead of vars for identical results
   models2 <- tax_model(
     ps = ps, type = "lm", rank = "Genus", taxa = 1:3,
-    formula = ~ female + overweight + obese
+    formula = ~ female + overweight + obese, return_psx = FALSE
   )
   # Alternative method using formula arg as string to produce identical results
   models3 <- tax_model(
     ps = ps, type = "lm", rank = "Genus", taxa = 1:3,
-    formula = "~ female + overweight + obese"
+    formula = "~ female + overweight + obese", return_psx = FALSE
   )
 
   expect_equal(models, models2)
@@ -89,11 +89,11 @@ test_that("formula and variable arg alternatives can be equivalent", {
   # try some univariable models
   models4 <- tax_model(
     ps = ps, type = "lm", rank = "Genus", taxa = 1:3,
-    formula = c(~female, "~ overweight", "~ obese")
+    formula = c(~female, "~ overweight", "~ obese"), return_psx = FALSE
   )
   models5 <- tax_model(
     ps = ps, type = "lm", rank = "Genus", taxa = 1:3,
-    variables = list("female", "overweight", "obese")
+    variables = list("female", "overweight", "obese"), return_psx = FALSE
   )
   expect_equal(models5, models4)
 })

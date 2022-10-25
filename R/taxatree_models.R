@@ -54,7 +54,7 @@ taxatree_models <- function(ps,
       models <- tax_model(
         ps = ps, rank = r, type = type, variables = variables, formula = formula,
         checkVars = checkVars, checkNA = checkNA, verbose = verbose,
-        use_future = use_future, ...
+        use_future = use_future, return_psx = FALSE, ...
       )
       return(models)
     }

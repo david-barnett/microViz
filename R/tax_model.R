@@ -37,7 +37,8 @@
 #' taxa to model (named, numbered, logical selection, or defaulting to all if NULL)
 #' @param use_future
 #' if TRUE parallel processing with future is possible, see details.
-#' @param return_psx if TRUE result will be returned attached to psExtra object
+#' @param return_psx
+#' if TRUE, list of results will be returned attached to psExtra object
 #' @param checkVars should the predictor variables be checked for zero variance?
 #' @param checkNA
 #' One of "stop", "warning", "message", or "allow", which
@@ -46,9 +47,11 @@
 #' @param ... extra args passed directly to modelling function
 #'
 #' @return
-#' Named list of model objects or list of lists. Or, if return_psx is TRUE, a psExtra.
+#' psExtra with named list of model objects attached.
+#' Or a list of lists of models (if multiple models per taxon).
+#' Or just a list (of lists), if return_psx is FALSE.
+#' @seealso \code{\link{tax_models_get}} for the accessor to retrieve model results from psExtra
 #' @seealso \code{\link{taxatree_models}} for more details on the underlying approach
-#' @seealso \code{\link{taxatree_plots}} for how to plot the output of `taxatree_models`
 #'
 #' @examples
 #' library(corncob)
@@ -80,7 +83,7 @@
 #' # Alternative method using formula arg instead of variables to produce identical results
 #' models2 <- tax_model(
 #'   ps = ps, rank = "Genus", type = "bbdml",
-#'   taxa = 1:3, formula = ~ female + overweight + obese
+#'   taxa = 1:3, formula = ~ female + overweight + obese, return_psx = FALSE
 #' )
 #' all.equal(models, models2) # should be TRUE
 #'
@@ -111,7 +114,7 @@ tax_model <- function(ps,
                       formula = NULL,
                       taxa = NULL,
                       use_future = FALSE,
-                      return_psx = FALSE,
+                      return_psx = TRUE,
                       checkVars = TRUE,
                       checkNA = "warning",
                       verbose = TRUE,

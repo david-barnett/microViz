@@ -20,6 +20,8 @@
 #'   rank = "family", variables = list("age", "number_reads"), type = cor_test
 #' )
 #'
+#' tax_models_get(cors)
+#'
 cor_test <- function(formula,
                      data,
                      ...) {

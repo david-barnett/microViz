@@ -12,7 +12,7 @@ tax_model(
   formula = NULL,
   taxa = NULL,
   use_future = FALSE,
-  return_psx = FALSE,
+  return_psx = TRUE,
   checkVars = TRUE,
   checkNA = "warning",
   verbose = TRUE,
@@ -36,7 +36,7 @@ If variables is a list, not a vector, a model is fit for each entry in list.}
 
 \item{use_future}{if TRUE parallel processing with future is possible, see details.}
 
-\item{return_psx}{if TRUE result will be returned attached to psExtra object}
+\item{return_psx}{if TRUE, list of results will be returned attached to psExtra object}
 
 \item{checkVars}{should the predictor variables be checked for zero variance?}
 
@@ -48,7 +48,9 @@ indicates whether to check predictor variables for NAs, and how to report any NA
 \item{...}{extra args passed directly to modelling function}
 }
 \value{
-Named list of model objects or list of lists. Or, if return_psx is TRUE, a psExtra.
+psExtra with named list of model objects attached.
+Or a list of lists of models (if multiple models per taxon).
+Or just a list (of lists), if return_psx is FALSE.
 }
 \description{
 \code{tax_model} provides a simple framework to statistically model the abundance
@@ -129,7 +131,7 @@ models_lm <- ps \%>\%
   tax_model(rank = "Genus", taxa = 1:3, variables = VARS, type = "lm")
 }
 \seealso{
-\code{\link{taxatree_models}} for more details on the underlying approach
+\code{\link{tax_models_get}} for the accessor to retrieve model results from psExtra
 
-\code{\link{taxatree_plots}} for how to plot the output of \code{taxatree_models}
+\code{\link{taxatree_models}} for more details on the underlying approach
 }

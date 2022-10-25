@@ -12,6 +12,8 @@ This version also introduces changes around `tax_model` and `taxatree_models` fu
 
 - `tax_model` and `taxatree_model` parallel processing with future and future.apply is off by default, and needs to be enabled with argument use_future = TRUE.
 
+- `tax_model` attaches results to psExtra object by default, but you can restore old behaviour with return_psx = FALSE
+
 - `comp_barplot` "other" taxa category renamed to "Other" by default
 
 ## Features
