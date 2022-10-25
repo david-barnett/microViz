@@ -5,12 +5,15 @@
 \title{Print method for psExtraInfo object}
 \usage{
 \method{print}{psExtraInfo}(
-  psExtraInfo,
+  x,
+  ...,
   which = c("tax_agg", "tax_trans", "tax_scale", "dist_method", "ord_info")
 )
 }
 \arguments{
-\item{psExtraInfo}{psExtraInfo object}
+\item{x}{psExtraInfo object}
+
+\item{...}{ignored}
 
 \item{which}{which elements of psExtraInfo list to print}
 }

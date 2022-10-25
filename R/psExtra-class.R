@@ -27,17 +27,18 @@ validate_psExtraOrdInfo <- function(psExtraOrdInfo) {
 
 #' Print method for psExtraOrdInfo list
 #'
-#' @param psExtraOrdInfo psExtraOrdInfo list
+#' @param x psExtraOrdInfo list
+#' @param ... ignored
 #'
 #' @export
-print.psExtraOrdInfo <- function(psExtraOrdInfo) {
-  lens <- purrr::map(psExtraOrdInfo, length)
+#' @noRd
+print.psExtraOrdInfo <- function(x, ...) {
+  lens <- purrr::map(x, length)
   if (any(lens > 0)) {
     cat("Ordination info:\n")
-    for (N in names(psExtraOrdInfo)) {
-      v <- psExtraOrdInfo[[N]]
-      if (length(v) > 0) {
-        cat(N, " = '", paste(v, collapse = "', '"), "'\t", sep = "")
+    for (N in names(x)) {
+      if (length(x[[N]]) > 0) {
+        cat(N, " = '", paste(x[[N]], collapse = "', '"), "'\t", sep = "")
       }
     }
     cat("\n")
@@ -103,24 +104,27 @@ modify_psExtraInfo <- function(psExtraInfo, ..., append = FALSE) {
 
 #' Print method for psExtraInfo object
 #'
-#' @param psExtraInfo psExtraInfo object
+#' @param x psExtraInfo object
+#' @param ... ignored
 #' @param which which elements of psExtraInfo list to print
 #'
 #' @export
-print.psExtraInfo <- function(psExtraInfo,
+#' @rdname psExtraInfo
+print.psExtraInfo <- function(x,
+                              ...,
                               which = c("tax_agg", "tax_trans", "tax_scale", "dist_method", "ord_info")) {
   which <- rlang::arg_match(which, multiple = TRUE)
   vectorElementNames <- setdiff(which, "ord_info") # vector slots
-  lens <- purrr::map(psExtraInfo[vectorElementNames], length)
+  lens <- purrr::map(x[vectorElementNames], length)
   if (any(lens > 0)) {
     cat("psExtra info:\n")
     for (N in vectorElementNames) {
-      v <- psExtraInfo[[N]]
+      v <- x[[N]]
       if (length(v) > 0) cat(N, " = '", paste(v, collapse = "', '"), "'\t", sep = "")
     }
     cat("\n")
   }
-  if ("ord_info" %in% which) print(psExtraInfo[["ord_info"]])
+  if ("ord_info" %in% which) print(x[["ord_info"]])
 }
 
 setOldClass("psExtraInfo")
@@ -286,3 +290,19 @@ setMethod("show", "psExtra", function(object) {
     tax_stats_summary(x@tax_stats)
   }
 })
+
+# helper for summarising taxatree_stats objects
+taxatree_stats_summary <- function(df) {
+  n <- length(unique(df[["taxon"]]))
+  r <- unique(df[["rank"]])
+  t <- levels(df[["term"]])
+  cat(n, "taxa at", length(r), "ranks:", paste(r, collapse = ", "), "\n")
+  cat(length(t), "terms:", paste(t, collapse = ", "))
+}
+# helper for summarising tax_stats objects
+tax_stats_summary <- function(df) {
+  n <- length(unique(df[["taxon"]]))
+  t <- unique(df[["term"]])
+  cat(n, "taxa at rank of", df[["rank"]][1], "\n")
+  cat(length(t), "terms:", paste(t, collapse = ", "))
+}

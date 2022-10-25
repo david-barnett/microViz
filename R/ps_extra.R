@@ -14,86 +14,10 @@ print.ps_extra <- function(x, ...) {
   stopif_ps_extra(x)
 }
 
-# helper for summarising taxatree_stats objects
-taxatree_stats_summary <- function(df) {
-  n <- length(unique(df[["taxon"]]))
-  r <- unique(df[["rank"]])
-  t <- levels(df[["term"]])
-  cat(n, "taxa at", length(r), "ranks:", paste(r, collapse = ", "), "\n")
-  cat(length(t), "terms:", paste(t, collapse = ", "))
-}
-# helper for summarising tax_stats objects
-tax_stats_summary <- function(df) {
-  n <- length(unique(df[["taxon"]]))
-  t <- unique(df[["term"]])
-  cat(n, "taxa at rank of", df[["rank"]][1], "\n")
-  cat(length(t), "terms:", paste(t, collapse = ", "))
-}
-
 #' @export
 #' @noRd
 print.ps_extra_info <- function(x, ..., all = TRUE) {
   stop("ps_extra class is defunct")
-}
-
-#' @param ps phyloseq object
-#' @param dist dist class distance matrix
-#' @param ord ordination object
-#' @param info info about the other 3 args
-#' @noRd
-new_ps_extra <- function(ps,
-                         dist = NULL,
-                         ord = NULL,
-                         info = new_ps_extra_info()) {
-  stopifnot(methods::is(ps, "phyloseq"))
-  stopifnot(identical(dist, NULL) && !inherits(dist, "dist"))
-  stopifnot(inherits(info, "ps_extra_info"))
-  psx <- structure(
-    .Data = list(ps = ps, dist = dist, ord = ord, info = info),
-    class = c("ps_extra", "list")
-  )
-  return(psx)
-}
-
-#' @param tax_agg aggregation level from tax_agg() (if any)
-#' @param tax_transform transformation name from tax_transform() (if any)
-#' @param tax_scale scaling specified in tax_scale() if any
-#' @param distMethod distance method in dist_calc()
-#' @param ordMethod ordination method in ord_calc()
-#' @param constraints constraints (if any) for ord_calc()
-#' @param conditions conditions (if any) for ord_calc()
-#' @noRd
-new_ps_extra_info <- function(tax_agg = NA_character_,
-                              tax_transform = NA_character_,
-                              tax_scale = NA_character_,
-                              distMethod = NA_character_,
-                              ordMethod = NA_character_,
-                              constraints = NA_character_,
-                              conditions = NA_character_) {
-  info <- c(
-    tax_agg = tax_agg, tax_transform = tax_transform,
-    tax_scale = tax_scale,
-    distMethod = distMethod,
-    ordMethod = ordMethod, constraints = constraints, conditions = conditions
-  )
-  stopifnot(all(is.character(info)))
-
-  psxi <- structure(.Data = info, class = "ps_extra_info")
-  return(psxi)
-}
-
-# internal helper to convert plain phyloseq to ps_extra or leave ps_extra as is
-as_ps_extra <- function(ps) {
-  if (methods::is(ps, "phyloseq")) {
-    return(new_ps_extra(ps = ps))
-  } else if (inherits(ps, "ps_extra")) {
-    return(ps)
-  } else {
-    stop(
-      "Cannot coerce object of class '", paste(class(ps), collapse = "' '"),
-      "' into a ps_extra. \nObject must be a phyloseq or already a ps_extra!"
-    )
-  }
 }
 
 #' Convert old format "ps_extra" objects to new "psExtra" objects

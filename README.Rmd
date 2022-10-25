@@ -44,31 +44,37 @@ citations <- paste0("~", stringr::str_extract(rvest::html_text(citeElem), "[0-9]
 
 :microscope: `microViz` extends and complements popular microbial ecology packages like `phyloseq`, `vegan`, & `microbiome`.
 
+## Upgrading microViz versions ≤ 0.9.7 to version 0.10.0 +
+
+microViz version 0.10.0 introduces changes that may break some code written with older versions of microViz.
+If you were already using microViz prior to version 0.10.0 please read [this document](articles/ps_extra-replaced.html) before upgrading to the latest version.
+
+
 ## Learn more
 
 :paperclip: This website is the best place for documentation and examples: <https://david-barnett.github.io/microViz/>
 
 -   [**This ReadMe**](https://david-barnett.github.io/microViz/) shows a few example analyses
 
--   **The [Reference](https://david-barnett.github.io/microViz/reference/index.html) page** lists all functions and links to help pages and examples
+-   **The [Reference](reference/index.html) page** lists all functions and links to help pages and examples
 
--   **The [Changelog](https://david-barnett.github.io/microViz/news/index.html)** describes important changes in new microViz package versions
+-   **The [Changelog](news/index.html)** describes important changes in new microViz package versions
 
 -   **The Articles pages** give tutorials and further examples
 
-    -   [Working with phyloseq objects](https://david-barnett.github.io/microViz/articles/web-only/phyloseq.html)
+    -   [Working with phyloseq objects](articles/web-only/phyloseq.html)
 
-    -   [Fixing your taxa table with tax_fix](https://david-barnett.github.io/microViz/articles/web-only/tax-fixing.html)
+    -   [Fixing your taxa table with tax_fix](articles/web-only/tax-fixing.html)
 
-    -   [Creating ordination plots](https://david-barnett.github.io/microViz/articles/web-only/ordination.html) (e.g. PCA or PCoA)
+    -   [Creating ordination plots](articles/web-only/ordination.html) (e.g. PCA or PCoA)
 
-    -   [Interactive ordination plots with ord_explore](https://david-barnett.github.io/microViz/articles/web-only/ordination-interactive.html)
+    -   [Interactive ordination plots with ord_explore](articles/web-only/ordination-interactive.html)
 
     -   [Visualising taxonomic compositions with comp_barplot](https://david-barnett.github.io/microViz/articles/web-only/compositions.html)
 
-    -   [Heatmaps of microbiome composition and correlation](https://david-barnett.github.io/microViz/articles/web-only/heatmaps.html)
+    -   [Heatmaps of microbiome composition and correlation](articles/web-only/heatmaps.html)
 
-    -   [Modelling and plotting individual taxon associations with taxatrees](https://david-barnett.github.io/microViz/articles/web-only/modelling-taxa.html)
+    -   [Modelling and plotting individual taxon associations with taxatrees](articles/web-only/modelling-taxa.html)
 
     -   More coming soon(ish)!
         Post on [GitHub discussions](https://github.com/david-barnett/microViz/discussions) if you have questions/requests
@@ -166,7 +172,7 @@ sample_data(dietswap)$african[c(3, 4)] <- NA
 ### Looking at your data
 
 You have quite a few samples in your phyloseq object, and would like to visualize their compositions.
-Perhaps these example data differ participant nationality?
+Perhaps these example data differ by participant nationality?
 
 ```{r, bars, fig.height=5, fig.width=6, dpi=120}
 dietswap %>%

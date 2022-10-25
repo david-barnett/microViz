@@ -1,17 +1,3 @@
-# is_ps_extra <- function(object) {
-#   if (inherits(object, "ps_extra")) {
-#     ps_extra_deprecation_warning()
-#     return(TRUE)
-#   }
-#   return(FALSE)
-# }
-#
-# ps_extra_deprecation_warning <- function() {
-#   rlang::warn(c(
-#     "'ps_extra' object class is deprecated",
-#     i = "please rerun your code with microViz version 0.10.0 or higher"
-#   ))
-# }
 
 ps_extra_arg_deprecation_warning <- function(ps_extra) {
   rlang::warn(call = rlang::caller_env(1), message = c(
