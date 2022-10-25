@@ -1,6 +1,18 @@
-# microViz (development version)
+# microViz 0.10.0
 
-This version introduces changes around `tax_model` and `taxatree_models` functionality.
+Major internal changes from S3 ps_extra to S4 psExtra objects. See [article about this change](../articles/ps_extra-replaced.html)
+
+This version also introduces changes around `tax_model` and `taxatree_models` functionality.
+
+## Breaking changes
+
+- Using the `$` operator to access parts of the old "ps_extra" S3 class will no longer work and must be replaced with accessor functions, e.g. `ps_get`
+
+- "ps_extra" objects generated with older versions will not be compatible with version 0.10.0 and can be converted to the new "psExtra" S4 objects with `upgrade_ps_extra_to_psExtra`
+
+- `tax_model` and `taxatree_model` parallel processing with future and future.apply is off by default, and needs to be enabled with argument use_future = TRUE.
+
+- `comp_barplot` "other" taxa category renamed to "Other" by default
 
 ## Features
 
@@ -11,8 +23,6 @@ This allows running e.g. three simple regression models per taxon with predictor
 ## Fixes
 - No more deprecation warnings in `taxatree_plot_labels`
 
-## Breaking changes
-- `tax_model` and `taxatree_model` parallel processing with future and future.apply is off by default, and needs to be enabled with argument use_future = TRUE.
 
 # microViz 0.9.7
 
