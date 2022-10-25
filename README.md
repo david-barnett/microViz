@@ -141,7 +141,7 @@ formally test this.
 
 ``` r
 library(microViz)
-#> microViz version 0.9.7.9002 - Copyright (C) 2022 David Barnett
+#> microViz version 0.10.0 - Copyright (C) 2022 David Barnett
 #> ! Website: https://david-barnett.github.io/microViz
 #> ✔ Useful?  For citation details, run: `citation("microViz")`
 #> ✖ Silence? `suppressPackageStartupMessages(library(microViz))`
@@ -324,8 +324,8 @@ aitchison_perm <- aitchison_dists %>%
     n_processes = 1, n_perms = 99, # you should use at least 999!
     variables = "bmi_group"
   )
-#> 2022-10-25 18:08:18 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2022-10-25 18:08:18 - Finished PERMANOVA
+#> 2022-10-25 23:47:45 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2022-10-25 23:47:45 - Finished PERMANOVA
 
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
@@ -337,7 +337,7 @@ perm_get(aitchison_perm) %>% as.data.frame()
 # view the info stored about the distance calculation
 info_get(aitchison_perm)
 #> psExtra info:
-#> tax_agg = 'Family'   tax_trans = 'identity'  dist_method = 'aitchison'   
+#> tax_agg = "Family" tax_trans = "identity" dist_method = "aitchison"
 ```
 
 ### Constrained partial ordination
@@ -350,8 +350,8 @@ your permanova directly using the `ord_plot` function with constraints
 perm2 <- aitchison_dists %>%
   dist_permanova(variables = c("weight", "african", "sex"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2022-10-25 18:08:18 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2022-10-25 18:08:20 - Finished PERMANOVA
+#> 2022-10-25 23:47:45 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2022-10-25 23:47:47 - Finished PERMANOVA
 ```
 
 We’ll visualise the effect of nationality and bodyweight on sample
@@ -458,9 +458,8 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] ggplot2_3.3.6       dplyr_1.0.10        phyloseq_1.40.0    
-#> [4] microViz_0.9.7.9002 testthat_3.1.4      devtools_2.4.3     
-#> [7] usethis_2.1.6      
+#> [1] ggplot2_3.3.6   dplyr_1.0.10    phyloseq_1.40.0 microViz_0.10.0
+#> [5] testthat_3.1.4  devtools_2.4.3  usethis_2.1.6  
 #> 
 #> loaded via a namespace (and not attached):
 #>   [1] circlize_0.4.15        plyr_1.8.7             igraph_1.3.5          
@@ -492,7 +491,7 @@ sessionInfo()
 #>  [79] compiler_4.2.1         rstudioapi_0.13        curl_4.3.2            
 #>  [82] png_0.1-7              tibble_3.1.8           stringi_1.7.8         
 #>  [85] highr_0.9              ps_1.7.0               desc_1.4.1            
-#>  [88] lattice_0.20-45        Matrix_1.4-1           markdown_1.1          
+#>  [88] lattice_0.20-45        Matrix_1.5-1           markdown_1.1          
 #>  [91] vegan_2.6-4            microbiome_1.18.0      permute_0.9-7         
 #>  [94] multtest_2.52.0        vctrs_0.5.0            pillar_1.8.1          
 #>  [97] lifecycle_1.0.3        rhdf5filters_1.8.0     GlobalOptions_0.1.2   
