@@ -1314,7 +1314,11 @@ We will transform the count data by first making it proportions, and then taking
 bacteroidesRegression1 <- shao4 %>%
   tax_transform("compositional", rank = "genus") %>%
   tax_transform("log2", zero_replace = "halfmin", chain = TRUE) %>%
-  tax_model(type = "lm", rank = "genus", taxa = "Bacteroides", variables = "birth_mode") %>%
+  tax_model(
+    type = "lm", rank = "genus", 
+    taxa = "Bacteroides", variables = "birth_mode",
+    return_psx = FALSE
+  ) %>%
   pluck(1)
 
 # looking at the regression results
@@ -1368,7 +1372,8 @@ bacteroidesRegression2 <- shao4 %>%
   tax_transform("log2", zero_replace = "halfmin", chain = TRUE) %>%
   tax_model(
     type = "lm", rank = "genus", taxa = "Bacteroides",
-    variables = c("C_section", "Female", "Birth_weight_Z", "Reads_Z")
+    variables = c("C_section", "Female", "Birth_weight_Z", "Reads_Z"),
+    return_psx = FALSE
   ) %>%
   pluck(1)
 
