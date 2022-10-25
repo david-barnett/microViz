@@ -31,7 +31,7 @@ https://sites.google.com/site/mb3gustame/hypothesis-tests/manova/npmanova"><meta
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.0</span>
       </span>
     </div>
 
@@ -68,6 +68,9 @@ https://sites.google.com/site/mb3gustame/hypothesis-tests/manova/npmanova"><meta
     </li>
     <li>
       <a href="../articles/web-only/videos.html">Tutorial video</a>
+    </li>
+    <li>
+      <a href="../articles/ps_extra-replaced.html">Upgrading to microViz version 0.10.0</a>
     </li>
     <li>
       <a href="../articles/web-only/atlas1006.html">Example analyses with atlas1006 data</a>
@@ -135,7 +138,7 @@ and a microbiota distance matrix you have already calculated with dist_calc().</
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>data</dt>
-<dd><p>ps_extra output from dist_calc()</p></dd>
+<dd><p>psExtra output from dist_calc()</p></dd>
 
 
 <dt>variables</dt>
@@ -178,7 +181,7 @@ and a microbiota distance matrix you have already calculated with dist_calc().</
     <h2>Value</h2>
     
 
-<p>ps_extra list containing permanova results and (filtered) input objects</p>
+<p>psExtra list containing permanova results and (filtered) input objects</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -216,18 +219,18 @@ you should rename the offending variable (e.g. avoid any of "+" "\*" "|" or ":" 
 <span class="r-in"><span>    n_perms <span class="op">=</span> <span class="fl">99</span> <span class="co"># only 99 perms used in examples for speed (use 9999+!)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Dropping samples with missings: 4</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022-10-21 09:42:16 - Starting PERMANOVA with 99 perms with 1 processes</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022-10-21 09:42:16 - Finished PERMANOVA</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022-10-25 21:55:15 - Starting PERMANOVA with 99 perms with 1 processes</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022-10-25 21:55:15 - Finished PERMANOVA</span>
 <span class="r-in"><span><span class="va">PERM</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ps_extra object - a list with phyloseq and extras:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> psExtra object - a phyloseq object with extra slots:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> phyloseq-class experiment-level object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> otu_table()   OTU Table:         [ 130 taxa and 218 samples ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sample_data() Sample Data:       [ 218 samples by 8 sample variables ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ps_extra info:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> tax_agg = Genus tax_transform = identity</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> psExtra info:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> tax_agg = "Genus" tax_trans = "identity" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> bray distance matrix of size 218 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0.7639533 0.731024 0.7283254 0.6637252 0.7437293 ...</span>
@@ -246,26 +249,8 @@ you should rename the offending variable (e.g. avoid any of "+" "\*" "|" or ":" 
 <span class="r-out co"><span class="r-pr">#&gt;</span> Total     217   38.691 1.00000                 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">PERM</span>, max.level <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> List of 5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ps       :Formal class 'phyloseq' [package "phyloseq"] with 5 slots</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ dist     : 'dist' num [1:23653] 0.764 0.731 0.728 0.664 0.744 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "Labels")= chr [1:218] "Sample-1" "Sample-2" "Sample-7" "Sample-8" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "Size")= int 218</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "call")= language as.dist.default(m = as.matrix(distMat)[keepers, keepers])</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "Diag")= logi FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "Upper")= logi FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ord      : NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ info     : 'ps_extra_info' Named chr [1:7] "Genus" "identity" NA "bray" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "names")= chr [1:7] "tax_agg" "tax_transform" "tax_scale" "distMethod" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ permanova:Classes ‘anova.cca’, ‘anova’ and 'data.frame':	4 obs. of  5 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "heading")= chr [1:2] "Permutation test for adonis under reduced model\nMarginal effects of terms\nPermutation: free\nNumber of permutations: 99\n" "vegan::adonis2(formula = formula, data = metadata, permutations = n_perms, by = by, parallel = parall)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "F.perm")= num [1:99, 1:2] 1.892 0.748 0.283 2.748 0.956 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "Random.seed")= int [1:626] 10403 624 -169270483 -442010614 -603558397 -222347416 1489374793 865871222 1734802815 98005428 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "control")=List of 12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "class")= chr "how"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "class")= chr [1:2] "ps_extra" "list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Formal class 'psExtra' [package "microViz"] with 15 slots</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># try permanova with interaction terms</span></span></span>
 <span class="r-in"><span><span class="va">PERM2</span> <span class="op">&lt;-</span> <span class="va">testDist</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
@@ -275,9 +260,9 @@ you should rename the offending variable (e.g. avoid any of "+" "\*" "|" or ":" 
 <span class="r-in"><span>    n_processes <span class="op">=</span> <span class="fl">1</span>, n_perms <span class="op">=</span> <span class="fl">99</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Dropping samples with missings: 4</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022-10-21 09:42:16 - Starting PERMANOVA with 99 perms with 1 processes</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022-10-21 09:42:16 - Finished PERMANOVA</span>
-<span class="r-in"><span><span class="va">PERM2</span><span class="op">$</span><span class="va">permanova</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022-10-25 21:55:15 - Starting PERMANOVA with 99 perms with 1 processes</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022-10-25 21:55:16 - Finished PERMANOVA</span>
+<span class="r-in"><span><span class="fu"><a href="psExtra-accessors.html">perm_get</a></span><span class="op">(</span><span class="va">PERM2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Permutation test for adonis under reduced model</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Marginal effects of terms</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Permutation: free</span>
@@ -301,9 +286,9 @@ you should rename the offending variable (e.g. avoid any of "+" "\*" "|" or ":" 
 <span class="r-in"><span>    n_processes <span class="op">=</span> <span class="fl">1</span>, n_perms <span class="op">=</span> <span class="fl">99</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Dropping samples with missings: 4</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022-10-21 09:42:16 - Starting PERMANOVA with 99 perms with 1 processes</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022-10-21 09:42:17 - Finished PERMANOVA</span>
-<span class="r-in"><span><span class="va">PERM3</span><span class="op">$</span><span class="va">permanova</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022-10-25 21:55:16 - Starting PERMANOVA with 99 perms with 1 processes</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022-10-25 21:55:16 - Finished PERMANOVA</span>
+<span class="r-in"><span><span class="fu"><a href="psExtra-accessors.html">perm_get</a></span><span class="op">(</span><span class="va">PERM3</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Permutation test for adonis under reduced model</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Marginal effects of terms</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Permutation: free</span>

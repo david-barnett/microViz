@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.0</span>
       </span>
     </div>
 
@@ -87,6 +87,9 @@
     </li>
     <li>
       <a href="../../articles/web-only/videos.html">Tutorial video</a>
+    </li>
+    <li>
+      <a href="../../articles/ps_extra-replaced.html">Upgrading to microViz version 0.10.0</a>
     </li>
     <li>
       <a href="../../articles/web-only/atlas1006.html">Example analyses with atlas1006 data</a>
@@ -521,7 +524,7 @@
 <code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">treatment_days</span> <span class="op">==</span> <span class="st">'D13'</span>, <span class="va">virus</span> <span class="op">==</span> <span class="st">'WNV2000'</span>, <span class="va">treatment</span> <span class="op">==</span> <span class="st">'Vehicle'</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/ps_calc_diversity.html">ps_calc_diversity</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">'Genus'</span>, index <span class="op">=</span> <span class="st">'shannon'</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../../reference/ps_extra-accessors.html">samdat_tbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../../reference/psExtra-accessors.html">samdat_tbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">shannon_Genus</span>, y <span class="op">=</span> <span class="st">"Day 13\ncontrols"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>position <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_jitter.html" class="external-link">position_jitter</a></span><span class="op">(</span>height <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">'Shannon diversity (Genus)'</span>, y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
@@ -537,7 +540,7 @@
 <code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">treatment_days</span> <span class="op">==</span> <span class="st">'D13'</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/ps_calc_diversity.html">ps_calc_diversity</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">'Genus'</span>, index <span class="op">=</span> <span class="st">'shannon'</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../../reference/ps_extra-accessors.html">samdat_tbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../../reference/psExtra-accessors.html">samdat_tbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">antibiotics</span>, x <span class="op">=</span> <span class="va">shannon_Genus</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>position <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_jitter.html" class="external-link">position_jitter</a></span><span class="op">(</span>height <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span></span>
@@ -548,7 +551,7 @@
 <code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">treatment_days</span> <span class="op">==</span> <span class="st">'D13'</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/ps_calc_diversity.html">ps_calc_diversity</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">'Genus'</span>, index <span class="op">=</span> <span class="st">'shannon'</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../../reference/ps_extra-accessors.html">samdat_tbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../../reference/psExtra-accessors.html">samdat_tbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/wilcox.test.html" class="external-link">wilcox.test</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">shannon_Genus</span> <span class="op">~</span> <span class="va">antibiotics</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Wilcoxon rank sum test with continuity correction</span></span>
@@ -561,7 +564,7 @@
 <code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">treatment_days</span> <span class="op">==</span> <span class="st">'D13'</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/ps_calc_diversity.html">ps_calc_diversity</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">'Genus'</span>, index <span class="op">=</span> <span class="st">'shannon'</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../../reference/ps_extra-accessors.html">samdat_tbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../../reference/psExtra-accessors.html">samdat_tbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">shannon_Genus</span> <span class="op">~</span> <span class="va">antibiotics</span> <span class="op">+</span> <span class="va">virus</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -637,7 +640,7 @@
 <code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/ps_calc_richness.html">ps_calc_richness</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">'Genus'</span>, index <span class="op">=</span> <span class="st">'observed'</span>, varname <span class="op">=</span> <span class="st">'genera'</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/ps_mutate.html">ps_mutate</a></span><span class="op">(</span>readcount <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_sums.html" class="external-link">sample_sums</a></span><span class="op">(</span><span class="va">mice</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/ps_extra-accessors.html">samdat_tbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../../reference/psExtra-accessors.html">samdat_tbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">readcount</span>, <span class="va">genera</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.4</span>, size <span class="op">=</span> <span class="fl">2.5</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="fl">14</span><span class="op">)</span></span></code></pre></div>
@@ -684,7 +687,7 @@
 <div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">shao19</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/ps_mutate.html">ps_mutate</a></span><span class="op">(</span>reads <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_sums.html" class="external-link">sample_sums</a></span><span class="op">(</span><span class="va">shao19</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/ps_extra-accessors.html">samdat_tbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../../reference/psExtra-accessors.html">samdat_tbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">reads</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html" class="external-link">geom_freqpoly</a></span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">500</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_rug.html" class="external-link">geom_rug</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span></span>
@@ -858,20 +861,20 @@
 <span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"binary"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="co"># converts counts to absence/presence: 0/1</span></span>
 <span>  <span class="fu"><a href="../../reference/dist_calc.html">dist_calc</a></span><span class="op">(</span>dist <span class="op">=</span> <span class="st">"jaccard"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Proportional min_prevalence given: 0.025 --&gt; min 8/306 samples.</span></span></code></pre>
-<pre><code><span><span class="co">## ps_extra object - a list with phyloseq and extras:</span></span>
+<pre><code><span><span class="co">## psExtra object - a phyloseq object with extra slots:</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## phyloseq-class experiment-level object</span></span>
 <span><span class="co">## otu_table()   OTU Table:         [ 35 taxa and 306 samples ]</span></span>
 <span><span class="co">## sample_data() Sample Data:       [ 306 samples by 11 sample variables ]</span></span>
 <span><span class="co">## tax_table()   Taxonomy Table:    [ 35 taxa by 5 taxonomic ranks ]</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## ps_extra info:</span></span>
-<span><span class="co">## tax_agg = genus tax_transform = binary</span></span>
+<span><span class="co">## otu_get(counts = TRUE)        [ 35 taxa and 306 samples ]</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## psExtra info:</span></span>
+<span><span class="co">## tax_agg = "genus" tax_trans = "binary" </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## jaccard distance matrix of size 306 </span></span>
-<span><span class="co">## 0.6666667 0.7333333 0.9375 0.8125 0.6428571 ...</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## $counts OTU Table: [ 35 taxa and 306 samples ]</span></span></code></pre>
+<span><span class="co">## 0.6666667 0.7333333 0.9375 0.8125 0.6428571 ...</span></span></code></pre>
 <p>So we get our pairwise dissimilarities, in a distance matrix attached as an extra part on the original phyloseq object, as part of a container object (a “ps_extra” class object created by microViz, which also stores info about the aggregation and transformations you performed)</p>
 <div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">distances</span> <span class="op">&lt;-</span> <span class="va">shao4</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
@@ -879,7 +882,7 @@
 <span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"binary"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/dist_calc.html">dist_calc</a></span><span class="op">(</span>dist <span class="op">=</span> <span class="st">"jaccard"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../../reference/ps_extra-accessors.html">dist_get</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="../../reference/psExtra-accessors.html">dist_get</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>You can extract the dissimilarities or distances with dist_get.</p>
 <div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">distances</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span></code></pre></div>
@@ -1043,9 +1046,9 @@
 <span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/dist_calc.html">dist_calc</a></span><span class="op">(</span>dist <span class="op">=</span> <span class="st">"bray"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/dist_permanova.html">dist_permanova</a></span><span class="op">(</span>variables <span class="op">=</span> <span class="st">"birth_mode"</span>, n_perms <span class="op">=</span> <span class="fl">99</span>, seed <span class="op">=</span> <span class="fl">123</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../../reference/ps_extra-accessors.html">perm_get</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## 2022-10-21 09:44:47 - Starting PERMANOVA with 99 perms with 1 processes</span></span></code></pre>
-<pre><code><span><span class="co">## 2022-10-21 09:44:47 - Finished PERMANOVA</span></span></code></pre>
+<span>  <span class="fu"><a href="../../reference/psExtra-accessors.html">perm_get</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## 2022-10-25 21:57:53 - Starting PERMANOVA with 99 perms with 1 processes</span></span></code></pre>
+<pre><code><span><span class="co">## 2022-10-25 21:57:53 - Finished PERMANOVA</span></span></code></pre>
 <pre><code><span><span class="co">## Permutation test for adonis under reduced model</span></span>
 <span><span class="co">## Marginal effects of terms</span></span>
 <span><span class="co">## Permutation: free</span></span>
@@ -1074,10 +1077,10 @@
 <span>    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"birth_mode"</span>, <span class="st">"sex"</span>, <span class="st">"birth_weight"</span>, <span class="st">"number_reads"</span><span class="op">)</span>,</span>
 <span>    n_perms <span class="op">=</span> <span class="fl">99</span>, seed <span class="op">=</span> <span class="fl">111</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../../reference/ps_extra-accessors.html">perm_get</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="../../reference/psExtra-accessors.html">perm_get</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Dropping samples with missings: 15</span></span></code></pre>
-<pre><code><span><span class="co">## 2022-10-21 09:44:47 - Starting PERMANOVA with 99 perms with 1 processes</span></span></code></pre>
-<pre><code><span><span class="co">## 2022-10-21 09:44:48 - Finished PERMANOVA</span></span></code></pre>
+<pre><code><span><span class="co">## 2022-10-25 21:57:53 - Starting PERMANOVA with 99 perms with 1 processes</span></span></code></pre>
+<pre><code><span><span class="co">## 2022-10-25 21:57:55 - Finished PERMANOVA</span></span></code></pre>
 <pre><code><span><span class="co">## Permutation test for adonis under reduced model</span></span>
 <span><span class="co">## Marginal effects of terms</span></span>
 <span><span class="co">## Permutation: free</span></span>
@@ -1333,7 +1336,11 @@
 <code class="sourceCode R"><span><span class="va">bacteroidesRegression1</span> <span class="op">&lt;-</span> <span class="va">shao4</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"compositional"</span>, rank <span class="op">=</span> <span class="st">"genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"log2"</span>, zero_replace <span class="op">=</span> <span class="st">"halfmin"</span>, chain <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../../reference/tax_model.html">tax_model</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"lm"</span>, rank <span class="op">=</span> <span class="st">"genus"</span>, taxa <span class="op">=</span> <span class="st">"Bacteroides"</span>, variables <span class="op">=</span> <span class="st">"birth_mode"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_model.html">tax_model</a></span><span class="op">(</span></span>
+<span>    type <span class="op">=</span> <span class="st">"lm"</span>, rank <span class="op">=</span> <span class="st">"genus"</span>, </span>
+<span>    taxa <span class="op">=</span> <span class="st">"Bacteroides"</span>, variables <span class="op">=</span> <span class="st">"birth_mode"</span>,</span>
+<span>    return_psx <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://purrr.tidyverse.org/reference/pluck.html" class="external-link">pluck</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Modelling: Bacteroides</span></span></code></pre>
 <div class="sourceCode" id="cb113"><pre class="downlit sourceCode r">
@@ -1379,9 +1386,9 @@
 <div class="sourceCode" id="cb119"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">shao4</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"compositional"</span>, rank <span class="op">=</span> <span class="st">"genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../../reference/ps_extra-accessors.html">ps_get</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/psExtra-accessors.html">ps_get</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/ps_otu2samdat.html">ps_otu2samdat</a></span><span class="op">(</span>taxa <span class="op">=</span> <span class="st">"Bacteroides"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../../reference/ps_extra-accessors.html">samdat_tbl</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="../../reference/psExtra-accessors.html">samdat_tbl</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </details><p>We can fit a model with covariates, as we did for PERMANOVA. We are going to convert the categorical variables into indicator (dummy) variables, and scale the continuous covariates to 0 mean and SD 1 (z-scores). You’ll see this will make our subsequent plots easier to interpret later.</p>
 <div class="sourceCode" id="cb120"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">shao4</span> <span class="op">&lt;-</span> <span class="va">shao4</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
@@ -1397,11 +1404,14 @@
 <span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"log2"</span>, zero_replace <span class="op">=</span> <span class="st">"halfmin"</span>, chain <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_model.html">tax_model</a></span><span class="op">(</span></span>
 <span>    type <span class="op">=</span> <span class="st">"lm"</span>, rank <span class="op">=</span> <span class="st">"genus"</span>, taxa <span class="op">=</span> <span class="st">"Bacteroides"</span>,</span>
-<span>    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C_section"</span>, <span class="st">"Female"</span>, <span class="st">"Birth_weight_Z"</span>, <span class="st">"Reads_Z"</span><span class="op">)</span></span>
+<span>    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C_section"</span>, <span class="st">"Female"</span>, <span class="st">"Birth_weight_Z"</span>, <span class="st">"Reads_Z"</span><span class="op">)</span>,</span>
+<span>    return_psx <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://purrr.tidyverse.org/reference/pluck.html" class="external-link">pluck</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female</span></span></code></pre>
+<pre><code><span><span class="co">## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z</span></span></code></pre>
 <pre><code><span><span class="co">## Modelling: Bacteroides</span></span></code></pre>
-<div class="sourceCode" id="cb123"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb125"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># looking at the regression results</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">bacteroidesRegression2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -1426,7 +1436,7 @@
 <span><span class="co">##   (15 observations deleted due to missingness)</span></span>
 <span><span class="co">## Multiple R-squared:  0.2854, Adjusted R-squared:  0.2754 </span></span>
 <span><span class="co">## F-statistic: 28.55 on 4 and 286 DF,  p-value: &lt; 2.2e-16</span></span></code></pre>
-<div class="sourceCode" id="cb125"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb127"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">bacteroidesRegression2</span>, conf.int <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 7</span></span></span>
 <span><span class="co">##   term           estimate std.error statistic  p.value conf.low conf.high</span></span>
@@ -1463,7 +1473,7 @@
 <p><em>Lower ranks like species or ASVs give better resolution but also more sparsity and classification uncertainty…</em> <em>Higher ranks e.g. classes, could also be more powerful if you think most taxa within that class will follow a similar pattern.</em></p>
 <p>So now we will fit a similar model for almost* every taxon at every rank we have available, from phylum down to species.</p>
 <p>*We’ll actually filter out species with a prevalence of less than 10%.</p>
-<div class="sourceCode" id="cb127"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb129"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># The code for `taxatree_models` is quite similar to tax_model. </span></span>
 <span><span class="co"># However, you might need to run `tax_prepend_ranks` to ensure that each taxon at each rank is always unique. </span></span>
 <span><span class="va">shaoModels</span> <span class="op">&lt;-</span> <span class="va">shao4</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
@@ -1477,67 +1487,84 @@
 <span>    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'C_section'</span>, <span class="st">'Female'</span>, <span class="st">'Birth_weight_Z'</span>, <span class="st">'Reads_Z'</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Proportional min_prevalence given: 0.1 --&gt; min 31/306 samples.</span></span></code></pre>
-<pre><code><span><span class="co">## 2022-10-21 09:45:36 - modelling at rank: phylum</span></span></code></pre>
-<pre><code><span><span class="co">## 2022-10-21 09:45:36 - modelling at rank: class</span></span></code></pre>
-<pre><code><span><span class="co">## 2022-10-21 09:45:36 - modelling at rank: order</span></span></code></pre>
-<pre><code><span><span class="co">## 2022-10-21 09:45:37 - modelling at rank: family</span></span></code></pre>
-<pre><code><span><span class="co">## 2022-10-21 09:45:37 - modelling at rank: genus</span></span></code></pre>
-<pre><code><span><span class="co">## 2022-10-21 09:45:38 - modelling at rank: species</span></span></code></pre>
-<div class="sourceCode" id="cb135"><pre class="downlit sourceCode r">
+<pre><code><span><span class="co">## 2022-10-25 21:58:41 - modelling at rank: phylum</span></span></code></pre>
+<pre><code><span><span class="co">## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female</span></span></code></pre>
+<pre><code><span><span class="co">## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z</span></span></code></pre>
+<pre><code><span><span class="co">## 2022-10-25 21:58:41 - modelling at rank: class</span></span></code></pre>
+<pre><code><span><span class="co">## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female</span></span>
+<span></span>
+<span><span class="co">## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z</span></span></code></pre>
+<pre><code><span><span class="co">## 2022-10-25 21:58:41 - modelling at rank: order</span></span></code></pre>
+<pre><code><span><span class="co">## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female</span></span>
+<span></span>
+<span><span class="co">## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z</span></span></code></pre>
+<pre><code><span><span class="co">## 2022-10-25 21:58:42 - modelling at rank: family</span></span></code></pre>
+<pre><code><span><span class="co">## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female</span></span>
+<span></span>
+<span><span class="co">## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z</span></span></code></pre>
+<pre><code><span><span class="co">## 2022-10-25 21:58:42 - modelling at rank: genus</span></span></code></pre>
+<pre><code><span><span class="co">## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female</span></span>
+<span></span>
+<span><span class="co">## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z</span></span></code></pre>
+<pre><code><span><span class="co">## 2022-10-25 21:58:43 - modelling at rank: species</span></span></code></pre>
+<pre><code><span><span class="co">## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female</span></span>
+<span></span>
+<span><span class="co">## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z</span></span></code></pre>
+<div class="sourceCode" id="cb144"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">shaoModels</span></span></code></pre></div>
-<pre><code><span><span class="co">## ps_extra object - a list with phyloseq and extras:</span></span>
+<pre><code><span><span class="co">## psExtra object - a phyloseq object with extra slots:</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## phyloseq-class experiment-level object</span></span>
 <span><span class="co">## otu_table()   OTU Table:         [ 39 taxa and 306 samples ]</span></span>
 <span><span class="co">## sample_data() Sample Data:       [ 306 samples by 15 sample variables ]</span></span>
 <span><span class="co">## tax_table()   Taxonomy Table:    [ 39 taxa by 6 taxonomic ranks ]</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## ps_extra info:</span></span>
-<span><span class="co">## tax_agg = species tax_transform = compositional&amp;log2</span></span>
+<span><span class="co">## otu_get(counts = TRUE)        [ 39 taxa and 306 samples ]</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## $counts OTU Table: [ 39 taxa and 306 samples ]</span></span>
+<span><span class="co">## psExtra info:</span></span>
+<span><span class="co">## tax_agg = "species" tax_trans = "compositional&amp;log2" </span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## $taxatree_models list:</span></span>
+<span><span class="co">## taxatree_models list:</span></span>
 <span><span class="co">## Ranks: phylum/class/order/family/genus/species</span></span></code></pre>
 <p><em>Why filter the taxa? It’s less likely that we are interested in rare taxa, and models of rare taxon abundances are more likely to be unreliable. Reducing the the number of taxa modelled also makes the process faster and makes visualizing the results easier!</em></p>
 <div class="section level5">
 <h5 id="getting-stats-from-the-models">Getting stats from the models<a class="anchor" aria-label="anchor" href="#getting-stats-from-the-models"></a>
 </h5>
 <p>Next we will get a data.frame containing the regression coefficient estimates, test statistics and corresponding p values from all these regression models.</p>
-<div class="sourceCode" id="cb137"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">shaoStats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/taxatree_models2stats.html">taxatree_models2stats</a></span><span class="op">(</span><span class="va">shaoModels</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb146"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">shaoStats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/models2stats.html">taxatree_models2stats</a></span><span class="op">(</span><span class="va">shaoModels</span><span class="op">)</span></span>
 <span><span class="va">shaoStats</span></span></code></pre></div>
-<pre><code><span><span class="co">## ps_extra object - a list with phyloseq and extras:</span></span>
+<pre><code><span><span class="co">## psExtra object - a phyloseq object with extra slots:</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## phyloseq-class experiment-level object</span></span>
 <span><span class="co">## otu_table()   OTU Table:         [ 39 taxa and 306 samples ]</span></span>
 <span><span class="co">## sample_data() Sample Data:       [ 306 samples by 15 sample variables ]</span></span>
 <span><span class="co">## tax_table()   Taxonomy Table:    [ 39 taxa by 6 taxonomic ranks ]</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## ps_extra info:</span></span>
-<span><span class="co">## tax_agg = species tax_transform = compositional&amp;log2</span></span>
+<span><span class="co">## otu_get(counts = TRUE)        [ 39 taxa and 306 samples ]</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## $counts OTU Table: [ 39 taxa and 306 samples ]</span></span>
+<span><span class="co">## psExtra info:</span></span>
+<span><span class="co">## tax_agg = "species" tax_trans = "compositional&amp;log2" </span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## $taxatree_stats dataframe:</span></span>
+<span><span class="co">## taxatree_stats dataframe:</span></span>
 <span><span class="co">## 86 taxa at 6 ranks: phylum, class, order, family, genus, species </span></span>
 <span><span class="co">## 4 terms: C_section, Female, Birth_weight_Z, Reads_Z</span></span></code></pre>
-<div class="sourceCode" id="cb139"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">shaoStats</span><span class="op">$</span><span class="va">taxatree_stats</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 344 × 7</span></span></span>
-<span><span class="co">##    term           taxon             rank   estimate std.error statistic  p.value</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> C_section      p: Proteobacteria phylum  -<span style="color: #BB0000;">3.44</span>       1.31    -<span style="color: #BB0000;">2.62</span>   9.23<span style="color: #949494;">e</span><span style="color: #BB0000;">- 3</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> Female         p: Proteobacteria phylum   0.595      1.29     0.460  6.46<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> Birth_weight_Z p: Proteobacteria phylum   0.017<span style="text-decoration: underline;">9</span>     0.640    0.027<span style="text-decoration: underline;">9</span> 9.78<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> Reads_Z        p: Proteobacteria phylum  -<span style="color: #BB0000;">1.22</span>       0.659   -<span style="color: #BB0000;">1.86</span>   6.44<span style="color: #949494;">e</span><span style="color: #BB0000;">- 2</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> C_section      p: Actinobacteria phylum -<span style="color: #BB0000;">16.9</span>        2.37    -<span style="color: #BB0000;">7.12</span>   8.98<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> Female         p: Actinobacteria phylum  -<span style="color: #BB0000;">2.80</span>       2.33    -<span style="color: #BB0000;">1.20</span>   2.30<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> Birth_weight_Z p: Actinobacteria phylum   1.65       1.15     1.43   1.55<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> Reads_Z        p: Actinobacteria phylum  -<span style="color: #BB0000;">2.86</span>       1.19    -<span style="color: #BB0000;">2.41</span>   1.67<span style="color: #949494;">e</span><span style="color: #BB0000;">- 2</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> C_section      p: Firmicutes     phylum  15.3        4.21     3.62   3.43<span style="color: #949494;">e</span><span style="color: #BB0000;">- 4</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> Female         p: Firmicutes     phylum   0.741      4.15     0.179  8.58<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span></span>
-<span><span class="co">## <span style="color: #949494;"># … with 334 more rows</span></span></span></code></pre>
+<div class="sourceCode" id="cb148"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">shaoStats</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/psExtra-accessors.html">taxatree_stats_get</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 344 × 8</span></span></span>
+<span><span class="co">##    term           taxon          rank  formula estimate std.e…¹ stati…²  p.value</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> C_section      p: Proteobact… phyl… `p: Pr…  -<span style="color: #BB0000;">3.44</span>     1.31  -<span style="color: #BB0000;">2.62</span>   9.23<span style="color: #949494;">e</span><span style="color: #BB0000;">- 3</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> Female         p: Proteobact… phyl… `p: Pr…   0.595    1.29   0.460  6.46<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> Birth_weight_Z p: Proteobact… phyl… `p: Pr…   0.017<span style="text-decoration: underline;">9</span>   0.640  0.027<span style="text-decoration: underline;">9</span> 9.78<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> Reads_Z        p: Proteobact… phyl… `p: Pr…  -<span style="color: #BB0000;">1.22</span>     0.659 -<span style="color: #BB0000;">1.86</span>   6.44<span style="color: #949494;">e</span><span style="color: #BB0000;">- 2</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> C_section      p: Actinobact… phyl… `p: Ac… -<span style="color: #BB0000;">16.9</span>      2.37  -<span style="color: #BB0000;">7.12</span>   8.98<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> Female         p: Actinobact… phyl… `p: Ac…  -<span style="color: #BB0000;">2.80</span>     2.33  -<span style="color: #BB0000;">1.20</span>   2.30<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> Birth_weight_Z p: Actinobact… phyl… `p: Ac…   1.65     1.15   1.43   1.55<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> Reads_Z        p: Actinobact… phyl… `p: Ac…  -<span style="color: #BB0000;">2.86</span>     1.19  -<span style="color: #BB0000;">2.41</span>   1.67<span style="color: #949494;">e</span><span style="color: #BB0000;">- 2</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> C_section      p: Firmicutes  phyl… `p: Fi…  15.3      4.21   3.62   3.43<span style="color: #949494;">e</span><span style="color: #BB0000;">- 4</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> Female         p: Firmicutes  phyl… `p: Fi…   0.741    4.15   0.179  8.58<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span></span>
+<span><span class="co">## <span style="color: #949494;"># … with 334 more rows, and abbreviated variable names ¹​std.error, ²​statistic</span></span></span></code></pre>
 </div>
 <div class="section level5">
 <h5 id="adjusting-p-values">Adjusting p values<a class="anchor" aria-label="anchor" href="#adjusting-p-values"></a>
@@ -1545,24 +1572,24 @@
 <p>As we have performed a lot of statistical tests here, it is quite possible that could we find some significant p-values by chance alone.</p>
 <p>So we should correct for multiple testing / control the false discovery rate or family-wise error rate.</p>
 <p>Instead of applying these adjustment methods across all 86 taxa models at all ranks, the default behaviour is to control the family-wise error rate per taxonomic rank.</p>
-<div class="sourceCode" id="cb141"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb150"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">shaoStats</span> <span class="op">&lt;-</span> <span class="va">shaoStats</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/taxatree_stats_p_adjust.html">taxatree_stats_p_adjust</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"BH"</span>, grouping <span class="op">=</span> <span class="st">"rank"</span><span class="op">)</span></span>
 <span><span class="co"># notice the new variable</span></span>
-<span><span class="va">shaoStats</span><span class="op">$</span><span class="va">taxatree_stats</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 344 × 8</span></span></span>
+<span><span class="va">shaoStats</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/psExtra-accessors.html">taxatree_stats_get</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 344 × 9</span></span></span>
 <span><span class="co">## <span style="color: #949494;"># Groups:   rank [6]</span></span></span>
-<span><span class="co">##    term           taxon         rank  estimate std.e…¹ stati…²  p.value p.adj.…³</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> C_section      p: Proteobac… phyl…  -<span style="color: #BB0000;">3.44</span>     1.31  -<span style="color: #BB0000;">2.62</span>   9.23<span style="color: #949494;">e</span><span style="color: #BB0000;">- 3</span> 2.95<span style="color: #949494;">e</span><span style="color: #BB0000;">- 2</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> Female         p: Proteobac… phyl…   0.595    1.29   0.460  6.46<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 7.38<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> Birth_weight_Z p: Proteobac… phyl…   0.017<span style="text-decoration: underline;">9</span>   0.640  0.027<span style="text-decoration: underline;">9</span> 9.78<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 9.78<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> Reads_Z        p: Proteobac… phyl…  -<span style="color: #BB0000;">1.22</span>     0.659 -<span style="color: #BB0000;">1.86</span>   6.44<span style="color: #949494;">e</span><span style="color: #BB0000;">- 2</span> 1.47<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> C_section      p: Actinobac… phyl… -<span style="color: #BB0000;">16.9</span>      2.37  -<span style="color: #BB0000;">7.12</span>   8.98<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 7.19<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> Female         p: Actinobac… phyl…  -<span style="color: #BB0000;">2.80</span>     2.33  -<span style="color: #BB0000;">1.20</span>   2.30<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 3.07<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> Birth_weight_Z p: Actinobac… phyl…   1.65     1.15   1.43   1.55<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 2.48<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> Reads_Z        p: Actinobac… phyl…  -<span style="color: #BB0000;">2.86</span>     1.19  -<span style="color: #BB0000;">2.41</span>   1.67<span style="color: #949494;">e</span><span style="color: #BB0000;">- 2</span> 4.46<span style="color: #949494;">e</span><span style="color: #BB0000;">- 2</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> C_section      p: Firmicutes phyl…  15.3      4.21   3.62   3.43<span style="color: #949494;">e</span><span style="color: #BB0000;">- 4</span> 1.83<span style="color: #949494;">e</span><span style="color: #BB0000;">- 3</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> Female         p: Firmicutes phyl…   0.741    4.15   0.179  8.58<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 9.16<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span></span>
+<span><span class="co">##    term           taxon rank  formula estimate std.e…¹ stati…²  p.value p.adj.…³</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> C_section      p: P… phyl… `p: Pr…  -<span style="color: #BB0000;">3.44</span>     1.31  -<span style="color: #BB0000;">2.62</span>   9.23<span style="color: #949494;">e</span><span style="color: #BB0000;">- 3</span> 2.95<span style="color: #949494;">e</span><span style="color: #BB0000;">- 2</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> Female         p: P… phyl… `p: Pr…   0.595    1.29   0.460  6.46<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 7.38<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> Birth_weight_Z p: P… phyl… `p: Pr…   0.017<span style="text-decoration: underline;">9</span>   0.640  0.027<span style="text-decoration: underline;">9</span> 9.78<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 9.78<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> Reads_Z        p: P… phyl… `p: Pr…  -<span style="color: #BB0000;">1.22</span>     0.659 -<span style="color: #BB0000;">1.86</span>   6.44<span style="color: #949494;">e</span><span style="color: #BB0000;">- 2</span> 1.47<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> C_section      p: A… phyl… `p: Ac… -<span style="color: #BB0000;">16.9</span>      2.37  -<span style="color: #BB0000;">7.12</span>   8.98<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 7.19<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> Female         p: A… phyl… `p: Ac…  -<span style="color: #BB0000;">2.80</span>     2.33  -<span style="color: #BB0000;">1.20</span>   2.30<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 3.07<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> Birth_weight_Z p: A… phyl… `p: Ac…   1.65     1.15   1.43   1.55<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 2.48<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> Reads_Z        p: A… phyl… `p: Ac…  -<span style="color: #BB0000;">2.86</span>     1.19  -<span style="color: #BB0000;">2.41</span>   1.67<span style="color: #949494;">e</span><span style="color: #BB0000;">- 2</span> 4.46<span style="color: #949494;">e</span><span style="color: #BB0000;">- 2</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> C_section      p: F… phyl… `p: Fi…  15.3      4.21   3.62   3.43<span style="color: #949494;">e</span><span style="color: #BB0000;">- 4</span> 1.83<span style="color: #949494;">e</span><span style="color: #BB0000;">- 3</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> Female         p: F… phyl… `p: Fi…   0.741    4.15   0.179  8.58<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 9.16<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span></span>
 <span><span class="co">## <span style="color: #949494;"># … with 334 more rows, and abbreviated variable names ¹​std.error, ²​statistic,</span></span></span>
 <span><span class="co">## <span style="color: #949494;">#   ³​p.adj.BH.rank</span></span></span></code></pre>
 </div>
@@ -1572,7 +1599,7 @@
 </h4>
 <p><code><a href="../../reference/taxatree_plots.html">taxatree_plots()</a></code> allows you to plot statistics (e.g. point estimates and significance) from all of the taxa models onto a tree layout. The taxon models are organised by rank, radiating out from the central root node from e.g. Phyla around the center to Species in the outermost ring.</p>
 <p><code><a href="../../reference/taxatree_plots.html">taxatree_plots()</a></code> itself returns a list of plots, which you can arrange into one figure with the <a href="https://patchwork.data-imaginist.com/" class="external-link"><code>patchwork</code></a> package for example (and/or <a href="https://wilkelab.org/cowplot/articles/plot_grid.html" class="external-link"><code>cowplot</code></a>).</p>
-<div class="sourceCode" id="cb143"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb152"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">shaoStats</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/taxatree_plots.html">taxatree_plots</a></span><span class="op">(</span>node_size_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, sig_stat <span class="op">=</span> <span class="st">'p.adj.BH.rank'</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu">patchwork</span><span class="fu">::</span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html" class="external-link">wrap_plots</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">2</span>, guides <span class="op">=</span> <span class="st">"collect"</span><span class="op">)</span></span></code></pre></div>
@@ -1581,7 +1608,7 @@
 <h5 id="taxatree-key">Taxatree Key<a class="anchor" aria-label="anchor" href="#taxatree-key"></a>
 </h5>
 <p>But how do we know which taxa are which nodes? We can create a labelled grey tree with <code><a href="../../reference/taxatree_plotkey.html">taxatree_plotkey()</a></code>. This labels only some of the taxa based on certain conditions that we specify.</p>
-<div class="sourceCode" id="cb144"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb153"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span> <span class="co"># label position </span></span>
 <span><span class="va">key</span> <span class="op">&lt;-</span> <span class="va">shaoStats</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/taxatree_plotkey.html">taxatree_plotkey</a></span><span class="op">(</span></span>
@@ -1593,7 +1620,7 @@
 <span><span class="va">key</span></span></code></pre></div>
 <p><img src="exercises_files/figure-html/unnamed-chunk-79-1.png" width="540"></p>
 <p>You can do more with these trees to customise them to your liking. See an extended tutorial <a href="https://david-barnett.github.io/microViz/articles/web-only/modelling-taxa.html#plot-all-the-taxatree_stats">here on the microViz website</a>: including how to directly label taxa on the colored plots, change the layout and style of the trees, and even how to use a different regression modelling approach.</p>
-<div class="sourceCode" id="cb145"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb154"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># try it out!</span></span></code></pre></div>
 <hr>
 </div>
@@ -1604,7 +1631,7 @@
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
 <p><code>session_info</code> records your package versions etc. This is useful for debugging / reproducing analysis.</p>
-<div class="sourceCode" id="cb146"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb155"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://r-lib.github.io/sessioninfo/reference/session_info.html" class="external-link">session_info</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #00BBBB; font-weight: bold;">─ Session info ───────────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">##  <span style="color: #555555; font-style: italic;">setting </span> <span style="color: #555555; font-style: italic;">value</span></span></span>
@@ -1616,7 +1643,7 @@
 <span><span class="co">##  collate  C.UTF-8</span></span>
 <span><span class="co">##  ctype    C.UTF-8</span></span>
 <span><span class="co">##  tz       UTC</span></span>
-<span><span class="co">##  date     2022-10-21</span></span>
+<span><span class="co">##  date     2022-10-25</span></span>
 <span><span class="co">##  pandoc   2.14.2 @ /usr/bin/ (via rmarkdown)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## <span style="color: #00BBBB; font-weight: bold;">─ Packages ───────────────────────────────────────────────────────────────────</span></span></span>
@@ -1631,6 +1658,7 @@
 <span><span class="co">##  bitops             1.0-7    <span style="color: #555555;">2021-04-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  broom              1.0.1    <span style="color: #555555;">2022-08-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  bslib              0.4.0    <span style="color: #555555;">2022-07-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  ca                 0.71.1   <span style="color: #555555;">2020-01-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  cachem             1.0.6    <span style="color: #555555;">2021-08-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  callr              3.7.2    <span style="color: #555555;">2022-08-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  circlize           0.4.15   <span style="color: #555555;">2022-05-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
@@ -1656,8 +1684,6 @@
 <span><span class="co">##  forcats            0.5.2    <span style="color: #555555;">2022-08-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  foreach            1.5.2    <span style="color: #555555;">2022-02-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  fs                 1.5.2    <span style="color: #555555;">2021-12-08</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  future             1.28.0   <span style="color: #555555;">2022-09-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  future.apply       1.9.1    <span style="color: #555555;">2022-09-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  generics           0.1.3    <span style="color: #555555;">2022-07-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  GenomeInfoDb       1.32.4   <span style="color: #555555;">2022-09-06</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">##  GenomeInfoDbData   1.2.8    <span style="color: #555555;">2022-10-20</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
@@ -1667,9 +1693,8 @@
 <span><span class="co">##  ggraph             2.1.0    <span style="color: #555555;">2022-10-09</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  ggrepel            0.9.1    <span style="color: #555555;">2021-01-15</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  GlobalOptions      0.1.2    <span style="color: #555555;">2020-06-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  globals            0.16.1   <span style="color: #555555;">2022-08-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  glue               1.6.2    <span style="color: #555555;">2022-02-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  graphlayouts       0.8.2    <span style="color: #555555;">2022-09-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  graphlayouts       0.8.3    <span style="color: #555555;">2022-10-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  gridExtra          2.3      <span style="color: #555555;">2017-09-09</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  gtable             0.3.1    <span style="color: #555555;">2022-09-01</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  highr              0.9      <span style="color: #555555;">2021-04-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
@@ -1680,13 +1705,12 @@
 <span><span class="co">##  IRanges            2.30.1   <span style="color: #555555;">2022-08-18</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">##  iterators          1.0.14   <span style="color: #555555;">2022-02-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  jquerylib          0.1.4    <span style="color: #555555;">2021-04-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  jsonlite           1.8.2    <span style="color: #555555;">2022-10-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  jsonlite           1.8.3    <span style="color: #555555;">2022-10-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  knitr              1.40     <span style="color: #555555;">2022-08-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  labeling           0.4.2    <span style="color: #555555;">2020-10-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  later              1.3.0    <span style="color: #555555;">2021-08-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  lattice            0.20-45  <span style="color: #555555;">2021-09-22</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
 <span><span class="co">##  lifecycle          1.0.3    <span style="color: #555555;">2022-10-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  listenv            0.8.0    <span style="color: #555555;">2019-12-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  magrittr           2.0.3    <span style="color: #555555;">2022-03-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  MASS               7.3-57   <span style="color: #555555;">2022-04-22</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
 <span><span class="co">##  Matrix             1.4-1    <span style="color: #555555;">2022-03-23</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
@@ -1694,13 +1718,12 @@
 <span><span class="co">##  memoise            2.0.1    <span style="color: #555555;">2021-11-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  mgcv               1.8-40   <span style="color: #555555;">2022-03-29</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
 <span><span class="co">##  microbiome         1.18.0   <span style="color: #555555;">2022-04-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">##  microViz         * 0.9.7    <span style="color: #555555;">2022-10-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">local</span></span></span>
+<span><span class="co">##  microViz         * 0.10.0   <span style="color: #555555;">2022-10-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">local</span></span></span>
 <span><span class="co">##  mime               0.12     <span style="color: #555555;">2021-09-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  miniUI             0.1.1.1  <span style="color: #555555;">2018-05-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  multtest           2.52.0   <span style="color: #555555;">2022-04-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">##  munsell            0.5.0    <span style="color: #555555;">2018-06-12</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  nlme               3.1-157  <span style="color: #555555;">2022-03-25</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
-<span><span class="co">##  parallelly         1.32.1   <span style="color: #555555;">2022-07-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  patchwork          1.1.2    <span style="color: #555555;">2022-08-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  permute            0.9-7    <span style="color: #555555;">2022-01-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  phyloseq         * 1.40.0   <span style="color: #555555;">2022-04-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
@@ -1711,7 +1734,7 @@
 <span><span class="co">##  pkgload            1.3.0    <span style="color: #555555;">2022-06-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  plyr               1.8.7    <span style="color: #555555;">2022-03-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  png                0.1-7    <span style="color: #555555;">2013-12-03</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  polyclip           1.10-0   <span style="color: #555555;">2019-03-14</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  polyclip           1.10-4   <span style="color: #555555;">2022-10-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  prettyunits        1.1.1    <span style="color: #555555;">2020-01-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  processx           3.7.0    <span style="color: #555555;">2022-07-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  profvis            0.3.7    <span style="color: #555555;">2020-11-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
@@ -1719,7 +1742,7 @@
 <span><span class="co">##  ps                 1.7.1    <span style="color: #555555;">2022-06-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  purrr            * 0.3.5    <span style="color: #555555;">2022-10-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  R6                 2.5.1    <span style="color: #555555;">2021-08-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  ragg               1.2.3    <span style="color: #555555;">2022-09-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  ragg               1.2.4    <span style="color: #555555;">2022-10-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  RColorBrewer       1.1-3    <span style="color: #555555;">2022-04-03</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  Rcpp               1.0.9    <span style="color: #555555;">2022-07-08</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  RCurl              1.98-1.9 <span style="color: #555555;">2022-10-03</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
@@ -1737,7 +1760,7 @@
 <span><span class="co">##  S4Vectors          0.34.0   <span style="color: #555555;">2022-04-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">##  sass               0.4.2    <span style="color: #555555;">2022-07-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  scales             1.2.1    <span style="color: #555555;">2022-08-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  seriation        * 1.3.6    <span style="color: #555555;">2022-07-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  seriation        * 1.4.0    <span style="color: #555555;">2022-10-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  sessioninfo        1.2.2    <span style="color: #555555;">2021-12-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  shape              1.4.6    <span style="color: #555555;">2021-05-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  shiny            * 1.7.2    <span style="color: #555555;">2022-07-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
@@ -1755,7 +1778,7 @@
 <span><span class="co">##  urlchecker         1.0.1    <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  usethis            2.1.6    <span style="color: #555555;">2022-05-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  utf8               1.2.2    <span style="color: #555555;">2021-07-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  vctrs              0.4.2    <span style="color: #555555;">2022-09-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  vctrs              0.5.0    <span style="color: #555555;">2022-10-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  vegan              2.6-4    <span style="color: #555555;">2022-10-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  viridis            0.6.2    <span style="color: #555555;">2021-10-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  viridisLite        0.4.1    <span style="color: #555555;">2022-08-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>

@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.0</span>
       </span>
     </div>
 
@@ -62,6 +62,9 @@
       <a href="../articles/web-only/videos.html">Tutorial video</a>
     </li>
     <li>
+      <a href="../articles/ps_extra-replaced.html">Upgrading to microViz version 0.10.0</a>
+    </li>
+    <li>
       <a href="../articles/web-only/atlas1006.html">Example analyses with atlas1006 data</a>
     </li>
   </ul></li>
@@ -96,6 +99,36 @@
       <small>Source: <a href="https://github.com/david-barnett/microViz/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.10.0" id="microviz-0100">microViz 0.10.0<a class="anchor" aria-label="anchor" href="#microviz-0100"></a></h2>
+<p>Major internal changes from S3 ps_extra to S4 psExtra objects. See <a href="../articles/ps_extra-replaced.html">article about this change</a></p>
+<p>This version also introduces changes around <code>tax_model</code> and <code>taxatree_models</code> functionality.</p>
+<div class="section level3">
+<h3 id="breaking-changes-0-10-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-10-0"></a></h3>
+<ul><li>Using the <code>$</code> operator to access parts of the old “ps_extra” S3 class will no longer work and must be replaced with accessor functions, e.g. <code>ps_get</code>
+</li>
+<li>“ps_extra” objects generated with older versions will not be compatible with version 0.10.0 and can be converted to the new “psExtra” S4 objects with <code>upgrade_ps_extra_to_psExtra</code>
+</li>
+<li>
+<code>tax_model</code> and <code>taxatree_model</code> parallel processing with future and future.apply is off by default, and needs to be enabled with argument use_future = TRUE.</li>
+<li>
+<code>tax_model</code> attaches results to psExtra object by default, but you can restore old behaviour with return_psx = FALSE</li>
+<li>
+<code>comp_barplot</code> “other” taxa category renamed to “Other” by default</li>
+</ul></div>
+<div class="section level3">
+<h3 id="features-0-10-0">Features<a class="anchor" aria-label="anchor" href="#features-0-10-0"></a></h3>
+<ul><li>
+<code>tax_model</code> and <code>taxatree_model</code> can now run multiple models per taxon, by accepting <strong>lists</strong> for formula or variables arguments. This allows running e.g. three simple regression models per taxon with predictors a, b, and c with variables = list(“a”, “b”, “c”)</li>
+<li>
+<code>cor_test</code> is a new simple wrapper around <code><a href="https://rdrr.io/r/stats/cor.test.html" class="external-link">stats::cor.test</a></code> with a y~x formula interface, allowing its use in <code>tax_model</code>
+</li>
+</ul></div>
+<div class="section level3">
+<h3 id="fixes-0-10-0">Fixes<a class="anchor" aria-label="anchor" href="#fixes-0-10-0"></a></h3>
+<ul><li>No more deprecation warnings in <code>taxatree_plot_labels</code>
+</li></ul></div>
+</div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.9.7" id="microviz-097">microViz 0.9.7<a class="anchor" aria-label="anchor" href="#microviz-097"></a></h2>
 <div class="section level3">

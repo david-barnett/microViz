@@ -36,7 +36,7 @@ abundance and dispersion parameters.'><meta property="og:image" content="https:/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.0</span>
       </span>
     </div>
 
@@ -73,6 +73,9 @@ abundance and dispersion parameters.'><meta property="og:image" content="https:/
     </li>
     <li>
       <a href="../articles/web-only/videos.html">Tutorial video</a>
+    </li>
+    <li>
+      <a href="../articles/ps_extra-replaced.html">Upgrading to microViz version 0.10.0</a>
     </li>
     <li>
       <a href="../articles/web-only/atlas1006.html">Example analyses with atlas1006 data</a>
@@ -135,6 +138,10 @@ abundance and dispersion parameters.</p>
 <span>  variables <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  formula <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  taxa <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  use_future <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  return_psx <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  checkVars <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  checkNA <span class="op">=</span> <span class="st">"warning"</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -155,15 +162,34 @@ abundance and dispersion parameters.</p>
 
 
 <dt>variables</dt>
-<dd><p>vector of variable names to use in statistical model as right hand side (ignored if formula given)</p></dd>
+<dd><p>vector of variable names, to be used as model formula right hand side.
+If variables is a list, not a vector, a model is fit for each entry in list.</p></dd>
 
 
 <dt>formula</dt>
-<dd><p>(alternative to variables arg) right hand side of a formula, as a formula object or character value</p></dd>
+<dd><p>Right hand side of a formula, as a formula object or character string. Or a list of these.
+(alternative to variables argument, do not provide both)</p></dd>
 
 
 <dt>taxa</dt>
 <dd><p>taxa to model (named, numbered, logical selection, or defaulting to all if NULL)</p></dd>
+
+
+<dt>use_future</dt>
+<dd><p>if TRUE parallel processing with future is possible, see details.</p></dd>
+
+
+<dt>return_psx</dt>
+<dd><p>if TRUE, list of results will be returned attached to psExtra object</p></dd>
+
+
+<dt>checkVars</dt>
+<dd><p>should the predictor variables be checked for zero variance?</p></dd>
+
+
+<dt>checkNA</dt>
+<dd><p>One of "stop", "warning", "message", or "allow", which
+indicates whether to check predictor variables for NAs, and how to report any NAs if present?</p></dd>
 
 
 <dt>verbose</dt>
@@ -178,17 +204,21 @@ abundance and dispersion parameters.</p>
     <h2>Value</h2>
     
 
-<p>named list of model objects or list of lists</p>
+<p>psExtra with named list of model objects attached.
+Or a list of lists of models (if multiple models per taxon).
+Or just a list (of lists), if return_psx is FALSE.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
     <p><code>tax_model</code> and <code>taxatree_models</code> can use parallel processing with the <code>future</code> package.
-This can speed up analysis if you have many taxa to model.
-Run a line like this beforehand: <code>future::plan(future::multisession, workers = 3)</code></p>
+This can speed up analysis if you have many taxa to model. Set use_future = TRUE and
+run a line like this before doing your modelling: <code>future::plan(future::multisession, workers = 3)</code>
+(This requires the future and future.apply packages to be installed.)</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p><code><a href="taxatree_plots.html">taxatree_plots</a></code> for how to plot the output of <code>taxatree_models</code></p></div>
+    <div class="dont-index"><p><code><a href="psExtra-accessors.html">tax_models_get</a></code> for the accessor to retrieve model results from psExtra</p>
+<p><code><a href="taxatree_models.html">taxatree_models</a></code> for more details on the underlying approach</p></div>
     </div>
 
     <div id="ref-examples">
@@ -199,7 +229,7 @@ Run a line like this beforehand: <code>future::plan(future::multisession, worker
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">dietswap</span>, package <span class="op">=</span> <span class="st">"microbiome"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">ps</span> <span class="op">&lt;-</span> <span class="va">dietswap</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># create some binary variables for easy visualisation</span></span></span>
+<span class="r-in"><span><span class="co"># create some binary variables for easy visualization</span></span></span>
 <span class="r-in"><span><span class="va">ps</span> <span class="op">&lt;-</span> <span class="va">ps</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="ps_mutate.html">ps_mutate</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  female <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">sex</span> <span class="op">==</span> <span class="st">"female"</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="cn">NaN</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  overweight <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">bmi_group</span> <span class="op">==</span> <span class="st">"overweight"</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="cn">NaN</span><span class="op">)</span>,</span></span>
@@ -226,13 +256,17 @@ Run a line like this beforehand: <code>future::plan(future::multisession, worker
 <span class="r-in"><span><span class="co"># Alternative method using formula arg instead of variables to produce identical results</span></span></span>
 <span class="r-in"><span><span class="va">models2</span> <span class="op">&lt;-</span> <span class="fu">tax_model</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  ps <span class="op">=</span> <span class="va">ps</span>, rank <span class="op">=</span> <span class="st">"Genus"</span>, type <span class="op">=</span> <span class="st">"bbdml"</span>,</span></span>
-<span class="r-in"><span>  taxa <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, formula <span class="op">=</span> <span class="op">~</span> <span class="va">female</span> <span class="op">+</span> <span class="va">overweight</span> <span class="op">+</span> <span class="va">obese</span></span></span>
+<span class="r-in"><span>  taxa <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, formula <span class="op">=</span> <span class="op">~</span> <span class="va">female</span> <span class="op">+</span> <span class="va">overweight</span> <span class="op">+</span> <span class="va">obese</span>, return_psx <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Modelling: G: Akkermansia</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Modelling: G: Allistipes et rel.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Modelling: G: Anaerostipes caccae et rel.</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">models</span>, <span class="va">models2</span><span class="op">)</span> <span class="co"># should be TRUE</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Modes: S4, list"                                                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "Lengths: 1, 3"                                                    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3] "names for current but not for target"                             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4] "Attributes: &lt; names for target but not for current &gt;"             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5] "Attributes: &lt; Length mismatch: comparison on first 0 components &gt;"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Model only one genus, NOTE the modified name,</span></span></span>
 <span class="r-in"><span><span class="co"># which was returned by tax_prepend_ranks defaults</span></span></span>

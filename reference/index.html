@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.0</span>
       </span>
     </div>
 
@@ -60,6 +60,9 @@
     </li>
     <li>
       <a href="../articles/web-only/videos.html">Tutorial video</a>
+    </li>
+    <li>
+      <a href="../articles/ps_extra-replaced.html">Upgrading to microViz version 0.10.0</a>
     </li>
     <li>
       <a href="../articles/web-only/atlas1006.html">Example analyses with atlas1006 data</a>
@@ -174,7 +177,7 @@
       </tr><tr><td>
           <p><code><a href="tax_agg.html">tax_agg()</a></code> </p>
         </td>
-        <td><p>Aggregate taxa and create ps_extra</p></td>
+        <td><p>Aggregate taxa and track aggregation in psExtra</p></td>
       </tr><tr><td>
           <p><code><a href="tax_transform.html">tax_transform()</a></code> </p>
         </td>
@@ -216,7 +219,7 @@
         </td>
         <td><p>Print names of "top" n taxa</p></td>
       </tr><tr><td>
-          <p><code><a href="tax_names2rank.html">tax_names2rank()</a></code> <code><a href="tax_names2rank.html">tax_names2tt()</a></code> </p>
+          <p><code><a href="tax_names2rank.html">tax_names2rank()</a></code> </p>
         </td>
         <td><p>Add taxa_names as last column in phyloseq tax_table</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
@@ -272,7 +275,7 @@
         </td>
         <td><p>Filled shapes for ggiraph interactive plots</p></td>
       </tr><tr><td>
-          <p><code><a href="ps_extra-accessors.html">ps_get()</a></code> <code><a href="ps_extra-accessors.html">dist_get()</a></code> <code><a href="ps_extra-accessors.html">ord_get()</a></code> <code><a href="ps_extra-accessors.html">info_get()</a></code> <code><a href="ps_extra-accessors.html">perm_get()</a></code> <code><a href="ps_extra-accessors.html">bdisp_get()</a></code> <code><a href="ps_extra-accessors.html">otu_get()</a></code> <code><a href="ps_extra-accessors.html">tt_get()</a></code> <code><a href="ps_extra-accessors.html">samdat_tbl()</a></code> </p>
+          <p><code><a href="psExtra-accessors.html">ps_get()</a></code> <code><a href="psExtra-accessors.html">dist_get()</a></code> <code><a href="psExtra-accessors.html">ord_get()</a></code> <code><a href="psExtra-accessors.html">info_get()</a></code> <code><a href="psExtra-accessors.html">perm_get()</a></code> <code><a href="psExtra-accessors.html">bdisp_get()</a></code> <code><a href="psExtra-accessors.html">tax_models_get()</a></code> <code><a href="psExtra-accessors.html">tax_stats_get()</a></code> <code><a href="psExtra-accessors.html">taxatree_models_get()</a></code> <code><a href="psExtra-accessors.html">taxatree_stats_get()</a></code> <code><a href="psExtra-accessors.html">otu_get()</a></code> <code><a href="psExtra-accessors.html">tt_get()</a></code> <code><a href="psExtra-accessors.html">samdat_tbl()</a></code> </p>
         </td>
         <td><p>Extract elements from ps_extra class</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
@@ -288,9 +291,9 @@
         </td>
         <td><p>Statistical modelling for individual taxa across multiple ranks</p></td>
       </tr><tr><td>
-          <p><code><a href="taxatree_models2stats.html">taxatree_models2stats()</a></code> </p>
+          <p><code><a href="models2stats.html">taxatree_models2stats()</a></code> <code><a href="models2stats.html">tax_models2stats()</a></code> </p>
         </td>
-        <td><p>Extract dataframe of statistics from taxatree_models list</p></td>
+        <td><p>Extract statistics from taxatree_models or tax_model output</p></td>
       </tr><tr><td>
           <p><code><a href="taxatree_stats_p_adjust.html">taxatree_stats_p_adjust()</a></code> </p>
         </td>
@@ -315,6 +318,10 @@
           <p><code><a href="taxatree_funs.html">taxatree_nodes()</a></code> <code><a href="taxatree_funs.html">taxatree_edges()</a></code> </p>
         </td>
         <td><p>Create node and edge dataframes for taxatree_plots</p></td>
+      </tr><tr><td>
+          <p><code><a href="cor_test.html">cor_test()</a></code> </p>
+        </td>
+        <td><p>Simple wrapper around cor.test for y ~ x style formula input</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="heatmap-plotting-functions">Heatmap plotting functions <a href="#heatmap-plotting-functions" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Functions for drawing and annotating heatmaps</p>
@@ -451,6 +458,18 @@
           <p><code><a href="microViz.html">microViz</a></code> </p>
         </td>
         <td><p>microViz: microbiome data analysis and visualization</p></td>
+      </tr><tr><td>
+          <p><code><a href="psExtraInfo.html">print(<i>&lt;psExtraInfo&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Print method for psExtraInfo object</p></td>
+      </tr><tr><td>
+          <p><code><a href="psExtra-class.html">psExtra-class</a></code> </p>
+        </td>
+        <td><p>Define psExtra class S4 object</p></td>
+      </tr><tr><td>
+          <p><code><a href="upgrade_ps_extra_to_psExtra.html">upgrade_ps_extra_to_psExtra()</a></code> </p>
+        </td>
+        <td><p>Convert old format "ps_extra" objects to new "psExtra" objects</p></td>
       </tr><tr><td>
           <p><code><a href="dist_calc_seq.html">dist_calc_seq()</a></code> </p>
         </td>

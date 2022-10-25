@@ -26,7 +26,7 @@ so all filter syntax can be used."><meta property="og:image" content="https://da
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.0</span>
       </span>
     </div>
 
@@ -63,6 +63,9 @@ so all filter syntax can be used."><meta property="og:image" content="https://da
     </li>
     <li>
       <a href="../articles/web-only/videos.html">Tutorial video</a>
+    </li>
+    <li>
+      <a href="../articles/ps_extra-replaced.html">Upgrading to microViz version 0.10.0</a>
     </li>
     <li>
       <a href="../articles/web-only/atlas1006.html">Example analyses with atlas1006 data</a>
@@ -119,7 +122,7 @@ so all <code>filter</code> syntax can be used.</p>
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>data</dt>
-<dd><p>ps_extra (or phyloseq)</p></dd>
+<dd><p>psExtra (or phyloseq)</p></dd>
 
 
 <dt>...</dt>
@@ -142,7 +145,7 @@ need to called taxatree_plot_label with</p></dd>
     <h2>Value</h2>
     
 
-<p>ps_extra with (modified) taxatree_stats dataframe</p>
+<p>psExtra with (modified) taxatree_stats dataframe</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -165,24 +168,22 @@ This is used internally for efficiency inside <code><a href="taxatree_plotkey.ht
 <span class="r-in"><span><span class="co"># because it is created by `taxatree_nodes()` using the named function</span></span></span>
 <span class="r-in"><span><span class="co"># provided to the `node_fun` argument</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># ps_Extra is returned</span></span></span>
+<span class="r-in"><span><span class="co"># psExtra is returned</span></span></span>
 <span class="r-in"><span><span class="va">labelled</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ps_extra object - a list with phyloseq and extras:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> psExtra object - a phyloseq object with extra slots:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> phyloseq-class experiment-level object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> otu_table()   OTU Table:         [ 130 taxa and 222 samples ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sample_data() Sample Data:       [ 222 samples by 8 sample variables ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ps_extra info:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> tax_agg = NA tax_transform = NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $taxatree_stats dataframe:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> taxatree_stats dataframe:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 161 taxa at 4 ranks: root, Phylum, Family, Genus </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0 terms: </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># notice how both conditions must be met for label column to be TRUE</span></span></span>
-<span class="r-in"><span><span class="va">labelled</span><span class="op">$</span><span class="va">taxatree_stats</span></span></span>
+<span class="r-in"><span><span class="va">labelled</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="psExtra-accessors.html">taxatree_stats_get</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 161 × 5</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    taxon              parent            rank   prevalence label</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span></span>

@@ -26,7 +26,7 @@ This function is designed to work with counts. otu_table must contain counts par
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.0</span>
       </span>
     </div>
 
@@ -63,6 +63,9 @@ This function is designed to work with counts. otu_table must contain counts par
     </li>
     <li>
       <a href="../articles/web-only/videos.html">Tutorial video</a>
+    </li>
+    <li>
+      <a href="../articles/ps_extra-replaced.html">Upgrading to microViz version 0.10.0</a>
     </li>
     <li>
       <a href="../articles/web-only/atlas1006.html">Example analyses with atlas1006 data</a>
@@ -125,7 +128,7 @@ This function is designed to work with counts. otu_table must contain counts par
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>ps</dt>
-<dd><p>phyloseq or ps_extra (ideally with count data available)</p></dd>
+<dd><p>phyloseq or psExtra (ideally with count data available)</p></dd>
 
 
 <dt>min_prevalence</dt>
@@ -188,15 +191,15 @@ If set, this overrides prev_detection_threshold.</p></dd>
 <span class="r-in"><span>  <span class="fu">tax_filter</span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">0.1</span>, min_total_abundance <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Family"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Proportional min_prevalence given: 0.1 --&gt; min 23/222 samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ps_extra object - a list with phyloseq and extras:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> psExtra object - a phyloseq object with extra slots:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> phyloseq-class experiment-level object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> otu_table()   OTU Table:         [ 9 taxa and 222 samples ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sample_data() Sample Data:       [ 222 samples by 8 sample variables ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> tax_table()   Taxonomy Table:    [ 9 taxa by 2 taxonomic ranks ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ps_extra info:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> tax_agg = Family tax_transform = NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> psExtra info:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> tax_agg = "Family" </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Keeping ubiquitous families #</span></span></span>
 <span class="r-in"><span><span class="co"># keep only families that have at least 1000 counts present in 90% of samples</span></span></span>
@@ -208,15 +211,15 @@ If set, this overrides prev_detection_threshold.</p></dd>
 <span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Genus"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Proportional min_prevalence given: 0.9 --&gt; min 200/222 samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ps_extra object - a list with phyloseq and extras:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> psExtra object - a phyloseq object with extra slots:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> phyloseq-class experiment-level object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> otu_table()   OTU Table:         [ 28 taxa and 222 samples ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sample_data() Sample Data:       [ 222 samples by 8 sample variables ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> tax_table()   Taxonomy Table:    [ 28 taxa by 3 taxonomic ranks ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ps_extra info:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> tax_agg = Genus tax_transform = NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> psExtra info:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> tax_agg = "Genus" </span>
 </code></pre></div>
     </div>
   </div>

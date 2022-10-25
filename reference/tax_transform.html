@@ -25,7 +25,7 @@ or equivalently set the rank argument in tax_transform."><meta property="og:imag
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.0</span>
       </span>
     </div>
 
@@ -62,6 +62,9 @@ or equivalently set the rank argument in tax_transform."><meta property="og:imag
     </li>
     <li>
       <a href="../articles/web-only/videos.html">Tutorial video</a>
+    </li>
+    <li>
+      <a href="../articles/ps_extra-replaced.html">Upgrading to microViz version 0.10.0</a>
     </li>
     <li>
       <a href="../articles/web-only/atlas1006.html">Example analyses with atlas1006 data</a>
@@ -122,7 +125,7 @@ or equivalently set the rank argument in <code>tax_transform</code>.</p>
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>data</dt>
-<dd><p>a phyloseq object or <code>ps_extra</code> list output from <code>tax_agg</code></p></dd>
+<dd><p>a phyloseq object or psExtra output from <code>tax_agg</code></p></dd>
 
 
 <dt>trans</dt>
@@ -132,11 +135,11 @@ or equivalently set the rank argument in <code>tax_transform</code>.</p>
 <dt>rank</dt>
 <dd><p>If data is phyloseq: data are aggregated at this rank before transforming.
 If NA, runs tax_agg(data, rank = NA).
-If rank is NA and data is already ps_extra, any preceding aggregation is left as is.</p></dd>
+If rank is NA and data is already psExtra, any preceding aggregation is left as is.</p></dd>
 
 
 <dt>keep_counts</dt>
-<dd><p>if TRUE, store the pre-transformation count data in ps_extra counts slot</p></dd>
+<dd><p>if TRUE, store the pre-transformation count data in psExtra counts slot</p></dd>
 
 
 <dt>chain</dt>
@@ -148,13 +151,13 @@ i.e. multiple transformations can be chained with multiple tax_transform calls</
 <dd><p>Replace any zeros with this value before transforming. Either a numeric, or
 "halfmin" which replaces zeros with half of the smallest value across the
 entire dataset.
-Beware: the choice of zero replacement is not tracked in the ps_extra output.</p></dd>
+Beware: the choice of zero replacement is not tracked in the psExtra output.</p></dd>
 
 
 <dt>add</dt>
 <dd><p>Add this value to the otu_table before transforming. If <code>add</code> != 0,
 <code>zero_replace</code> does nothing. Either a numeric, or "halfmin".
-Beware: this choice is not tracked in the ps_extra output.</p></dd>
+Beware: this choice is not tracked in the psExtra output.</p></dd>
 
 
 <dt>transformation</dt>
@@ -170,14 +173,14 @@ undetected = <code>a number</code> when using trans = "binary"</p></dd>
     <h2>Value</h2>
     
 
-<p><code>ps_extra</code> list including phyloseq object and info</p>
+<p><code>psExtra</code> object including phyloseq and extra info</p>
     </div>
     <div id="details">
     <h2>Details</h2>
     <p>This function often uses <code><a href="https://rdrr.io/pkg/microbiome/man/transform.html" class="external-link">microbiome::transform</a></code> internally and can perform the
 same transformations, including many from <code><a href="https://rdrr.io/pkg/vegan/man/decostand.html" class="external-link">vegan::decostand</a></code> (where the default MARGIN = 2).
 See below for notes about some of the available transformations.</p>
-<p><code>tax_transform</code> returns a <code>ps_extra</code> list containing the transformed phyloseq object and
+<p><code>tax_transform</code> returns a <code>psExtra</code> containing the transformed phyloseq object and
 extra info (used for annotating <code>ord_plot</code> ordinations):</p><ul><li><p>tax_transform (a string recording the transformation),</p></li>
 <li><p>tax_agg (a string recording the taxonomic aggregation rank if specified here or earlier in <code>tax_agg</code>).</p></li>
 </ul><p>A few commonly used transformations:</p><ul><li><p>"clr", or "rclr", perform the centered log ratio transformation, or the robust clr, using <code><a href="https://rdrr.io/pkg/microbiome/man/transform.html" class="external-link">microbiome::transform</a></code></p></li>
@@ -208,7 +211,7 @@ are converted to 1 (like <code>decostand(method = "pa")</code>).
 You can set a different threshold, by passing e.g. undetected = 10, for
 example, in which case all abundances of 10 or below would be converted to 0.
 All abundances above 10 would be converted to 1s.</p>
-<p>Beware that the choice of detection threshold is not tracked in the ps_extra.</p>
+<p>Beware that the choice of detection threshold is not tracked in the psExtra.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -223,60 +226,60 @@ All abundances above 10 would be converted to 1s.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># aggregate taxa at Phylum level and center log ratio transform the phyla counts</span></span></span>
 <span class="r-in"><span><span class="fu">tax_transform</span><span class="op">(</span><span class="va">dietswap</span>, trans <span class="op">=</span> <span class="st">"clr"</span>, rank <span class="op">=</span> <span class="st">"Phylum"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ps_extra object - a list with phyloseq and extras:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> psExtra object - a phyloseq object with extra slots:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> phyloseq-class experiment-level object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> otu_table()   OTU Table:         [ 8 taxa and 222 samples ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sample_data() Sample Data:       [ 222 samples by 8 sample variables ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> tax_table()   Taxonomy Table:    [ 8 taxa by 1 taxonomic ranks ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ps_extra info:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> tax_agg = Phylum tax_transform = clr</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> otu_get(counts = TRUE)		 [ 8 taxa and 222 samples ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $counts OTU Table: [ 8 taxa and 222 samples ]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> psExtra info:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> tax_agg = "Phylum" tax_trans = "clr" </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># this is equivalent to the two-step method (agg then transform)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="va">dietswap</span>, rank <span class="op">=</span> <span class="st">"Phylum"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">tax_transform</span><span class="op">(</span><span class="st">"clr"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ps_extra object - a list with phyloseq and extras:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> psExtra object - a phyloseq object with extra slots:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> phyloseq-class experiment-level object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> otu_table()   OTU Table:         [ 8 taxa and 222 samples ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sample_data() Sample Data:       [ 222 samples by 8 sample variables ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> tax_table()   Taxonomy Table:    [ 8 taxa by 1 taxonomic ranks ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ps_extra info:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> tax_agg = Phylum tax_transform = clr</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> otu_get(counts = TRUE)		 [ 8 taxa and 222 samples ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $counts OTU Table: [ 8 taxa and 222 samples ]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> psExtra info:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> tax_agg = "Phylum" tax_trans = "clr" </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># does nothing except record tax_agg as "unique" and tax_transform as "identity" in ps_extra info</span></span></span>
+<span class="r-in"><span><span class="co"># does nothing except record tax_agg as "unique" and tax_transform as "identity" in psExtra info</span></span></span>
 <span class="r-in"><span><span class="va">dietswap</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">tax_transform</span><span class="op">(</span><span class="st">"identity"</span>, rank <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ps_extra object - a list with phyloseq and extras:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> psExtra object - a phyloseq object with extra slots:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> phyloseq-class experiment-level object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> otu_table()   OTU Table:         [ 130 taxa and 222 samples ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sample_data() Sample Data:       [ 222 samples by 8 sample variables ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> tax_table()   Taxonomy Table:    [ 130 taxa by 4 taxonomic ranks ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ps_extra info:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> tax_agg = unique tax_transform = identity</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> psExtra info:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> tax_agg = "unique" tax_trans = "identity" </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># binary transformation (convert abundances to presence/absence or detected/undetected)</span></span></span>
 <span class="r-in"><span><span class="fu">tax_transform</span><span class="op">(</span><span class="va">dietswap</span>, trans <span class="op">=</span> <span class="st">"binary"</span>, rank <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ps_extra object - a list with phyloseq and extras:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> psExtra object - a phyloseq object with extra slots:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> phyloseq-class experiment-level object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> otu_table()   OTU Table:         [ 130 taxa and 222 samples ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sample_data() Sample Data:       [ 222 samples by 8 sample variables ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ps_extra info:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> tax_agg = Genus tax_transform = binary</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> otu_get(counts = TRUE)		 [ 130 taxa and 222 samples ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $counts OTU Table: [ 130 taxa and 222 samples ]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> psExtra info:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> tax_agg = "Genus" tax_trans = "binary" </span>
 <span class="r-in"><span><span class="co"># change detection threshold by setting undetected argument (default is 0)</span></span></span>
 <span class="r-in"><span><span class="fu">tax_transform</span><span class="op">(</span><span class="va">dietswap</span>, trans <span class="op">=</span> <span class="st">"binary"</span>, rank <span class="op">=</span> <span class="st">"Genus"</span>, undetected <span class="op">=</span> <span class="fl">50</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="ps_extra-accessors.html">otu_get</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="psExtra-accessors.html">otu_get</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="va">.</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> OTU Table:          [4 taxa and 6 samples]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                      taxa are columns</span>
@@ -290,32 +293,32 @@ All abundances above 10 would be converted to 1s.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># log2 transformation after replacing all zeros with a pseudocount of 1</span></span></span>
 <span class="r-in"><span><span class="fu">tax_transform</span><span class="op">(</span><span class="va">dietswap</span>, trans <span class="op">=</span> <span class="st">"log2"</span>, rank <span class="op">=</span> <span class="st">"Family"</span>, zero_replace <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ps_extra object - a list with phyloseq and extras:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> psExtra object - a phyloseq object with extra slots:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> phyloseq-class experiment-level object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> otu_table()   OTU Table:         [ 22 taxa and 222 samples ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sample_data() Sample Data:       [ 222 samples by 8 sample variables ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> tax_table()   Taxonomy Table:    [ 22 taxa by 2 taxonomic ranks ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ps_extra info:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> tax_agg = Family tax_transform = log2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> otu_get(counts = TRUE)		 [ 22 taxa and 222 samples ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $counts OTU Table: [ 22 taxa and 222 samples ]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> psExtra info:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> tax_agg = "Family" tax_trans = "log2" </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># log2 transformation after replacing all zeros with a pseudocount of half</span></span></span>
 <span class="r-in"><span><span class="co"># the minimum non-zero count value in the aggregated dataset</span></span></span>
 <span class="r-in"><span><span class="fu">tax_transform</span><span class="op">(</span><span class="va">dietswap</span>, trans <span class="op">=</span> <span class="st">"log2"</span>, rank <span class="op">=</span> <span class="st">"Family"</span>, zero_replace <span class="op">=</span> <span class="st">"halfmin"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ps_extra object - a list with phyloseq and extras:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> psExtra object - a phyloseq object with extra slots:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> phyloseq-class experiment-level object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> otu_table()   OTU Table:         [ 22 taxa and 222 samples ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sample_data() Sample Data:       [ 222 samples by 8 sample variables ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> tax_table()   Taxonomy Table:    [ 22 taxa by 2 taxonomic ranks ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ps_extra info:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> tax_agg = Family tax_transform = log2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> otu_get(counts = TRUE)		 [ 22 taxa and 222 samples ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $counts OTU Table: [ 22 taxa and 222 samples ]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> psExtra info:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> tax_agg = "Family" tax_trans = "log2" </span>
 </code></pre></div>
     </div>
   </div>

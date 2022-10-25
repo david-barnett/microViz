@@ -11,8 +11,8 @@ Aitchison distance (Euclidean distance after centered log ratio transform clr, s
 Euclidean distance
 
 
-Use dist_calc with ps_extra output of tax_transform (or tax_agg).
-It returns a ps_extra object containing the phyloseq and the name of the distance used
+Use dist_calc with psExtra output of tax_transform (or tax_agg).
+It returns a psExtra object containing the phyloseq and the name of the distance used
 in addition to the distance matrix itself.
 The resulting object is intended to be piped into ord_calc or dist_permanova functions.
 Alternatively you can directly access the distance matrix with dist_get()."><meta property="og:image" content="https://david-barnett.github.io/microViz/logo.png"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -39,7 +39,7 @@ Alternatively you can directly access the distance matrix with dist_get()."><met
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.0</span>
       </span>
     </div>
 
@@ -76,6 +76,9 @@ Alternatively you can directly access the distance matrix with dist_get()."><met
     </li>
     <li>
       <a href="../articles/web-only/videos.html">Tutorial video</a>
+    </li>
+    <li>
+      <a href="../articles/ps_extra-replaced.html">Upgrading to microViz version 0.10.0</a>
     </li>
     <li>
       <a href="../articles/web-only/atlas1006.html">Example analyses with atlas1006 data</a>
@@ -122,8 +125,8 @@ Alternatively you can directly access the distance matrix with dist_get()."><met
 </ul></li>
 <li><p>Aitchison distance (Euclidean distance after centered log ratio transform clr, see details)</p></li>
 <li><p>Euclidean distance</p></li>
-</ul><p>Use dist_calc with ps_extra output of tax_transform (or tax_agg).
-It returns a ps_extra object containing the phyloseq and the name of the distance used
+</ul><p>Use dist_calc with psExtra output of tax_transform (or tax_agg).
+It returns a psExtra object containing the phyloseq and the name of the distance used
 in addition to the distance matrix itself.
 The resulting object is intended to be piped into ord_calc or dist_permanova functions.
 Alternatively you can directly access the distance matrix with dist_get().</p>
@@ -136,7 +139,7 @@ Alternatively you can directly access the distance matrix with dist_get().</p>
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>data</dt>
-<dd><p>ps_extra object, e.g. output from tax_transform()</p></dd>
+<dd><p>psExtra object, e.g. output from tax_transform()</p></dd>
 
 
 <dt>dist</dt>
@@ -155,7 +158,7 @@ Alternatively you can directly access the distance matrix with dist_get().</p>
     <h2>Value</h2>
     
 
-<p>list with distance matrix, phyloseq object, and name of distance used</p>
+<p>psExtra object including distance matrix and name of distance used</p>
     </div>
     <div id="aitchison-distance-note">
     <h2>Aitchison distance note</h2>
@@ -195,26 +198,28 @@ OR pass an additional argument to <code>dist_calc("jaccard", binary = TRUE)</cod
 <span class="r-in"><span>  <span class="fu"><a href="tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">dist_calc</span><span class="op">(</span><span class="st">"bray"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">bc</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ps_extra object - a list with phyloseq and extras:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> psExtra object - a phyloseq object with extra slots:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> phyloseq-class experiment-level object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> otu_table()   OTU Table:         [ 130 taxa and 222 samples ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sample_data() Sample Data:       [ 222 samples by 8 sample variables ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ps_extra info:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> tax_agg = Genus tax_transform = NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> psExtra info:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> tax_agg = "Genus" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> bray distance matrix of size 222 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0.7639533 0.7851213 0.6680796 0.7699252 0.80507 ...</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">bc</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "ps_extra" "list"    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "psExtra"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"package")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "microViz"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># gunifrac distance using phyloseq input</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"esophagus"</span>, package <span class="op">=</span> <span class="st">"phyloseq"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">gunifrac</span> <span class="op">&lt;-</span> <span class="va">esophagus</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">dist_calc</span><span class="op">(</span><span class="st">"gunifrac"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="ps_extra-accessors.html">dist_get</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="psExtra-accessors.html">dist_get</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Registered S3 method overwritten by 'rmutil':</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   method         from</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   print.response httr</span>
