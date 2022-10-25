@@ -102,6 +102,7 @@ tax_agg <- function(ps,
                     sort_by = NA,
                     top_N = NA,
                     force = FALSE,
+                    preserve = NULL,
                     add_unique = FALSE) {
   stopif_ps_extra(ps, argName = "ps")
   check_is_phyloseq(ps, argName = "ps")
@@ -148,6 +149,18 @@ tax_agg <- function(ps,
     }
     if (purrr::some(.x = uniqueNamesAtRank, .p = `==`, "")) {
       stop("zero-length name(s) in tax_table at rank: ", rank, taxFixPrompt())
+    }
+
+    # copy taxa names to aggregation rank if some taxa marked as preserved
+    if (!is.null(preserve)) {
+      preserve <- rlang::arg_match(
+        arg = preserve, values = uniqueNamesAtRank, multiple = TRUE
+      )
+      preserved <- tt_df[[rank_index]] %in% preserve
+      tt_df[preserved, rank_index] <- rownames(tt_df)[preserved]
+      uniqueNamesAtRank <- unique(tt_df[, rank_index])
+      # change name of rank to indicate it's not a pure rank aggregation
+      rank <- names(tt_df)[names(tt_df) == rank] <- paste(rank, "& unique")
     }
 
     if (isTRUE(force)) {
