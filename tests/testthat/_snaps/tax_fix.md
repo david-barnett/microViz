@@ -11,7 +11,7 @@
       tax_table()   Taxonomy Table:    [ 553 taxa by 1 taxonomic ranks ]
       
       psExtra info:
-      tax_agg = 'Genus'	
+      tax_agg = "Genus" 
 
 # tax_fix defaults allow agg: modified_dietswap Phylum
 
@@ -26,7 +26,7 @@
       tax_table()   Taxonomy Table:    [ 12 taxa by 1 taxonomic ranks ]
       
       psExtra info:
-      tax_agg = 'Phylum'	
+      tax_agg = "Phylum" 
 
 # tax_fix defaults allow agg: modified_dietswap Family
 
@@ -41,7 +41,7 @@
       tax_table()   Taxonomy Table:    [ 28 taxa by 2 taxonomic ranks ]
       
       psExtra info:
-      tax_agg = 'Family'	
+      tax_agg = "Family" 
 
 # tax_fix defaults allow agg: modified_dietswap Genus
 
@@ -56,7 +56,7 @@
       tax_table()   Taxonomy Table:    [ 110 taxa by 3 taxonomic ranks ]
       
       psExtra info:
-      tax_agg = 'Genus'	
+      tax_agg = "Genus" 
 
 # tax_fix defaults allow agg: ibd_phylo Kingdom
 
@@ -71,7 +71,7 @@
       tax_table()   Taxonomy Table:    [ 1 taxa by 1 taxonomic ranks ]
       
       psExtra info:
-      tax_agg = 'Kingdom'	
+      tax_agg = "Kingdom" 
 
 # tax_fix defaults allow agg: ibd_phylo Phylum
 
@@ -86,7 +86,7 @@
       tax_table()   Taxonomy Table:    [ 9 taxa by 2 taxonomic ranks ]
       
       psExtra info:
-      tax_agg = 'Phylum'	
+      tax_agg = "Phylum" 
 
 # tax_fix defaults allow agg: ibd_phylo Class
 
@@ -101,7 +101,7 @@
       tax_table()   Taxonomy Table:    [ 19 taxa by 3 taxonomic ranks ]
       
       psExtra info:
-      tax_agg = 'Class'	
+      tax_agg = "Class" 
 
 # tax_fix defaults allow agg: ibd_phylo Order
 
@@ -116,7 +116,7 @@
       tax_table()   Taxonomy Table:    [ 32 taxa by 4 taxonomic ranks ]
       
       psExtra info:
-      tax_agg = 'Order'	
+      tax_agg = "Order" 
 
 # tax_fix defaults allow agg: ibd_phylo Family
 
@@ -131,7 +131,7 @@
       tax_table()   Taxonomy Table:    [ 59 taxa by 5 taxonomic ranks ]
       
       psExtra info:
-      tax_agg = 'Family'	
+      tax_agg = "Family" 
 
 # tax_fix defaults allow agg: ibd_phylo Genus
 
@@ -146,7 +146,7 @@
       tax_table()   Taxonomy Table:    [ 178 taxa by 6 taxonomic ranks ]
       
       psExtra info:
-      tax_agg = 'Genus'	
+      tax_agg = "Genus" 
 
 # tax_fix defaults allow agg: ibd_phylo Species
 
@@ -161,5 +161,5 @@
       tax_table()   Taxonomy Table:    [ 178 taxa by 7 taxonomic ranks ]
       
       psExtra info:
-      tax_agg = 'Species'	
+      tax_agg = "Species" 
 

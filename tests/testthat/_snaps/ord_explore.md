@@ -12,7 +12,7 @@
       tax_table()   Taxonomy Table:    [ 130 taxa by 4 taxonomic ranks ]
       
       psExtra info:
-      tax_agg = 'unique'	tax_trans = 'identity'	
+      tax_agg = "unique" tax_trans = "identity" 
       
       $info
       $info$rank
@@ -81,7 +81,7 @@
       otu_get(counts = TRUE)		 [ 130 taxa and 222 samples ]
       
       psExtra info:
-      tax_agg = 'Genus'	tax_trans = 'clr'	
+      tax_agg = "Genus" tax_trans = "clr" 
       
       ordination of class: rda cca 
       rda(formula = OTU ~ weight + female, data = data)
@@ -162,7 +162,7 @@
       phy_tree()    Phylogenetic Tree: [ 58 tips and 57 internal nodes ]
       
       psExtra info:
-      tax_agg = 'unique'	tax_trans = 'identity'	
+      tax_agg = "unique" tax_trans = "identity" 
       
       $info
       $info$rank
@@ -604,7 +604,7 @@
       tax_table()   Taxonomy Table:    [ 130 taxa by 3 taxonomic ranks ]
       
       psExtra info:
-      tax_agg = 'Genus'	tax_trans = 'identity'	
+      tax_agg = "Genus" tax_trans = "identity" 
       
       bray distance matrix of size 222 
       0.7639533 0.7851213 0.6680796 0.7699252 0.80507 ...
@@ -630,7 +630,7 @@
       otu_get(counts = TRUE)		 [ 130 taxa and 222 samples ]
       
       psExtra info:
-      tax_agg = 'Genus'	tax_trans = 'clr'	
+      tax_agg = "Genus" tax_trans = "clr" 
       
       ordination of class: rda cca 
       rda(formula = OTU ~ 1, data = data)

@@ -18,7 +18,7 @@
     tax_table()   Taxonomy Table:    [ 130 taxa by 4 taxonomic ranks ]
     
     psExtra info:
-    tax_agg = 'unique'	
+    tax_agg = "unique" 
 
 # microbiome::aggregate_taxa output hasn't changed: Phylum
 
