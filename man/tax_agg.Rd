@@ -10,6 +10,7 @@ tax_agg(
   sort_by = NA,
   top_N = NA,
   force = FALSE,
+  preserve = NULL,
   add_unique = FALSE
 )
 }
