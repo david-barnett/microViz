@@ -7,13 +7,9 @@ This version also introduces changes around `tax_model` and `taxatree_models` fu
 ## Breaking changes
 
 - Using the `$` operator to access parts of the old "ps_extra" S3 class will no longer work and must be replaced with accessor functions, e.g. `ps_get`
-
 - "ps_extra" objects generated with older versions will not be compatible with version 0.10.0 and can be converted to the new "psExtra" S4 objects with `upgrade_ps_extra_to_psExtra`
-
 - `tax_model` and `taxatree_model` parallel processing with future and future.apply is off by default, and needs to be enabled with argument use_future = TRUE.
-
 - `tax_model` attaches results to psExtra object by default, but you can restore old behaviour with return_psx = FALSE
-
 - `comp_barplot` "other" taxa category renamed to "Other" by default
 
 ## Features
@@ -23,6 +19,7 @@ This allows running e.g. three simple regression models per taxon with predictor
 - `cor_test` is a new simple wrapper around `stats::cor.test` with a y~x formula interface, allowing its use in `tax_model`
 
 ## Fixes
+
 - No more deprecation warnings in `taxatree_plot_labels`
 
 
