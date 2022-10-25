@@ -14,7 +14,7 @@ This version also introduces changes around `tax_model` and `taxatree_models` fu
 
 ## Features
 
-- `tax_model` and `taxatree_model` can now run multiple models per taxon, by accepting lists for formula or variables arguments. 
+- `tax_model` and `taxatree_model` can now run multiple models per taxon, by accepting **lists** for formula or variables arguments. 
 This allows running e.g. three simple regression models per taxon with predictors a, b, and c with variables = list("a", "b", "c")
 - `cor_test` is a new simple wrapper around `stats::cor.test` with a y~x formula interface, allowing its use in `tax_model`
 
