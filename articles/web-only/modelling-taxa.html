@@ -141,7 +141,9 @@
 
     
     
-<p>This article will give an example of statistical modelling of the abundances of individual taxa, and visual presentation of the results using microViz <em>taxonomic association tree</em> plots.</p>
+<p>This article will give an example of statistical modelling of the
+abundances of individual taxa, and visual presentation of the results
+using microViz <em>taxonomic association tree</em> plots.</p>
 <div class="section level3">
 <h3 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
 </h3>
@@ -164,7 +166,8 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
-<p>First we’ll get some OTU abundance data from inflammatory bowel disease patients and controls from the corncob package.</p>
+<p>First we’ll get some OTU abundance data from inflammatory bowel
+disease patients and controls from the corncob package.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"ibd_phylo"</span><span class="op">)</span></span>
 <span><span class="va">ibd_phylo</span></span>
@@ -172,7 +175,12 @@
 <span><span class="co">#&gt; otu_table()   OTU Table:         [ 36349 taxa and 91 samples ]</span></span>
 <span><span class="co">#&gt; sample_data() Sample Data:       [ 91 samples by 15 sample variables ]</span></span>
 <span><span class="co">#&gt; tax_table()   Taxonomy Table:    [ 36349 taxa by 7 taxonomic ranks ]</span></span></code></pre></div>
-<p>We’ll keep only the Ulcerative Colitis and Healthy Control samples, to simplify the analyses for this example. We’ll also remove the Species rank information, as most OTUs in this dataset are not assigned to a species. We’ll also use <code>tax_fix</code> to fill any gaps where the Genus is unknown, with the family name or whatever higher rank classification is known.</p>
+<p>We’ll keep only the Ulcerative Colitis and Healthy Control samples,
+to simplify the analyses for this example. We’ll also remove the Species
+rank information, as most OTUs in this dataset are not assigned to a
+species. We’ll also use <code>tax_fix</code> to fill any gaps where the
+Genus is unknown, with the family name or whatever higher rank
+classification is known.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">phylo</span> <span class="op">&lt;-</span> <span class="va">ibd_phylo</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">DiseaseState</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UC"</span>, <span class="st">"nonIBD"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
@@ -183,7 +191,8 @@
 <span><span class="co">#&gt; otu_table()   OTU Table:         [ 29304 taxa and 67 samples ]</span></span>
 <span><span class="co">#&gt; sample_data() Sample Data:       [ 67 samples by 15 sample variables ]</span></span>
 <span><span class="co">#&gt; tax_table()   Taxonomy Table:    [ 29304 taxa by 6 taxonomic ranks ]</span></span></code></pre></div>
-<p>Let’s have a quick look at the sample data using the <code>skimr</code> package.</p>
+<p>Let’s have a quick look at the sample data using the
+<code>skimr</code> package.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">phylo</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/psExtra-accessors.html">samdat_tbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
@@ -234,6 +243,14 @@
 </table>
 <p><strong>Variable type: factor</strong></p>
 <table class="table">
+<colgroup>
+<col width="15%">
+<col width="11%">
+<col width="15%">
+<col width="8%">
+<col width="10%">
+<col width="38%">
+</colgroup>
 <thead><tr class="header">
 <th align="left">skim_variable</th>
 <th align="right">n_missing</th>
@@ -367,6 +384,19 @@
 </table>
 <p><strong>Variable type: numeric</strong></p>
 <table class="table">
+<colgroup>
+<col width="18%">
+<col width="13%">
+<col width="18%">
+<col width="8%">
+<col width="6%">
+<col width="4%">
+<col width="5%">
+<col width="5%">
+<col width="5%">
+<col width="6%">
+<col width="8%">
+</colgroup>
 <thead><tr class="header">
 <th align="left">skim_variable</th>
 <th align="right">n_missing</th>
@@ -394,7 +424,11 @@
 <td align="left">▅▇▇▅▂</td>
 </tr></tbody>
 </table>
-<p>Let’s make some sample data variables that are easier to use and compare in the statistical modelling ahead. We will convert dichotomous categorical variables into similar binary variables (values: 1 for true, or 0 for false). We will also scale and center the numeric variable for age.</p>
+<p>Let’s make some sample data variables that are easier to use and
+compare in the statistical modelling ahead. We will convert dichotomous
+categorical variables into similar binary variables (values: 1 for true,
+or 0 for false). We will also scale and center the numeric variable for
+age.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">phylo</span> <span class="op">&lt;-</span> <span class="va">phylo</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/ps_mutate.html">ps_mutate</a></span><span class="op">(</span></span>
@@ -411,7 +445,13 @@
 <div class="section level4">
 <h4 id="tss-log2-linear-regression">TSS log2 linear regression<a class="anchor" aria-label="anchor" href="#tss-log2-linear-regression"></a>
 </h4>
-<p>We will start by creating a linear regression model for one genus, <em>Bacteroides</em>. We will transform the count data by first making it proportions, and then taking the logarithm, with base 2. This is what MaAsLin2 does by default (except they call the compositional transformation “Total Sum Scaling (TSS)”). We will replace the zeros with half the minimum observed abundance proportion (of any taxon) before log2 transformation.</p>
+<p>We will start by creating a linear regression model for one genus,
+<em>Bacteroides</em>. We will transform the count data by first making
+it proportions, and then taking the logarithm, with base 2. This is what
+MaAsLin2 does by default (except they call the compositional
+transformation “Total Sum Scaling (TSS)”). We will replace the zeros
+with half the minimum observed abundance proportion (of any taxon)
+before log2 transformation.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">parabacteroides_lm</span> <span class="op">&lt;-</span> <span class="va">phylo</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/tax_fix.html">tax_fix</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
@@ -455,12 +495,16 @@
 <span><span class="co">#&gt; Residual standard error: 3.452 on 61 degrees of freedom</span></span>
 <span><span class="co">#&gt; Multiple R-squared:  0.3109, Adjusted R-squared:  0.2545 </span></span>
 <span><span class="co">#&gt; F-statistic: 5.505 on 5 and 61 DF,  p-value: 0.0003018</span></span></code></pre></div>
-<p>This model suggests <em>Parabacteroides</em> abundances are significantly lower in Ulcerative Colitis patients than controls, on average.</p>
+<p>This model suggests <em>Parabacteroides</em> abundances are
+significantly lower in Ulcerative Colitis patients than controls, on
+average.</p>
 </div>
 <div class="section level4">
 <h4 id="plotting-tss-log2-data">Plotting TSS log2 data<a class="anchor" aria-label="anchor" href="#plotting-tss-log2-data"></a>
 </h4>
-<p>Let’s boxplot the transformed data to see what this <em>Parabacteroides</em> association looks like as a crude group difference.</p>
+<p>Let’s boxplot the transformed data to see what this
+<em>Parabacteroides</em> association looks like as a crude group
+difference.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">plot_data</span> <span class="op">&lt;-</span> <span class="va">phylo</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/tax_fix.html">tax_fix</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
@@ -484,7 +528,15 @@
 <div class="section level4">
 <h4 id="beta-binomial-regression">Beta binomial regression<a class="anchor" aria-label="anchor" href="#beta-binomial-regression"></a>
 </h4>
-<p>You can also use other regression modelling functions that take a formula. For example the beta binomial modelling provided in the corncob package. This approach models both abundance and dispersion, and directly uses untransformed counts. By default, microViz’s <code><a href="../../reference/tax_model.html">tax_model()</a></code> will use the same formula for both abundance and dispersion modelling, but you can override this by setting the <code>phi.formula</code> argument yourself. See <code>vignette("corncob-intro", package = "corncob")</code> for more info on these models.</p>
+<p>You can also use other regression modelling functions that take a
+formula. For example the beta binomial modelling provided in the corncob
+package. This approach models both abundance and dispersion, and
+directly uses untransformed counts. By default, microViz’s
+<code><a href="../../reference/tax_model.html">tax_model()</a></code> will use the same formula for both abundance
+and dispersion modelling, but you can override this by setting the
+<code>phi.formula</code> argument yourself. See
+<code>vignette("corncob-intro", package = "corncob")</code> for more
+info on these models.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">parabacteroides_bb</span> <span class="op">&lt;-</span> <span class="va">phylo</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/tax_fix.html">tax_fix</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
@@ -530,7 +582,12 @@
 <div class="section level3">
 <h3 id="model-all-the-taxa">Model all the taxa!<a class="anchor" aria-label="anchor" href="#model-all-the-taxa"></a>
 </h3>
-<p>Now we will fit a similar model for almost every taxon at every rank. The code for <code>taxatree_models</code> is quite similar to <code>tax_model</code>. However, you might need to run <code>tax_prepend_ranks</code> to ensure that each taxon at each rank is always unique. As an example of the problem, Actinobacteria is the name of both a Phylum and a Class!</p>
+<p>Now we will fit a similar model for almost every taxon at every rank.
+The code for <code>taxatree_models</code> is quite similar to
+<code>tax_model</code>. However, you might need to run
+<code>tax_prepend_ranks</code> to ensure that each taxon at each rank is
+always unique. As an example of the problem, Actinobacteria is the name
+of both a Phylum and a Class!</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lm_models</span> <span class="op">&lt;-</span> <span class="va">phylo</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/tax_fix.html">tax_fix</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
@@ -547,12 +604,15 @@
 <span>    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UC"</span>, <span class="st">"female"</span>, <span class="st">"antibiotics"</span>, <span class="st">"steroids"</span>, <span class="st">"age_scaled"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#&gt; Proportional min_prevalence given: 0.1 --&gt; min 7/67 samples.</span></span>
-<span><span class="co">#&gt; 2022-10-25 22:28:32 - modelling at rank: Phylum</span></span>
-<span><span class="co">#&gt; 2022-10-25 22:28:32 - modelling at rank: Class</span></span>
-<span><span class="co">#&gt; 2022-10-25 22:28:33 - modelling at rank: Order</span></span>
-<span><span class="co">#&gt; 2022-10-25 22:28:33 - modelling at rank: Family</span></span>
-<span><span class="co">#&gt; 2022-10-25 22:28:34 - modelling at rank: Genus</span></span></code></pre></div>
-<p>Why filter the taxa? <em>It’s less likely that we are interested in rare taxa, and models of rare taxon abundances are more likely to be unreliable. Reducing the the number of taxa modelled also makes visualising the results easier!</em></p>
+<span><span class="co">#&gt; 2022-10-26 19:15:10 - modelling at rank: Phylum</span></span>
+<span><span class="co">#&gt; 2022-10-26 19:15:10 - modelling at rank: Class</span></span>
+<span><span class="co">#&gt; 2022-10-26 19:15:11 - modelling at rank: Order</span></span>
+<span><span class="co">#&gt; 2022-10-26 19:15:11 - modelling at rank: Family</span></span>
+<span><span class="co">#&gt; 2022-10-26 19:15:12 - modelling at rank: Genus</span></span></code></pre></div>
+<p>Why filter the taxa? <em>It’s less likely that we are interested in
+rare taxa, and models of rare taxon abundances are more likely to be
+unreliable. Reducing the the number of taxa modelled also makes
+visualising the results easier!</em></p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lm_models</span></span>
 <span><span class="co">#&gt; psExtra object - a phyloseq object with extra slots:</span></span>
@@ -572,7 +632,12 @@
 <div class="section level4">
 <h4 id="getting-stats-from-the-models">Getting stats from the models<a class="anchor" aria-label="anchor" href="#getting-stats-from-the-models"></a>
 </h4>
-<p>Next we will get a data.frame containing the regression coefficient estimates, test statistics and corresponding p values from all these regression models. The function <code><a href="../../reference/models2stats.html">taxatree_models2stats()</a></code> can do this for any type of model that has a <code><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">broom::tidy()</a></code> method, as well as for beta binomial regression models calculated with the <code>corncob</code> package <code><a href="https://rdrr.io/pkg/corncob/man/bbdml.html" class="external-link">bbdml()</a></code> function.</p>
+<p>Next we will get a data.frame containing the regression coefficient
+estimates, test statistics and corresponding p values from all these
+regression models. The function <code><a href="../../reference/models2stats.html">taxatree_models2stats()</a></code> can
+do this for any type of model that has a <code><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">broom::tidy()</a></code>
+method, as well as for beta binomial regression models calculated with
+the <code>corncob</code> package <code><a href="https://rdrr.io/pkg/corncob/man/bbdml.html" class="external-link">bbdml()</a></code> function.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lm_stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/models2stats.html">taxatree_models2stats</a></span><span class="op">(</span><span class="va">lm_models</span><span class="op">)</span></span>
 <span><span class="va">lm_stats</span></span>
@@ -612,8 +677,12 @@
 <div class="section level4">
 <h4 id="adjusting-p-values">Adjusting p values<a class="anchor" aria-label="anchor" href="#adjusting-p-values"></a>
 </h4>
-<p>Using the <code><a href="../../reference/taxatree_stats_p_adjust.html">taxatree_stats_p_adjust()</a></code> function, you can correct for multiple testing / control the false discovery rate or family-wise error rate.</p>
-<p>Instead of applying these adjustment methods across all 88 taxa models at all ranks, the default behaviour is to control the family-wise error rate per rank.</p>
+<p>Using the <code><a href="../../reference/taxatree_stats_p_adjust.html">taxatree_stats_p_adjust()</a></code> function, you can
+correct for multiple testing / control the false discovery rate or
+family-wise error rate.</p>
+<p>Instead of applying these adjustment methods across all 88 taxa
+models at all ranks, the default behaviour is to control the family-wise
+error rate per rank.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lm_stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/taxatree_stats_p_adjust.html">taxatree_stats_p_adjust</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">lm_stats</span>, method <span class="op">=</span> <span class="st">"BH"</span>, grouping <span class="op">=</span> <span class="st">"rank"</span></span>
@@ -641,8 +710,14 @@
 <div class="section level3">
 <h3 id="plot-all-the-taxatree_stats">Plot all the taxatree_stats!<a class="anchor" aria-label="anchor" href="#plot-all-the-taxatree_stats"></a>
 </h3>
-<p><code><a href="../../reference/taxatree_plots.html">taxatree_plots()</a></code> allows you to plot statistics (e.g. point estimates and significance) from all of the taxa models onto a tree layout. The taxon models are organised by rank, radiating out from the central root node from e.g. Phyla around the center to Genera in the outermost ring.</p>
-<p><code><a href="../../reference/taxatree_plots.html">taxatree_plots()</a></code> itself returns a list of plots, which you can arrange into one figure with the <a href="https://patchwork.data-imaginist.com/" class="external-link"><code>patchwork</code></a> package for example (and/or <a href="https://wilkelab.org/cowplot/articles/plot_grid.html" class="external-link"><code>cowplot</code></a>).</p>
+<p><code><a href="../../reference/taxatree_plots.html">taxatree_plots()</a></code> allows you to plot statistics
+(e.g. point estimates and significance) from all of the taxa models onto
+a tree layout. The taxon models are organised by rank, radiating out
+from the central root node from e.g. Phyla around the center to Genera
+in the outermost ring.</p>
+<p><code><a href="../../reference/taxatree_plots.html">taxatree_plots()</a></code> itself returns a list of plots, which
+you can arrange into one figure with the <a href="https://patchwork.data-imaginist.com/" class="external-link"><code>patchwork</code></a>
+package for example (and/or <a href="https://wilkelab.org/cowplot/articles/plot_grid.html" class="external-link"><code>cowplot</code></a>).</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lm_stats</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/taxatree_plots.html">taxatree_plots</a></span><span class="op">(</span></span>
 <span>  node_size_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, var_renamer <span class="op">=</span> <span class="va">toupper</span></span>
@@ -654,7 +729,9 @@
 <div class="section level4">
 <h4 id="taxatree-key">Taxatree Key<a class="anchor" aria-label="anchor" href="#taxatree-key"></a>
 </h4>
-<p>But how do we know which taxa are which nodes? We can create a labelled grey tree with <code>taxatree_plotkey</code>. This labels taxa based on certain conditions.</p>
+<p>But how do we know which taxa are which nodes? We can create a
+labelled grey tree with <code>taxatree_plotkey</code>. This labels taxa
+based on certain conditions.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span> <span class="co"># label position </span></span>
 <span><span class="va">key</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/taxatree_plotkey.html">taxatree_plotkey</a></span><span class="op">(</span></span>
@@ -697,8 +774,13 @@
 <div class="section level5">
 <h5 id="key-trees">Key + Trees<a class="anchor" aria-label="anchor" href="#key-trees"></a>
 </h5>
-<p>Let’s put the key and some of the trees together in one <code>patchwork</code> figure. Getting the sizing right on these combined plots can be very tricky! Pay attention to the absolute height and width of the plot output.</p>
-<p><code><a href="https://rdrr.io/pkg/gridExtra/man/arrangeGrob.html" class="external-link">gridExtra::grid.arrange()</a></code> or <code><a href="https://wilkelab.org/cowplot/reference/plot_grid.html" class="external-link">cowplot::plot_grid()</a></code> are alternatives you can also try. <code><a href="https://wilkelab.org/cowplot/reference/get_legend.html" class="external-link">cowplot::get_legend()</a></code> can be particularly useful.</p>
+<p>Let’s put the key and some of the trees together in one
+<code>patchwork</code> figure. Getting the sizing right on these
+combined plots can be very tricky! Pay attention to the absolute height
+and width of the plot output.</p>
+<p><code><a href="https://rdrr.io/pkg/gridExtra/man/arrangeGrob.html" class="external-link">gridExtra::grid.arrange()</a></code> or
+<code><a href="https://wilkelab.org/cowplot/reference/plot_grid.html" class="external-link">cowplot::plot_grid()</a></code> are alternatives you can also try.
+<code><a href="https://wilkelab.org/cowplot/reference/get_legend.html" class="external-link">cowplot::get_legend()</a></code> can be particularly useful.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trees</span> <span class="op">&lt;-</span> <span class="va">lm_stats</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/taxatree_plots.html">taxatree_plots</a></span><span class="op">(</span>node_size_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2.25</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
@@ -742,7 +824,11 @@
 <div class="section level5">
 <h5 id="alternative-label-styling">Alternative label styling<a class="anchor" aria-label="anchor" href="#alternative-label-styling"></a>
 </h5>
-<p>You can change the default styling of the labels by first suppressing the automatic drawing of labels with <code>.draw_label = FALSE</code> in <code><a href="../../reference/taxatree_plotkey.html">taxatree_plotkey()</a></code> and then adding your own custom-style labels with <code><a href="../../reference/taxatree_plot_labels.html">taxatree_plot_labels()</a></code>. Here we will draw some yellow labels.</p>
+<p>You can change the default styling of the labels by first suppressing
+the automatic drawing of labels with <code>.draw_label = FALSE</code> in
+<code><a href="../../reference/taxatree_plotkey.html">taxatree_plotkey()</a></code> and then adding your own custom-style
+labels with <code><a href="../../reference/taxatree_plot_labels.html">taxatree_plot_labels()</a></code>. Here we will draw some
+yellow labels.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../../reference/taxatree_plotkey.html">taxatree_plotkey</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">lm_stats</span>, .draw_label <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -790,7 +876,9 @@
 <div class="section level4">
 <h4 id="directly-labelling-taxa">Directly labelling taxa<a class="anchor" aria-label="anchor" href="#directly-labelling-taxa"></a>
 </h4>
-<p>You can directly label taxatree_plots too, but it is better to only do this for a few taxa. You must run <code><a href="../../reference/taxatree_label.html">taxatree_label()</a></code> first to create a “label” indicator variable.</p>
+<p>You can directly label taxatree_plots too, but it is better to only
+do this for a few taxa. You must run <code><a href="../../reference/taxatree_label.html">taxatree_label()</a></code> first
+to create a “label” indicator variable.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lm_stats</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/taxatree_label.html">taxatree_label</a></span><span class="op">(</span></span>
@@ -833,13 +921,22 @@
 <div class="section level4">
 <h4 id="changing-color-palette">Changing color palette<a class="anchor" aria-label="anchor" href="#changing-color-palette"></a>
 </h4>
-<p>Choosing another color palette is easy, just name any diverging palette from colorspace hcl diverging palettes. See your options below.</p>
+<p>Choosing another color palette is easy, just name any diverging
+palette from colorspace hcl diverging palettes. See your options
+below.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">colorspace</span><span class="fu">::</span><span class="fu"><a href="https://colorspace.R-Forge.R-project.org/reference/hcl_palettes.html" class="external-link">hcl_palettes</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"diverging"</span>, plot <span class="op">=</span> <span class="cn">TRUE</span>, n <span class="op">=</span> <span class="fl">11</span><span class="op">)</span></span></code></pre></div>
 <p><img src="modelling-taxa_files/figure-html/unnamed-chunk-21-1.png" width="288"></p>
-<p>By default, the colour scale is transformed by taking the square root of the absolute values. But you can change this to “identity” to have no palette transformation.</p>
-<p>By default the range of the data is used to set symmetrical limits on the colour scale, which are the same for all plots in the list produced. You can set alternative limits. If some data lie outside these limits, their values will be “squished” to match the max or min limit value.</p>
-<p>For finer control of the palette luminance range, you can set custom values for l1 and l2, e.g. if the extremes are too bright or dark. This is done by default for the Green-Brown palette.</p>
+<p>By default, the colour scale is transformed by taking the square root
+of the absolute values. But you can change this to “identity” to have no
+palette transformation.</p>
+<p>By default the range of the data is used to set symmetrical limits on
+the colour scale, which are the same for all plots in the list produced.
+You can set alternative limits. If some data lie outside these limits,
+their values will be “squished” to match the max or min limit value.</p>
+<p>For finer control of the palette luminance range, you can set custom
+values for l1 and l2, e.g. if the extremes are too bright or dark. This
+is done by default for the Green-Brown palette.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lm_stats</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/taxatree_label.html">taxatree_label</a></span><span class="op">(</span></span>
@@ -881,7 +978,8 @@
 <span><span class="co">#&gt; Warning: data frame results in `filter()` are deprecated, use `if_any()` or</span></span>
 <span><span class="co">#&gt; `if_all()`.</span></span></code></pre></div>
 <p><img src="modelling-taxa_files/figure-html/unnamed-chunk-22-1.png" width="624"></p>
-<p>Palettes like “Berlin” that go through a black midpoint would probably only make sense with a darker background!</p>
+<p>Palettes like “Berlin” that go through a black midpoint would
+probably only make sense with a darker background!</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lm_stats</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/taxatree_label.html">taxatree_label</a></span><span class="op">(</span></span>
@@ -932,14 +1030,16 @@
 <div class="section level4">
 <h4 id="sorting-taxa-nodes">Sorting taxa nodes<a class="anchor" aria-label="anchor" href="#sorting-taxa-nodes"></a>
 </h4>
-<p>If you like, you can sort the nodes by sorting the taxa in the ps_extra object.</p>
+<p>If you like, you can sort the nodes by sorting the taxa in the
+ps_extra object.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lm_stats</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/tax_sort.html">tax_sort</a></span><span class="op">(</span>by <span class="op">=</span> <span class="st">"prev"</span>, at <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/taxatree_plots.html">taxatree_plots</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="va">.</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="co"># show only the first plot</span></span></code></pre></div>
 <p><img src="modelling-taxa_files/figure-html/unnamed-chunk-24-1.png" width="480"></p>
-<p>You can chain multiple <code><a href="../../reference/tax_sort.html">tax_sort()</a></code> calls together to fine-tune the order of the nodes on the tree to your own preference.</p>
+<p>You can chain multiple <code><a href="../../reference/tax_sort.html">tax_sort()</a></code> calls together to
+fine-tune the order of the nodes on the tree to your own preference.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lm_stats</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/tax_sort.html">tax_sort</a></span><span class="op">(</span>by <span class="op">=</span> <span class="st">"prev"</span>, at <span class="op">=</span> <span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
@@ -952,8 +1052,12 @@
 <div class="section level4">
 <h4 id="plotting-adjusted-p-values">Plotting adjusted p values<a class="anchor" aria-label="anchor" href="#plotting-adjusted-p-values"></a>
 </h4>
-<p>Remember we made adjusted p values earlier? Let’s plot those instead. Just to show how it’s done, we’ll also change the symbol used to identify the significant sites to a cross, and we’ll also relax the significance threshold to 0.1.</p>
-<p>It looks like only the disease state (having ulcerative colitis) shows any significant associations after this FDR correction.</p>
+<p>Remember we made adjusted p values earlier? Let’s plot those instead.
+Just to show how it’s done, we’ll also change the symbol used to
+identify the significant sites to a cross, and we’ll also relax the
+significance threshold to 0.1.</p>
+<p>It looks like only the disease state (having ulcerative colitis)
+shows any significant associations after this FDR correction.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lm_stats</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/taxatree_plots.html">taxatree_plots</a></span><span class="op">(</span></span>
@@ -970,7 +1074,11 @@
 <div class="section level4">
 <h4 id="plotting-multiple-significance-markers">Plotting multiple significance markers<a class="anchor" aria-label="anchor" href="#plotting-multiple-significance-markers"></a>
 </h4>
-<p>You can also plot multiple significance markers. You must start with the strictest threshold. Here we will plot the FDR corrected significance markers at for p.adj &lt; 0.05 (as thick white crosses) and then also unadjusted significance markers for p &lt; 0.05 (as outlined white circles).</p>
+<p>You can also plot multiple significance markers. You must start with
+the strictest threshold. Here we will plot the FDR corrected
+significance markers at for p.adj &lt; 0.05 (as thick white crosses) and
+then also unadjusted significance markers for p &lt; 0.05 (as outlined
+white circles).</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lm_stats</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/taxatree_plots.html">taxatree_plots</a></span><span class="op">(</span></span>
@@ -989,8 +1097,13 @@
 <div class="section level3">
 <h3 id="beta-binomial-regression-example">Beta-binomial regression example<a class="anchor" aria-label="anchor" href="#beta-binomial-regression-example"></a>
 </h3>
-<p>The corncob package provides beta-binomial regression models. See the paper <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7514055/" class="external-link">here</a>, and the helpful package vignette: <code>vignette("corncob-intro", package = "corncob")</code>.</p>
-<p>We will filter the taxa more strictly (by a higher prevalence threshold) before this type of modelling. We do not need to transform the data, as this approach uses counts.</p>
+<p>The corncob package provides beta-binomial regression models. See the
+paper <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7514055/" class="external-link">here</a>,
+and the helpful package vignette:
+<code>vignette("corncob-intro", package = "corncob")</code>.</p>
+<p>We will filter the taxa more strictly (by a higher prevalence
+threshold) before this type of modelling. We do not need to transform
+the data, as this approach uses counts.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bb_models</span> <span class="op">&lt;-</span> <span class="va">phylo</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/tax_fix.html">tax_fix</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
@@ -1002,10 +1115,10 @@
 <span>    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UC"</span>, <span class="st">"female"</span>, <span class="st">"antibiotics"</span>, <span class="st">"steroids"</span>, <span class="st">"age_scaled"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#&gt; Proportional min_prevalence given: 0.3 --&gt; min 21/67 samples.</span></span>
-<span><span class="co">#&gt; 2022-10-25 22:29:14 - modelling at rank: Phylum</span></span>
-<span><span class="co">#&gt; 2022-10-25 22:29:15 - modelling at rank: Class</span></span>
-<span><span class="co">#&gt; 2022-10-25 22:29:16 - modelling at rank: Order</span></span>
-<span><span class="co">#&gt; 2022-10-25 22:29:16 - modelling at rank: Family</span></span>
+<span><span class="co">#&gt; 2022-10-26 19:15:48 - modelling at rank: Phylum</span></span>
+<span><span class="co">#&gt; 2022-10-26 19:15:48 - modelling at rank: Class</span></span>
+<span><span class="co">#&gt; 2022-10-26 19:15:49 - modelling at rank: Order</span></span>
+<span><span class="co">#&gt; 2022-10-26 19:15:49 - modelling at rank: Family</span></span>
 <span><span class="va">bb_models</span></span>
 <span><span class="co">#&gt; psExtra object - a phyloseq object with extra slots:</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -1017,7 +1130,9 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; taxatree_models list:</span></span>
 <span><span class="co">#&gt; Ranks: Phylum/Class/Order/Family</span></span></code></pre></div>
-<p>When extracting stats from corncob beta-binomial models, you need to specify which parameter estimate you want, “mu” for differential abundance, or “phi” for differential variability or overdispersion.</p>
+<p>When extracting stats from corncob beta-binomial models, you need to
+specify which parameter estimate you want, “mu” for differential
+abundance, or “phi” for differential variability or overdispersion.</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bb_stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/models2stats.html">taxatree_models2stats</a></span><span class="op">(</span><span class="va">bb_models</span>, param <span class="op">=</span> <span class="st">"mu"</span><span class="op">)</span></span>
 <span><span class="va">bb_stats</span></span>
@@ -1077,7 +1192,8 @@
 <span></span>
 <span><span class="va">alt_trees</span></span></code></pre></div>
 <p><img src="modelling-taxa_files/figure-html/unnamed-chunk-31-1.png" width="480"></p>
-<p>Let’s add the key for this layout and label it manually with <code><a href="../../reference/taxatree_plot_labels.html">taxatree_plot_labels()</a></code>.</p>
+<p>Let’s add the key for this layout and label it manually with
+<code><a href="../../reference/taxatree_plot_labels.html">taxatree_plot_labels()</a></code>.</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">alt_tree_key</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/taxatree_plotkey.html">taxatree_plotkey</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">bb_stats</span>, circular <span class="op">=</span> <span class="cn">FALSE</span>, .draw_label <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -1095,7 +1211,10 @@
 <span><span class="fu">patchwork</span><span class="fu">::</span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html" class="external-link">wrap_plots</a></span><span class="op">(</span><span class="va">alt_tree_key</span>, <span class="va">alt_trees</span>, nrow <span class="op">=</span> <span class="fl">2</span>, heights <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="modelling-taxa_files/figure-html/unnamed-chunk-32-1.png" width="480"></p>
 <p>You don’t have to use a regular tree!</p>
-<p>Alternative layouts from the igraph package are possible, such as the Kamada and Kawai spring algorithm (“kk”) or Fruchterman and Reingold force-directed algorithm (“fr”). You must set a layout_seed number for these layouts to ensure they are always the same.</p>
+<p>Alternative layouts from the igraph package are possible, such as the
+Kamada and Kawai spring algorithm (“kk”) or Fruchterman and Reingold
+force-directed algorithm (“fr”). You must set a layout_seed number for
+these layouts to ensure they are always the same.</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bb_stats</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/taxatree_plots.html">taxatree_plots</a></span><span class="op">(</span></span>
 <span>  node_size_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span>, </span>
@@ -1124,8 +1243,8 @@
 <span><span class="co">#&gt;  collate  C.UTF-8</span></span>
 <span><span class="co">#&gt;  ctype    C.UTF-8</span></span>
 <span><span class="co">#&gt;  tz       UTC</span></span>
-<span><span class="co">#&gt;  date     2022-10-25</span></span>
-<span><span class="co">#&gt;  pandoc   2.14.2 @ /usr/bin/ (via rmarkdown)</span></span>
+<span><span class="co">#&gt;  date     2022-10-26</span></span>
+<span><span class="co">#&gt;  pandoc   2.19.2 @ /usr/bin/ (via rmarkdown)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">─ Packages ───────────────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt;  <span style="color: #555555; font-style: italic;">package           </span> <span style="color: #555555; font-style: italic;">*</span> <span style="color: #555555; font-style: italic;">version     </span> <span style="color: #555555; font-style: italic;">date (UTC)</span> <span style="color: #555555; font-style: italic;">lib</span> <span style="color: #555555; font-style: italic;">source</span></span></span>
@@ -1143,8 +1262,8 @@
 <span><span class="co">#&gt;  cachem               1.0.6        <span style="color: #555555;">2021-08-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  callr                3.7.2        <span style="color: #555555;">2022-08-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  cli                  3.4.1        <span style="color: #555555;">2022-09-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  cluster              2.1.3        <span style="color: #555555;">2022-03-28</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
-<span><span class="co">#&gt;  codetools            0.2-18       <span style="color: #555555;">2020-11-04</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
+<span><span class="co">#&gt;  cluster              2.1.3        <span style="color: #555555;">2022-03-28</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
+<span><span class="co">#&gt;  codetools            0.2-18       <span style="color: #555555;">2020-11-04</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
 <span><span class="co">#&gt;  colorspace           2.0-3        <span style="color: #555555;">2022-02-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  corncob            * 0.3.0        <span style="color: #555555;">2022-09-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  crayon               1.5.2        <span style="color: #555555;">2022-09-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
@@ -1184,21 +1303,21 @@
 <span><span class="co">#&gt;  knitr                1.40         <span style="color: #555555;">2022-08-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  labeling             0.4.2        <span style="color: #555555;">2020-10-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  later                1.3.0        <span style="color: #555555;">2021-08-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  lattice              0.20-45      <span style="color: #555555;">2021-09-22</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
+<span><span class="co">#&gt;  lattice              0.20-45      <span style="color: #555555;">2021-09-22</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
 <span><span class="co">#&gt;  lifecycle            1.0.3        <span style="color: #555555;">2022-10-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  lpSolveAPI           5.5.2.0-17.9 <span style="color: #555555;">2022-10-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  magrittr             2.0.3        <span style="color: #555555;">2022-03-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  MASS                 7.3-57       <span style="color: #555555;">2022-04-22</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
-<span><span class="co">#&gt;  Matrix               1.4-1        <span style="color: #555555;">2022-03-23</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
+<span><span class="co">#&gt;  MASS                 7.3-57       <span style="color: #555555;">2022-04-22</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
+<span><span class="co">#&gt;  Matrix               1.4-1        <span style="color: #555555;">2022-03-23</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
 <span><span class="co">#&gt;  memoise              2.0.1        <span style="color: #555555;">2021-11-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  mgcv                 1.8-40       <span style="color: #555555;">2022-03-29</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
+<span><span class="co">#&gt;  mgcv                 1.8-40       <span style="color: #555555;">2022-03-29</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
 <span><span class="co">#&gt;  microbiome           1.18.0       <span style="color: #555555;">2022-04-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">#&gt;  microViz           * 0.10.0       <span style="color: #555555;">2022-10-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">local</span></span></span>
+<span><span class="co">#&gt;  microViz           * 0.10.0       <span style="color: #555555;">2022-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">local</span></span></span>
 <span><span class="co">#&gt;  mime                 0.12         <span style="color: #555555;">2021-09-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  miniUI               0.1.1.1      <span style="color: #555555;">2018-05-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  multtest             2.52.0       <span style="color: #555555;">2022-04-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">#&gt;  munsell              0.5.0        <span style="color: #555555;">2018-06-12</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  nlme                 3.1-157      <span style="color: #555555;">2022-03-25</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
+<span><span class="co">#&gt;  nlme                 3.1-157      <span style="color: #555555;">2022-03-25</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
 <span><span class="co">#&gt;  numDeriv             <span style="color: #BB00BB; font-weight: bold;">2016.8-1.1  </span> <span style="color: #555555;">2019-06-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  patchwork            1.1.2        <span style="color: #555555;">2022-08-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  permute              0.9-7        <span style="color: #555555;">2022-01-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
@@ -1237,12 +1356,12 @@
 <span><span class="co">#&gt;  sass                 0.4.2        <span style="color: #555555;">2022-07-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  scales               1.2.1        <span style="color: #555555;">2022-08-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  sessioninfo          1.2.2        <span style="color: #555555;">2021-12-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  shiny                1.7.2        <span style="color: #555555;">2022-07-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  shiny                1.7.3        <span style="color: #555555;">2022-10-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  skimr                2.1.4        <span style="color: #555555;">2022-04-15</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  slam                 0.1-50       <span style="color: #555555;">2022-01-08</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  stringi              1.7.8        <span style="color: #555555;">2022-07-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  stringr              1.4.1        <span style="color: #555555;">2022-08-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  survival             3.3-1        <span style="color: #555555;">2022-03-03</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
+<span><span class="co">#&gt;  survival             3.3-1        <span style="color: #555555;">2022-03-03</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
 <span><span class="co">#&gt;  systemfonts          1.0.4        <span style="color: #555555;">2022-02-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  textshaping          0.3.6        <span style="color: #555555;">2021-10-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  tibble               3.1.8        <span style="color: #555555;">2022-07-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
@@ -1267,7 +1386,8 @@
 <span><span class="co">#&gt;  zlibbioc             1.42.0       <span style="color: #555555;">2022-04-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #555555;"> [1] /home/runner/work/_temp/Library</span></span></span>
-<span><span class="co">#&gt; <span style="color: #555555;"> [2] /opt/R/4.2.1/lib/R/library</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;"> [2] /opt/R/4.2.1/lib/R/site-library</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;"> [3] /opt/R/4.2.1/lib/R/library</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">──────────────────────────────────────────────────────────────────────────────</span></span></span></code></pre></div>
 </div>

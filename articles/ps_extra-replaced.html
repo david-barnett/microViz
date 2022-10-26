@@ -131,7 +131,8 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Upgrading to microViz version 0.10.0 (and beyond)</h1>
+      <h1 data-toc-skip>Upgrading to microViz version 0.10.0 (and
+beyond)</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/HEAD/vignettes/articles/ps_extra-replaced.Rmd" class="external-link"><code>vignettes/articles/ps_extra-replaced.Rmd</code></a></small>
@@ -150,7 +151,10 @@
 <div class="section level2">
 <h2 id="do-i-need-to-read-this">Do I need to read this?<a class="anchor" aria-label="anchor" href="#do-i-need-to-read-this"></a>
 </h2>
-<p>This article is important for you to read if you are already using microViz version 0.9.7 or earlier, and would like to upgrade to the newest version. You can check which version of microViz you are using by running the following code.</p>
+<p>This article is important for you to read if you are already using
+microViz version 0.9.7 or earlier, and would like to upgrade to the
+newest version. You can check which version of microViz you are using by
+running the following code.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/packageDescription.html" class="external-link">packageVersion</a></span><span class="op">(</span><span class="st">"microViz"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] '0.10.0'</span></span></code></pre></div>
@@ -158,27 +162,44 @@
 <div class="section level2">
 <h2 id="key-points">Key points<a class="anchor" aria-label="anchor" href="#key-points"></a>
 </h2>
-<p><strong>microViz version 0.10.0 introduces changes that may break some code written with older versions of microViz.</strong></p>
+<p><strong>microViz version 0.10.0 introduces changes that may break
+some code written with older versions of microViz.</strong></p>
 <ul>
 <li>
 <p><strong>Breaking change 1:</strong></p>
 <ul>
-<li><p><strong>Description</strong>: using the <code>$</code> operator to access parts of the old “ps_extra” S3 class list (e.g. <code>yourData$ps</code> or <code>yourData$dist)</code> will no longer work in microViz 0.10.0 or later</p></li>
-<li><p><strong>Solution:</strong> You must replace the use of the <code>$</code> operator with <a href="https://david-barnett.github.io/microViz/reference/psExtra-accessors.html">accessor</a> functions, e.g. <code><a href="../reference/psExtra-accessors.html">ps_get()</a></code> or <code><a href="../reference/psExtra-accessors.html">dist_get()</a></code></p></li>
+<li><p><strong>Description</strong>: using the <code>$</code> operator
+to access parts of the old “ps_extra” S3 class list
+(e.g. <code>yourData$ps</code> or <code>yourData$dist)</code> will no
+longer work in microViz 0.10.0 or later</p></li>
+<li><p><strong>Solution:</strong> You must replace the use of the
+<code>$</code> operator with <a href="https://david-barnett.github.io/microViz/reference/psExtra-accessors.html">accessor</a>
+functions, e.g. <code><a href="../reference/psExtra-accessors.html">ps_get()</a></code> or
+<code><a href="../reference/psExtra-accessors.html">dist_get()</a></code></p></li>
 </ul>
 </li>
 <li>
 <p><strong>Breaking change 2:</strong></p>
 <ul>
-<li><p><strong>Description</strong>: if you have a saved “ps_extra” object generated with an older version of microViz, this will not be compatible with microViz version 0.10.0 and later versions</p></li>
-<li><p><strong>Solution</strong>: you can convert old “ps_extra” objects to the new “psExtra” S4 objects with the new function <code><a href="../reference/upgrade_ps_extra_to_psExtra.html">upgrade_ps_extra_to_psExtra()</a></code></p></li>
+<li><p><strong>Description</strong>: if you have a saved “ps_extra”
+object generated with an older version of microViz, this will not be
+compatible with microViz version 0.10.0 and later versions</p></li>
+<li><p><strong>Solution</strong>: you can convert old “ps_extra” objects
+to the new “psExtra” S4 objects with the new function
+<code><a href="../reference/upgrade_ps_extra_to_psExtra.html">upgrade_ps_extra_to_psExtra()</a></code></p></li>
 </ul>
 </li>
 <li>
 <p><strong>Need more help?</strong></p>
 <ul>
-<li><p>If you have questions about upgrading your version of microViz, please ask them here on the <a href="https://github.com/david-barnett/microViz/discussions" class="external-link">Discussions</a> page.</p></li>
-<li><p>If you encounter any other problems (not mentioned here) after upgrading to version 0.10.0 or later, please report them as <a href="https://github.com/david-barnett/microViz/issues" class="external-link">Issues</a>, and describe which version of microViz they occur with, e.g. include the output of <code>packageVersion("microViz")</code> or <code><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo()</a></code>.</p></li>
+<li><p>If you have questions about upgrading your version of microViz,
+please ask them here on the <a href="https://github.com/david-barnett/microViz/discussions" class="external-link">Discussions</a>
+page.</p></li>
+<li><p>If you encounter any other problems (not mentioned here) after
+upgrading to version 0.10.0 or later, please report them as <a href="https://github.com/david-barnett/microViz/issues" class="external-link">Issues</a>, and
+describe which version of microViz they occur with, e.g. include the
+output of <code>packageVersion("microViz")</code> or
+<code><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo()</a></code>.</p></li>
 </ul>
 </li>
 </ul>
@@ -186,18 +207,37 @@
 <div class="section level2">
 <h2 id="explanation">Explanation<a class="anchor" aria-label="anchor" href="#explanation"></a>
 </h2>
-<p>Many microViz functions, including <code><a href="../reference/tax_transform.html">tax_transform()</a></code>, <code><a href="../reference/dist_calc.html">dist_calc()</a></code>, etc. use and produce R objects that contain a “phyloseq” object along with additional information (e.g. the name of the transformation applied, and the name of the distance method used) and additional objects (e.g. the distance matrix itself).</p>
-<p>In microViz versions 0.9.7 and earlier, the extra information and objects were stored alongside the phyloseq object in a simple (S3) list object with the class, “ps_extra”.</p>
-<p>From microViz version 0.10.0 onwards, the S3 “ps_extra” object class is no longer used. It has been replaced with an S4 object class “psExtra”. The “psExtra” S4 class is an extension of the “phyloseq” S4 class, with extra slots to store other information and additional objects. All slots have a clearly named accessor function to retrieve the information or data stored within them.</p>
+<p>Many microViz functions, including <code><a href="../reference/tax_transform.html">tax_transform()</a></code>,
+<code><a href="../reference/dist_calc.html">dist_calc()</a></code>, etc. use and produce R objects that contain a
+“phyloseq” object along with additional information (e.g. the name of
+the transformation applied, and the name of the distance method used)
+and additional objects (e.g. the distance matrix itself).</p>
+<p>In microViz versions 0.9.7 and earlier, the extra information and
+objects were stored alongside the phyloseq object in a simple (S3) list
+object with the class, “ps_extra”.</p>
+<p>From microViz version 0.10.0 onwards, the S3 “ps_extra” object class
+is no longer used. It has been replaced with an S4 object class
+“psExtra”. The “psExtra” S4 class is an extension of the “phyloseq” S4
+class, with extra slots to store other information and additional
+objects. All slots have a clearly named accessor function to retrieve
+the information or data stored within them.</p>
 <div class="section level3">
 <h3 id="why-was-this-change-made">Why was this change made?<a class="anchor" aria-label="anchor" href="#why-was-this-change-made"></a>
 </h3>
-<p>In the long term, this change should simplify compatibility of microViz with other packages that work with phyloseq objects. Most functions that expect a phyloseq object should now also work with psExtra objects, as the extra slots can just be ignored. (But for now, if you are unsure, it is safest to use <code>ps_get</code> to extract a plain phyloseq from any psExtra object.)</p>
+<p>In the long term, this change should simplify compatibility of
+microViz with other packages that work with phyloseq objects. Most
+functions that expect a phyloseq object should now also work with
+psExtra objects, as the extra slots can just be ignored. (But for now,
+if you are unsure, it is safest to use <code>ps_get</code> to extract a
+plain phyloseq from any psExtra object.)</p>
 </div>
 <div class="section level3">
 <h3 id="do-i-need-to-understand-what-s4-and-s3-classes-are">Do I need to understand what S4 and S3 classes are?<a class="anchor" aria-label="anchor" href="#do-i-need-to-understand-what-s4-and-s3-classes-are"></a>
 </h3>
-<p>No, you do not need to understand these concepts to use microViz. But If you are interested to learn, a good place to start is Hadley Wickham’s <a href="https://adv-r.hadley.nz/oo.html" class="external-link">Advanced R book chapter on object-oriented programming</a>.</p>
+<p>No, you do not need to understand these concepts to use microViz. But
+If you are interested to learn, a good place to start is Hadley
+Wickham’s <a href="https://adv-r.hadley.nz/oo.html" class="external-link">Advanced R book
+chapter on object-oriented programming</a>.</p>
 </div>
 </div>
   </div>

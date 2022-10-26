@@ -144,7 +144,8 @@
 <div class="section level2">
 <h2 id="intro">Intro<a class="anchor" aria-label="anchor" href="#intro"></a>
 </h2>
-<p>This tutorial will show you how microViz makes working with phyloseq objects easier.</p>
+<p>This tutorial will show you how microViz makes working with phyloseq
+objects easier.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -165,14 +166,28 @@
 <div class="section level2">
 <h2 id="getting-your-data-into-phyloseq">Getting your data into phyloseq<a class="anchor" aria-label="anchor" href="#getting-your-data-into-phyloseq"></a>
 </h2>
-<p>phyloseq objects are probably the most commonly used data format for working with microbiome data in R.</p>
-<p>The creator of phyloseq, <a href="https://github.com/joey711" class="external-link">Paul J. McMurdie</a>, explains the structure of phyloseq objects and how to construct them on the <a href="https://joey711.github.io/phyloseq/import-data.html#phyloseq-ize_data_already_in_r" class="external-link">phyloseq website</a>.</p>
+<p>phyloseq objects are probably the most commonly used data format for
+working with microbiome data in R.</p>
+<p>The creator of phyloseq, <a href="https://github.com/joey711" class="external-link">Paul J.
+McMurdie</a>, explains the structure of phyloseq objects and how to
+construct them on the <a href="https://joey711.github.io/phyloseq/import-data.html#phyloseq-ize_data_already_in_r" class="external-link">phyloseq
+website</a>.</p>
 <ul>
-<li><p><a href="http://biom-format.org/" class="external-link">biom format</a> files can be imported to phyloseq with the <a href="https://joey711.github.io/phyloseq/import-data.html#the_import_family_of_functions" class="external-link"><code>import_biom</code></a> function. Such biom files are generated (or can be) from many processing tools including QIIME <a href="http://qiime.org/tutorials/index.html" class="external-link">1</a> / <a href="https://docs.qiime2.org/2021.8/tutorials/exporting/" class="external-link">2</a>, <a href="http://segatalab.cibio.unitn.it/tools/metaphlan/" class="external-link">MetaPhlAn</a>, and <a href="https://doi.org/10.3389/fgene.2019.01366" class="external-link">NG-Tax</a>.</p></li>
-<li><p><a href="https://mothur.org/" class="external-link">mothur</a> output is also directly supported via phyloseq’s <a href="https://joey711.github.io/phyloseq/import-data.html#_import_mothur" class="external-link"><code>import_mothur</code></a> function.</p></li>
-<li><p><a href="https://benjjneb.github.io/dada2/" class="external-link">DADA2</a> output can converted to phyloseq according to these <a href="https://benjjneb.github.io/dada2/tutorial.html#bonus-handoff-to-phyloseq" class="external-link">DADA2 handoff instructions</a></p></li>
+<li><p><a href="http://biom-format.org/" class="external-link">biom format</a> files can be
+imported to phyloseq with the <a href="https://joey711.github.io/phyloseq/import-data.html#the_import_family_of_functions" class="external-link"><code>import_biom</code></a>
+function. Such biom files are generated (or can be) from many processing
+tools including QIIME <a href="http://qiime.org/tutorials/index.html" class="external-link">1</a> / <a href="https://docs.qiime2.org/2021.8/tutorials/exporting/" class="external-link">2</a>, <a href="http://segatalab.cibio.unitn.it/tools/metaphlan/" class="external-link">MetaPhlAn</a>,
+and <a href="https://doi.org/10.3389/fgene.2019.01366" class="external-link">NG-Tax</a>.</p></li>
+<li><p><a href="https://mothur.org/" class="external-link">mothur</a> output is also directly
+supported via phyloseq’s <a href="https://joey711.github.io/phyloseq/import-data.html#_import_mothur" class="external-link"><code>import_mothur</code></a>
+function.</p></li>
+<li><p><a href="https://benjjneb.github.io/dada2/" class="external-link">DADA2</a> output can
+converted to phyloseq according to these <a href="https://benjjneb.github.io/dada2/tutorial.html#bonus-handoff-to-phyloseq" class="external-link">DADA2
+handoff instructions</a></p></li>
 </ul>
-<p>Don’t worry too much about getting all of your sample metadata into your biom file or phyloseq object at the start, as <code><a href="../../reference/ps_join.html">ps_join()</a></code> makes it easy to add sample data later.</p>
+<p>Don’t worry too much about getting all of your sample metadata into
+your biom file or phyloseq object at the start, as
+<code><a href="../../reference/ps_join.html">ps_join()</a></code> makes it easy to add sample data later.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># This tutorial will just use some example data </span></span>
 <span><span class="co"># It is already available as a phyloseq object from the corncob package</span></span>
@@ -185,7 +200,12 @@
 <div class="section level3">
 <h3 id="validating-your-phyloseq">Validating your phyloseq<a class="anchor" aria-label="anchor" href="#validating-your-phyloseq"></a>
 </h3>
-<p>phyloseq checks that your sample and taxa names are consistent across the different slots of the phyloseq object. microViz provides <code><a href="../../reference/phyloseq_validate.html">phyloseq_validate()</a></code> to check for and fix other possible problems with your phyloseq that might cause problems in later analyses. It is recommended to run this at the start of your analyses, and fix any problems identified.</p>
+<p>phyloseq checks that your sample and taxa names are consistent across
+the different slots of the phyloseq object. microViz provides
+<code><a href="../../reference/phyloseq_validate.html">phyloseq_validate()</a></code> to check for and fix other possible
+problems with your phyloseq that might cause problems in later analyses.
+It is recommended to run this at the start of your analyses, and fix any
+problems identified.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">example_ps</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/phyloseq_validate.html">phyloseq_validate</a></span><span class="op">(</span><span class="va">example_ps</span>, remove_undetected <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Short values detected in phyloseq tax_table (nchar&lt;4) :</span></span>
@@ -196,24 +216,37 @@
 <div class="section level2">
 <h2 id="microviz-and-phyloseq-overview">microViz and phyloseq overview<a class="anchor" aria-label="anchor" href="#microviz-and-phyloseq-overview"></a>
 </h2>
-<p>Once you have a valid phyloseq object, microViz provides several helpful functions for manipulating that object. The names and syntax of some functions will be familiar to users of dplyr, and reading <a href="https://dplyr.tidyverse.org/" class="external-link">the dplyr help pages</a> may be useful for getting the most out of these functions.</p>
+<p>Once you have a valid phyloseq object, microViz provides several
+helpful functions for manipulating that object. The names and syntax of
+some functions will be familiar to users of dplyr, and reading <a href="https://dplyr.tidyverse.org/" class="external-link">the dplyr help pages</a> may be
+useful for getting the most out of these functions.</p>
 <ul>
-<li><p>Add a data.frame of metadata to the sample_data slot with <code><a href="../../reference/ps_join.html">ps_join()</a></code></p></li>
-<li><p>Compute new sample_data variables with <code><a href="../../reference/ps_mutate.html">ps_mutate()</a></code></p></li>
-<li><p>Subset or reorder variables in sample_data with <code><a href="../../reference/ps_select.html">ps_select()</a></code></p></li>
-<li><p>Subset samples based on sample_data variables with <code><a href="../../reference/ps_filter.html">ps_filter()</a></code></p></li>
+<li><p>Add a data.frame of metadata to the sample_data slot with
+<code><a href="../../reference/ps_join.html">ps_join()</a></code></p></li>
+<li><p>Compute new sample_data variables with
+<code><a href="../../reference/ps_mutate.html">ps_mutate()</a></code></p></li>
+<li><p>Subset or reorder variables in sample_data with
+<code><a href="../../reference/ps_select.html">ps_select()</a></code></p></li>
+<li><p>Subset samples based on sample_data variables with
+<code><a href="../../reference/ps_filter.html">ps_filter()</a></code></p></li>
 <li>
-<p>Reorder samples (can be useful for examining sample data or plotting) with:</p>
+<p>Reorder samples (can be useful for examining sample data or
+plotting) with:</p>
 <ul>
 <li><p><code><a href="../../reference/ps_reorder.html">ps_reorder()</a></code> : manually set sample order</p></li>
-<li><p><code><a href="../../reference/ps_arrange.html">ps_arrange()</a></code> : order samples using sample_data variables</p></li>
-<li><p><code><a href="../../reference/ps_seriate.html">ps_seriate()</a></code> : order samples according to microbiome similarity</p></li>
+<li><p><code><a href="../../reference/ps_arrange.html">ps_arrange()</a></code> : order samples using sample_data
+variables</p></li>
+<li><p><code><a href="../../reference/ps_seriate.html">ps_seriate()</a></code> : order samples according to microbiome
+similarity</p></li>
 </ul>
 </li>
-<li><p>Remove duplicated/repeated samples with <code><a href="../../reference/ps_dedupe.html">ps_dedupe()</a></code></p></li>
-<li><p>Remove samples with missing values in sample_data with <code><a href="../../reference/ps_drop_incomplete.html">ps_drop_incomplete()</a></code></p></li>
+<li><p>Remove duplicated/repeated samples with
+<code><a href="../../reference/ps_dedupe.html">ps_dedupe()</a></code></p></li>
+<li><p>Remove samples with missing values in sample_data with
+<code><a href="../../reference/ps_drop_incomplete.html">ps_drop_incomplete()</a></code></p></li>
 </ul>
-<p>Check out the examples section on each function’s <a href="https://david-barnett.github.io/microViz/reference/index.html#section-manipulating-sample-data">reference</a> page for extensive usage examples.</p>
+<p>Check out the examples section on each function’s <a href="https://david-barnett.github.io/microViz/reference/index.html#section-manipulating-sample-data">reference</a>
+page for extensive usage examples.</p>
 </div>
 <div class="section level2">
 <h2 id="example-sample-manipulation">Example sample manipulation<a class="anchor" aria-label="anchor" href="#example-sample-manipulation"></a>
@@ -244,7 +277,9 @@
 <span><span class="co">#&gt; <span style="color: #949494;"># … with 81 more rows, 5 more variables: active &lt;chr&gt;, race &lt;chr&gt;, fhx &lt;chr&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   imspLEVEL &lt;chr&gt;, SampleType &lt;chr&gt;, and abbreviated variable names</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   ¹​.sample_name, ²​DiseaseState, ³​steroids, ⁴​mesalamine, ⁵​activity</span></span></span></code></pre></div>
-<p>Maybe you want to only select participants who have IBD (not controls). You can do that by filtering samples based on the values of the sample data variable: ibd</p>
+<p>Maybe you want to only select participants who have IBD (not
+controls). You can do that by filtering samples based on the values of
+the sample data variable: ibd</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">example_ps</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">ibd</span> <span class="op">==</span> <span class="st">"ibd"</span><span class="op">)</span> <span class="co"># it is essential to use `==` , not just one `=`</span></span>
 <span><span class="co">#&gt; phyloseq-class experiment-level object</span></span>
@@ -252,7 +287,9 @@
 <span><span class="co">#&gt; sample_data() Sample Data:       [ 67 samples by 15 sample variables ]</span></span>
 <span><span class="co">#&gt; tax_table()   Taxonomy Table:    [ 24490 taxa by 7 taxonomic ranks ]</span></span>
 <span><span class="co"># notice that taxa that no longer appear in the remaining 67 samples have been removed!</span></span></code></pre></div>
-<p>More complicated filtering rules can be applied. Let’s say you want female IBD patients with “mild” or “severe” activity, who are at least 13 years old.</p>
+<p>More complicated filtering rules can be applied. Let’s say you want
+female IBD patients with “mild” or “severe” activity, who are at least
+13 years old.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">partial_ps</span> <span class="op">&lt;-</span> <span class="va">example_ps</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span></span>
@@ -265,7 +302,9 @@
 <span><span class="co">#&gt; otu_table()   OTU Table:         [ 2600 taxa and 9 samples ]</span></span>
 <span><span class="co">#&gt; sample_data() Sample Data:       [ 9 samples by 15 sample variables ]</span></span>
 <span><span class="co">#&gt; tax_table()   Taxonomy Table:    [ 2600 taxa by 7 taxonomic ranks ]</span></span></code></pre></div>
-<p>Let’s have a look at the sample data of these participants. We will also arrange the samples grouped by disease and in descending age order, and select only a few interesting variables to show.</p>
+<p>Let’s have a look at the sample data of these participants. We will
+also arrange the samples grouped by disease and in descending age order,
+and select only a few interesting variables to show.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">partial_ps</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/ps_arrange.html">ps_arrange</a></span><span class="op">(</span><span class="va">DiseaseState</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">age</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
@@ -283,7 +322,8 @@
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> 009A         UC              15 severe   active noabx</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> 120D         UC              14 mild     active noabx</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">9</span> 186A         UC              14 severe   active abx</span></span></code></pre></div>
-<p>You can also sort sample by microbiome similarity with <code><a href="../../reference/ps_seriate.html">ps_seriate()</a></code>.</p>
+<p>You can also sort sample by microbiome similarity with
+<code><a href="../../reference/ps_seriate.html">ps_seriate()</a></code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">partial_ps</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
@@ -296,7 +336,10 @@
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># note that comp_barplot with sample_order = "bray" will run </span></span>
 <span><span class="co"># this ps_seriate call internally, so you don't have to!</span></span></code></pre></div>
-<p>You can also arrange samples by abundance of one of more microbes using <code><a href="../../reference/ps_arrange.html">ps_arrange()</a></code> with <code>.target = "otu_table"</code>. Arranging by taxon can only be done at the current taxonomic rank, so we will aggregate to Genus level first.</p>
+<p>You can also arrange samples by abundance of one of more microbes
+using <code><a href="../../reference/ps_arrange.html">ps_arrange()</a></code> with <code>.target = "otu_table"</code>.
+Arranging by taxon can only be done at the current taxonomic rank, so we
+will aggregate to Genus level first.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Arranging by decreasing Bacteroides abundance</span></span>
 <span><span class="va">partial_ps</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
@@ -332,12 +375,19 @@
 </h2>
 <div class="section level3">
 <h3 id="ps_filter-vs--phyloseqsubset_samples">
-<code>ps_filter()</code> vs. <code>phyloseq::subset_samples()</code><a class="anchor" aria-label="anchor" href="#ps_filter-vs--phyloseqsubset_samples"></a>
+<code>ps_filter()</code>
+vs. <code>phyloseq::subset_samples()</code><a class="anchor" aria-label="anchor" href="#ps_filter-vs--phyloseqsubset_samples"></a>
 </h3>
-<p>As well as filtering your samples, <code><a href="../../reference/ps_filter.html">ps_filter()</a></code> might also modify the otu_table and tax_table of the phyloseq object (unlike <code><a href="https://rdrr.io/pkg/phyloseq/man/subset_samples-methods.html" class="external-link">phyloseq::subset_samples()</a></code>, which never does this).</p>
+<p>As well as filtering your samples, <code><a href="../../reference/ps_filter.html">ps_filter()</a></code> might
+also modify the otu_table and tax_table of the phyloseq object (unlike
+<code><a href="https://rdrr.io/pkg/phyloseq/man/subset_samples-methods.html" class="external-link">phyloseq::subset_samples()</a></code>, which never does this).</p>
 <p>Why does it do this?<br>
-If you remove many samples from your dataset, often your phyloseq object will be left with taxa that never occur in any of the remaining samples (i.e. total counts of zero). <code><a href="../../reference/ps_filter.html">ps_filter()</a></code> removes those absent taxa by default.</p>
-<p>If you don’t want this, you can set the <code>.keep_all_taxa</code> argument to <code>TRUE</code> in <code>ps_filter</code>.</p>
+If you remove many samples from your dataset, often your phyloseq object
+will be left with taxa that never occur in any of the remaining samples
+(i.e. total counts of zero). <code><a href="../../reference/ps_filter.html">ps_filter()</a></code> removes those
+absent taxa by default.</p>
+<p>If you don’t want this, you can set the <code>.keep_all_taxa</code>
+argument to <code>TRUE</code> in <code>ps_filter</code>.</p>
 </div>
 </div>
 <div class="section level2">
@@ -355,8 +405,8 @@ If you remove many samples from your dataset, often your phyloseq object will be
 <span><span class="co">#&gt;  collate  C.UTF-8</span></span>
 <span><span class="co">#&gt;  ctype    C.UTF-8</span></span>
 <span><span class="co">#&gt;  tz       UTC</span></span>
-<span><span class="co">#&gt;  date     2022-10-25</span></span>
-<span><span class="co">#&gt;  pandoc   2.14.2 @ /usr/bin/ (via rmarkdown)</span></span>
+<span><span class="co">#&gt;  date     2022-10-26</span></span>
+<span><span class="co">#&gt;  pandoc   2.19.2 @ /usr/bin/ (via rmarkdown)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">─ Packages ───────────────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt;  <span style="color: #555555; font-style: italic;">package         </span> <span style="color: #555555; font-style: italic;">*</span> <span style="color: #555555; font-style: italic;">version </span> <span style="color: #555555; font-style: italic;">date (UTC)</span> <span style="color: #555555; font-style: italic;">lib</span> <span style="color: #555555; font-style: italic;">source</span></span></span>
@@ -372,8 +422,8 @@ If you remove many samples from your dataset, often your phyloseq object will be
 <span><span class="co">#&gt;  cachem             1.0.6    <span style="color: #555555;">2021-08-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  callr              3.7.2    <span style="color: #555555;">2022-08-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  cli                3.4.1    <span style="color: #555555;">2022-09-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  cluster            2.1.3    <span style="color: #555555;">2022-03-28</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
-<span><span class="co">#&gt;  codetools          0.2-18   <span style="color: #555555;">2020-11-04</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
+<span><span class="co">#&gt;  cluster            2.1.3    <span style="color: #555555;">2022-03-28</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
+<span><span class="co">#&gt;  codetools          0.2-18   <span style="color: #555555;">2020-11-04</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
 <span><span class="co">#&gt;  colorspace         2.0-3    <span style="color: #555555;">2022-02-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  corncob            0.3.0    <span style="color: #555555;">2022-09-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  crayon             1.5.2    <span style="color: #555555;">2022-09-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
@@ -407,20 +457,20 @@ If you remove many samples from your dataset, often your phyloseq object will be
 <span><span class="co">#&gt;  knitr              1.40     <span style="color: #555555;">2022-08-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  labeling           0.4.2    <span style="color: #555555;">2020-10-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  later              1.3.0    <span style="color: #555555;">2021-08-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  lattice            0.20-45  <span style="color: #555555;">2021-09-22</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
+<span><span class="co">#&gt;  lattice            0.20-45  <span style="color: #555555;">2021-09-22</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
 <span><span class="co">#&gt;  lifecycle          1.0.3    <span style="color: #555555;">2022-10-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  magrittr           2.0.3    <span style="color: #555555;">2022-03-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  MASS               7.3-57   <span style="color: #555555;">2022-04-22</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
-<span><span class="co">#&gt;  Matrix             1.4-1    <span style="color: #555555;">2022-03-23</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
+<span><span class="co">#&gt;  MASS               7.3-57   <span style="color: #555555;">2022-04-22</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
+<span><span class="co">#&gt;  Matrix             1.4-1    <span style="color: #555555;">2022-03-23</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
 <span><span class="co">#&gt;  memoise            2.0.1    <span style="color: #555555;">2021-11-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  mgcv               1.8-40   <span style="color: #555555;">2022-03-29</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
+<span><span class="co">#&gt;  mgcv               1.8-40   <span style="color: #555555;">2022-03-29</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
 <span><span class="co">#&gt;  microbiome         1.18.0   <span style="color: #555555;">2022-04-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">#&gt;  microViz         * 0.10.0   <span style="color: #555555;">2022-10-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">local</span></span></span>
+<span><span class="co">#&gt;  microViz         * 0.10.0   <span style="color: #555555;">2022-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">local</span></span></span>
 <span><span class="co">#&gt;  mime               0.12     <span style="color: #555555;">2021-09-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  miniUI             0.1.1.1  <span style="color: #555555;">2018-05-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  multtest           2.52.0   <span style="color: #555555;">2022-04-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">#&gt;  munsell            0.5.0    <span style="color: #555555;">2018-06-12</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  nlme               3.1-157  <span style="color: #555555;">2022-03-25</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
+<span><span class="co">#&gt;  nlme               3.1-157  <span style="color: #555555;">2022-03-25</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
 <span><span class="co">#&gt;  permute            0.9-7    <span style="color: #555555;">2022-01-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  phyloseq         * 1.40.0   <span style="color: #555555;">2022-04-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">#&gt;  pillar             1.8.1    <span style="color: #555555;">2022-08-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
@@ -454,10 +504,10 @@ If you remove many samples from your dataset, often your phyloseq object will be
 <span><span class="co">#&gt;  scales             1.2.1    <span style="color: #555555;">2022-08-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  seriation          1.4.0    <span style="color: #555555;">2022-10-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  sessioninfo        1.2.2    <span style="color: #555555;">2021-12-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  shiny              1.7.2    <span style="color: #555555;">2022-07-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  shiny              1.7.3    <span style="color: #555555;">2022-10-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  stringi            1.7.8    <span style="color: #555555;">2022-07-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  stringr            1.4.1    <span style="color: #555555;">2022-08-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  survival           3.3-1    <span style="color: #555555;">2022-03-03</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
+<span><span class="co">#&gt;  survival           3.3-1    <span style="color: #555555;">2022-03-03</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
 <span><span class="co">#&gt;  systemfonts        1.0.4    <span style="color: #555555;">2022-02-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  textshaping        0.3.6    <span style="color: #555555;">2021-10-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  tibble             3.1.8    <span style="color: #555555;">2022-07-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
@@ -477,7 +527,8 @@ If you remove many samples from your dataset, often your phyloseq object will be
 <span><span class="co">#&gt;  zlibbioc           1.42.0   <span style="color: #555555;">2022-04-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #555555;"> [1] /home/runner/work/_temp/Library</span></span></span>
-<span><span class="co">#&gt; <span style="color: #555555;"> [2] /opt/R/4.2.1/lib/R/library</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;"> [2] /opt/R/4.2.1/lib/R/site-library</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;"> [3] /opt/R/4.2.1/lib/R/library</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">──────────────────────────────────────────────────────────────────────────────</span></span></span></code></pre></div>
 </div>

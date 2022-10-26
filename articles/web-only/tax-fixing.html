@@ -144,7 +144,13 @@
 <div class="section level2">
 <h2 id="quick-start-tldr">Quick start / TLDR<a class="anchor" aria-label="anchor" href="#quick-start-tldr"></a>
 </h2>
-<p>Use <code><a href="../../reference/tax_fix.html">tax_fix()</a></code> on your phyloseq data with default arguments to repair most <code>tax_table</code> problems (missing or uninformative values). If you still encounter errors using e.g. <code>tax_agg</code>, try using the Shiny app <code><a href="../../reference/tax_fix_interactive.html">tax_fix_interactive()</a></code> to help you generate <code>tax_fix</code> code that will fix your particular <code>tax_table</code> problems.</p>
+<p>Use <code><a href="../../reference/tax_fix.html">tax_fix()</a></code> on your phyloseq data with default
+arguments to repair most <code>tax_table</code> problems (missing or
+uninformative values). If you still encounter errors using
+e.g. <code>tax_agg</code>, try using the Shiny app
+<code><a href="../../reference/tax_fix_interactive.html">tax_fix_interactive()</a></code> to help you generate
+<code>tax_fix</code> code that will fix your particular
+<code>tax_table</code> problems.</p>
 <hr>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://dx.plos.org/10.1371/journal.pone.0061217" class="external-link">phyloseq</a></span><span class="op">)</span></span>
@@ -153,7 +159,10 @@
 <div class="section level2">
 <h2 id="intro">Intro<a class="anchor" aria-label="anchor" href="#intro"></a>
 </h2>
-<p>This article will explain some of the common problems that can occur in your phyloseq <code>tax_table</code>, and that might cause problems for e.g. <code>tax_agg</code>. You can fix these problems with the help of <code>tax_fix</code> and <code>tax_fix_interactive</code>.</p>
+<p>This article will explain some of the common problems that can occur
+in your phyloseq <code>tax_table</code>, and that might cause problems
+for e.g. <code>tax_agg</code>. You can fix these problems with the help
+of <code>tax_fix</code> and <code>tax_fix_interactive</code>.</p>
 </div>
 <div class="section level2">
 <h2 id="fixing-problems">Fixing problems<a class="anchor" aria-label="anchor" href="#fixing-problems"></a>
@@ -166,7 +175,9 @@
 <span><span class="co">#&gt; otu_table()   OTU Table:         [ 36349 taxa and 91 samples ]</span></span>
 <span><span class="co">#&gt; sample_data() Sample Data:       [ 91 samples by 15 sample variables ]</span></span>
 <span><span class="co">#&gt; tax_table()   Taxonomy Table:    [ 36349 taxa by 7 taxonomic ranks ]</span></span></code></pre></div>
-<p>The Species rank appears to be blank for many entries. This is a problem you may well encounter in your data: unique sequences or OTUs often cannot be annotated at lower taxonomic ranks.</p>
+<p>The Species rank appears to be blank for many entries. This is a
+problem you may well encounter in your data: unique sequences or OTUs
+often cannot be annotated at lower taxonomic ranks.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html" class="external-link">tax_table</a></span><span class="op">(</span><span class="va">pseq</span><span class="op">)</span><span class="op">[</span><span class="fl">40</span><span class="op">:</span><span class="fl">54</span>, <span class="fl">4</span><span class="op">:</span><span class="fl">7</span><span class="op">]</span> <span class="co"># highest 3 ranks not shown, to save space</span></span>
 <span><span class="co">#&gt; Taxonomy Table:     [15 taxa by 4 taxonomic ranks]:</span></span>
@@ -186,10 +197,20 @@
 <span><span class="co">#&gt; OTU.52 "Clostridiales"     "Lachnospiraceae"    "Clostridium_XlVa"     ""     </span></span>
 <span><span class="co">#&gt; OTU.53 "Bacteroidales"     "Prevotellaceae"     "Prevotella"           ""     </span></span>
 <span><span class="co">#&gt; OTU.54 "Clostridiales"     "Lachnospiraceae"    ""                     ""</span></span></code></pre></div>
-<p>If we would try to aggregate at Genus or Family rank level, we discover that blank values at these ranks prevent taxonomic aggregation. This is because, for example, it looks like OTU.43 and OTU.54 share the same (empty) Genus name, ““, despite being different at a higher rank, Family.</p>
+<p>If we would try to aggregate at Genus or Family rank level, we
+discover that blank values at these ranks prevent taxonomic aggregation.
+This is because, for example, it looks like OTU.43 and OTU.54 share the
+same (empty) Genus name, ““, despite being different at a higher rank,
+Family.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># tax_agg(pseq, rank = "Family") # this fails, and sends (helpful) messages about taxa problems</span></span></code></pre></div>
-<p>So we should run <code>tax_fix</code> first, which will fix <strong>most</strong> problems with default settings, allowing taxa to be aggregated successfully (at any rank). If you still have errors when using tax_agg after tax_fix, carefully read the error and accompanying messages. Often you can copy suggested tax_fix code from the tax_agg error. You should generally also have a look around your tax_table for other uninformative values, using <a href="https://david-barnett.github.io/microViz/articles/web-only/tax-fixing.html#interactive-solutions">tax_fix_interactive</a>.</p>
+<p>So we should run <code>tax_fix</code> first, which will fix
+<strong>most</strong> problems with default settings, allowing taxa to
+be aggregated successfully (at any rank). If you still have errors when
+using tax_agg after tax_fix, carefully read the error and accompanying
+messages. Often you can copy suggested tax_fix code from the tax_agg
+error. You should generally also have a look around your tax_table for
+other uninformative values, using <a href="https://david-barnett.github.io/microViz/articles/web-only/tax-fixing.html#interactive-solutions">tax_fix_interactive</a>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pseq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/tax_fix.html">tax_fix</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"Family"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; psExtra object - a phyloseq object with extra slots:</span></span>
@@ -204,13 +225,18 @@
 <div class="section level3">
 <h3 id="what-does-tax_fix-do">What does tax_fix do?<a class="anchor" aria-label="anchor" href="#what-does-tax_fix-do"></a>
 </h3>
-<p><code>tax_fix</code> searches all the ranks of the phyloseq object <code>tax_table</code> for:</p>
+<p><code>tax_fix</code> searches all the ranks of the phyloseq object
+<code>tax_table</code> for:</p>
 <ul>
-<li><p>short values, like “g__”, ““,” “, etc. (any with fewer characters than min_length)</p></li>
-<li><p>common, longer but uninformative values like “unknown” (see full list at <code><a href="../../reference/tax_fix.html">?tax_fix</a></code>)</p></li>
+<li><p>short values, like “g__”, ““,” “, etc. (any with fewer characters
+than min_length)</p></li>
+<li><p>common, longer but uninformative values like “unknown” (see full
+list at <code><a href="../../reference/tax_fix.html">?tax_fix</a></code>)</p></li>
 <li><p>NAs</p></li>
 </ul>
-<p><code>tax_fix</code> replaces these values with the next higher taxonomic rank, e.g. an “unknown” Family within the Order Clostridiales will be renamed “Clostridiales Order”, as seen below.</p>
+<p><code>tax_fix</code> replaces these values with the next higher
+taxonomic rank, e.g. an “unknown” Family within the Order Clostridiales
+will be renamed “Clostridiales Order”, as seen below.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pseq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/tax_fix.html">tax_fix</a></span><span class="op">(</span>min_length <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
@@ -231,7 +257,13 @@
 <div class="section level3">
 <h3 id="interactive-solutions">Interactive solutions<a class="anchor" aria-label="anchor" href="#interactive-solutions"></a>
 </h3>
-<p>You can use <code><a href="../../reference/tax_fix_interactive.html">tax_fix_interactive()</a></code> to explore your data’s <code>tax_table</code> visually, and interactively find and fix problematic entries. You can then copy your automagically personalised <code>tax_fix</code> code from <code>tax_fix_interactive</code>’s output, to paste into your script. Below is a screen capture video of <code>tax_fix</code> in action, using some other artificially mangled example data (see details at <code>?tax_fix_interactive()</code>).</p>
+<p>You can use <code><a href="../../reference/tax_fix_interactive.html">tax_fix_interactive()</a></code> to explore your data’s
+<code>tax_table</code> visually, and interactively find and fix
+problematic entries. You can then copy your automagically personalised
+<code>tax_fix</code> code from <code>tax_fix_interactive</code>’s
+output, to paste into your script. Below is a screen capture video of
+<code>tax_fix</code> in action, using some other artificially mangled
+example data (see details at <code>?tax_fix_interactive()</code>).</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../../reference/tax_fix_interactive.html">tax_fix_interactive</a></span><span class="op">(</span><span class="va">example_data</span><span class="op">)</span></span></code></pre></div>
 <p><img src="images/20210411_tax_fix_interactive_x2.gif"></p>
@@ -241,27 +273,71 @@
 </h3>
 <ol style="list-style-type: decimal">
 <li>
-<strong>Completely unclassified taxa</strong> (aka taxa where all values in their <code>tax_table</code> row are either too short or listed in unknowns argument) will be replaced at all ranks with their unique row name by default (or alternatively with a generic name of “unclassified [highest rank]”, which is useful if you want to aggregate all the unclassified sequences together with <code><a href="../../reference/tax_agg.html">tax_agg()</a></code>)</li>
+<strong>Completely unclassified taxa</strong> (aka taxa where all
+values in their <code>tax_table</code> row are either too short or
+listed in unknowns argument) will be replaced at all ranks with their
+unique row name by default (or alternatively with a generic name of
+“unclassified [highest rank]”, which is useful if you want to aggregate
+all the unclassified sequences together with
+<code><a href="../../reference/tax_agg.html">tax_agg()</a></code>)</li>
 <li>
-<strong>Unclassified taxa that also have short / unknown row names</strong>, e.g. the unclassified taxon called “-1” in the example “enterotype” dataset from phyloseq. If something like this happens in your data, rename the taxa manually, (e.g. <code>taxa_names(enterotype)[1] &lt;- "unclassified taxon"</code> or give them all completely different names with <code><a href="../../reference/tax_name.html">tax_name()</a></code>.</li>
-<li>T<strong>axa with the same <code>tax_table</code> entry repeated across multiple ranks</strong>: This is a problem for functions like <code><a href="../../reference/taxatree_plots.html">taxatree_plots()</a></code>, which need distinct entries at each rank to build the tree structure for plotting. This might happen after you <code>tax_fix</code> data with problem 1. of this list, or in data from e.g. microarray methods like HITchip. The solution is to use <code><a href="../../reference/tax_prepend_ranks.html">tax_prepend_ranks()</a></code> (after <code>tax_fix</code>) to add the first character of the rank to all tax_table entries (you will also need set the <code>tax_fix</code> argument suffix_rank = “current”).</li>
+<strong>Unclassified taxa that also have short / unknown row
+names</strong>, e.g. the unclassified taxon called “-1” in the example
+“enterotype” dataset from phyloseq. If something like this happens in
+your data, rename the taxa manually,
+(e.g. <code>taxa_names(enterotype)[1] &lt;- "unclassified taxon"</code>
+or give them all completely different names with
+<code><a href="../../reference/tax_name.html">tax_name()</a></code>.</li>
+<li>T<strong>axa with the same <code>tax_table</code> entry repeated
+across multiple ranks</strong>: This is a problem for functions like
+<code><a href="../../reference/taxatree_plots.html">taxatree_plots()</a></code>, which need distinct entries at each rank
+to build the tree structure for plotting. This might happen after you
+<code>tax_fix</code> data with problem 1. of this list, or in data from
+e.g. microarray methods like HITchip. The solution is to use
+<code><a href="../../reference/tax_prepend_ranks.html">tax_prepend_ranks()</a></code> (after <code>tax_fix</code>) to add the
+first character of the rank to all tax_table entries (you will also need
+set the <code>tax_fix</code> argument suffix_rank = “current”).</li>
 <li>
-<strong>Informative but duplicated <code>tax_table</code> entries:</strong> e.g. you don’t want to delete/replace a genus name completely, but it is shared by two families and thus blocking <code>tax_agg</code>. The solution is to rename (one of) these values manually to make them distinct. <code>tax_table(yourPhyloseq)["targetTaxonName", "targetRank"] &lt;- "newBetterGenusName"</code>
+<strong>Informative but duplicated <code>tax_table</code>
+entries:</strong> e.g. you don’t want to delete/replace a genus name
+completely, but it is shared by two families and thus blocking
+<code>tax_agg</code>. The solution is to rename (one of) these values
+manually to make them distinct.
+<code>tax_table(yourPhyloseq)["targetTaxonName", "targetRank"] &lt;- "newBetterGenusName"</code>
 </li>
 <li>
-<strong>Really long taxa_names():</strong> e.g. you have DNA sequences as names. See <code><a href="../../reference/tax_name.html">tax_name()</a></code> for an easy way to rename all your taxa.</li>
+<strong>Really long taxa_names():</strong> e.g. you have DNA
+sequences as names. See <code><a href="../../reference/tax_name.html">tax_name()</a></code> for an easy way to
+rename all your taxa.</li>
 </ol>
 </div>
 </div>
 <div class="section level2">
 <h2 id="abundance-filtering-as-a-solution">Abundance filtering as a solution<a class="anchor" aria-label="anchor" href="#abundance-filtering-as-a-solution"></a>
 </h2>
-<p>Sequences that are unclassified at fairly high ranks e.g. Class are often very low abundance (or possibly represent sequencing errors/chimeras), if you are using data from an environment that is typically well represented in reference databases. So if you are struggling with what to do with unclassified taxa, consider if you can just remove them first using <code><a href="../../reference/tax_filter.html">tax_filter()</a></code> (perhaps using fairly relaxed filtering criteria like min_prevalence of 2 samples, or min_total_abundance of 1000 reads, and keeping the tax_level argument as NA, so that no aggregation is attempted before filtering).</p>
+<p>Sequences that are unclassified at fairly high ranks e.g. Class are
+often very low abundance (or possibly represent sequencing
+errors/chimeras), if you are using data from an environment that is
+typically well represented in reference databases. So if you are
+struggling with what to do with unclassified taxa, consider if you can
+just remove them first using <code><a href="../../reference/tax_filter.html">tax_filter()</a></code> (perhaps using
+fairly relaxed filtering criteria like min_prevalence of 2 samples, or
+min_total_abundance of 1000 reads, and keeping the tax_level argument as
+NA, so that no aggregation is attempted before filtering).</p>
 </div>
 <div class="section level2">
 <h2 id="alternatives">Alternatives<a class="anchor" aria-label="anchor" href="#alternatives"></a>
 </h2>
-<p><code><a href="https://rdrr.io/pkg/microbiome/man/aggregate_taxa.html" class="external-link">microbiome::aggregate_taxa()</a></code> also solves some <code>tax_table</code> problems, e.g. where multiple distinct genera converge again to the same species name like “” or “s__”, it will make unique taxa names by pasting together <strong>all</strong> of the rank names. However this can produce some very long names, which need to be manually shortened before use in plots. Plus, it doesn’t replace names like “s__” if they only occur once. Moreover, when creating ordination plots with microViz, only <code><a href="../../reference/tax_agg.html">tax_agg()</a></code> will record the aggregation level for provenance tracking and automated plot captioning.</p>
+<p><code><a href="https://rdrr.io/pkg/microbiome/man/aggregate_taxa.html" class="external-link">microbiome::aggregate_taxa()</a></code> also solves some
+<code>tax_table</code> problems, e.g. where multiple distinct genera
+converge again to the same species name like “” or “s__”, it will make
+unique taxa names by pasting together <strong>all</strong> of the rank
+names. However this can produce some very long names, which need to be
+manually shortened before use in plots. Plus, it doesn’t replace names
+like “s__” if they only occur once. Moreover, when creating ordination
+plots with microViz, only <code><a href="../../reference/tax_agg.html">tax_agg()</a></code> will record the
+aggregation level for provenance tracking and automated plot
+captioning.</p>
 </div>
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
@@ -278,8 +354,8 @@
 <span><span class="co">#&gt;  collate  C.UTF-8</span></span>
 <span><span class="co">#&gt;  ctype    C.UTF-8</span></span>
 <span><span class="co">#&gt;  tz       UTC</span></span>
-<span><span class="co">#&gt;  date     2022-10-25</span></span>
-<span><span class="co">#&gt;  pandoc   2.14.2 @ /usr/bin/ (via rmarkdown)</span></span>
+<span><span class="co">#&gt;  date     2022-10-26</span></span>
+<span><span class="co">#&gt;  pandoc   2.19.2 @ /usr/bin/ (via rmarkdown)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">─ Packages ───────────────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt;  <span style="color: #555555; font-style: italic;">package         </span> <span style="color: #555555; font-style: italic;">*</span> <span style="color: #555555; font-style: italic;">version </span> <span style="color: #555555; font-style: italic;">date (UTC)</span> <span style="color: #555555; font-style: italic;">lib</span> <span style="color: #555555; font-style: italic;">source</span></span></span>
@@ -294,8 +370,8 @@
 <span><span class="co">#&gt;  cachem             1.0.6    <span style="color: #555555;">2021-08-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  callr              3.7.2    <span style="color: #555555;">2022-08-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  cli                3.4.1    <span style="color: #555555;">2022-09-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  cluster            2.1.3    <span style="color: #555555;">2022-03-28</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
-<span><span class="co">#&gt;  codetools          0.2-18   <span style="color: #555555;">2020-11-04</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
+<span><span class="co">#&gt;  cluster            2.1.3    <span style="color: #555555;">2022-03-28</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
+<span><span class="co">#&gt;  codetools          0.2-18   <span style="color: #555555;">2020-11-04</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
 <span><span class="co">#&gt;  colorspace         2.0-3    <span style="color: #555555;">2022-02-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  corncob            0.3.0    <span style="color: #555555;">2022-09-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  crayon             1.5.2    <span style="color: #555555;">2022-09-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
@@ -326,19 +402,19 @@
 <span><span class="co">#&gt;  jsonlite           1.8.3    <span style="color: #555555;">2022-10-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  knitr              1.40     <span style="color: #555555;">2022-08-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  later              1.3.0    <span style="color: #555555;">2021-08-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  lattice            0.20-45  <span style="color: #555555;">2021-09-22</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
+<span><span class="co">#&gt;  lattice            0.20-45  <span style="color: #555555;">2021-09-22</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
 <span><span class="co">#&gt;  lifecycle          1.0.3    <span style="color: #555555;">2022-10-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  magrittr           2.0.3    <span style="color: #555555;">2022-03-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  MASS               7.3-57   <span style="color: #555555;">2022-04-22</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
-<span><span class="co">#&gt;  Matrix             1.4-1    <span style="color: #555555;">2022-03-23</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
+<span><span class="co">#&gt;  MASS               7.3-57   <span style="color: #555555;">2022-04-22</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
+<span><span class="co">#&gt;  Matrix             1.4-1    <span style="color: #555555;">2022-03-23</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
 <span><span class="co">#&gt;  memoise            2.0.1    <span style="color: #555555;">2021-11-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  mgcv               1.8-40   <span style="color: #555555;">2022-03-29</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
-<span><span class="co">#&gt;  microViz         * 0.10.0   <span style="color: #555555;">2022-10-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">local</span></span></span>
+<span><span class="co">#&gt;  mgcv               1.8-40   <span style="color: #555555;">2022-03-29</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
+<span><span class="co">#&gt;  microViz         * 0.10.0   <span style="color: #555555;">2022-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">local</span></span></span>
 <span><span class="co">#&gt;  mime               0.12     <span style="color: #555555;">2021-09-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  miniUI             0.1.1.1  <span style="color: #555555;">2018-05-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  multtest           2.52.0   <span style="color: #555555;">2022-04-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">#&gt;  munsell            0.5.0    <span style="color: #555555;">2018-06-12</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  nlme               3.1-157  <span style="color: #555555;">2022-03-25</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
+<span><span class="co">#&gt;  nlme               3.1-157  <span style="color: #555555;">2022-03-25</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
 <span><span class="co">#&gt;  permute            0.9-7    <span style="color: #555555;">2022-01-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  phyloseq         * 1.40.0   <span style="color: #555555;">2022-04-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">#&gt;  pillar             1.8.1    <span style="color: #555555;">2022-08-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
@@ -369,10 +445,10 @@
 <span><span class="co">#&gt;  sass               0.4.2    <span style="color: #555555;">2022-07-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  scales             1.2.1    <span style="color: #555555;">2022-08-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  sessioninfo        1.2.2    <span style="color: #555555;">2021-12-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  shiny              1.7.2    <span style="color: #555555;">2022-07-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  shiny              1.7.3    <span style="color: #555555;">2022-10-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  stringi            1.7.8    <span style="color: #555555;">2022-07-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  stringr            1.4.1    <span style="color: #555555;">2022-08-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  survival           3.3-1    <span style="color: #555555;">2022-03-03</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
+<span><span class="co">#&gt;  survival           3.3-1    <span style="color: #555555;">2022-03-03</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.1)</span></span></span>
 <span><span class="co">#&gt;  systemfonts        1.0.4    <span style="color: #555555;">2022-02-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  textshaping        0.3.6    <span style="color: #555555;">2021-10-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  tibble             3.1.8    <span style="color: #555555;">2022-07-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
@@ -390,7 +466,8 @@
 <span><span class="co">#&gt;  zlibbioc           1.42.0   <span style="color: #555555;">2022-04-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #555555;"> [1] /home/runner/work/_temp/Library</span></span></span>
-<span><span class="co">#&gt; <span style="color: #555555;"> [2] /opt/R/4.2.1/lib/R/library</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;"> [2] /opt/R/4.2.1/lib/R/site-library</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;"> [3] /opt/R/4.2.1/lib/R/library</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">──────────────────────────────────────────────────────────────────────────────</span></span></span></code></pre></div>
 </div>
