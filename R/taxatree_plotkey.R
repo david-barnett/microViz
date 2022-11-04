@@ -50,7 +50,7 @@ taxatree_plotkey <- function(data,
 
   # make basic nodes
   if (isTRUE(drop_ranks) && is(data, "psExtra") && !is.null(data@taxatree_stats)) {
-    ranks <- unique(data@taxatree_stats[["rank"]])
+    ranks <- as.character(unique(data@taxatree_stats[["rank"]]))
   } else {
     ranks <- "all"
   }
@@ -69,6 +69,12 @@ taxatree_plotkey <- function(data,
     )
     # join label_data to treeNodes
     treeNodes <- dplyr::left_join(treeNodes, label_data, by = "taxon")
+  }
+  # grab any preceding label info from taxatree stats (not already in nodes df)
+  if (is(data, "psExtra") && !is.null(data@taxatree_stats)) {
+    nonRedundantVars <- setdiff(names(data@taxatree_stats), names(treeNodes))
+    oldLabelData <- data@taxatree_stats[, c("taxon", nonRedundantVars)]
+    treeNodes <- dplyr::left_join(treeNodes, oldLabelData, by = "taxon")
   }
 
   # make graph
@@ -145,6 +151,8 @@ taxatree_plotkey <- function(data,
 #' @param y_nudge
 #' absolute amount by which the initial position of taxon labels is nudged
 #' (relevant only for circular layouts, use nudge_y for other layouts)
+#' @param rotate angle to rotate labels' outer edges away from horizontal
+#' (relevant only for circular layouts, use angle for other layouts)
 #' @param fontface fontface of label text
 #' @param size size of labels
 #' @param colour colour of label outlines and text
@@ -155,6 +163,7 @@ taxatree_plotkey <- function(data,
 #' @param point.padding padding around node points (for label positioning)
 #' @param box.padding padding around labels/text (for label positioning)
 #' @param seed set this for reproducible label positions
+#'
 #' @inheritDotParams ggrepel::geom_text_repel
 #' arrow force force_pull max.time max.iter xlim ylim direction verbose
 #'
@@ -166,6 +175,7 @@ taxatree_plot_labels <- function(p,
                                  label_var = "label",
                                  x_nudge = 0.1,
                                  y_nudge = 0.025,
+                                 rotate = 0,
                                  fontface = "bold",
                                  size = 2.5,
                                  colour = "grey15",
@@ -200,18 +210,20 @@ taxatree_plot_labels <- function(p,
 
   if (isTRUE(circular)) {
     # add circular plot specific nudges and limits
-    args[c("x_nudge", "y_nudge", "xlim", "ylim")] <- list(
-      x_nudge, y_nudge, c(-1.5, 1.5), c(-1.5, 1.5)
+    args[c("x_nudge", "y_nudge", "xlim", "ylim", "rotate")] <- list(
+      x_nudge, y_nudge, c(-1.5, 1.5), c(-1.5, 1.5), rotate
     )
     args[names(dots)] <- dots
+    args <- taxatreePruneLabelArgs(fun = fun, args = args)
 
     for (pos in list(c("x", "y"), "y", NULL, "x")) {
       args[["pos"]] <- pos
       p <- do.call(taxatree_plot_labelsQuadrant, args = args)
-      args[["p"]] <- p
+      args[["p"]] <- p # modified plot used in next iteration of loop
     }
   } else {
     args[names(dots)] <- dots
+    args <- taxatreePruneLabelArgs(fun = fun, args = args)
     p <- do.call(taxatree_plot_labelsNotCircular, args = args)
   }
   return(p)
@@ -225,6 +237,7 @@ taxatree_plot_labelsQuadrant <- function(p,
                                          label_var,
                                          x_nudge,
                                          y_nudge,
+                                         rotate,
                                          ...) {
   neg <- c("x", "y")[!c("x", "y") %in% pos]
 
@@ -245,13 +258,14 @@ taxatree_plot_labelsQuadrant <- function(p,
     data = function(d) {
       dplyr::filter(
         .data = d,
-        dplyr::across(dplyr::all_of(pos), ~ . >= 0),
-        dplyr::across(dplyr::all_of(neg), ~ . < 0),
+        dplyr::if_all(.cols = dplyr::all_of(pos), .fns = ~ . >= 0),
+        dplyr::if_all(.cols = dplyr::all_of(neg), .fns = ~ . < 0),
         .data[[label_var]]
       )
     },
     nudge_x = xsign * x_nudge,
     nudge_y = ysign * y_nudge,
+    angle = ysign * xsign * rotate,
     hjust = hjust
   )
 
@@ -282,4 +296,36 @@ taxatree_plot_labelsNotCircular <- function(p,
 
   p <- p + do.call(what = fun, args = args)
   return(p)
+}
+
+
+#' Helper, removes unwanted arguments from geom_* call args list
+#'
+#' @param fun function name or function itself e.g. geom_label_repel
+#' @param args named list of args
+#'
+#' @return args list possibly with elements removed
+#' @keywords internal
+#' @examples
+#' taxatreePruneLabelArgs(fun = "geom_label", args = list(size = 2, seed = 2))
+#' taxatreePruneLabelArgs(fun = library, args = list(size = 2, seed = 2))
+taxatreePruneLabelArgs <- function(fun, args) {
+  if (!is.null(args$color)){
+    rlang::warn("'color' argument is ignored, please use 'colour'")
+    args$color <- NULL
+  }
+  # remove ggrepel text or label args from common alternatives from ggplot2
+  # This shouldn't check if NOT ggrepel fun, because a modified version might be used
+  ggRepelArgs <- c(
+    "max.overlaps", "min.segment.length", "segment.size", "segment.color",
+    "segment.colour", "point.padding", "box.padding", "seed", "xlim", "ylim"
+  )
+
+  # label and text separate as there might be further args 1 would want removing
+  if (identical(fun, "geom_label") || identical(fun, ggplot2::geom_label)) {
+    args[ggRepelArgs] <- NULL
+  } else if (identical(fun, "geom_text") || identical(fun, ggplot2::geom_text)) {
+    args[ggRepelArgs] <- NULL
+  }
+  return(args)
 }

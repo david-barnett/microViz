@@ -43,6 +43,13 @@ taxatree_nodes <- function(ps,
     stop("fun must be a length 1 named list holding a function for a vector")
   }
 
+  # remove non-selected ranks (to avoid creation of invalid graph)
+  if (!identical(ranks, "all")) {
+    rlang::arg_match(ranks, c(phyloseq::rank_names(ps), "root"), multiple = TRUE)
+    ranks <- setdiff(ranks, "root")
+    phyloseq::tax_table(ps) <- phyloseq::tax_table(ps)[, ranks]
+  }
+
   # check if there is more than one value in top level: if so, add a root level
   if (length(unique(unclass(phyloseq::tax_table(ps))[, 1])) > 1) {
     phyloseq::tax_table(ps) <- cbind(root = "root", phyloseq::tax_table(ps))

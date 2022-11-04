@@ -191,7 +191,7 @@ taxatree_plots <- function(data,
 
   # make basic nodes
   if (isTRUE(drop_ranks)) {
-    ranks <- unique(data@taxatree_stats[["rank"]])
+    ranks <- as.character(unique(data@taxatree_stats[["rank"]]))
   } else {
     ranks <- "all"
   }

@@ -1,3 +1,7 @@
+# microViz (development version)
+
+- Bug fixes in taxatree_plots and keys
+
 # microViz 0.10.0
 
 Major internal changes from S3 ps_extra to S4 psExtra objects. See [article about this change](../articles/ps_extra-replaced.html)

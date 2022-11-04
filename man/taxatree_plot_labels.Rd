@@ -12,6 +12,7 @@ taxatree_plot_labels(
   label_var = "label",
   x_nudge = 0.1,
   y_nudge = 0.025,
+  rotate = 0,
   fontface = "bold",
   size = 2.5,
   colour = "grey15",
@@ -41,6 +42,9 @@ taxatree_plot_labels(
 
 \item{y_nudge}{absolute amount by which the initial position of taxon labels is nudged
 (relevant only for circular layouts, use nudge_y for other layouts)}
+
+\item{rotate}{angle to rotate labels' outer edges away from horizontal
+(relevant only for circular layouts, use angle for other layouts)}
 
 \item{fontface}{fontface of label text}
 
