@@ -10,7 +10,8 @@ test_that("ps_calc_diversity supported plot doesn't change", {
     ord_plot(
       colour = "exp_shannon_Genus", size = "inverse_simpson_Family"
     ) +
-    ggplot2::scale_colour_viridis_c() +
+    ggplot2::scale_size(guide = ggplot2::guide_legend(order = 1)) +
+    ggplot2::scale_colour_viridis_c(guide = ggplot2::guide_colorbar(order = 9)) +
     ggplot2::theme_test()
 
   vdiffr::expect_doppelganger(title = "diversity-pca", fig = p)

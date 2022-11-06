@@ -19,7 +19,8 @@ p <- suppressMessages(
     tax_transform("clr", rank = "Genus") %>%
     ord_calc(constraints = c("weight", "female")) %>%
     ord_plot(colour = "bmi_group", plot_taxa = 1:3) +
-    lims(x = c(-5, 6), y = c(-5, 5))
+    lims(x = c(-5, 6), y = c(-5, 5)) +
+    theme_test()
 )
 
 

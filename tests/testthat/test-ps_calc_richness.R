@@ -49,8 +49,8 @@ test_that("ps_calc_richness supported plot doesn't change", {
     ord_plot(
       size = "observed_Genus", colour = "chao1_Family"
     ) +
-    ggplot2::scale_radius(range = c(1, 6)) +
-    ggplot2::scale_colour_viridis_c() +
+    ggplot2::scale_radius(range = c(1, 6), guide = ggplot2::guide_legend(order = 2)) +
+    ggplot2::scale_colour_viridis_c(guide = ggplot2::guide_colourbar(order = 1)) +
     ggplot2::theme_test()
 
   vdiffr::expect_doppelganger(title = "richness-pca", fig = p)
