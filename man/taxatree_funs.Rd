@@ -23,7 +23,7 @@ taxatree_edges(nodes_df)
 
 \item{ranks}{selection of taxonomic ranks to make nodes for ("all", or names)}
 
-\item{.sort}{sort nodes by "ascending" or "descending" values of fun function result}
+\item{.sort}{sort nodes by "increasing" or "decreasing" values of fun function result}
 
 \item{.use_counts}{use count data if available (instead of transformed data)}
 
