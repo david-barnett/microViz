@@ -21,7 +21,10 @@ test_that("taxatree_plotkey works as expected", {
     taxatree_plotkey(rank != "species", .draw_label = FALSE)
 
   # check circular plot data
-  expect_snapshot_csv(name = "unlabeledKeyData", unlabeledKey$data)
+  keyDat <- unlabeledKey$data %>%
+    dplyr::mutate(dplyr::across(where(is.numeric), round, digits = 6))
+
+  expect_snapshot_csv(name = "unlabeledKeyData", keyDat)
   expect_snapshot(attr(unlabeledKey$data, "graph"))
 
   # draw rectangular key without labels
@@ -30,7 +33,11 @@ test_that("taxatree_plotkey works as expected", {
 
   # check rectangular plot data
   expect_s3_class(unlabeledKey_rect$layers[[1]]$geom, "GeomEdgePath") # asserts no circles drawn behind
-  expect_snapshot_csv(name = "unlabeledKey_rectData", unlabeledKey_rect$data)
+
+  keyDatRect <- unlabeledKey_rect$data %>%
+    dplyr::mutate(dplyr::across(where(is.numeric), round, digits = 6))
+
+  expect_snapshot_csv(name = "unlabeledKey_rectData", keyDatRect)
   expect_snapshot(attr(unlabeledKey_rect$data, "graph"))
 
   # plot non-circular geom_text labels without warnings
@@ -102,7 +109,8 @@ test_that("taxatree_label and plot_labels allows multiple rounds of custom label
       taxatree_plot_labels(label_var = "class_label", size = 2, rotate = -5)
   )
   expect_s3_class(pMulti, "ggplot")
-  expect_snapshot_csv("taxatreekey-multiplelabels", pMulti$data)
-  # TODO consider rounding numeric values before expect_snapshot_csv
+  pMultiDat <- pMulti$data %>%
+    dplyr::mutate(dplyr::across(where(is.numeric), round, digits = 6))
+  expect_snapshot_csv("taxatreekey-multiplelabels", pMultiDat)
 })
 
