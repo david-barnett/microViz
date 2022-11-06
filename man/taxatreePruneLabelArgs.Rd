@@ -18,7 +18,7 @@ args list possibly with elements removed
 Helper, removes unwanted arguments from geom_* call args list
 }
 \examples{
-taxatreePruneLabelArgs(fun = "geom_label", args = list(size = 2, seed = 2))
-taxatreePruneLabelArgs(fun = library, args = list(size = 2, seed = 2))
+microViz:::taxatreePruneLabelArgs(fun = "geom_label", args = list(size = 2, seed = 2))
+microViz:::taxatreePruneLabelArgs(fun = library, args = list(size = 2, seed = 2))
 }
 \keyword{internal}
