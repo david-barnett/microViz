@@ -16,6 +16,17 @@ test_that("taxatree_plotkey works as expected", {
     tax_prepend_ranks(ps) %>% taxatree_plotkey(rank != "species")
   )
 
+  # check node sorting works
+  expect_setequal(
+    taxatree_plotkey(tax_prepend_ranks(ps), node_sort = "decreasing")$data$taxon,
+    taxatree_plotkey(tax_prepend_ranks(ps))$data$taxon
+  )
+  expect_failure(expect_equal(
+    taxatree_plotkey(tax_prepend_ranks(ps), node_sort = "decreasing")$data$taxon,
+    taxatree_plotkey(tax_prepend_ranks(ps))$data$taxon,
+    ignore_attr = TRUE
+  ))
+
   # draw circular key without labels (calculate labels though)
   unlabeledKey <- tax_prepend_ranks(ps) %>%
     taxatree_plotkey(rank != "species", .draw_label = FALSE)
@@ -58,7 +69,39 @@ test_that("taxatree_plotkey works as expected", {
     regexp = "'color' argument is ignored, please use 'colour'"
   )
 
+
 })
+
+test_that("taxatree_plotkey can sort nodes", {
+  data("shao19")
+
+  ps <- shao19 %>%
+    ps_filter(dplyr::row_number() <= 15, .keep_all_taxa = TRUE) %>%
+    tax_filter(min_prevalence = 6)
+
+  psX <- ps %>%
+    taxatree_models(
+      ranks = c("class", "genus"), variables = "birth_mode", verbose = FALSE
+    ) %>%
+    taxatree_models2stats()
+
+  expect_s3_class(k <- taxatree_plotkey(psX, drop_ranks = TRUE), "ggplot")
+  expect_s3_class(p <- taxatree_plots(psX, drop_ranks = TRUE)[[1]], "ggplot")
+  expect_equal(p$data$taxon, k$data$taxon)
+  expect_equal(p$data$x, k$data$x)
+  expect_equal(p$data$y, k$data$y)
+
+  ps1 <- psX %>%
+    taxatree_models(ranks = "genus", variables = "birth_mode", verbose = FALSE) %>%
+    taxatree_models2stats()
+
+  expect_s3_class(k1 <- taxatree_plotkey(ps1, circular = FALSE), "ggplot")
+  expect_s3_class(p1 <- taxatree_plots(ps1, circular = FALSE)[[1]], "ggplot")
+  expect_equal(p1$data$taxon, k1$data$taxon)
+  expect_equal(p1$data$x, k1$data$x)
+  expect_equal(p1$data$y, k1$data$y)
+})
+
 
 test_that("taxatree_plotkey can drop ranks", {
   local_edition(3)

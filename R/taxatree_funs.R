@@ -87,7 +87,7 @@ taxatree_nodes <- function(ps,
     rlang::arg_match(.sort, c("increasing", "decreasing"))
     STAT <- nodes_df[[names(fun)[[1]]]]
     newOrder <- order(STAT, decreasing = .sort == "decreasing")
-    nodes_df <- nodes_df[newOrder, drop = FALSE]
+    nodes_df <- nodes_df[newOrder, , drop = FALSE]
   }
 
   return(nodes_df)
