@@ -1,4 +1,5 @@
 local_edition(3)
+skip_on_os("windows") # legend category ordering inconsistency
 
 library(ggplot2)
 
