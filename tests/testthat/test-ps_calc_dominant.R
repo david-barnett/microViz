@@ -1,13 +1,14 @@
-local_edition(3)
-
-library(ggplot2)
-
-ps <- corncob::ibd_phylo %>%
-  tax_filter(min_prevalence = 3) %>%
-  tax_fix() %>%
-  phyloseq_validate()
 
 test_that("ps_calc_dominant supported plot doesn't change", {
+  local_edition(3)
+  skip_on_os("windows") # ordering of colour levels in legend is odd on windows
+  library(ggplot2)
+
+  ps <- corncob::ibd_phylo %>%
+    tax_filter(min_prevalence = 3) %>%
+    tax_fix() %>%
+    phyloseq_validate()
+
   p <- ps %>%
     ps_calc_dominant(
       rank = "Family", other = "Other", none = "Not dominated",
