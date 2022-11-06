@@ -8,6 +8,30 @@ test_that("tax_transform and agg 1 and 2 step options equivalent", {
   )
 })
 
+
+test_that("tax_transform add and zero_replace work", {
+  data("shao19")
+  ps <- ps_filter(shao19, family_id %in% 1:3)
+
+  expect_equal(
+    otu_get(ps) + 0.1,
+    otu_get(tax_transform(ps, trans = "identity", add = 0.1))
+  )
+
+  expect_s4_class(
+    addHm <- tax_transform(ps, trans = "identity", add = "halfmin"),
+    class = "psExtra"
+  )
+  expect_s4_class(
+    replaceHm <- tax_transform(ps, trans = "identity", zero_replace = "halfmin"),
+    class = "psExtra"
+  )
+  expect_equal(min(otu_get(addHm)), min(otu_get(replaceHm)))
+  expect_failure(expect_equal(otu_get(addHm), otu_get(replaceHm), ignore_attr = TRUE))
+
+})
+
+
 test_that("tax_transform doesn't change", {
   ps <- dietswap
   comp <- tax_transform(ps, trans = "compositional", rank = "Family")
