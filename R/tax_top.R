@@ -1,6 +1,6 @@
-#' Print names of "top" n taxa
+#' Get names of "top" n taxa
 #'
-#' Simple wrapper function that:
+#' Simple wrapper around tax_sort that:
 #' 1. optionally aggregates taxa at `rank`
 #' 2. sorts the aggregated taxa according to `by`
 #' 3. returns the top `n` number of taxa names
@@ -15,7 +15,9 @@
 #' defaults to `sum` which sorts by total abundance across all samples
 #' @param rank taxonomic rank to aggregate at before calculating
 #' ("unique" = no aggregation)
-#' @param ... extra optional args passed to tax_sort
+#'
+#' @inheritParams tax_sort
+#' @inheritDotParams tax_sort verbose trans
 #'
 #' @return vector of taxa names at chosen rank
 #' @export
@@ -24,13 +26,24 @@
 #' data("dietswap", package = "microbiome")
 #' tax_top(dietswap)
 #' tax_top(dietswap, n = 4, by = "prev", rank = "Phylum", undetected = 30)
-tax_top <- function(data, n = 10, by = sum, rank = "unique", ...) {
+tax_top <- function(data,
+                    n = 10,
+                    by = sum,
+                    rank = "unique",
+                    use_counts = FALSE,
+                    ...) {
   if (!rlang::is_na(n) && (!rlang::is_scalar_integerish(n) || n < 1)) {
     stop("`n` must be a single number, greater than zero")
   }
-  ps <- ps_get(data)
+  ps <- ps_get(data, counts = use_counts, warn = "error")
   ps <- tax_agg(ps, rank = rank) %>% ps_get()
-  ps <- tax_sort(ps, by = by, ...)
+  sortArgs <- list(
+    data = ps, use_counts = use_counts, by = by, at = "names", tree_warn = FALSE
+  )
+  ps <- tax_sort(
+    data = ps, use_counts = use_counts,
+    by = by, at = "names", tree_warn = FALSE, ...
+  )
   taxnames <- phyloseq::taxa_names(physeq = ps)
   if (is.na(n) || n > length(taxnames)) n <- length(taxnames)
   return(taxnames[seq_len(n)])
