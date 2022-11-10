@@ -16,13 +16,14 @@
 #' @seealso \code{\link{ord_plot}}
 #' @export
 #' @examples
-#' library(ggplot2)
+#' library(ggplot2) # for aes
 #' corncob::ibd_phylo %>%
 #'   tax_fix() %>%
 #'   tax_transform(rank = "Genus", trans = "clr") %>%
 #'   ord_calc(method = "PCA") %>%
 #'   ord_plot(colour = "DiseaseState", shape = "DiseaseState", alpha = 0.5) +
-#'   stat_chull(aes(colour = DiseaseState))
+#'   stat_chull(aes(colour = DiseaseState), linewidth = 0.1)
+#'   # linewidth is used since ggplot2 version 3.4.0 (instead of size)
 #'
 #' corncob::ibd_phylo %>%
 #'   tax_fix() %>%
@@ -43,7 +44,7 @@ stat_chull <- function(mapping = NULL, data = NULL, geom = "polygonHollow",
 GeomPolygonHollow <- ggplot2::ggproto(
   `_class` = "GeomPolygonHollow", `_inherit` = ggplot2::GeomPolygon,
   default_aes = ggplot2::aes(
-    colour = "black", fill = NA, size = 0.5, linetype = 1, alpha = NA
+    colour = "black", fill = NA, size = 0.5, linewidth = 0.5, linetype = 1, alpha = NA
   )
 )
 
