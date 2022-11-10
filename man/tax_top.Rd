@@ -2,9 +2,9 @@
 % Please edit documentation in R/tax_top.R
 \name{tax_top}
 \alias{tax_top}
-\title{Print names of "top" n taxa}
+\title{Get names of "top" n taxa}
 \usage{
-tax_top(data, n = 10, by = sum, rank = "unique", ...)
+tax_top(data, n = 10, by = sum, rank = "unique", use_counts = FALSE, ...)
 }
 \arguments{
 \item{data}{phyloseq object or psExtra}
@@ -18,13 +18,21 @@ defaults to \code{sum} which sorts by total abundance across all samples}
 \item{rank}{taxonomic rank to aggregate at before calculating
 ("unique" = no aggregation)}
 
-\item{...}{extra optional args passed to tax_sort}
+\item{use_counts}{use count data if available, instead of transformed data}
+
+\item{...}{
+  Arguments passed on to \code{\link[=tax_sort]{tax_sort}}
+  \describe{
+    \item{\code{verbose}}{passed to phyloseq_validate verbose
+(if TRUE: message about suspicious values in tax_table, and how to fix)}
+    \item{\code{trans}}{name of transformation to apply to taxa before sorting (taxa are returned un-transformed)}
+  }}
 }
 \value{
 vector of taxa names at chosen rank
 }
 \description{
-Simple wrapper function that:
+Simple wrapper around tax_sort that:
 \enumerate{
 \item optionally aggregates taxa at \code{rank}
 \item sorts the aggregated taxa according to \code{by}
