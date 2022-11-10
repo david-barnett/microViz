@@ -1,6 +1,11 @@
-# microViz (development version)
+# microViz 0.10.1
 
-- Bug fixes in taxatree_plots and keys
+## Features
+- `ps_get` can return phyloseq with taxon counts when counts = TRUE and counts are available
+
+## Fixes
+- Bug fixes, mostly in taxatree_plots and keys
+- tax_transform 'add' argument accepts 'halfmin' again
 
 # microViz 0.10.0
 
