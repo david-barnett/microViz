@@ -52,54 +52,14 @@ phyloseq_validate <- function(ps,
     "Try `ps <- phyloseq_validate(ps, verbose = FALSE)` to avoid this message"
 
   # check for NULL sample data
-  if (identical(phyloseq::access(ps, "sam_data"), NULL)) {
-    if (isTRUE(verbose)) {
-      message(
-        "Note: Replacing missing sample_data with a dataframe ",
-        "of only sample_names.\n", silencing_advice
-      )
-    }
-    phyloseq::sample_data(ps) <- samdat_init(ps)
-  }
+  ps <- psCheckSamdat(
+    ps = ps, verbose = verbose, message_footer = silencing_advice
+  )
 
-  # check for NULL tax_table
-  if (identical(phyloseq::access(ps, "tax_table"), NULL)) {
-    if (isTRUE(verbose)) {
-      message(
-        "Note: Replacing missing tax_table with a 1-column table ",
-        "of only taxa_names.\n", silencing_advice
-      )
-    }
-
-    taxons <- phyloseq::taxa_names(ps)
-    phyloseq::tax_table(ps) <-
-      matrix(data = taxons, ncol = 1, dimnames = list(taxons, "unique"))
-  } else if (isTRUE(verbose)) {
-    # check tax_table for uninformative entries
-    suspicious_names <- tax_common_unknowns(min_length = min_tax_length)
-
-    # check tax_table except any "unique" column, likely made from taxa names
-    ranks <- phyloseq::rank_names(ps)
-    ranks <- ranks[ranks != "unique"]
-    taxTab <- phyloseq::tax_table(ps)[, ranks, drop = FALSE]
-
-    taxfillmessage <-
-      "Consider using tax_fix() to make taxa uniquely identifiable"
-    if (anyNA(taxTab)) {
-      message("NAs detected in phyloseq tax_table:\n", taxfillmessage)
-    } else if (any(nchar(taxTab) < min_tax_length)) {
-      message(
-        "Short values detected in phyloseq tax_table (nchar<",
-        min_tax_length, ") :\n", taxfillmessage
-      )
-    } else if (any(taxTab %in% suspicious_names)) {
-      message(
-        "Suspicious values detected in phyloseq tax_table:\n", taxfillmessage
-      )
-      bad <- unclass(tt_get(ps))[tt_get(ps) %in% suspicious_names]
-      message("Detected: '", paste(unique(bad), collapse = "', '"), "'\n")
-    }
-  }
+  ps <- psCheckTaxTable(
+    ps = ps, verbose = verbose, min_tax_length = min_tax_length,
+    message_footer = silencing_advice
+  )
 
   if (isTRUE(remove_undetected)) {
     # check for taxa with no counts at all
@@ -128,6 +88,21 @@ phyloseq_validate <- function(ps,
   return(ps)
 }
 
+# check if sample data exists in phyloseq and create it otherwise
+psCheckSamdat <- function(ps, verbose = TRUE, message_footer = NULL) {
+  if (!identical(phyloseq::access(ps, "sam_data"), NULL)) {
+    return(ps)
+  }
+  if (isTRUE(verbose)) {
+    message(
+      "Note: Replacing missing sample_data with a dataframe ",
+      "of only sample_names.\n", message_footer
+    )
+  }
+  phyloseq::sample_data(ps) <- samdat_init(ps)
+  return(ps)
+}
+
 # helper function used in phyloseq_validate and in tax_sort
 samdat_init <- function(ps) {
   samples <- phyloseq::sample_names(ps)
@@ -135,4 +110,55 @@ samdat_init <- function(ps) {
     data.frame(SAMPLE = samples, row.names = samples, check.names = FALSE)
   )
   return(samdat)
+}
+
+psCheckTaxTable <- function(ps, verbose, min_tax_length, message_footer = NULL) {
+  # check for NULL tax_table
+  if (identical(phyloseq::access(ps, "tax_table"), NULL)) {
+    if (isTRUE(verbose)) {
+      message(
+        "Note: Replacing missing tax_table with a 1-column table ",
+        "of only taxa_names.\n", message_footer
+      )
+    }
+
+    taxons <- phyloseq::taxa_names(ps)
+    phyloseq::tax_table(ps) <- matrix(
+      data = taxons, ncol = 1, dimnames = list(taxons, "unique")
+    )
+  } else if (isTRUE(verbose)) {
+    if (!identical(phyloseq::rank_names(ps), "unique")) {
+      ttCheck(ps, min_tax_length = min_tax_length)
+    }
+  }
+  return(ps)
+}
+
+
+# check tax_table for uninformative entries
+ttCheck <- function(ps, min_tax_length) {
+
+  # check tax_table except any "unique" column, likely made from taxa names
+  ranks <- setdiff(phyloseq::rank_names(ps), "unique")
+  tt <- phyloseq::tax_table(ps)[, ranks, drop = FALSE]
+
+  taxfixmessage <- "Consider using tax_fix() to make taxa uniquely identifiable"
+
+  if (anyNA(tt)) {
+    message("NAs detected in phyloseq tax_table:\n", taxfixmessage)
+  } else if (any(nchar(tt) < min_tax_length)) {
+    message(
+      "Short values detected in phyloseq tax_table (nchar<",
+      min_tax_length, ") :\n", taxfixmessage
+    )
+  } else {
+    suspicious_names <- tax_common_unknowns(min_length = min_tax_length)
+    if (any(tt %in% suspicious_names)) {
+      bad <- intersect(tt, suspicious_names)
+      message(
+        "Suspicious values detected in phyloseq tax_table:\n", taxfixmessage,
+        paste0("\n", "Detected: '", paste(bad, collapse = "', '"), "'\n")
+      )
+    }
+  }
 }
