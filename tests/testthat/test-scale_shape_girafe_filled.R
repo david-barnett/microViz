@@ -10,7 +10,7 @@ test_that("scale values are as expected", {
   )
   expect_error(
     object = s$palette(n = 6),
-    regexp = "Insufficient values in manual scale. 6 needed but only 5 provided."
+    regexp = "Insufficient values in manual scale. 6 needed but only 5"
   )
 })
 
