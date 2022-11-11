@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [main]
 
-name: R-CMD-check-ggplot330
+name: R-CMD-check-ggplot336
 
 jobs:
   R-CMD-check:
@@ -26,8 +26,8 @@ jobs:
           extra-packages: any::rcmdcheck
           needs: check
 
-      - name: "Install ggplot2 version 3.3.0"
-        run: remotes::install_version("ggplot2", version = "3.3.0", upgrade = FALSE)
+      - name: "Install ggplot2 version 3.3.6"
+        run: remotes::install_version("ggplot2", version = "3.3.6", upgrade = FALSE)
         shell: Rscript {0}
 
       - name: "Install ggiraph version 0.8.3"
