@@ -26,7 +26,7 @@ ord_arrows <- function(p, data, styleList, axesNames, defaultStyles) {
 #' @description
 #' Used by ord_plot, see examples there.
 #'
-#' @param size width of vector
+#' @param linewidth width of vector
 #' @param alpha opacity of vector
 #' @param colour colour of vector
 #' @param arrow arrow style specified with grid::arrow() or NULL for no arrow

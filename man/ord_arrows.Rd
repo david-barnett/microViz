@@ -32,6 +32,8 @@ vec_tax_sel(
 vec_tax_all(linewidth = 0.5, alpha = 0.25, arrow = NULL, ...)
 }
 \arguments{
+\item{linewidth}{width of vector}
+
 \item{alpha}{opacity of vector}
 
 \item{colour}{colour of vector}
@@ -43,8 +45,6 @@ vec_tax_all(linewidth = 0.5, alpha = 0.25, arrow = NULL, ...)
 \item{linejoin}{Line join style (round, mitre, bevel).}
 
 \item{...}{further arguments passed to geom_segment}
-
-\item{size}{width of vector}
 }
 \value{
 list
