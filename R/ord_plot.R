@@ -274,10 +274,9 @@ ord_plot <-
 
     # build ggplot ------------------------------------------------------------
     ## samples ----------------------------------------------------------------
-    p <- ggplot2::ggplot(
-      data = df,
-      mapping = ggplot2::aes_string(x = axesNames[1], y = axesNames[2])
-    ) +
+    p <- ggplot2::ggplot(data = df, mapping = ggplot2::aes(
+      x = .data[[axesNames[1]]], y = .data[[axesNames[2]]]
+    )) +
       ggplot2::theme_minimal() +
       ggplot2::labs(x = axesLabs[1], y = axesLabs[2]) +
       ggplot2::coord_cartesian(clip = clip, default = TRUE, expand = expand)

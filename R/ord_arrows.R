@@ -11,8 +11,8 @@
 #' @noRd
 ord_arrows <- function(p, data, styleList, axesNames, defaultStyles) {
   args <- list(
-    data = data, mapping = ggplot2::aes_string(
-      xend = axesNames[1], yend = axesNames[2], x = 0, y = 0
+    data = data, x = 0, y = 0, mapping = ggplot2::aes(
+      xend = .data[[axesNames[1]]], yend = .data[[axesNames[2]]],
     )
   )
   styles <- defaultStyles
