@@ -26,12 +26,12 @@ jobs:
           extra-packages: any::rcmdcheck
           needs: check
 
-      - name: "Install ggplot2 version 3.3.0 and ggiraph 0.8.3"
+      - name: "Install ggplot2 version 3.3.0"
         run: remotes::install_version("ggplot2", version = "3.3.0", upgrade = FALSE)
         shell: Rscript {0}
 
       - name: "Install ggiraph version 0.8.3"
-        run: remotes::install_version("ggirafe", version = "0.8.3", upgrade = FALSE)
+        run: remotes::install_version("ggiraph", version = "0.8.3", upgrade = FALSE)
         shell: Rscript {0}
 
       - uses: r-lib/actions/check-r-package@v2
