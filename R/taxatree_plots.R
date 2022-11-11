@@ -317,7 +317,7 @@ taxatree_plotCircles <- function(p, layout) {
     x <- 0 + r * cos(seq(from = 0, to = 2 * pi, length.out = 100))
     y <- 0 + r * sin(seq(from = 0, to = 2 * pi, length.out = 100))
     cl <- "grey80"
-    if (packageVersion("ggplot2") < "3.4.0") {
+    if (utils::packageVersion("ggplot2") < "3.4.0") {
       a <- ggplot2::annotate("path", x = x, y = y, color = cl, size = 0.1)
     } else {
       a <- ggplot2::annotate("path", x = x, y = y, color = cl, linewidth = 0.1)

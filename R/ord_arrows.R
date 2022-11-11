@@ -78,7 +78,7 @@ vec_tax_all <- function(linewidth = 0.5, alpha = 0.25, arrow = NULL, ...) {
 # avoid ggplot2 version issues: size aesthetic changing to new linewidth aesthetic
 # and check arrow is NULL or an arrow
 vecCheckArgList <- function(argList) {
-  if (packageVersion("ggplot2") < "3.4.0") {
+  if (utils::packageVersion("ggplot2") < "3.4.0") {
     if (is.null(argList[["size"]])) argList[["size"]] <- argList[["linewidth"]]
     argList[["linewidth"]] <- NULL
   } else {

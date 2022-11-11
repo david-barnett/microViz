@@ -428,7 +428,7 @@ comp_barplotFixed <- function(ps, interactive,
 # helper to add geom_col or geom_col_interactive to comp_barplot ggplot
 addGeomStackedBars <- function(p, interactive, width, colour, linewidth) {
   args <- list(position = "stack", width = width, colour = colour)
-  if (packageVersion("ggplot2") < "3.4.0") {
+  if (utils::packageVersion("ggplot2") < "3.4.0") {
     args[["size"]] <- linewidth
   } else {
     args[["linewidth"]] <- linewidth

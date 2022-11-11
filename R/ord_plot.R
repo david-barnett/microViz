@@ -245,7 +245,6 @@ ord_plot <-
       )
       axesLabs <- axesNames <- colnames(siteScoresDf)
     } else {
-
       # compute summary of ordination object to ensure
       # consistent scaling of components
       ordsum <- summary(ordination, scaling = scaling, axes = max(axes))
@@ -301,7 +300,6 @@ ord_plot <-
     ## taxa -------------------------------------------------------------------
     # add loadings/ species-scores arrows for RDA/PCA methods
     if (ordInfo[["method"]] %in% c("RDA", "CCA", "PCA")) {
-
       # return subselection of taxa for which to draw labels on plot
       selectSpeciesScoresDf <- subsetTaxaDfLabel(
         speciesScoresDf = speciesScoresDf, plot_taxa = plot_taxa
@@ -310,7 +308,6 @@ ord_plot <-
       # if a selection of species scores (for labelling) was calculated,
       # add taxa lines and labels to plot
       if (!identical(selectSpeciesScoresDf, NULL)) {
-
         # automatic taxa vector length setting
         if (identical(tax_vec_length, NA)) {
           tax_vec_length <- computeAutoVecLength(
@@ -344,7 +341,6 @@ ord_plot <-
     ## constraints -----------------------------------------------------------
     # if constrained ordination, plot constraints
     if (isConstrained) {
-
       # automatic constraint length setting
       if (identical(constraint_vec_length, NA)) {
         constraint_vec_length <- computeAutoVecLength(
@@ -484,7 +480,6 @@ vecNormEuclid <- function(vec) norm(vec, type = "2")
 # Returns subset of that dataframe with only taxa that will be labelled,
 # subset returned depends on the plot_taxa argument, which is user supplied.
 subsetTaxaDfLabel <- function(speciesScoresDf, plot_taxa) {
-
   # calculate initial line length for taxa vectors
   speciesLineLength <- rowVecNorms(df = speciesScoresDf, cols = 1:2)
 

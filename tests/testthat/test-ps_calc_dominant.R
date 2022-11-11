@@ -22,5 +22,6 @@ test_that("ps_calc_dominant supported plot doesn't change", {
     )) +
     theme_test()
 
+  skip_if(utils::packageVersion("ggplot2") < "3.4.0")
   vdiffr::expect_doppelganger(title = "dominant-taxa-pca", fig = p)
 })

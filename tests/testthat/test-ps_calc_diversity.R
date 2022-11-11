@@ -13,6 +13,7 @@ test_that("ps_calc_diversity supported plot doesn't change", {
     ggplot2::scale_colour_viridis_c() +
     ggplot2::theme_test()
 
+  skip_if(utils::packageVersion("ggplot2") < "3.4.0") # changed legend order
   vdiffr::expect_doppelganger(title = "diversity-pca", fig = p)
 })
 
