@@ -79,7 +79,7 @@ p2 <- ibd %>%
     tax_lab_style = tax_lab_style(
       type = "text", max_angle = 90, fontface = "bold.italic"
     ),
-    constraint_vec_style = vec_constraint(size = 1.5, alpha = 0.5),
+    constraint_vec_style = vec_constraint(linewidth = 1.5, alpha = 0.5),
     constraint_vec_length = 3, constraint_lab_length = 3.3,
     constraint_lab_style = constraint_lab_style(
       alpha = 0.8, size = 3, max_angle = 90, perpendicular = TRUE
