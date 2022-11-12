@@ -40,11 +40,16 @@ stat_chull <- function(mapping = NULL, data = NULL, geom = "polygonHollow",
   )
 }
 
+polygonHollowDefaultAes <- function() {
+  def <- list(colour = "black", fill = NA, linetype = 1, alpha = NA)
+  oldGG <- isTRUE(utils::packageVersion("ggplot2") < "3.4.0")
+  if (oldGG) def[["size"]] <- 0.5 else def[["linewidth"]] <- 0.5
+  do.call(ggplot2::aes, args = def)
+}
+
 GeomPolygonHollow <- ggplot2::ggproto(
   `_class` = "GeomPolygonHollow", `_inherit` = ggplot2::GeomPolygon,
-  default_aes = ggplot2::aes(
-    colour = "black", fill = NA, size = 0.5, linetype = 1, alpha = NA
-  )
+  default_aes = polygonHollowDefaultAes()
 )
 
 StatChull <- ggplot2::ggproto(
