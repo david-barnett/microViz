@@ -282,7 +282,7 @@ ord_plot <-
       ggplot2::coord_cartesian(clip = clip, default = TRUE, expand = expand)
 
     # set geom_point variable aesthetics
-    aesthetics <- do.call(what = ggplot2::aes_string, args = aestheticArgs)
+    aesthetics <- buildAesFromListOfStrings(aestheticArgs)
 
     # gather all args for use in geom_point (sample data)
     geompointArgs <- c(list(mapping = aesthetics), fixed_aesthetics)
@@ -377,6 +377,11 @@ ord_plot <-
   }
 
 # helper functions ------------------------------------------------------------
+
+# placeholder for aes_string deprecation workaround
+buildAesFromListOfStrings <- function(args) {
+  return(do.call(what = ggplot2::aes_string, args = args))
+}
 
 #' Add caption text to ordination ggplot
 #'

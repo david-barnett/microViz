@@ -86,9 +86,9 @@ tax_palette_plot <- function(named_pal_vec, max_n = NA) {
   df <- data.frame(taxon = names(named_pal_vec), hex = unname(named_pal_vec))
   df[["taxon"]] <- factor(df[["taxon"]], levels = rev(df[["taxon"]]))
 
-  p <- ggplot2::ggplot(
-    data = df, mapping = ggplot2::aes_string(y = "taxon", fill = "hex")
-  ) +
+  p <- ggplot2::ggplot(data = df, mapping = ggplot2::aes(
+    y = .data[["taxon"]], fill = .data[["hex"]]
+  )) +
     ggplot2::geom_raster(mapping = ggplot2::aes(x = "")) +
     ggplot2::scale_fill_identity() +
     ggplot2::labs(x = NULL, y = NULL) +
