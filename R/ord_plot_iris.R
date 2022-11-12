@@ -27,7 +27,9 @@
 #' @param keep_all_vars slows down processing but is required for any post-hoc plot customisation options
 #' @inheritParams ord_plot
 #' @param count_warn warn if count data are not available? i.e. phyloseq otu_table is not positive integers and psExtra counts slot is NULL
-#' @param ... extra args passed to comp_barplot e.g. bar_width
+#' @inheritDotParams comp_barplot
+#' merge_other other_name bar_width bar_outline_colour bar_outline_width
+#' tax_order tax_transform_for_plot interactive max_taxa
 #'
 #' @return ggplot
 #' @export
@@ -173,6 +175,8 @@ ord_plot_iris <- function(data,
                           scaling = 2,
                           count_warn = TRUE,
                           ...) {
+  check_is_phyloseq(data, argName = "data")
+  rlang::arg_match(ord_plot, values = c('none', 'list', 'below', 'above'))
   if (!identical(ord_plot, "none")) {
     ord_p <- ord_plot(
       data = data, axes = axes, taxon_renamer = taxon_renamer, center = TRUE,
@@ -268,23 +272,20 @@ ord_plot_iris <- function(data,
       }
     }
   }
-  if (!identical(ord_plot, "none")) {
-    plots <- list(iris = iris, ord_plot = ord_p)
-    if (identical(ord_plot, "list")) {
-      return(plots)
-    } else if (!requireNamespace("patchwork")) {
-      warning("patchwork required to pair plots vertically! Returning list.")
-      return(plots)
-    } else if (identical(ord_plot, "below")) {
-      return(patchwork::wrap_plots(plots, ncol = 1))
-    } else if (identical(ord_plot, "above")) {
-      return(patchwork::wrap_plots(plots[2:1], ncol = 1))
-    } else {
-      stop(
-        "ord_plot argument must be one of 'none', 'list', 'below' or 'above'"
-      )
-    }
-  } else {
+
+  if (identical(ord_plot, "none")) {
     return(iris)
   }
+
+  plots <- list(iris = iris, ord_plot = ord_p)
+  if (ord_plot == "list") {
+    return(plots)
+  } else {
+    rlang::check_installed(
+      "patchwork", reason = "to place `ord_plot` 'above' or 'below'"
+    )
+    if (ord_plot == "above") plots <- plots[2:1] # flip order
+    return(patchwork::wrap_plots(plots, ncol = 1))
+  }
+
 }

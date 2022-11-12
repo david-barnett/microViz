@@ -55,7 +55,25 @@ and the other set of scores is left unscaled (from ?vegan::scores.cca)}
 
 \item{count_warn}{warn if count data are not available? i.e. phyloseq otu_table is not positive integers and psExtra counts slot is NULL}
 
-\item{...}{extra args passed to comp_barplot e.g. bar_width}
+\item{...}{
+  Arguments passed on to \code{\link[=comp_barplot]{comp_barplot}}
+  \describe{
+    \item{\code{merge_other}}{if FALSE, taxa coloured/filled as "other" remain distinct,
+and so can have bar outlines drawn around them}
+    \item{\code{bar_width}}{default 1 avoids random gapping otherwise seen with many samples
+(set to less than 1 to introduce gaps between samples)}
+    \item{\code{bar_outline_colour}}{line colour separating taxa and samples (use NA for no outlines)}
+    \item{\code{bar_outline_width}}{width of line separating taxa and samples
+(for no outlines set bar_outline_colour = NA)}
+    \item{\code{tax_transform_for_plot}}{default "compositional" draws proportions of total counts per sample,
+but you could reasonably use another transformation,
+e.g. "identity", if you have truly quantitative microbiome profiling data}
+    \item{\code{interactive}}{creates plot suitable for use with ggiraph}
+    \item{\code{max_taxa}}{maximum distinct taxa groups to show
+(only really useful for limiting complexity of interactive plots
+e.g. within ord_explore)}
+    \item{\code{other_name}}{name for other taxa after N}
+  }}
 }
 \value{
 ggplot
