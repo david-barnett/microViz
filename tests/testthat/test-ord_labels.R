@@ -13,6 +13,7 @@ ibd <- ibd_phylo %>%
 
 # calculate a centered-log-ratio transformed PCA ordination
 ibd_ord <- ibd %>%
+  ps_mutate(DiseaseState = as.factor(DiseaseState), active = as.factor(active)) %>%
   tax_transform("clr", rank = "Genus") %>%
   ord_calc("PCA")
 
