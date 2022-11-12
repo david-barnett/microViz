@@ -15,9 +15,8 @@ test_that("ord_plot arrow style helpers work", {
 
   skip_if(interactive()) # frequency setting of warnings requires fresh session
   expect_warning(
-    vec_tax_sel(size = 1),
+    sizeVec <- vec_tax_sel(size = 0.1),
     "Since ggplot2 v3.4.0, you should use 'linewidth' instead of 'size'"
   )
-  # 2nd vec_tax_sel call won't throw a warning because frequency is every 8 hrs
-  expect_equal(object = vec_tax_sel(size = 0.1), vec_tax_sel(linewidth = 0.1))
+  expect_equal(object = sizeVec, vec_tax_sel(linewidth = 0.1))
 })
