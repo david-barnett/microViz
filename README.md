@@ -103,6 +103,15 @@ install.packages(
 )
 ```
 
+I also highly recommend you install the following suggested CRAN
+packages.
+
+``` r
+install.packages("ggraph") # for taxatree_plots()
+install.packages("DT") # for tax_fix_interactive()
+install.packages("corncob") # for example datasets and beta binomial models
+```
+
 ### Installation of microViz from GitHub
 
 ``` r
@@ -140,7 +149,7 @@ formally test this.
 
 ``` r
 library(microViz)
-#> microViz version 0.10.0 - Copyright (C) 2022 David Barnett
+#> microViz version 0.10.0.9000 - Copyright (C) 2022 David Barnett
 #> ! Website: https://david-barnett.github.io/microViz
 #> ✔ Useful?  For citation details, run: `citation("microViz")`
 #> ✖ Silence? `suppressPackageStartupMessages(library(microViz))`
@@ -323,8 +332,8 @@ aitchison_perm <- aitchison_dists %>%
     n_processes = 1, n_perms = 99, # you should use at least 999!
     variables = "bmi_group"
   )
-#> 2022-11-11 18:09:31 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2022-11-11 18:09:31 - Finished PERMANOVA
+#> 2022-11-13 22:53:46 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2022-11-13 22:53:46 - Finished PERMANOVA
 
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
@@ -349,8 +358,8 @@ your permanova directly using the `ord_plot` function with constraints
 perm2 <- aitchison_dists %>%
   dist_permanova(variables = c("weight", "african", "sex"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2022-11-11 18:09:31 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2022-11-11 18:09:33 - Finished PERMANOVA
+#> 2022-11-13 22:53:46 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2022-11-13 22:53:48 - Finished PERMANOVA
 ```
 
 We’ll visualise the effect of nationality and bodyweight on sample
@@ -457,11 +466,12 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] ggplot2_3.4.0   dplyr_1.0.10    phyloseq_1.42.0 microViz_0.10.0
-#> [5] testthat_3.1.5  devtools_2.4.5  usethis_2.1.6  
+#> [1] ggplot2_3.4.0        dplyr_1.0.10         phyloseq_1.42.0     
+#> [4] microViz_0.10.0.9000 testthat_3.1.5       devtools_2.4.5      
+#> [7] usethis_2.1.6       
 #> 
 #> loaded via a namespace (and not attached):
-#>   [1] circlize_0.4.15        plyr_1.8.7             igraph_1.3.5          
+#>   [1] circlize_0.4.15        plyr_1.8.8             igraph_1.3.5          
 #>   [4] selectr_0.4-2          splines_4.2.1          GenomeInfoDb_1.34.2   
 #>   [7] digest_0.6.30          foreach_1.5.2          ca_0.71.1             
 #>  [10] htmltools_0.5.3        magick_2.7.3           viridis_0.6.2         

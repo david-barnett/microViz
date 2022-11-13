@@ -180,6 +180,8 @@ taxatree_plots <- function(data,
                            l1 = if (palette == "Green-Brown") 10 else NULL,
                            l2 = if (palette == "Green-Brown") 85 else NULL,
                            colour_na = "grey35") {
+  rlang::check_installed(c("tidygraph", "ggraph"), "to use taxatree_plots")
+
   check_is_psExtra(data, argName = "data")
   # get variable-specific stats for joining to node data
   stats <- data@taxatree_stats

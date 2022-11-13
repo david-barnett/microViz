@@ -46,6 +46,7 @@
 #' # tax_fix_interactive(data = ps)
 tax_fix_interactive <- function(data,
                                 app_options = list(launch.browser = TRUE)) {
+  rlang::check_installed("DT", reason = "use `tax_fix_interactive`")
   message(
     "------ tax_fix_interactive looks best fullscreen! ------",
     "\nClick red stop button or hit Esc in console to stop app!"
