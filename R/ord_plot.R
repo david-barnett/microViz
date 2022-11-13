@@ -378,9 +378,12 @@ ord_plot <-
 
 # helper functions ------------------------------------------------------------
 
-# placeholder for aes_string deprecation workaround
+# https://stackoverflow.com/a/74424353/9005116
 buildAesFromListOfStrings <- function(args) {
-  return(do.call(what = ggplot2::aes_string, args = args))
+  args <- lapply(X = args, FUN = function(x) {
+    if (rlang::is_string(x)) rlang::data_sym(x) else x
+  })
+  return(do.call(what = ggplot2::aes, args = args))
 }
 
 #' Add caption text to ordination ggplot
