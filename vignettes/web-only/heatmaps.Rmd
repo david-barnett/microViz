@@ -293,12 +293,12 @@ psq %>%
 
 *Older versions of microViz `cor_heatmap` had a `tax_transform`
 argument. But for flexibility, you must now transform your taxa
-**before** passing the ps_extra object to `cor_heatmap`.*
+**before** passing the psExtra object to `cor_heatmap`.*
 
 Here we have transformed our taxa with the "clr" or centered-log-ratio
 transformation prior to correlating. *Notice that the annotations stay
 on the same scale, as by default the annotation functions extract the
-stored counts data from the ps_extra input, not the transformed data.*
+stored counts data from the psExtra input, not the transformed data.*
 
 ```{r, fig.width=7, fig.height=3, dpi=120}
 psq %>% 
@@ -344,7 +344,7 @@ psq %>%
 ```
 
 You can do multiple transformations and or scaling by supplying a
-function, that takes a ps_extra or phyloseq object, transforms it, and
+function, that takes a psExtra or phyloseq object, transforms it, and
 returns it.
 
 ```{r, fig.width=7, fig.height=3, dpi=120}
