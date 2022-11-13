@@ -47,6 +47,7 @@ taxatree_plotkey <- function(data,
                              node_sort = NULL,
                              add_circles = isTRUE(circular),
                              drop_ranks = TRUE) {
+  rlang::check_installed(c("tidygraph", "ggraph"), "to use taxatree_plotkey")
 
   # make basic nodes
   if (isTRUE(drop_ranks) && is(data, "psExtra") && !is.null(data@taxatree_stats)) {

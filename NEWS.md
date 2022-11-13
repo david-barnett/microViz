@@ -1,3 +1,8 @@
+# microViz (development version)
+
+- Updates for compatibility with ggplot2 3.4.0
+- Move DT, ggraph and tidygraph to suggested dependencies
+
 # microViz 0.10.0
 
 Major internal changes from S3 ps_extra to S4 psExtra objects. See [article about this change](../articles/ps_extra-replaced.html)
