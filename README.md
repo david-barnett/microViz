@@ -46,40 +46,40 @@ latest version.
 :paperclip: This website is the best place for documentation and
 examples: <https://david-barnett.github.io/microViz/>
 
--   [**This ReadMe**](https://david-barnett.github.io/microViz/) shows a
-    few example analyses
+- [**This ReadMe**](https://david-barnett.github.io/microViz/) shows a
+  few example analyses
 
--   **The [Reference](reference/index.html) page** lists all functions
-    and links to help pages and examples
+- **The [Reference](reference/index.html) page** lists all functions and
+  links to help pages and examples
 
--   **The [Changelog](news/index.html)** describes important changes in
-    new microViz package versions
+- **The [Changelog](news/index.html)** describes important changes in
+  new microViz package versions
 
--   **The Articles pages** give tutorials and further examples
+- **The Articles pages** give tutorials and further examples
 
-    -   [Working with phyloseq objects](articles/web-only/phyloseq.html)
+  - [Working with phyloseq objects](articles/web-only/phyloseq.html)
 
-    -   [Fixing your taxa table with
-        tax_fix](articles/web-only/tax-fixing.html)
+  - [Fixing your taxa table with
+    tax_fix](articles/web-only/tax-fixing.html)
 
-    -   [Creating ordination plots](articles/web-only/ordination.html)
-        (e.g. PCA or PCoA)
+  - [Creating ordination plots](articles/web-only/ordination.html)
+    (e.g. PCA or PCoA)
 
-    -   [Interactive ordination plots with
-        ord_explore](articles/web-only/ordination-interactive.html)
+  - [Interactive ordination plots with
+    ord_explore](articles/web-only/ordination-interactive.html)
 
-    -   [Visualising taxonomic compositions with
-        comp_barplot](https://david-barnett.github.io/microViz/articles/web-only/compositions.html)
+  - [Visualising taxonomic compositions with
+    comp_barplot](https://david-barnett.github.io/microViz/articles/web-only/compositions.html)
 
-    -   [Heatmaps of microbiome composition and
-        correlation](articles/web-only/heatmaps.html)
+  - [Heatmaps of microbiome composition and
+    correlation](articles/web-only/heatmaps.html)
 
-    -   [Modelling and plotting individual taxon associations with
-        taxatrees](articles/web-only/modelling-taxa.html)
+  - [Modelling and plotting individual taxon associations with
+    taxatrees](articles/web-only/modelling-taxa.html)
 
-    -   More coming soon(ish)! Post on [GitHub
-        discussions](https://github.com/david-barnett/microViz/discussions)
-        if you have questions/requests
+  - More coming soon(ish)! Post on [GitHub
+    discussions](https://github.com/david-barnett/microViz/discussions)
+    if you have questions/requests
 
 ## Installation
 
@@ -123,7 +123,7 @@ install.packages("devtools")
 devtools::install_github("david-barnett/microViz")
 
 # To install a specific "release" version of this package
-devtools::install_github("david-barnett/microViz@0.9.6") 
+devtools::install_github("david-barnett/microViz@0.10.1") 
 ```
 
 ### Installation notes
@@ -149,7 +149,7 @@ formally test this.
 
 ``` r
 library(microViz)
-#> microViz version 0.10.1 - Copyright (C) 2022 David Barnett
+#> microViz version 0.10.2 - Copyright (C) 2022 David Barnett
 #> ! Website: https://david-barnett.github.io/microViz
 #> ✔ Useful?  For citation details, run: `citation("microViz")`
 #> ✖ Silence? `suppressPackageStartupMessages(library(microViz))`
@@ -332,8 +332,8 @@ aitchison_perm <- aitchison_dists %>%
     n_processes = 1, n_perms = 99, # you should use at least 999!
     variables = "bmi_group"
   )
-#> 2022-11-14 11:00:51 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2022-11-14 11:00:51 - Finished PERMANOVA
+#> 2022-11-14 23:23:04 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2022-11-14 23:23:04 - Finished PERMANOVA
 
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
@@ -358,8 +358,8 @@ your permanova directly using the `ord_plot` function with constraints
 perm2 <- aitchison_dists %>%
   dist_permanova(variables = c("weight", "african", "sex"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2022-11-14 11:00:51 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2022-11-14 11:00:53 - Finished PERMANOVA
+#> 2022-11-14 23:23:04 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2022-11-14 23:23:06 - Finished PERMANOVA
 ```
 
 We’ll visualise the effect of nationality and bodyweight on sample
@@ -466,7 +466,7 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] ggplot2_3.4.0   dplyr_1.0.10    phyloseq_1.42.0 microViz_0.10.1
+#> [1] ggplot2_3.4.0   dplyr_1.0.10    phyloseq_1.42.0 microViz_0.10.2
 #> [5] testthat_3.1.5  devtools_2.4.5  usethis_2.1.6  
 #> 
 #> loaded via a namespace (and not attached):
