@@ -25,7 +25,7 @@ Best paired with ordination plot made from same ord_calc output."><meta property
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.1</span>
       </span>
     </div>
 
@@ -191,7 +191,39 @@ and the other set of scores is left unscaled (from ?vegan::scores.cca)</p></dd>
 
 
 <dt>...</dt>
-<dd><p>extra args passed to comp_barplot e.g. bar_width</p></dd>
+<dd><p>Arguments passed on to <code><a href="comp_barplot.html">comp_barplot</a></code></p><dl><dt><code>merge_other</code></dt>
+<dd><p>if FALSE, taxa coloured/filled as "other" remain distinct,
+and so can have bar outlines drawn around them</p></dd>
+
+    <dt><code>bar_width</code></dt>
+<dd><p>default 1 avoids random gapping otherwise seen with many samples
+(set to less than 1 to introduce gaps between samples)</p></dd>
+
+    <dt><code>bar_outline_colour</code></dt>
+<dd><p>line colour separating taxa and samples (use NA for no outlines)</p></dd>
+
+    <dt><code>bar_outline_width</code></dt>
+<dd><p>width of line separating taxa and samples
+(for no outlines set bar_outline_colour = NA)</p></dd>
+
+    <dt><code>tax_transform_for_plot</code></dt>
+<dd><p>default "compositional" draws proportions of total counts per sample,
+but you could reasonably use another transformation,
+e.g. "identity", if you have truly quantitative microbiome profiling data</p></dd>
+
+    <dt><code>interactive</code></dt>
+<dd><p>creates plot suitable for use with ggiraph</p></dd>
+
+    <dt><code>max_taxa</code></dt>
+<dd><p>maximum distinct taxa groups to show
+(only really useful for limiting complexity of interactive plots
+e.g. within ord_explore)</p></dd>
+
+    <dt><code>other_name</code></dt>
+<dd><p>name for other taxa after N</p></dd>
+
+  
+</dl></dd>
 
 </dl></div>
     <div id="value">
