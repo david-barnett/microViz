@@ -53,6 +53,7 @@ test_that("tax_reorder works", {
 })
 
 sums <- phyloseq::taxa_sums(dietswap)
+names(sums) <- phyloseq::taxa_names(dietswap) # for old R version testing
 
 test_that("tax_sort sum ordering works", {
   expect_equal(
@@ -64,7 +65,7 @@ test_that("tax_sort sum ordering works", {
 # manually sort by descending prevalence, breaking ties with descending sums
 prevs <- microbiome::prevalence(x = dietswap, detection = 0)
 stopifnot(identical(names(sums), names(prevs)))
-df <- data.frame(sums = sums, prevs = prevs, names = names(sums))
+df <- data.frame(sums = sums, prevs = prevs, names = names(sums), stringsAsFactors = FALSE)
 df <- dplyr::arrange(df, dplyr::desc(prevs), dplyr::desc(sums))
 
 

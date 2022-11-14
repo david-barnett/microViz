@@ -236,7 +236,9 @@ getTruncatedTaxTable <- function(ps, rank_index) {
   tt <- unclass(phyloseq::tax_table(ps))
   tt <- tt[, seq_len(rank_index), drop = FALSE]
   # convert to a dataframe to use dplyr distinct
-  tt_df <- as.data.frame.matrix(tt, optional = TRUE, make.names = FALSE)
+  tt_df <- as.data.frame.matrix(
+    x = tt, optional = TRUE, make.names = FALSE, stringsAsFactors = FALSE
+  )
   return(tt_df)
 }
 

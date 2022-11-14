@@ -48,7 +48,7 @@ tax_mutate <- function(ps, ...) {
   tt <- tt_get(ps)
 
   # convert to dataframe
-  tt <- as.data.frame(tt)
+  tt <- as.data.frame(tt, stringsAsFactors = FALSE)
 
   # mutate, ensuring rownames saved
   saved_rownames <- rownames(tt)

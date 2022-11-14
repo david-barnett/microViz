@@ -56,7 +56,9 @@ tax_fix_interactive <- function(data,
 
   # get tax_table
   tt <- unclass(tt_get(data))
-  tt_df <- as.data.frame.matrix(tt, optional = TRUE, make.names = FALSE)
+  tt_df <- as.data.frame.matrix(
+    x = tt, optional = TRUE, make.names = FALSE, stringsAsFactors = FALSE
+  )
 
   # find common unknown values to populate unknowns list
   unique_tt_vals <- rev(unique.default(tt)) # .default = treat as vector
@@ -254,7 +256,10 @@ tax_fix_interactive <- function(data,
         anon_unique = input$anon_uniq, sep = input$sep
       )
       tt_fixed <- unclass(tt_get(ps_fixed))
-      as.data.frame.matrix(tt_fixed, optional = TRUE, make.names = FALSE)
+      as.data.frame.matrix(
+        x = tt_fixed, optional = TRUE, make.names = FALSE,
+        stringsAsFactors = FALSE
+      )
     })
 
     output$out_tt <- DT::renderDataTable(

@@ -193,7 +193,7 @@ tax_sort <- function(data,
       # make tax table of un-aggregated phyloseq as dataframe
       tt <- as.data.frame.matrix(
         x = unclass(phyloseq::tax_table(ps)),
-        optional = TRUE, make.names = FALSE
+        optional = TRUE, make.names = FALSE, stringsAsFactors = FALSE
       )
       # sort un-aggregated data based on order of taxa in aggregated phyloseq
       tt[, at] <- factor(tt[, at], levels = phyloseq::taxa_names(psAg))

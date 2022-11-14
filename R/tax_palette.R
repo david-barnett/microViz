@@ -83,7 +83,10 @@ tax_palette_plot <- function(named_pal_vec, max_n = NA) {
   stopifnot(identical(max_n, NA) || rlang::is_scalar_integerish(max_n))
   if (!is.na(max_n)) named_pal_vec <- utils::head(named_pal_vec, max_n)
 
-  df <- data.frame(taxon = names(named_pal_vec), hex = unname(named_pal_vec))
+  df <- data.frame(
+    taxon = names(named_pal_vec), hex = unname(named_pal_vec),
+    stringsAsFactors = FALSE
+  )
   df[["taxon"]] <- factor(df[["taxon"]], levels = rev(df[["taxon"]]))
 
   p <- ggplot2::ggplot(data = df, mapping = ggplot2::aes(

@@ -217,7 +217,7 @@ tidy_bbdml <- function(model,
 
   # get stats from model
   stats <- method(model, ...)
-  df <- as.data.frame(stats, optional = TRUE)
+  df <- as.data.frame(stats, optional = TRUE, stringsAsFactors = FALSE)
   df <- tibble::rownames_to_column(df, var = "rownames")
   # standardise names in accordance with vibe of broom tidy guidelines
   df <- dplyr::rename(

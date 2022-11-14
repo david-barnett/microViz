@@ -1,4 +1,4 @@
-# microViz (development version)
+# microViz 0.10.2
 
 ## Features
 - `ps_get` can return phyloseq with taxon counts when counts = TRUE and counts are available
@@ -7,6 +7,7 @@
 - `taxatree_plots` and keys more robust #43 and no deprecation warnings #80
 - `tax_transform` add argument accepts "halfmin" again #77
 - `tax_top` can use_counts #78
+- Compatibility with old R versions 3.6.* improved (explicit stringsAsFactors = FALSE)
 
 # microViz 0.10.1
 

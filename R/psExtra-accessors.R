@@ -256,7 +256,7 @@ samdat_tbl <- function(data, sample_names_col = ".sample_name") {
 # or losing rownames / sample_names (like data.frame() with defaults does)
 samdatAsDataframe <- function(ps) {
   samdat <- phyloseq::sample_data(ps)
-  df <- data.frame(samdat, check.names = FALSE)
+  df <- data.frame(samdat, check.names = FALSE, stringsAsFactors = FALSE)
   return(df)
 }
 

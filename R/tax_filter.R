@@ -76,7 +76,8 @@ tax_filter <- function(ps,
   }
 
   # preserve original tax table
-  original_taxtab <- data.frame(tt_get(input), check.names = FALSE)
+  original_taxtab <-
+    data.frame(tt_get(input), check.names = FALSE, stringsAsFactors = FALSE)
 
   # convert min prevalence to an absolute number
   # (if given as a proportion i.e. <1)
@@ -122,7 +123,7 @@ tax_filter <- function(ps,
   if (!phyloseq::taxa_are_rows(ps)) otu <- t(otu)
 
   # tax ranks table
-  taxtab <- data.frame(phyloseq::tax_table(ps), check.names = FALSE)
+  taxtab <- data.frame(phyloseq::tax_table(ps), check.names = FALSE, stringsAsFactors = FALSE)
 
   # alternative way of specifying prev_detection_threshold.
   if (!identical(undetected, NULL)) {
@@ -137,7 +138,8 @@ tax_filter <- function(ps,
       detection = prev_detection_threshold
     ),
     total_counts = phyloseq::taxa_sums(ps),
-    max_abundance = apply(otu, MARGIN = 1, FUN = max)
+    max_abundance = apply(otu, MARGIN = 1, FUN = max),
+    stringsAsFactors = FALSE
   )
   tax_info <- cbind(tax_info, taxtab)
 

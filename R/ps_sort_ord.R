@@ -109,7 +109,7 @@ ord_order_samples <- function(ord, axes = 1:2, scaling = 2) {
     scoreVector <- scoreMatrix[, 1, drop = TRUE]
     sortedSamples <- names(sort(scoreVector, decreasing = FALSE))
   } else if (length(axes) == 2) {
-    df <- as.data.frame.matrix(scoreMatrix)
+    df <- as.data.frame.matrix(scoreMatrix, stringsAsFactors = FALSE)
     df[["ID"]] <- rownames(df)
 
     # find anticlockwise angle from right x-axis
