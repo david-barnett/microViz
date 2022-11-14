@@ -118,12 +118,6 @@ tax_transform <- function(data,
     stop("`rank` must be NA or a character string")
   }
   if (!rlang::is_string(trans)) stop("`trans` must be a character string")
-  if (!rlang::is_scalar_double(add)) stop("`add` must be a double, length 1")
-  if (!rlang::is_scalar_double(zero_replace)) {
-    if (!identical(zero_replace, "halfmin")) {
-      stop("`zero_replace` must be a number, or 'halfmin'")
-    }
-  }
   stopifnot(rlang::is_bool(keep_counts))
   stopifnot(rlang::is_bool(chain))
 
@@ -240,8 +234,13 @@ otuTransformBinary <- function(otu, undetected = 0) {
 
 # otu table zero replacement helper
 otuZeroReplace <- function(otu, zero_replace) {
-  if (!identical(zero_replace, "halfmin") && !is.numeric(zero_replace)) {
-    stop(call. = FALSE, "zero_replace argument must be 'halfmin' or a number")
+  if (!identical(zero_replace, "halfmin")) {
+    if (!is.numeric(zero_replace) || length(zero_replace) != 1) {
+      rlang::abort(
+        message = "`zero_replace` argument must be 'halfmin' or a number",
+        call = rlang::caller_env()
+      )
+    }
   }
 
   # calculate zero replacement number if halfmin option given
@@ -255,7 +254,10 @@ otuZeroReplace <- function(otu, zero_replace) {
 # otu table helper adds a constant value to ALL entries in otuTable
 otuAddConstant <- function(otu, add) {
   if (!identical(add, "halfmin") && !is.numeric(add) || length(add) != 1) {
-    stop(call. = FALSE, "`add` argument must be 'halfmin' or a number")
+    rlang::abort(
+      message = "`add` argument must be 'halfmin' or a number",
+      call = rlang::caller_env()
+    )
   }
 
   # calculate constant number if halfmin option given

@@ -1,6 +1,9 @@
 # microViz (development version)
 
-- Bug fixes in taxatree_plots and keys
+## Bug fixes
+- taxatree_plots and keys more robust #43 and no deprecation warnings #80
+- tax_transform add argument accepts "halfmin" again #77
+- 
 
 # microViz 0.10.1
 
