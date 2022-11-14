@@ -1,4 +1,4 @@
-# microViz (development version)
+# microViz 0.10.1
 
 - Updates for compatibility with ggplot2 3.4.0
 - Move DT, ggraph and tidygraph to suggested dependencies
