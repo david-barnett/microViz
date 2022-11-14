@@ -17,7 +17,7 @@
 \alias{samdat_tbl}
 \title{Extract elements from ps_extra class}
 \usage{
-ps_get(psExtra, ps_extra)
+ps_get(psExtra, ps_extra, counts = FALSE, warn = TRUE)
 
 dist_get(psExtra, ps_extra)
 
@@ -37,7 +37,7 @@ taxatree_models_get(psExtra)
 
 taxatree_stats_get(psExtra)
 
-otu_get(data, taxa = NA, samples = NA, counts = FALSE)
+otu_get(data, taxa = NA, samples = NA, counts = FALSE, warn = TRUE)
 
 tt_get(data)
 
@@ -48,13 +48,16 @@ samdat_tbl(data, sample_names_col = ".sample_name")
 
 \item{ps_extra}{deprecated! don't use this}
 
+\item{counts}{should ps_get or otu_get attempt to return counts? if present in object}
+
+\item{warn}{if counts = TRUE, should a warning be emitted if counts are not available?
+set warn = "error" to stop if counts are not available}
+
 \item{data}{phyloseq or psExtra}
 
 \item{taxa}{subset of taxa to return, NA for all (default)}
 
 \item{samples}{subset of samples to return, NA for all (default)}
-
-\item{counts}{should otu_get ensure it returns counts? if present in object}
 
 \item{sample_names_col}{name of column where sample_names are put.
 if NA, return data.frame with rownames (sample_names)}
@@ -82,19 +85,33 @@ with sample_names as new first column called .sample_name
 }
 \examples{
 data("dietswap", package = "microbiome")
-psx <- tax_transform(dietswap, "identity", rank = "Genus")
+
+psx <- tax_transform(dietswap, "compositional", rank = "Genus")
+
 psx
 
 ps_get(psx)
+
+ps_get(psx, counts = TRUE)
+
 info_get(psx)
 
 dist_get(psx) # this psExtra has no dist_calc result
+
 ord_get(psx) # this psExtra has no ord_calc result
+
 perm_get(psx) # this psExtra has no dist_permanova result
+
 bdisp_get(psx) # this psExtra has no dist_bdisp result
 
 # these can be returned from phyloseq objects too
 otu_get(psx, taxa = 6:9, samples = c("Sample-9", "Sample-1", "Sample-6"))
+
+otu_get(psx, taxa = 6:9, samples = c(9, 1, 6), counts = TRUE)
+
 tt_get(psx) \%>\% head()
+
 samdat_tbl(psx)
+
+samdat_tbl(psx, sample_names_col = "SAMPLENAME")
 }

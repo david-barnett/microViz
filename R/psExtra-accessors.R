@@ -58,26 +58,43 @@ check_is_psExtra <- function(x, argName = NULL) {
 #'
 #' @examples
 #' data("dietswap", package = "microbiome")
-#' psx <- tax_transform(dietswap, "identity", rank = "Genus")
+#'
+#' psx <- tax_transform(dietswap, "compositional", rank = "Genus")
+#'
 #' psx
 #'
 #' ps_get(psx)
+#'
+#' ps_get(psx, counts = TRUE)
+#'
 #' info_get(psx)
 #'
 #' dist_get(psx) # this psExtra has no dist_calc result
+#'
 #' ord_get(psx) # this psExtra has no ord_calc result
+#'
 #' perm_get(psx) # this psExtra has no dist_permanova result
+#'
 #' bdisp_get(psx) # this psExtra has no dist_bdisp result
 #'
 #' # these can be returned from phyloseq objects too
 #' otu_get(psx, taxa = 6:9, samples = c("Sample-9", "Sample-1", "Sample-6"))
+#'
+#' otu_get(psx, taxa = 6:9, samples = c(9, 1, 6), counts = TRUE)
+#'
 #' tt_get(psx) %>% head()
+#'
 #' samdat_tbl(psx)
+#'
+#' samdat_tbl(psx, sample_names_col = "SAMPLENAME")
 #' @export
 #' @rdname psExtra-accessors
-ps_get <- function(psExtra, ps_extra) {
+ps_get <- function(psExtra, ps_extra, counts = FALSE, warn = TRUE) {
   if (!missing(ps_extra)) psExtra <- ps_extra_arg_deprecation_warning(ps_extra)
   check_is_phyloseq(psExtra)
+  if (isTRUE(counts)) {
+    return(ps_counts(psExtra, warn = warn))
+  }
   return(as(psExtra, "phyloseq"))
 }
 #' @rdname psExtra-accessors
@@ -153,17 +170,20 @@ taxatree_stats_get <- function(psExtra) {
 #'
 #' @param taxa subset of taxa to return, NA for all (default)
 #' @param samples subset of samples to return, NA for all (default)
-#' @param counts should otu_get ensure it returns counts? if present in object
+#' @param counts should ps_get or otu_get attempt to return counts? if present in object
+#' @param warn
+#' if counts = TRUE, should a warning be emitted if counts are not available?
+#' set warn = "error" to stop if counts are not available
 #'
 #' @rdname psExtra-accessors
 #' @export
-otu_get <- function(data, taxa = NA, samples = NA, counts = FALSE) {
+otu_get <- function(data, taxa = NA, samples = NA, counts = FALSE, warn = TRUE) {
   # get otu_table from object
   if (methods::is(data, "otu_table")) {
     if (isTRUE(counts)) warning("data is otu_table: ignoring `counts = TRUE`")
     otu <- data
   } else {
-    ps <- if (isTRUE(counts)) ps_counts(data) else ps_get(data)
+    ps <- if (isTRUE(counts)) ps_counts(data, warn = warn) else ps_get(data)
     otu <- phyloseq::otu_table(ps)
   }
   if (phyloseq::taxa_are_rows(otu)) otu <- phyloseq::t(otu)
