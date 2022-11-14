@@ -31,25 +31,12 @@ test_that("taxatree_plotkey works as expected", {
   unlabeledKey <- tax_prepend_ranks(ps) %>%
     taxatree_plotkey(rank != "species", .draw_label = FALSE)
 
-  # check circular plot data
-  keyDat <- unlabeledKey$data %>%
-    dplyr::mutate(dplyr::across(where(is.numeric), round, digits = 6))
-
-  expect_snapshot_csv(name = "unlabeledKeyData", keyDat)
-  expect_snapshot(attr(unlabeledKey$data, "graph"))
-
   # draw rectangular key without labels
   unlabeledKey_rect <- tax_prepend_ranks(ps) %>%
     taxatree_plotkey(circular = FALSE, rank != "species", .draw_label = FALSE)
 
   # check rectangular plot data
   expect_s3_class(unlabeledKey_rect$layers[[1]]$geom, "GeomEdgePath") # asserts no circles drawn behind
-
-  keyDatRect <- unlabeledKey_rect$data %>%
-    dplyr::mutate(dplyr::across(where(is.numeric), round, digits = 6))
-
-  expect_snapshot_csv(name = "unlabeledKey_rectData", keyDatRect)
-  expect_snapshot(attr(unlabeledKey_rect$data, "graph"))
 
   # plot non-circular geom_text labels without warnings
   expect_silent(
@@ -69,7 +56,20 @@ test_that("taxatree_plotkey works as expected", {
     regexp = "'color' argument is ignored, please use 'colour'"
   )
 
+  # get circular plot data
+  keyDat <- unlabeledKey$data %>%
+    dplyr::mutate(dplyr::across(where(is.numeric), round, digits = 6))
 
+  # get rectangular plot data
+  keyDatRect <- unlabeledKey_rect$data %>%
+    dplyr::mutate(dplyr::across(where(is.numeric), round, digits = 6))
+
+  expect_snapshot_csv(name = "unlabeledKeyData", keyDat)
+  expect_snapshot_csv(name = "unlabeledKey_rectData", keyDatRect)
+
+  skip_if(R.version$major != "4") # printing of x and ... different
+  expect_snapshot(attr(unlabeledKey$data, "graph"))
+  expect_snapshot(attr(unlabeledKey_rect$data, "graph"))
 })
 
 test_that("taxatree_plotkey can sort nodes", {
