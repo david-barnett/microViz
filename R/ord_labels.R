@@ -36,18 +36,12 @@ ord_labels <- function(p,
   if (identical(styles[["type"]], "text")) {
     geomFun <- ggplot2::geom_text
   } else if (identical(styles[["type"]], "richtext")) {
-    if (requireNamespace("ggtext", quietly = TRUE)) {
-      geomFun <- ggtext::geom_richtext
-    } else {
-      stop("Package `ggtext` must be installed to use type = 'richtext'")
-    }
+    rlang::check_installed("ggtext", reason = "to use type = 'richtext'")
+    geomFun <- ggtext::geom_richtext
   } else if (identical(styles[["type"]], "label")) {
     if (styles[["max_angle"]] > 0) {
-      if (requireNamespace("ggtext", quietly = TRUE)) {
-        geomFun <- ggtext::geom_richtext
-      } else {
-        stop("Package `ggtext` must be installed to rotate type = 'label'")
-      }
+      rlang::check_installed("ggtext", reason = "to rotate type = 'label'")
+      geomFun <- ggtext::geom_richtext
     } else {
       geomFun <- ggplot2::geom_label
     }
