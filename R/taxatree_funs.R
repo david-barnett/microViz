@@ -22,7 +22,7 @@
 #' selection of taxonomic ranks to make nodes for ("all", or names)
 #' @param fun function to calculate for each taxon/node
 #' @param .sort
-#' sort nodes by "ascending" or "descending" values of fun function result
+#' sort nodes by "increasing" or "decreasing" values of fun function result
 #' @param .use_counts use count data if available (instead of transformed data)
 #'
 #' @rdname taxatree_funs
@@ -41,6 +41,13 @@ taxatree_nodes <- function(ps,
   # check fun format
   if (!is.list(fun) || !inherits(fun[[1]], "function") || is.null(names(fun))) {
     stop("fun must be a length 1 named list holding a function for a vector")
+  }
+
+  # remove non-selected ranks (to avoid creation of invalid graph)
+  if (!identical(ranks, "all")) {
+    rlang::arg_match(ranks, c(phyloseq::rank_names(ps), "root"), multiple = TRUE)
+    ranks <- setdiff(ranks, "root")
+    phyloseq::tax_table(ps) <- phyloseq::tax_table(ps)[, ranks]
   }
 
   # check if there is more than one value in top level: if so, add a root level
@@ -76,12 +83,13 @@ taxatree_nodes <- function(ps,
   taxatree_nodes_checkLoops(nodes_df)
 
   # sort if requested
-  if (identical(.sort, "ascending") | identical(.sort, "increasing")) {
-    nodes_df[order(nodes_df[[names(fun)[[1]]]], decreasing = FALSE), ]
+  if (!is.null(.sort)) {
+    rlang::arg_match(.sort, c("increasing", "decreasing"))
+    STAT <- nodes_df[[names(fun)[[1]]]]
+    newOrder <- order(STAT, decreasing = .sort == "decreasing")
+    nodes_df <- nodes_df[newOrder, , drop = FALSE]
   }
-  if (identical(.sort, "descending") | identical(.sort, "decreasing")) {
-    nodes_df[order(nodes_df[[names(fun)[[1]]]], decreasing = TRUE), ]
-  }
+
   return(nodes_df)
 }
 

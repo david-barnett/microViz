@@ -1,3 +1,7 @@
+# microViz (development version)
+
+- Bug fixes in taxatree_plots and keys
+
 # microViz 0.10.1
 
 - Updates for compatibility with ggplot2 3.4.0
