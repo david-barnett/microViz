@@ -74,7 +74,7 @@
       p3$layers
     Output
       [[1]]
-      mapping: colour = ~bmi_group 
+      mapping: colour = ~.data$bmi_group 
       geom_point: na.rm = FALSE
       stat_identity: na.rm = FALSE
       position_identity 
@@ -100,7 +100,7 @@
       p4$layers
     Output
       [[1]]
-      mapping: colour = ~bmi_group 
+      mapping: colour = ~.data$bmi_group 
       geom_point: na.rm = FALSE
       stat_identity: na.rm = FALSE
       position_identity 

@@ -11,8 +11,8 @@
 #' @noRd
 ord_arrows <- function(p, data, styleList, axesNames, defaultStyles) {
   args <- list(
-    data = data, mapping = ggplot2::aes_string(
-      xend = axesNames[1], yend = axesNames[2], x = 0, y = 0
+    data = data, x = 0, y = 0, mapping = ggplot2::aes(
+      xend = .data[[axesNames[1]]], yend = .data[[axesNames[2]]],
     )
   )
   styles <- defaultStyles
@@ -26,7 +26,7 @@ ord_arrows <- function(p, data, styleList, axesNames, defaultStyles) {
 #' @description
 #' Used by ord_plot, see examples there.
 #'
-#' @param size width of vector
+#' @param linewidth width of vector
 #' @param alpha opacity of vector
 #' @param colour colour of vector
 #' @param arrow arrow style specified with grid::arrow() or NULL for no arrow
@@ -41,36 +41,61 @@ ord_arrows <- function(p, data, styleList, axesNames, defaultStyles) {
 #' @export
 #' @rdname ord_arrows
 #' @name Ordination-arrows
-vec_constraint <- function(size = 1, alpha = 0.8, colour = "brown",
+vec_constraint <- function(linewidth = 1, alpha = 0.8, colour = "brown",
                            arrow = grid::arrow(
                              length = grid::unit(0.005, units = "npc"),
                              type = "closed", angle = 30
                            ),
                            lineend = "round", linejoin = "mitre",
                            ...) {
-  list(
-    size = size, alpha = alpha, arrow = arrow, colour = colour,
+  vecCheckArgList(list(
+    linewidth = linewidth, alpha = alpha, arrow = arrow, colour = colour,
     lineend = lineend, linejoin = linejoin, ...
-  )
+  ))
 }
 
 #' @export
 #' @rdname ord_arrows
-vec_tax_sel <- function(size = 0.5, alpha = 1, colour = "black",
+vec_tax_sel <- function(linewidth = 0.5, alpha = 1, colour = "black",
                         arrow = grid::arrow(
                           length = grid::unit(0.005, units = "npc"),
                           type = "closed", angle = 30
                         ),
                         lineend = "round", linejoin = "mitre",
                         ...) {
-  list(
-    size = size, alpha = alpha, arrow = arrow, colour = colour,
+  vecCheckArgList(list(
+    linewidth = linewidth, alpha = alpha, arrow = arrow, colour = colour,
     lineend = lineend, linejoin = linejoin, ...
-  )
+  ))
 }
 
 #' @export
 #' @rdname ord_arrows
-vec_tax_all <- function(size = 0.5, alpha = 0.25, arrow = NULL, ...) {
-  list(size = size, alpha = alpha, arrow = arrow, ...)
+vec_tax_all <- function(linewidth = 0.5, alpha = 0.25, arrow = NULL, ...) {
+  vecCheckArgList(list(linewidth = linewidth, alpha = alpha, arrow = arrow, ...))
+}
+
+# avoid ggplot2 version issues: size aesthetic changing to new linewidth aesthetic
+# and check arrow is NULL or an arrow
+vecCheckArgList <- function(argList) {
+  if (utils::packageVersion("ggplot2") < "3.4.0") {
+    if (is.null(argList[["size"]])) argList[["size"]] <- argList[["linewidth"]]
+    argList[["linewidth"]] <- NULL
+  } else {
+    if (!is.null(argList[["size"]])) {
+      rlang::warn(
+        "Since ggplot2 v3.4.0, you should use 'linewidth' instead of 'size'",
+        .frequency = "regularly", .frequency_id = "linewidth_ord_arrows"
+      )
+      argList[["linewidth"]] <- argList[["size"]]
+    }
+    argList[["size"]] <- NULL
+  }
+  if (!is.null(argList[["arrow"]]) && !inherits(argList[["arrow"]], "arrow")) {
+    rlang::abort(
+      "arrow must be `NULL` or an 'arrow' object (made with `grid::arrow`)",
+      call = rlang::caller_env(1)
+    )
+  }
+  return(argList)
 }

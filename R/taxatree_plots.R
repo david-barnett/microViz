@@ -316,13 +316,15 @@ taxatree_plotCircles <- function(p, layout) {
 
   # add background circles
   for (r in radii) {
-    p <- p +
-      ggplot2::annotate(
-        geom = "path",
-        x = 0 + r * cos(seq(from = 0, to = 2 * pi, length.out = 100)),
-        y = 0 + r * sin(seq(from = 0, to = 2 * pi, length.out = 100)),
-        colour = "grey80", size = 0.1
-      )
+    x <- 0 + r * cos(seq(from = 0, to = 2 * pi, length.out = 100))
+    y <- 0 + r * sin(seq(from = 0, to = 2 * pi, length.out = 100))
+    cl <- "grey80"
+    if (utils::packageVersion("ggplot2") < "3.4.0") {
+      a <- ggplot2::annotate("path", x = x, y = y, color = cl, size = 0.1)
+    } else {
+      a <- ggplot2::annotate("path", x = x, y = y, color = cl, linewidth = 0.1)
+    }
+    p <- p + a
   }
   return(p)
 }
@@ -354,8 +356,6 @@ taxatree_plot_sig <- function(p,
                               sig_colour = "white",
                               sig_shape = "circle filled") {
   if (!identical(sig_stat, NULL)) {
-
-
     # convert shape numbers to character names for consistency
     sig_shape <- sapply(sig_shape, shape_number2name)
 
@@ -479,7 +479,6 @@ shape_number2name <- function(shape_number) {
 # sigMarkerList is a list of length n, for n legend entries: each named item
 # is itself a list of all the aesthetics for that entry, named correctly.
 taxatree_plot_sigLegend <- function(p, sigMarkerList) {
-
   # increase size and stroke for legend
   sigLegend <- lapply(sigMarkerList, function(x) {
     x[c("stroke", "size")] <- lapply(x[c("stroke", "size")], `*`, 1.5)

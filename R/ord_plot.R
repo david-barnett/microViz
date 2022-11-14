@@ -245,7 +245,6 @@ ord_plot <-
       )
       axesLabs <- axesNames <- colnames(siteScoresDf)
     } else {
-
       # compute summary of ordination object to ensure
       # consistent scaling of components
       ordsum <- summary(ordination, scaling = scaling, axes = max(axes))
@@ -275,16 +274,15 @@ ord_plot <-
 
     # build ggplot ------------------------------------------------------------
     ## samples ----------------------------------------------------------------
-    p <- ggplot2::ggplot(
-      data = df,
-      mapping = ggplot2::aes_string(x = axesNames[1], y = axesNames[2])
-    ) +
+    p <- ggplot2::ggplot(data = df, mapping = ggplot2::aes(
+      x = .data[[axesNames[1]]], y = .data[[axesNames[2]]]
+    )) +
       ggplot2::theme_minimal() +
       ggplot2::labs(x = axesLabs[1], y = axesLabs[2]) +
       ggplot2::coord_cartesian(clip = clip, default = TRUE, expand = expand)
 
     # set geom_point variable aesthetics
-    aesthetics <- do.call(what = ggplot2::aes_string, args = aestheticArgs)
+    aesthetics <- buildAesFromListOfStrings(aestheticArgs)
 
     # gather all args for use in geom_point (sample data)
     geompointArgs <- c(list(mapping = aesthetics), fixed_aesthetics)
@@ -301,7 +299,6 @@ ord_plot <-
     ## taxa -------------------------------------------------------------------
     # add loadings/ species-scores arrows for RDA/PCA methods
     if (ordInfo[["method"]] %in% c("RDA", "CCA", "PCA")) {
-
       # return subselection of taxa for which to draw labels on plot
       selectSpeciesScoresDf <- subsetTaxaDfLabel(
         speciesScoresDf = speciesScoresDf, plot_taxa = plot_taxa
@@ -310,7 +307,6 @@ ord_plot <-
       # if a selection of species scores (for labelling) was calculated,
       # add taxa lines and labels to plot
       if (!identical(selectSpeciesScoresDf, NULL)) {
-
         # automatic taxa vector length setting
         if (identical(tax_vec_length, NA)) {
           tax_vec_length <- computeAutoVecLength(
@@ -344,7 +340,6 @@ ord_plot <-
     ## constraints -----------------------------------------------------------
     # if constrained ordination, plot constraints
     if (isConstrained) {
-
       # automatic constraint length setting
       if (identical(constraint_vec_length, NA)) {
         constraint_vec_length <- computeAutoVecLength(
@@ -382,6 +377,14 @@ ord_plot <-
   }
 
 # helper functions ------------------------------------------------------------
+
+# https://stackoverflow.com/a/74424353/9005116
+buildAesFromListOfStrings <- function(args) {
+  args <- lapply(X = args, FUN = function(x) {
+    if (rlang::is_string(x)) rlang::data_sym(x) else x
+  })
+  return(do.call(what = ggplot2::aes, args = args))
+}
 
 #' Add caption text to ordination ggplot
 #'
@@ -484,7 +487,6 @@ vecNormEuclid <- function(vec) norm(vec, type = "2")
 # Returns subset of that dataframe with only taxa that will be labelled,
 # subset returned depends on the plot_taxa argument, which is user supplied.
 subsetTaxaDfLabel <- function(speciesScoresDf, plot_taxa) {
-
   # calculate initial line length for taxa vectors
   speciesLineLength <- rowVecNorms(df = speciesScoresDf, cols = 1:2)
 

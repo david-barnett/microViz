@@ -23,9 +23,8 @@ ord_labels <- function(p,
                        defaultStyles = tax_lab_style()) {
   # list of non-style arguments (not provided by user)
   args <- list(
-    data = data,
-    label = renamer(rownames(data)),
-    mapping = ggplot2::aes_string(x = axesNames[1], y = axesNames[2])
+    data = data, label = renamer(rownames(data)),
+    mapping = ggplot2::aes(x = .data[[axesNames[1]]], y = .data[[axesNames[2]]])
   )
   # overwrite (some) default style aspects with whatever user provided
   styles <- defaultStyles

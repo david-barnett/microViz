@@ -53,6 +53,7 @@ test_that("ps_calc_richness supported plot doesn't change", {
     ggplot2::scale_colour_viridis_c() +
     ggplot2::theme_test()
 
+  skip_if(packageVersion("ggplot2") < "3.4.0")
   vdiffr::expect_doppelganger(title = "richness-pca", fig = p)
 })
 

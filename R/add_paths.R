@@ -27,7 +27,8 @@
 #'   ord_plot(colour = "timepoint", alpha = 0.5, size = 2) %>%
 #'   add_paths(
 #'     id_var = "subject", id_values = c("azl", "byn"),
-#'     mapping = aes(colour = timepoint), size = 1.5
+#'     mapping = aes(colour = timepoint), linewidth = 1.5
+#'     # size = 1.5 # size instead of linewidth in older ggplot2 versions
 #'   )
 #'
 #' # paths do NOT connect points in the correct order without arranging first
@@ -38,7 +39,8 @@
 #'   ord_plot(colour = "timepoint", alpha = 0.5) %>%
 #'   add_paths(
 #'     id_var = "subject", id_values = c("azl", "byn"),
-#'     mapping = aes(colour = timepoint), size = 1.5
+#'     mapping = aes(colour = timepoint), linewidth = 1.5
+#'     # size = 1.5 # size instead of linewidth in older ggplot2 versions
 #'   ) +
 #'   ggtitle("WRONG PATH ORDER", "use ps_arrange first!")
 add_paths <- function(ggplot, id_var, id_values,

@@ -237,10 +237,13 @@ ord_plot_iris <- function(data,
 
   if (!identical(anno_colour, NULL)) {
     # set default args
-    ac_args <- list(
-      y = 1.05, yend = 1.10, size = 1,
-      mapping = ggplot2::aes_string(xend = "SAMPLE", colour = anno_colour)
-    )
+    ac_args <- list(y = 1.05, yend = 1.10, mapping = ggplot2::aes(
+      xend = .data[["SAMPLE"]], colour = .data[[anno_colour]]
+    ))
+    # set appropriate linewidth/size arg, dependent on ggplot2 version
+    oldGG <- isTRUE(utils::packageVersion("ggplot2") < "3.4.0")
+    if (oldGG) ac_args[["size"]] <- 1 else ac_args[["linewidth"]] <- 1
+
     # overwrite defaults and add any other args
     ac_args[names(anno_colour_style)] <- anno_colour_style
     # add to plot
@@ -256,7 +259,7 @@ ord_plot_iris <- function(data,
       y <- y + i * 0.05
       # set default args
       ab_args <- list(
-        # paste formula together to ensure anno_binary[i] evalutates
+        # paste formula together to ensure anno_binary[i] evaluates
         # otherwise all do.calls use formula with last i value
         data = stats::as.formula(paste0("~ .[.[['", anno_binary[i], "']] == TRUE, ]")),
         y = y, shape = "circle", size = 1, colour = "black", show.legend = FALSE

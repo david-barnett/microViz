@@ -7,6 +7,7 @@ data("ibd_phylo", package = "corncob")
 
 # filter out rare taxa and clean up names etc
 ibd <- ibd_phylo %>%
+  ps_mutate(DiseaseState = as.factor(DiseaseState), active = as.factor(active)) %>%
   tax_filter(min_prevalence = 3) %>%
   tax_fix() %>%
   phyloseq_validate()
@@ -32,23 +33,8 @@ p1 <- ibd_ord %>%
   theme(legend.position = c(0.8, 0.2), legend.background = element_rect()) +
   stat_chull(mapping = aes(colour = ibd, fill = ibd), alpha = 0.1)
 
-# visually check ord_labels tax_vec_style help page example stays the same
-p <- ibd_ord %>%
-  ord_plot(
-    shape = "circle filled", fill = "ibd",
-    plot_taxa = 1:10,
-    taxon_renamer = function(x) stringr::str_replace_all(x, "_", " "),
-    tax_vec_length = 2, tax_lab_length = 2.1,
-    tax_lab_style = tax_lab_style(
-      type = "text", max_angle = 90, size = 2.5,
-      fontface = "bold.italic", check_overlap = TRUE
-    )
-  ) +
-  coord_fixed(1, clip = "off", xlim = c(-5, 5)) +
-  theme(legend.position = c(0.8, 0.2), legend.background = element_rect()) +
-  stat_chull(mapping = aes(colour = ibd, fill = ibd), alpha = 0.1)
-
 test_that("ord_labels/tax_vec_style help page example stays the same", {
+  skip_if(packageVersion("ggplot2") < "3.4.0")
   vdiffr::expect_doppelganger("unconstrained rotated labels", fig = p1)
 })
 
@@ -79,16 +65,17 @@ p2 <- ibd %>%
     tax_lab_style = tax_lab_style(
       type = "text", max_angle = 90, fontface = "bold.italic"
     ),
-    constraint_vec_style = vec_constraint(size = 1.5, alpha = 0.5),
+    constraint_vec_style = vec_constraint(linewidth = 1.5, alpha = 0.5),
     constraint_vec_length = 3, constraint_lab_length = 3.3,
     constraint_lab_style = constraint_lab_style(
       alpha = 0.8, size = 3, max_angle = 90, perpendicular = TRUE
     )
   ) +
   coord_fixed(ratio = 1, clip = "off", xlim = c(-6, 6)) +
-  scale_colour_manual(values = c(
-    CD = "red", UC = "orange", IBDundef = "purple", nonIBD = "green"
-  )) +
+  scale_colour_manual(
+  breaks = c("CD", "IBDundef", "nonIBD", "UC"),
+  values = c(CD = "red", UC = "orange", IBDundef = "purple", nonIBD = "green")
+  ) +
   scale_shape_manual(values = c(
     active = "circle", mild = "circle cross",
     inactive = "circle open", control = "square open"
@@ -99,5 +86,6 @@ p2 <- ibd %>%
 
 
 test_that("ordination vignette custom constrained plot stays the same", {
+  skip_if(packageVersion("ggplot2") < "3.4.0")
   vdiffr::expect_doppelganger("constrained custom labels", fig = p2)
 })

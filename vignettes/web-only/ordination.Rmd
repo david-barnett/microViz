@@ -299,7 +299,7 @@ ibd %>%
     tax_lab_length = 6, # this multiplier moves the labels, independently of the arrowheads
     tax_lab_style = tax_lab_style(size = 1.8, alpha = 0.5), # create a list of options to tweak the taxa labels' default style
     constraint_vec_length = 3, # this adjusts the length of the constraint arrows, and the labels track these lengths by default
-    constraint_vec_style = vec_constraint(size = 1.5, alpha = 0.5), # this styles the constraint arrows
+    constraint_vec_style = vec_constraint(1.5, alpha = 0.5), # this styles the constraint arrows
     constraint_lab_style = constraint_lab_style(size = 3) # this styles the constraint labels
   ) +
   # the functions below are from ggplot2:
@@ -353,7 +353,7 @@ ibd %>%
     tax_lab_style = tax_lab_style(
       type = "text", max_angle = 90, fontface = "bold.italic"
     ), 
-    constraint_vec_style = vec_constraint(size = 1.5, alpha = 0.5), 
+    constraint_vec_style = vec_constraint(1.5, alpha = 0.5), 
     constraint_vec_length = 3, constraint_lab_length = 3.3,
     constraint_lab_style = constraint_lab_style(
       alpha = 0.8, size = 3, max_angle = 90, perpendicular = TRUE

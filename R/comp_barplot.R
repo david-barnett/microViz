@@ -395,18 +395,11 @@ comp_barplotFixed <- function(ps, interactive,
   ))
   if (identical(x, "SAMPLE")) p <- p + ggplot2::xlab(NULL)
 
-  if (isTRUE(interactive)) {
-    p <- p + ggiraph::geom_col_interactive(
-      position = "stack", width = bar_width,
-      colour = bar_outline_colour, size = bar_outline_width,
-      ggplot2::aes_string(data_id = "unique", tooltip = "unique")
-    )
-  } else {
-    p <- p + ggplot2::geom_col(
-      position = "stack", width = bar_width,
-      colour = bar_outline_colour, size = bar_outline_width
-    )
-  }
+  p <- addGeomStackedBars(
+    p = p, interactive = interactive, width = bar_width,
+    colour = bar_outline_colour, linewidth = bar_outline_width
+  )
+
   # theme plot
   p <- p +
     ggplot2::theme(
@@ -430,6 +423,23 @@ comp_barplotFixed <- function(ps, interactive,
   }
 
   return(p)
+}
+
+# helper to add geom_col or geom_col_interactive to comp_barplot ggplot
+addGeomStackedBars <- function(p, interactive, width, colour, linewidth) {
+  args <- list(position = "stack", width = width, colour = colour)
+  if (utils::packageVersion("ggplot2") < "3.4.0") {
+    args[["size"]] <- linewidth
+  } else {
+    args[["linewidth"]] <- linewidth
+  }
+  if (isTRUE(interactive)) {
+    fun <- ggiraph::geom_col_interactive
+    args[["mapping"]] <- ggplot2::aes(data_id = .data[["unique"]], tooltip = .data[["unique"]])
+  } else {
+    fun <- ggplot2::geom_col
+  }
+  return(p + do.call(fun, args))
 }
 
 #' Create a new tax_table rank, lumping taxa after first N

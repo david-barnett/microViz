@@ -33,7 +33,6 @@ citations <- paste0("~", stringr::str_extract(rvest::html_text(citeElem), "[0-9]
 [![JOSS article](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa/status.svg)](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa)
 [![Citations](https://img.shields.io/badge/Citations-`r citations`-blueviolet)](https://scholar.google.com/scholar?oi=bibs&hl=en&cites=5439940108464463894) 
 [![Zenodo DOI](https://zenodo.org/badge/307119750.svg)](https://zenodo.org/badge/latestdoi/307119750)
-
 <!-- badges: end -->
 
 ## Overview
@@ -254,7 +253,7 @@ pca_plot <- unconstrained_aitchison_pca %>%
 
 # customise plot
 customised_plot <- pca_plot +
-  stat_ellipse(aes(linetype = bmi_group, colour = bmi_group), size = 0.3) +
+  stat_ellipse(aes(linetype = bmi_group, colour = bmi_group), linewidth = 0.3) + # linewidth not size, since ggplot 3.4.0
   scale_colour_brewer(palette = "Set1") +
   theme(legend.position = "bottom") +
   coord_fixed(ratio = 0.5, clip = "off") # makes rotated labels align correctly
@@ -310,12 +309,12 @@ perm2 %>%
     colour = "nationality", size = 2.5, alpha = 0.35,
     auto_caption = 7,
     constraint_vec_length = 1,
-    constraint_vec_style = vec_constraint(size = 1.5, colour = "grey15"),
+    constraint_vec_style = vec_constraint(1.5, colour = "grey15"),
     constraint_lab_style = constraint_lab_style(
       max_angle = 90, size = 3, aspect_ratio = 0.35, colour = "black"
     )
   ) +
-  stat_ellipse(aes(colour = nationality), size = 0.2) +
+  stat_ellipse(aes(colour = nationality), linewidth = 0.2) + # linewidth not size since ggplot 3.4.0
   scale_color_brewer(palette = "Set1") +
   coord_fixed(ratio = 0.35, clip = "off") +
   theme(legend.position = c(0.9, 0.1), legend.background = element_rect())

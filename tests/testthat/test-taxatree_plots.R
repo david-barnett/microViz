@@ -68,6 +68,9 @@ test_that("taxatree_plot plotting works", {
 
   # visual diff plots
   skip_on_os("windows")
+  if (packageVersion("ggplot2") >= "3.4.0" && packageVersion("ggraph") <= "2.1.0") {
+    options(lifecycle_verbosity = "quiet") # suppress deprecation warnings until fixed in ggraph
+  }
   vdiffr::expect_doppelganger("taxatree_plot_UC", lm_plots$UC)
   vdiffr::expect_doppelganger("taxatree_plot_age", lm_plots$age_scaled)
 })
@@ -88,6 +91,10 @@ test_that("taxatree_plot plotting works with multiple sig markers", {
 
   # visual diff plots
   skip_on_os("windows")
+  if (packageVersion("ggplot2") >= "3.4.0" && packageVersion("ggraph") <= "2.1.0") {
+    options(lifecycle_verbosity = "quiet") # suppress deprecation warnings until fixed in ggraph
+  }
   vdiffr::expect_doppelganger("taxatree_plot_UC_m", lmp_multiSig$UC)
   vdiffr::expect_doppelganger("taxatree_plot_age_m", lmp_multiSig$age_scaled)
+  options(lifecycle_verbosity = "default")
 })

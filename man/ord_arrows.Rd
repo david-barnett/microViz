@@ -8,7 +8,7 @@
 \title{Create ordination plot vector styling lists}
 \usage{
 vec_constraint(
-  size = 1,
+  linewidth = 1,
   alpha = 0.8,
   colour = "brown",
   arrow = grid::arrow(length = grid::unit(0.005, units = "npc"), type = "closed", angle =
@@ -19,7 +19,7 @@ vec_constraint(
 )
 
 vec_tax_sel(
-  size = 0.5,
+  linewidth = 0.5,
   alpha = 1,
   colour = "black",
   arrow = grid::arrow(length = grid::unit(0.005, units = "npc"), type = "closed", angle =
@@ -29,10 +29,10 @@ vec_tax_sel(
   ...
 )
 
-vec_tax_all(size = 0.5, alpha = 0.25, arrow = NULL, ...)
+vec_tax_all(linewidth = 0.5, alpha = 0.25, arrow = NULL, ...)
 }
 \arguments{
-\item{size}{width of vector}
+\item{linewidth}{width of vector}
 
 \item{alpha}{opacity of vector}
 
