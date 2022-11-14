@@ -7,13 +7,13 @@ data("ibd_phylo", package = "corncob")
 
 # filter out rare taxa and clean up names etc
 ibd <- ibd_phylo %>%
+  ps_mutate(DiseaseState = as.factor(DiseaseState), active = as.factor(active)) %>%
   tax_filter(min_prevalence = 3) %>%
   tax_fix() %>%
   phyloseq_validate()
 
 # calculate a centered-log-ratio transformed PCA ordination
 ibd_ord <- ibd %>%
-  ps_mutate(DiseaseState = as.factor(DiseaseState), active = as.factor(active)) %>%
   tax_transform("clr", rank = "Genus") %>%
   ord_calc("PCA")
 
