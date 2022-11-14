@@ -74,7 +74,9 @@ taxatree_nodes <- function(ps,
     stat <- apply(otu, MARGIN = 2, FUN = fun[[1]])
 
     # create dataframe
-    df <- data.frame(taxon = taxon, parent = parent, rank = rank)
+    df <- data.frame(
+      taxon = taxon, parent = parent, rank = rank, stringsAsFactors = FALSE
+    )
     df[[names(fun)[[1]]]] <- stat
 
     return(df)
@@ -148,7 +150,7 @@ taxatree_edges <- function(nodes_df) {
       taxon_row_index <- nodes_df[["taxon"]] == unique_name
       data.frame(
         from = nodes_df[taxon_row_index, "parent"],
-        to = unique_name
+        to = unique_name, stringsAsFactors = FALSE
       )
     }
   )

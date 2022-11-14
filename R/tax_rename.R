@@ -138,7 +138,7 @@ tax_rename <- function(ps,
     data = ps, by = sort_by, at = "names", trans = transform_for_sort,
     tree_warn = FALSE, ...
   )
-  ttSorted <- as.data.frame.matrix(tt_get(psSorted))
+  ttSorted <- as.data.frame.matrix(tt_get(psSorted), stringsAsFactors = FALSE)
   ttList <- split.data.frame(x = ttSorted, f = ttSorted[, rank, drop = TRUE])
 
   # calculate consistent padding across groups if requested

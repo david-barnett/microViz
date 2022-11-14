@@ -491,7 +491,7 @@ taxatree_plot_sigLegend <- function(p, sigMarkerList) {
   sig_shape <- sigLegend[["shape"]]
 
   # add a layer with nothing, just to give a shape legend
-  invisibleData <- data.frame(.shape. = sig_shape)
+  invisibleData <- data.frame(.shape. = sig_shape, stringsAsFactors = FALSE)
   names(sig_shape) <- sig_shape # named for use as manual scale values
   p <- p +
     ggplot2::geom_point(

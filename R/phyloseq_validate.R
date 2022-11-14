@@ -107,7 +107,7 @@ psCheckSamdat <- function(ps, verbose = TRUE, message_footer = NULL) {
 samdat_init <- function(ps) {
   samples <- phyloseq::sample_names(ps)
   samdat <- phyloseq::sample_data(
-    data.frame(SAMPLE = samples, row.names = samples, check.names = FALSE)
+    data.frame(SAMPLE = samples, row.names = samples, check.names = FALSE, stringsAsFactors = FALSE)
   )
   return(samdat)
 }
