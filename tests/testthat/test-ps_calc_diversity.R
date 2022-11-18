@@ -11,6 +11,9 @@ test_that("ps_calc_diversity supported plot doesn't change", {
       colour = "exp_shannon_Genus", size = "inverse_simpson_Family"
     ) +
     ggplot2::scale_colour_viridis_c() +
+    ggplot2::guides(
+      size = ggplot2::guide_legend(order = 1), ggplot2::guide_colorbar(order = 2)
+    ) +
     ggplot2::theme_test()
 
   skip_if(utils::packageVersion("ggplot2") < "3.4.0") # changed legend order
