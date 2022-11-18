@@ -57,25 +57,27 @@ examples: <https://david-barnett.github.io/microViz/>
 
 - **The Articles pages** give tutorials and further examples
 
-  - [Working with phyloseq objects](articles/web-only/phyloseq.html)
+  - [Working with phyloseq
+    objects](https://david-barnett.github.io/microViz/articles/web-only/phyloseq.html)
 
   - [Fixing your taxa table with
-    tax_fix](articles/web-only/tax-fixing.html)
+    tax_fix](https://david-barnett.github.io/microViz/articles/web-only/tax-fixing.html)
 
-  - [Creating ordination plots](articles/web-only/ordination.html)
+  - [Creating ordination
+    plots](https://david-barnett.github.io/microViz/articles/web-only/ordination.html)
     (e.g. PCA or PCoA)
 
   - [Interactive ordination plots with
-    ord_explore](articles/web-only/ordination-interactive.html)
+    ord_explore](https://david-barnett.github.io/microViz/articles/web-only/ordination-interactive.html)
 
   - [Visualising taxonomic compositions with
     comp_barplot](https://david-barnett.github.io/microViz/articles/web-only/compositions.html)
 
   - [Heatmaps of microbiome composition and
-    correlation](articles/web-only/heatmaps.html)
+    correlation](https://david-barnett.github.io/microViz/articles/web-only/heatmaps.html)
 
   - [Modelling and plotting individual taxon associations with
-    taxatrees](articles/web-only/modelling-taxa.html)
+    taxatrees](https://david-barnett.github.io/microViz/articles/web-only/modelling-taxa.html)
 
   - More coming soon(ish)! Post on [GitHub
     discussions](https://github.com/david-barnett/microViz/discussions)
@@ -149,7 +151,7 @@ formally test this.
 
 ``` r
 library(microViz)
-#> microViz version 0.10.2 - Copyright (C) 2022 David Barnett
+#> microViz version 0.10.3 - Copyright (C) 2022 David Barnett
 #> ! Website: https://david-barnett.github.io/microViz
 #> ✔ Useful?  For citation details, run: `citation("microViz")`
 #> ✖ Silence? `suppressPackageStartupMessages(library(microViz))`
@@ -332,8 +334,8 @@ aitchison_perm <- aitchison_dists %>%
     n_processes = 1, n_perms = 99, # you should use at least 999!
     variables = "bmi_group"
   )
-#> 2022-11-14 23:23:04 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2022-11-14 23:23:04 - Finished PERMANOVA
+#> 2022-11-18 12:18:02 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2022-11-18 12:18:02 - Finished PERMANOVA
 
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
@@ -358,8 +360,8 @@ your permanova directly using the `ord_plot` function with constraints
 perm2 <- aitchison_dists %>%
   dist_permanova(variables = c("weight", "african", "sex"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2022-11-14 23:23:04 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2022-11-14 23:23:06 - Finished PERMANOVA
+#> 2022-11-18 12:18:02 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2022-11-18 12:18:04 - Finished PERMANOVA
 ```
 
 We’ll visualise the effect of nationality and bodyweight on sample
@@ -466,7 +468,7 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] ggplot2_3.4.0   dplyr_1.0.10    phyloseq_1.42.0 microViz_0.10.2
+#> [1] ggplot2_3.4.0   dplyr_1.0.10    phyloseq_1.42.0 microViz_0.10.3
 #> [5] testthat_3.1.5  devtools_2.4.5  usethis_2.1.6  
 #> 
 #> loaded via a namespace (and not attached):
@@ -478,7 +480,7 @@ sessionInfo()
 #>  [16] cluster_2.1.4          doParallel_1.0.17      remotes_2.4.2         
 #>  [19] ComplexHeatmap_2.14.0  Biostrings_2.66.0      matrixStats_0.62.0    
 #>  [22] prettyunits_1.1.1      colorspace_2.0-3       corncob_0.3.0         
-#>  [25] rvest_1.0.3            xfun_0.34              callr_3.7.3           
+#>  [25] rvest_1.0.3            xfun_0.35              callr_3.7.3           
 #>  [28] crayon_1.5.2           RCurl_1.98-1.9         jsonlite_1.8.3        
 #>  [31] survival_3.4-0         iterators_1.0.14       ape_5.6-2             
 #>  [34] glue_1.6.2             registry_0.5-1         gtable_0.3.1          
@@ -501,15 +503,15 @@ sessionInfo()
 #>  [85] brio_1.1.3             compiler_4.2.1         rstudioapi_0.14       
 #>  [88] curl_4.3.3             png_0.1-7              tibble_3.1.8          
 #>  [91] stringi_1.7.8          highr_0.9              ps_1.7.2              
-#>  [94] lattice_0.20-45        Matrix_1.5-1           commonmark_1.8.1      
-#>  [97] markdown_1.3           vegan_2.6-4            microbiome_1.20.0     
-#> [100] permute_0.9-7          multtest_2.54.0        vctrs_0.5.0           
+#>  [94] lattice_0.20-45        Matrix_1.5-3           commonmark_1.8.1      
+#>  [97] markdown_1.4           vegan_2.6-4            microbiome_1.20.0     
+#> [100] permute_0.9-7          multtest_2.54.0        vctrs_0.5.1           
 #> [103] pillar_1.8.1           lifecycle_1.0.3        rhdf5filters_1.10.0   
-#> [106] GlobalOptions_0.1.2    data.table_1.14.4      bitops_1.0-7          
+#> [106] GlobalOptions_0.1.2    data.table_1.14.6      bitops_1.0-7          
 #> [109] seriation_1.4.0        httpuv_1.6.6           R6_2.5.1              
 #> [112] promises_1.2.0.1       TSP_1.2-1              gridExtra_2.3         
 #> [115] IRanges_2.32.0         sessioninfo_1.2.2      codetools_0.2-18      
-#> [118] MASS_7.3-58.1          assertthat_0.2.1       pkgload_1.3.1         
+#> [118] MASS_7.3-58.1          assertthat_0.2.1       pkgload_1.3.2         
 #> [121] rhdf5_2.42.0           rjson_0.2.21           withr_2.5.0           
 #> [124] S4Vectors_0.36.0       GenomeInfoDbData_1.2.9 ggtext_0.1.2          
 #> [127] mgcv_1.8-41            parallel_4.2.1         grid_4.2.1            
