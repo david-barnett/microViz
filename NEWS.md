@@ -1,5 +1,8 @@
 # microViz (development version)
 
+- Bug fix: manual direct labelling of `taxatree_plots` with `taxatree_labels` 
+and `taxatree_plot_labels` works properly (without losing stats info for any rank) 
+
 # microViz 0.10.3
 
 - `taxatree_plotkey` IMPORTANT BUG FIX: layout now matches taxatree_plots again
