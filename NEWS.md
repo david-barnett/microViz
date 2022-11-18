@@ -1,3 +1,7 @@
+# microViz (development version)
+
+- `taxatree_plotkey` bug fix: layout now matches taxatree_plots again
+
 # microViz 0.10.2
 
 ## Features

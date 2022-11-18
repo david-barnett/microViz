@@ -131,8 +131,11 @@ taxatree_plotkey <- function(data,
   # grab any preceding label info from taxatree stats (not already in nodes df)
   if (is(data, "psExtra") && !is.null(data@taxatree_stats)) {
     nonRedundantVars <- setdiff(names(data@taxatree_stats), names(treeNodes))
-    oldLabelData <- data@taxatree_stats[, c("taxon", nonRedundantVars)]
-    treeNodes <- dplyr::left_join(treeNodes, oldLabelData, by = "taxon")
+    oldStatsDf <- taxatree_stats_get(data)
+    oldLabelDf <- oldStatsDf[, c("taxon", nonRedundantVars), drop = FALSE]
+    # taxatree_stats will contain multiple rows per taxon if multiple predictors
+    oldLabelDf <- dplyr::distinct(oldLabelDf, .data[["taxon"]], .keep_all = TRUE)
+    treeNodes <- dplyr::left_join(treeNodes, oldLabelDf, by = "taxon")
   }
 
   # make graph

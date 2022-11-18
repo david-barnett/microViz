@@ -98,3 +98,20 @@ test_that("taxatree_plot plotting works with multiple sig markers", {
   vdiffr::expect_doppelganger("taxatree_plot_age_m", lmp_multiSig$age_scaled)
   options(lifecycle_verbosity = "default")
 })
+
+test_that("taxatree_plotkey produces same results before and after stats", {
+  local_edition(3)
+  p1 <- lm_models %>% taxatree_plotkey(.draw_label = FALSE)
+  p2 <- lm_stats %>% taxatree_plotkey(.draw_label = FALSE)
+  p3 <- taxatree_plots(lm_stats)[[1]]
+
+  p1Data <- p1$data[-1, , drop = FALSE] %>% as.data.frame(stringsAsFactors = FALSE)
+  p2Data <- p2$data[-1, colnames(p1Data), drop = FALSE] %>% as.data.frame(stringsAsFactors = FALSE)
+  p1Data$parent[p1Data$parent == "K: Bacteria"] <- "root"
+  p3Data <- p3$data[-1, setdiff(colnames(p1Data), "label"), drop = FALSE] %>%
+    as.data.frame(stringsAsFactors = FALSE)
+
+  expect_snapshot_csv(p1Data, name = "taxatree_plotkey-before-stats")
+  expect_equal(p1Data, p2Data)
+  expect_equal(p1Data[, setdiff(colnames(p1Data), "label")], p3Data)
+})
