@@ -46,7 +46,6 @@ taxatree_nodes <- function(ps,
   # remove non-selected ranks (to avoid creation of invalid graph)
   if (!identical(ranks, "all")) {
     rlang::arg_match(ranks, c(phyloseq::rank_names(ps), "root"), multiple = TRUE)
-    ranks <- setdiff(ranks, "root")
     phyloseq::tax_table(ps) <- phyloseq::tax_table(ps)[, ranks]
   }
 

@@ -60,7 +60,7 @@ taxatree_label <- function(data,
   # get taxatree_stats if present
   if (is(data, "psExtra") && !identical(data@taxatree_stats, NULL)) {
     stats <- data@taxatree_stats
-    stats <- dplyr::left_join(stats, treeNodes, by = c("taxon", "rank"))
+    stats <- dplyr::left_join(treeNodes, stats, by = c("taxon", "rank"))
   } else {
     stats <- treeNodes
   }

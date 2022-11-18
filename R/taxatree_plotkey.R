@@ -107,8 +107,10 @@ taxatree_plotkey <- function(data,
   rlang::check_installed(c("tidygraph", "ggraph"), "to use taxatree_plotkey")
 
   # make basic nodes
-  if (isTRUE(drop_ranks) && is(data, "psExtra") && !is.null(data@taxatree_stats)) {
-    ranks <- as.character(unique(data@taxatree_stats[["rank"]]))
+  if (isTRUE(drop_ranks) && is(data, "psExtra")) {
+    statRanks <- unique(taxatree_stats_get(data)[["rank"]])
+    ranks <- phyloseq::rank_names(data)
+    if (!is.null(statRanks)) ranks <- intersect(ranks, statRanks)
   } else {
     ranks <- "all"
   }

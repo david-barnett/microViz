@@ -1,3 +1,4 @@
+options(stringsAsFactors = FALSE)
 data("ibd_phylo", package = "corncob")
 
 phylo <- ibd_phylo %>%
@@ -100,18 +101,36 @@ test_that("taxatree_plot plotting works with multiple sig markers", {
 
 test_that("taxatree_plotkey produces same results before and after stats", {
   local_edition(3)
-  p1 <- lm_models %>% taxatree_plotkey(.draw_label = FALSE)
-  p2 <- lm_stats %>% taxatree_plotkey(.draw_label = FALSE)
-  p3 <- taxatree_plots(lm_stats)[[1]]
+  # generate various different tree plots that should all have same layout
+  p1 <- lm_models %>% taxatree_plotkey(.draw_label = TRUE)
+  p2a <- lm_stats %>% taxatree_plotkey(.draw_label = TRUE)
+  p2b <- lm_stats %>% taxatree_plotkey(.draw_label = TRUE, drop_ranks = FALSE)
+  p3a <- taxatree_plots(lm_stats)[[1]]
+  p3b <- taxatree_plots(lm_stats, drop_ranks = FALSE)[[1]]
+  labeled <- lm_stats %>% taxatree_label()
+  labeled <- labeled %>% taxatree_label(.label_var = "la", rank == "Family")
+  p4 <- taxatree_plots(labeled)[[1]] %>% taxatree_plot_labels()
+  p5 <- p4 %>% taxatree_plot_labels(label_var = "la", colour = "red")
 
-  p1Data <- p1$data[-1, , drop = FALSE] %>% as.data.frame(stringsAsFactors = FALSE)
-  p2Data <- p2$data[-1, colnames(p1Data), drop = FALSE] %>% as.data.frame(stringsAsFactors = FALSE)
-  p1Data$parent[p1Data$parent == "K: Bacteria"] <- "root"
-  p3Data <- p3$data[-1, setdiff(colnames(p1Data), "label"), drop = FALSE] %>%
-    as.data.frame(stringsAsFactors = FALSE)
+  # get data from the various plots (as.data.frame removes graph attributes)
+  p1Data <- p1$data[, ] %>% as.data.frame()
+  p2aData <- p2a$data[, colnames(p1Data)] %>% as.data.frame()
+  p2bData <- p2b$data[, colnames(p1Data)] %>% as.data.frame()
+  p3aData <- p3a$data[, setdiff(colnames(p1Data), "label")] %>% as.data.frame()
+  p3bData <- p3b$data[, setdiff(colnames(p1Data), "label")] %>% as.data.frame()
+  p4Data <- p4$data[, colnames(p1Data)] %>% as.data.frame()
+  p5Data <- p5$data[, colnames(p1Data)] %>% as.data.frame()
 
-  expect_equal(p1Data, p2Data)
-  expect_equal(p1Data[, setdiff(colnames(p1Data), "label")], p3Data)
+  #
+  expect_equal(p1Data, p2bData)
+  expect_equal(p1Data[, colnames(p1Data) != "label"], p3bData)
+  expect_equal(p1Data[-1,], p4Data[-1,]) # root node is NA label
+  expect_equal(p1Data[-1,], p5Data[-1,]) # root node is NA label
+
+  # ranks dropped --> replaced kingdom with root (in parent)
+  expect_equal(dplyr::select(p2aData[-1,], !parent), dplyr::select(p2bData[-1,], !parent))
+  expect_equal(p2aData[, colnames(p2aData) != "label"], p3aData)
+
   skip_on_os("windows") # igraph algorithm layout results slightly differ on windows?
   expect_snapshot_csv(p1Data, name = "taxatree_plotkey-before-stats")
 })

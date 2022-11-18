@@ -184,16 +184,15 @@ taxatree_plots <- function(data,
 
   check_is_psExtra(data, argName = "data")
   # get variable-specific stats for joining to node data
-  stats <- data@taxatree_stats
+  stats <- taxatree_stats_get(data)
   taxatree_plots_statsCheck(
     stats = stats, vars = vars, colour_stat = colour_stat, sig_stat = sig_stat
   )
 
-  terms <- unique(stats[[vars]])
 
   # make basic nodes
   if (isTRUE(drop_ranks)) {
-    ranks <- as.character(unique(data@taxatree_stats[["rank"]]))
+    ranks <- as.character(unique(stats[["rank"]]))
   } else {
     ranks <- "all"
   }
@@ -203,16 +202,17 @@ taxatree_plots <- function(data,
     ranks = ranks, .use_counts = TRUE
   )
 
-  # return list of ggraph layout dataframes for trees (one per variable)
+  # return list of ggraph layout dataframes for trees (one per variable, 'term')
+  terms <- unique(stats[[vars]])
+  terms <- terms[!is.na(terms)] # can occur after e.g. taxatree_label
+
   var_layouts <- lapply(
     X = terms,
     FUN = function(v) {
       # add variable-specific statistics/variables
       var_stats <- dplyr::filter(stats, .data$term == v)
-      sharedColumns <- intersect(colnames(treeNodes), colnames(var_stats))
-      treeNodes <- dplyr::left_join(
-        x = treeNodes, y = var_stats, by = sharedColumns
-      )
+      shared <- intersect(colnames(treeNodes), colnames(var_stats))
+      treeNodes <- dplyr::left_join(x = treeNodes, y = var_stats, by = shared)
       # create edge data, graph, and graph layout
       # (graph stored as attribute on layout object, which allows edge styling)
       treeEdges <- taxatree_edges(treeNodes)
