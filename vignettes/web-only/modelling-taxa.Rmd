@@ -338,10 +338,7 @@ lm_stats %>%
   taxatree_plot_labels(
     taxon_renamer = function(x) stringr::str_remove(x, "G: "),
     fun = ggrepel::geom_label_repel, x_nudge = 0.7, hjust = 0.5, size = 2
-  ) +
-  # the lines below allow expansion and make some space for labels
-  coord_fixed(clip = "off", expand = TRUE) +
-  scale_x_continuous(expand = expansion(mult = 0.3))
+  ) 
 ```
 
 ### Changing color palette
@@ -379,22 +376,19 @@ lm_stats %>%
   taxatree_plot_labels(
     taxon_renamer = function(x) stringr::str_remove(x, "G: "),
     fun = ggrepel::geom_label_repel, x_nudge = 0.7, hjust = 0.5, size = 2
-  ) +
-  # the lines below allow expansion and make some space for labels
-  coord_fixed(clip = "off", expand = TRUE) +
-  scale_x_continuous(expand = expansion(mult = 0.3)) 
+  ) 
 ```
 
 Palettes like "Berlin" that go through a black midpoint would probably
 only make sense with a darker background!
 
-```{r, fig.width=6.5, fig.height=4}
+```{r, fig.width=6.5, fig.height=3.4}
 lm_stats %>% 
   taxatree_label(
     rank == "Genus", p.value < 0.05 | prevalence > 0.5, estimate > 0
   ) %>% 
   taxatree_plots(
-    palette = "Berlin", colour_lims = c(-20, 20)
+    palette = "Berlin", colour_lims = c(-20, 20), size_guide = NULL
   ) %>% 
   .[[1]] %>% # show only the first plot
   taxatree_plot_labels(
@@ -402,9 +396,6 @@ lm_stats %>%
     fun = ggrepel::geom_label_repel, 
     x_nudge = 0.7, xlim = c(-1.7, 1.5), hjust = 0.5, size = 2
   ) +
-  # the lines below allow expansion and make some space for labels
-  coord_fixed(clip = "off", expand = TRUE) +
-  scale_x_continuous(expand = expansion(mult = 0.3)) +
   theme(
     text = element_text(colour = "white"),
     plot.background = element_rect(fill = "grey30"), 
@@ -550,17 +541,15 @@ Let's add the key for this layout and label it manually with
 `taxatree_plot_labels()`.
 
 ```{r, fig.width=5, fig.height=8}
-alt_tree_key <- taxatree_plotkey(
-  data = bb_stats, circular = FALSE, .draw_label = FALSE,
-  rank == "Family"
-) %>% 
+alt_tree_key <- bb_stats %>% 
+  taxatree_plotkey(circular = FALSE, .draw_label = FALSE, rank == "Family"
+  ) %>% 
   taxatree_plot_labels(
-    circular = FALSE, 
-    taxon_renamer = function(x) stringr::str_remove(x, "[PFG]: "),
-    hjust = 0.5, force = 0, nudge_y = 2, size = 3
+    circular = FALSE, hjust = 0.5, force = 0, nudge_y = 2, size = 3,
+    taxon_renamer = function(x) stringr::str_remove(x, "[PFG]: ")
   )  + 
   coord_flip() + 
-  scale_y_reverse(expand = expansion(mult = c(0.1, 1))) +
+  scale_y_reverse(expand = expansion(add = c(0.5, 1.5))) +
   theme(plot.title = element_text(size = 14))
 
 patchwork::wrap_plots(alt_tree_key, alt_trees, nrow = 2, heights = 1:2)
