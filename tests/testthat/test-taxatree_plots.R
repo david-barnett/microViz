@@ -110,7 +110,8 @@ test_that("taxatree_plotkey produces same results before and after stats", {
   p3Data <- p3$data[-1, setdiff(colnames(p1Data), "label"), drop = FALSE] %>%
     as.data.frame(stringsAsFactors = FALSE)
 
-  expect_snapshot_csv(p1Data, name = "taxatree_plotkey-before-stats")
   expect_equal(p1Data, p2Data)
   expect_equal(p1Data[, setdiff(colnames(p1Data), "label")], p3Data)
+  skip_on_os("windows") # igraph algorithm layout results slightly differ on windows?
+  expect_snapshot_csv(p1Data, name = "taxatree_plotkey-before-stats")
 })
