@@ -49,11 +49,13 @@ examples: <https://david-barnett.github.io/microViz/>
 - [**This ReadMe**](https://david-barnett.github.io/microViz/) shows a
   few example analyses
 
-- **The [Reference](reference/index.html) page** lists all functions and
-  links to help pages and examples
+- **[The Reference
+  page](https://david-barnett.github.io/microViz/reference/index.html)**
+  lists all functions and links to help pages and examples
 
-- **The [Changelog](news/index.html)** describes important changes in
-  new microViz package versions
+- **[The News
+  page](https://david-barnett.github.io/microViz/news/index.html)**
+  describes important changes in new microViz package versions
 
 - **The Articles pages** give tutorials and further examples
 
@@ -334,8 +336,8 @@ aitchison_perm <- aitchison_dists %>%
     n_processes = 1, n_perms = 99, # you should use at least 999!
     variables = "bmi_group"
   )
-#> 2022-11-18 12:18:02 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2022-11-18 12:18:02 - Finished PERMANOVA
+#> 2022-11-18 12:52:45 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2022-11-18 12:52:45 - Finished PERMANOVA
 
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
@@ -360,8 +362,8 @@ your permanova directly using the `ord_plot` function with constraints
 perm2 <- aitchison_dists %>%
   dist_permanova(variables = c("weight", "african", "sex"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2022-11-18 12:18:02 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2022-11-18 12:18:04 - Finished PERMANOVA
+#> 2022-11-18 12:52:45 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2022-11-18 12:52:47 - Finished PERMANOVA
 ```
 
 We’ll visualise the effect of nationality and bodyweight on sample
