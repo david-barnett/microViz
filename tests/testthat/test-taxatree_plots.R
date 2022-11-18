@@ -76,7 +76,6 @@ test_that("taxatree_plot plotting works", {
 })
 
 
-
 test_that("taxatree_plot plotting works with multiple sig markers", {
   local_edition(3)
   # test multiple significance markers succeeds
