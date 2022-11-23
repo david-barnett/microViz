@@ -379,7 +379,7 @@ comp_barplotFixed <- function(ps, interactive,
   df <- ps_melt(ps)
 
   # set fixed order of stacked taxa bars by creating ordered factor
-  df[["unique"]] <- factor(df[["unique"]], levels = rev(uniqueTaxaOrdered))
+  df[["Taxon"]] <- factor(df[["unique"]], levels = rev(uniqueTaxaOrdered))
 
   # # set fixed order of fill colours (for LEGEND ordering!)
   df[[tax_level]] <- factor(df[[".top"]], levels = topTaxaOrdered)
@@ -391,7 +391,7 @@ comp_barplotFixed <- function(ps, interactive,
   # build plot
   p <- ggplot2::ggplot(data = df, mapping = ggplot2::aes(
     x = .data[[x]], y = .data[["Abundance"]],
-    fill = .data[[tax_level]], group = .data[["unique"]]
+    fill = .data[[tax_level]], group = .data[["Taxon"]]
   ))
   if (identical(x, "SAMPLE")) p <- p + ggplot2::xlab(NULL)
 
