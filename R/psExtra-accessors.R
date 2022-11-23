@@ -32,7 +32,7 @@ check_is_psExtra <- function(x, argName = NULL) {
 }
 
 #' @name psExtra-accessors
-#' @title Extract elements from ps_extra class
+#' @title Extract elements from psExtra class
 #'
 #' @description
 #' - `ps_get`         returns phyloseq

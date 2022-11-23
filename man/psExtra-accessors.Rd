@@ -15,7 +15,7 @@
 \alias{otu_get}
 \alias{tt_get}
 \alias{samdat_tbl}
-\title{Extract elements from ps_extra class}
+\title{Extract elements from psExtra class}
 \usage{
 ps_get(psExtra, ps_extra, counts = FALSE, warn = TRUE)
 
