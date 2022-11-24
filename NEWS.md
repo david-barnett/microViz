@@ -1,5 +1,10 @@
 # microViz (development version)
 
+- Bug fix: manual direct labelling of `taxatree_plots` with `taxatree_labels` 
+and `taxatree_plot_labels` works properly also with phyloseq object that lack a rooting rank (e.g. kingdom)
+- Bug fix: `comp_barplot` bars are now in the correct order again when using tax_level = "unique"
+- New Getting Started article
+
 # microViz 0.10.4
 
 - Bug fix: manual direct labelling of `taxatree_plots` with `taxatree_labels` 
