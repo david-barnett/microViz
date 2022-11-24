@@ -14,6 +14,7 @@ knitr::opts_chunk$set(
 This article will demonstrate some of the data processing steps, statistical analyses, and visualisations that can be performed with the microViz package. It will also provide some tips for how to use microViz with your own data, and point you to other articles for more details.
 
 ```{r setup}
+set.seed(1) # for reproducible stochastic processes
 library(phyloseq)
 library(ggplot2)
 library(patchwork) # for combining multiple plots
@@ -244,7 +245,7 @@ As shown in the video clip above, your default web browser will open a new windo
 
 ## Composition heatmap
 
-Heatmaps can be a useful way to display In addition to (or instead of) bar charts,
+Heatmaps can be a useful way to display taxonomic composition of your samples, in addition to or instead of bar charts. You can transform the taxa using `tax_transform()`, various kinds of log transformations (including clr or rclr) can be helpful to illustrate relative abundance patterns for both low abundance and high abundance taxa on the same plot. This is an advantage of heatmaps over `comp_barplot()`, where patterns involving low relative abundance taxa can be hard to spot.
 
 ```{r, fig.width=8.5, fig.height=3.5}
 shao4d %>% 
@@ -265,3 +266,174 @@ shao4d %>%
 See the microViz [heatmaps article](https://david-barnett.github.io/microViz/articles/web-only/heatmaps.html "Heatmaps") for more guidance on making composition heatmaps.
 
 [See the ComplexHeatmap online book](https://jokergoo.github.io/ComplexHeatmap-reference/book/ "ComplexHeatmap book") for more information on controlling the display of Complex Heatmaps.
+
+## Statistical testing
+
+microViz can also help you perform and visualise the results of statistical tests. A couple of simple examples follow.
+
+### PERMANOVA
+
+One common method for assessing whether a variable has is associated with an overall difference in microbiota composition in your dataset is permutational multivariate analysis of variance (PERMANOVA). For a great introduction to PERMANOVA, [see this resource by Marti J Anderson](https://doi.org/10.1002/9781118445112.stat07841 "Permutational Multivariate Analysis of Variance (PERMANOVA)").
+
+vegan provides the `vegan::adonis2()` function for performing PERMANOVA analyses. microViz provides a convenience function, `dist_permanova()` which allows you to use the distance matrix stored in a psExtra object to perform PERMANOVA with adonis2, and store the result in the psExtra too.
+
+```{r}
+shao4d_perm <- shao4d %>% 
+  tax_transform("identity", rank = "genus") %>% 
+  dist_calc("aitchison") %>% 
+  dist_permanova(
+    variables = c("birth_mode", "sex", "number_reads"),
+    n_perms = 99, # you should use more permutations in your real analyses!
+    n_processes = 1
+  )
+
+shao4d_perm %>% perm_get()
+```
+
+### Differential abundance testing
+
+microViz provides functions for applying various statistical modelling methods to microbiome data, see the [statistical modelling article for a longer discussion](https://david-barnett.github.io/microViz/articles/web-only/modelling-taxa.html "Statistical modelling of individual taxa").
+
+microViz does not introduce any novel statistical method for differential abundance testing, but allows you to apply various methods, including those from other packages, on multiple taxa across multiple taxonomic ranks of aggregation, using the `taxatree_models()` function. If you want to apply statistical tests to many or all taxa in a single rank, you could use the `tax_model()` function.
+
+microViz offers a somewhat novel general approach to visualising the results (effect estimates and significance) of many tests across multiple ranks, "Taxonomic Association Trees", a heatmap-style visualisation with results arranged in a tree structure, following the hierarchy of taxonomic rank relationships in the taxonomy table: `taxatree_plots()`.
+
+#### Taxonomic association tree plots
+
+Starting with a simple approach borrowed from [MaAsLin2](https://huttenhower.sph.harvard.edu/maaslin/), let's perform simple linear regression using log2-transformed relative abundances (as the dependent variable). We will test for differences in the average relative abundance of each taxon between infants born by C-section and vaginally delivered infants.
+
+```{r}
+# First transform and filter the taxa, ready for statistical modelling #
+
+shao4d_log2prop <- shao4d %>% 
+  # prepend the 1st letter of the rank to each tax_table entry, to ensure all are unique
+  tax_prepend_ranks() %>% 
+  tax_transform(
+    trans = "compositional", rank = "genus",
+    add = "halfmin" # adds half the minimum observed abundance to all values
+  ) %>% #  
+  # for various statistical, biological, and practical reasons, let's strictly filter taxa
+  tax_filter(min_prevalence = 0.1, use_counts = TRUE) %>% 
+  tax_transform(
+    trans = "log2", # pseudocount added earlier allows us to use a log transform
+    chain = TRUE # chain = TRUE allows the 2nd transformation
+  )
+
+shao4d_log2prop
+```
+
+```{r}
+shao4d_treeStats <- shao4d_log2prop %>% 
+  # run all the statistical models
+  taxatree_models(
+    ranks = c("phylum", "class", "order", "family", "genus"),
+    variables = "Csection", type = lm # modelling function
+  ) %>% 
+  # extract stats from the models
+  taxatree_models2stats(.keep_models = TRUE) %>%
+  # adjust the p values for multiple testing, within each rank
+  taxatree_stats_p_adjust(method = "fdr", grouping = "rank")
+```
+
+```{r}
+shao4d_treeStats
+```
+
+The models are stored in a nested list. A list of ranks containing lists of taxa.
+
+```{r}
+taxatree_models_get(shao4d_treeStats)$genus$`g: Phocaeicola`
+```
+
+The stats extracted from each model (with the help of `broom::tidy()`) are stored in a tibble (data frame).
+
+```{r}
+taxatree_stats_get(shao4d_treeStats)
+```
+
+Let's make a labelled tree plot:
+
+```{r}
+treePlotsSimple <- shao4d_treeStats %>% 
+  # specify which taxa will get labeled (adds a "label" variable to the stats tibble)
+  taxatree_label(p.adj.fdr.rank < 0.01, rank %in% c("phylum", "genus")) %>% 
+  # make the plots (1 per predictor variable, so a list of 1 in this example)
+  taxatree_plots(
+    sig_stat = "p.adj.fdr.rank", sig_threshold = 0.01,
+    drop_ranks = FALSE # drop_ranks = TRUE has a bug in version 0.10.4 :(
+  ) 
+
+treePlotsSimple %>% str(max.level = 1) # just a list with a single ggplot inside
+```
+
+```{r, fig.width=7, fig.height=5}
+treePlotsSimple$Csection %>% 
+  # add labels to the plot, only for the taxa indicated earlier
+  taxatree_plot_labels(
+    taxon_renamer = function(x) gsub(x = x, pattern = "[pg]: ", replacement = "")
+  ) +
+  coord_fixed(expand = TRUE, clip = "off") + # allow scale expansion
+  scale_x_continuous(expand = expansion(mult = 0.2)) # make space for labels
+```
+
+Check out the [statistical modelling article](https://david-barnett.github.io/microViz/articles/web-only/modelling-taxa.html "Statistical modelling of individual taxa") for many more tree examples, including covariate-adjusted regression.
+
+## Longitudinal data?
+
+microViz doesn't yet contain much functionality designed for longitudinal data (more specifically, multiple timepoints of microbiome data from the same individual/site/experimental run/etc.), but there are already a few ways you can use microViz to help visualise your repeated samples.
+
+Let us create a dataset containing 10 infants with numerous samples across multiple ages.
+
+```{r}
+# some dplyr wrangling to get the names of the infants we want!
+repeatedInfants <- shao19 %>% 
+  samdat_tbl() %>% 
+  dplyr::filter(family_role == "child") %>% 
+  dplyr::group_by(subject_id) %>% 
+  dplyr::summarise(nSamples = dplyr::n()) %>% 
+  dplyr::arrange(desc(nSamples)) %>% 
+  dplyr::pull(subject_id) %>% 
+  head(10)
+
+shaoRepeated <- shao19 %>% 
+  ps_filter(subject_id %in% repeatedInfants) %>% 
+  ps_arrange(subject_id, infant_age) %>% # put the samples in age order, per infant
+  ps_mutate(age_factor = factor(infant_age)) # useful for plotting
+  
+samdat_tbl(shaoRepeated)
+
+```
+
+Try `ord_explore()` on this dataset (or any dataset with repeated samples arranged in time order).
+
+You can try: colour samples by subject_id, map the size of the points to infant_age, and try selecting "paths" and infants from the "add" menu, to follow infants trajectories over time.
+
+```{r, eval=FALSE}
+ord_explore(shaoRepeated)
+```
+
+Use the "Code" button to get example code, and you'll be able to recreate something fun like this.
+
+```{r, fig.width=6, fig.height=5}
+shaoRepeated %>%
+ tax_transform(rank = "genus", trans = "identity") %>%
+ dist_calc(dist = "bray") %>%
+ ord_calc(method = "auto") %>% 
+ ord_plot(colour = "subject_id", alpha = 0.5, size = "infant_age") %>%
+ add_paths(
+  id_var = "subject_id", 
+  id_values = c("A01166_ba", "SID523133_ba", "A01173_ba", "SID512120_ba", "SID519128_ba"),
+  mapping = aes(colour = subject_id)
+ ) + 
+  scale_color_viridis_d(option = "turbo")
+```
+
+To learn how to sort samples by time, or in some other manual order, such as in the example below, check out the [section on sorting samples by time in the composition barplots article](https://david-barnett.github.io/microViz/articles/web-only/compositions.html#sorting-by-time "Sort barcharts by time").
+
+[![](https://david-barnett.github.io/microViz/articles/web-only/compositions_files/figure-html/unnamed-chunk-34-1.png)](https://david-barnett.github.io/microViz/articles/web-only/compositions.html#sorting-by-time)
+
+## Session info
+
+```{r}
+devtools::session_info()
+```
