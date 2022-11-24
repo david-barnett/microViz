@@ -189,10 +189,9 @@ taxatree_plots <- function(data,
     stats = stats, vars = vars, colour_stat = colour_stat, sig_stat = sig_stat
   )
 
-
   # make basic nodes
   if (isTRUE(drop_ranks)) {
-    ranks <- as.character(unique(stats[["rank"]]))
+    ranks <- intersect(phyloseq::rank_names(data), unique(stats[["rank"]]))
   } else {
     ranks <- "all"
   }
