@@ -1,4 +1,4 @@
-# microViz (development version)
+# microViz 0.10.5
 
 - Bug fix: manual direct labelling of `taxatree_plots` with `taxatree_labels` 
 and `taxatree_plot_labels` works properly also with phyloseq object that lack a rooting rank (e.g. kingdom)
