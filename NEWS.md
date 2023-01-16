@@ -1,3 +1,7 @@
+# microViz (development version)
+
+- shao19 example data: family rank in tax table now correctly shows families. 
+
 # microViz 0.10.5
 
 - Bug fix: manual direct labelling of `taxatree_plots` with `taxatree_labels` 
