@@ -1,6 +1,6 @@
-# microViz (development version)
+# microViz 0.10.6
 
-- shao19 example data: family rank in tax table now correctly shows families. 
+- Fix shao19 example data: family rank in tax table now correctly shows families
 
 # microViz 0.10.5
 
