@@ -38,8 +38,8 @@ ecology packages like `phyloseq`, `vegan`, & `microbiome`.
 microViz version 0.10.0 introduces changes that may break some code
 written with older versions of microViz. If you were already using
 microViz prior to version 0.10.0 please read [this
-document](articles/ps_extra-replaced.html) before upgrading to the
-latest version.
+document](https://david-barnett.github.io/microViz/articles/ps_extra-replaced.html)
+before upgrading to the latest version.
 
 ## Learn more
 
@@ -341,8 +341,8 @@ aitchison_perm <- aitchison_dists %>%
     n_processes = 1, n_perms = 99, # you should use at least 999!
     variables = "bmi_group"
   )
-#> 2023-01-18 22:12:12 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2023-01-18 22:12:12 - Finished PERMANOVA
+#> 2023-01-20 13:36:03 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2023-01-20 13:36:03 - Finished PERMANOVA
 
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
@@ -367,8 +367,8 @@ your permanova directly using the `ord_plot` function with constraints
 perm2 <- aitchison_dists %>%
   dist_permanova(variables = c("weight", "african", "sex"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2023-01-18 22:12:12 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2023-01-18 22:12:14 - Finished PERMANOVA
+#> 2023-01-20 13:36:03 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2023-01-20 13:36:05 - Finished PERMANOVA
 ```
 
 We’ll visualise the effect of nationality and bodyweight on sample
