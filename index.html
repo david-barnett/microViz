@@ -149,7 +149,7 @@
 <div class="section level2">
 <h2 id="upgrading-microviz-versions--097-to-version-0100-">Upgrading microViz versions ≤ 0.9.7 to version 0.10.0 +<a class="anchor" aria-label="anchor" href="#upgrading-microviz-versions--097-to-version-0100-"></a>
 </h2>
-<p>microViz version 0.10.0 introduces changes that may break some code written with older versions of microViz. If you were already using microViz prior to version 0.10.0 please read <a href="articles/ps_extra-replaced.html">this document</a> before upgrading to the latest version.</p>
+<p>microViz version 0.10.0 introduces changes that may break some code written with older versions of microViz. If you were already using microViz prior to version 0.10.0 please read <a href="https://david-barnett.github.io/microViz/articles/ps_extra-replaced.html">this document</a> before upgrading to the latest version.</p>
 </div>
 <div class="section level2">
 <h2 id="learn-more">Learn more<a class="anchor" aria-label="anchor" href="#learn-more"></a>
@@ -382,8 +382,8 @@
 <span>    n_processes <span class="op">=</span> <span class="fl">1</span>, n_perms <span class="op">=</span> <span class="fl">99</span>, <span class="co"># you should use at least 999!</span></span>
 <span>    variables <span class="op">=</span> <span class="st">"bmi_group"</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-01-18 22:12:12 - Starting PERMANOVA with 99 perms with 1 processes</span></span>
-<span><span class="co">#&gt; 2023-01-18 22:12:12 - Finished PERMANOVA</span></span>
+<span><span class="co">#&gt; 2023-01-20 13:36:03 - Starting PERMANOVA with 99 perms with 1 processes</span></span>
+<span><span class="co">#&gt; 2023-01-20 13:36:03 - Finished PERMANOVA</span></span>
 <span></span>
 <span><span class="co"># view the permanova results</span></span>
 <span><span class="fu"><a href="reference/psExtra-accessors.html">perm_get</a></span><span class="op">(</span><span class="va">aitchison_perm</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -405,8 +405,8 @@
 <code class="sourceCode R"><span><span class="va">perm2</span> <span class="op">&lt;-</span> <span class="va">aitchison_dists</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="reference/dist_permanova.html">dist_permanova</a></span><span class="op">(</span>variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"african"</span>, <span class="st">"sex"</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">321</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Dropping samples with missings: 2</span></span>
-<span><span class="co">#&gt; 2023-01-18 22:12:12 - Starting PERMANOVA with 999 perms with 1 processes</span></span>
-<span><span class="co">#&gt; 2023-01-18 22:12:14 - Finished PERMANOVA</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-01-20 13:36:03 - Starting PERMANOVA with 999 perms with 1 processes</span></span>
+<span><span class="co">#&gt; 2023-01-20 13:36:05 - Finished PERMANOVA</span></span></code></pre></div>
 <p>We’ll visualise the effect of nationality and bodyweight on sample composition, after first removing the effect of sex.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">perm2</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
