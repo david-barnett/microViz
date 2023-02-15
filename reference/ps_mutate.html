@@ -24,7 +24,7 @@ Uses dplyr::mutate() syntax."><meta property="og:image" content="https://david-b
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.7</span>
       </span>
     </div>
 
@@ -200,7 +200,7 @@ Uses <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="ex
 <span class="r-in"><span><span class="co"># Using the dplyr::across functionality is also possible</span></span></span>
 <span class="r-in"><span><span class="va">ps</span> <span class="op">&lt;-</span> <span class="va">ps</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">ps_mutate</span><span class="op">(</span></span></span>
-<span class="r-in"><span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html" class="external-link">across</a></span><span class="op">(</span><span class="fu">where</span><span class="op">(</span><span class="va">is.factor</span><span class="op">)</span>, <span class="va">toupper</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html" class="external-link">across</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/where.html" class="external-link">where</a></span><span class="op">(</span><span class="va">is.factor</span><span class="op">)</span>, <span class="va">toupper</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    another_var <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>    SeqTech <span class="op">=</span> <span class="cn">NULL</span> <span class="co"># deletes SeqTech variable</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>

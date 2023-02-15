@@ -24,7 +24,7 @@ See functions section."><meta property="og:image" content="https://david-barnett
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.7</span>
       </span>
     </div>
 
@@ -174,30 +174,41 @@ labels, or hjust values</p>
 <span class="r-in"><span><span class="va">p</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html" class="external-link">geom_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">2.5</span>, mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fu">textAngleCalc</span><span class="op">(</span><span class="va">mpg</span>, <span class="va">hp</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_fixed.html" class="external-link">coord_fixed</a></span><span class="op">(</span>ratio <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="ord_plot-label-helpers-2.png" alt="" width="700" height="433"></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in geom_text(size = 2.5, mapping = aes(angle = textAngleCalc(mpg,     hp))):</span> Problem while computing aesthetics.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Error occurred in the 3rd layer.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `dplyr::if_else()`:</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> `condition` must be a vector with type &lt;logical&gt;.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> Instead, it has type &lt;logical[,1]&gt;.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># equivalent: calculate variable outside aes by referring to dataframe again</span></span></span>
 <span class="r-in"><span><span class="va">p</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html" class="external-link">geom_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">2.5</span>, angle <span class="op">=</span> <span class="fu">textAngleCalc</span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">mpg</span>, <span class="va">df</span><span class="op">$</span><span class="va">hp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_fixed.html" class="external-link">coord_fixed</a></span><span class="op">(</span>ratio <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="ord_plot-label-helpers-3.png" alt="" width="700" height="433"></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in dplyr::if_else(abs(degs) &gt; max, true = sign(degs) * max, false = degs):</span> `condition` must be a vector with type &lt;logical&gt;.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> Instead, it has type &lt;logical[,1]&gt;.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># fixing aspect ratio is important</span></span></span>
 <span class="r-in"><span><span class="co"># see how angles may be incorrect otherwise</span></span></span>
 <span class="r-in"><span><span class="va">p</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html" class="external-link">geom_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">2.5</span>, mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fu">textAngleCalc</span><span class="op">(</span><span class="va">mpg</span>, <span class="va">hp</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="ord_plot-label-helpers-4.png" alt="" width="700" height="433"></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in geom_text(size = 2.5, mapping = aes(angle = textAngleCalc(mpg,     hp))):</span> Problem while computing aesthetics.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Error occurred in the 3rd layer.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `dplyr::if_else()`:</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> `condition` must be a vector with type &lt;logical&gt;.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> Instead, it has type &lt;logical[,1]&gt;.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># ratio argument allows matching angles with alternative aspect ratio</span></span></span>
 <span class="r-in"><span><span class="va">p</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html" class="external-link">geom_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">2.5</span>, angle <span class="op">=</span> <span class="fu">textAngleCalc</span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">mpg</span>, <span class="va">df</span><span class="op">$</span><span class="va">hp</span>, ratio <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_fixed.html" class="external-link">coord_fixed</a></span><span class="op">(</span>ratio <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="ord_plot-label-helpers-5.png" alt="" width="700" height="433"></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in dplyr::if_else(abs(degs) &gt; max, true = sign(degs) * max, false = degs):</span> `condition` must be a vector with type &lt;logical&gt;.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> Instead, it has type &lt;logical[,1]&gt;.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">p</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html" class="external-link">geom_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">2.5</span>, angle <span class="op">=</span> <span class="fu">textAngleCalc</span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">mpg</span>, <span class="va">df</span><span class="op">$</span><span class="va">hp</span>, ratio <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_fixed.html" class="external-link">coord_fixed</a></span><span class="op">(</span>ratio <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="ord_plot-label-helpers-6.png" alt="" width="700" height="433"></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in dplyr::if_else(abs(degs) &gt; max, true = sign(degs) * max, false = degs):</span> `condition` must be a vector with type &lt;logical&gt;.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> Instead, it has type &lt;logical[,1]&gt;.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># perpendicular argument makes text perpendicular instead of parallel</span></span></span>
 <span class="r-in"><span><span class="va">p</span> <span class="op">+</span></span></span>
@@ -206,7 +217,8 @@ labels, or hjust values</p>
 <span class="r-in"><span>    angle <span class="op">=</span> <span class="fu">textAngleCalc</span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">mpg</span>, <span class="va">df</span><span class="op">$</span><span class="va">hp</span>, perpendicular <span class="op">=</span> <span class="cn">TRUE</span>, ratio <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_fixed.html" class="external-link">coord_fixed</a></span><span class="op">(</span>ratio <span class="op">=</span> <span class="fl">1.5</span>, clip <span class="op">=</span> <span class="st">"off"</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="ord_plot-label-helpers-7.png" alt="" width="700" height="433"></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in dplyr::if_else(abs(degs) &gt; max, true = sign(degs) * max, false = degs):</span> `condition` must be a vector with type &lt;logical&gt;.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> Instead, it has type &lt;logical[,1]&gt;.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># max angle limits extreme text angles</span></span></span>
 <span class="r-in"><span><span class="va">p</span> <span class="op">+</span></span></span>
@@ -216,7 +228,8 @@ labels, or hjust values</p>
 <span class="r-in"><span>    hjust <span class="op">=</span> <span class="fu">textHjustCalc</span><span class="op">(</span>xvec <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">mpg</span>, adjust <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_fixed.html" class="external-link">coord_fixed</a></span><span class="op">(</span>ratio <span class="op">=</span> <span class="fl">2</span>, clip <span class="op">=</span> <span class="st">"off"</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="ord_plot-label-helpers-8.png" alt="" width="700" height="433"></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in dplyr::if_else(abs(degs) &gt; max, true = sign(degs) * max, false = degs):</span> `condition` must be a vector with type &lt;logical&gt;.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> Instead, it has type &lt;logical[,1]&gt;.</span>
 </code></pre></div>
     </div>
   </div>

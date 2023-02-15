@@ -43,7 +43,7 @@ and dplyr packages. The name in microViz is changed to ps_melt for consistency w
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.7</span>
       </span>
     </div>
 
@@ -192,6 +192,9 @@ extensively by plot functions in phyloseq.</p>
 <span class="r-in"><span><span class="va">mdf2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/psmelt.html" class="external-link">psmelt</a></span><span class="op">(</span><span class="va">gp_ch</span><span class="op">)</span> <span class="co"># slower</span></span></span>
 <span class="r-in"><span><span class="co"># same dataframe, except with somewhat different row orders</span></span></span>
 <span class="r-in"><span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/all_equal.html" class="external-link">all_equal</a></span><span class="op">(</span><span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="va">mdf</span><span class="op">)</span>, <span class="va">mdf2</span>, convert <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># TRUE</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`all_equal()` was deprecated in dplyr 1.1.0.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Please use `all.equal()` instead.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> And manually order the rows/cols as needed</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">mdf2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 546</span>

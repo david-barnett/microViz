@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.7</span>
       </span>
     </div>
 
@@ -991,6 +991,11 @@ information.</p>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="st">"phylum"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning: There was 1 warning in `mutate()`.</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">ℹ</span> In argument: `phylum = forcats::fct_explicit_na(phylum, na_level = "Other")`.</span></span>
+<span><span class="co">## Caused by warning:</span></span>
+<span><span class="co">## <span style="color: #BBBB00;">!</span> `fct_explicit_na()` was deprecated in forcats 1.0.0.</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">ℹ</span> Please use `fct_na_value_to_level()` instead.</span></span></code></pre>
 <p><img src="exercises_files/figure-html/unnamed-chunk-46-1.png" width="960"></p>
 <p><strong>How to pick a threshold?</strong></p>
 <p>Depends on what analysis method you are filtering for!</p>
@@ -1019,12 +1024,12 @@ lecture.</p>
 <p>To simplify and speed up the analyses, we’re going to take a smaller
 part of the dataset. We’ll only look at the 300 infant fecal samples
 from 4 days of age.</p>
-<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">shao4</span> <span class="op">&lt;-</span> <span class="va">shao19</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">family_role</span> <span class="op">==</span> <span class="st">"child"</span>, <span class="va">infant_age</span> <span class="op">==</span> <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
 <p>We’re going to filter out rare taxa quite strictly, for similar
 reasons. But we won’t overwrite our smaller dataset: we’ll do the
 filtering per analysis.</p>
-<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">shao4</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">2.5</span> <span class="op">/</span> <span class="fl">100</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
@@ -1049,7 +1054,7 @@ filtering per analysis.</p>
 as an extra part on the original phyloseq object, as part of a container
 object (a “ps_extra” class object created by microViz, which also stores
 info about the aggregation and transformations you performed)</p>
-<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">distances</span> <span class="op">&lt;-</span> <span class="va">shao4</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">2.5</span> <span class="op">/</span> <span class="fl">100</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
@@ -1057,7 +1062,7 @@ info about the aggregation and transformations you performed)</p>
 <span>  <span class="fu"><a href="../../reference/dist_calc.html">dist_calc</a></span><span class="op">(</span>dist <span class="op">=</span> <span class="st">"jaccard"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/psExtra-accessors.html">dist_get</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>You can extract the dissimilarities or distances with dist_get.</p>
-<div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">distances</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span></code></pre></div>
 <pre><code><span><span class="co">##             B01089_ba_4 B01190_ba_4 B01194_ba_4 B01196_ba_4 B01235_ba_4</span></span>
 <span><span class="co">## B01089_ba_4   0.0000000   0.6666667   0.7333333   0.9375000   0.8125000</span></span>
@@ -1067,7 +1072,7 @@ info about the aggregation and transformations you performed)</p>
 <span><span class="co">## B01235_ba_4   0.8125000   0.8461538   0.3076923   0.4615385   0.0000000</span></span></code></pre>
 <p>The Binary Jaccard dissimilarities range between zero (identical) and
 one (no shared genera).</p>
-<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">distances</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 0 1</span></span></code></pre>
 <hr>
@@ -1096,7 +1101,7 @@ GUide to STatistical Analysis in Microbial Ecology (GUSTA ME) website.
 This website covers a lot of topics, we’ll cover PCoA now, and PCA in
 the next session. The other topics may be interesting for you to read at
 a later date if you’ll work on microbiome analysis.</p>
-<div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">shao4</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">2.5</span> <span class="op">/</span> <span class="fl">100</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
@@ -1108,7 +1113,7 @@ a later date if you’ll work on microbiome analysis.</p>
 <p><img src="exercises_files/figure-html/unnamed-chunk-52-1.png" width="720"></p>
 <p>To get a little insight into what has happened here, we can colour
 each sample according to its dominant (most abundant) genus.</p>
-<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">shao4</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">2.5</span> <span class="op">/</span> <span class="fl">100</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/ps_calc_dominant.html">ps_calc_dominant</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"genus"</span>, none <span class="op">=</span> <span class="st">"Mixed"</span>, other <span class="op">=</span> <span class="st">"Other"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
@@ -1190,7 +1195,7 @@ ecology website link</li>
 </ul>
 </li>
 </ul>
-<div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># fire up the shiny app</span></span>
 <span><span class="co"># run these lines in your console (don't keep in script/notebook)</span></span>
 <span><span class="va">shao4</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
@@ -1199,7 +1204,7 @@ ecology website link</li>
 <span>  <span class="fu"><a href="../../reference/ps_calc_dominant.html">ps_calc_dominant</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"genus"</span>, none <span class="op">=</span> <span class="st">"Mixed"</span>, other <span class="op">=</span> <span class="st">"Other"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="co"># launch a Shiny app in your web browser!</span></span>
 <span>  <span class="fu"><a href="../../reference/ord_explore.html">ord_explore</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># different options</span></span>
 <span><span class="co"># run this line in your console</span></span>
 <span><span class="va">shao19</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
@@ -1231,7 +1236,7 @@ on PERMANOVA: <a href="https://onlinelibrary.wiley.com/doi/full/10.1002/97811184
 GUide to STatistical Analysis in Microbial Ecology <a href="https://sites.google.com/site/mb3gustame/hypothesis-tests/manova/npmanova" class="external-link">website.</a></p>
 <p><strong>TLDR:</strong> Are those groups on the PCoA actually
 different??</p>
-<div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">shao4</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">2.5</span> <span class="op">/</span> <span class="fl">100</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
@@ -1243,15 +1248,15 @@ different??</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/stat_ellipse.html" class="external-link">stat_ellipse</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">birth_mode</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_color_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Set1"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="exercises_files/figure-html/unnamed-chunk-54-1.png" width="720"></p>
-<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">shao4</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">2.5</span> <span class="op">/</span> <span class="fl">100</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/dist_calc.html">dist_calc</a></span><span class="op">(</span>dist <span class="op">=</span> <span class="st">"bray"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/dist_permanova.html">dist_permanova</a></span><span class="op">(</span>variables <span class="op">=</span> <span class="st">"birth_mode"</span>, n_perms <span class="op">=</span> <span class="fl">99</span>, seed <span class="op">=</span> <span class="fl">123</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/psExtra-accessors.html">perm_get</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## 2023-01-20 16:43:21 - Starting PERMANOVA with 99 perms with 1 processes</span></span></code></pre>
-<pre><code><span><span class="co">## 2023-01-20 16:43:21 - Finished PERMANOVA</span></span></code></pre>
+<pre><code><span><span class="co">## 2023-02-15 22:49:10 - Starting PERMANOVA with 99 perms with 1 processes</span></span></code></pre>
+<pre><code><span><span class="co">## 2023-02-15 22:49:11 - Finished PERMANOVA</span></span></code></pre>
 <pre><code><span><span class="co">## Permutation test for adonis under reduced model</span></span>
 <span><span class="co">## Marginal effects of terms</span></span>
 <span><span class="co">## Permutation: free</span></span>
@@ -1264,7 +1269,7 @@ different??</p>
 <span><span class="co">## Total      305  111.518 1.00000                 </span></span>
 <span><span class="co">## ---</span></span>
 <span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre>
-<div class="sourceCode" id="cb89"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Use more permutations for a more reliable p.value in your real work (slower)</span></span>
 <span><span class="co"># Set a random seed number for reproducibility of this stochastic method</span></span></code></pre></div>
 <p>You can see from the model output that the p value, Pr(&gt;F) is
@@ -1282,7 +1287,7 @@ results and conclusions!</p>
 depending on your study design. Let’s fit a more complex model,
 adjusting for infant sex, birth weight, and the total number of assigned
 reads.</p>
-<div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">shao4</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">2.5</span> <span class="op">/</span> <span class="fl">100</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
@@ -1293,8 +1298,8 @@ reads.</p>
 <span>  <span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/psExtra-accessors.html">perm_get</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Dropping samples with missings: 15</span></span></code></pre>
-<pre><code><span><span class="co">## 2023-01-20 16:43:21 - Starting PERMANOVA with 99 perms with 1 processes</span></span></code></pre>
-<pre><code><span><span class="co">## 2023-01-20 16:43:22 - Finished PERMANOVA</span></span></code></pre>
+<pre><code><span><span class="co">## 2023-02-15 22:49:11 - Starting PERMANOVA with 99 perms with 1 processes</span></span></code></pre>
+<pre><code><span><span class="co">## 2023-02-15 22:49:12 - Finished PERMANOVA</span></span></code></pre>
 <pre><code><span><span class="co">## Permutation test for adonis under reduced model</span></span>
 <span><span class="co">## Marginal effects of terms</span></span>
 <span><span class="co">## Permutation: free</span></span>
@@ -1310,7 +1315,7 @@ reads.</p>
 <span><span class="co">## Total        290  106.211 1.00000                  </span></span>
 <span><span class="co">## ---</span></span>
 <span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre>
-<div class="sourceCode" id="cb95"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb96"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Use more permutations for a more reliable p.value in your real work (slower)</span></span>
 <span><span class="co"># Set a random seed number for reproducibility of this stochastic method</span></span></code></pre></div>
 <hr>
@@ -1347,7 +1352,7 @@ first</li>
 <li>The PCoA looks weird! most samples bunched in the middle with
 spindly projections..</li>
 </ul>
-<div class="sourceCode" id="cb96"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">shao4</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">2.5</span> <span class="op">/</span> <span class="fl">100</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
@@ -1372,14 +1377,14 @@ transformation.</p>
 <h4 id="log-transformations">Log transformations<a class="anchor" aria-label="anchor" href="#log-transformations"></a>
 </h4>
 <p>First let’s look at the abundance again, this time with heatmaps.</p>
-<div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb98"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Getting the taxa in abundance order up front</span></span>
 <span><span class="co"># to keep it consistent across multiple plots</span></span>
 <span><span class="va">shao4_sorted</span> <span class="op">&lt;-</span> <span class="va">shao4</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/tax_sort.html">tax_sort</a></span><span class="op">(</span>by <span class="op">=</span> <span class="va">sum</span>, at <span class="op">=</span> <span class="st">"genus"</span>, trans <span class="op">=</span> <span class="st">"compositional"</span>, tree_warn <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p>Each column is a sample (from an infant), and each row is a
 taxon.</p>
-<div class="sourceCode" id="cb98"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb99"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">shao4_sorted</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span>trans <span class="op">=</span> <span class="st">"identity"</span>, rank <span class="op">=</span> <span class="st">"genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_heatmap.html">comp_heatmap</a></span><span class="op">(</span></span>
@@ -1387,7 +1392,7 @@ taxon.</p>
 <span>    tax_seriation <span class="op">=</span> <span class="st">"Identity"</span>, sample_seriation <span class="op">=</span> <span class="st">"Identity"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <p><img src="exercises_files/figure-html/unnamed-chunk-59-1.png" width="720"></p>
-<div class="sourceCode" id="cb99"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb100"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">shao4_sorted</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span>trans <span class="op">=</span> <span class="st">"compositional"</span>, rank <span class="op">=</span> <span class="st">"genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_heatmap.html">comp_heatmap</a></span><span class="op">(</span></span>
@@ -1397,7 +1402,7 @@ taxon.</p>
 <p><img src="exercises_files/figure-html/unnamed-chunk-60-1.png" width="720"></p>
 <p>We can add the proportions on this small subset of data as
 numbers.</p>
-<div class="sourceCode" id="cb100"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb101"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">shao4_sorted</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span>trans <span class="op">=</span> <span class="st">"compositional"</span>, rank <span class="op">=</span> <span class="st">"genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_heatmap.html">comp_heatmap</a></span><span class="op">(</span></span>
@@ -1415,7 +1420,7 @@ transformation. This small value is often called a pseudo-count.</p>
 <p>One option is to just add 1, and another popular option is to add
 half of the smallest observed real value (from across the whole
 dataset).</p>
-<div class="sourceCode" id="cb101"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb102"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">shao4_sorted</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"genus"</span>, trans <span class="op">=</span> <span class="st">"log10"</span>, zero_replace <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_heatmap.html">comp_heatmap</a></span><span class="op">(</span></span>
@@ -1423,7 +1428,7 @@ dataset).</p>
 <span>    tax_seriation <span class="op">=</span> <span class="st">"Identity"</span>, sample_seriation <span class="op">=</span> <span class="st">"Identity"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <p><img src="exercises_files/figure-html/unnamed-chunk-62-1.png" width="720"></p>
-<div class="sourceCode" id="cb102"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb103"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">shao4_sorted</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="co"># tax_transform(trans = 'compositional') %&gt;% # compositional also possible</span></span>
@@ -1443,7 +1448,7 @@ your approach</strong>.</p>
 transformation.</p>
 <p>The centered log-ratio (clr) transformation uses the geometric mean
 of the sample vector as the reference.</p>
-<div class="sourceCode" id="cb103"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb104"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">shao4_sorted</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="co"># tax_transform(trans = 'compositional') %&gt;% # compositional also possible</span></span>
@@ -1491,7 +1496,7 @@ distances and hierarchical clustering!).</p>
 <p>More examples/tutorial of visualizing microbiome data using heatmaps
 can be found here:</p>
 <p><a href="https://david-barnett.github.io/microViz/articles/web-only/heatmaps.html" class="uri">https://david-barnett.github.io/microViz/articles/web-only/heatmaps.html</a></p>
-<div class="sourceCode" id="cb104"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb105"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#</span></span></code></pre></div>
 <hr>
 </div>
@@ -1503,7 +1508,7 @@ can be found here:</p>
 <p>In fact, PCA produces equivalent results to PCoA with euclidean
 distances. So let’s perform the CLR-transform first and check PCA and
 euclidean PCoA are the same.</p>
-<div class="sourceCode" id="cb105"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb106"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">shao4</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">2.5</span> <span class="op">/</span> <span class="fl">100</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"genus"</span>, trans <span class="op">=</span> <span class="st">"clr"</span>, zero_replace <span class="op">=</span> <span class="st">"halfmin"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
@@ -1514,7 +1519,7 @@ euclidean PCoA are the same.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_fixed.html" class="external-link">coord_fixed</a></span><span class="op">(</span><span class="fl">0.7</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_reverse</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="exercises_files/figure-html/unnamed-chunk-66-1.png" width="720"></p>
-<div class="sourceCode" id="cb106"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb107"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">shao4</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">2.5</span> <span class="op">/</span> <span class="fl">100</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"genus"</span>, trans <span class="op">=</span> <span class="st">"clr"</span>, zero_replace <span class="op">=</span> <span class="st">"halfmin"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
@@ -1529,7 +1534,7 @@ features.</p>
 <p>That means we know how much each taxon contributes to each PC axis,
 and we can plot this information (loadings) as arrows, alongside the
 sample points.</p>
-<div class="sourceCode" id="cb107"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb108"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pca</span> <span class="op">&lt;-</span> <span class="va">shao4</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">2.5</span> <span class="op">/</span> <span class="fl">100</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"genus"</span>, trans <span class="op">=</span> <span class="st">"clr"</span>, zero_replace <span class="op">=</span> <span class="st">"halfmin"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
@@ -1569,7 +1574,7 @@ making barplots interactively with <code>ord_explore</code> earlier.</p>
 </h4>
 <p>We can make another kind of barplot now, using the PCA information to
 order our samples in a circular layout.</p>
-<div class="sourceCode" id="cb108"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb109"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">iris</span> <span class="op">&lt;-</span> <span class="va">shao4</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">2.5</span> <span class="op">/</span> <span class="fl">100</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"genus"</span>, trans <span class="op">=</span> <span class="st">"clr"</span>, zero_replace <span class="op">=</span> <span class="st">"halfmin"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
@@ -1581,7 +1586,7 @@ order our samples in a circular layout.</p>
 <span>  <span class="op">)</span></span>
 <span><span class="va">iris</span></span></code></pre></div>
 <p><img src="exercises_files/figure-html/unnamed-chunk-69-1.png" width="720"></p>
-<div class="sourceCode" id="cb109"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb110"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">patchwork</span><span class="fu">::</span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html" class="external-link">wrap_plots</a></span><span class="op">(</span><span class="va">pca</span>, <span class="va">iris</span>, nrow <span class="op">=</span> <span class="fl">1</span>, guides <span class="op">=</span> <span class="st">"collect"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="exercises_files/figure-html/unnamed-chunk-70-1.png" width="1200"></p>
 <hr>
@@ -1597,7 +1602,7 @@ vice versa, but we can also statistically test this. This is often
 called “differential abundance” (DA) testing, in the style of
 “differential expression” (DE) testing from the transcriptomics
 field.</p>
-<div class="sourceCode" id="cb110"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb111"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">shao4</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span></span>
 <span>    tax_level <span class="op">=</span> <span class="st">"genus"</span>, n_taxa <span class="op">=</span> <span class="fl">12</span>, facet_by <span class="op">=</span> <span class="st">"birth_mode"</span>,</span>
@@ -1613,7 +1618,7 @@ field.</p>
 Bacteroides. We will transform the count data by first making it
 proportions, and then taking the binary logarithm, log2, after adding a
 pseudocount.</p>
-<div class="sourceCode" id="cb111"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb112"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bacteroidesRegression1</span> <span class="op">&lt;-</span> <span class="va">shao4</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"compositional"</span>, rank <span class="op">=</span> <span class="st">"genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"log2"</span>, zero_replace <span class="op">=</span> <span class="st">"halfmin"</span>, chain <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
@@ -1624,7 +1629,7 @@ pseudocount.</p>
 <span>  <span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://purrr.tidyverse.org/reference/pluck.html" class="external-link">pluck</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Modelling: Bacteroides</span></span></code></pre>
-<div class="sourceCode" id="cb113"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb114"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># looking at the regression results</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">bacteroidesRegression1</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -1645,12 +1650,12 @@ pseudocount.</p>
 <span><span class="co">## Residual standard error: 5.957 on 304 degrees of freedom</span></span>
 <span><span class="co">## Multiple R-squared:  0.265,  Adjusted R-squared:  0.2626 </span></span>
 <span><span class="co">## F-statistic: 109.6 on 1 and 304 DF,  p-value: &lt; 2.2e-16</span></span></code></pre>
-<div class="sourceCode" id="cb115"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb116"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">bacteroidesRegression1</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##                        2.5 %     97.5 %</span></span>
 <span><span class="co">## (Intercept)       -20.332614 -18.418542</span></span>
 <span><span class="co">## birth_modevaginal   5.791662   8.472414</span></span></code></pre>
-<div class="sourceCode" id="cb117"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb118"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">bacteroidesRegression1</span>, conf.int <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 7</span></span></span>
 <span><span class="co">##   term              estimate std.error statistic   p.value conf.low conf.high</span></span>
@@ -1669,7 +1674,7 @@ each birth_mode group, omitting zeros, on a log2 scale</li>
 <li>Hard: Do task 1 or 2 for for several taxa in one plot - (hint:
 <code>pivot_longer</code>)</li>
 </ol>
-<div class="sourceCode" id="cb119"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb120"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">shao4</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"compositional"</span>, rank <span class="op">=</span> <span class="st">"genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/psExtra-accessors.html">ps_get</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
@@ -1680,7 +1685,7 @@ going to convert the categorical variables into indicator (dummy)
 variables, and scale the continuous covariates to 0 mean and SD 1
 (z-scores). You’ll see this will make our subsequent plots easier to
 interpret later.</p>
-<div class="sourceCode" id="cb120"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb121"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">shao4</span> <span class="op">&lt;-</span> <span class="va">shao4</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/ps_mutate.html">ps_mutate</a></span><span class="op">(</span></span>
 <span>    C_section <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">birth_mode</span> <span class="op">==</span> <span class="st">"c_section"</span>, true <span class="op">=</span> <span class="fl">1</span>, false <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>,</span>
@@ -1688,7 +1693,7 @@ interpret later.</p>
 <span>    Birth_weight_Z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">birth_weight</span>, center <span class="op">=</span> <span class="cn">TRUE</span>, scale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    Reads_Z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">number_reads</span>, center <span class="op">=</span> <span class="cn">TRUE</span>, scale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb121"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb122"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bacteroidesRegression2</span> <span class="op">&lt;-</span> <span class="va">shao4</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"compositional"</span>, rank <span class="op">=</span> <span class="st">"genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"log2"</span>, zero_replace <span class="op">=</span> <span class="st">"halfmin"</span>, chain <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
@@ -1701,7 +1706,7 @@ interpret later.</p>
 <pre><code><span><span class="co">## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female</span></span></code></pre>
 <pre><code><span><span class="co">## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z</span></span></code></pre>
 <pre><code><span><span class="co">## Modelling: Bacteroides</span></span></code></pre>
-<div class="sourceCode" id="cb125"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb126"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># looking at the regression results</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">bacteroidesRegression2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -1726,7 +1731,7 @@ interpret later.</p>
 <span><span class="co">##   (15 observations deleted due to missingness)</span></span>
 <span><span class="co">## Multiple R-squared:  0.2854, Adjusted R-squared:  0.2754 </span></span>
 <span><span class="co">## F-statistic: 28.55 on 4 and 286 DF,  p-value: &lt; 2.2e-16</span></span></code></pre>
-<div class="sourceCode" id="cb127"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb128"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">bacteroidesRegression2</span>, conf.int <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 7</span></span></span>
 <span><span class="co">##   term           estimate std.error statistic  p.value conf.low conf.high</span></span>
@@ -1784,7 +1789,7 @@ that class will follow a similar pattern.</em></p>
 rank we have available, from phylum down to species.</p>
 <p>*We’ll actually filter out species with a prevalence of less than
 10%.</p>
-<div class="sourceCode" id="cb129"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb130"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># The code for `taxatree_models` is quite similar to tax_model. </span></span>
 <span><span class="co"># However, you might need to run `tax_prepend_ranks` to ensure that each taxon at each rank is always unique. </span></span>
 <span><span class="va">shaoModels</span> <span class="op">&lt;-</span> <span class="va">shao4</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
@@ -1798,30 +1803,30 @@ rank we have available, from phylum down to species.</p>
 <span>    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'C_section'</span>, <span class="st">'Female'</span>, <span class="st">'Birth_weight_Z'</span>, <span class="st">'Reads_Z'</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Proportional min_prevalence given: 0.1 --&gt; min 31/306 samples.</span></span></code></pre>
-<pre><code><span><span class="co">## 2023-01-20 16:44:03 - modelling at rank: phylum</span></span></code></pre>
+<pre><code><span><span class="co">## 2023-02-15 22:50:03 - modelling at rank: phylum</span></span></code></pre>
 <pre><code><span><span class="co">## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female</span></span></code></pre>
 <pre><code><span><span class="co">## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z</span></span></code></pre>
-<pre><code><span><span class="co">## 2023-01-20 16:44:04 - modelling at rank: class</span></span></code></pre>
+<pre><code><span><span class="co">## 2023-02-15 22:50:03 - modelling at rank: class</span></span></code></pre>
 <pre><code><span><span class="co">## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female</span></span>
 <span></span>
 <span><span class="co">## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z</span></span></code></pre>
-<pre><code><span><span class="co">## 2023-01-20 16:44:04 - modelling at rank: order</span></span></code></pre>
+<pre><code><span><span class="co">## 2023-02-15 22:50:03 - modelling at rank: order</span></span></code></pre>
 <pre><code><span><span class="co">## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female</span></span>
 <span></span>
 <span><span class="co">## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z</span></span></code></pre>
-<pre><code><span><span class="co">## 2023-01-20 16:44:04 - modelling at rank: family</span></span></code></pre>
+<pre><code><span><span class="co">## 2023-02-15 22:50:04 - modelling at rank: family</span></span></code></pre>
 <pre><code><span><span class="co">## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female</span></span>
 <span></span>
 <span><span class="co">## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z</span></span></code></pre>
-<pre><code><span><span class="co">## 2023-01-20 16:44:04 - modelling at rank: genus</span></span></code></pre>
+<pre><code><span><span class="co">## 2023-02-15 22:50:04 - modelling at rank: genus</span></span></code></pre>
 <pre><code><span><span class="co">## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female</span></span>
 <span></span>
 <span><span class="co">## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z</span></span></code></pre>
-<pre><code><span><span class="co">## 2023-01-20 16:44:05 - modelling at rank: species</span></span></code></pre>
+<pre><code><span><span class="co">## 2023-02-15 22:50:05 - modelling at rank: species</span></span></code></pre>
 <pre><code><span><span class="co">## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female</span></span>
 <span></span>
 <span><span class="co">## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z</span></span></code></pre>
-<div class="sourceCode" id="cb144"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb145"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">shaoModels</span></span></code></pre></div>
 <pre><code><span><span class="co">## psExtra object - a phyloseq object with extra slots:</span></span>
 <span><span class="co">## </span></span>
@@ -1847,7 +1852,7 @@ process faster and makes visualizing the results easier!</em></p>
 <p>Next we will get a data.frame containing the regression coefficient
 estimates, test statistics and corresponding p values from all these
 regression models.</p>
-<div class="sourceCode" id="cb146"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb147"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">shaoStats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/models2stats.html">taxatree_models2stats</a></span><span class="op">(</span><span class="va">shaoModels</span><span class="op">)</span></span>
 <span><span class="va">shaoStats</span></span></code></pre></div>
 <pre><code><span><span class="co">## psExtra object - a phyloseq object with extra slots:</span></span>
@@ -1865,7 +1870,7 @@ regression models.</p>
 <span><span class="co">## taxatree_stats dataframe:</span></span>
 <span><span class="co">## 89 taxa at 6 ranks: phylum, class, order, family, genus, species </span></span>
 <span><span class="co">## 4 terms: C_section, Female, Birth_weight_Z, Reads_Z</span></span></code></pre>
-<div class="sourceCode" id="cb148"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb149"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">shaoStats</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/psExtra-accessors.html">taxatree_stats_get</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 356 × 8</span></span></span>
 <span><span class="co">##    term           taxon          rank  formula estimate std.e…¹ stati…²  p.value</span></span>
@@ -1893,7 +1898,7 @@ discovery rate or family-wise error rate.</p>
 <p>Instead of applying these adjustment methods across all 86 taxa
 models at all ranks, the default behaviour is to control the family-wise
 error rate per taxonomic rank.</p>
-<div class="sourceCode" id="cb150"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb151"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">shaoStats</span> <span class="op">&lt;-</span> <span class="va">shaoStats</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/taxatree_stats_p_adjust.html">taxatree_stats_p_adjust</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"BH"</span>, grouping <span class="op">=</span> <span class="st">"rank"</span><span class="op">)</span></span>
 <span><span class="co"># notice the new variable</span></span>
 <span><span class="va">shaoStats</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/psExtra-accessors.html">taxatree_stats_get</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -1926,7 +1931,7 @@ in the outermost ring.</p>
 <p><code><a href="../../reference/taxatree_plots.html">taxatree_plots()</a></code> itself returns a list of plots, which
 you can arrange into one figure with the <a href="https://patchwork.data-imaginist.com/" class="external-link"><code>patchwork</code></a>
 package for example (and/or <a href="https://wilkelab.org/cowplot/articles/plot_grid.html" class="external-link"><code>cowplot</code></a>).</p>
-<div class="sourceCode" id="cb152"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb153"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">shaoStats</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/taxatree_plots.html">taxatree_plots</a></span><span class="op">(</span>node_size_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, sig_stat <span class="op">=</span> <span class="st">'p.adj.BH.rank'</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu">patchwork</span><span class="fu">::</span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html" class="external-link">wrap_plots</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">2</span>, guides <span class="op">=</span> <span class="st">"collect"</span><span class="op">)</span></span></code></pre></div>
@@ -1937,7 +1942,7 @@ package for example (and/or <a href="https://wilkelab.org/cowplot/articles/plot_
 <p>But how do we know which taxa are which nodes? We can create a
 labelled grey tree with <code><a href="../../reference/taxatree_plotkey.html">taxatree_plotkey()</a></code>. This labels
 only some of the taxa based on certain conditions that we specify.</p>
-<div class="sourceCode" id="cb153"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb154"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span> <span class="co"># label position </span></span>
 <span><span class="va">key</span> <span class="op">&lt;-</span> <span class="va">shaoStats</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../reference/taxatree_plotkey.html">taxatree_plotkey</a></span><span class="op">(</span></span>
@@ -1953,7 +1958,7 @@ See an extended tutorial <a href="https://david-barnett.github.io/microViz/artic
 on the microViz website</a>: including how to directly label taxa on the
 colored plots, change the layout and style of the trees, and even how to
 use a different regression modelling approach.</p>
-<div class="sourceCode" id="cb154"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb155"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># try it out!</span></span></code></pre></div>
 <hr>
 </div>
@@ -1965,7 +1970,7 @@ use a different regression modelling approach.</p>
 </h2>
 <p><code>session_info</code> records your package versions etc. This is
 useful for debugging / reproducing analysis.</p>
-<div class="sourceCode" id="cb155"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb156"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://r-lib.github.io/sessioninfo/reference/session_info.html" class="external-link">session_info</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #00BBBB; font-weight: bold;">─ Session info ───────────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">##  <span style="color: #555555; font-style: italic;">setting </span> <span style="color: #555555; font-style: italic;">value</span></span></span>
@@ -1977,151 +1982,151 @@ useful for debugging / reproducing analysis.</p>
 <span><span class="co">##  collate  C.UTF-8</span></span>
 <span><span class="co">##  ctype    C.UTF-8</span></span>
 <span><span class="co">##  tz       UTC</span></span>
-<span><span class="co">##  date     2023-01-20</span></span>
+<span><span class="co">##  date     2023-02-15</span></span>
 <span><span class="co">##  pandoc   2.19.2 @ /usr/bin/ (via rmarkdown)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## <span style="color: #00BBBB; font-weight: bold;">─ Packages ───────────────────────────────────────────────────────────────────</span></span></span>
-<span><span class="co">##  <span style="color: #555555; font-style: italic;">package         </span> <span style="color: #555555; font-style: italic;">*</span> <span style="color: #555555; font-style: italic;">version </span> <span style="color: #555555; font-style: italic;">date (UTC)</span> <span style="color: #555555; font-style: italic;">lib</span> <span style="color: #555555; font-style: italic;">source</span></span></span>
-<span><span class="co">##  ade4               1.7-20   <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  ape                5.6-2    <span style="color: #555555;">2022-03-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  backports          1.4.1    <span style="color: #555555;">2021-12-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  Biobase            2.58.0   <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">##  BiocGenerics       0.44.0   <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">##  biomformat         1.26.0   <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">##  Biostrings         2.66.0   <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">##  bitops             1.0-7    <span style="color: #555555;">2021-04-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  broom              1.0.2    <span style="color: #555555;">2022-12-15</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  bslib              0.4.2    <span style="color: #555555;">2022-12-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  ca                 0.71.1   <span style="color: #555555;">2020-01-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  cachem             1.0.6    <span style="color: #555555;">2021-08-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  callr              3.7.3    <span style="color: #555555;">2022-11-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  circlize           0.4.15   <span style="color: #555555;">2022-05-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  cli                3.6.0    <span style="color: #555555;">2023-01-09</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  clue               0.3-63   <span style="color: #555555;">2022-11-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  cluster            2.1.4    <span style="color: #555555;">2022-08-22</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.2)</span></span></span>
-<span><span class="co">##  codetools          0.2-18   <span style="color: #555555;">2020-11-04</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.2)</span></span></span>
-<span><span class="co">##  colorspace         2.0-3    <span style="color: #555555;">2022-02-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  ComplexHeatmap     2.14.0   <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">##  corncob            0.3.1    <span style="color: #555555;">2022-12-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  crayon             1.5.2    <span style="color: #555555;">2022-09-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  data.table         1.14.6   <span style="color: #555555;">2022-11-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  desc               1.4.2    <span style="color: #555555;">2022-09-08</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  devtools           2.4.5    <span style="color: #555555;">2022-10-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  digest             0.6.31   <span style="color: #555555;">2022-12-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  doParallel         1.0.17   <span style="color: #555555;">2022-02-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  dplyr            * 1.0.10   <span style="color: #555555;">2022-09-01</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  ellipsis           0.3.2    <span style="color: #555555;">2021-04-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  evaluate           0.20     <span style="color: #555555;">2023-01-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  fansi              1.0.3    <span style="color: #555555;">2022-03-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  farver             2.1.1    <span style="color: #555555;">2022-07-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  fastmap            1.1.0    <span style="color: #555555;">2021-01-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  forcats            0.5.2    <span style="color: #555555;">2022-08-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  foreach            1.5.2    <span style="color: #555555;">2022-02-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  fs                 1.5.2    <span style="color: #555555;">2021-12-08</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  generics           0.1.3    <span style="color: #555555;">2022-07-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  GenomeInfoDb       1.34.6   <span style="color: #555555;">2023-01-03</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">##  GenomeInfoDbData   1.2.9    <span style="color: #555555;">2023-01-19</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">##  GetoptLong         1.0.5    <span style="color: #555555;">2020-12-15</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  ggforce            0.4.1    <span style="color: #555555;">2022-10-04</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  ggplot2          * 3.4.0    <span style="color: #555555;">2022-11-04</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  ggraph             2.1.0    <span style="color: #555555;">2022-10-09</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  ggrepel            0.9.2    <span style="color: #555555;">2022-11-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  GlobalOptions      0.1.2    <span style="color: #555555;">2020-06-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  glue               1.6.2    <span style="color: #555555;">2022-02-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  graphlayouts       0.8.4    <span style="color: #555555;">2022-11-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  gridExtra          2.3      <span style="color: #555555;">2017-09-09</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  gtable             0.3.1    <span style="color: #555555;">2022-09-01</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  highr              0.10     <span style="color: #555555;">2022-12-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  htmltools          0.5.4    <span style="color: #555555;">2022-12-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  htmlwidgets        1.6.1    <span style="color: #555555;">2023-01-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  httpuv             1.6.8    <span style="color: #555555;">2023-01-12</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  igraph             1.3.5    <span style="color: #555555;">2022-09-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  IRanges            2.32.0   <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">##  iterators          1.0.14   <span style="color: #555555;">2022-02-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  jquerylib          0.1.4    <span style="color: #555555;">2021-04-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  jsonlite           1.8.4    <span style="color: #555555;">2022-12-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  knitr              1.41     <span style="color: #555555;">2022-11-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  labeling           0.4.2    <span style="color: #555555;">2020-10-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  later              1.3.0    <span style="color: #555555;">2021-08-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  lattice            0.20-45  <span style="color: #555555;">2021-09-22</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.2)</span></span></span>
-<span><span class="co">##  lifecycle          1.0.3    <span style="color: #555555;">2022-10-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  magrittr           2.0.3    <span style="color: #555555;">2022-03-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  MASS               7.3-58.1 <span style="color: #555555;">2022-08-03</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.2)</span></span></span>
-<span><span class="co">##  Matrix             1.5-1    <span style="color: #555555;">2022-09-13</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.2)</span></span></span>
-<span><span class="co">##  matrixStats        0.63.0   <span style="color: #555555;">2022-11-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  memoise            2.0.1    <span style="color: #555555;">2021-11-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  mgcv               1.8-41   <span style="color: #555555;">2022-10-21</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.2)</span></span></span>
-<span><span class="co">##  microbiome         1.20.0   <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">##  microViz         * 0.10.6   <span style="color: #555555;">2023-01-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">local</span></span></span>
-<span><span class="co">##  mime               0.12     <span style="color: #555555;">2021-09-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  miniUI             0.1.1.1  <span style="color: #555555;">2018-05-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  multtest           2.54.0   <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">##  munsell            0.5.0    <span style="color: #555555;">2018-06-12</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  nlme               3.1-160  <span style="color: #555555;">2022-10-10</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.2)</span></span></span>
-<span><span class="co">##  patchwork          1.1.2    <span style="color: #555555;">2022-08-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  permute            0.9-7    <span style="color: #555555;">2022-01-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  phyloseq         * 1.42.0   <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">##  pillar             1.8.1    <span style="color: #555555;">2022-08-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  pkgbuild           1.4.0    <span style="color: #555555;">2022-11-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  pkgconfig          2.0.3    <span style="color: #555555;">2019-09-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  pkgdown            2.0.7    <span style="color: #555555;">2022-12-14</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  pkgload            1.3.2    <span style="color: #555555;">2022-11-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  plyr               1.8.8    <span style="color: #555555;">2022-11-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  png                0.1-8    <span style="color: #555555;">2022-11-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  polyclip           1.10-4   <span style="color: #555555;">2022-10-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  prettyunits        1.1.1    <span style="color: #555555;">2020-01-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  processx           3.8.0    <span style="color: #555555;">2022-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  profvis            0.3.7    <span style="color: #555555;">2020-11-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  promises           1.2.0.1  <span style="color: #555555;">2021-02-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  ps                 1.7.2    <span style="color: #555555;">2022-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  purrr            * 1.0.1    <span style="color: #555555;">2023-01-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  R6                 2.5.1    <span style="color: #555555;">2021-08-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  ragg               1.2.5    <span style="color: #555555;">2023-01-12</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  RColorBrewer       1.1-3    <span style="color: #555555;">2022-04-03</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  Rcpp               1.0.9    <span style="color: #555555;">2022-07-08</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  RCurl              1.98-1.9 <span style="color: #555555;">2022-10-03</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  registry           0.5-1    <span style="color: #555555;">2019-03-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  remotes            2.4.2    <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  reshape2           1.4.4    <span style="color: #555555;">2020-04-09</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  rhdf5              2.42.0   <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">##  rhdf5filters       1.10.0   <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">##  Rhdf5lib           1.20.0   <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">##  rjson              0.2.21   <span style="color: #555555;">2022-01-09</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  rlang              1.0.6    <span style="color: #555555;">2022-09-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  rmarkdown          2.20     <span style="color: #555555;">2023-01-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  rprojroot          2.0.3    <span style="color: #555555;">2022-04-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  Rtsne              0.16     <span style="color: #555555;">2022-04-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  S4Vectors          0.36.1   <span style="color: #555555;">2022-12-05</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">##  sass               0.4.4    <span style="color: #555555;">2022-11-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  scales             1.2.1    <span style="color: #555555;">2022-08-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  seriation        * 1.4.1    <span style="color: #555555;">2023-01-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  sessioninfo        1.2.2    <span style="color: #555555;">2021-12-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  shape              1.4.6    <span style="color: #555555;">2021-05-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  shiny            * 1.7.4    <span style="color: #555555;">2022-12-15</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  stringi            1.7.12   <span style="color: #555555;">2023-01-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  stringr            1.5.0    <span style="color: #555555;">2022-12-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  survival           3.4-0    <span style="color: #555555;">2022-08-09</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.2)</span></span></span>
-<span><span class="co">##  systemfonts        1.0.4    <span style="color: #555555;">2022-02-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  textshaping        0.3.6    <span style="color: #555555;">2021-10-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  tibble             3.1.8    <span style="color: #555555;">2022-07-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  tidygraph          1.2.2    <span style="color: #555555;">2022-08-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  tidyr              1.2.1    <span style="color: #555555;">2022-09-08</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  tidyselect         1.2.0    <span style="color: #555555;">2022-10-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  TSP                1.2-1    <span style="color: #555555;">2022-07-14</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  tweenr             2.0.2    <span style="color: #555555;">2022-09-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  urlchecker         1.0.1    <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  usethis            2.1.6    <span style="color: #555555;">2022-05-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  utf8               1.2.2    <span style="color: #555555;">2021-07-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  vctrs              0.5.1    <span style="color: #555555;">2022-11-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  vegan              2.6-4    <span style="color: #555555;">2022-10-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  viridis            0.6.2    <span style="color: #555555;">2021-10-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  viridisLite        0.4.1    <span style="color: #555555;">2022-08-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  withr              2.5.0    <span style="color: #555555;">2022-03-03</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  xfun               0.36     <span style="color: #555555;">2022-12-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  xtable             1.8-4    <span style="color: #555555;">2019-04-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  XVector            0.38.0   <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">##  yaml               2.3.6    <span style="color: #555555;">2022-10-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  zlibbioc           1.44.0   <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  <span style="color: #555555; font-style: italic;">package         </span> <span style="color: #555555; font-style: italic;">*</span> <span style="color: #555555; font-style: italic;">version  </span> <span style="color: #555555; font-style: italic;">date (UTC)</span> <span style="color: #555555; font-style: italic;">lib</span> <span style="color: #555555; font-style: italic;">source</span></span></span>
+<span><span class="co">##  ade4               1.7-22    <span style="color: #555555;">2023-02-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  ape                5.6-2     <span style="color: #555555;">2022-03-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  backports          1.4.1     <span style="color: #555555;">2021-12-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  Biobase            2.58.0    <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  BiocGenerics       0.44.0    <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  biomformat         1.26.0    <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  Biostrings         2.66.0    <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  bitops             1.0-7     <span style="color: #555555;">2021-04-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  broom              1.0.3     <span style="color: #555555;">2023-01-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  bslib              0.4.2     <span style="color: #555555;">2022-12-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  ca                 0.71.1    <span style="color: #555555;">2020-01-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  cachem             1.0.6     <span style="color: #555555;">2021-08-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  callr              3.7.3     <span style="color: #555555;">2022-11-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  circlize           0.4.15    <span style="color: #555555;">2022-05-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  cli                3.6.0     <span style="color: #555555;">2023-01-09</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  clue               0.3-64    <span style="color: #555555;">2023-01-31</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  cluster            2.1.4     <span style="color: #555555;">2022-08-22</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.2)</span></span></span>
+<span><span class="co">##  codetools          0.2-18    <span style="color: #555555;">2020-11-04</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.2)</span></span></span>
+<span><span class="co">##  colorspace         2.1-0     <span style="color: #555555;">2023-01-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  ComplexHeatmap     2.14.0    <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  corncob            0.3.1     <span style="color: #555555;">2022-12-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  crayon             1.5.2     <span style="color: #555555;">2022-09-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  data.table         1.14.6    <span style="color: #555555;">2022-11-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  desc               1.4.2     <span style="color: #555555;">2022-09-08</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  devtools           2.4.5     <span style="color: #555555;">2022-10-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  digest             0.6.31    <span style="color: #555555;">2022-12-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  doParallel         1.0.17    <span style="color: #555555;">2022-02-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  dplyr            * 1.1.0     <span style="color: #555555;">2023-01-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  ellipsis           0.3.2     <span style="color: #555555;">2021-04-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  evaluate           0.20      <span style="color: #555555;">2023-01-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  fansi              1.0.4     <span style="color: #555555;">2023-01-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  farver             2.1.1     <span style="color: #555555;">2022-07-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  fastmap            1.1.0     <span style="color: #555555;">2021-01-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  forcats            1.0.0     <span style="color: #555555;">2023-01-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  foreach            1.5.2     <span style="color: #555555;">2022-02-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  fs                 1.6.1     <span style="color: #555555;">2023-02-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  generics           0.1.3     <span style="color: #555555;">2022-07-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  GenomeInfoDb       1.34.9    <span style="color: #555555;">2023-02-02</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  GenomeInfoDbData   1.2.9     <span style="color: #555555;">2023-01-19</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  GetoptLong         1.0.5     <span style="color: #555555;">2020-12-15</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  ggforce            0.4.1     <span style="color: #555555;">2022-10-04</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  ggplot2          * 3.4.1     <span style="color: #555555;">2023-02-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  ggraph             2.1.0     <span style="color: #555555;">2022-10-09</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  ggrepel            0.9.3     <span style="color: #555555;">2023-02-03</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  GlobalOptions      0.1.2     <span style="color: #555555;">2020-06-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  glue               1.6.2     <span style="color: #555555;">2022-02-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  graphlayouts       0.8.4     <span style="color: #555555;">2022-11-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  gridExtra          2.3       <span style="color: #555555;">2017-09-09</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  gtable             0.3.1     <span style="color: #555555;">2022-09-01</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  highr              0.10      <span style="color: #555555;">2022-12-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  htmltools          0.5.4     <span style="color: #555555;">2022-12-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  htmlwidgets        1.6.1     <span style="color: #555555;">2023-01-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  httpuv             1.6.9     <span style="color: #555555;">2023-02-14</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  igraph             1.4.0     <span style="color: #555555;">2023-02-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  IRanges            2.32.0    <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  iterators          1.0.14    <span style="color: #555555;">2022-02-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  jquerylib          0.1.4     <span style="color: #555555;">2021-04-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  jsonlite           1.8.4     <span style="color: #555555;">2022-12-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  knitr              1.42      <span style="color: #555555;">2023-01-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  labeling           0.4.2     <span style="color: #555555;">2020-10-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  later              1.3.0     <span style="color: #555555;">2021-08-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  lattice            0.20-45   <span style="color: #555555;">2021-09-22</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.2)</span></span></span>
+<span><span class="co">##  lifecycle          1.0.3     <span style="color: #555555;">2022-10-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  magrittr           2.0.3     <span style="color: #555555;">2022-03-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  MASS               7.3-58.1  <span style="color: #555555;">2022-08-03</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.2)</span></span></span>
+<span><span class="co">##  Matrix             1.5-1     <span style="color: #555555;">2022-09-13</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.2)</span></span></span>
+<span><span class="co">##  matrixStats        0.63.0    <span style="color: #555555;">2022-11-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  memoise            2.0.1     <span style="color: #555555;">2021-11-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  mgcv               1.8-41    <span style="color: #555555;">2022-10-21</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.2)</span></span></span>
+<span><span class="co">##  microbiome         1.20.0    <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  microViz         * 0.10.7    <span style="color: #555555;">2023-02-15</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">local</span></span></span>
+<span><span class="co">##  mime               0.12      <span style="color: #555555;">2021-09-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  miniUI             0.1.1.1   <span style="color: #555555;">2018-05-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  multtest           2.54.0    <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  munsell            0.5.0     <span style="color: #555555;">2018-06-12</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  nlme               3.1-160   <span style="color: #555555;">2022-10-10</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.2)</span></span></span>
+<span><span class="co">##  patchwork          1.1.2     <span style="color: #555555;">2022-08-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  permute            0.9-7     <span style="color: #555555;">2022-01-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  phyloseq         * 1.42.0    <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  pillar             1.8.1     <span style="color: #555555;">2022-08-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  pkgbuild           1.4.0     <span style="color: #555555;">2022-11-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  pkgconfig          2.0.3     <span style="color: #555555;">2019-09-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  pkgdown            2.0.7     <span style="color: #555555;">2022-12-14</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  pkgload            1.3.2     <span style="color: #555555;">2022-11-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  plyr               1.8.8     <span style="color: #555555;">2022-11-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  png                0.1-8     <span style="color: #555555;">2022-11-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  polyclip           1.10-4    <span style="color: #555555;">2022-10-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  prettyunits        1.1.1     <span style="color: #555555;">2020-01-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  processx           3.8.0     <span style="color: #555555;">2022-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  profvis            0.3.7     <span style="color: #555555;">2020-11-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  promises           1.2.0.1   <span style="color: #555555;">2021-02-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  ps                 1.7.2     <span style="color: #555555;">2022-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  purrr            * 1.0.1     <span style="color: #555555;">2023-01-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  R6                 2.5.1     <span style="color: #555555;">2021-08-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  ragg               1.2.5     <span style="color: #555555;">2023-01-12</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  RColorBrewer       1.1-3     <span style="color: #555555;">2022-04-03</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  Rcpp               1.0.10    <span style="color: #555555;">2023-01-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  RCurl              1.98-1.10 <span style="color: #555555;">2023-01-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  registry           0.5-1     <span style="color: #555555;">2019-03-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  remotes            2.4.2     <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  reshape2           1.4.4     <span style="color: #555555;">2020-04-09</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  rhdf5              2.42.0    <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  rhdf5filters       1.10.0    <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  Rhdf5lib           1.20.0    <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  rjson              0.2.21    <span style="color: #555555;">2022-01-09</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  rlang              1.0.6     <span style="color: #555555;">2022-09-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  rmarkdown          2.20      <span style="color: #555555;">2023-01-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  rprojroot          2.0.3     <span style="color: #555555;">2022-04-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  Rtsne              0.16      <span style="color: #555555;">2022-04-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  S4Vectors          0.36.1    <span style="color: #555555;">2022-12-05</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  sass               0.4.5     <span style="color: #555555;">2023-01-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  scales             1.2.1     <span style="color: #555555;">2022-08-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  seriation        * 1.4.1     <span style="color: #555555;">2023-01-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  sessioninfo        1.2.2     <span style="color: #555555;">2021-12-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  shape              1.4.6     <span style="color: #555555;">2021-05-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  shiny            * 1.7.4     <span style="color: #555555;">2022-12-15</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  stringi            1.7.12    <span style="color: #555555;">2023-01-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  stringr            1.5.0     <span style="color: #555555;">2022-12-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  survival           3.4-0     <span style="color: #555555;">2022-08-09</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.2)</span></span></span>
+<span><span class="co">##  systemfonts        1.0.4     <span style="color: #555555;">2022-02-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  textshaping        0.3.6     <span style="color: #555555;">2021-10-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  tibble             3.1.8     <span style="color: #555555;">2022-07-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  tidygraph          1.2.3     <span style="color: #555555;">2023-02-01</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  tidyr              1.3.0     <span style="color: #555555;">2023-01-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  tidyselect         1.2.0     <span style="color: #555555;">2022-10-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  TSP                1.2-2     <span style="color: #555555;">2023-01-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  tweenr             2.0.2     <span style="color: #555555;">2022-09-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  urlchecker         1.0.1     <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  usethis            2.1.6     <span style="color: #555555;">2022-05-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  utf8               1.2.3     <span style="color: #555555;">2023-01-31</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  vctrs              0.5.2     <span style="color: #555555;">2023-01-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  vegan              2.6-4     <span style="color: #555555;">2022-10-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  viridis            0.6.2     <span style="color: #555555;">2021-10-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  viridisLite        0.4.1     <span style="color: #555555;">2022-08-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  withr              2.5.0     <span style="color: #555555;">2022-03-03</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  xfun               0.37      <span style="color: #555555;">2023-01-31</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  xtable             1.8-4     <span style="color: #555555;">2019-04-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  XVector            0.38.0    <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  yaml               2.3.7     <span style="color: #555555;">2023-01-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  zlibbioc           1.44.0    <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## <span style="color: #555555;"> [1] /home/runner/work/_temp/Library</span></span></span>
 <span><span class="co">## <span style="color: #555555;"> [2] /opt/R/4.2.2/lib/R/site-library</span></span></span>
