@@ -20,6 +20,7 @@ Use dplyr::mutate() syntax.
 }
 \examples{
 library(phyloseq)
+library(dplyr)
 data("dietswap", package = "microbiome")
 
 # compute new rank
@@ -33,7 +34,7 @@ tax_mutate(dietswap, Genus = toupper(Genus)) \%>\%
   head()
 
 # overwrite all ranks
-tax_mutate(dietswap, dplyr::across(.fns = toupper)) \%>\%
+tax_mutate(dietswap, across(everything(), .fns = toupper)) \%>\%
   tt_get() \%>\%
   head()
 

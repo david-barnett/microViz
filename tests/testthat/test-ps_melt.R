@@ -12,7 +12,11 @@ test_that("ps_melt equivalent to psmelt", {
     regexp = "to avoid conflicts with special phyloseq plot attribute names"
   )
   # same dataframe, except with somewhat different row orders
-  expect_true(dplyr::all_equal(tibble::as_tibble(mdf), mdf2, convert = TRUE))
+  expect_true(all.equal(
+    dplyr::arrange(mdf, OTU, Sample),
+    dplyr::arrange(mdf2, OTU, Sample),
+    check.attributes = FALSE
+  ))
 })
 
 

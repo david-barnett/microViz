@@ -28,7 +28,7 @@ test_that("tax_models2stats works", {
     name = "lmBirthweight_psx",
     object = lmBirthweight_psx %>%
       tax_stats_get() %>%
-      dplyr::mutate(dplyr::across(where(is.numeric), round, digits = 8))
+      dplyr::mutate(dplyr::across(where(is.numeric), ~ round(., digits = 8)))
   )
 
   # multivariable wilcox fail
@@ -59,7 +59,7 @@ test_that("tax_models2stats works", {
     name = "wilcox2_psx",
     object = wilcox2_psx %>%
       tax_stats_get() %>%
-      dplyr::mutate(dplyr::across(where(is.numeric), round, digits = 8))
+      dplyr::mutate(dplyr::across(where(is.numeric), ~ round(., digits = 8)))
   )
 
 })

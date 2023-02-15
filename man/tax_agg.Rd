@@ -72,6 +72,7 @@ which should then result in (much) shorter unique names at the aggregation rank.
 }
 \examples{
 library(phyloseq)
+library(dplyr)
 data("dietswap", package = "microbiome")
 
 tax_agg(ps = dietswap, "Phylum") \%>\%

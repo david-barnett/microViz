@@ -1,3 +1,7 @@
+# microViz 0.10.7
+
+- Fix for dplyr version 1.1.0 warnings about across() wanting explicit .cols use
+
 # microViz 0.10.6
 
 - Fix shao19 example data: family rank in tax table now correctly shows families

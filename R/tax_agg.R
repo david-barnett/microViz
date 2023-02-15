@@ -62,6 +62,7 @@
 #'
 #' @examples
 #' library(phyloseq)
+#' library(dplyr)
 #' data("dietswap", package = "microbiome")
 #'
 #' tax_agg(ps = dietswap, "Phylum") %>%
@@ -150,6 +151,19 @@ tax_agg <- function(ps,
       stop("zero-length name(s) in tax_table at rank: ", rank, taxFixPrompt())
     }
 
+    # copy taxa names to aggregation rank if some taxa marked as preserved
+    if (!is.null(preserve)) {
+      preserve <- rlang::arg_match(
+        arg = preserve, values = uniqueNamesAtRank, multiple = TRUE
+      )
+      preserved <- tt_df[[rank_index]] %in% preserve
+      # change name of rank to indicate it's not a pure rank aggregation
+      rank <- paste(rank, "& lower")
+      tt_df[[rank]] <- tt_df[[rank_index]] # copies to new column on RHS
+      tt_df[preserved, rank] <- rownames(tt_df)[preserved] # preserved names to rank
+      uniqueNamesAtRank <- unique(tt_df[[rank]])
+    }
+
     if (isTRUE(force)) {
       # FORCED aggregation: doesn't care/check if higher ranks are not unique
       tt_distinct <- dplyr::distinct(
@@ -178,7 +192,9 @@ tax_agg <- function(ps,
     # aggregate tax abundance values in samples by summing within taxID groups
     otu_agg <- otu_df %>%
       dplyr::group_by(dplyr::across(dplyr::all_of(".taxID."))) %>%
-      dplyr::summarise(dplyr::across(.fns = sum, .names = "{.col}"))
+      dplyr::summarise(dplyr::across(
+        .cols = dplyr::everything(), .fns = sum, .names = "{.col}"
+      ))
 
     # build new phyloseq -----------------------------------------------------
     tt_new <- tt_distinct

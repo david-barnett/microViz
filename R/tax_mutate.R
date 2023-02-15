@@ -14,6 +14,7 @@
 #'
 #' @examples
 #' library(phyloseq)
+#' library(dplyr)
 #' data("dietswap", package = "microbiome")
 #'
 #' # compute new rank
@@ -27,7 +28,7 @@
 #'   head()
 #'
 #' # overwrite all ranks
-#' tax_mutate(dietswap, dplyr::across(.fns = toupper)) %>%
+#' tax_mutate(dietswap, across(everything(), .fns = toupper)) %>%
 #'   tt_get() %>%
 #'   head()
 #'

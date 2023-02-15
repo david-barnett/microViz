@@ -58,11 +58,11 @@ test_that("taxatree_plotkey works as expected", {
 
   # get circular plot data
   keyDat <- unlabeledKey$data %>%
-    dplyr::mutate(dplyr::across(where(is.numeric), round, digits = 6))
+    dplyr::mutate(dplyr::across(where(is.numeric), ~ round(., digits = 6)))
 
   # get rectangular plot data
   keyDatRect <- unlabeledKey_rect$data %>%
-    dplyr::mutate(dplyr::across(where(is.numeric), round, digits = 6))
+    dplyr::mutate(dplyr::across(where(is.numeric), ~ round(., digits = 6)))
 
   expect_snapshot_csv(name = "unlabeledKeyData", keyDat)
   expect_snapshot_csv(name = "unlabeledKey_rectData", keyDatRect)
@@ -153,7 +153,7 @@ test_that("taxatree_label and plot_labels allows multiple rounds of custom label
   )
   expect_s3_class(pMulti, "ggplot")
   pMultiDat <- pMulti$data %>%
-    dplyr::mutate(dplyr::across(where(is.numeric), round, digits = 6))
+    dplyr::mutate(dplyr::across(where(is.numeric), ~ round(., digits = 6)))
   expect_snapshot_csv("taxatreekey-multiplelabels", pMultiDat)
 })
 
