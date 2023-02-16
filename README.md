@@ -185,17 +185,6 @@ ord_explore(pseq) # gif generated with microViz version 0.7.4 (plays at 1.75x sp
 ``` r
 library(phyloseq)
 library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following object is masked from 'package:testthat':
-#> 
-#>     matches
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
 library(ggplot2)
 ```
 
@@ -314,10 +303,6 @@ customised_plot <- pca_plot +
 
 # show plot
 customised_plot
-#> Warning in do_once((if (is_R_CMD_check()) stop else warning)("The function
-#> xfun::isFALSE() will be deprecated in the future. Please ", : The function
-#> xfun::isFALSE() will be deprecated in the future. Please consider using
-#> base::isFALSE(x) or identical(x, FALSE) instead.
 ```
 
 <img src="man/figures/README-ordination-plot-1.png" width="100%" />
@@ -345,8 +330,8 @@ aitchison_perm <- aitchison_dists %>%
     n_processes = 1, n_perms = 99, # you should use at least 999!
     variables = "bmi_group"
   )
-#> 2023-02-15 23:25:30 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2023-02-15 23:25:30 - Finished PERMANOVA
+#> 2023-02-16 10:04:14 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2023-02-16 10:04:14 - Finished PERMANOVA
 
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
@@ -371,8 +356,8 @@ your permanova directly using the `ord_plot` function with constraints
 perm2 <- aitchison_dists %>%
   dist_permanova(variables = c("weight", "african", "sex"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2023-02-15 23:25:30 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2023-02-15 23:25:32 - Finished PERMANOVA
+#> 2023-02-16 10:04:14 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2023-02-16 10:04:16 - Finished PERMANOVA
 ```
 
 We’ll visualise the effect of nationality and bodyweight on sample
@@ -515,7 +500,7 @@ sessionInfo()
 #>  [88] curl_5.0.0             png_0.1-8              tibble_3.1.8          
 #>  [91] stringi_1.7.12         highr_0.10             ps_1.7.2              
 #>  [94] lattice_0.20-45        Matrix_1.5-3           commonmark_1.8.1      
-#>  [97] markdown_1.4           vegan_2.6-4            microbiome_1.20.0     
+#>  [97] markdown_1.5           vegan_2.6-4            microbiome_1.20.0     
 #> [100] permute_0.9-7          multtest_2.54.0        vctrs_0.5.2           
 #> [103] pillar_1.8.1           lifecycle_1.0.3        rhdf5filters_1.10.0   
 #> [106] GlobalOptions_0.1.2    data.table_1.14.6      bitops_1.0-7          
