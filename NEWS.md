@@ -1,6 +1,6 @@
 # microViz 0.10.7
 
-- Fix for dplyr version 1.1.0 warnings about across() wanting explicit .cols use
+- Fix for dplyr version 1.1.0 warnings e.g. about across() wanting explicit .cols use
 
 # microViz 0.10.6
 

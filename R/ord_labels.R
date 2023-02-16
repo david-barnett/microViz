@@ -159,6 +159,13 @@ textAngleCalc <- function(xvec, yvec,
                           max = 90, ratio = 1,
                           perpendicular = FALSE) {
 
+  if (!is.numeric(xvec)) rlang::abort("xvec must be a numeric vector")
+  if (!is.numeric(yvec)) rlang::abort("yvec must be a numeric vector")
+
+  # strip attributes, otherwise dplyr::if_else complains if a vec was scaled
+  xvec <- as.vector(xvec)
+  yvec <- as.vector(yvec)
+
   # replace exact zeros
   xvec[xvec == 0] <- 1e-6
 
@@ -182,6 +189,11 @@ textAngleCalc <- function(xvec, yvec,
 #' ord_plot-label-helpers
 #' Calculate hjust of text labels for ordination plot
 textHjustCalc <- function(xvec, adjust = TRUE) {
+  if (!is.numeric(xvec)) rlang::abort("xvec must be a numeric vector")
+
+  # strip attributes, otherwise dplyr::if_else complains if a vec was scaled
+  xvec <- as.vector(xvec)
+
   if (isTRUE(adjust)) {
     hjust <- dplyr::if_else(xvec < 0, true = 1, false = 0)
   } else {
