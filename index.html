@@ -245,17 +245,6 @@
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://dx.plos.org/10.1371/journal.pone.0061217" class="external-link">phyloseq</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     filter, lag</span></span>
-<span><span class="co">#&gt; The following object is masked from 'package:testthat':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     matches</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get some example data</span></span>
@@ -359,11 +348,7 @@
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_fixed.html" class="external-link">coord_fixed</a></span><span class="op">(</span>ratio <span class="op">=</span> <span class="fl">0.5</span>, clip <span class="op">=</span> <span class="st">"off"</span><span class="op">)</span> <span class="co"># makes rotated labels align correctly</span></span>
 <span></span>
 <span><span class="co"># show plot</span></span>
-<span><span class="va">customised_plot</span></span>
-<span><span class="co">#&gt; Warning in do_once((if (is_R_CMD_check()) stop else warning)("The function</span></span>
-<span><span class="co">#&gt; xfun::isFALSE() will be deprecated in the future. Please ", : The function</span></span>
-<span><span class="co">#&gt; xfun::isFALSE() will be deprecated in the future. Please consider using</span></span>
-<span><span class="co">#&gt; base::isFALSE(x) or identical(x, FALSE) instead.</span></span></code></pre></div>
+<span><span class="va">customised_plot</span></span></code></pre></div>
 <p><img src="reference/figures/README-ordination-plot-1.png" width="100%"></p>
 </div>
 <div class="section level3">
@@ -386,8 +371,8 @@
 <span>    n_processes <span class="op">=</span> <span class="fl">1</span>, n_perms <span class="op">=</span> <span class="fl">99</span>, <span class="co"># you should use at least 999!</span></span>
 <span>    variables <span class="op">=</span> <span class="st">"bmi_group"</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-02-15 23:25:30 - Starting PERMANOVA with 99 perms with 1 processes</span></span>
-<span><span class="co">#&gt; 2023-02-15 23:25:30 - Finished PERMANOVA</span></span>
+<span><span class="co">#&gt; 2023-02-16 10:04:14 - Starting PERMANOVA with 99 perms with 1 processes</span></span>
+<span><span class="co">#&gt; 2023-02-16 10:04:14 - Finished PERMANOVA</span></span>
 <span></span>
 <span><span class="co"># view the permanova results</span></span>
 <span><span class="fu"><a href="reference/psExtra-accessors.html">perm_get</a></span><span class="op">(</span><span class="va">aitchison_perm</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -409,8 +394,8 @@
 <code class="sourceCode R"><span><span class="va">perm2</span> <span class="op">&lt;-</span> <span class="va">aitchison_dists</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="reference/dist_permanova.html">dist_permanova</a></span><span class="op">(</span>variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"african"</span>, <span class="st">"sex"</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">321</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Dropping samples with missings: 2</span></span>
-<span><span class="co">#&gt; 2023-02-15 23:25:30 - Starting PERMANOVA with 999 perms with 1 processes</span></span>
-<span><span class="co">#&gt; 2023-02-15 23:25:32 - Finished PERMANOVA</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-02-16 10:04:14 - Starting PERMANOVA with 999 perms with 1 processes</span></span>
+<span><span class="co">#&gt; 2023-02-16 10:04:16 - Finished PERMANOVA</span></span></code></pre></div>
 <p>We’ll visualise the effect of nationality and bodyweight on sample composition, after first removing the effect of sex.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">perm2</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
@@ -536,7 +521,7 @@
 <span><span class="co">#&gt;  [88] curl_5.0.0             png_0.1-8              tibble_3.1.8          </span></span>
 <span><span class="co">#&gt;  [91] stringi_1.7.12         highr_0.10             ps_1.7.2              </span></span>
 <span><span class="co">#&gt;  [94] lattice_0.20-45        Matrix_1.5-3           commonmark_1.8.1      </span></span>
-<span><span class="co">#&gt;  [97] markdown_1.4           vegan_2.6-4            microbiome_1.20.0     </span></span>
+<span><span class="co">#&gt;  [97] markdown_1.5           vegan_2.6-4            microbiome_1.20.0     </span></span>
 <span><span class="co">#&gt; [100] permute_0.9-7          multtest_2.54.0        vctrs_0.5.2           </span></span>
 <span><span class="co">#&gt; [103] pillar_1.8.1           lifecycle_1.0.3        rhdf5filters_1.10.0   </span></span>
 <span><span class="co">#&gt; [106] GlobalOptions_0.1.2    data.table_1.14.6      bitops_1.0-7          </span></span>
