@@ -1,3 +1,7 @@
+# microViz 0.10.8
+
+- Fix: small internal fix for compatibility with next R version (relating to loss of stringsAsFactors global option)
+
 # microViz 0.10.7
 
 - Fix for dplyr version 1.1.0 warnings e.g. about across() wanting explicit .cols use
