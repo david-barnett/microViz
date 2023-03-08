@@ -156,7 +156,7 @@ ps_melt <- function(ps) {
       methods::as("matrix", strict = TRUE) %>%
       tibble::as_tibble(rownames = "OTU")
     # Convert taxonomy vars to factors for phyloseq compatibility
-    if (getOption("stringsAsFactors")) {
+    if (isTRUE(getOption("stringsAsFactors"))) {
       tax <- tax %>% dplyr::mutate(
         dplyr::across(-dplyr::all_of("OTU"), .fns = as.factor)
       )
