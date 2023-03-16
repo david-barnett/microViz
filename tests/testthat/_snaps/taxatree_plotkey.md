@@ -7,7 +7,7 @@
       #
       # A rooted tree
       #
-      # Edge Data: 61 × 7 (active)
+      # A tibble: 61 × 7
          from    to parent            rank   prevalence label direction
         <int> <int> <chr>             <chr>       <dbl> <lgl> <fct>    
       1     1     2 root              phylum      0.8   TRUE  right    
@@ -18,7 +18,7 @@
       6     3     7 p: Actinobacteria class       0.933 TRUE  right    
       # … with 55 more rows
       #
-      # Node Data: 62 × 6
+      # A tibble: 62 × 6
         taxon             parent rank   prevalence label .ggraph.orig_index
         <chr>             <chr>  <chr>       <dbl> <lgl>              <int>
       1 root              root   root        1     TRUE                   1
@@ -35,7 +35,7 @@
       #
       # A rooted tree
       #
-      # Edge Data: 61 × 7 (active)
+      # A tibble: 61 × 7
          from    to parent            rank   prevalence label direction
         <int> <int> <chr>             <chr>       <dbl> <lgl> <fct>    
       1     1     2 root              phylum      0.8   TRUE  right    
@@ -46,7 +46,7 @@
       6     3     7 p: Actinobacteria class       0.933 TRUE  right    
       # … with 55 more rows
       #
-      # Node Data: 62 × 6
+      # A tibble: 62 × 6
         taxon             parent rank   prevalence label .ggraph.orig_index
         <chr>             <chr>  <chr>       <dbl> <lgl>              <int>
       1 root              root   root        1     TRUE                   1

@@ -330,8 +330,8 @@ aitchison_perm <- aitchison_dists %>%
     n_processes = 1, n_perms = 99, # you should use at least 999!
     variables = "bmi_group"
   )
-#> 2023-03-08 13:49:41 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2023-03-08 13:49:41 - Finished PERMANOVA
+#> 2023-03-16 20:04:22 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2023-03-16 20:04:22 - Finished PERMANOVA
 
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
@@ -356,8 +356,8 @@ your permanova directly using the `ord_plot` function with constraints
 perm2 <- aitchison_dists %>%
   dist_permanova(variables = c("weight", "african", "sex"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2023-03-08 13:49:41 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2023-03-08 13:49:43 - Finished PERMANOVA
+#> 2023-03-16 20:04:22 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2023-03-16 20:04:24 - Finished PERMANOVA
 ```
 
 We’ll visualise the effect of nationality and bodyweight on sample
@@ -465,20 +465,20 @@ sessionInfo()
 #> 
 #> other attached packages:
 #> [1] ggplot2_3.4.1   dplyr_1.1.0     phyloseq_1.42.0 microViz_0.10.8
-#> [5] testthat_3.1.6  devtools_2.4.5  usethis_2.1.6  
+#> [5] testthat_3.1.7  devtools_2.4.5  usethis_2.1.6  
 #> 
 #> loaded via a namespace (and not attached):
 #>   [1] circlize_0.4.15        plyr_1.8.8             igraph_1.4.1          
 #>   [4] selectr_0.4-2          splines_4.2.2          GenomeInfoDb_1.34.2   
 #>   [7] digest_0.6.31          foreach_1.5.2          ca_0.71.1             
-#>  [10] htmltools_0.5.4        magick_2.7.3           viridis_0.6.2         
+#>  [10] htmltools_0.5.4        magick_2.7.4           viridis_0.6.2         
 #>  [13] fansi_1.0.4            magrittr_2.0.3         memoise_2.0.1         
 #>  [16] cluster_2.1.4          doParallel_1.0.17      remotes_2.4.2         
 #>  [19] ComplexHeatmap_2.14.0  Biostrings_2.66.0      matrixStats_0.63.0    
 #>  [22] prettyunits_1.1.1      colorspace_2.1-0       corncob_0.3.1         
 #>  [25] rvest_1.0.3            xfun_0.37              callr_3.7.3           
 #>  [28] crayon_1.5.2           RCurl_1.98-1.10        jsonlite_1.8.4        
-#>  [31] survival_3.5-3         iterators_1.0.14       ape_5.7               
+#>  [31] survival_3.5-5         iterators_1.0.14       ape_5.7-1             
 #>  [34] glue_1.6.2             registry_0.5-1         gtable_0.3.1          
 #>  [37] zlibbioc_1.44.0        XVector_0.38.0         GetoptLong_1.0.5      
 #>  [40] pkgbuild_1.4.0         Rhdf5lib_1.20.0        shape_1.4.6           
@@ -489,7 +489,7 @@ sessionInfo()
 #>  [55] httr_1.4.5             RColorBrewer_1.1-3     ellipsis_0.3.2        
 #>  [58] urlchecker_1.0.1       pkgconfig_2.0.3        farver_2.1.1          
 #>  [61] utf8_1.2.3             tidyselect_1.2.0       labeling_0.4.2        
-#>  [64] rlang_1.0.6            reshape2_1.4.4         later_1.3.0           
+#>  [64] rlang_1.1.0            reshape2_1.4.4         later_1.3.0           
 #>  [67] munsell_0.5.0          tools_4.2.2            cachem_1.0.7          
 #>  [70] cli_3.6.0              generics_0.1.3         ade4_1.7-22           
 #>  [73] evaluate_0.20          biomformat_1.26.0      stringr_1.5.0         
@@ -497,15 +497,15 @@ sessionInfo()
 #>  [79] knitr_1.42             fs_1.6.1               purrr_1.0.1           
 #>  [82] nlme_3.1-162           mime_0.12              xml2_1.3.3            
 #>  [85] brio_1.1.3             compiler_4.2.2         rstudioapi_0.14       
-#>  [88] curl_5.0.0             png_0.1-8              tibble_3.1.8          
+#>  [88] curl_5.0.0             png_0.1-8              tibble_3.2.0          
 #>  [91] stringi_1.7.12         highr_0.10             ps_1.7.2              
 #>  [94] lattice_0.20-45        Matrix_1.5-3           commonmark_1.8.1      
 #>  [97] markdown_1.5           vegan_2.6-4            microbiome_1.20.0     
 #> [100] permute_0.9-7          multtest_2.54.0        vctrs_0.5.2           
 #> [103] pillar_1.8.1           lifecycle_1.0.3        rhdf5filters_1.10.0   
 #> [106] GlobalOptions_0.1.2    data.table_1.14.8      bitops_1.0-7          
-#> [109] seriation_1.4.1        httpuv_1.6.9           R6_2.5.1              
-#> [112] promises_1.2.0.1       TSP_1.2-2              gridExtra_2.3         
+#> [109] seriation_1.4.2        httpuv_1.6.9           R6_2.5.1              
+#> [112] promises_1.2.0.1       TSP_1.2-3              gridExtra_2.3         
 #> [115] IRanges_2.32.0         sessioninfo_1.2.2      codetools_0.2-19      
 #> [118] MASS_7.3-58.3          pkgload_1.3.2          rhdf5_2.42.0          
 #> [121] rjson_0.2.21           withr_2.5.0            S4Vectors_0.36.0      
