@@ -615,11 +615,11 @@ of both a Phylum and a Class!</p>
 <span>    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UC"</span>, <span class="st">"female"</span>, <span class="st">"antibiotics"</span>, <span class="st">"steroids"</span>, <span class="st">"age_scaled"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#&gt; Proportional min_prevalence given: 0.1 --&gt; min 7/67 samples.</span></span>
-<span><span class="co">#&gt; 2023-03-21 20:03:49 - modelling at rank: Phylum</span></span>
-<span><span class="co">#&gt; 2023-03-21 20:03:49 - modelling at rank: Class</span></span>
-<span><span class="co">#&gt; 2023-03-21 20:03:49 - modelling at rank: Order</span></span>
-<span><span class="co">#&gt; 2023-03-21 20:03:49 - modelling at rank: Family</span></span>
-<span><span class="co">#&gt; 2023-03-21 20:03:50 - modelling at rank: Genus</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-04-03 14:24:46 - modelling at rank: Phylum</span></span>
+<span><span class="co">#&gt; 2023-04-03 14:24:46 - modelling at rank: Class</span></span>
+<span><span class="co">#&gt; 2023-04-03 14:24:47 - modelling at rank: Order</span></span>
+<span><span class="co">#&gt; 2023-04-03 14:24:47 - modelling at rank: Family</span></span>
+<span><span class="co">#&gt; 2023-04-03 14:24:48 - modelling at rank: Genus</span></span></code></pre></div>
 <p>Why filter the taxa? <em>It’s less likely that we are interested in
 rare taxa, and models of rare taxon abundances are more likely to be
 unreliable. Reducing the the number of taxa modelled also makes
@@ -670,20 +670,19 @@ the <code>corncob</code> package <code><a href="https://rdrr.io/pkg/corncob/man/
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lm_stats</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/psExtra-accessors.html">taxatree_stats_get</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 670 × 8</span></span></span>
-<span><span class="co">#&gt;    term        taxon            rank   formula   estim…¹ std.e…² stati…³ p.value</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> UC          P: Firmicutes    Phylum `P: Firm… -<span style="color: #BB0000;">22.3</span>     13.6   -<span style="color: #BB0000;">1.64</span>  0.107  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> female      P: Firmicutes    Phylum `P: Firm… -<span style="color: #BB0000;">11.7</span>      9.66  -<span style="color: #BB0000;">1.21</span>  0.230  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> antibiotics P: Firmicutes    Phylum `P: Firm… -<span style="color: #BB0000;">19.8</span>     13.1   -<span style="color: #BB0000;">1.51</span>  0.137  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> steroids    P: Firmicutes    Phylum `P: Firm… -<span style="color: #BB0000;">32.7</span>     12.4   -<span style="color: #BB0000;">2.63</span>  0.010<span style="text-decoration: underline;">7</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> age_scaled  P: Firmicutes    Phylum `P: Firm…  -<span style="color: #BB0000;">0.600</span>    5.45  -<span style="color: #BB0000;">0.110</span> 0.913  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> UC          P: Bacteroidetes Phylum `P: Bact… -<span style="color: #BB0000;">13.8</span>      4.15  -<span style="color: #BB0000;">3.32</span>  0.001<span style="text-decoration: underline;">51</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> female      P: Bacteroidetes Phylum `P: Bact…  -<span style="color: #BB0000;">1.21</span>     2.95  -<span style="color: #BB0000;">0.410</span> 0.683  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> antibiotics P: Bacteroidetes Phylum `P: Bact…   1.37     4.01   0.342 0.734  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> steroids    P: Bacteroidetes Phylum `P: Bact…  -<span style="color: #BB0000;">4.36</span>     3.79  -<span style="color: #BB0000;">1.15</span>  0.255  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> age_scaled  P: Bacteroidetes Phylum `P: Bact…  -<span style="color: #BB0000;">0.937</span>    1.67  -<span style="color: #BB0000;">0.563</span> 0.576  </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 660 more rows, and abbreviated variable names ¹​estimate, ²​std.error,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   ³​statistic</span></span></span></code></pre></div>
+<span><span class="co">#&gt;    term        taxon          rank  formula estimate std.error statistic p.value</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> UC          P: Firmicutes  Phyl… `P: Fi…  -<span style="color: #BB0000;">22.3</span>       13.6     -<span style="color: #BB0000;">1.64</span>  0.107  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> female      P: Firmicutes  Phyl… `P: Fi…  -<span style="color: #BB0000;">11.7</span>        9.66    -<span style="color: #BB0000;">1.21</span>  0.230  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> antibiotics P: Firmicutes  Phyl… `P: Fi…  -<span style="color: #BB0000;">19.8</span>       13.1     -<span style="color: #BB0000;">1.51</span>  0.137  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> steroids    P: Firmicutes  Phyl… `P: Fi…  -<span style="color: #BB0000;">32.7</span>       12.4     -<span style="color: #BB0000;">2.63</span>  0.010<span style="text-decoration: underline;">7</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> age_scaled  P: Firmicutes  Phyl… `P: Fi…   -<span style="color: #BB0000;">0.600</span>      5.45    -<span style="color: #BB0000;">0.110</span> 0.913  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> UC          P: Bacteroide… Phyl… `P: Ba…  -<span style="color: #BB0000;">13.8</span>        4.15    -<span style="color: #BB0000;">3.32</span>  0.001<span style="text-decoration: underline;">51</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> female      P: Bacteroide… Phyl… `P: Ba…   -<span style="color: #BB0000;">1.21</span>       2.95    -<span style="color: #BB0000;">0.410</span> 0.683  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> antibiotics P: Bacteroide… Phyl… `P: Ba…    1.37       4.01     0.342 0.734  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> steroids    P: Bacteroide… Phyl… `P: Ba…   -<span style="color: #BB0000;">4.36</span>       3.79    -<span style="color: #BB0000;">1.15</span>  0.255  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> age_scaled  P: Bacteroide… Phyl… `P: Ba…   -<span style="color: #BB0000;">0.937</span>      1.67    -<span style="color: #BB0000;">0.563</span> 0.576  </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 660 more rows</span></span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="adjusting-p-values">Adjusting p values<a class="anchor" aria-label="anchor" href="#adjusting-p-values"></a>
@@ -702,20 +701,19 @@ error rate per rank.</p>
 <span><span class="va">lm_stats</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/psExtra-accessors.html">taxatree_stats_get</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 670 × 9</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># Groups:   rank [5]</span></span></span>
-<span><span class="co">#&gt;    term        taxon       rank  formula estim…¹ std.e…² stati…³ p.value p.adj…⁴</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> UC          P: Firmicu… Phyl… `P: Fi… -<span style="color: #BB0000;">22.3</span>     13.6   -<span style="color: #BB0000;">1.64</span>  0.107    0.391 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> female      P: Firmicu… Phyl… `P: Fi… -<span style="color: #BB0000;">11.7</span>      9.66  -<span style="color: #BB0000;">1.21</span>  0.230    0.473 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> antibiotics P: Firmicu… Phyl… `P: Fi… -<span style="color: #BB0000;">19.8</span>     13.1   -<span style="color: #BB0000;">1.51</span>  0.137    0.399 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> steroids    P: Firmicu… Phyl… `P: Fi… -<span style="color: #BB0000;">32.7</span>     12.4   -<span style="color: #BB0000;">2.63</span>  0.010<span style="text-decoration: underline;">7</span>   0.125 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> age_scaled  P: Firmicu… Phyl… `P: Fi…  -<span style="color: #BB0000;">0.600</span>    5.45  -<span style="color: #BB0000;">0.110</span> 0.913    0.940 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> UC          P: Bactero… Phyl… `P: Ba… -<span style="color: #BB0000;">13.8</span>      4.15  -<span style="color: #BB0000;">3.32</span>  0.001<span style="text-decoration: underline;">51</span>  0.053<span style="text-decoration: underline;">0</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> female      P: Bactero… Phyl… `P: Ba…  -<span style="color: #BB0000;">1.21</span>     2.95  -<span style="color: #BB0000;">0.410</span> 0.683    0.828 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> antibiotics P: Bactero… Phyl… `P: Ba…   1.37     4.01   0.342 0.734    0.828 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> steroids    P: Bactero… Phyl… `P: Ba…  -<span style="color: #BB0000;">4.36</span>     3.79  -<span style="color: #BB0000;">1.15</span>  0.255    0.495 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> age_scaled  P: Bactero… Phyl… `P: Ba…  -<span style="color: #BB0000;">0.937</span>    1.67  -<span style="color: #BB0000;">0.563</span> 0.576    0.776 </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 660 more rows, and abbreviated variable names ¹​estimate, ²​std.error,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   ³​statistic, ⁴​p.adj.BH.rank</span></span></span></code></pre></div>
+<span><span class="co">#&gt;    term   taxon rank  formula estimate std.error statistic p.value p.adj.BH.rank</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> UC     P: F… Phyl… `P: Fi…  -<span style="color: #BB0000;">22.3</span>       13.6     -<span style="color: #BB0000;">1.64</span>  0.107          0.391 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> female P: F… Phyl… `P: Fi…  -<span style="color: #BB0000;">11.7</span>        9.66    -<span style="color: #BB0000;">1.21</span>  0.230          0.473 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> antib… P: F… Phyl… `P: Fi…  -<span style="color: #BB0000;">19.8</span>       13.1     -<span style="color: #BB0000;">1.51</span>  0.137          0.399 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> stero… P: F… Phyl… `P: Fi…  -<span style="color: #BB0000;">32.7</span>       12.4     -<span style="color: #BB0000;">2.63</span>  0.010<span style="text-decoration: underline;">7</span>         0.125 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> age_s… P: F… Phyl… `P: Fi…   -<span style="color: #BB0000;">0.600</span>      5.45    -<span style="color: #BB0000;">0.110</span> 0.913          0.940 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> UC     P: B… Phyl… `P: Ba…  -<span style="color: #BB0000;">13.8</span>        4.15    -<span style="color: #BB0000;">3.32</span>  0.001<span style="text-decoration: underline;">51</span>        0.053<span style="text-decoration: underline;">0</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> female P: B… Phyl… `P: Ba…   -<span style="color: #BB0000;">1.21</span>       2.95    -<span style="color: #BB0000;">0.410</span> 0.683          0.828 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> antib… P: B… Phyl… `P: Ba…    1.37       4.01     0.342 0.734          0.828 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> stero… P: B… Phyl… `P: Ba…   -<span style="color: #BB0000;">4.36</span>       3.79    -<span style="color: #BB0000;">1.15</span>  0.255          0.495 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> age_s… P: B… Phyl… `P: Ba…   -<span style="color: #BB0000;">0.937</span>      1.67    -<span style="color: #BB0000;">0.563</span> 0.576          0.776 </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 660 more rows</span></span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -979,10 +977,10 @@ the data, as this approach uses counts.</p>
 <span>    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UC"</span>, <span class="st">"female"</span>, <span class="st">"antibiotics"</span>, <span class="st">"steroids"</span>, <span class="st">"age_scaled"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#&gt; Proportional min_prevalence given: 0.3 --&gt; min 21/67 samples.</span></span>
-<span><span class="co">#&gt; 2023-03-21 20:04:21 - modelling at rank: Phylum</span></span>
-<span><span class="co">#&gt; 2023-03-21 20:04:21 - modelling at rank: Class</span></span>
-<span><span class="co">#&gt; 2023-03-21 20:04:22 - modelling at rank: Order</span></span>
-<span><span class="co">#&gt; 2023-03-21 20:04:22 - modelling at rank: Family</span></span>
+<span><span class="co">#&gt; 2023-04-03 14:25:20 - modelling at rank: Phylum</span></span>
+<span><span class="co">#&gt; 2023-04-03 14:25:20 - modelling at rank: Class</span></span>
+<span><span class="co">#&gt; 2023-04-03 14:25:20 - modelling at rank: Order</span></span>
+<span><span class="co">#&gt; 2023-04-03 14:25:21 - modelling at rank: Family</span></span>
 <span><span class="va">bb_models</span></span>
 <span><span class="co">#&gt; psExtra object - a phyloseq object with extra slots:</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -1013,20 +1011,19 @@ abundance, or “phi” for differential variability or overdispersion.</p>
 <span><span class="co">#&gt; 5 terms: UC, female, antibiotics, steroids, age_scaled</span></span>
 <span><span class="va">bb_stats</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/psExtra-accessors.html">taxatree_stats_get</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 150 × 9</span></span></span>
-<span><span class="co">#&gt;    term        taxon       rank  formula param…¹ estim…² std.e…³ t.sta…⁴ p.value</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> UC          P: Firmicu… Phyl… `P: Fi… mu      -<span style="color: #BB0000;">0.375</span>    0.434 -<span style="color: #BB0000;">0.864</span>    0.392</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> female      P: Firmicu… Phyl… `P: Fi… mu       0.022<span style="text-decoration: underline;">7</span>   0.309  0.073<span style="text-decoration: underline;">4</span>   0.942</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> antibiotics P: Firmicu… Phyl… `P: Fi… mu      -<span style="color: #BB0000;">0.781</span>    0.478 -<span style="color: #BB0000;">1.63</span>     0.108</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> steroids    P: Firmicu… Phyl… `P: Fi… mu      -<span style="color: #BB0000;">0.162</span>    0.426 -<span style="color: #BB0000;">0.380</span>    0.705</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> age_scaled  P: Firmicu… Phyl… `P: Fi… mu       0.294    0.188  1.56     0.124</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> UC          P: Bactero… Phyl… `P: Ba… mu      -<span style="color: #BB0000;">0.814</span>    0.558 -<span style="color: #BB0000;">1.46</span>     0.150</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> female      P: Bactero… Phyl… `P: Ba… mu      -<span style="color: #BB0000;">0.559</span>    0.349 -<span style="color: #BB0000;">1.60</span>     0.115</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> antibiotics P: Bactero… Phyl… `P: Ba… mu      -<span style="color: #BB0000;">0.116</span>    0.706 -<span style="color: #BB0000;">0.164</span>    0.871</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> steroids    P: Bactero… Phyl… `P: Ba… mu      -<span style="color: #BB0000;">0.130</span>    0.656 -<span style="color: #BB0000;">0.197</span>    0.844</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> age_scaled  P: Bactero… Phyl… `P: Ba… mu      -<span style="color: #BB0000;">0.096</span><span style="color: #BB0000; text-decoration: underline;">7</span>   0.264 -<span style="color: #BB0000;">0.366</span>    0.716</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 140 more rows, and abbreviated variable names ¹​parameter, ²​estimate,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   ³​std.error, ⁴​t.statistic</span></span></span></code></pre></div>
+<span><span class="co">#&gt;    term     taxon rank  formula parameter estimate std.error t.statistic p.value</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> UC       P: F… Phyl… `P: Fi… mu         -<span style="color: #BB0000;">0.375</span>      0.434     -<span style="color: #BB0000;">0.864</span>    0.392</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> female   P: F… Phyl… `P: Fi… mu          0.022<span style="text-decoration: underline;">7</span>     0.309      0.073<span style="text-decoration: underline;">4</span>   0.942</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> antibio… P: F… Phyl… `P: Fi… mu         -<span style="color: #BB0000;">0.781</span>      0.478     -<span style="color: #BB0000;">1.63</span>     0.108</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> steroids P: F… Phyl… `P: Fi… mu         -<span style="color: #BB0000;">0.162</span>      0.426     -<span style="color: #BB0000;">0.380</span>    0.705</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> age_sca… P: F… Phyl… `P: Fi… mu          0.294      0.188      1.56     0.124</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> UC       P: B… Phyl… `P: Ba… mu         -<span style="color: #BB0000;">0.814</span>      0.558     -<span style="color: #BB0000;">1.46</span>     0.150</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> female   P: B… Phyl… `P: Ba… mu         -<span style="color: #BB0000;">0.559</span>      0.349     -<span style="color: #BB0000;">1.60</span>     0.115</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> antibio… P: B… Phyl… `P: Ba… mu         -<span style="color: #BB0000;">0.116</span>      0.706     -<span style="color: #BB0000;">0.164</span>    0.871</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> steroids P: B… Phyl… `P: Ba… mu         -<span style="color: #BB0000;">0.130</span>      0.656     -<span style="color: #BB0000;">0.197</span>    0.844</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> age_sca… P: B… Phyl… `P: Ba… mu         -<span style="color: #BB0000;">0.096</span><span style="color: #BB0000; text-decoration: underline;">7</span>     0.264     -<span style="color: #BB0000;">0.366</span>    0.716</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 140 more rows</span></span></span></code></pre></div>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bb_stats</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/taxatree_plots.html">taxatree_plots</a></span><span class="op">(</span></span>
 <span>  node_size_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span>, colour_trans <span class="op">=</span> <span class="st">"identity"</span></span>
@@ -1105,7 +1102,7 @@ these layouts to ensure they are always the same.</p>
 <span><span class="co">#&gt;  collate  C.UTF-8</span></span>
 <span><span class="co">#&gt;  ctype    C.UTF-8</span></span>
 <span><span class="co">#&gt;  tz       UTC</span></span>
-<span><span class="co">#&gt;  date     2023-03-21</span></span>
+<span><span class="co">#&gt;  date     2023-04-03</span></span>
 <span><span class="co">#&gt;  pandoc   2.19.2 @ /usr/bin/ (via rmarkdown)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">─ Packages ───────────────────────────────────────────────────────────────────</span></span></span>
@@ -1123,7 +1120,7 @@ these layouts to ensure they are always the same.</p>
 <span><span class="co">#&gt;  bslib                0.4.2        <span style="color: #555555;">2022-12-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  cachem               1.0.7        <span style="color: #555555;">2023-02-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  callr                3.7.3        <span style="color: #555555;">2022-11-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  cli                  3.6.0        <span style="color: #555555;">2023-01-09</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  cli                  3.6.1        <span style="color: #555555;">2023-03-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  cluster              2.1.4        <span style="color: #555555;">2022-08-22</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.3)</span></span></span>
 <span><span class="co">#&gt;  codetools            0.2-19       <span style="color: #555555;">2023-02-01</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.3)</span></span></span>
 <span><span class="co">#&gt;  colorspace           2.1-0        <span style="color: #555555;">2023-01-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
@@ -1134,7 +1131,7 @@ these layouts to ensure they are always the same.</p>
 <span><span class="co">#&gt;  detectseparation     0.3          <span style="color: #555555;">2022-08-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  devtools             2.4.5        <span style="color: #555555;">2022-10-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  digest               0.6.31       <span style="color: #555555;">2022-12-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  dplyr              * 1.1.0        <span style="color: #555555;">2023-01-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  dplyr              * 1.1.1        <span style="color: #555555;">2023-03-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  ellipsis             0.3.2        <span style="color: #555555;">2021-04-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  evaluate             0.20         <span style="color: #555555;">2023-01-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  fansi                1.0.4        <span style="color: #555555;">2023-01-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
@@ -1152,9 +1149,9 @@ these layouts to ensure they are always the same.</p>
 <span><span class="co">#&gt;  glue                 1.6.2        <span style="color: #555555;">2022-02-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  graphlayouts         0.8.4        <span style="color: #555555;">2022-11-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  gridExtra            2.3          <span style="color: #555555;">2017-09-09</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  gtable               0.3.2        <span style="color: #555555;">2023-03-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  gtable               0.3.3        <span style="color: #555555;">2023-03-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  highr                0.10         <span style="color: #555555;">2022-12-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  htmltools            0.5.4        <span style="color: #555555;">2022-12-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  htmltools            0.5.5        <span style="color: #555555;">2023-03-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  htmlwidgets          1.6.2        <span style="color: #555555;">2023-03-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  httpuv               1.6.9        <span style="color: #555555;">2023-02-14</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  igraph               1.4.1        <span style="color: #555555;">2023-02-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
@@ -1174,7 +1171,7 @@ these layouts to ensure they are always the same.</p>
 <span><span class="co">#&gt;  memoise              2.0.1        <span style="color: #555555;">2021-11-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  mgcv                 1.8-42       <span style="color: #555555;">2023-03-02</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.2.3)</span></span></span>
 <span><span class="co">#&gt;  microbiome           1.20.0       <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">#&gt;  microViz           * 0.10.8       <span style="color: #555555;">2023-03-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">local</span></span></span>
+<span><span class="co">#&gt;  microViz           * 0.10.8       <span style="color: #555555;">2023-04-03</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">local</span></span></span>
 <span><span class="co">#&gt;  mime                 0.12         <span style="color: #555555;">2021-09-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  miniUI               0.1.1.1      <span style="color: #555555;">2018-05-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  multtest             2.54.0       <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
@@ -1184,7 +1181,7 @@ these layouts to ensure they are always the same.</p>
 <span><span class="co">#&gt;  patchwork            1.1.2        <span style="color: #555555;">2022-08-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  permute              0.9-7        <span style="color: #555555;">2022-01-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  phyloseq             1.42.0       <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">#&gt;  pillar               1.8.1        <span style="color: #555555;">2022-08-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  pillar               1.9.0        <span style="color: #555555;">2023-03-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  pkgbuild             1.4.0        <span style="color: #555555;">2022-11-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  pkgconfig            2.0.3        <span style="color: #555555;">2019-09-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  pkgdown              2.0.7        <span style="color: #555555;">2022-12-14</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
@@ -1195,21 +1192,21 @@ these layouts to ensure they are always the same.</p>
 <span><span class="co">#&gt;  processx             3.8.0        <span style="color: #555555;">2022-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  profvis              0.3.7        <span style="color: #555555;">2020-11-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  promises             1.2.0.1      <span style="color: #555555;">2021-02-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  ps                   1.7.2        <span style="color: #555555;">2022-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  ps                   1.7.3        <span style="color: #555555;">2023-03-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  purrr                1.0.1        <span style="color: #555555;">2023-01-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  R6                   2.5.1        <span style="color: #555555;">2021-08-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  ragg                 1.2.5        <span style="color: #555555;">2023-01-12</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  Rcpp                 1.0.10       <span style="color: #555555;">2023-01-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  RCurl                1.98-1.10    <span style="color: #555555;">2023-01-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  RCurl                1.98-1.12    <span style="color: #555555;">2023-03-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  registry             0.5-1        <span style="color: #555555;">2019-03-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  remotes              2.4.2        <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  repr                 1.1.6        <span style="color: #555555;">2023-01-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  reshape2             1.4.4        <span style="color: #555555;">2020-04-09</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  rhdf5                2.42.0       <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">#&gt;  rhdf5filters         1.10.0       <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">#&gt;  rhdf5filters         1.10.1       <span style="color: #555555;">2023-03-24</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">#&gt;  Rhdf5lib             1.20.0       <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">#&gt;  rlang                1.1.0        <span style="color: #555555;">2023-03-14</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  rmarkdown            2.20         <span style="color: #555555;">2023-01-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  rmarkdown            2.21         <span style="color: #555555;">2023-03-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  ROI                  1.0-0        <span style="color: #555555;">2020-08-31</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  ROI.plugin.lpsolve   1.0-1        <span style="color: #555555;">2021-06-15</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  rprojroot            2.0.3        <span style="color: #555555;">2022-04-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
@@ -1235,13 +1232,13 @@ these layouts to ensure they are always the same.</p>
 <span><span class="co">#&gt;  urlchecker           1.0.1        <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  usethis              2.1.6        <span style="color: #555555;">2022-05-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  utf8                 1.2.3        <span style="color: #555555;">2023-01-31</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  vctrs                0.6.0        <span style="color: #555555;">2023-03-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  vctrs                0.6.1        <span style="color: #555555;">2023-03-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  vegan                2.6-4        <span style="color: #555555;">2022-10-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  VGAM                 1.1-8        <span style="color: #555555;">2023-03-09</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  viridis              0.6.2        <span style="color: #555555;">2021-10-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  viridisLite          0.4.1        <span style="color: #555555;">2022-08-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  withr                2.5.0        <span style="color: #555555;">2022-03-03</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  xfun                 0.37         <span style="color: #555555;">2023-01-31</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  xfun                 0.38         <span style="color: #555555;">2023-03-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  xtable               1.8-4        <span style="color: #555555;">2019-04-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  XVector              0.38.0       <span style="color: #555555;">2022-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">#&gt;  yaml                 2.3.7        <span style="color: #555555;">2023-01-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
