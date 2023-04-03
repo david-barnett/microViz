@@ -16,7 +16,7 @@
       4     1     5 root              phylum      0.467 TRUE  left     
       5     2     6 p: Proteobacteria class       0.8   TRUE  left     
       6     3     7 p: Actinobacteria class       0.933 TRUE  right    
-      # … with 55 more rows
+      # ℹ 55 more rows
       #
       # A tibble: 62 × 6
         taxon             parent rank   prevalence label .ggraph.orig_index
@@ -24,7 +24,7 @@
       1 root              root   root        1     TRUE                   1
       2 p: Proteobacteria root   phylum      0.8   TRUE                   2
       3 p: Actinobacteria root   phylum      0.933 TRUE                   3
-      # … with 59 more rows
+      # ℹ 59 more rows
 
 ---
 
@@ -44,7 +44,7 @@
       4     1     5 root              phylum      0.467 TRUE  left     
       5     2     6 p: Proteobacteria class       0.8   TRUE  left     
       6     3     7 p: Actinobacteria class       0.933 TRUE  right    
-      # … with 55 more rows
+      # ℹ 55 more rows
       #
       # A tibble: 62 × 6
         taxon             parent rank   prevalence label .ggraph.orig_index
@@ -52,5 +52,5 @@
       1 root              root   root        1     TRUE                   1
       2 p: Proteobacteria root   phylum      0.8   TRUE                   2
       3 p: Actinobacteria root   phylum      0.933 TRUE                   3
-      # … with 59 more rows
+      # ℹ 59 more rows
 
