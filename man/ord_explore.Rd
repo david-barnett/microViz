@@ -90,7 +90,7 @@ then that grouping variable cannot be used to select those samples
 not including NAs. NAs in the shape variable are shown as hollow circles.
 }
 
-On some web browsers, e.g. older versions of firefox, the numeric inputs'
+On some web browsers, e.g. older versions of Firefox, the numeric inputs'
 buttons are sometimes hard to click.
 As a workaround, click the box and type a number or use the arrow keys.
 This problem occurs in all Shiny apps, not just microViz.
