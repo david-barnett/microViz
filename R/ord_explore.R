@@ -40,7 +40,7 @@
 #' - "Shape:" can only be mapped to variables with maximum 5 distinct levels,
 #' not including NAs. NAs in the shape variable are shown as hollow circles.
 #'
-#' On some web browsers, e.g. older versions of firefox, the numeric inputs'
+#' On some web browsers, e.g. older versions of Firefox, the numeric inputs'
 #' buttons are sometimes hard to click.
 #' As a workaround, click the box and type a number or use the arrow keys.
 #' This problem occurs in all Shiny apps, not just microViz.
@@ -616,7 +616,7 @@ ord_explore <- function(data,
 
     ### render girafe ---------------------------------------------------------
     # interactive girafe composition plot
-    output$comps_girafe <- ggiraph::renderggiraph({
+    output$comps_girafe <- ggiraph::renderGirafe({
       # TODO work out how to match static/interactive sizes properly
       gg <- comp_plot() + ggplot2::theme(text = ggplot2::element_text(size = 8))
       gg <- legend_separate(ggplot = gg, rel_widths = c(70, 30))
