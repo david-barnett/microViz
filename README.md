@@ -17,7 +17,7 @@ date)](https://img.shields.io/docker/v/barnettdavid/microviz-rocker-verse?color=
 status](https://david-barnett.r-universe.dev/badges/microViz)](https://david-barnett.r-universe.dev/ui#package:microViz)
 [![JOSS
 article](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa/status.svg)](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa)
-[![Citations](https://img.shields.io/badge/Citations-~30-blueviolet)](https://scholar.google.com/scholar?oi=bibs&hl=en&cites=5439940108464463894)
+[![Citations](https://img.shields.io/badge/Citations-~35-blueviolet)](https://scholar.google.com/scholar?oi=bibs&hl=en&cites=5439940108464463894)
 [![Zenodo
 DOI](https://zenodo.org/badge/307119750.svg)](https://zenodo.org/badge/latestdoi/307119750)
 <!-- badges: end -->
@@ -116,6 +116,7 @@ I also highly recommend you install the following suggested CRAN
 packages.
 
 ``` r
+install.packages("ggtext") # for rotated labels on ord_plot() 
 install.packages("ggraph") # for taxatree_plots()
 install.packages("DT") # for tax_fix_interactive()
 install.packages("corncob") # for example datasets and beta binomial models
@@ -124,15 +125,15 @@ install.packages("corncob") # for example datasets and beta binomial models
 ### Installation of microViz from GitHub
 
 ``` r
-# Installing from github requires the devtools package
+# Installing from GitHub requires the devtools package
 install.packages("devtools")
 # Windows users will also need to have RTools installed! http://jtleek.com/modules/01_DataScientistToolbox/02_10_rtools/
 
 # To install the latest version:
 devtools::install_github("david-barnett/microViz")
 
-# To install a specific (old) "release" version of this package
-devtools::install_github("david-barnett/microViz@0.10.1") 
+# To install a specific "release" version of this package, e.g. an old version 
+devtools::install_github("david-barnett/microViz@0.10.8") 
 ```
 
 ### Installation notes
@@ -330,8 +331,8 @@ aitchison_perm <- aitchison_dists %>%
     n_processes = 1, n_perms = 99, # you should use at least 999!
     variables = "bmi_group"
   )
-#> 2023-04-03 15:50:14 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2023-04-03 15:50:14 - Finished PERMANOVA
+#> 2023-05-09 13:27:36 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2023-05-09 13:27:36 - Finished PERMANOVA
 
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
@@ -356,8 +357,8 @@ your permanova directly using the `ord_plot` function with constraints
 perm2 <- aitchison_dists %>%
   dist_permanova(variables = c("weight", "african", "sex"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2023-04-03 15:50:14 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2023-04-03 15:50:16 - Finished PERMANOVA
+#> 2023-05-09 13:27:36 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2023-05-09 13:27:38 - Finished PERMANOVA
 ```
 
 We’ll visualise the effect of nationality and bodyweight on sample
