@@ -251,49 +251,82 @@ samdat_tbl <- function(data, sample_names_col = ".sample_name") {
   }
 }
 
-# internal helper that get phyloseq sample_data as plain dataframe
-# without changing invalid colnames (like microbiome::meta does)
-# or losing rownames / sample_names (like data.frame() with defaults does)
+#' Internal helper that gets phyloseq sample_data as a plain dataframe
+#'
+#' @param ps A phyloseq object.
+#'
+#' @return A dataframe with sample data from the phyloseq object.
+#' @keywords internal
 samdatAsDataframe <- function(ps) {
   samdat <- phyloseq::sample_data(ps)
   df <- data.frame(samdat, check.names = FALSE, stringsAsFactors = FALSE)
   return(df)
 }
 
-# get phyloseq with counts if available
+#' Get phyloseq with counts if available
+#'
+#' @param data A phyloseq or psExtra object.
+#' @param warn
+#' A boolean or "error" string to control warning or error behaviour (default: TRUE).
+#'
+#' @return A phyloseq object with counts if available.
+#' @keywords internal
 ps_counts <- function(data, warn = TRUE) {
   check_is_phyloseq(data)
   if (!rlang::is_bool(warn) && !rlang::is_string(warn, string = "error")) {
     stop("warn argument must be TRUE, FALSE, or 'error'")
   }
-  counts <- NULL # check this later, warn if still NULL
-
   # always get ps, regardless of psExtra or phyloseq data or counts presence
   ps <- ps_get(data)
 
   # get counts and use them if they exist,
   # and check regardless if otutab returned will be counts
-  if (is(data, "psExtra")) counts <- data@counts
+  counts <- if (is(data, "psExtra")) data@counts else NULL
 
   # maintain existing taxa_are_rows status for consistency
   if (phyloseq::taxa_are_rows(ps) && !is.null(counts)) counts <- phyloseq::t(counts)
+
   # put non-null counts table in otu table slot
   if (!is.null(counts)) phyloseq::otu_table(ps) <- counts
 
-  if (isFALSE(warn)) {
-    return(ps)
-  }
+  # check ps otu_table is counts (first checking for NAs)
+  if (!isFALSE(warn)) check_otutable_is_counts(otu_get(ps), warn = warn)
 
-  mess <- paste0(
-    "otu_table of counts is NOT available!\n",
-    "Available otu_table contains non-zero values that are less than 1"
-  )
-
-  # lastly check ps otu_table is counts
-  test_matrix <- unclass(otu_get(ps))
-  if (any(test_matrix < 1 & test_matrix != 0)) {
-    if (identical(warn, "error")) stop(mess)
-    if (isTRUE(warn)) warning(mess)
-  }
   return(ps)
 }
+
+#' Internal helper for ps_counts
+#'
+#' @param otu A phyloseq otu_table object.
+#' @param warn A boolean or "error" string to control warning or error behavior.
+#'
+#' @keywords internal
+check_otutable_is_counts <- function(otu, warn) {
+  # extract plain matrix from otu table
+  test_matrix <- unclass(otu)
+
+  # specify warning or error
+  mess_fun <- function(mess) {} # intentionally does nothing
+  if (identical(warn, "error")) mess_fun <- rlang::abort
+  if (isTRUE(warn)) mess_fun <- rlang::warn
+
+  # check for NAs
+  if (anyNA(test_matrix)) {
+    n <- sum(is.na(test_matrix))
+    mess <- paste("otu_table contains", n, "NAs")
+    mess_fun(mess)
+    # stops here if mess_fun is abort
+    # otherwise, remove NAs for further testing
+    test_matrix <- as.numeric(test_matrix)
+    test_matrix <- test_matrix[!is.na(test_matrix)]
+  }
+
+  # check for counts
+  if (any(test_matrix < 1 & test_matrix != 0)) {
+    mess_fun(paste0(
+      "otu_table of counts is NOT available!\n",
+      "Available otu_table contains non-zero values that are less than 1"
+    ))
+  }
+}
+
