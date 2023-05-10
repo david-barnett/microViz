@@ -1,3 +1,9 @@
+# microViz 0.10.9
+
+- Fix: Small internal fix to avoid renderggiraph deprecation warning in ord_explore.
+- Fix: Internal fix to report NAs in OTU table more gracefully. (ps_counts issue #109)
+- Fix: `tax_select()` tax_list argument can now actually take a list (Issue #100)
+
 # microViz 0.10.8
 
 - Fix: small internal fix for compatibility with next R version (relating to loss of stringsAsFactors global option)
