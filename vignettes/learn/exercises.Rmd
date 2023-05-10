@@ -150,7 +150,7 @@ rank_names(mice)
 ```
 
 ```{r}
-otu_table(mice)[1:15, 1:8] 
+otu_table(mice)[1:15, 1:8]
 # mice@otu_table[1:15, 1:10] # the same result
 ```
 
@@ -163,7 +163,7 @@ sample_data(mice)[1:15, 1:5]
 ```
 
 ```{r}
-sample_names(mice) %>% head(10) 
+sample_names(mice) %>% head(10)
 ```
 
 
@@ -181,8 +181,8 @@ Just the control group (vehicle treatment) at day 13.
 
 ```{r}
 # We can filter the samples like this, using the sample_data information
-mice %>% 
-  ps_filter(treatment_days == 'D13', virus == 'WNV2000', treatment == 'Vehicle')
+mice %>%
+  ps_filter(treatment_days == "D13", virus == "WNV2000", treatment == "Vehicle")
 ```
 
 We will start by naively plotting the raw data, and then make several improvements to make the bar chart more informative.
@@ -190,13 +190,13 @@ We will start by naively plotting the raw data, and then make several improvemen
 #### Bad bars
 
 ```{r}
-mice %>% 
-  ps_filter(treatment_days == 'D13', virus == 'WNV2000', treatment == 'Vehicle') %>%
+mice %>%
+  ps_filter(treatment_days == "D13", virus == "WNV2000", treatment == "Vehicle") %>%
   comp_barplot(
-    tax_level = 'unique', n_taxa = 12, bar_width = 0.7,
-    sample_order = 'asis', tax_transform_for_plot = 'identity'
+    tax_level = "unique", n_taxa = 12, bar_width = 0.7,
+    sample_order = "asis", tax_transform_for_plot = "identity"
   ) +
-  coord_flip() 
+  coord_flip()
 ```
 
 What is going on here?
@@ -209,10 +209,10 @@ So for now we will just consider the relative abundance of each taxon, as propor
 #### Compositions (%)
 
 ```{r}
-mice %>% 
-  ps_filter(treatment_days == 'D13', virus == 'WNV2000', treatment == 'Vehicle') %>%
+mice %>%
+  ps_filter(treatment_days == "D13", virus == "WNV2000", treatment == "Vehicle") %>%
   comp_barplot(
-    tax_level = 'unique', n_taxa = 12, sample_order = 'asis', bar_width = 0.7
+    tax_level = "unique", n_taxa = 12, sample_order = "asis", bar_width = 0.7
   ) +
   coord_flip()
 ```
@@ -236,31 +236,35 @@ mice <- tax_fix(mice, verbose = FALSE)
 We can also rename the unique taxa with a more informative name, according to their classification at the rank of Family (and how common they are).
 
 ```{r}
-mice %>% taxa_names() %>% head
-mice <- tax_rename(mice, rank = 'Family')
-mice %>% taxa_names() %>% head
+mice %>%
+  taxa_names() %>%
+  head()
+mice <- tax_rename(mice, rank = "Family")
+mice %>%
+  taxa_names() %>%
+  head()
 ```
 
 Let's try again with the better names.
 
 ```{r}
-mice %>% 
-  ps_filter(treatment_days == 'D13', virus == 'WNV2000', treatment == 'Vehicle') %>%
+mice %>%
+  ps_filter(treatment_days == "D13", virus == "WNV2000", treatment == "Vehicle") %>%
   comp_barplot(
-    tax_level = 'unique', n_taxa = 12, sample_order = 'asis', bar_width = 0.7
-    ) +
+    tax_level = "unique", n_taxa = 12, sample_order = "asis", bar_width = 0.7
+  ) +
   coord_flip()
 ```
 
 Sadly we don't have enough distinct colours to show all the unique taxa.
 
 ```{r}
-mice %>% 
-  ps_filter(treatment_days == 'D13', virus == 'WNV2000', treatment == 'Vehicle') %>%
+mice %>%
+  ps_filter(treatment_days == "D13", virus == "WNV2000", treatment == "Vehicle") %>%
   comp_barplot(
-    tax_level = 'unique', n_taxa = 12, sample_order = 'asis', bar_width = 0.7,
+    tax_level = "unique", n_taxa = 12, sample_order = "asis", bar_width = 0.7,
     merge_other = FALSE
-    ) +
+  ) +
   coord_flip()
 ```
 
@@ -270,10 +274,10 @@ So let's "aggregate" all the counts into family-level groups.
 For each family, this adds together all the counts from every ASV that belongs to that family. We can do that by changing the `tax_level` argument to "Family".
 
 ```{r}
-mice %>% 
-  ps_filter(treatment_days == 'D13', virus == 'WNV2000', treatment == 'Vehicle') %>%
+mice %>%
+  ps_filter(treatment_days == "D13", virus == "WNV2000", treatment == "Vehicle") %>%
   comp_barplot(
-    tax_level = "Family", n_taxa = 10, bar_width = 0.7, sample_order = 'asis'
+    tax_level = "Family", n_taxa = 10, bar_width = 0.7, sample_order = "asis"
   ) +
   coord_flip()
 ```
@@ -291,11 +295,11 @@ Try making some similar plots aggregated at different taxonomic ranks.
 ```
 
 ```{r}
-mice %>% 
-  ps_filter(treatment_days == 'D13', virus == 'WNV2000', treatment == 'Vehicle') %>% 
+mice %>%
+  ps_filter(treatment_days == "D13", virus == "WNV2000", treatment == "Vehicle") %>%
   comp_barplot(
     tax_level = "Genus", n_taxa = 12, bar_width = 0.7,
-    sample_order = 'asis', merge_other = FALSE
+    sample_order = "asis", merge_other = FALSE
   ) +
   coord_flip()
 ```
@@ -303,10 +307,10 @@ mice %>%
 Many of the ASVs in this mice data, the *Porphyromonadaceae*, could not be classified at genus level.
 
 ```{r}
-mice %>% 
-  ps_filter(treatment_days == 'D13', virus == 'WNV2000', treatment == 'Vehicle') %>% 
+mice %>%
+  ps_filter(treatment_days == "D13", virus == "WNV2000", treatment == "Vehicle") %>%
   comp_barplot(
-    tax_level = "Phylum", n_taxa = 7, bar_width = 0.7, sample_order = 'asis'
+    tax_level = "Phylum", n_taxa = 7, bar_width = 0.7, sample_order = "asis"
   ) +
   coord_flip()
 ```
@@ -334,7 +338,6 @@ sort samples. We haven't discussed dissimilarity or distances yet, but we will i
 For now, just appreciate that it can make the bar charts easier to read!
 
 ```{r}
-
 ```
 
 
@@ -363,12 +366,12 @@ The simplest measure is just counting, aka "Observed Richness".
 Let's compute the observed richness and label each sample with it.
 
 ```{r}
-mice %>% 
-  ps_filter(treatment_days == 'D13', virus == 'WNV2000', treatment == 'Vehicle') %>% 
-  ps_calc_richness(rank = 'Genus', index = 'observed', varname = 'N genera') %>%
+mice %>%
+  ps_filter(treatment_days == "D13", virus == "WNV2000", treatment == "Vehicle") %>%
+  ps_calc_richness(rank = "Genus", index = "observed", varname = "N genera") %>%
   comp_barplot(
-    tax_level = "Genus", n_taxa = 12, label = 'N genera', bar_width = 0.7,
-    sample_order = 'asis', merge_other = FALSE#, tax_transform_for_plot = 'identity'
+    tax_level = "Genus", n_taxa = 12, label = "N genera", bar_width = 0.7,
+    sample_order = "asis", merge_other = FALSE # , tax_transform_for_plot = 'identity'
   ) +
   coord_flip()
 ```
@@ -378,13 +381,13 @@ mice %>%
 Richness and evenness matter in the calculation of true diversity indices.
 
 ```{r}
-mice %>% 
-  ps_filter(treatment_days == 'D13', virus == 'WNV2000', treatment == 'Vehicle') %>% 
-  ps_calc_diversity(rank = 'Genus', index = 'shannon') %>%
-  ps_mutate(shannon_Genus = round(shannon_Genus, digits = 2)) %>% 
+mice %>%
+  ps_filter(treatment_days == "D13", virus == "WNV2000", treatment == "Vehicle") %>%
+  ps_calc_diversity(rank = "Genus", index = "shannon") %>%
+  ps_mutate(shannon_Genus = round(shannon_Genus, digits = 2)) %>%
   comp_barplot(
-    tax_level = "Genus", n_taxa = 12, label = 'shannon_Genus', bar_width = 0.7,
-    sample_order = 'asis', merge_other = FALSE
+    tax_level = "Genus", n_taxa = 12, label = "shannon_Genus", bar_width = 0.7,
+    sample_order = "asis", merge_other = FALSE
   ) +
   coord_flip()
 ```
@@ -394,15 +397,15 @@ mice %>%
 So we have our alpha diversity values for this small subset of mice.
 
 ```{r, fig.width=3, fig.height=1}
-mice %>% 
-  ps_filter(treatment_days == 'D13', virus == 'WNV2000', treatment == 'Vehicle') %>% 
-  ps_calc_diversity(rank = 'Genus', index = 'shannon') %>%
-  samdat_tbl() %>% 
-  ggplot(aes(x = shannon_Genus, y = "Day 13\ncontrols")) + 
+mice %>%
+  ps_filter(treatment_days == "D13", virus == "WNV2000", treatment == "Vehicle") %>%
+  ps_calc_diversity(rank = "Genus", index = "shannon") %>%
+  samdat_tbl() %>%
+  ggplot(aes(x = shannon_Genus, y = "Day 13\ncontrols")) +
   geom_point(position = position_jitter(height = 0.2), alpha = 0.5) +
-  labs(x = 'Shannon diversity (Genus)', y = NULL) +
+  labs(x = "Shannon diversity (Genus)", y = NULL) +
   xlim(1, 2.5) +
-  theme_bw() 
+  theme_bw()
 ```
 
 Let's calculate alpha diversity for all mice after antibiotic or control treatment, and make a comparison.
@@ -410,17 +413,17 @@ I suspect that the average gut microbiota diversity of the antibiotic exposed mi
 
 ```{r}
 # First compute a new variable aggregating all the control mice together
-mice <- mice %>% 
+mice <- mice %>%
   ps_mutate(antibiotics = treatment %in% c("Amp", "Metro", "AmpMetro"))
 ```
 
 ```{r, fig.width=4, fig.height=2.5}
-mice %>% 
-  ps_filter(treatment_days == 'D13') %>% 
-  ps_calc_diversity(rank = 'Genus', index = 'shannon') %>%
-  samdat_tbl() %>% 
+mice %>%
+  ps_filter(treatment_days == "D13") %>%
+  ps_calc_diversity(rank = "Genus", index = "shannon") %>%
+  samdat_tbl() %>%
   ggplot(aes(y = antibiotics, x = shannon_Genus)) +
-  geom_boxplot(width = 0.3) + 
+  geom_boxplot(width = 0.3) +
   geom_point(position = position_jitter(height = 0.2), alpha = 0.5) +
   theme_bw()
 ```
@@ -429,21 +432,21 @@ It looks like the antibiotics treated mice have lower gut microbiota diversity o
 A simple statistical test supports this.
 
 ```{r}
-mice %>% 
-  ps_filter(treatment_days == 'D13') %>% 
-  ps_calc_diversity(rank = 'Genus', index = 'shannon') %>%
-  samdat_tbl() %>% 
+mice %>%
+  ps_filter(treatment_days == "D13") %>%
+  ps_calc_diversity(rank = "Genus", index = "shannon") %>%
+  samdat_tbl() %>%
   wilcox.test(formula = shannon_Genus ~ antibiotics, data = .)
 ```
 
 You can apply more complex statistical tests as you like, e.g. adjusting for covariates with linear regression, using `lm()`
 
 ```{r}
-mice %>% 
-  ps_filter(treatment_days == 'D13') %>% 
-  ps_calc_diversity(rank = 'Genus', index = 'shannon') %>%
-  samdat_tbl() %>% 
-  lm(formula = shannon_Genus ~ antibiotics + virus, data = .) %>% 
+mice %>%
+  ps_filter(treatment_days == "D13") %>%
+  ps_calc_diversity(rank = "Genus", index = "shannon") %>%
+  samdat_tbl() %>%
+  lm(formula = shannon_Genus ~ antibiotics + virus, data = .) %>%
   summary()
 ```
 
@@ -469,9 +472,9 @@ This is an extension exercise, for those who are moving quickly.
 **Inflammatory Bowel Disease study**
 
 ```{r}
-ibd <- corncob::ibd_phylo %>% 
+ibd <- corncob::ibd_phylo %>%
   tax_mutate(Species = NULL) %>% # ibd_phylo Species column was blank -> deleted
-  ps_mutate(disease = ibd == 'ibd', ibd = NULL) # adds disease state indicator variable
+  ps_mutate(disease = ibd == "ibd", ibd = NULL) # adds disease state indicator variable
 ```
 
 `ibd` is another phyloseq object containing 16S rRNA gene amplicon sequencing data, from a 2012 study of Inflammatory Bowel Disease in children and young adults.
@@ -523,21 +526,21 @@ Indeed we can see that the samples with a much lower readcount have lower observ
 (Furthermore, as this richness estimate is based on a sample, and not the actual ecosystem, the richness estimate actually has quantifiable uncertainty too.)
 
 ```{r}
-mice %>% 
-  ps_filter(treatment_days == 'D13', virus == 'WNV2000', treatment == 'Amp') %>%
-  ps_calc_richness(rank = 'Genus', index = 'observed', varname = 'N genera') %>%
+mice %>%
+  ps_filter(treatment_days == "D13", virus == "WNV2000", treatment == "Amp") %>%
+  ps_calc_richness(rank = "Genus", index = "observed", varname = "N genera") %>%
   comp_barplot(
-    tax_level = "Genus", n_taxa = 12, label = 'N genera', bar_width = 0.7,
-    sample_order = 'asis', merge_other = FALSE, tax_transform_for_plot = 'identity'
+    tax_level = "Genus", n_taxa = 12, label = "N genera", bar_width = 0.7,
+    sample_order = "asis", merge_other = FALSE, tax_transform_for_plot = "identity"
   )
 ```
 
 ```{r, fig.width=5, fig.height=3}
-mice %>% 
-  ps_calc_richness(rank = 'Genus', index = 'observed', varname = 'genera') %>%
-  ps_mutate(readcount = sample_sums(mice)) %>% 
-  samdat_tbl() %>% 
-  ggplot(aes(readcount, genera)) + 
+mice %>%
+  ps_calc_richness(rank = "Genus", index = "observed", varname = "genera") %>%
+  ps_mutate(readcount = sample_sums(mice)) %>%
+  samdat_tbl() %>%
+  ggplot(aes(readcount, genera)) +
   geom_point(alpha = 0.4, size = 2.5) +
   theme_bw(14)
 ```
@@ -592,14 +595,14 @@ This can suggest that something went wrong in the lab (or during sample collecti
 You might already do this check for total reads and remove poor quality samples during the fastq file processing.
 
 ```{r, fig.height=3, fig.width=6}
-shao19 %>% 
-  ps_mutate(reads = sample_sums(shao19)) %>% 
-  samdat_tbl() %>% 
-  ggplot(aes(x = reads)) + 
+shao19 %>%
+  ps_mutate(reads = sample_sums(shao19)) %>%
+  samdat_tbl() %>%
+  ggplot(aes(x = reads)) +
   geom_freqpoly(bins = 500) +
   geom_rug(alpha = 0.5) +
   scale_x_log10(labels = scales::label_number()) +
-  labs(x = 'Number of classified reads', y = NULL) +
+  labs(x = "Number of classified reads", y = NULL) +
   theme_bw()
 ```
 
@@ -626,7 +629,7 @@ If you are interested, go back and recreate this plot with the 16S sequencing da
 #   samdat_tbl() %>%
 #   ggplot(aes(x = reads)) +
 #   geom_freqpoly(bins = 30) +
-#   ... 
+#   ...
 ```
 
 #### Taxon filtering
@@ -659,8 +662,8 @@ Let's say we are not interested in unique taxa that occur in fewer than 2% of sa
 ntaxa(shao19)
 
 # after filtering
-shao19 %>% 
-  tax_filter(min_prevalence = 2 / 100, min_total_abundance = 10000) %>% 
+shao19 %>%
+  tax_filter(min_prevalence = 2 / 100, min_total_abundance = 10000) %>%
   ntaxa()
 ```
 
@@ -1064,7 +1067,7 @@ First let's look at the abundance again, this time with heatmaps.
 ```{r}
 # Getting the taxa in abundance order up front
 # to keep it consistent across multiple plots
-shao4_sorted <- shao4 %>% 
+shao4_sorted <- shao4 %>%
   tax_sort(by = sum, at = "genus", trans = "compositional", tree_warn = FALSE)
 ```
 
@@ -1276,7 +1279,7 @@ iris <- shao4 %>%
   ord_calc(method = "PCA") %>%
   ord_plot_iris(
     tax_level = "genus", n_taxa = 12, other = "Other",
-    anno_colour = "birth_mode", 
+    anno_colour = "birth_mode",
     anno_colour_style = list(alpha = 0.6, size = 0.6, show.legend = FALSE)
   )
 iris
@@ -1315,7 +1318,7 @@ bacteroidesRegression1 <- shao4 %>%
   tax_transform("compositional", rank = "genus") %>%
   tax_transform("log2", zero_replace = "halfmin", chain = TRUE) %>%
   tax_model(
-    type = "lm", rank = "genus", 
+    type = "lm", rank = "genus",
     taxa = "Bacteroides", variables = "birth_mode",
     return_psx = FALSE
   ) %>%
@@ -1417,17 +1420,17 @@ So now we will fit a similar model for almost\* every taxon at every rank we hav
 \*We'll actually filter out species with a prevalence of less than 10%.
 
 ```{r}
-# The code for `taxatree_models` is quite similar to tax_model. 
-# However, you might need to run `tax_prepend_ranks` to ensure that each taxon at each rank is always unique. 
-shaoModels <- shao4 %>% 
+# The code for `taxatree_models` is quite similar to tax_model.
+# However, you might need to run `tax_prepend_ranks` to ensure that each taxon at each rank is always unique.
+shaoModels <- shao4 %>%
   tax_prepend_ranks() %>%
-  tax_transform("compositional", rank = "species", keep_counts = TRUE) %>% 
-  tax_filter(min_prevalence = 0.1, undetected = 0, use_counts = TRUE) %>% 
-  tax_transform(trans = "log2", chain = TRUE, zero_replace = "halfmin") %>% 
+  tax_transform("compositional", rank = "species", keep_counts = TRUE) %>%
+  tax_filter(min_prevalence = 0.1, undetected = 0, use_counts = TRUE) %>%
+  tax_transform(trans = "log2", chain = TRUE, zero_replace = "halfmin") %>%
   taxatree_models(
-    type = lm, 
-    ranks = c("phylum", "class", "order", "family", "genus", "species"), 
-    variables = c('C_section', 'Female', 'Birth_weight_Z', 'Reads_Z')
+    type = lm,
+    ranks = c("phylum", "class", "order", "family", "genus", "species"),
+    variables = c("C_section", "Female", "Birth_weight_Z", "Reads_Z")
   )
 shaoModels
 ```
@@ -1469,8 +1472,8 @@ Phyla around the center to Species in the outermost ring.
 `taxatree_plots()` itself returns a list of plots, which you can arrange into one figure with the [`patchwork`](https://patchwork.data-imaginist.com/) package for example (and/or [`cowplot`](https://wilkelab.org/cowplot/articles/plot_grid.html)).
 
 ```{r, fig.width=6, fig.height=5}
-shaoStats %>% 
-  taxatree_plots(node_size_range = c(1, 3), sig_stat = 'p.adj.BH.rank') %>% 
+shaoStats %>%
+  taxatree_plots(node_size_range = c(1, 3), sig_stat = "p.adj.BH.rank") %>%
   patchwork::wrap_plots(ncol = 2, guides = "collect")
 ```
 
@@ -1482,14 +1485,14 @@ We can create a labelled grey tree with `taxatree_plotkey()`.
 This labels only some of the taxa based on certain conditions that we specify.
 
 ```{r fig.height=4, fig.width=4.5, warning=FALSE}
-set.seed(123) # label position 
-key <- shaoStats %>% 
+set.seed(123) # label position
+key <- shaoStats %>%
   taxatree_plotkey(
     taxon_renamer = function(x) stringr::str_remove(x, "[pfg]: "),
     # conditions below, for filtering taxa to be labelled
     rank == "phylum" | rank == "genus" & prevalence > 0.2
     # all phyla are labelled, and all genera with a prevalence of over 0.2
-  ) 
+  )
 key
 ```
 

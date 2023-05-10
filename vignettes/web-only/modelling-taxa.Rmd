@@ -38,19 +38,19 @@ unknown, with the family name or whatever higher rank classification is
 known.
 
 ```{r}
-phylo <- ibd_phylo %>% 
-  ps_filter(DiseaseState %in% c("UC", "nonIBD")) %>% 
-  tax_mutate(Species = NULL) %>% 
+phylo <- ibd_phylo %>%
+  ps_filter(DiseaseState %in% c("UC", "nonIBD")) %>%
+  tax_mutate(Species = NULL) %>%
   tax_fix()
-phylo 
+phylo
 ```
 
 Let's have a quick look at the sample data using the `skimr` package.
 
 ```{r}
-phylo %>% 
-  samdat_tbl() %>% 
-  dplyr::mutate(across(where(is.character), as.factor)) %>% 
+phylo %>%
+  samdat_tbl() %>%
+  dplyr::mutate(across(where(is.character), as.factor)) %>%
   skimr::skim()
 ```
 
@@ -61,7 +61,7 @@ or 0 for false). We will also scale and center the numeric variable for
 age.
 
 ```{r}
-phylo <- phylo %>% 
+phylo <- phylo %>%
   ps_mutate(
     UC = ifelse(DiseaseState == "UC", yes = 1, no = 0),
     female = ifelse(gender == "female", yes = 1, no = 0),
@@ -84,15 +84,15 @@ with half the minimum observed abundance proportion (of any taxon)
 before log2 transformation.
 
 ```{r}
-parabacteroides_lm <- phylo %>% 
-  tax_fix() %>% 
-  tax_transform("compositional", rank = "Genus") %>% 
-  tax_transform("log2", zero_replace = "halfmin", chain = TRUE) %>% 
+parabacteroides_lm <- phylo %>%
+  tax_fix() %>%
+  tax_transform("compositional", rank = "Genus") %>%
+  tax_transform("log2", zero_replace = "halfmin", chain = TRUE) %>%
   tax_model(
-    type = "lm", rank = "Genus", taxa = "Parabacteroides", 
+    type = "lm", rank = "Genus", taxa = "Parabacteroides",
     variables = c("UC", "female", "antibiotics", "steroids", "age_scaled"),
     return_psx = FALSE
-  ) 
+  )
 parabacteroides_lm$Parabacteroides
 ```
 
@@ -109,22 +109,22 @@ Let's boxplot the transformed data to see what this *Parabacteroides*
 association looks like as a crude group difference.
 
 ```{r, fig.width=4, dpi=120}
-plot_data <- phylo %>% 
-  tax_fix() %>% 
-  tax_transform("compositional", rank = "Genus") %>% 
-  tax_transform("log2", zero_replace = "halfmin", chain = TRUE) %>% 
-  ps_get() %>% 
+plot_data <- phylo %>%
+  tax_fix() %>%
+  tax_transform("compositional", rank = "Genus") %>%
+  tax_transform("log2", zero_replace = "halfmin", chain = TRUE) %>%
+  ps_get() %>%
   ps_otu2samdat("Parabacteroides") %>% # adds Parabacteroides as sample data!
   samdat_tbl()
 
-ggplot(plot_data, aes(x = DiseaseState, y = Parabacteroides)) + 
+ggplot(plot_data, aes(x = DiseaseState, y = Parabacteroides)) +
   geom_boxplot(width = 0.5, colour = "grey35") +
-  geom_jitter(width = 0.2, alpha = 0.5) + 
+  geom_jitter(width = 0.2, alpha = 0.5) +
   scale_y_continuous(
-    breaks = log2(1/2^(0:13)), 
-    labels = function(x) paste0(100 * round(2^x, digits = 5), "%"), 
+    breaks = log2(1 / 2^(0:13)),
+    labels = function(x) paste0(100 * round(2^x, digits = 5), "%"),
     limits = c(log2(0.00005), log2(0.25))
-  ) + 
+  ) +
   theme_bw()
 ```
 
@@ -140,13 +140,13 @@ yourself. See `vignette("corncob-intro", package = "corncob")` for more
 info on these models.
 
 ```{r}
-parabacteroides_bb <- phylo %>% 
-  tax_fix() %>% 
+parabacteroides_bb <- phylo %>%
+  tax_fix() %>%
   tax_model(
-    type = corncob::bbdml, rank = "Genus", taxa = "Parabacteroides", 
+    type = corncob::bbdml, rank = "Genus", taxa = "Parabacteroides",
     variables = c("UC", "female", "antibiotics", "steroids", "age_scaled"),
     return_psx = FALSE
-  ) 
+  )
 parabacteroides_bb$Parabacteroides
 ```
 
@@ -159,17 +159,17 @@ each rank is always unique. As an example of the problem, Actinobacteria
 is the name of both a Phylum and a Class!
 
 ```{r}
-lm_models <- phylo %>% 
-  tax_fix() %>% 
-  tax_prepend_ranks() %>% 
+lm_models <- phylo %>%
+  tax_fix() %>%
+  tax_prepend_ranks() %>%
   # it makes sense to perform the compositional transformation BEFORE filtering
-  tax_transform("compositional", rank = "Genus", keep_counts = TRUE) %>% 
-  tax_filter(min_prevalence = 0.1, undetected = 0, use_counts = TRUE) %>% 
+  tax_transform("compositional", rank = "Genus", keep_counts = TRUE) %>%
+  tax_filter(min_prevalence = 0.1, undetected = 0, use_counts = TRUE) %>%
   tax_transform(
     trans = "log2", chain = TRUE, zero_replace = "halfmin"
-  ) %>% 
+  ) %>%
   taxatree_models(
-    type = lm, 
+    type = lm,
     ranks = NULL, # uses every rank available except the first
     variables = c("UC", "female", "antibiotics", "steroids", "age_scaled")
   )
@@ -234,9 +234,10 @@ into one figure with the
 [`cowplot`](https://wilkelab.org/cowplot/articles/plot_grid.html)).
 
 ```{r, fig.width=7, fig.height=10}
-lm_stats %>% taxatree_plots(
-  node_size_range = c(1, 3), var_renamer = toupper
-) %>% 
+lm_stats %>%
+  taxatree_plots(
+    node_size_range = c(1, 3), var_renamer = toupper
+  ) %>%
   patchwork::wrap_plots(
     ncol = 2, guides = "collect"
   )
@@ -249,18 +250,18 @@ grey tree with `taxatree_plotkey`. This labels taxa based on certain
 conditions.
 
 ```{r, fig.height=5, fig.width=6}
-set.seed(123) # label position 
+set.seed(123) # label position
 key <- taxatree_plotkey(
-  data = lm_stats, 
+  data = lm_stats,
   taxon_renamer = function(x) stringr::str_remove(x, "[PFG]: "),
   # 2 lines of conditions below, for filtering taxa to be labelled
-  rank == "Phylum" | rank == "Genus" & prevalence > 0.25, 
+  rank == "Phylum" | rank == "Genus" & prevalence > 0.25,
   !grepl("Kingdom", taxon)
-) + 
+) +
   # add a bit more space for the longer labels by expanding the x axis
   scale_x_continuous(expand = expansion(mult = 0.2))
 # all phyla are labelled, and all genera with a prevalence of over 0.2
-# except for any taxa whose names (partly) match "Kingdom" 
+# except for any taxa whose names (partly) match "Kingdom"
 # (i.e. an unclassified taxon)
 key
 ```
@@ -276,9 +277,9 @@ output.
 you can also try. `cowplot::get_legend()` can be particularly useful.
 
 ```{r, fig.width=13, fig.height=5.5, dpi=120}
-trees <- lm_stats %>% 
+trees <- lm_stats %>%
   taxatree_plots(node_size_range = c(1, 2.25)) %>%
-  .[1:4] %>% 
+  .[1:4] %>%
   patchwork::wrap_plots(
     ncol = 2, guides = "collect"
   )
@@ -307,14 +308,14 @@ taxatree_plotkey(
   data = lm_stats, .draw_label = FALSE,
   rank %in% c("Phylum", "Family") & !grepl("Bacteria", taxon),
   prevalence > 0.2 | rank == "Phylum"
-) %>% 
+) %>%
   taxatree_plot_labels(
     taxon_renamer = function(x) stringr::str_remove(x, "[PFGO]: "),
     # default fun is ggrepel::geom_text_repel
-    fun = ggrepel::geom_label_repel, 
+    fun = ggrepel::geom_label_repel,
     # arguments modifying label style
-    size = 2.5, alpha = 0.5, colour = "black", fill = "gold1", 
-    label.size = 0.05, label.r = unit(0.05, "lines"), 
+    size = 2.5, alpha = 0.5, colour = "black", fill = "gold1",
+    label.size = 0.05, label.r = unit(0.05, "lines"),
     label.padding = unit(0.15, "lines"), segment.size = 0.5,
     # arguments affecting label positioning
     box.padding = 0.05, x_nudge = 0.4, y_nudge = 0.05,
@@ -329,16 +330,16 @@ this for a few taxa. You must run `taxatree_label()` first to create a
 "label" indicator variable.
 
 ```{r, fig.width=6.5, fig.height=4}
-lm_stats %>% 
+lm_stats %>%
   taxatree_label(
     rank == "Genus", p.value < 0.05 | prevalence > 0.5, estimate > 0
-  ) %>% 
-  taxatree_plots() %>% 
+  ) %>%
+  taxatree_plots() %>%
   .[[1]] %>% # show only the first plot
   taxatree_plot_labels(
     taxon_renamer = function(x) stringr::str_remove(x, "G: "),
     fun = ggrepel::geom_label_repel, x_nudge = 0.7, hjust = 0.5, size = 2
-  ) 
+  )
 ```
 
 ### Changing color palette
@@ -364,41 +365,41 @@ values for l1 and l2, e.g. if the extremes are too bright or dark. This
 is done by default for the Green-Brown palette.
 
 ```{r, fig.width=6.5, fig.height=4}
-lm_stats %>% 
+lm_stats %>%
   taxatree_label(
     rank == "Genus", p.value < 0.05 | prevalence > 0.5, estimate > 0
-  ) %>% 
+  ) %>%
   taxatree_plots(
     colour_lims = c(-20, 20), colour_trans = "identity",
     palette = "Blue-Red 3", l2 = 90
-  ) %>% 
+  ) %>%
   .[[1]] %>% # show only the first plot
   taxatree_plot_labels(
     taxon_renamer = function(x) stringr::str_remove(x, "G: "),
     fun = ggrepel::geom_label_repel, x_nudge = 0.7, hjust = 0.5, size = 2
-  ) 
+  )
 ```
 
 Palettes like "Berlin" that go through a black midpoint would probably
 only make sense with a darker background!
 
 ```{r, fig.width=6.5, fig.height=3.4}
-lm_stats %>% 
+lm_stats %>%
   taxatree_label(
     rank == "Genus", p.value < 0.05 | prevalence > 0.5, estimate > 0
-  ) %>% 
+  ) %>%
   taxatree_plots(
     palette = "Berlin", colour_lims = c(-20, 20), size_guide = NULL
-  ) %>% 
+  ) %>%
   .[[1]] %>% # show only the first plot
   taxatree_plot_labels(
     taxon_renamer = function(x) stringr::str_remove(x, "G: "),
-    fun = ggrepel::geom_label_repel, 
+    fun = ggrepel::geom_label_repel,
     x_nudge = 0.7, xlim = c(-1.7, 1.5), hjust = 0.5, size = 2
   ) +
   theme(
     text = element_text(colour = "white"),
-    plot.background = element_rect(fill = "grey30"), 
+    plot.background = element_rect(fill = "grey30"),
     plot.title = element_text(size = 20, colour = "white")
   )
 ```
@@ -409,9 +410,9 @@ If you like, you can sort the nodes by sorting the taxa in the ps_extra
 object.
 
 ```{r, fig.width=5, fig.height=4}
-lm_stats %>% 
+lm_stats %>%
   tax_sort(by = "prev", at = "Genus") %>%
-  taxatree_plots() %>% 
+  taxatree_plots() %>%
   .[[1]] # show only the first plot
 ```
 
@@ -419,11 +420,11 @@ You can chain multiple `tax_sort()` calls together to fine-tune the
 order of the nodes on the tree to your own preference.
 
 ```{r, fig.width=5, fig.height=4}
-lm_stats %>% 
+lm_stats %>%
   tax_sort(by = "prev", at = "Family") %>%
   tax_sort(by = "name", at = "Phylum") %>%
   tax_sort(by = "rev") %>%
-  taxatree_plots() %>% 
+  taxatree_plots() %>%
   .[[1]] # show only the first plot
 ```
 
@@ -438,12 +439,12 @@ It looks like only the disease state (having ulcerative colitis) shows
 any significant associations after this FDR correction.
 
 ```{r, fig.width=7, fig.height=6}
-lm_stats %>% 
+lm_stats %>%
   taxatree_plots(
-    sig_stat = "p.adj.BH.rank", sig_threshold = 0.1, 
+    sig_stat = "p.adj.BH.rank", sig_threshold = 0.1,
     sig_shape = "cross", sig_size = 1.5,
     node_size_range = c(1, 3), var_renamer = toupper
-) %>% 
+  ) %>%
   .[1:4] %>% # keep only first 4 plots
   patchwork::wrap_plots(
     ncol = 2, guides = "collect"
@@ -459,13 +460,13 @@ unadjusted significance markers for p \< 0.05 (as outlined white
 circles).
 
 ```{r, fig.width=7, fig.height=6}
-lm_stats %>% 
+lm_stats %>%
   taxatree_plots(
-    sig_stat = c("p.adj.BH.rank", "p.value"), sig_threshold = 0.05, 
+    sig_stat = c("p.adj.BH.rank", "p.value"), sig_threshold = 0.05,
     sig_shape = c("cross", "circle filled"), sig_colour = "white",
     sig_size = c(1.5, 1), sig_stroke = c(1, 0.25),
     node_size_range = c(1, 3), var_renamer = toupper
-) %>% 
+  ) %>%
   .[1:4] %>% # keep only first 4 plots
   patchwork::wrap_plots(
     ncol = 2, guides = "collect"
@@ -484,12 +485,12 @@ before this type of modelling. We do not need to transform the data, as
 this approach uses counts.
 
 ```{r}
-bb_models <- phylo %>% 
-  tax_fix() %>% 
-  tax_prepend_ranks() %>% 
-  tax_filter(min_prevalence = 0.3) %>% 
+bb_models <- phylo %>%
+  tax_fix() %>%
+  tax_prepend_ranks() %>%
+  tax_filter(min_prevalence = 0.3) %>%
   taxatree_models(
-    type = corncob::bbdml, 
+    type = corncob::bbdml,
     ranks = c("Phylum", "Class", "Order", "Family"),
     variables = c("UC", "female", "antibiotics", "steroids", "age_scaled")
   )
@@ -507,14 +508,15 @@ bb_stats %>% taxatree_stats_get()
 ```
 
 ```{r, fig.width=5, fig.height=5}
-bb_stats %>% taxatree_plots(
-  node_size_range = c(1, 4), colour_trans = "identity"
-) %>% 
+bb_stats %>%
+  taxatree_plots(
+    node_size_range = c(1, 4), colour_trans = "identity"
+  ) %>%
   # keep only first 4 plots
-  .[1:4] %>% 
+  .[1:4] %>%
   patchwork::wrap_plots(
     ncol = 2, guides = "collect"
-  ) 
+  )
 ```
 
 ### Alternative layouts
@@ -522,16 +524,16 @@ bb_stats %>% taxatree_plots(
 You do not need to make circular tree plots if you don't want to!
 
 ```{r, fig.width=5, fig.height=5}
-alt_trees <- bb_stats %>% 
+alt_trees <- bb_stats %>%
   taxatree_plots(
     node_size_range = c(1, 4), circular = FALSE, colour_trans = "identity"
-  ) %>% 
+  ) %>%
   # keep only first 4 plots
-  .[1:4] %>% 
+  .[1:4] %>%
   patchwork::wrap_plots(
     ncol = 2, guides = "collect"
   ) & # & is used by patchwork to modify multiple ggplots (instead of +)
-  coord_flip() & 
+  coord_flip() &
   scale_y_reverse()
 
 alt_trees
@@ -541,14 +543,13 @@ Let's add the key for this layout and label it manually with
 `taxatree_plot_labels()`.
 
 ```{r, fig.width=5, fig.height=8}
-alt_tree_key <- bb_stats %>% 
-  taxatree_plotkey(circular = FALSE, .draw_label = FALSE, rank == "Family"
-  ) %>% 
+alt_tree_key <- bb_stats %>%
+  taxatree_plotkey(circular = FALSE, .draw_label = FALSE, rank == "Family") %>%
   taxatree_plot_labels(
     circular = FALSE, hjust = 0.5, force = 0, nudge_y = 2, size = 3,
     taxon_renamer = function(x) stringr::str_remove(x, "[PFG]: ")
-  )  + 
-  coord_flip() + 
+  ) +
+  coord_flip() +
   scale_y_reverse(expand = expansion(add = c(0.5, 1.5))) +
   theme(plot.title = element_text(size = 14))
 
@@ -563,12 +564,13 @@ force-directed algorithm ("fr"). You must set a layout_seed number for
 these layouts to ensure they are always the same.
 
 ```{r, fig.width=5, fig.height=5}
-bb_stats %>% taxatree_plots(
-  node_size_range = c(1, 4), 
-  colour_trans = "identity", layout = "kk", layout_seed = 321
-) %>% 
+bb_stats %>%
+  taxatree_plots(
+    node_size_range = c(1, 4),
+    colour_trans = "identity", layout = "kk", layout_seed = 321
+  ) %>%
   # keep only first 4 plots
-  .[1:4] %>% 
+  .[1:4] %>%
   patchwork::wrap_plots(
     ncol = 2, guides = "collect"
   )

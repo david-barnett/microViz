@@ -22,7 +22,6 @@ mat_seriate <- function(mat,
 
 # get list including seriation object, order from that object, and any tree
 rowSeriationInfo <- function(mat, method, dist) {
-
   # don't try and sort if there's only one row
   if (nrow(mat) == 1) method <- "Identity"
 

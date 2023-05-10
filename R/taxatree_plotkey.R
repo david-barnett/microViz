@@ -373,7 +373,7 @@ taxatree_plot_labelsNotCircular <- function(p,
 #' microViz:::taxatreePruneLabelArgs(fun = "geom_label", args = list(size = 2, seed = 2))
 #' microViz:::taxatreePruneLabelArgs(fun = library, args = list(size = 2, seed = 2))
 taxatreePruneLabelArgs <- function(fun, args) {
-  if (!is.null(args$color)){
+  if (!is.null(args$color)) {
     rlang::warn("'color' argument is ignored, please use 'colour'")
     args$color <- NULL
   }

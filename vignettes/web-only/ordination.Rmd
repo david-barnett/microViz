@@ -58,15 +58,15 @@ When creating an ordination plot, you first need to prepare the microbiota varia
 -   Consider transforming the microbial counts, e.g. using the "clr" (centred log ratio) transformation, which is often recommended for compositional data ([like sequencing data](https://doi.org/10.3389/fmicb.2017.02224 "Gloor 2017"))
 
 ```{r clr}
-ibd %>% 
+ibd %>%
   tax_transform(trans = "clr", rank = "Genus")
 ```
 
 -   Some methods, such as [PCoA](#pcoa), require a matrix of pairwise distances between samples, which you can easily calculate with `dist_calc()`. Normally you should NOT transform your data when using a distance-based method, but it is useful to record an "identity" transformation anyway, to make it clear you have not transformed your data.
 
 ```{r identity}
-ibd %>% 
-  tax_transform(trans = "identity", rank = "Genus") %>% 
+ibd %>%
+  tax_transform(trans = "identity", rank = "Genus") %>%
   dist_calc("bray") # bray curtis distance
 ```
 
@@ -83,10 +83,10 @@ Principal ***Components*** Analysis is an unconstrained method that does not use
 Each point is a sample, and samples that appear closer together are typically more similar to each other than samples which are further apart. So by colouring the points by IBD status you can see that the microbiota from people with IBD is often, but not always, highly distinct from people without IBD.
 
 ```{r}
-ibd %>% 
-  tax_transform("clr", rank = "Genus") %>% 
+ibd %>%
+  tax_transform("clr", rank = "Genus") %>%
   # when no distance matrix or constraints are supplied, PCA is the default/auto ordination method
-  ord_calc() %>% 
+  ord_calc() %>%
   ord_plot(color = "ibd", shape = "DiseaseState", size = 2) +
   scale_colour_brewer(palette = "Dark2")
 ```
@@ -96,10 +96,10 @@ One benefit of not using a distance matrix, is that you can plot taxa "loadings"
 The relative length of each loading vector indicates its contribution to each PCA axis shown, and allows you to roughly estimate which samples will contain more of that taxon e.g. samples on the left of the plot below, will typically contain more *Escherichia*/*Shigella* than samples on the right, and this taxon contributes heavily to the PC1 axis.
 
 ```{r}
-ibd %>% 
-  tax_transform("clr", rank = "Genus") %>% 
+ibd %>%
+  tax_transform("clr", rank = "Genus") %>%
   # when no distance matrix or constraints are supplied, PCA is the default/auto ordination method
-  ord_calc(method = "PCA") %>% 
+  ord_calc(method = "PCA") %>%
   ord_plot(color = "ibd", shape = "DiseaseState", plot_taxa = 1:5, size = 2) +
   scale_colour_brewer(palette = "Dark2")
 ```
@@ -107,10 +107,10 @@ ibd %>%
 microViz also allows you directly visualize the sample compositions on a circular barplot or "iris plot" (named because it looks kinda like an eyeball) alongside the PCA plot. The samples on the iris plot are automatically arranged by their rotational position around the center/origin of the PCA plot.
 
 ```{r, fig.height=8, fig.width=7}
-ibd %>% 
-  tax_transform("clr", rank = "Genus") %>% 
+ibd %>%
+  tax_transform("clr", rank = "Genus") %>%
   # when no distance matrix or constraints are supplied, PCA is the default/auto ordination method
-  ord_calc() %>% 
+  ord_calc() %>%
   ord_plot_iris(tax_level = "Genus", ord_plot = "above", anno_colour = "ibd")
 ```
 
@@ -125,10 +125,10 @@ Principal ***Co-ordinates*** Analysis is also an unconstrained method, but it do
 The [Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance) is similar to the distance we humans are familiar with in the physical world. The results of a PCA is practically equivalent to a PCoA with Euclidean distances. The Aitchison distance is a dissimilarity measure calculated as the Euclidean distance between observations (samples) after performing a centered log ratio ("clr") transformation. That is why the Aitchison distance PCoA, below, looks the same as the PCA we made earlier. However, we cannot use plot_taxa, as the taxa loadings are only available for PCA (and related methods like RDA).
 
 ```{r}
-ibd %>% 
+ibd %>%
   tax_transform("identity", rank = "Genus") %>% # don't transform!
-  dist_calc("aitchison") %>% 
-  ord_calc("PCoA") %>% 
+  dist_calc("aitchison") %>%
+  ord_calc("PCoA") %>%
   ord_plot(color = "ibd", shape = "DiseaseState", size = 2) +
   scale_colour_brewer(palette = "Dark2")
 ```
@@ -140,10 +140,10 @@ Note that PCoA is also known as MDS, for (metric) Multi-Dimensional Scaling, hen
 Over the years, ecologists have invented numerous ways of quantifying dissimilarity between pairs of ecosystems. One ubiquitous example is the [Bray-Curtis](https://en.wikipedia.org/wiki/Bray–Curtis_dissimilarity) dissimilarity measure, shown below.
 
 ```{r}
-ibd %>% 
+ibd %>%
   tax_transform("identity", rank = "Genus") %>% # don't transform!
-  dist_calc("bray") %>% 
-  ord_calc("PCoA") %>% 
+  dist_calc("bray") %>%
+  ord_calc("PCoA") %>%
   ord_plot(color = "ibd", shape = "DiseaseState", size = 2) +
   scale_colour_brewer(palette = "Dark2")
 ```
@@ -151,10 +151,10 @@ ibd %>%
 Beyond Bray-Curtis, microViz `dist_calc()` can also help you calculate all the other ecological distances listed in `phyloseq::distanceMethodList` such the Jensen-Shannon Divergence, `"jsd"`, or Jaccard dissimilarity `"jaccard"`. Beware that if you want a binary dissimilarity measure from `vegan::vegdist()` (i.e. only using presence/absence info, and noting all the caveats about sensitivity to low abundance taxa) you will need to pass `binary = TRUE`, as below.
 
 ```{r}
-ibd %>% 
-  tax_transform("identity", rank = "Genus") %>% 
-  dist_calc(dist = "jaccard", binary = TRUE) %>% 
-  ord_calc("PCoA") %>% 
+ibd %>%
+  tax_transform("identity", rank = "Genus") %>%
+  dist_calc(dist = "jaccard", binary = TRUE) %>%
+  ord_calc("PCoA") %>%
   ord_plot(color = "ibd", shape = "DiseaseState", size = 2) +
   scale_colour_brewer(palette = "Dark2")
 ```
@@ -170,10 +170,9 @@ You should **not** aggregate taxa before using a phylogenetic distance measure, 
 ```{r}
 data("esophagus", package = "phyloseq")
 esophagus %>%
-  phyloseq_validate(verbose = FALSE) %>% 
-  tax_transform("identity", rank = "unique") %>% 
+  phyloseq_validate(verbose = FALSE) %>%
+  tax_transform("identity", rank = "unique") %>%
   dist_calc("gunifrac", gunifrac_alpha = 0.5)
-
 ```
 
 ## Further dimensions
@@ -181,23 +180,23 @@ esophagus %>%
 You can show other dimensions / axes of an ordination than just the first two, by setting the axes argument. You can judge from the variation explained by each successive axis (on a scree plot) whether this is worthwhile information to show, e.g. in the example below, it could be interesting to also show the 3rd axis, but not any others.
 
 ```{r, fig.width=5, fig.height=3}
-ibd %>% 
+ibd %>%
   tax_transform("identity", rank = "Genus") %>% # don't transform!
-  dist_calc("bray") %>% 
-  ord_calc("PCoA") %>% 
-  ord_get() %>% 
+  dist_calc("bray") %>%
+  ord_calc("PCoA") %>%
+  ord_get() %>%
   phyloseq::plot_scree() + theme(axis.text.x = element_text(size = 6))
 ```
 
 Let us view the 1st and 3rd axes.
 
 ```{r}
-ibd %>% 
+ibd %>%
   tax_transform("identity", rank = "Genus") %>% # don't transform!
-  dist_calc("bray") %>% 
-  ord_calc("PCoA") %>% 
+  dist_calc("bray") %>%
+  ord_calc("PCoA") %>%
   ord_plot(axes = c(1, 3), color = "ibd", shape = "DiseaseState", size = 2) +
-  scale_colour_brewer(palette = "Dark2") 
+  scale_colour_brewer(palette = "Dark2")
 ```
 
 
@@ -211,10 +210,10 @@ distribution plots for each PC, split by the same groups as in the main plot.
 ### Side panel boxplots
 
 ```{r}
-ibd %>% 
-  tax_transform("identity", rank = "Genus") %>% 
-  dist_calc(dist = "aitchison") %>% 
-  ord_calc("PCoA") %>% 
+ibd %>%
+  tax_transform("identity", rank = "Genus") %>%
+  dist_calc(dist = "aitchison") %>%
+  ord_calc("PCoA") %>%
   ord_plot(color = "ibd", shape = "DiseaseState", size = 2) +
   scale_colour_brewer(palette = "Dark2", aesthetics = c("fill", "colour")) +
   theme_bw() +
@@ -228,16 +227,16 @@ ibd %>%
 ### Side panel density plots
 
 ```{r}
-ibd %>% 
-  tax_transform("identity", rank = "Genus") %>% 
-  dist_calc(dist = "aitchison") %>% 
-  ord_calc("PCoA") %>% 
+ibd %>%
+  tax_transform("identity", rank = "Genus") %>%
+  dist_calc(dist = "aitchison") %>%
+  ord_calc("PCoA") %>%
   ord_plot(color = "ibd", shape = "DiseaseState", size = 2) +
   scale_colour_brewer(palette = "Dark2", aesthetics = c("fill", "colour"), name = "IBD") +
   theme_bw() +
   ggside::geom_xsidedensity(aes(fill = ibd), alpha = 0.5, show.legend = FALSE) +
   ggside::geom_ysidedensity(aes(fill = ibd), alpha = 0.5, show.legend = FALSE) +
-  ggside::theme_ggside_void() 
+  ggside::theme_ggside_void()
 ```
 
 
@@ -276,7 +275,7 @@ The plot above looks okay by default, but it is fairly easy to tweak ord_plot fu
 
 ```{r, fig.width=7, fig.height=8}
 # first we make a function that replaces any unwanted "_" in our taxa labels with spaces
-library(stringr) 
+library(stringr)
 renamer <- function(x) str_replace(x, pattern = "_", replacement = " ")
 
 ibd %>%
@@ -346,18 +345,18 @@ ibd %>%
   ) %>%
   ord_plot(
     colour = "DiseaseState", size = 2, alpha = 0.5, shape = "active",
-    auto_caption = NA, 
+    auto_caption = NA,
     plot_taxa = 1:8, taxon_renamer = renamer,
     # with rotated labels, it is nicer to keep lab_length closer to vec_length
-    tax_vec_length = 4.5, tax_lab_length = 4.6, 
+    tax_vec_length = 4.5, tax_lab_length = 4.6,
     tax_lab_style = tax_lab_style(
       type = "text", max_angle = 90, fontface = "bold.italic"
-    ), 
-    constraint_vec_style = vec_constraint(1.5, alpha = 0.5), 
+    ),
+    constraint_vec_style = vec_constraint(1.5, alpha = 0.5),
     constraint_vec_length = 3, constraint_lab_length = 3.3,
     constraint_lab_style = constraint_lab_style(
       alpha = 0.8, size = 3, max_angle = 90, perpendicular = TRUE
-    ) 
+    )
   ) +
   # SETTING A FIXED RATIO IDENTICAL TO THE aspect_ratio ARGUMENT IN
   # tax_lab_style() IS NECESSARY FOR THE ANGLES OF TEXT TO ALIGN WITH ARROWS!
@@ -367,7 +366,7 @@ ibd %>%
   scale_shape_manual(values = c(
     active = "circle", mild = "circle cross",
     inactive = "circle open", control = "square open"
-  )) 
+  ))
 ```
 
 

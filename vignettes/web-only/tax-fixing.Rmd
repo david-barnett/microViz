@@ -48,7 +48,9 @@ If we would try to aggregate at Genus or Family rank level, we discover that bla
 So we should run `tax_fix` first, which will fix **most** problems with default settings, allowing taxa to be aggregated successfully (at any rank). If you still have errors when using tax_agg after tax_fix, carefully read the error and accompanying messages. Often you can copy suggested tax_fix code from the tax_agg error. You should generally also have a look around your tax_table for other uninformative values, using [tax_fix_interactive](https://david-barnett.github.io/microViz/articles/web-only/tax-fixing.html#interactive-solutions).
 
 ```{r tax_agg success}
-pseq %>% tax_fix() %>% tax_agg(rank = "Family")
+pseq %>%
+  tax_fix() %>%
+  tax_agg(rank = "Family")
 ```
 
 ### What does tax_fix do?
@@ -64,10 +66,11 @@ pseq %>% tax_fix() %>% tax_agg(rank = "Family")
 `tax_fix` replaces these values with the next higher taxonomic rank, e.g. an "unknown" Family within the Order Clostridiales will be renamed "Clostridiales Order", as seen below.
 
 ```{r tax_fix look}
-pseq %>% tax_fix(min_length = 4) %>% 
-  tax_agg("Family") %>% 
+pseq %>%
+  tax_fix(min_length = 4) %>%
+  tax_agg("Family") %>%
   # ps_get() %>% # needed in older versions of microViz (< 0.10.0)
-  tax_table() %>% 
+  tax_table() %>%
   .[1:8, 3:5] # removes the first 2 ranks and shows only first 8 rows for nice printing
 ```
 

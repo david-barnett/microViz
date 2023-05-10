@@ -1,4 +1,3 @@
-
 test_that("taxatree_plotkey works as expected", {
   local_edition(3)
   data("shao19")
@@ -156,4 +155,3 @@ test_that("taxatree_label and plot_labels allows multiple rounds of custom label
     dplyr::mutate(dplyr::across(where(is.numeric), ~ round(., digits = 6)))
   expect_snapshot_csv("taxatreekey-multiplelabels", pMultiDat)
 })
-

@@ -21,7 +21,9 @@ library(microViz)
 Example data loaded from the corncob package. All you need is a valid phyloseq object, and to run `tax_fix` to [ensure the tax_table doesn't contain problematic names](https://david-barnett.github.io/microViz/articles/web-only/tax-fixing.html).
 
 ```{r example}
-pseq <- corncob::ibd_phylo %>% tax_fix() %>% phyloseq_validate()
+pseq <- corncob::ibd_phylo %>%
+  tax_fix() %>%
+  phyloseq_validate()
 ```
 
 The gif animation below shows the result of running `ord_explore`, the animation starts immediately after interactively selecting "Genus" level aggregation, "clr" transformation, and the "PCA" ordination method from the "Edit" menu.
@@ -46,7 +48,7 @@ Create simple Bray-Curtis PCoA to explore interactively.
 
 ```{r create ordination}
 ord1 <- ps %>%
-  tax_transform("identity", rank = "Genus") %>% 
+  tax_transform("identity", rank = "Genus") %>%
   dist_calc("bray") %>% # bray curtis
   ord_calc() # automagically picks PCoA
 ```

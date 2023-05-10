@@ -1,4 +1,3 @@
-
 #' Calculate diversity index and add to phyloseq sample data
 #'
 #' Wrapper around microbiome::diversity() function.
@@ -43,7 +42,6 @@ ps_calc_diversity <- function(ps,
                               index = "shannon",
                               exp = FALSE,
                               varname = paste0(ifelse(exp, "exp_", ""), paste0(index, "_", rank))) {
-
   # argument checks
   stopifnot(is.logical(exp))
   if (!inherits(ps, "phyloseq")) stop("ps must be a phyloseq object")

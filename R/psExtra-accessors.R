@@ -1,4 +1,3 @@
-
 ps_extra_arg_deprecation_warning <- function(ps_extra) {
   rlang::warn(call = rlang::caller_env(1), message = c(
     "ps_extra argument deprecated",
@@ -330,4 +329,3 @@ check_otutable_is_counts <- function(otu, warn) {
     )))
   }
 }
-

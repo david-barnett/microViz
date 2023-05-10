@@ -1,5 +1,3 @@
-
-
 #' Check if rank exists in phyloseq
 #'
 #' Internal helper to check if given ranks are in phyloseq

@@ -73,8 +73,8 @@ p2 <- ibd %>%
   ) +
   coord_fixed(ratio = 1, clip = "off", xlim = c(-6, 6)) +
   scale_colour_manual(
-  breaks = c("CD", "IBDundef", "nonIBD", "UC"),
-  values = c(CD = "red", UC = "orange", IBDundef = "purple", nonIBD = "green")
+    breaks = c("CD", "IBDundef", "nonIBD", "UC"),
+    values = c(CD = "red", UC = "orange", IBDundef = "purple", nonIBD = "green")
   ) +
   scale_shape_manual(values = c(
     active = "circle", mild = "circle cross",

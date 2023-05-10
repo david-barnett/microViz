@@ -17,7 +17,6 @@
 #' @inheritParams ps_sort_ord
 #' @inheritParams ord_plot
 tax_sort_ord <- function(ps, ord, axes = 1:2, scaling = 2) {
-
   # get taxa order character vector
   taxaInOrder <- ord_order_taxa(ord = ord, axes = axes, scaling = scaling)
 

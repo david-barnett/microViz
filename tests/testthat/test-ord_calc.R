@@ -1,4 +1,3 @@
-
 test_that("(constrained) ordination gives correct warnings etc", {
   data("dietswap", package = "microbiome")
 

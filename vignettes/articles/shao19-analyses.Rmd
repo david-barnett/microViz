@@ -40,7 +40,7 @@ If you can put your data in a phyloseq object, then you can use microViz with it
 You can check the basic characteristics of your phyloseq dataset using standard phyloseq functions. microViz also provides a few helper functions.
 
 ```{r}
-sample_names(shao19) %>% head() 
+sample_names(shao19) %>% head()
 ```
 
 Note: These taxa already have informative unique names, but if your taxa_names are just numbers or sequences, look at the `tax_rename()` function for one way to replace them with more readable/informative unique names.
@@ -86,11 +86,11 @@ One common problem you will encounter either when you run phyloseq_validate or s
 Later in these example analyses we will need modified version of the sample variables stored in the sample_data slot of the phyloseq object. The `ps_mutate()` function provides an easy way to modify your phyloseq sample_data (ps is short for phyloseq). You can use `ps_mutate()` in a similar way to `dplyr::mutate()`. If you are unfamiliar with the `{dplyr}` package, I highly recommend you look at the [dplyr website](https://dplyr.tidyverse.org/), to learn about some incredibly handy tools for data transformation, and because several of the microViz data transformation functions are used in a similar way.
 
 ```{r}
-shao19 <- shao19 %>% 
+shao19 <- shao19 %>%
   ps_mutate(
-    Csection = ifelse(birth_mode == "c_section", yes = 1, no =  0),
+    Csection = ifelse(birth_mode == "c_section", yes = 1, no = 0),
     birth_mode3 = dplyr::recode(
-      c_section_type, 
+      c_section_type,
       Elective_CS = "CS Elective", Emergency_CS = "CS Emergency", .missing = "Vaginal"
     )
   )
@@ -107,7 +107,7 @@ We will also use `ps_dedupe()` to "deduplicate" samples, to ensure that we defin
 -   **Note 2**: By default, `ps_filter()` also removes taxa that no longer appear in the filtered dataset (zero total counts). This is different to `phyloseq::subset_samples()` and `phyloseq::prune_samples()`.
 
 ```{r}
-shao4d <- shao19 %>% 
+shao4d <- shao19 %>%
   ps_filter(family_role == "child", infant_age == 4, .keep_all_taxa = TRUE) %>%
   ps_dedupe(vars = "family_id")
 shao4d
@@ -118,14 +118,14 @@ shao4d
 Let us look at the compositions of infant samples from age of 4 days, grouping the samples by birth mode. The `comp_barplot()` function make generating an attractive and informative ggplot2 bar chart easy: by default it automatically sorts the samples by microbiota similarity, sorts the taxa by overall abundance, and applies a sensible categorical colour palette with many colours. Taxa not assigned a colour are merged into one light grey bar by default, but can be shown un-merged, as in this example.
 
 ```{r message=FALSE, fig.height=6, fig.width=7}
-shao4d %>% 
+shao4d %>%
   comp_barplot("genus", n_taxa = 15, merge_other = FALSE, label = NULL) +
   facet_wrap(vars(birth_mode), scales = "free") + # scales = "free" is IMPORTANT!
   coord_flip() +
   ggtitle(
     "Neonatal gut microbiota composition at 4 days",
     "Substanstial differences are visible in profiles of high abundance taxa"
-    ) +
+  ) +
   theme(axis.ticks.y = element_blank(), strip.text = element_text(face = "bold"))
 ```
 
@@ -145,11 +145,11 @@ microViz provides an easy workflow for creating ordination plots including [PCA]
 6.  `ord_plot()` to plot any two dimensions of your ordinated data
 
 ```{r}
-shao4d_psX <- shao4d %>% 
+shao4d_psX <- shao4d %>%
   # keep only taxa belonging to genera that have over 100 counts in at least 5% of samples
-  tax_filter(min_prevalence = 0.05, undetected = 100, tax_level = "genus") %>% 
+  tax_filter(min_prevalence = 0.05, undetected = 100, tax_level = "genus") %>%
   # aggregate counts at genus-level & transform with robust CLR transformation
-  tax_transform(trans = "rclr", rank = "genus") %>% 
+  tax_transform(trans = "rclr", rank = "genus") %>%
   # no distances are needed for PCA: so skip dist_calc and go straight to ord_calc
   ord_calc(method = "PCA")
 
@@ -159,18 +159,18 @@ shao4d_psX
 **Note:** microViz will record your choices in steps 2 through 5, by adding additional information to the phyloseq object, which is now called a "[psExtra](https://david-barnett.github.io/microViz/articles/ps_extra-replaced.html "A note on ps_extra to psExtra transition")". By default the psExtra object will also store: the original counts OTU table (before any transformation); the distance matrix; and ordination object. To retrieve each of these, use `ps_get(counts = TRUE)`, `dist_get()`, or `ord_get()`.
 
 ```{r, fig.width=7.5, fig.height=7}
-PCA_plot <- shao4d_psX %>% 
+PCA_plot <- shao4d_psX %>%
   ord_plot(
     colour = "birth_mode", shape = "birth_mode",
-    plot_taxa = 10:1, 
+    plot_taxa = 10:1,
     tax_vec_length = 0.3,
     tax_lab_style = tax_lab_style(
-      type = "label", max_angle = 90, aspect_ratio = 1, 
+      type = "label", max_angle = 90, aspect_ratio = 1,
       size = 2.5, alpha = 0.8, fontface = "bold", # style the labels
       label.r = unit(0, "mm") # square corners of labels - see ?geom_label
     )
   ) +
-  coord_fixed(ratio = 1, clip = "off", xlim = c(-2, 2)) 
+  coord_fixed(ratio = 1, clip = "off", xlim = c(-2, 2))
 # match coord_fixed() ratio to tax_lab_style() aspect_ratio for correct text angles
 
 PCA_plot
@@ -181,8 +181,8 @@ As this PCA plot is a ggplot object, you can adjust the aesthetic scales (colour
 ```{r, fig.width=7, fig.height=7.5}
 PCA_plot_custom <- PCA_plot +
   # add a convex hull around the points for each group, to aid the eye
-  stat_chull( 
-    mapping = aes(colour = birth_mode, linetype = birth_mode), 
+  stat_chull(
+    mapping = aes(colour = birth_mode, linetype = birth_mode),
     linewidth = 0.5, alpha = 0.5, show.legend = FALSE
   ) +
   scale_shape_manual(
@@ -196,7 +196,7 @@ PCA_plot_custom <- PCA_plot +
     guide = guide_legend(override.aes = list(size = 4))
   ) +
   # add a title and delete the automatic caption
-  labs(title = "4-day-old gut microbiota and birth mode", caption = NULL) + 
+  labs(title = "4-day-old gut microbiota and birth mode", caption = NULL) +
   # put the legend at the bottom and draw a border around it
   theme(legend.position = "bottom", legend.background = element_rect())
 
@@ -218,7 +218,7 @@ For additional insight into your ordination plot results, microViz provides a no
 ```{r, fig.width=12, fig.height=7}
 irisPlot <- shao4d_psX %>%
   ord_plot_iris(
-    axes = c(1, 2), tax_level = "genus", n_taxa = 8, 
+    axes = c(1, 2), tax_level = "genus", n_taxa = 8,
     anno_binary = "Csection", # add an annotation ring indicating C-section birth
     anno_binary_style = list(size = 0.5, colour = "black"), # from ord plot colour scale
     ord_plot = "none" # we'll reuse the customised PCA plot from earlier
@@ -226,7 +226,7 @@ irisPlot <- shao4d_psX %>%
   guides(fill = guide_legend(ncol = 3)) +
   theme(legend.position = "bottom")
 
-patchwork::wrap_plots(PCA_plot_custom, irisPlot, nrow = 1, widths = c(5, 4)) 
+patchwork::wrap_plots(PCA_plot_custom, irisPlot, nrow = 1, widths = c(5, 4))
 ```
 
 ## Interactive ordination plots
@@ -248,14 +248,14 @@ As shown in the video clip above, your default web browser will open a new windo
 Heatmaps can be a useful way to display taxonomic composition of your samples, in addition to or instead of bar charts. You can transform the taxa using `tax_transform()`, various kinds of log transformations (including clr or rclr) can be helpful to illustrate relative abundance patterns for both low abundance and high abundance taxa on the same plot. This is an advantage of heatmaps over `comp_barplot()`, where patterns involving low relative abundance taxa can be hard to spot.
 
 ```{r, fig.width=8.5, fig.height=3.5}
-shao4d %>% 
-  tax_transform(trans = "rclr", rank = "genus") %>% 
-  tax_filter(min_prevalence = 0.1, use_counts = TRUE) %>% 
+shao4d %>%
+  tax_transform(trans = "rclr", rank = "genus") %>%
+  tax_filter(min_prevalence = 0.1, use_counts = TRUE) %>%
   comp_heatmap(
-    colors = heat_palette(sym = TRUE), grid_col = NA, 
+    colors = heat_palette(sym = TRUE), grid_col = NA,
     sample_side = "bottom", name = "Robust\nCLR",
     sample_anno = sampleAnnotation(
-      "Birth mode" = anno_sample("birth_mode3"), 
+      "Birth mode" = anno_sample("birth_mode3"),
       col = list("Birth mode" = c(
         "CS Elective" = "black", "CS Emergency" = "orange", "Vaginal" = "lightgrey"
       ))
@@ -278,9 +278,9 @@ One common method for assessing whether a variable has is associated with an ove
 vegan provides the `vegan::adonis2()` function for performing PERMANOVA analyses. microViz provides a convenience function, `dist_permanova()` which allows you to use the distance matrix stored in a psExtra object to perform PERMANOVA with adonis2, and store the result in the psExtra too.
 
 ```{r}
-shao4d_perm <- shao4d %>% 
-  tax_transform("identity", rank = "genus") %>% 
-  dist_calc("aitchison") %>% 
+shao4d_perm <- shao4d %>%
+  tax_transform("identity", rank = "genus") %>%
+  dist_calc("aitchison") %>%
   dist_permanova(
     variables = c("birth_mode", "sex", "number_reads"),
     n_perms = 99, # you should use more permutations in your real analyses!
@@ -305,15 +305,15 @@ Starting with a simple approach borrowed from [MaAsLin2](https://huttenhower.sph
 ```{r}
 # First transform and filter the taxa, ready for statistical modelling #
 
-shao4d_log2prop <- shao4d %>% 
+shao4d_log2prop <- shao4d %>%
   # prepend the 1st letter of the rank to each tax_table entry, to ensure all are unique
-  tax_prepend_ranks() %>% 
+  tax_prepend_ranks() %>%
   tax_transform(
     trans = "compositional", rank = "genus",
     add = "halfmin" # adds half the minimum observed abundance to all values
-  ) %>% #  
+  ) %>% #
   # for various statistical, biological, and practical reasons, let's strictly filter taxa
-  tax_filter(min_prevalence = 0.1, use_counts = TRUE) %>% 
+  tax_filter(min_prevalence = 0.1, use_counts = TRUE) %>%
   tax_transform(
     trans = "log2", # pseudocount added earlier allows us to use a log transform
     chain = TRUE # chain = TRUE allows the 2nd transformation
@@ -323,12 +323,12 @@ shao4d_log2prop
 ```
 
 ```{r}
-shao4d_treeStats <- shao4d_log2prop %>% 
+shao4d_treeStats <- shao4d_log2prop %>%
   # run all the statistical models
   taxatree_models(
     ranks = c("phylum", "class", "order", "family", "genus"),
     variables = "Csection", type = lm # modelling function
-  ) %>% 
+  ) %>%
   # extract stats from the models
   taxatree_models2stats(.keep_models = TRUE) %>%
   # adjust the p values for multiple testing, within each rank
@@ -354,20 +354,20 @@ taxatree_stats_get(shao4d_treeStats)
 Let's make a labelled tree plot:
 
 ```{r}
-treePlotsSimple <- shao4d_treeStats %>% 
+treePlotsSimple <- shao4d_treeStats %>%
   # specify which taxa will get labeled (adds a "label" variable to the stats tibble)
-  taxatree_label(p.adj.fdr.rank < 0.01, rank %in% c("phylum", "genus")) %>% 
+  taxatree_label(p.adj.fdr.rank < 0.01, rank %in% c("phylum", "genus")) %>%
   # make the plots (1 per predictor variable, so a list of 1 in this example)
   taxatree_plots(
     sig_stat = "p.adj.fdr.rank", sig_threshold = 0.01,
     drop_ranks = FALSE # drop_ranks = TRUE has a bug in version 0.10.4 :(
-  ) 
+  )
 
 treePlotsSimple %>% str(max.level = 1) # just a list with a single ggplot inside
 ```
 
 ```{r, fig.width=7, fig.height=5}
-treePlotsSimple$Csection %>% 
+treePlotsSimple$Csection %>%
   # add labels to the plot, only for the taxa indicated earlier
   taxatree_plot_labels(
     taxon_renamer = function(x) gsub(x = x, pattern = "[pg]: ", replacement = "")
@@ -386,22 +386,21 @@ Let us create a dataset containing 10 infants with numerous samples across multi
 
 ```{r}
 # some dplyr wrangling to get the names of the infants we want!
-repeatedInfants <- shao19 %>% 
-  samdat_tbl() %>% 
-  dplyr::filter(family_role == "child") %>% 
-  dplyr::group_by(subject_id) %>% 
-  dplyr::summarise(nSamples = dplyr::n()) %>% 
-  dplyr::arrange(desc(nSamples)) %>% 
-  dplyr::pull(subject_id) %>% 
+repeatedInfants <- shao19 %>%
+  samdat_tbl() %>%
+  dplyr::filter(family_role == "child") %>%
+  dplyr::group_by(subject_id) %>%
+  dplyr::summarise(nSamples = dplyr::n()) %>%
+  dplyr::arrange(desc(nSamples)) %>%
+  dplyr::pull(subject_id) %>%
   head(10)
 
-shaoRepeated <- shao19 %>% 
-  ps_filter(subject_id %in% repeatedInfants) %>% 
+shaoRepeated <- shao19 %>%
+  ps_filter(subject_id %in% repeatedInfants) %>%
   ps_arrange(subject_id, infant_age) %>% # put the samples in age order, per infant
   ps_mutate(age_factor = factor(infant_age)) # useful for plotting
-  
-samdat_tbl(shaoRepeated)
 
+samdat_tbl(shaoRepeated)
 ```
 
 Try `ord_explore()` on this dataset (or any dataset with repeated samples arranged in time order).
@@ -416,15 +415,15 @@ Use the "Code" button to get example code, and you'll be able to recreate someth
 
 ```{r, fig.width=6, fig.height=5}
 shaoRepeated %>%
- tax_transform(rank = "genus", trans = "identity") %>%
- dist_calc(dist = "bray") %>%
- ord_calc(method = "auto") %>% 
- ord_plot(colour = "subject_id", alpha = 0.5, size = "infant_age") %>%
- add_paths(
-  id_var = "subject_id", 
-  id_values = c("A01166_ba", "SID523133_ba", "A01173_ba", "SID512120_ba", "SID519128_ba"),
-  mapping = aes(colour = subject_id)
- ) + 
+  tax_transform(rank = "genus", trans = "identity") %>%
+  dist_calc(dist = "bray") %>%
+  ord_calc(method = "auto") %>%
+  ord_plot(colour = "subject_id", alpha = 0.5, size = "infant_age") %>%
+  add_paths(
+    id_var = "subject_id",
+    id_values = c("A01166_ba", "SID523133_ba", "A01173_ba", "SID512120_ba", "SID519128_ba"),
+    mapping = aes(colour = subject_id)
+  ) +
   scale_color_viridis_d(option = "turbo")
 ```
 

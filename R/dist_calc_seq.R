@@ -1,4 +1,3 @@
-
 #' Calculate distances between sequential samples in ps_extra/phyloseq object
 #'
 #' @param data psExtra object, e.g. output from tax_transform()
@@ -108,7 +107,6 @@ dist_calc_seq <- function(data,
                           start_value = NaN,
                           return = "data",
                           var_name = paste0(dist, "_DistFromLast")) {
-
   # check input data object class
   isDistCalcDataPhyloseq(data)
 

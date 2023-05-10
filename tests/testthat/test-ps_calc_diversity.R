@@ -1,4 +1,3 @@
-
 test_that("ps_calc_diversity supported plot doesn't change", {
   p <- corncob::ibd_phylo %>%
     ps_filter(abx == "abx") %>%

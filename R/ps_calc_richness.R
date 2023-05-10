@@ -44,7 +44,6 @@ ps_calc_richness <- function(ps,
                              index = "observed",
                              detection = 0,
                              varname = paste0(index, "_", rank)) {
-
   # argument checks
   stopifnot(is.numeric(detection))
   if (!inherits(ps, "phyloseq")) stop("ps must be a phyloseq object")

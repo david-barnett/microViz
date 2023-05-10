@@ -1,4 +1,3 @@
-
 #' Simple wrapper around cor.test for y ~ x style formula input
 #'
 #' Intended for use within the function tax_model

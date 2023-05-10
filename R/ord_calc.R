@@ -130,7 +130,6 @@ ord_calc <- function(data,
 
   # constraint and condition handling in phyloseq object and distance matrix
   if (isConstrained || isConditioned) {
-
     # handle missings and scale conditions and constraints (for RDA etc.)
     ps <- ps_conScale(
       ps = ps, constraints = constraints, conditions = conditions,
@@ -157,7 +156,6 @@ ord_calc <- function(data,
 
   # standard and possibly constrained methods
   if (ordMethod %in% c("RDA", "CAP", "CCA")) {
-
     # set formula to include any given constraints on RHS
     # (if unconstrained, the constraints = 1, and so RHS is = 1)
     f <- paste0("~ ", paste(constraints, collapse = " + "))

@@ -100,7 +100,6 @@ dist_permanova <- function(data,
                            by = "margin",
                            verbose = TRUE,
                            ...) {
-
   # check input data object class
   check_is_psExtra(data, argName = "data")
   ps <- ps_get(data)

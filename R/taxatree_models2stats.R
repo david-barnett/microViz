@@ -214,7 +214,6 @@ tidy_bbdml <- function(model,
                        param = "mu",
                        method = corncob::waldt,
                        ...) {
-
   # get stats from model
   stats <- method(model, ...)
   df <- as.data.frame(stats, optional = TRUE, stringsAsFactors = FALSE)

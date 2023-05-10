@@ -256,7 +256,6 @@ anno_var_density <- function(fun = identity,
 
   # create AnnotationFunction-making function
   FN <- function(data, vars, which, size = .size, args = densityArgs) {
-
     # extract (sample)data to matrix
     if (methods::is(data, "phyloseq")) {
       data <- samdatAsDataframe(ps_get(data))
@@ -342,7 +341,6 @@ anno_var_hist <- function(fun = identity,
 
   # create AnnotationFunction-making function
   FN <- function(data, vars, which, size = .size, args = histArgs) {
-
     # extract (sample)data to matrix
     if (methods::is(data, "phyloseq")) {
       data <- samdatAsDataframe(ps_get(data))

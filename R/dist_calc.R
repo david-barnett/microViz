@@ -70,7 +70,6 @@ dist_calc <- function(data,
                       dist = "bray",
                       gunifrac_alpha = 0.5,
                       ...) {
-
   # check valid distance name was supplied
   rlang::arg_match(arg = dist, multiple = FALSE, values = union(c(
     "bray", "gunifrac", "unifrac", "wunifrac", "va-wunifrac",

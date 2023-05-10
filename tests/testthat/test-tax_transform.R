@@ -28,7 +28,6 @@ test_that("tax_transform add and zero_replace work", {
   )
   expect_equal(min(otu_get(addHm)), min(otu_get(replaceHm)))
   expect_failure(expect_equal(otu_get(addHm), otu_get(replaceHm), ignore_attr = TRUE))
-
 })
 
 

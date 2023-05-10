@@ -34,7 +34,7 @@ data("atlas1006", package = "microbiome")
 ps <- atlas1006 %>%
   ps_mutate(
     weight = recode(
-      .x = bmi_group, morbidobese = 5, severeobese = 4, 
+      .x = bmi_group, morbidobese = 5, severeobese = 4,
       obese = 3, overweight = 2, lean = 1, underweight = 0
     ),
     lean = if_else(weight < 2, true = 1, false = 0, missing = 0),
@@ -126,11 +126,11 @@ composition as represented on axes PC1 and PC2.
 pca <- clr_pca %>%
   ord_plot(
     colour = "weight", shape = "DNA_extraction_method", alpha = 0.7, size = 1,
-    plot_taxa = 12:1, tax_vec_length = 0.3, 
+    plot_taxa = 12:1, tax_vec_length = 0.3,
     taxon_renamer = function(x) stringr::str_remove_all(x, "^G: | [ae]t rel."),
     center = TRUE,
     tax_lab_style = tax_lab_style(
-      type = "label", max_angle = 90, fontface = "bold", 
+      type = "label", max_angle = 90, fontface = "bold",
       alpha = 0.8, size = 2
     )
   ) +
@@ -164,7 +164,7 @@ iris
 You can arrange both plots together with patchwork package.
 
 ```{r, fig.height=10, fig.width=8, dpi=120}
-pca / iris 
+pca / iris
 ```
 
 ## Testing hypotheses
@@ -255,7 +255,7 @@ library(corncob)
 tt_models <- ps %>%
   tax_filter(min_prevalence = 5 / 100, tax_level = "Genus") %>%
   taxatree_models(
-    ranks = c("Phylum", "Family"), 
+    ranks = c("Phylum", "Family"),
     variables = c("female", "wt_scaled", "P", "R"),
     type = "bbdml", verbose = "max"
   )
@@ -266,20 +266,20 @@ Visualize the results compactly on a microViz taxonomic association
 tree.
 
 ```{r, fig.height=6}
-tt_stats %>% 
+tt_stats %>%
   taxatree_plotkey(
     node_size_range = c(2, 8), size_stat = list(mean = mean),
-    rank == "Phylum", 
+    rank == "Phylum",
     taxon_renamer = function(x) stringr::str_remove_all(x, "^.: | [ae]t rel.")
   )
 ```
 
 ```{r taxatree plots, fig.height=7}
-tt_stats %>% 
+tt_stats %>%
   taxatree_plots(
     node_size_range = c(1, 5), size_stat = list(mean = mean)
   ) %>%
-    .[c("P", "R", "female", "wt_scaled")] %>% 
+  .[c("P", "R", "female", "wt_scaled")] %>%
   wrap_plots(., ncol = 2, guides = "collect")
 ```
 
