@@ -303,7 +303,7 @@ ps_counts <- function(data, warn = TRUE) {
 #' @keywords internal
 check_otutable_is_counts <- function(otu, warn) {
   # extract plain matrix from otu table
-  test_matrix <- unclass(otu)
+  mat <- unclass(otu)
 
   # specify warning or error
   mess_fun <- function(mess) {} # intentionally does nothing
@@ -311,22 +311,23 @@ check_otutable_is_counts <- function(otu, warn) {
   if (isTRUE(warn)) mess_fun <- rlang::warn
 
   # check for NAs
-  if (anyNA(test_matrix)) {
-    n <- sum(is.na(test_matrix))
+  if (anyNA(mat)) {
+    n <- sum(is.na(mat))
     mess <- paste("otu_table contains", n, "NAs")
     mess_fun(mess)
     # stops here if mess_fun is abort
     # otherwise, remove NAs for further testing
-    test_matrix <- as.numeric(test_matrix)
-    test_matrix <- test_matrix[!is.na(test_matrix)]
+    mat <- as.numeric(mat)
+    mat <- mat[!is.na(mat)]
   }
 
   # check for counts
-  if (any(test_matrix < 1 & test_matrix != 0)) {
-    mess_fun(paste0(
-      "otu_table of counts is NOT available!\n",
-      "Available otu_table contains non-zero values that are less than 1"
-    ))
+  if (any(mat != trunc(mat)) || any(mat < 0)) {
+    bad <- which(mat != trunc(mat) | mat < 0)
+    mess_fun(c("otu_table of counts is NOT available!\n", paste0(
+      "Available otu_table contains ", length(bad),
+      " values that are not non-negative integers"
+    )))
   }
 }
 
