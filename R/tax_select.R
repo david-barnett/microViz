@@ -47,51 +47,66 @@ tax_select <- function(ps,
                        strict_matches = FALSE,
                        n_typos = 1,
                        deselect = FALSE) {
+  # Input checks ----
+  if (!rlang::is_list(tax_list) && !rlang::is_character(tax_list)) {
+    rlang::abort("tax_list must be a character vector or a list of strings")
+  }
+  if (rlang::is_list(tax_list) && !all(sapply(tax_list, is.character))) {
+    rlang::abort("tax_list list must contain only character strings")
+  }
+  if (!is.logical(strict_matches) || !is.logical(deselect)) {
+    rlang::abort("strict_matches and deselect must be logical values")
+  }
+  if (!rlang::is_scalar_integerish(n_typos) || n_typos < 0) {
+    rlang::abort("n_typos must be an integer greater than or equal to 0")
+  }
+  check_is_phyloseq(ps)
+
+  # End of checks, start of main function body ----
   ps <- ps_get(ps)
 
-  # collapse tax_list to a string of regex OR patterns
-  taxaString <- paste(tax_list, collapse = "|")
+  # Collapse tax_list to a string of regex OR patterns
+  taxaString <- paste(unlist(tax_list), collapse = "|")
 
-  # get tax table to search
+  # Get tax table to search
   Taxa <- phyloseq::tax_table(ps)
 
+  # Check valid taxonomic ranks given for searching
   if (!identical(ranks_searched, "all")) {
-    # check valid taxonomic ranks given for searching
     if (any(!ranks_searched %in% phyloseq::rank_names(ps))) {
-      stop(
+      rlang::abort(
         "Invalid rank names given: ", paste(ranks_searched, collapse = " "),
         "\n- Should be any/some of: ", paste(phyloseq::rank_names(ps), collapse = "/")
       )
     }
-
     Taxa <- Taxa[, ranks_searched, drop = FALSE]
   }
 
+  # Calculate selection vector based on strict_matches and n_typos
   if (isTRUE(strict_matches)) {
-    selectionVec <- apply(Taxa, MARGIN = 1, FUN = function(r) any(r %in% tax_list))
+    taxon_row_matching_fun <- function(r) any(r %in% tax_list)
+  } else if (n_typos == 0) {
+    taxon_row_matching_fun <- function(r) any(grepl(taxaString, r))
   } else if (n_typos > 0) {
-    selectionVec <- apply(Taxa, MARGIN = 1, FUN = function(r) {
+    taxon_row_matching_fun <- function(r) {
       any(sapply(tax_list, FUN = function(x) {
         agrepl(x, r, max.distance = n_typos)
       }))
-    })
-  } else {
-    selectionVec <- apply(Taxa, MARGIN = 1, FUN = function(r) any(grepl(taxaString, r)))
+    }
   }
+  selectionVec <- apply(Taxa, MARGIN = 1, FUN = taxon_row_matching_fun)
 
-  # include exact rownames/taxa names matches
+  # Include exact rownames/taxa names matches
   ROWNAMES <- rownames(Taxa)
   selectionVec <- selectionVec | ROWNAMES %in% tax_list
 
-  # stop with error if no taxa matched! (but not "in deselect mode")
+  # Stop with error if no taxa matched! (but not "in deselect mode")
   if (isFALSE(deselect) && !any(selectionVec)) {
-    stop("No taxa matched.")
+    rlang::abort("No taxa matched.")
   }
 
-  # if taxa DEselection is requested, invert the logical vector, to cause removal of matching taxa
-  if (isTRUE(deselect)) {
-    selectionVec <- !selectionVec
-  }
+  # If taxa DEselection is requested, invert the logical vector, to cause removal of matching taxa
+  if (isTRUE(deselect)) selectionVec <- !selectionVec
 
   ps <- phyloseq::prune_taxa(x = ps, taxa = selectionVec)
 
