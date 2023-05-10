@@ -1,5 +1,36 @@
+test_that("ps_counts warns and errors as expected", {
+  data("shao19")
 
-test_that("sample data returned without mangling names", {
+  # throw warning or error on non-integer elements (below 1, not zero)
+  shao19@otu_table[1:3, ] <- 0.2
+  expect_silent(
+    object = microViz:::ps_counts(shao19, warn = FALSE)
+  )
+  expect_warning(
+    object = microViz:::ps_counts(shao19, warn = TRUE),
+    regexp = "otu_table contains 4932 values that are not non-negative integers"
+  )
+  expect_error(
+    object = microViz:::ps_counts(shao19, warn = "error"),
+    regexp = "otu_table contains 4932 values that are not non-negative integers"
+  )
+
+  # throw warning or error on NAs
+  shao19@otu_table[1:5, ] <- NA
+  expect_silent(
+    object = microViz:::ps_counts(shao19, warn = FALSE)
+  )
+  expect_warning(
+    object = microViz:::ps_counts(shao19, warn = TRUE),
+    regexp = "otu_table contains 8220 NAs"
+  )
+  expect_error(
+    object = microViz:::ps_counts(shao19, warn = "error"),
+    regexp = "otu_table contains 8220 NAs"
+  )
+})
+
+test_that("sample data are returned without mangling names", {
   data("dietswap", package = "microbiome")
   phyloseq::sample_data(dietswap)[["b a d"]] <- 1:phyloseq::nsamples(dietswap)
   phyloseq::sample_names(dietswap) <- paste(
