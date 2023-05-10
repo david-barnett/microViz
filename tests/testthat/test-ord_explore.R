@@ -66,11 +66,19 @@ test_that("ord_choices helper works", {
 # ord_code --------------------------------------------------------------------
 test_that("ord_code helper works", {
   local_edition(3)
+
+  # Iterate through different values for plot_taxa
   for (p in list(FALSE, 1:6)) {
+    # Iterate through different values for alpha
     for (a in list(0.5, "aVariable")) {
+      # Iterate through different values for const
       for (c in list(NULL, c("test1", "test2"))) {
+        # Capture snapshots of ord_code() outputs
         expect_snapshot({
+          # Print the current combination of p, a, and c values
           for (x in list(p, a, c)) cat(x, "\t")
+
+          # Call ord_code() with the current combination of p, a, and c values
           ord_code(
             rank = "Genus", trans = "identity", dist = "none",
             ord = "RDA", const = c, conds = NULL, x = 1, y = 2,
@@ -84,23 +92,23 @@ test_that("ord_code helper works", {
   }
 })
 
+
 test_that("ord_code_dist helper works", {
   local_edition(3)
   expect_snapshot(cat(ord_code_dist("aitchison")))
   expect_snapshot(cat(ord_code_dist("none")))
 })
 
-test_that("ord_code_stat and paths helpers work", {
+test_that("Testing ord_code_stat() different combinations of ellipses and chulls", {
   local_edition(3)
-  expect_snapshot(
-    cat(ord_code_stat(ellipses = TRUE, chulls = FALSE, colour = "aVar"))
-  )
-  expect_snapshot(
-    cat(ord_code_stat(ellipses = FALSE, chulls = FALSE, colour = "aVar"))
-  )
-  expect_snapshot(
-    cat(ord_code_stat(ellipses = FALSE, chulls = TRUE, colour = "aVar"))
-  )
+  expect_snapshot(cat(ord_code_stat(ellipses = TRUE, chulls = FALSE, colour = "aVar")))
+  expect_snapshot(cat(ord_code_stat(ellipses = FALSE, chulls = FALSE, colour = "aVar")))
+  expect_snapshot(cat(ord_code_stat(ellipses = FALSE, chulls = TRUE, colour = "aVar")))
+  expect_snapshot(cat(ord_code_stat(ellipses = TRUE, chulls = TRUE, colour = "aVar")))
+})
+
+test_that("Testing ord_code_paths() with different all_vars options (string & vec)", {
+  local_edition(3)
   expect_snapshot(cat(
     ord_code_paths(paths = list(
       colour = "aVar", id_var = "bVar", id_values = letters[1:4],

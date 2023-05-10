@@ -537,7 +537,7 @@
     Code
       cat(ord_code_dist("none"))
 
-# ord_code_stat and paths helpers work
+# Testing ord_code_stat() different combinations of ellipses and chulls
 
     Code
       cat(ord_code_stat(ellipses = TRUE, chulls = FALSE, colour = "aVar"))
@@ -565,6 +565,16 @@
        )
 
 ---
+
+    Code
+      cat(ord_code_stat(ellipses = TRUE, chulls = TRUE, colour = "aVar"))
+    Output
+       ) +
+       stat_chull(
+        ggplot2::aes(colour = aVar)
+       )
+
+# Testing ord_code_paths() with different all_vars options (string & vec)
 
     Code
       cat(ord_code_paths(paths = list(colour = "aVar", id_var = "bVar", id_values = letters[
