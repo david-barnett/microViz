@@ -4,10 +4,10 @@
       ps
     Output
       phyloseq-class experiment-level object
-      otu_table()   OTU Table:         [ 88 taxa and 8 samples ]
-      sample_data() Sample Data:       [ 8 samples by 11 sample variables ]
-      tax_table()   Taxonomy Table:    [ 88 taxa by 6 taxonomic ranks ]
-      phy_tree()    Phylogenetic Tree: [ 88 tips and 87 internal nodes ]
+      otu_table()   OTU Table:         [ 70 taxa and 5 samples ]
+      sample_data() Sample Data:       [ 5 samples by 11 sample variables ]
+      tax_table()   Taxonomy Table:    [ 70 taxa by 6 taxonomic ranks ]
+      phy_tree()    Phylogenetic Tree: [ 70 tips and 69 internal nodes ]
 
 ---
 
@@ -26,6 +26,6 @@
     Code
       phyloseq::sample_names(ps)
     Output
-      [1] "B01042_ba_10"    "SID513122_ba_10" "SID515126_ba_10" "SID521130_ba_10"
-      [5] "SID604136_ba_10" "SID606141_ba_10" "BBS0007_ba_10"   "BBS0008_ba_10"  
+      [1] "SID513122_ba_10" "SID515126_ba_10" "SID521130_ba_10" "SID604136_ba_10"
+      [5] "SID606141_ba_10"
 
