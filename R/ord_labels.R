@@ -158,7 +158,6 @@ ord_labels <- function(p,
 textAngleCalc <- function(xvec, yvec,
                           max = 90, ratio = 1,
                           perpendicular = FALSE) {
-
   if (!is.numeric(xvec)) rlang::abort("xvec must be a numeric vector")
   if (!is.numeric(yvec)) rlang::abort("yvec must be a numeric vector")
 

@@ -124,11 +124,11 @@ test_that("taxatree_plotkey produces same results before and after stats", {
   #
   expect_equal(p1Data, p2bData)
   expect_equal(p1Data[, colnames(p1Data) != "label"], p3bData)
-  expect_equal(p1Data[-1,], p4Data[-1,]) # root node is NA label
-  expect_equal(p1Data[-1,], p5Data[-1,]) # root node is NA label
+  expect_equal(p1Data[-1, ], p4Data[-1, ]) # root node is NA label
+  expect_equal(p1Data[-1, ], p5Data[-1, ]) # root node is NA label
 
   # ranks dropped --> replaced kingdom with root (in parent)
-  expect_equal(dplyr::select(p2aData[-1,], !parent), dplyr::select(p2bData[-1,], !parent))
+  expect_equal(dplyr::select(p2aData[-1, ], !parent), dplyr::select(p2bData[-1, ], !parent))
   expect_equal(p2aData[, colnames(p2aData) != "label"], p3aData)
 
   skip_on_os("windows") # igraph algorithm layout results slightly differ on windows?

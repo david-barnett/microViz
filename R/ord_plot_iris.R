@@ -176,7 +176,7 @@ ord_plot_iris <- function(data,
                           count_warn = TRUE,
                           ...) {
   check_is_phyloseq(data, argName = "data")
-  rlang::arg_match(ord_plot, values = c('none', 'list', 'below', 'above'))
+  rlang::arg_match(ord_plot, values = c("none", "list", "below", "above"))
   if (!identical(ord_plot, "none")) {
     ord_p <- ord_plot(
       data = data, axes = axes, taxon_renamer = taxon_renamer, center = TRUE,
@@ -285,10 +285,9 @@ ord_plot_iris <- function(data,
     return(plots)
   } else {
     rlang::check_installed(
-      "patchwork", reason = "to place `ord_plot` 'above' or 'below'"
+      pkg = "patchwork", reason = "to place `ord_plot` 'above' or 'below'"
     )
     if (ord_plot == "above") plots <- plots[2:1] # flip order
     return(patchwork::wrap_plots(plots, ncol = 1))
   }
-
 }

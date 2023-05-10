@@ -181,7 +181,6 @@ tax_fix_interactive <- function(data,
   )
 
   server <- function(input, output, session) {
-
     # set highlighted row choices server side (better performance on big data)
     shiny::updateSelectizeInput(
       session = session,

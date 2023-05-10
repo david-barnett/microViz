@@ -117,7 +117,6 @@ tax_sort <- function(data,
                      verbose = TRUE,
                      trans = "identity",
                      use_counts = TRUE) {
-
   # checks, and get phyloseq--------------------------------------------------
   stopifnot(rlang::is_bool(use_counts))
   stopifnot(rlang::is_bool(tree_warn))

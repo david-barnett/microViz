@@ -69,7 +69,6 @@ ps_calc_dominant <- function(ps,
                              var = paste("dominant", rank, sep = "_"),
                              none = "none",
                              other = "other") {
-
   # get count phyloseq if psExtra
   ps <- ps_counts(data = ps)
 
@@ -110,7 +109,6 @@ ps_calc_dominant <- function(ps,
 # test if samples in otu_table count as "dominated" by comparing to threshold
 # minimum proportion, which their most abundant taxon must reach/exceed
 isDominated <- function(data, threshold) {
-
   # get otu table with taxa as cols
   otu <- otu_get(data = data)
 
@@ -128,7 +126,6 @@ isDominated <- function(data, threshold) {
 
 # get name of most abundant taxon from otu_table (taxa as columns)
 getTopTaxon <- function(data) {
-
   # get otu table with taxa as cols
   otu <- otu_get(data = data)
 
@@ -145,7 +142,6 @@ getTopTaxon <- function(data) {
 # replace least frequently dominant taxa names with "other",
 # if there are more than n_max different dominant taxa (not including "none")
 aggregateExcessAsOther <- function(topTaxonName, n_max, none, other) {
-
   # table of dominant taxa, sorted by number of times they are dominant
   dominantTaxaTable <- sort(
     x = table(topTaxonName[topTaxonName != none]), decreasing = TRUE

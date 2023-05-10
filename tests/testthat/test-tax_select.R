@@ -1,4 +1,3 @@
-
 data("dietswap", package = "microbiome")
 pS <- dietswap
 
@@ -52,4 +51,3 @@ test_that("tax_select throws error on non-logical strict_matches or deselect inp
     regexp = "strict_matches and deselect must be logical values"
   )
 })
-

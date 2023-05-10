@@ -1,4 +1,3 @@
-
 test_that("tax_top works", {
   local_edition(3)
   data("enterotype", package = "phyloseq")

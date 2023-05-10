@@ -1,4 +1,3 @@
-
 test_that("scale values are as expected", {
   s <- scale_shape_girafe_filled()
   expect_equal(

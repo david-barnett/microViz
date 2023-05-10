@@ -137,7 +137,6 @@ psCheckTaxTable <- function(ps, verbose, min_tax_length, message_footer = NULL) 
 
 # check tax_table for uninformative entries
 ttCheck <- function(ps, min_tax_length) {
-
   # check tax_table except any "unique" column, likely made from taxa names
   ranks <- setdiff(phyloseq::rank_names(ps), "unique")
   tt <- phyloseq::tax_table(ps)[, ranks, drop = FALSE]

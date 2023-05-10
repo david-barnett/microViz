@@ -352,7 +352,6 @@ comp_barplotFixed <- function(ps, interactive,
                               tax_transform_for_plot, palette, taxon_renamer,
                               bar_width, bar_outline_colour, bar_outline_width,
                               label, x, facet_by, tax_level, ...) {
-
   # sample order was already fixed, so infer it from phyloseq
   sample_order <- unique(phyloseq::sample_names(ps))
   uniqueTaxaOrdered <- unique(phyloseq::tax_table(ps)[, "unique"])
@@ -507,7 +506,6 @@ checkFixedSampleOrder <- function(ps, sample_order) {
 
 # enforce max_taxa limit (avoids v.expensive plots in ord_explore)
 taxMaxEnforce <- function(ps, maxTaxa, otherName) {
-
   # aggregate the phyloseq at a high maximum number of displayable taxa
   phyloseq::tax_table(ps) <- tt_add_topN_var(
     tt = phyloseq::tax_table(ps), N = maxTaxa - 1,

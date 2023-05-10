@@ -127,7 +127,6 @@ tax_agg <- function(ps,
     # any sorting and/or creation of "top" rank is still done later
     ps_agg <- ps
   } else {
-
     # these elements don't make sense any more with aggregated taxa (ever?)
     ps@phy_tree <- NULL
     ps@refseq <- NULL

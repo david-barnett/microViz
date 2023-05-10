@@ -42,7 +42,6 @@
 #' psxDist %>% tax_scale()
 #' tax_scale(psxDist) %>% info_get()
 tax_scale <- function(data, center = TRUE, scale = TRUE, do = NA, keep_counts = TRUE) {
-
   # overwrite center and scale according to non-NA value of do arg, if given
   if (!identical(do, NA)) {
     stopifnot(do %in% c("both", "center", "scale", "neither"))
@@ -76,7 +75,6 @@ tax_scale <- function(data, center = TRUE, scale = TRUE, do = NA, keep_counts = 
 
   # check input data object class
   if (is(data, "psExtra")) {
-
     # check and update pre-existing info
     info <- info_get(data)
     if (length(info[["tax_scale"]]) > 0) {

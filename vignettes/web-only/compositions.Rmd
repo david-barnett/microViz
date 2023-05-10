@@ -606,7 +606,7 @@ ps <- shao19 %>%
 ps %>%
   ps_mutate(infant_age = factor(infant_age, levels = unique(infant_age))) %>%
   comp_barplot(
-    tax_level = "genus", sample_order = "asis", bar_width = 0.7, 
+    tax_level = "genus", sample_order = "asis", bar_width = 0.7,
     merge_other = FALSE, x = "infant_age" # x argument available since microViz 0.9.7
   ) +
   facet_wrap(
@@ -624,10 +624,11 @@ You can try to roughly sort subjects by their microbiome composition by seriatin
 
 ```{r, fig.height=6, fig.width=7}
 ps %>%
-  ps_seriate(rank = "genus") %>% 
+  ps_seriate(rank = "genus") %>%
   ps_mutate(
     family_id = factor(family_id, levels = unique(family_id)),
-    infant_age = factor(infant_age, levels = unique(infant_age))) %>%
+    infant_age = factor(infant_age, levels = unique(infant_age))
+  ) %>%
   comp_barplot(
     tax_level = "genus", sample_order = "asis", bar_width = 0.7,
     x = "infant_age" # x argument is available since microViz 0.9.7

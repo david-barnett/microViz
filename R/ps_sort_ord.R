@@ -85,7 +85,6 @@
 #'
 #' cordi %>% ord_plot(plot_taxa = 1:6, axes = 2:1)
 ps_sort_ord <- function(ps, ord, axes = 1:2, scaling = 2) {
-
   # get names of samples in order
   sortedSamples <- ord_order_samples(ord = ord, axes = axes, scaling = scaling)
 

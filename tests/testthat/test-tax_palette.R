@@ -1,4 +1,3 @@
-
 test_that("tax_palette throws appropriate errors", {
   ps <- tax_filter(corncob::ibd_phylo, min_prevalence = 10)
   ps <- tax_fix(ps)

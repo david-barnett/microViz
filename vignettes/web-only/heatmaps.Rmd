@@ -33,10 +33,10 @@ and fix the taxonomy of the rest. Also drop patients with unclassified
 IBD.
 
 ```{r}
-psq <- ibd_phylo %>% 
-  tax_mutate(Species = NULL) %>% 
-  tax_filter(min_prevalence = 5) %>% 
-  tax_fix() %>% 
+psq <- ibd_phylo %>%
+  tax_mutate(Species = NULL) %>%
+  tax_filter(min_prevalence = 5) %>%
+  tax_fix() %>%
   ps_filter(DiseaseState != "IBDundef")
 psq
 ```
@@ -53,8 +53,8 @@ In this example we use a "compositional" transformation, so the Class
 abundances are shown as proportions of each sample.
 
 ```{r, fig.height=2.5, fig.width=7, dpi=120}
-psq %>% 
-  tax_transform("compositional", rank = "Class") %>% 
+psq %>%
+  tax_transform("compositional", rank = "Class") %>%
   comp_heatmap()
 ```
 
@@ -63,16 +63,16 @@ like "clr" or "standardize". This is the default symmetrical palette but
 you can pick from many.
 
 ```{r, fig.height=4, fig.width=7, dpi=120}
-psq %>% 
-  tax_transform("clr", rank = "Family") %>% 
+psq %>%
+  tax_transform("clr", rank = "Family") %>%
   comp_heatmap(colors = heat_palette(sym = TRUE), name = "CLR")
 ```
 
 ### Annotating taxa
 
 ```{r, fig.height=2.5, fig.width=7, dpi=120}
-psq %>% 
-  tax_transform("compositional", rank = "Class") %>% 
+psq %>%
+  tax_transform("compositional", rank = "Class") %>%
   comp_heatmap(tax_anno = taxAnnotation(
     Prev. = anno_tax_prev(bar_width = 0.3, size = grid::unit(1, "cm"))
   ))
@@ -84,22 +84,23 @@ Positioning the heatmap legend at the bottom is possible. You can assign
 the heatmap to a name and then call `ComplexHeatmap`'s `draw` function.
 
 ```{r, fig.height=2.5, fig.width=7, dpi=120}
-heat <- psq %>% 
-  tax_transform("compositional", rank = "Class") %>% 
+heat <- psq %>%
+  tax_transform("compositional", rank = "Class") %>%
   comp_heatmap(
     tax_anno = taxAnnotation(
-      Prev. = anno_tax_prev(bar_width = 0.3, size = grid::unit(1, "cm"))),
+      Prev. = anno_tax_prev(bar_width = 0.3, size = grid::unit(1, "cm"))
+    ),
     heatmap_legend_param = list(
       at = 0:5 / 5,
-      direction = "horizontal", title_position = "leftcenter", 
+      direction = "horizontal", title_position = "leftcenter",
       legend_width = grid::unit(4, "cm"), grid_height = grid::unit(5, "mm")
-      )
+    )
   )
 
 ComplexHeatmap::draw(
-  object = heat, heatmap_legend_side = "bottom", 
+  object = heat, heatmap_legend_side = "bottom",
   adjust_annotation_extension = FALSE
-  )
+)
 ```
 
 
@@ -120,8 +121,8 @@ metadata are possible.
 cols <- distinct_palette(n = 3, add = NA)
 names(cols) <- unique(samdat_tbl(psq)$DiseaseState)
 
-psq %>% 
-  tax_transform("compositional", rank = "Class") %>% 
+psq %>%
+  tax_transform("compositional", rank = "Class") %>%
   comp_heatmap(
     tax_anno = taxAnnotation(
       Prev. = anno_tax_prev(bar_width = 0.3, size = grid::unit(1, "cm"))
@@ -131,7 +132,7 @@ psq %>%
       col = list(State1 = cols), border = FALSE,
       State2 = anno_sample_cat("DiseaseState", col = cols)
     )
-  ) 
+  )
 ```
 
 Let's try drawing equivalent categorical annotations by two methods.
@@ -144,9 +145,9 @@ every row with `row_split = 1:11`, which are both
 `ComplexHeatmap::Heatmap()` arguments.
 
 ```{r, fig.height=4, fig.width=7, dpi=120}
-psqC <- psq %>% tax_transform("compositional", rank = "Class") 
+psqC <- psq %>% tax_transform("compositional", rank = "Class")
 
-htmp <- psqC %>% 
+htmp <- psqC %>%
   comp_heatmap(
     grid_col = NA,
     cluster_rows = FALSE, row_title = NULL,
@@ -156,7 +157,7 @@ htmp <- psqC %>%
     ),
     sample_anno = sampleAnnotation(
       # method one
-      State1 = anno_sample("DiseaseState"), 
+      State1 = anno_sample("DiseaseState"),
       col = list(State1 = cols), border = TRUE,
       # method two
       State2 = anno_sample_cat(
@@ -164,7 +165,7 @@ htmp <- psqC %>%
         legend_title = "State2"
       )
     )
-  ) 
+  )
 htmp %>% ComplexHeatmap::draw(
   annotation_legend_list = attr(htmp, "AnnoLegends")
 )
@@ -177,10 +178,10 @@ You can also manually draw a legend with the convenience function
 ```{r, fig.height=0.5, fig.width=4, dpi=120}
 grid::grid.newpage()
 anno_cat_legend(
-  col = c("a level" = "red", "another level" = "blue", c = "white"), 
+  col = c("a level" = "red", "another level" = "blue", c = "white"),
   border = "black", gap = grid::unit(2, "cm"), ncol = 3
-) %>% 
-ComplexHeatmap::draw()
+) %>%
+  ComplexHeatmap::draw()
 ```
 
 
@@ -190,8 +191,8 @@ If you have fewer samples (and taxa) you might like to label the cells
 with their values. By default, the raw counts are shown.
 
 ```{r, fig.height=3, fig.width=7, dpi=120}
-psq %>% 
-  tax_transform("compositional", rank = "Class") %>% 
+psq %>%
+  tax_transform("compositional", rank = "Class") %>%
   comp_heatmap(samples = 1:15, numbers = heat_numbers())
 ```
 
@@ -200,8 +201,8 @@ setting `numbers_use_counts = FALSE`, and you can/should change the
 number of decimals shown too.
 
 ```{r, fig.height=3, fig.width=7, dpi=120}
-psq %>% 
-  tax_transform("compositional", rank = "Class") %>% 
+psq %>%
+  tax_transform("compositional", rank = "Class") %>%
   comp_heatmap(
     samples = 1:15, numbers_use_counts = FALSE,
     numbers = heat_numbers(decimals = 2)
@@ -212,11 +213,11 @@ The numbers can any transformation of counts, irrespective of what
 transformations were used for the colours, or seriation.
 
 ```{r, fig.height=3, fig.width=7, dpi=120}
-psq %>% 
-  tax_transform("binary", undetected = 0, rank = "Class") %>% 
+psq %>%
+  tax_transform("binary", undetected = 0, rank = "Class") %>%
   comp_heatmap(
-    samples = 1:15, numbers_use_counts = TRUE, numbers_trans = "compositional", 
-    numbers = heat_numbers(decimals = 2, col = "white"), 
+    samples = 1:15, numbers_use_counts = TRUE, numbers_trans = "compositional",
+    numbers = heat_numbers(decimals = 2, col = "white"),
     show_heatmap_legend = FALSE
   )
 ```
@@ -228,14 +229,14 @@ values used for the numbers transformation, not the colours, which are
 just presence/absence!
 
 ```{r, fig.height=3, fig.width=7, dpi=120}
-psq %>% 
-  tax_transform("binary", undetected = 0, rank = "Class") %>% 
+psq %>%
+  tax_transform("binary", undetected = 0, rank = "Class") %>%
   comp_heatmap(
-    samples = 1:15, 
+    samples = 1:15,
     sample_ser_counts = TRUE, sample_ser_trans = "compositional",
     tax_ser_counts = TRUE, tax_ser_trans = "compositional",
-    numbers_use_counts = TRUE, numbers_trans = "compositional", 
-    numbers = heat_numbers(decimals = 2, col = "white"), 
+    numbers_use_counts = TRUE, numbers_trans = "compositional",
+    numbers = heat_numbers(decimals = 2, col = "white"),
     show_heatmap_legend = FALSE
   )
 ```
@@ -250,18 +251,18 @@ Let's make some fake numeric variables to exemplify this.
 
 ```{r}
 set.seed(111) # ensures making same random variables every time!
-psq <- psq %>% 
-  ps_arrange(ibd) %>% 
+psq <- psq %>%
+  ps_arrange(ibd) %>%
   ps_mutate(
     var1 = rnorm(nsamples(psq), mean = 10, sd = 3),
     var2 = c(
-      rnorm(nsamples(psq)*0.75, mean = 4, sd = 2),
-      rnorm(1 + nsamples(psq)/4, mean = 9, sd = 3)
-      ),
+      rnorm(nsamples(psq) * 0.75, mean = 4, sd = 2),
+      rnorm(1 + nsamples(psq) / 4, mean = 9, sd = 3)
+    ),
     var3 = runif(nsamples(psq), 2, 10),
     var4 = rnorm(nsamples(psq), mean = 100 + nsamples(psq):0, sd = 20) / 20,
     var5 = rnorm(nsamples(psq), mean = 5, sd = 2),
-    var6 = rnbinom(nsamples(psq), size = 1:75/10, mu = 5)
+    var6 = rnbinom(nsamples(psq), size = 1:75 / 10, mu = 5)
   )
 ```
 
@@ -271,8 +272,8 @@ By default, the `cor_heatmap` function will correlate all taxa to all
 numerical sample data, using pearson correlation method.
 
 ```{r, fig.width=7, dpi=120}
-psq %>% 
-  tax_agg("Family") %>% 
+psq %>%
+  tax_agg("Family") %>%
   cor_heatmap(vars = c("var1", "var2", "var3", "var4", "var5", "var6"))
 ```
 
@@ -283,8 +284,8 @@ maximum count, just to make these tutorial figures a little more
 compact!
 
 ```{r, fig.width=7, fig.height=3, dpi=120}
-psq %>% 
-  tax_agg("Family") %>% 
+psq %>%
+  tax_agg("Family") %>%
   cor_heatmap(
     taxa = tax_top(psq, 15, by = max, rank = "Family"),
     vars = paste0("var", 1:6), cor = "spearman"
@@ -301,9 +302,9 @@ on the same scale, as by default the annotation functions extract the
 stored counts data from the psExtra input, not the transformed data.*
 
 ```{r, fig.width=7, fig.height=3, dpi=120}
-psq %>% 
-  tax_agg("Family") %>% 
-  tax_transform("clr", zero_replace = "halfmin") %>% 
+psq %>%
+  tax_agg("Family") %>%
+  tax_transform("clr", zero_replace = "halfmin") %>%
   cor_heatmap(
     taxa = tax_top(psq, 15, by = max, rank = "Family"),
     vars = paste0("var", 1:6)
@@ -313,9 +314,9 @@ psq %>%
 Let's transform and scale the taxon abundances before correlating.
 
 ```{r, fig.width=7, fig.height=3, dpi=120}
-psq %>% 
-  tax_agg("Family") %>% 
-  tax_transform("clr", zero_replace = "halfmin") %>% 
+psq %>%
+  tax_agg("Family") %>%
+  tax_transform("clr", zero_replace = "halfmin") %>%
   cor_heatmap(
     taxa = tax_top(psq, 15, by = max, rank = "Family"),
     vars = paste0("var", 1:6)
@@ -331,13 +332,13 @@ You can transform the taxa for the abundance annotation. The `trans` and
 `zero_replace` arguments are sent to `tax_transform()`.
 
 ```{r, fig.width=7, fig.height=3, dpi=120}
-psq %>% 
-  tax_agg("Family") %>% 
+psq %>%
+  tax_agg("Family") %>%
   cor_heatmap(
     taxa = tax_top(psq, 15, by = max, rank = "Family"),
-    vars = paste0("var", 1:6), 
+    vars = paste0("var", 1:6),
     tax_anno = taxAnnotation(
-      Prev. = anno_tax_prev(ylim = 0:1), 
+      Prev. = anno_tax_prev(ylim = 0:1),
       Log10. = anno_tax_box(trans = "log10", zero_replace = "halfmin")
     )
   )
@@ -348,11 +349,11 @@ function, that takes a psExtra or phyloseq object, transforms it, and
 returns it.
 
 ```{r, fig.width=7, fig.height=3, dpi=120}
-psq %>% 
-  tax_agg("Family") %>% 
+psq %>%
+  tax_agg("Family") %>%
   cor_heatmap(
     taxa = tax_top(psq, 15, by = max, rank = "Family"),
-    vars = paste0("var", 1:6), 
+    vars = paste0("var", 1:6),
     tax_anno = taxAnnotation(
       Log2 = anno_tax_density(
         joyplot_scale = 2, gp = grid::gpar(fill = "black", alpha = 0.2),
@@ -361,9 +362,9 @@ psq %>%
       `prop Log2` = anno_tax_density(
         joyplot_scale = 1.5, gp = grid::gpar(fill = "black", alpha = 0.2),
         trans = function(ps) {
-          ps %>% 
-            tax_transform("compositional", zero_replace = 1) %>% 
-            tax_transform("log2", chain = TRUE) 
+          ps %>%
+            tax_transform("compositional", zero_replace = 1) %>%
+            tax_transform("log2", chain = TRUE)
         }
       )
     )
@@ -384,22 +385,22 @@ For zero-inflated microbiome data, showing prevalence and "abundance
 when detected" often seems like a more informative annotation.
 
 ```{r, fig.width=7, fig.height=3, dpi=120}
-psq %>% 
-  tax_agg("Family") %>% 
+psq %>%
+  tax_agg("Family") %>%
   cor_heatmap(
     taxa = tax_top(psq, 15, by = max, rank = "Family"),
-    vars = paste0("var", 1:6), 
+    vars = paste0("var", 1:6),
     tax_anno = taxAnnotation(
-      Prev. = anno_tax_prev(size = grid::unit(10, "mm"), ylim = 0:1), 
+      Prev. = anno_tax_prev(size = grid::unit(10, "mm"), ylim = 0:1),
       All = anno_tax_density(
         size = grid::unit(20, "mm"),
-        trans = "log10", zero_replace = 1, 
+        trans = "log10", zero_replace = 1,
         heatmap_colors = viridisLite::turbo(n = 15),
         type = "heatmap", only_detected = FALSE
       ),
       Default = anno_tax_density(
         size = grid::unit(20, "mm"),
-        trans = "log10", zero_replace = 1, 
+        trans = "log10", zero_replace = 1,
         heatmap_colors = viridisLite::turbo(n = 15),
         type = "heatmap", only_detected = TRUE
       )
@@ -417,16 +418,16 @@ ordering, so you can set `seriation_method_col = OLO_ward` to keep
 ordering.
 
 ```{r, fig.width=7, fig.height=3, dpi=120}
-psq %>% 
-  tax_agg("Family") %>% 
-  tax_sort(by = prev, at = "Family") %>% 
+psq %>%
+  tax_agg("Family") %>%
+  tax_sort(by = prev, at = "Family") %>%
   cor_heatmap(
     seriation_method = "Identity",
     seriation_method_col = "OLO_ward",
     taxa = tax_top(psq, 15, by = max, rank = "Family"),
-    vars = paste0("var", 1:6), 
+    vars = paste0("var", 1:6),
     tax_anno = taxAnnotation(
-      Prev. = anno_tax_prev(ylim = 0:1), 
+      Prev. = anno_tax_prev(ylim = 0:1),
       CLR = anno_tax_box(trans = "clr", zero_replace = "halfmin")
     )
   )
@@ -438,9 +439,9 @@ You can easily put the taxa annotations on another of the heatmap with
 e.g. `taxa_side = "left"`
 
 ```{r, fig.width=7, fig.height=3, dpi=120}
-psq %>% 
-  tax_agg("Family") %>% 
-  tax_sort(by = prev, at = "Family") %>% 
+psq %>%
+  tax_agg("Family") %>%
+  tax_sort(by = prev, at = "Family") %>%
   cor_heatmap(
     seriation_method = "Identity",
     seriation_method_col = "OLO_ward",
@@ -448,7 +449,7 @@ psq %>%
     taxa = tax_top(psq, 15, by = max, rank = "Family"),
     vars = paste0("var", 1:6),
     tax_anno = taxAnnotation(
-      Prev. = anno_tax_prev(ylim = 0:1), 
+      Prev. = anno_tax_prev(ylim = 0:1),
       CLR = anno_tax_box(trans = "clr", zero_replace = "halfmin")
     )
   )
@@ -458,17 +459,17 @@ Or on the top or bottom is also possible, this will rotate the heatmap.
 Remember to swap the seriation method arguments around!
 
 ```{r, fig.width=5, fig.height=4, dpi=120}
-psq %>% 
-  tax_agg("Family") %>% 
-  tax_sort(by = prev, at = "Family") %>% 
+psq %>%
+  tax_agg("Family") %>%
+  tax_sort(by = prev, at = "Family") %>%
   cor_heatmap(
-    seriation_method_col = "Identity", #swapped!
-    seriation_method = "OLO_ward", #swapped!
+    seriation_method_col = "Identity", # swapped!
+    seriation_method = "OLO_ward", # swapped!
     taxa_side = "top",
     taxa = tax_top(psq, 15, by = max, rank = "Family"),
     vars = paste0("var", 1:6),
     tax_anno = taxAnnotation(
-      Prev. = anno_tax_prev(ylim = 0:1), 
+      Prev. = anno_tax_prev(ylim = 0:1),
       CLR = anno_tax_box(trans = "clr", zero_replace = "halfmin")
     )
   )
@@ -479,11 +480,11 @@ psq %>%
 As well as annotating the taxa, you can also annotate the variables.
 
 ```{r, fig.width=6, fig.height=6, dpi=120}
-psq %>% 
-  tax_agg("Family") %>% 
+psq %>%
+  tax_agg("Family") %>%
   cor_heatmap(
     taxa = tax_top(psq, 15, by = max, rank = "Family"),
-    vars = paste0("var", 1:6), 
+    vars = paste0("var", 1:6),
     var_anno = varAnnotation(
       Value = anno_var_box(),
       Zscore = anno_var_density(fun = scale, type = "violin")
@@ -505,7 +506,7 @@ Transform data and customise only labels.
 ```{r, fig.height=2.5, fig.width=8, dpi=120}
 psq %>%
   tax_transform("compositional", rank = "Class") %>%
-  tax_transform("log10", zero_replace = "halfmin", chain = TRUE) %>% 
+  tax_transform("log10", zero_replace = "halfmin", chain = TRUE) %>%
   comp_heatmap(
     tax_anno = taxAnnotation(
       Prev. = anno_tax_prev(bar_width = 0.3, size = grid::unit(1, "cm"))

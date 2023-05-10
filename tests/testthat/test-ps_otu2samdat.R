@@ -1,4 +1,3 @@
-
 test_that("ps_otu2samdat works as expected", {
   data("shao19")
   taxnames <- phyloseq::taxa_names(shao19)

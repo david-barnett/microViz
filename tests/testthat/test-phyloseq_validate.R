@@ -1,4 +1,3 @@
-
 data(dietswap, package = "microbiome")
 
 test_that("phyloseq_validate warns about removing all zero taxa", {

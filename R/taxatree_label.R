@@ -49,7 +49,6 @@ taxatree_label <- function(data,
                            ...,
                            .label_var = "label",
                            .node_fun = list(prevalence = prev)) {
-
   # get node data or use node data if already provided
   if (inherits(.node_fun, "data.frame")) {
     treeNodes <- .node_fun

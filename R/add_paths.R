@@ -47,7 +47,6 @@ add_paths <- function(ggplot, id_var, id_values,
                       mapping = NULL,
                       arrow = grid::arrow(length = grid::unit(2, units = "mm")),
                       ...) {
-
   # add group mapping
   mapping <- c(ggplot2::aes(group = .data[[id_var]]), mapping)
   class(mapping) <- "uneval" # so ggplot accepts this modified mapping

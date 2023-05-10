@@ -34,7 +34,7 @@ The creator of phyloseq, [Paul J. McMurdie](https://github.com/joey711), explain
 Don't worry too much about getting all of your sample metadata into your biom file or phyloseq object at the start, as `ps_join()` makes it easy to add sample data later.
 
 ```{r example data}
-# This tutorial will just use some example data 
+# This tutorial will just use some example data
 # It is already available as a phyloseq object from the corncob package
 example_ps <- corncob::ibd_phylo
 example_ps
@@ -47,7 +47,6 @@ phyloseq checks that your sample and taxa names are consistent across the differ
 ```{r validate ps}
 example_ps <- phyloseq_validate(example_ps, remove_undetected = TRUE)
 example_ps <- tax_fix(example_ps)
-
 ```
 
 ## microViz and phyloseq overview
@@ -82,7 +81,7 @@ Lets look at the sample data already in our example phyloseq.
 
 ```{r example data tbl}
 # 91 samples, with 15 sample_data variables
-example_ps 
+example_ps
 # return sample data as a tibble for pretty printing
 samdat_tbl(example_ps)
 ```
@@ -97,7 +96,7 @@ example_ps %>% ps_filter(ibd == "ibd") # it is essential to use `==` , not just 
 More complicated filtering rules can be applied. Let's say you want female IBD patients with "mild" or "severe" activity, who are at least 13 years old.
 
 ```{r select ibd 2}
-partial_ps <- example_ps %>% 
+partial_ps <- example_ps %>%
   ps_filter(
     gender == "female",
     activity %in% c("mild", "severe"),
@@ -109,8 +108,8 @@ partial_ps
 Let's have a look at the sample data of these participants. We will also arrange the samples grouped by disease and in descending age order, and select only a few interesting variables to show.
 
 ```{r arrange and select}
-partial_ps %>% 
-  ps_arrange(DiseaseState, desc(age)) %>% 
+partial_ps %>%
+  ps_arrange(DiseaseState, desc(age)) %>%
   ps_select(DiseaseState, age, matches("activ"), abx) %>% # selection order is respected
   samdat_tbl() # this adds the .sample_name variable
 ```
@@ -118,31 +117,30 @@ partial_ps %>%
 You can also sort sample by microbiome similarity with `ps_seriate()`.
 
 ```{r}
-partial_ps %>% 
-  tax_agg("Genus") %>% 
+partial_ps %>%
+  tax_agg("Genus") %>%
   ps_seriate(dist = "bray", method = "OLO_ward") %>% # these are the defaults
   comp_barplot(tax_level = "Genus", sample_order = "asis", n_taxa = 10)
-# note that comp_barplot with sample_order = "bray" will run 
+# note that comp_barplot with sample_order = "bray" will run
 # this ps_seriate call internally, so you don't have to!
-
 ```
 
 You can also arrange samples by abundance of one of more microbes using `ps_arrange()` with `.target = "otu_table"`. Arranging by taxon can only be done at the current taxonomic rank, so we will aggregate to Genus level first.
 
 ```{r}
 # Arranging by decreasing Bacteroides abundance
-partial_ps %>% 
-  tax_agg("Genus") %>% 
-  ps_arrange(desc(Bacteroides), .target = "otu_table") %>% 
+partial_ps %>%
+  tax_agg("Genus") %>%
+  ps_arrange(desc(Bacteroides), .target = "otu_table") %>%
   otu_get() %>% # get the otu table
   .[, 1:6] # show only a subset of the otu_table
 
 # Plot samples' compositions in this order
-partial_ps %>% 
-  tax_agg("Genus") %>% 
-  ps_arrange(desc(Bacteroides), .target = "otu_table") %>% 
+partial_ps %>%
+  tax_agg("Genus") %>%
+  ps_arrange(desc(Bacteroides), .target = "otu_table") %>%
   comp_barplot(tax_level = "Genus", sample_order = "asis", n_taxa = 10)
-# Notice this is sorted by bacteroides counts 
+# Notice this is sorted by bacteroides counts
 # (this doesn't quite match relative abundance % due to sequencing depth variation)
 ```
 

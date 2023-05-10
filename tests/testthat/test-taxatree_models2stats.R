@@ -1,4 +1,3 @@
-
 test_that("tax_models2stats works", {
   local_edition(3)
 
@@ -17,7 +16,7 @@ test_that("tax_models2stats works", {
 
   # simple linear model
   lmBirthweight_psx <- psx %>%
-    tax_model(rank = "class", variables = "birth_weight", verbose = FALSE)  %>%
+    tax_model(rank = "class", variables = "birth_weight", verbose = FALSE) %>%
     tax_models2stats(.keep_models = TRUE)
 
   expect_s4_class(lmBirthweight_psx, "psExtra")
@@ -45,7 +44,7 @@ test_that("tax_models2stats works", {
     tax_model(
       rank = "phylum", variables = list("birth_mode", "sex"), verbose = FALSE,
       type = wilcox.test, exact = FALSE # exact passed to wilcox.test
-    )  %>%
+    ) %>%
     tax_models2stats(.keep_models = TRUE)
 
   expect_s4_class(wilcox2_psx, "psExtra")
@@ -61,7 +60,4 @@ test_that("tax_models2stats works", {
       tax_stats_get() %>%
       dplyr::mutate(dplyr::across(where(is.numeric), ~ round(., digits = 8)))
   )
-
 })
-
-
