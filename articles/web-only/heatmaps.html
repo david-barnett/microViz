@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.9</span>
       </span>
     </div>
 
@@ -161,7 +161,7 @@ microbial composition heatmaps with microViz.</p>
 <span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://dx.plos.org/10.1371/journal.pone.0061217" class="external-link">phyloseq</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://david-barnett.github.io/microViz">microViz</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;">microViz version 0.10.8 - Copyright (C) 2022 David Barnett</span></span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">microViz version 0.10.9 - Copyright (C) 2023 David Barnett</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Website: https://david-barnett.github.io/microViz</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Useful?  For citation details, run: `citation("microViz")`</span></span>
 <span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> Silence? `suppressPackageStartupMessages(library(microViz))`</span></span></code></pre></div>
@@ -178,10 +178,10 @@ disease patients and controls from the corncob package.</p>
 and fix the taxonomy of the rest. Also drop patients with unclassified
 IBD.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">psq</span> <span class="op">&lt;-</span> <span class="va">ibd_phylo</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_mutate.html">tax_mutate</a></span><span class="op">(</span>Species <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_fix.html">tax_fix</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">psq</span> <span class="op">&lt;-</span> <span class="va">ibd_phylo</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_mutate.html">tax_mutate</a></span><span class="op">(</span>Species <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_fix.html">tax_fix</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">DiseaseState</span> <span class="op">!=</span> <span class="st">"IBDundef"</span><span class="op">)</span></span>
 <span><span class="va">psq</span></span>
 <span><span class="co">#&gt; phyloseq-class experiment-level object</span></span>
@@ -199,8 +199,8 @@ distances on the transformed data</em>).</p>
 <p>In this example we use a “compositional” transformation, so the Class
 abundances are shown as proportions of each sample.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"compositional"</span>, rank <span class="op">=</span> <span class="st">"Class"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"compositional"</span>, rank <span class="op">=</span> <span class="st">"Class"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_heatmap.html">comp_heatmap</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Registered S3 method overwritten by 'seriation':</span></span>
 <span><span class="co">#&gt;   method         from </span></span>
@@ -210,16 +210,16 @@ abundances are shown as proportions of each sample.</p>
 transformations like “clr” or “standardize”. This is the default
 symmetrical palette but you can pick from many.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"clr"</span>, rank <span class="op">=</span> <span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"clr"</span>, rank <span class="op">=</span> <span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_heatmap.html">comp_heatmap</a></span><span class="op">(</span>colors <span class="op">=</span> <span class="fu"><a href="../../reference/heat_palette.html">heat_palette</a></span><span class="op">(</span>sym <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"CLR"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="heatmaps_files/figure-html/unnamed-chunk-5-1.png" width="840"></p>
 <div class="section level3">
 <h3 id="annotating-taxa">Annotating taxa<a class="anchor" aria-label="anchor" href="#annotating-taxa"></a>
 </h3>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"compositional"</span>, rank <span class="op">=</span> <span class="st">"Class"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"compositional"</span>, rank <span class="op">=</span> <span class="st">"Class"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_heatmap.html">comp_heatmap</a></span><span class="op">(</span>tax_anno <span class="op">=</span> <span class="fu"><a href="../../reference/taxAnnotation.html">taxAnnotation</a></span><span class="op">(</span></span>
 <span>    Prev. <span class="op">=</span> <span class="fu"><a href="../../reference/anno_tax_prev.html">anno_tax_prev</a></span><span class="op">(</span>bar_width <span class="op">=</span> <span class="fl">0.3</span>, size <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">1</span>, <span class="st">"cm"</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -232,22 +232,23 @@ symmetrical palette but you can pick from many.</p>
 assign the heatmap to a name and then call <code>ComplexHeatmap</code>’s
 <code>draw</code> function.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">heat</span> <span class="op">&lt;-</span> <span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"compositional"</span>, rank <span class="op">=</span> <span class="st">"Class"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">heat</span> <span class="op">&lt;-</span> <span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"compositional"</span>, rank <span class="op">=</span> <span class="st">"Class"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_heatmap.html">comp_heatmap</a></span><span class="op">(</span></span>
 <span>    tax_anno <span class="op">=</span> <span class="fu"><a href="../../reference/taxAnnotation.html">taxAnnotation</a></span><span class="op">(</span></span>
-<span>      Prev. <span class="op">=</span> <span class="fu"><a href="../../reference/anno_tax_prev.html">anno_tax_prev</a></span><span class="op">(</span>bar_width <span class="op">=</span> <span class="fl">0.3</span>, size <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">1</span>, <span class="st">"cm"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>      Prev. <span class="op">=</span> <span class="fu"><a href="../../reference/anno_tax_prev.html">anno_tax_prev</a></span><span class="op">(</span>bar_width <span class="op">=</span> <span class="fl">0.3</span>, size <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">1</span>, <span class="st">"cm"</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
 <span>    heatmap_legend_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>      at <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">5</span> <span class="op">/</span> <span class="fl">5</span>,</span>
-<span>      direction <span class="op">=</span> <span class="st">"horizontal"</span>, title_position <span class="op">=</span> <span class="st">"leftcenter"</span>, </span>
+<span>      direction <span class="op">=</span> <span class="st">"horizontal"</span>, title_position <span class="op">=</span> <span class="st">"leftcenter"</span>,</span>
 <span>      legend_width <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">4</span>, <span class="st">"cm"</span><span class="op">)</span>, grid_height <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">5</span>, <span class="st">"mm"</span><span class="op">)</span></span>
-<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="fu">ComplexHeatmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html" class="external-link">draw</a></span><span class="op">(</span></span>
-<span>  object <span class="op">=</span> <span class="va">heat</span>, heatmap_legend_side <span class="op">=</span> <span class="st">"bottom"</span>, </span>
+<span>  object <span class="op">=</span> <span class="va">heat</span>, heatmap_legend_side <span class="op">=</span> <span class="st">"bottom"</span>,</span>
 <span>  adjust_annotation_extension <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span>  <span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="heatmaps_files/figure-html/unnamed-chunk-7-1.png" width="840"></p>
 </div>
 <div class="section level3">
@@ -268,8 +269,8 @@ requires an extra step to draw a legend</p></li>
 <code class="sourceCode R"><span><span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/distinct_palette.html">distinct_palette</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">3</span>, add <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">cols</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu"><a href="../../reference/psExtra-accessors.html">samdat_tbl</a></span><span class="op">(</span><span class="va">psq</span><span class="op">)</span><span class="op">$</span><span class="va">DiseaseState</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"compositional"</span>, rank <span class="op">=</span> <span class="st">"Class"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"compositional"</span>, rank <span class="op">=</span> <span class="st">"Class"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_heatmap.html">comp_heatmap</a></span><span class="op">(</span></span>
 <span>    tax_anno <span class="op">=</span> <span class="fu"><a href="../../reference/taxAnnotation.html">taxAnnotation</a></span><span class="op">(</span></span>
 <span>      Prev. <span class="op">=</span> <span class="fu"><a href="../../reference/anno_tax_prev.html">anno_tax_prev</a></span><span class="op">(</span>bar_width <span class="op">=</span> <span class="fl">0.3</span>, size <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">1</span>, <span class="st">"cm"</span><span class="op">)</span><span class="op">)</span></span>
@@ -279,7 +280,7 @@ requires an extra step to draw a legend</p></li>
 <span>      col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>State1 <span class="op">=</span> <span class="va">cols</span><span class="op">)</span>, border <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>      State2 <span class="op">=</span> <span class="fu"><a href="../../reference/anno_sample_cat.html">anno_sample_cat</a></span><span class="op">(</span><span class="st">"DiseaseState"</span>, col <span class="op">=</span> <span class="va">cols</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
-<span>  <span class="op">)</span> </span></code></pre></div>
+<span>  <span class="op">)</span></span></code></pre></div>
 <p><img src="heatmaps_files/figure-html/unnamed-chunk-8-1.png" width="840"></p>
 <p>Let’s try drawing equivalent categorical annotations by two methods.
 Both methods can draw annotations with borders and no individual boxes.
@@ -290,9 +291,9 @@ This style suits heatmaps with no gridlines
 splitting at every row with <code>row_split = 1:11</code>, which are
 both <code><a href="https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html" class="external-link">ComplexHeatmap::Heatmap()</a></code> arguments.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">psqC</span> <span class="op">&lt;-</span> <span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"compositional"</span>, rank <span class="op">=</span> <span class="st">"Class"</span><span class="op">)</span> </span>
+<code class="sourceCode R"><span><span class="va">psqC</span> <span class="op">&lt;-</span> <span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"compositional"</span>, rank <span class="op">=</span> <span class="st">"Class"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">htmp</span> <span class="op">&lt;-</span> <span class="va">psqC</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<span><span class="va">htmp</span> <span class="op">&lt;-</span> <span class="va">psqC</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_heatmap.html">comp_heatmap</a></span><span class="op">(</span></span>
 <span>    grid_col <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>    cluster_rows <span class="op">=</span> <span class="cn">FALSE</span>, row_title <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -302,7 +303,7 @@ both <code><a href="https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html" class="
 <span>    <span class="op">)</span>,</span>
 <span>    sample_anno <span class="op">=</span> <span class="fu"><a href="../../reference/sampleAnnotation.html">sampleAnnotation</a></span><span class="op">(</span></span>
 <span>      <span class="co"># method one</span></span>
-<span>      State1 <span class="op">=</span> <span class="fu"><a href="../../reference/anno_sample.html">anno_sample</a></span><span class="op">(</span><span class="st">"DiseaseState"</span><span class="op">)</span>, </span>
+<span>      State1 <span class="op">=</span> <span class="fu"><a href="../../reference/anno_sample.html">anno_sample</a></span><span class="op">(</span><span class="st">"DiseaseState"</span><span class="op">)</span>,</span>
 <span>      col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>State1 <span class="op">=</span> <span class="va">cols</span><span class="op">)</span>, border <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>      <span class="co"># method two</span></span>
 <span>      State2 <span class="op">=</span> <span class="fu"><a href="../../reference/anno_sample_cat.html">anno_sample_cat</a></span><span class="op">(</span></span>
@@ -310,7 +311,7 @@ both <code><a href="https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html" class="
 <span>        legend_title <span class="op">=</span> <span class="st">"State2"</span></span>
 <span>      <span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
-<span>  <span class="op">)</span> </span>
+<span>  <span class="op">)</span></span>
 <span><span class="va">htmp</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu">ComplexHeatmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html" class="external-link">draw</a></span><span class="op">(</span></span>
 <span>  annotation_legend_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">htmp</span>, <span class="st">"AnnoLegends"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -320,10 +321,10 @@ both <code><a href="https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html" class="
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/grid.newpage.html" class="external-link">grid.newpage</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../../reference/anno_cat_legend.html">anno_cat_legend</a></span><span class="op">(</span></span>
-<span>  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a level"</span> <span class="op">=</span> <span class="st">"red"</span>, <span class="st">"another level"</span> <span class="op">=</span> <span class="st">"blue"</span>, c <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span>, </span>
+<span>  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a level"</span> <span class="op">=</span> <span class="st">"red"</span>, <span class="st">"another level"</span> <span class="op">=</span> <span class="st">"blue"</span>, c <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span>,</span>
 <span>  border <span class="op">=</span> <span class="st">"black"</span>, gap <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">2</span>, <span class="st">"cm"</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">3</span></span>
-<span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span><span class="fu">ComplexHeatmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html" class="external-link">draw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">ComplexHeatmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html" class="external-link">draw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="heatmaps_files/figure-html/unnamed-chunk-10-1.png" width="480"></p>
 </div>
 </div>
@@ -333,16 +334,16 @@ both <code><a href="https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html" class="
 <p>If you have fewer samples (and taxa) you might like to label the
 cells with their values. By default, the raw counts are shown.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"compositional"</span>, rank <span class="op">=</span> <span class="st">"Class"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"compositional"</span>, rank <span class="op">=</span> <span class="st">"Class"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_heatmap.html">comp_heatmap</a></span><span class="op">(</span>samples <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">15</span>, numbers <span class="op">=</span> <span class="fu"><a href="../../reference/heat_numbers.html">heat_numbers</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="heatmaps_files/figure-html/unnamed-chunk-11-1.png" width="840"></p>
 <p>You can easily change to showing the same values as the colours by
 setting <code>numbers_use_counts = FALSE</code>, and you can/should
 change the number of decimals shown too.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"compositional"</span>, rank <span class="op">=</span> <span class="st">"Class"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"compositional"</span>, rank <span class="op">=</span> <span class="st">"Class"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_heatmap.html">comp_heatmap</a></span><span class="op">(</span></span>
 <span>    samples <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">15</span>, numbers_use_counts <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>    numbers <span class="op">=</span> <span class="fu"><a href="../../reference/heat_numbers.html">heat_numbers</a></span><span class="op">(</span>decimals <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
@@ -351,11 +352,11 @@ change the number of decimals shown too.</p>
 <p>The numbers can any transformation of counts, irrespective of what
 transformations were used for the colours, or seriation.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"binary"</span>, undetected <span class="op">=</span> <span class="fl">0</span>, rank <span class="op">=</span> <span class="st">"Class"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"binary"</span>, undetected <span class="op">=</span> <span class="fl">0</span>, rank <span class="op">=</span> <span class="st">"Class"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_heatmap.html">comp_heatmap</a></span><span class="op">(</span></span>
-<span>    samples <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">15</span>, numbers_use_counts <span class="op">=</span> <span class="cn">TRUE</span>, numbers_trans <span class="op">=</span> <span class="st">"compositional"</span>, </span>
-<span>    numbers <span class="op">=</span> <span class="fu"><a href="../../reference/heat_numbers.html">heat_numbers</a></span><span class="op">(</span>decimals <span class="op">=</span> <span class="fl">2</span>, col <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span>, </span>
+<span>    samples <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">15</span>, numbers_use_counts <span class="op">=</span> <span class="cn">TRUE</span>, numbers_trans <span class="op">=</span> <span class="st">"compositional"</span>,</span>
+<span>    numbers <span class="op">=</span> <span class="fu"><a href="../../reference/heat_numbers.html">heat_numbers</a></span><span class="op">(</span>decimals <span class="op">=</span> <span class="fl">2</span>, col <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span>,</span>
 <span>    show_heatmap_legend <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <p><img src="heatmaps_files/figure-html/unnamed-chunk-13-1.png" width="840"></p>
@@ -365,14 +366,14 @@ we specifies seriating the taxa and samples using the same numerical
 values used for the numbers transformation, not the colours, which are
 just presence/absence!</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"binary"</span>, undetected <span class="op">=</span> <span class="fl">0</span>, rank <span class="op">=</span> <span class="st">"Class"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"binary"</span>, undetected <span class="op">=</span> <span class="fl">0</span>, rank <span class="op">=</span> <span class="st">"Class"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_heatmap.html">comp_heatmap</a></span><span class="op">(</span></span>
-<span>    samples <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">15</span>, </span>
+<span>    samples <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">15</span>,</span>
 <span>    sample_ser_counts <span class="op">=</span> <span class="cn">TRUE</span>, sample_ser_trans <span class="op">=</span> <span class="st">"compositional"</span>,</span>
 <span>    tax_ser_counts <span class="op">=</span> <span class="cn">TRUE</span>, tax_ser_trans <span class="op">=</span> <span class="st">"compositional"</span>,</span>
-<span>    numbers_use_counts <span class="op">=</span> <span class="cn">TRUE</span>, numbers_trans <span class="op">=</span> <span class="st">"compositional"</span>, </span>
-<span>    numbers <span class="op">=</span> <span class="fu"><a href="../../reference/heat_numbers.html">heat_numbers</a></span><span class="op">(</span>decimals <span class="op">=</span> <span class="fl">2</span>, col <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span>, </span>
+<span>    numbers_use_counts <span class="op">=</span> <span class="cn">TRUE</span>, numbers_trans <span class="op">=</span> <span class="st">"compositional"</span>,</span>
+<span>    numbers <span class="op">=</span> <span class="fu"><a href="../../reference/heat_numbers.html">heat_numbers</a></span><span class="op">(</span>decimals <span class="op">=</span> <span class="fl">2</span>, col <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span>,</span>
 <span>    show_heatmap_legend <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <p><img src="heatmaps_files/figure-html/unnamed-chunk-14-1.png" width="840"></p>
@@ -387,18 +388,18 @@ microbial abundances and other metadata.</p>
 <p>Let’s make some fake numeric variables to exemplify this.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">111</span><span class="op">)</span> <span class="co"># ensures making same random variables every time!</span></span>
-<span><span class="va">psq</span> <span class="op">&lt;-</span> <span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/ps_arrange.html">ps_arrange</a></span><span class="op">(</span><span class="va">ibd</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<span><span class="va">psq</span> <span class="op">&lt;-</span> <span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/ps_arrange.html">ps_arrange</a></span><span class="op">(</span><span class="va">ibd</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/ps_mutate.html">ps_mutate</a></span><span class="op">(</span></span>
 <span>    var1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/nsamples-methods.html" class="external-link">nsamples</a></span><span class="op">(</span><span class="va">psq</span><span class="op">)</span>, mean <span class="op">=</span> <span class="fl">10</span>, sd <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span>
 <span>    var2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/nsamples-methods.html" class="external-link">nsamples</a></span><span class="op">(</span><span class="va">psq</span><span class="op">)</span><span class="op">*</span><span class="fl">0.75</span>, mean <span class="op">=</span> <span class="fl">4</span>, sd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/nsamples-methods.html" class="external-link">nsamples</a></span><span class="op">(</span><span class="va">psq</span><span class="op">)</span><span class="op">/</span><span class="fl">4</span>, mean <span class="op">=</span> <span class="fl">9</span>, sd <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
-<span>      <span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/nsamples-methods.html" class="external-link">nsamples</a></span><span class="op">(</span><span class="va">psq</span><span class="op">)</span> <span class="op">*</span> <span class="fl">0.75</span>, mean <span class="op">=</span> <span class="fl">4</span>, sd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/nsamples-methods.html" class="external-link">nsamples</a></span><span class="op">(</span><span class="va">psq</span><span class="op">)</span> <span class="op">/</span> <span class="fl">4</span>, mean <span class="op">=</span> <span class="fl">9</span>, sd <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
 <span>    var3 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/nsamples-methods.html" class="external-link">nsamples</a></span><span class="op">(</span><span class="va">psq</span><span class="op">)</span>, <span class="fl">2</span>, <span class="fl">10</span><span class="op">)</span>,</span>
 <span>    var4 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/nsamples-methods.html" class="external-link">nsamples</a></span><span class="op">(</span><span class="va">psq</span><span class="op">)</span>, mean <span class="op">=</span> <span class="fl">100</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/nsamples-methods.html" class="external-link">nsamples</a></span><span class="op">(</span><span class="va">psq</span><span class="op">)</span><span class="op">:</span><span class="fl">0</span>, sd <span class="op">=</span> <span class="fl">20</span><span class="op">)</span> <span class="op">/</span> <span class="fl">20</span>,</span>
 <span>    var5 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/nsamples-methods.html" class="external-link">nsamples</a></span><span class="op">(</span><span class="va">psq</span><span class="op">)</span>, mean <span class="op">=</span> <span class="fl">5</span>, sd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span>
-<span>    var6 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/NegBinomial.html" class="external-link">rnbinom</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/nsamples-methods.html" class="external-link">nsamples</a></span><span class="op">(</span><span class="va">psq</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">75</span><span class="op">/</span><span class="fl">10</span>, mu <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span>    var6 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/NegBinomial.html" class="external-link">rnbinom</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/nsamples-methods.html" class="external-link">nsamples</a></span><span class="op">(</span><span class="va">psq</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">75</span> <span class="op">/</span> <span class="fl">10</span>, mu <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="calculating-correlations">Calculating correlations<a class="anchor" aria-label="anchor" href="#calculating-correlations"></a>
@@ -406,8 +407,8 @@ microbial abundances and other metadata.</p>
 <p>By default, the <code>cor_heatmap</code> function will correlate all
 taxa to all numerical sample data, using pearson correlation method.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/cor_heatmap.html">cor_heatmap</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"var1"</span>, <span class="st">"var2"</span>, <span class="st">"var3"</span>, <span class="st">"var4"</span>, <span class="st">"var5"</span>, <span class="st">"var6"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="heatmaps_files/figure-html/unnamed-chunk-16-1.png" width="840"></p>
 <p>It’s easy to change to a different method, i.e. spearman’s rank
@@ -416,8 +417,8 @@ title. We will also specify to use only the 15 most abundant taxa, by
 maximum count, just to make these tutorial figures a little more
 compact!</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/cor_heatmap.html">cor_heatmap</a></span><span class="op">(</span></span>
 <span>    taxa <span class="op">=</span> <span class="fu"><a href="../../reference/tax_top.html">tax_top</a></span><span class="op">(</span><span class="va">psq</span>, <span class="fl">15</span>, by <span class="op">=</span> <span class="va">max</span>, rank <span class="op">=</span> <span class="st">"Family"</span><span class="op">)</span>,</span>
 <span>    vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"var"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>, cor <span class="op">=</span> <span class="st">"spearman"</span></span>
@@ -433,9 +434,9 @@ the annotations stay on the same scale, as by default the annotation
 functions extract the stored counts data from the psExtra input, not the
 transformed data.</em></p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"clr"</span>, zero_replace <span class="op">=</span> <span class="st">"halfmin"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"clr"</span>, zero_replace <span class="op">=</span> <span class="st">"halfmin"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/cor_heatmap.html">cor_heatmap</a></span><span class="op">(</span></span>
 <span>    taxa <span class="op">=</span> <span class="fu"><a href="../../reference/tax_top.html">tax_top</a></span><span class="op">(</span><span class="va">psq</span>, <span class="fl">15</span>, by <span class="op">=</span> <span class="va">max</span>, rank <span class="op">=</span> <span class="st">"Family"</span><span class="op">)</span>,</span>
 <span>    vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"var"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span></span>
@@ -444,9 +445,9 @@ transformed data.</em></p>
 <p>Let’s transform and scale the taxon abundances before
 correlating.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"clr"</span>, zero_replace <span class="op">=</span> <span class="st">"halfmin"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"clr"</span>, zero_replace <span class="op">=</span> <span class="st">"halfmin"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/cor_heatmap.html">cor_heatmap</a></span><span class="op">(</span></span>
 <span>    taxa <span class="op">=</span> <span class="fu"><a href="../../reference/tax_top.html">tax_top</a></span><span class="op">(</span><span class="va">psq</span>, <span class="fl">15</span>, by <span class="op">=</span> <span class="va">max</span>, rank <span class="op">=</span> <span class="st">"Family"</span><span class="op">)</span>,</span>
 <span>    vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"var"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span></span>
@@ -462,13 +463,13 @@ prevalence and relative abundance.</p>
 <code>trans</code> and <code>zero_replace</code> arguments are sent to
 <code><a href="../../reference/tax_transform.html">tax_transform()</a></code>.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/cor_heatmap.html">cor_heatmap</a></span><span class="op">(</span></span>
 <span>    taxa <span class="op">=</span> <span class="fu"><a href="../../reference/tax_top.html">tax_top</a></span><span class="op">(</span><span class="va">psq</span>, <span class="fl">15</span>, by <span class="op">=</span> <span class="va">max</span>, rank <span class="op">=</span> <span class="st">"Family"</span><span class="op">)</span>,</span>
-<span>    vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"var"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>, </span>
+<span>    vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"var"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>,</span>
 <span>    tax_anno <span class="op">=</span> <span class="fu"><a href="../../reference/taxAnnotation.html">taxAnnotation</a></span><span class="op">(</span></span>
-<span>      Prev. <span class="op">=</span> <span class="fu"><a href="../../reference/anno_tax_prev.html">anno_tax_prev</a></span><span class="op">(</span>ylim <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span>, </span>
+<span>      Prev. <span class="op">=</span> <span class="fu"><a href="../../reference/anno_tax_prev.html">anno_tax_prev</a></span><span class="op">(</span>ylim <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span>,</span>
 <span>      Log10. <span class="op">=</span> <span class="fu"><a href="../../reference/anno_tax_box.html">anno_tax_box</a></span><span class="op">(</span>trans <span class="op">=</span> <span class="st">"log10"</span>, zero_replace <span class="op">=</span> <span class="st">"halfmin"</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
@@ -477,11 +478,11 @@ prevalence and relative abundance.</p>
 function, that takes a psExtra or phyloseq object, transforms it, and
 returns it.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/cor_heatmap.html">cor_heatmap</a></span><span class="op">(</span></span>
 <span>    taxa <span class="op">=</span> <span class="fu"><a href="../../reference/tax_top.html">tax_top</a></span><span class="op">(</span><span class="va">psq</span>, <span class="fl">15</span>, by <span class="op">=</span> <span class="va">max</span>, rank <span class="op">=</span> <span class="st">"Family"</span><span class="op">)</span>,</span>
-<span>    vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"var"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>, </span>
+<span>    vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"var"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>,</span>
 <span>    tax_anno <span class="op">=</span> <span class="fu"><a href="../../reference/taxAnnotation.html">taxAnnotation</a></span><span class="op">(</span></span>
 <span>      Log2 <span class="op">=</span> <span class="fu"><a href="../../reference/anno_tax_density.html">anno_tax_density</a></span><span class="op">(</span></span>
 <span>        joyplot_scale <span class="op">=</span> <span class="fl">2</span>, gp <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/gpar.html" class="external-link">gpar</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"black"</span>, alpha <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span>,</span>
@@ -490,9 +491,9 @@ returns it.</p>
 <span>      `prop Log2` <span class="op">=</span> <span class="fu"><a href="../../reference/anno_tax_density.html">anno_tax_density</a></span><span class="op">(</span></span>
 <span>        joyplot_scale <span class="op">=</span> <span class="fl">1.5</span>, gp <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/gpar.html" class="external-link">gpar</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"black"</span>, alpha <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span>,</span>
 <span>        trans <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">ps</span><span class="op">)</span> <span class="op">{</span></span>
-<span>          <span class="va">ps</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>            <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"compositional"</span>, zero_replace <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>            <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"log2"</span>, chain <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> </span>
+<span>          <span class="va">ps</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>            <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"compositional"</span>, zero_replace <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>            <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"log2"</span>, chain <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span>        <span class="op">}</span></span>
 <span>      <span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
@@ -509,22 +510,22 @@ only distribution of values above the detection threshold.</p>
 <p>For zero-inflated microbiome data, showing prevalence and “abundance
 when detected” often seems like a more informative annotation.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/cor_heatmap.html">cor_heatmap</a></span><span class="op">(</span></span>
 <span>    taxa <span class="op">=</span> <span class="fu"><a href="../../reference/tax_top.html">tax_top</a></span><span class="op">(</span><span class="va">psq</span>, <span class="fl">15</span>, by <span class="op">=</span> <span class="va">max</span>, rank <span class="op">=</span> <span class="st">"Family"</span><span class="op">)</span>,</span>
-<span>    vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"var"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>, </span>
+<span>    vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"var"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>,</span>
 <span>    tax_anno <span class="op">=</span> <span class="fu"><a href="../../reference/taxAnnotation.html">taxAnnotation</a></span><span class="op">(</span></span>
-<span>      Prev. <span class="op">=</span> <span class="fu"><a href="../../reference/anno_tax_prev.html">anno_tax_prev</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">10</span>, <span class="st">"mm"</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span>, </span>
+<span>      Prev. <span class="op">=</span> <span class="fu"><a href="../../reference/anno_tax_prev.html">anno_tax_prev</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">10</span>, <span class="st">"mm"</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span>,</span>
 <span>      All <span class="op">=</span> <span class="fu"><a href="../../reference/anno_tax_density.html">anno_tax_density</a></span><span class="op">(</span></span>
 <span>        size <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">20</span>, <span class="st">"mm"</span><span class="op">)</span>,</span>
-<span>        trans <span class="op">=</span> <span class="st">"log10"</span>, zero_replace <span class="op">=</span> <span class="fl">1</span>, </span>
+<span>        trans <span class="op">=</span> <span class="st">"log10"</span>, zero_replace <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>        heatmap_colors <span class="op">=</span> <span class="fu">viridisLite</span><span class="fu">::</span><span class="fu"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">turbo</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">15</span><span class="op">)</span>,</span>
 <span>        type <span class="op">=</span> <span class="st">"heatmap"</span>, only_detected <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>      <span class="op">)</span>,</span>
 <span>      Default <span class="op">=</span> <span class="fu"><a href="../../reference/anno_tax_density.html">anno_tax_density</a></span><span class="op">(</span></span>
 <span>        size <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">20</span>, <span class="st">"mm"</span><span class="op">)</span>,</span>
-<span>        trans <span class="op">=</span> <span class="st">"log10"</span>, zero_replace <span class="op">=</span> <span class="fl">1</span>, </span>
+<span>        trans <span class="op">=</span> <span class="st">"log10"</span>, zero_replace <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>        heatmap_colors <span class="op">=</span> <span class="fu">viridisLite</span><span class="fu">::</span><span class="fu"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">turbo</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">15</span><span class="op">)</span>,</span>
 <span>        type <span class="op">=</span> <span class="st">"heatmap"</span>, only_detected <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span>      <span class="op">)</span></span>
@@ -541,16 +542,16 @@ ordering by using <code>seriation_method = "Identity"</code>. By default
 this also suppresses column ordering, so you can set
 <code>seriation_method_col = OLO_ward</code> to keep ordering.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_sort.html">tax_sort</a></span><span class="op">(</span>by <span class="op">=</span> <span class="va">prev</span>, at <span class="op">=</span> <span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_sort.html">tax_sort</a></span><span class="op">(</span>by <span class="op">=</span> <span class="va">prev</span>, at <span class="op">=</span> <span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/cor_heatmap.html">cor_heatmap</a></span><span class="op">(</span></span>
 <span>    seriation_method <span class="op">=</span> <span class="st">"Identity"</span>,</span>
 <span>    seriation_method_col <span class="op">=</span> <span class="st">"OLO_ward"</span>,</span>
 <span>    taxa <span class="op">=</span> <span class="fu"><a href="../../reference/tax_top.html">tax_top</a></span><span class="op">(</span><span class="va">psq</span>, <span class="fl">15</span>, by <span class="op">=</span> <span class="va">max</span>, rank <span class="op">=</span> <span class="st">"Family"</span><span class="op">)</span>,</span>
-<span>    vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"var"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>, </span>
+<span>    vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"var"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>,</span>
 <span>    tax_anno <span class="op">=</span> <span class="fu"><a href="../../reference/taxAnnotation.html">taxAnnotation</a></span><span class="op">(</span></span>
-<span>      Prev. <span class="op">=</span> <span class="fu"><a href="../../reference/anno_tax_prev.html">anno_tax_prev</a></span><span class="op">(</span>ylim <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span>, </span>
+<span>      Prev. <span class="op">=</span> <span class="fu"><a href="../../reference/anno_tax_prev.html">anno_tax_prev</a></span><span class="op">(</span>ylim <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span>,</span>
 <span>      CLR <span class="op">=</span> <span class="fu"><a href="../../reference/anno_tax_box.html">anno_tax_box</a></span><span class="op">(</span>trans <span class="op">=</span> <span class="st">"clr"</span>, zero_replace <span class="op">=</span> <span class="st">"halfmin"</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
@@ -562,9 +563,9 @@ this also suppresses column ordering, so you can set
 <p>You can easily put the taxa annotations on another of the heatmap
 with e.g. <code>taxa_side = "left"</code></p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_sort.html">tax_sort</a></span><span class="op">(</span>by <span class="op">=</span> <span class="va">prev</span>, at <span class="op">=</span> <span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_sort.html">tax_sort</a></span><span class="op">(</span>by <span class="op">=</span> <span class="va">prev</span>, at <span class="op">=</span> <span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/cor_heatmap.html">cor_heatmap</a></span><span class="op">(</span></span>
 <span>    seriation_method <span class="op">=</span> <span class="st">"Identity"</span>,</span>
 <span>    seriation_method_col <span class="op">=</span> <span class="st">"OLO_ward"</span>,</span>
@@ -572,7 +573,7 @@ with e.g. <code>taxa_side = "left"</code></p>
 <span>    taxa <span class="op">=</span> <span class="fu"><a href="../../reference/tax_top.html">tax_top</a></span><span class="op">(</span><span class="va">psq</span>, <span class="fl">15</span>, by <span class="op">=</span> <span class="va">max</span>, rank <span class="op">=</span> <span class="st">"Family"</span><span class="op">)</span>,</span>
 <span>    vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"var"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>,</span>
 <span>    tax_anno <span class="op">=</span> <span class="fu"><a href="../../reference/taxAnnotation.html">taxAnnotation</a></span><span class="op">(</span></span>
-<span>      Prev. <span class="op">=</span> <span class="fu"><a href="../../reference/anno_tax_prev.html">anno_tax_prev</a></span><span class="op">(</span>ylim <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span>, </span>
+<span>      Prev. <span class="op">=</span> <span class="fu"><a href="../../reference/anno_tax_prev.html">anno_tax_prev</a></span><span class="op">(</span>ylim <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span>,</span>
 <span>      CLR <span class="op">=</span> <span class="fu"><a href="../../reference/anno_tax_box.html">anno_tax_box</a></span><span class="op">(</span>trans <span class="op">=</span> <span class="st">"clr"</span>, zero_replace <span class="op">=</span> <span class="st">"halfmin"</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
@@ -580,17 +581,17 @@ with e.g. <code>taxa_side = "left"</code></p>
 <p>Or on the top or bottom is also possible, this will rotate the
 heatmap. Remember to swap the seriation method arguments around!</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_sort.html">tax_sort</a></span><span class="op">(</span>by <span class="op">=</span> <span class="va">prev</span>, at <span class="op">=</span> <span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_sort.html">tax_sort</a></span><span class="op">(</span>by <span class="op">=</span> <span class="va">prev</span>, at <span class="op">=</span> <span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/cor_heatmap.html">cor_heatmap</a></span><span class="op">(</span></span>
-<span>    seriation_method_col <span class="op">=</span> <span class="st">"Identity"</span>, <span class="co">#swapped!</span></span>
-<span>    seriation_method <span class="op">=</span> <span class="st">"OLO_ward"</span>, <span class="co">#swapped!</span></span>
+<span>    seriation_method_col <span class="op">=</span> <span class="st">"Identity"</span>, <span class="co"># swapped!</span></span>
+<span>    seriation_method <span class="op">=</span> <span class="st">"OLO_ward"</span>, <span class="co"># swapped!</span></span>
 <span>    taxa_side <span class="op">=</span> <span class="st">"top"</span>,</span>
 <span>    taxa <span class="op">=</span> <span class="fu"><a href="../../reference/tax_top.html">tax_top</a></span><span class="op">(</span><span class="va">psq</span>, <span class="fl">15</span>, by <span class="op">=</span> <span class="va">max</span>, rank <span class="op">=</span> <span class="st">"Family"</span><span class="op">)</span>,</span>
 <span>    vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"var"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>,</span>
 <span>    tax_anno <span class="op">=</span> <span class="fu"><a href="../../reference/taxAnnotation.html">taxAnnotation</a></span><span class="op">(</span></span>
-<span>      Prev. <span class="op">=</span> <span class="fu"><a href="../../reference/anno_tax_prev.html">anno_tax_prev</a></span><span class="op">(</span>ylim <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span>, </span>
+<span>      Prev. <span class="op">=</span> <span class="fu"><a href="../../reference/anno_tax_prev.html">anno_tax_prev</a></span><span class="op">(</span>ylim <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span>,</span>
 <span>      CLR <span class="op">=</span> <span class="fu"><a href="../../reference/anno_tax_box.html">anno_tax_box</a></span><span class="op">(</span>trans <span class="op">=</span> <span class="st">"clr"</span>, zero_replace <span class="op">=</span> <span class="st">"halfmin"</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
@@ -603,11 +604,11 @@ heatmap. Remember to swap the seriation method arguments around!</p>
 <p>As well as annotating the taxa, you can also annotate the
 variables.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_agg.html">tax_agg</a></span><span class="op">(</span><span class="st">"Family"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/cor_heatmap.html">cor_heatmap</a></span><span class="op">(</span></span>
 <span>    taxa <span class="op">=</span> <span class="fu"><a href="../../reference/tax_top.html">tax_top</a></span><span class="op">(</span><span class="va">psq</span>, <span class="fl">15</span>, by <span class="op">=</span> <span class="va">max</span>, rank <span class="op">=</span> <span class="st">"Family"</span><span class="op">)</span>,</span>
-<span>    vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"var"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>, </span>
+<span>    vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"var"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>,</span>
 <span>    var_anno <span class="op">=</span> <span class="fu"><a href="../../reference/varAnnotation.html">varAnnotation</a></span><span class="op">(</span></span>
 <span>      Value <span class="op">=</span> <span class="fu"><a href="../../reference/anno_var_box.html">anno_var_box</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>      Zscore <span class="op">=</span> <span class="fu"><a href="../../reference/anno_var_density.html">anno_var_density</a></span><span class="op">(</span>fun <span class="op">=</span> <span class="va">scale</span>, type <span class="op">=</span> <span class="st">"violin"</span><span class="op">)</span></span>
@@ -630,7 +631,7 @@ colours, instead of only 5.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">psq</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"compositional"</span>, rank <span class="op">=</span> <span class="st">"Class"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"log10"</span>, zero_replace <span class="op">=</span> <span class="st">"halfmin"</span>, chain <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"log10"</span>, zero_replace <span class="op">=</span> <span class="st">"halfmin"</span>, chain <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_heatmap.html">comp_heatmap</a></span><span class="op">(</span></span>
 <span>    tax_anno <span class="op">=</span> <span class="fu"><a href="../../reference/taxAnnotation.html">taxAnnotation</a></span><span class="op">(</span></span>
 <span>      Prev. <span class="op">=</span> <span class="fu"><a href="../../reference/anno_tax_prev.html">anno_tax_prev</a></span><span class="op">(</span>bar_width <span class="op">=</span> <span class="fl">0.3</span>, size <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">1</span>, <span class="st">"cm"</span><span class="op">)</span><span class="op">)</span></span>
@@ -677,7 +678,7 @@ demonstrates that custom breaks can be set in
 <span><span class="co">#&gt;  collate  C.UTF-8</span></span>
 <span><span class="co">#&gt;  ctype    C.UTF-8</span></span>
 <span><span class="co">#&gt;  tz       UTC</span></span>
-<span><span class="co">#&gt;  date     2023-05-07</span></span>
+<span><span class="co">#&gt;  date     2023-05-12</span></span>
 <span><span class="co">#&gt;  pandoc   2.19.2 @ /usr/bin/ (via rmarkdown)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">─ Packages ───────────────────────────────────────────────────────────────────</span></span></span>
@@ -708,7 +709,7 @@ demonstrates that custom breaks can be set in
 <span><span class="co">#&gt;  doParallel         1.0.17    <span style="color: #555555;">2022-02-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  dplyr            * 1.1.2     <span style="color: #555555;">2023-04-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  ellipsis           0.3.2     <span style="color: #555555;">2021-04-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  evaluate           0.20      <span style="color: #555555;">2023-01-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  evaluate           0.21      <span style="color: #555555;">2023-05-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  fansi              1.0.4     <span style="color: #555555;">2023-01-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  fastmap            1.1.1     <span style="color: #555555;">2023-02-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  foreach            1.5.2     <span style="color: #555555;">2022-02-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
@@ -724,7 +725,7 @@ demonstrates that custom breaks can be set in
 <span><span class="co">#&gt;  highr              0.10      <span style="color: #555555;">2022-12-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  htmltools          0.5.5     <span style="color: #555555;">2023-03-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  htmlwidgets        1.6.2     <span style="color: #555555;">2023-03-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  httpuv             1.6.9     <span style="color: #555555;">2023-02-14</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  httpuv             1.6.10    <span style="color: #555555;">2023-05-08</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  igraph             1.4.2     <span style="color: #555555;">2023-04-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  IRanges            2.34.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">#&gt;  iterators          1.0.14    <span style="color: #555555;">2022-02-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
@@ -741,7 +742,7 @@ demonstrates that custom breaks can be set in
 <span><span class="co">#&gt;  memoise            2.0.1     <span style="color: #555555;">2021-11-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  mgcv               1.8-42    <span style="color: #555555;">2023-03-02</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
 <span><span class="co">#&gt;  microbiome         1.22.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">#&gt;  microViz         * 0.10.8    <span style="color: #555555;">2023-05-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">local</span></span></span>
+<span><span class="co">#&gt;  microViz         * 0.10.9    <span style="color: #555555;">2023-05-12</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">local</span></span></span>
 <span><span class="co">#&gt;  mime               0.12      <span style="color: #555555;">2021-09-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  miniUI             0.1.1.1   <span style="color: #555555;">2018-05-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  multtest           2.56.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>

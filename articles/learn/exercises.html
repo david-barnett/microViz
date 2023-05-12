@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.9</span>
       </span>
     </div>
 
@@ -326,7 +326,7 @@ inside.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/rank_names.html" class="external-link">rank_names</a></span><span class="op">(</span><span class="va">mice</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "Kingdom" "Phylum"  "Class"   "Order"   "Family"  "Genus"   "Species"</span></span></code></pre>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/otu_table-methods.html" class="external-link">otu_table</a></span><span class="op">(</span><span class="va">mice</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">15</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span> </span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/otu_table-methods.html" class="external-link">otu_table</a></span><span class="op">(</span><span class="va">mice</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">15</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span></span></code></pre></div>
 <pre><code><span><span class="co">## OTU Table:          [8 taxa and 15 samples]</span></span>
 <span><span class="co">##                      taxa are columns</span></span>
 <span><span class="co">##        ASV0001 ASV0002 ASV0003 ASV0004 ASV0005 ASV0006 ASV0007 ASV0008</span></span>
@@ -371,7 +371,7 @@ inside.</p>
 <span><span class="co">## D0.F5  110.Thackray.D0.F5 CGTGCTTAGGCT 368     2    110</span></span>
 <span><span class="co">## D0.G1  111.Thackray.D0.G1 TACCGAAGGTAT 368     2    111</span></span></code></pre>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_names-methods.html" class="external-link">sample_names</a></span><span class="op">(</span><span class="va">mice</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span> </span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_names-methods.html" class="external-link">sample_names</a></span><span class="op">(</span><span class="va">mice</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##  [1] "D14.A1" "D14.B5" "D0.D5"  "D0.E1"  "D0.E2"  "D0.E3"  "D0.E4"  "D0.E5" </span></span>
 <span><span class="co">##  [9] "D0.F1"  "D0.F2"</span></span></code></pre>
 <hr>
@@ -388,8 +388,8 @@ we’re going to use the R package <code>microViz</code></p>
 control group (vehicle treatment) at day 13.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># We can filter the samples like this, using the sample_data information</span></span>
-<span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">treatment_days</span> <span class="op">==</span> <span class="st">'D13'</span>, <span class="va">virus</span> <span class="op">==</span> <span class="st">'WNV2000'</span>, <span class="va">treatment</span> <span class="op">==</span> <span class="st">'Vehicle'</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">treatment_days</span> <span class="op">==</span> <span class="st">"D13"</span>, <span class="va">virus</span> <span class="op">==</span> <span class="st">"WNV2000"</span>, <span class="va">treatment</span> <span class="op">==</span> <span class="st">"Vehicle"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## phyloseq-class experiment-level object</span></span>
 <span><span class="co">## otu_table()   OTU Table:         [ 563 taxa and 10 samples ]</span></span>
 <span><span class="co">## sample_data() Sample Data:       [ 10 samples by 11 sample variables ]</span></span>
@@ -400,13 +400,13 @@ improvements to make the bar chart more informative.</p>
 <h5 id="bad-bars">Bad bars<a class="anchor" aria-label="anchor" href="#bad-bars"></a>
 </h5>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">treatment_days</span> <span class="op">==</span> <span class="st">'D13'</span>, <span class="va">virus</span> <span class="op">==</span> <span class="st">'WNV2000'</span>, <span class="va">treatment</span> <span class="op">==</span> <span class="st">'Vehicle'</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">treatment_days</span> <span class="op">==</span> <span class="st">"D13"</span>, <span class="va">virus</span> <span class="op">==</span> <span class="st">"WNV2000"</span>, <span class="va">treatment</span> <span class="op">==</span> <span class="st">"Vehicle"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span></span>
-<span>    tax_level <span class="op">=</span> <span class="st">'unique'</span>, n_taxa <span class="op">=</span> <span class="fl">12</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span>,</span>
-<span>    sample_order <span class="op">=</span> <span class="st">'asis'</span>, tax_transform_for_plot <span class="op">=</span> <span class="st">'identity'</span></span>
+<span>    tax_level <span class="op">=</span> <span class="st">"unique"</span>, n_taxa <span class="op">=</span> <span class="fl">12</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span>,</span>
+<span>    sample_order <span class="op">=</span> <span class="st">"asis"</span>, tax_transform_for_plot <span class="op">=</span> <span class="st">"identity"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span> </span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## NAs detected in phyloseq tax_table:</span></span>
 <span><span class="co">## Consider using tax_fix() to make taxa uniquely identifiable</span></span>
 <span><span class="co">## NAs detected in phyloseq tax_table:</span></span>
@@ -424,10 +424,10 @@ total counts for that sample.</p>
 <h5 id="compositions">Compositions (%)<a class="anchor" aria-label="anchor" href="#compositions"></a>
 </h5>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">treatment_days</span> <span class="op">==</span> <span class="st">'D13'</span>, <span class="va">virus</span> <span class="op">==</span> <span class="st">'WNV2000'</span>, <span class="va">treatment</span> <span class="op">==</span> <span class="st">'Vehicle'</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">treatment_days</span> <span class="op">==</span> <span class="st">"D13"</span>, <span class="va">virus</span> <span class="op">==</span> <span class="st">"WNV2000"</span>, <span class="va">treatment</span> <span class="op">==</span> <span class="st">"Vehicle"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span></span>
-<span>    tax_level <span class="op">=</span> <span class="st">'unique'</span>, n_taxa <span class="op">=</span> <span class="fl">12</span>, sample_order <span class="op">=</span> <span class="st">'asis'</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span></span>
+<span>    tax_level <span class="op">=</span> <span class="st">"unique"</span>, n_taxa <span class="op">=</span> <span class="fl">12</span>, sample_order <span class="op">=</span> <span class="st">"asis"</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## NAs detected in phyloseq tax_table:</span></span>
@@ -452,31 +452,35 @@ our <code>mice</code> phyloseq object with this fix.</p>
 according to their classification at the rank of Family (and how common
 they are).</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html" class="external-link">taxa_names</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="va">head</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html" class="external-link">taxa_names</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "ASV0001" "ASV0002" "ASV0003" "ASV0004" "ASV0005" "ASV0006"</span></span></code></pre>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mice</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/tax_rename.html">tax_rename</a></span><span class="op">(</span><span class="va">mice</span>, rank <span class="op">=</span> <span class="st">'Family'</span><span class="op">)</span></span>
-<span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html" class="external-link">taxa_names</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="va">head</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">mice</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/tax_rename.html">tax_rename</a></span><span class="op">(</span><span class="va">mice</span>, rank <span class="op">=</span> <span class="st">"Family"</span><span class="op">)</span></span>
+<span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/taxa_names-methods.html" class="external-link">taxa_names</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "Porphyromonadaceae 001" "Xanthomonadaceae 01"    "Porphyromonadaceae 002"</span></span>
 <span><span class="co">## [4] "Porphyromonadaceae 003" "Porphyromonadaceae 004" "Porphyromonadaceae 005"</span></span></code></pre>
 <p>Let’s try again with the better names.</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">treatment_days</span> <span class="op">==</span> <span class="st">'D13'</span>, <span class="va">virus</span> <span class="op">==</span> <span class="st">'WNV2000'</span>, <span class="va">treatment</span> <span class="op">==</span> <span class="st">'Vehicle'</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">treatment_days</span> <span class="op">==</span> <span class="st">"D13"</span>, <span class="va">virus</span> <span class="op">==</span> <span class="st">"WNV2000"</span>, <span class="va">treatment</span> <span class="op">==</span> <span class="st">"Vehicle"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span></span>
-<span>    tax_level <span class="op">=</span> <span class="st">'unique'</span>, n_taxa <span class="op">=</span> <span class="fl">12</span>, sample_order <span class="op">=</span> <span class="st">'asis'</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span></span>
-<span>    <span class="op">)</span> <span class="op">+</span></span>
+<span>    tax_level <span class="op">=</span> <span class="st">"unique"</span>, n_taxa <span class="op">=</span> <span class="fl">12</span>, sample_order <span class="op">=</span> <span class="st">"asis"</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="exercises_files/figure-html/unnamed-chunk-16-1.png" width="720"></p>
 <p>Sadly we don’t have enough distinct colours to show all the unique
 taxa.</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">treatment_days</span> <span class="op">==</span> <span class="st">'D13'</span>, <span class="va">virus</span> <span class="op">==</span> <span class="st">'WNV2000'</span>, <span class="va">treatment</span> <span class="op">==</span> <span class="st">'Vehicle'</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">treatment_days</span> <span class="op">==</span> <span class="st">"D13"</span>, <span class="va">virus</span> <span class="op">==</span> <span class="st">"WNV2000"</span>, <span class="va">treatment</span> <span class="op">==</span> <span class="st">"Vehicle"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span></span>
-<span>    tax_level <span class="op">=</span> <span class="st">'unique'</span>, n_taxa <span class="op">=</span> <span class="fl">12</span>, sample_order <span class="op">=</span> <span class="st">'asis'</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span>,</span>
+<span>    tax_level <span class="op">=</span> <span class="st">"unique"</span>, n_taxa <span class="op">=</span> <span class="fl">12</span>, sample_order <span class="op">=</span> <span class="st">"asis"</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span>,</span>
 <span>    merge_other <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span>    <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="exercises_files/figure-html/unnamed-chunk-17-1.png" width="720"></p>
 </div>
@@ -488,10 +492,10 @@ each family, this adds together all the counts from every ASV that
 belongs to that family. We can do that by changing the
 <code>tax_level</code> argument to “Family”.</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">treatment_days</span> <span class="op">==</span> <span class="st">'D13'</span>, <span class="va">virus</span> <span class="op">==</span> <span class="st">'WNV2000'</span>, <span class="va">treatment</span> <span class="op">==</span> <span class="st">'Vehicle'</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">treatment_days</span> <span class="op">==</span> <span class="st">"D13"</span>, <span class="va">virus</span> <span class="op">==</span> <span class="st">"WNV2000"</span>, <span class="va">treatment</span> <span class="op">==</span> <span class="st">"Vehicle"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span></span>
-<span>    tax_level <span class="op">=</span> <span class="st">"Family"</span>, n_taxa <span class="op">=</span> <span class="fl">10</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span>, sample_order <span class="op">=</span> <span class="st">'asis'</span></span>
+<span>    tax_level <span class="op">=</span> <span class="st">"Family"</span>, n_taxa <span class="op">=</span> <span class="fl">10</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span>, sample_order <span class="op">=</span> <span class="st">"asis"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="exercises_files/figure-html/unnamed-chunk-18-1.png" width="720"></p>
@@ -507,21 +511,21 @@ ranks.</p>
 <span><span class="co">#   ps_filter(treatment_days == 'D13', virus == 'WNV2000', treatment == 'Vehicle') %&gt;%</span></span>
 <span><span class="co">#   comp_barplot(tax_level = , n_taxa = 10, sample_order = 'asis', merge_other = FALSE)</span></span></code></pre></div>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">treatment_days</span> <span class="op">==</span> <span class="st">'D13'</span>, <span class="va">virus</span> <span class="op">==</span> <span class="st">'WNV2000'</span>, <span class="va">treatment</span> <span class="op">==</span> <span class="st">'Vehicle'</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">treatment_days</span> <span class="op">==</span> <span class="st">"D13"</span>, <span class="va">virus</span> <span class="op">==</span> <span class="st">"WNV2000"</span>, <span class="va">treatment</span> <span class="op">==</span> <span class="st">"Vehicle"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span></span>
 <span>    tax_level <span class="op">=</span> <span class="st">"Genus"</span>, n_taxa <span class="op">=</span> <span class="fl">12</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span>,</span>
-<span>    sample_order <span class="op">=</span> <span class="st">'asis'</span>, merge_other <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>    sample_order <span class="op">=</span> <span class="st">"asis"</span>, merge_other <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="exercises_files/figure-html/unnamed-chunk-20-1.png" width="720"></p>
 <p>Many of the ASVs in this mice data, the <em>Porphyromonadaceae</em>,
 could not be classified at genus level.</p>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">treatment_days</span> <span class="op">==</span> <span class="st">'D13'</span>, <span class="va">virus</span> <span class="op">==</span> <span class="st">'WNV2000'</span>, <span class="va">treatment</span> <span class="op">==</span> <span class="st">'Vehicle'</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">treatment_days</span> <span class="op">==</span> <span class="st">"D13"</span>, <span class="va">virus</span> <span class="op">==</span> <span class="st">"WNV2000"</span>, <span class="va">treatment</span> <span class="op">==</span> <span class="st">"Vehicle"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span></span>
-<span>    tax_level <span class="op">=</span> <span class="st">"Phylum"</span>, n_taxa <span class="op">=</span> <span class="fl">7</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span>, sample_order <span class="op">=</span> <span class="st">'asis'</span></span>
+<span>    tax_level <span class="op">=</span> <span class="st">"Phylum"</span>, n_taxa <span class="op">=</span> <span class="fl">7</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span>, sample_order <span class="op">=</span> <span class="st">"asis"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="exercises_files/figure-html/unnamed-chunk-21-1.png" width="720"></p>
@@ -584,12 +588,12 @@ ecosystem: easy to compare and do stats with.</p>
 “Observed Richness”. Let’s compute the observed richness and label each
 sample with it.</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">treatment_days</span> <span class="op">==</span> <span class="st">'D13'</span>, <span class="va">virus</span> <span class="op">==</span> <span class="st">'WNV2000'</span>, <span class="va">treatment</span> <span class="op">==</span> <span class="st">'Vehicle'</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/ps_calc_richness.html">ps_calc_richness</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">'Genus'</span>, index <span class="op">=</span> <span class="st">'observed'</span>, varname <span class="op">=</span> <span class="st">'N genera'</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">treatment_days</span> <span class="op">==</span> <span class="st">"D13"</span>, <span class="va">virus</span> <span class="op">==</span> <span class="st">"WNV2000"</span>, <span class="va">treatment</span> <span class="op">==</span> <span class="st">"Vehicle"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/ps_calc_richness.html">ps_calc_richness</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"Genus"</span>, index <span class="op">=</span> <span class="st">"observed"</span>, varname <span class="op">=</span> <span class="st">"N genera"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span></span>
-<span>    tax_level <span class="op">=</span> <span class="st">"Genus"</span>, n_taxa <span class="op">=</span> <span class="fl">12</span>, label <span class="op">=</span> <span class="st">'N genera'</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span>,</span>
-<span>    sample_order <span class="op">=</span> <span class="st">'asis'</span>, merge_other <span class="op">=</span> <span class="cn">FALSE</span><span class="co">#, tax_transform_for_plot = 'identity'</span></span>
+<span>    tax_level <span class="op">=</span> <span class="st">"Genus"</span>, n_taxa <span class="op">=</span> <span class="fl">12</span>, label <span class="op">=</span> <span class="st">"N genera"</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span>,</span>
+<span>    sample_order <span class="op">=</span> <span class="st">"asis"</span>, merge_other <span class="op">=</span> <span class="cn">FALSE</span> <span class="co"># , tax_transform_for_plot = 'identity'</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="exercises_files/figure-html/unnamed-chunk-23-1.png" width="720"></p>
@@ -600,13 +604,13 @@ sample with it.</p>
 <p>Richness and evenness matter in the calculation of true diversity
 indices.</p>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">treatment_days</span> <span class="op">==</span> <span class="st">'D13'</span>, <span class="va">virus</span> <span class="op">==</span> <span class="st">'WNV2000'</span>, <span class="va">treatment</span> <span class="op">==</span> <span class="st">'Vehicle'</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/ps_calc_diversity.html">ps_calc_diversity</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">'Genus'</span>, index <span class="op">=</span> <span class="st">'shannon'</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../../reference/ps_mutate.html">ps_mutate</a></span><span class="op">(</span>shannon_Genus <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">shannon_Genus</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">treatment_days</span> <span class="op">==</span> <span class="st">"D13"</span>, <span class="va">virus</span> <span class="op">==</span> <span class="st">"WNV2000"</span>, <span class="va">treatment</span> <span class="op">==</span> <span class="st">"Vehicle"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/ps_calc_diversity.html">ps_calc_diversity</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"Genus"</span>, index <span class="op">=</span> <span class="st">"shannon"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/ps_mutate.html">ps_mutate</a></span><span class="op">(</span>shannon_Genus <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">shannon_Genus</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span></span>
-<span>    tax_level <span class="op">=</span> <span class="st">"Genus"</span>, n_taxa <span class="op">=</span> <span class="fl">12</span>, label <span class="op">=</span> <span class="st">'shannon_Genus'</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span>,</span>
-<span>    sample_order <span class="op">=</span> <span class="st">'asis'</span>, merge_other <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>    tax_level <span class="op">=</span> <span class="st">"Genus"</span>, n_taxa <span class="op">=</span> <span class="fl">12</span>, label <span class="op">=</span> <span class="st">"shannon_Genus"</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span>,</span>
+<span>    sample_order <span class="op">=</span> <span class="st">"asis"</span>, merge_other <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="exercises_files/figure-html/unnamed-chunk-24-1.png" width="720"></p>
@@ -617,15 +621,15 @@ indices.</p>
 <p>So we have our alpha diversity values for this small subset of
 mice.</p>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">treatment_days</span> <span class="op">==</span> <span class="st">'D13'</span>, <span class="va">virus</span> <span class="op">==</span> <span class="st">'WNV2000'</span>, <span class="va">treatment</span> <span class="op">==</span> <span class="st">'Vehicle'</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/ps_calc_diversity.html">ps_calc_diversity</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">'Genus'</span>, index <span class="op">=</span> <span class="st">'shannon'</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../../reference/psExtra-accessors.html">samdat_tbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">shannon_Genus</span>, y <span class="op">=</span> <span class="st">"Day 13\ncontrols"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">treatment_days</span> <span class="op">==</span> <span class="st">"D13"</span>, <span class="va">virus</span> <span class="op">==</span> <span class="st">"WNV2000"</span>, <span class="va">treatment</span> <span class="op">==</span> <span class="st">"Vehicle"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/ps_calc_diversity.html">ps_calc_diversity</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"Genus"</span>, index <span class="op">=</span> <span class="st">"shannon"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/psExtra-accessors.html">samdat_tbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">shannon_Genus</span>, y <span class="op">=</span> <span class="st">"Day 13\ncontrols"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>position <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_jitter.html" class="external-link">position_jitter</a></span><span class="op">(</span>height <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">'Shannon diversity (Genus)'</span>, y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Shannon diversity (Genus)"</span>, y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html" class="external-link">xlim</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2.5</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> </span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="exercises_files/figure-html/unnamed-chunk-25-1.png" width="360"></p>
 <p>Let’s calculate alpha diversity for all mice after antibiotic or
 control treatment, and make a comparison. I suspect that the average gut
@@ -633,25 +637,25 @@ microbiota diversity of the antibiotic exposed mice will differ from the
 control group’s at day 3.</p>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># First compute a new variable aggregating all the control mice together</span></span>
-<span><span class="va">mice</span> <span class="op">&lt;-</span> <span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<span><span class="va">mice</span> <span class="op">&lt;-</span> <span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/ps_mutate.html">ps_mutate</a></span><span class="op">(</span>antibiotics <span class="op">=</span> <span class="va">treatment</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Amp"</span>, <span class="st">"Metro"</span>, <span class="st">"AmpMetro"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">treatment_days</span> <span class="op">==</span> <span class="st">'D13'</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/ps_calc_diversity.html">ps_calc_diversity</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">'Genus'</span>, index <span class="op">=</span> <span class="st">'shannon'</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../../reference/psExtra-accessors.html">samdat_tbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">treatment_days</span> <span class="op">==</span> <span class="st">"D13"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/ps_calc_diversity.html">ps_calc_diversity</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"Genus"</span>, index <span class="op">=</span> <span class="st">"shannon"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/psExtra-accessors.html">samdat_tbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">antibiotics</span>, x <span class="op">=</span> <span class="va">shannon_Genus</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>position <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_jitter.html" class="external-link">position_jitter</a></span><span class="op">(</span>height <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="exercises_files/figure-html/unnamed-chunk-27-1.png" width="480"></p>
 <p>It looks like the antibiotics treated mice have lower gut microbiota
 diversity on average. A simple statistical test supports this.</p>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">treatment_days</span> <span class="op">==</span> <span class="st">'D13'</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/ps_calc_diversity.html">ps_calc_diversity</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">'Genus'</span>, index <span class="op">=</span> <span class="st">'shannon'</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../../reference/psExtra-accessors.html">samdat_tbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">treatment_days</span> <span class="op">==</span> <span class="st">"D13"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/ps_calc_diversity.html">ps_calc_diversity</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"Genus"</span>, index <span class="op">=</span> <span class="st">"shannon"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/psExtra-accessors.html">samdat_tbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/wilcox.test.html" class="external-link">wilcox.test</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">shannon_Genus</span> <span class="op">~</span> <span class="va">antibiotics</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Wilcoxon rank sum test with continuity correction</span></span>
@@ -663,11 +667,11 @@ diversity on average. A simple statistical test supports this.</p>
 e.g. adjusting for covariates with linear regression, using
 <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code></p>
 <div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">treatment_days</span> <span class="op">==</span> <span class="st">'D13'</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/ps_calc_diversity.html">ps_calc_diversity</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">'Genus'</span>, index <span class="op">=</span> <span class="st">'shannon'</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../../reference/psExtra-accessors.html">samdat_tbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">shannon_Genus</span> <span class="op">~</span> <span class="va">antibiotics</span> <span class="op">+</span> <span class="va">virus</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">treatment_days</span> <span class="op">==</span> <span class="st">"D13"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/ps_calc_diversity.html">ps_calc_diversity</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"Genus"</span>, index <span class="op">=</span> <span class="st">"shannon"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/psExtra-accessors.html">samdat_tbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">shannon_Genus</span> <span class="op">~</span> <span class="va">antibiotics</span> <span class="op">+</span> <span class="va">virus</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">## Call:</span></span>
@@ -702,9 +706,9 @@ dataset:</strong></p>
 </summary><p>This is an extension exercise, for those who are moving quickly.</p>
 <p><strong>Inflammatory Bowel Disease study</strong></p>
 <div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ibd</span> <span class="op">&lt;-</span> <span class="fu">corncob</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/corncob/man/ibd_phylo.html" class="external-link">ibd_phylo</a></span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">ibd</span> <span class="op">&lt;-</span> <span class="fu">corncob</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/corncob/man/ibd_phylo.html" class="external-link">ibd_phylo</a></span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_mutate.html">tax_mutate</a></span><span class="op">(</span>Species <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="co"># ibd_phylo Species column was blank -&gt; deleted</span></span>
-<span>  <span class="fu"><a href="../../reference/ps_mutate.html">ps_mutate</a></span><span class="op">(</span>disease <span class="op">=</span> <span class="va">ibd</span> <span class="op">==</span> <span class="st">'ibd'</span>, ibd <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="co"># adds disease state indicator variable</span></span></code></pre></div>
+<span>  <span class="fu"><a href="../../reference/ps_mutate.html">ps_mutate</a></span><span class="op">(</span>disease <span class="op">=</span> <span class="va">ibd</span> <span class="op">==</span> <span class="st">"ibd"</span>, ibd <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="co"># adds disease state indicator variable</span></span></code></pre></div>
 <p><code>ibd</code> is another phyloseq object containing 16S rRNA gene
 amplicon sequencing data, from a 2012 study of Inflammatory Bowel
 Disease in children and young adults.</p>
@@ -748,20 +752,20 @@ richness.</p>
 the actual ecosystem, the richness estimate actually has quantifiable
 uncertainty too.)</p>
 <div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">treatment_days</span> <span class="op">==</span> <span class="st">'D13'</span>, <span class="va">virus</span> <span class="op">==</span> <span class="st">'WNV2000'</span>, <span class="va">treatment</span> <span class="op">==</span> <span class="st">'Amp'</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../../reference/ps_calc_richness.html">ps_calc_richness</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">'Genus'</span>, index <span class="op">=</span> <span class="st">'observed'</span>, varname <span class="op">=</span> <span class="st">'N genera'</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/ps_filter.html">ps_filter</a></span><span class="op">(</span><span class="va">treatment_days</span> <span class="op">==</span> <span class="st">"D13"</span>, <span class="va">virus</span> <span class="op">==</span> <span class="st">"WNV2000"</span>, <span class="va">treatment</span> <span class="op">==</span> <span class="st">"Amp"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/ps_calc_richness.html">ps_calc_richness</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"Genus"</span>, index <span class="op">=</span> <span class="st">"observed"</span>, varname <span class="op">=</span> <span class="st">"N genera"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/comp_barplot.html">comp_barplot</a></span><span class="op">(</span></span>
-<span>    tax_level <span class="op">=</span> <span class="st">"Genus"</span>, n_taxa <span class="op">=</span> <span class="fl">12</span>, label <span class="op">=</span> <span class="st">'N genera'</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span>,</span>
-<span>    sample_order <span class="op">=</span> <span class="st">'asis'</span>, merge_other <span class="op">=</span> <span class="cn">FALSE</span>, tax_transform_for_plot <span class="op">=</span> <span class="st">'identity'</span></span>
+<span>    tax_level <span class="op">=</span> <span class="st">"Genus"</span>, n_taxa <span class="op">=</span> <span class="fl">12</span>, label <span class="op">=</span> <span class="st">"N genera"</span>, bar_width <span class="op">=</span> <span class="fl">0.7</span>,</span>
+<span>    sample_order <span class="op">=</span> <span class="st">"asis"</span>, merge_other <span class="op">=</span> <span class="cn">FALSE</span>, tax_transform_for_plot <span class="op">=</span> <span class="st">"identity"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <p><img src="exercises_files/figure-html/unnamed-chunk-35-1.png" width="720"></p>
 <div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/ps_calc_richness.html">ps_calc_richness</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">'Genus'</span>, index <span class="op">=</span> <span class="st">'observed'</span>, varname <span class="op">=</span> <span class="st">'genera'</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../../reference/ps_mutate.html">ps_mutate</a></span><span class="op">(</span>readcount <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_sums.html" class="external-link">sample_sums</a></span><span class="op">(</span><span class="va">mice</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/psExtra-accessors.html">samdat_tbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">readcount</span>, <span class="va">genera</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<code class="sourceCode R"><span><span class="va">mice</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/ps_calc_richness.html">ps_calc_richness</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="st">"Genus"</span>, index <span class="op">=</span> <span class="st">"observed"</span>, varname <span class="op">=</span> <span class="st">"genera"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/ps_mutate.html">ps_mutate</a></span><span class="op">(</span>readcount <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_sums.html" class="external-link">sample_sums</a></span><span class="op">(</span><span class="va">mice</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/psExtra-accessors.html">samdat_tbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">readcount</span>, <span class="va">genera</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.4</span>, size <span class="op">=</span> <span class="fl">2.5</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="fl">14</span><span class="op">)</span></span></code></pre></div>
 <p><img src="exercises_files/figure-html/unnamed-chunk-36-1.png" width="600"></p>
@@ -823,14 +827,14 @@ might be unreliable.</p>
 <p>You might already do this check for total reads and remove poor
 quality samples during the fastq file processing.</p>
 <div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">shao19</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/ps_mutate.html">ps_mutate</a></span><span class="op">(</span>reads <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_sums.html" class="external-link">sample_sums</a></span><span class="op">(</span><span class="va">shao19</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/psExtra-accessors.html">samdat_tbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">reads</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<code class="sourceCode R"><span><span class="va">shao19</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/ps_mutate.html">ps_mutate</a></span><span class="op">(</span>reads <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_sums.html" class="external-link">sample_sums</a></span><span class="op">(</span><span class="va">shao19</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/psExtra-accessors.html">samdat_tbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">reads</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html" class="external-link">geom_freqpoly</a></span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">500</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_rug.html" class="external-link">geom_rug</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_log10</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_number.html" class="external-link">label_number</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">'Number of classified reads'</span>, y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Number of classified reads"</span>, y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="exercises_files/figure-html/unnamed-chunk-39-1.png" width="720"></p>
 <p>How many is enough? There is no easy answer.</p>
@@ -855,7 +859,7 @@ sequencing dataset <code>mice</code>.</p>
 <span><span class="co">#   samdat_tbl() %&gt;%</span></span>
 <span><span class="co">#   ggplot(aes(x = reads)) +</span></span>
 <span><span class="co">#   geom_freqpoly(bins = 30) +</span></span>
-<span><span class="co">#   ... </span></span></code></pre></div>
+<span><span class="co">#   ...</span></span></code></pre></div>
 </div>
 <div class="section level5">
 <h5 id="taxon-filtering">Taxon filtering<a class="anchor" aria-label="anchor" href="#taxon-filtering"></a>
@@ -893,8 +897,8 @@ they have to have at least 10,000 reads in total across all samples.</p>
 <pre><code><span><span class="co">## [1] 819</span></span></code></pre>
 <div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># after filtering</span></span>
-<span><span class="va">shao19</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">2</span> <span class="op">/</span> <span class="fl">100</span>, min_total_abundance <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<span><span class="va">shao19</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">2</span> <span class="op">/</span> <span class="fl">100</span>, min_total_abundance <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/ntaxa-methods.html" class="external-link">ntaxa</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Proportional min_prevalence given: 0.02 --&gt; min 33/1644 samples.</span></span></code></pre>
 <pre><code><span><span class="co">## [1] 253</span></span></code></pre>
@@ -1255,8 +1259,8 @@ different??</p>
 <span>  <span class="fu"><a href="../../reference/dist_calc.html">dist_calc</a></span><span class="op">(</span>dist <span class="op">=</span> <span class="st">"bray"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/dist_permanova.html">dist_permanova</a></span><span class="op">(</span>variables <span class="op">=</span> <span class="st">"birth_mode"</span>, n_perms <span class="op">=</span> <span class="fl">99</span>, seed <span class="op">=</span> <span class="fl">123</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/psExtra-accessors.html">perm_get</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## 2023-05-07 19:15:39.420603 - Starting PERMANOVA with 99 perms with 1 processes</span></span></code></pre>
-<pre><code><span><span class="co">## 2023-05-07 19:15:39.516825 - Finished PERMANOVA</span></span></code></pre>
+<pre><code><span><span class="co">## 2023-05-12 12:31:18.690909 - Starting PERMANOVA with 99 perms with 1 processes</span></span></code></pre>
+<pre><code><span><span class="co">## 2023-05-12 12:31:18.787677 - Finished PERMANOVA</span></span></code></pre>
 <pre><code><span><span class="co">## Permutation test for adonis under reduced model</span></span>
 <span><span class="co">## Marginal effects of terms</span></span>
 <span><span class="co">## Permutation: free</span></span>
@@ -1298,8 +1302,8 @@ reads.</p>
 <span>  <span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/psExtra-accessors.html">perm_get</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Dropping samples with missings: 15</span></span></code></pre>
-<pre><code><span><span class="co">## 2023-05-07 19:15:39.78421 - Starting PERMANOVA with 99 perms with 1 processes</span></span></code></pre>
-<pre><code><span><span class="co">## 2023-05-07 19:15:40.185271 - Finished PERMANOVA</span></span></code></pre>
+<pre><code><span><span class="co">## 2023-05-12 12:31:19.051031 - Starting PERMANOVA with 99 perms with 1 processes</span></span></code></pre>
+<pre><code><span><span class="co">## 2023-05-12 12:31:19.468624 - Finished PERMANOVA</span></span></code></pre>
 <pre><code><span><span class="co">## Permutation test for adonis under reduced model</span></span>
 <span><span class="co">## Marginal effects of terms</span></span>
 <span><span class="co">## Permutation: free</span></span>
@@ -1380,7 +1384,7 @@ transformation.</p>
 <div class="sourceCode" id="cb98"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Getting the taxa in abundance order up front</span></span>
 <span><span class="co"># to keep it consistent across multiple plots</span></span>
-<span><span class="va">shao4_sorted</span> <span class="op">&lt;-</span> <span class="va">shao4</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<span><span class="va">shao4_sorted</span> <span class="op">&lt;-</span> <span class="va">shao4</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_sort.html">tax_sort</a></span><span class="op">(</span>by <span class="op">=</span> <span class="va">sum</span>, at <span class="op">=</span> <span class="st">"genus"</span>, trans <span class="op">=</span> <span class="st">"compositional"</span>, tree_warn <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p>Each column is a sample (from an infant), and each row is a
 taxon.</p>
@@ -1581,7 +1585,7 @@ order our samples in a circular layout.</p>
 <span>  <span class="fu"><a href="../../reference/ord_calc.html">ord_calc</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"PCA"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/ord_plot_iris.html">ord_plot_iris</a></span><span class="op">(</span></span>
 <span>    tax_level <span class="op">=</span> <span class="st">"genus"</span>, n_taxa <span class="op">=</span> <span class="fl">12</span>, other <span class="op">=</span> <span class="st">"Other"</span>,</span>
-<span>    anno_colour <span class="op">=</span> <span class="st">"birth_mode"</span>, </span>
+<span>    anno_colour <span class="op">=</span> <span class="st">"birth_mode"</span>,</span>
 <span>    anno_colour_style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.6</span>, size <span class="op">=</span> <span class="fl">0.6</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="va">iris</span></span></code></pre></div>
@@ -1623,7 +1627,7 @@ pseudocount.</p>
 <span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"compositional"</span>, rank <span class="op">=</span> <span class="st">"genus"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"log2"</span>, zero_replace <span class="op">=</span> <span class="st">"halfmin"</span>, chain <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_model.html">tax_model</a></span><span class="op">(</span></span>
-<span>    type <span class="op">=</span> <span class="st">"lm"</span>, rank <span class="op">=</span> <span class="st">"genus"</span>, </span>
+<span>    type <span class="op">=</span> <span class="st">"lm"</span>, rank <span class="op">=</span> <span class="st">"genus"</span>,</span>
 <span>    taxa <span class="op">=</span> <span class="st">"Bacteroides"</span>, variables <span class="op">=</span> <span class="st">"birth_mode"</span>,</span>
 <span>    return_psx <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
@@ -1790,39 +1794,39 @@ rank we have available, from phylum down to species.</p>
 <p>*We’ll actually filter out species with a prevalence of less than
 10%.</p>
 <div class="sourceCode" id="cb130"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># The code for `taxatree_models` is quite similar to tax_model. </span></span>
-<span><span class="co"># However, you might need to run `tax_prepend_ranks` to ensure that each taxon at each rank is always unique. </span></span>
-<span><span class="va">shaoModels</span> <span class="op">&lt;-</span> <span class="va">shao4</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="co"># The code for `taxatree_models` is quite similar to tax_model.</span></span>
+<span><span class="co"># However, you might need to run `tax_prepend_ranks` to ensure that each taxon at each rank is always unique.</span></span>
+<span><span class="va">shaoModels</span> <span class="op">&lt;-</span> <span class="va">shao4</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/tax_prepend_ranks.html">tax_prepend_ranks</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"compositional"</span>, rank <span class="op">=</span> <span class="st">"species"</span>, keep_counts <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">0.1</span>, undetected <span class="op">=</span> <span class="fl">0</span>, use_counts <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span>trans <span class="op">=</span> <span class="st">"log2"</span>, chain <span class="op">=</span> <span class="cn">TRUE</span>, zero_replace <span class="op">=</span> <span class="st">"halfmin"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"compositional"</span>, rank <span class="op">=</span> <span class="st">"species"</span>, keep_counts <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">0.1</span>, undetected <span class="op">=</span> <span class="fl">0</span>, use_counts <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/tax_transform.html">tax_transform</a></span><span class="op">(</span>trans <span class="op">=</span> <span class="st">"log2"</span>, chain <span class="op">=</span> <span class="cn">TRUE</span>, zero_replace <span class="op">=</span> <span class="st">"halfmin"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/taxatree_models.html">taxatree_models</a></span><span class="op">(</span></span>
-<span>    type <span class="op">=</span> <span class="va">lm</span>, </span>
-<span>    ranks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"phylum"</span>, <span class="st">"class"</span>, <span class="st">"order"</span>, <span class="st">"family"</span>, <span class="st">"genus"</span>, <span class="st">"species"</span><span class="op">)</span>, </span>
-<span>    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'C_section'</span>, <span class="st">'Female'</span>, <span class="st">'Birth_weight_Z'</span>, <span class="st">'Reads_Z'</span><span class="op">)</span></span>
+<span>    type <span class="op">=</span> <span class="va">lm</span>,</span>
+<span>    ranks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"phylum"</span>, <span class="st">"class"</span>, <span class="st">"order"</span>, <span class="st">"family"</span>, <span class="st">"genus"</span>, <span class="st">"species"</span><span class="op">)</span>,</span>
+<span>    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C_section"</span>, <span class="st">"Female"</span>, <span class="st">"Birth_weight_Z"</span>, <span class="st">"Reads_Z"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Proportional min_prevalence given: 0.1 --&gt; min 31/306 samples.</span></span></code></pre>
-<pre><code><span><span class="co">## 2023-05-07 19:16:26.213287 - modelling at rank: phylum</span></span></code></pre>
+<pre><code><span><span class="co">## 2023-05-12 12:32:05.328095 - modelling at rank: phylum</span></span></code></pre>
 <pre><code><span><span class="co">## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female</span></span></code></pre>
 <pre><code><span><span class="co">## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z</span></span></code></pre>
-<pre><code><span><span class="co">## 2023-05-07 19:16:26.394706 - modelling at rank: class</span></span></code></pre>
+<pre><code><span><span class="co">## 2023-05-12 12:32:05.49418 - modelling at rank: class</span></span></code></pre>
 <pre><code><span><span class="co">## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female</span></span>
 <span></span>
 <span><span class="co">## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z</span></span></code></pre>
-<pre><code><span><span class="co">## 2023-05-07 19:16:26.623946 - modelling at rank: order</span></span></code></pre>
+<pre><code><span><span class="co">## 2023-05-12 12:32:05.751607 - modelling at rank: order</span></span></code></pre>
 <pre><code><span><span class="co">## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female</span></span>
 <span></span>
 <span><span class="co">## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z</span></span></code></pre>
-<pre><code><span><span class="co">## 2023-05-07 19:16:27.681913 - modelling at rank: family</span></span></code></pre>
+<pre><code><span><span class="co">## 2023-05-12 12:32:06.045938 - modelling at rank: family</span></span></code></pre>
 <pre><code><span><span class="co">## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female</span></span>
 <span></span>
 <span><span class="co">## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z</span></span></code></pre>
-<pre><code><span><span class="co">## 2023-05-07 19:16:28.02834 - modelling at rank: genus</span></span></code></pre>
+<pre><code><span><span class="co">## 2023-05-12 12:32:06.412067 - modelling at rank: genus</span></span></code></pre>
 <pre><code><span><span class="co">## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female</span></span>
 <span></span>
 <span><span class="co">## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z</span></span></code></pre>
-<pre><code><span><span class="co">## 2023-05-07 19:16:28.452772 - modelling at rank: species</span></span></code></pre>
+<pre><code><span><span class="co">## 2023-05-12 12:32:06.852437 - modelling at rank: species</span></span></code></pre>
 <pre><code><span><span class="co">## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female</span></span>
 <span></span>
 <span><span class="co">## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z</span></span></code></pre>
@@ -1931,8 +1935,8 @@ in the outermost ring.</p>
 you can arrange into one figure with the <a href="https://patchwork.data-imaginist.com/" class="external-link"><code>patchwork</code></a>
 package for example (and/or <a href="https://wilkelab.org/cowplot/articles/plot_grid.html" class="external-link"><code>cowplot</code></a>).</p>
 <div class="sourceCode" id="cb153"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">shaoStats</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../reference/taxatree_plots.html">taxatree_plots</a></span><span class="op">(</span>node_size_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, sig_stat <span class="op">=</span> <span class="st">'p.adj.BH.rank'</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">shaoStats</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../../reference/taxatree_plots.html">taxatree_plots</a></span><span class="op">(</span>node_size_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, sig_stat <span class="op">=</span> <span class="st">"p.adj.BH.rank"</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">patchwork</span><span class="fu">::</span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html" class="external-link">wrap_plots</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">2</span>, guides <span class="op">=</span> <span class="st">"collect"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="exercises_files/figure-html/unnamed-chunk-78-1.png" width="720"></p>
 <div class="section level5">
@@ -1942,14 +1946,14 @@ package for example (and/or <a href="https://wilkelab.org/cowplot/articles/plot_
 labelled grey tree with <code><a href="../../reference/taxatree_plotkey.html">taxatree_plotkey()</a></code>. This labels
 only some of the taxa based on certain conditions that we specify.</p>
 <div class="sourceCode" id="cb154"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span> <span class="co"># label position </span></span>
-<span><span class="va">key</span> <span class="op">&lt;-</span> <span class="va">shaoStats</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span> <span class="co"># label position</span></span>
+<span><span class="va">key</span> <span class="op">&lt;-</span> <span class="va">shaoStats</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../../reference/taxatree_plotkey.html">taxatree_plotkey</a></span><span class="op">(</span></span>
 <span>    taxon_renamer <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html" class="external-link">str_remove</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"[pfg]: "</span><span class="op">)</span>,</span>
 <span>    <span class="co"># conditions below, for filtering taxa to be labelled</span></span>
 <span>    <span class="va">rank</span> <span class="op">==</span> <span class="st">"phylum"</span> <span class="op">|</span> <span class="va">rank</span> <span class="op">==</span> <span class="st">"genus"</span> <span class="op">&amp;</span> <span class="va">prevalence</span> <span class="op">&gt;</span> <span class="fl">0.2</span></span>
 <span>    <span class="co"># all phyla are labelled, and all genera with a prevalence of over 0.2</span></span>
-<span>  <span class="op">)</span> </span>
+<span>  <span class="op">)</span></span>
 <span><span class="va">key</span></span></code></pre></div>
 <p><img src="exercises_files/figure-html/unnamed-chunk-79-1.png" width="540"></p>
 <p>You can do more with these trees to customise them to your liking.
@@ -1981,7 +1985,7 @@ useful for debugging / reproducing analysis.</p>
 <span><span class="co">##  collate  C.UTF-8</span></span>
 <span><span class="co">##  ctype    C.UTF-8</span></span>
 <span><span class="co">##  tz       UTC</span></span>
-<span><span class="co">##  date     2023-05-07</span></span>
+<span><span class="co">##  date     2023-05-12</span></span>
 <span><span class="co">##  pandoc   2.19.2 @ /usr/bin/ (via rmarkdown)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## <span style="color: #00BBBB; font-weight: bold;">─ Packages ───────────────────────────────────────────────────────────────────</span></span></span>
@@ -2015,7 +2019,7 @@ useful for debugging / reproducing analysis.</p>
 <span><span class="co">##  doParallel         1.0.17    <span style="color: #555555;">2022-02-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  dplyr            * 1.1.2     <span style="color: #555555;">2023-04-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  ellipsis           0.3.2     <span style="color: #555555;">2021-04-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  evaluate           0.20      <span style="color: #555555;">2023-01-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  evaluate           0.21      <span style="color: #555555;">2023-05-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  fansi              1.0.4     <span style="color: #555555;">2023-01-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  farver             2.1.1     <span style="color: #555555;">2022-07-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  fastmap            1.1.1     <span style="color: #555555;">2023-02-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
@@ -2038,7 +2042,7 @@ useful for debugging / reproducing analysis.</p>
 <span><span class="co">##  highr              0.10      <span style="color: #555555;">2022-12-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  htmltools          0.5.5     <span style="color: #555555;">2023-03-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  htmlwidgets        1.6.2     <span style="color: #555555;">2023-03-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">##  httpuv             1.6.9     <span style="color: #555555;">2023-02-14</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">##  httpuv             1.6.10    <span style="color: #555555;">2023-05-08</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  igraph             1.4.2     <span style="color: #555555;">2023-04-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  IRanges            2.34.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">##  iterators          1.0.14    <span style="color: #555555;">2022-02-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
@@ -2056,7 +2060,7 @@ useful for debugging / reproducing analysis.</p>
 <span><span class="co">##  memoise            2.0.1     <span style="color: #555555;">2021-11-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  mgcv               1.8-42    <span style="color: #555555;">2023-03-02</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
 <span><span class="co">##  microbiome         1.22.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">##  microViz         * 0.10.8    <span style="color: #555555;">2023-05-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">local</span></span></span>
+<span><span class="co">##  microViz         * 0.10.9    <span style="color: #555555;">2023-05-12</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">local</span></span></span>
 <span><span class="co">##  mime               0.12      <span style="color: #555555;">2021-09-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  miniUI             0.1.1.1   <span style="color: #555555;">2018-05-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">##  multtest           2.56.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
