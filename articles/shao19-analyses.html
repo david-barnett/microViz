@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.10</span>
       </span>
     </div>
 
@@ -158,7 +158,7 @@ details.</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com" class="external-link">patchwork</a></span><span class="op">)</span> <span class="co"># for combining multiple plots</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://david-barnett.github.io/microViz">microViz</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;">microViz version 0.10.9 - Copyright (C) 2023 David Barnett</span></span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">microViz version 0.10.10 - Copyright (C) 2023 David Barnett</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Website: https://david-barnett.github.io/microViz</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Useful?  For citation details, run: `citation("microViz")`</span></span>
 <span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> Silence? `suppressPackageStartupMessages(library(microViz))`</span></span></code></pre></div>
@@ -606,8 +606,8 @@ store the result in the psExtra too.</p>
 <span>    n_processes <span class="op">=</span> <span class="fl">1</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#&gt; Dropping samples with missings: 15</span></span>
-<span><span class="co">#&gt; 2023-05-15 19:31:00.277014 - Starting PERMANOVA with 99 perms with 1 processes</span></span>
-<span><span class="co">#&gt; 2023-05-15 19:31:01.235295 - Finished PERMANOVA</span></span>
+<span><span class="co">#&gt; 2023-05-16 14:01:45.528867 - Starting PERMANOVA with 99 perms with 1 processes</span></span>
+<span><span class="co">#&gt; 2023-05-16 14:01:46.706275 - Finished PERMANOVA</span></span>
 <span></span>
 <span><span class="va">shao4d_perm</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../reference/psExtra-accessors.html">perm_get</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Permutation test for adonis under reduced model</span></span>
@@ -692,11 +692,11 @@ C-section and vaginally delivered infants.</p>
 <span>  <span class="fu"><a href="../reference/models2stats.html">taxatree_models2stats</a></span><span class="op">(</span>.keep_models <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="co"># adjust the p values for multiple testing, within each rank</span></span>
 <span>  <span class="fu"><a href="../reference/taxatree_stats_p_adjust.html">taxatree_stats_p_adjust</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"fdr"</span>, grouping <span class="op">=</span> <span class="st">"rank"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-05-15 19:31:01.69915 - modelling at rank: phylum</span></span>
-<span><span class="co">#&gt; 2023-05-15 19:31:01.877383 - modelling at rank: class</span></span>
-<span><span class="co">#&gt; 2023-05-15 19:31:02.162915 - modelling at rank: order</span></span>
-<span><span class="co">#&gt; 2023-05-15 19:31:02.466784 - modelling at rank: family</span></span>
-<span><span class="co">#&gt; 2023-05-15 19:31:02.828727 - modelling at rank: genus</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-05-16 14:01:47.275631 - modelling at rank: phylum</span></span>
+<span><span class="co">#&gt; 2023-05-16 14:01:47.493901 - modelling at rank: class</span></span>
+<span><span class="co">#&gt; 2023-05-16 14:01:47.85902 - modelling at rank: order</span></span>
+<span><span class="co">#&gt; 2023-05-16 14:01:48.243646 - modelling at rank: family</span></span>
+<span><span class="co">#&gt; 2023-05-16 14:01:48.70488 - modelling at rank: genus</span></span></code></pre></div>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">shao4d_treeStats</span></span>
 <span><span class="co">#&gt; psExtra object - a phyloseq object with extra slots:</span></span>
@@ -863,7 +863,7 @@ composition barplots article</a>.</p>
 <span><span class="co">#&gt;  collate  C.UTF-8</span></span>
 <span><span class="co">#&gt;  ctype    C.UTF-8</span></span>
 <span><span class="co">#&gt;  tz       UTC</span></span>
-<span><span class="co">#&gt;  date     2023-05-15</span></span>
+<span><span class="co">#&gt;  date     2023-05-16</span></span>
 <span><span class="co">#&gt;  pandoc   2.19.2 @ /usr/bin/ (via rmarkdown)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">─ Packages ───────────────────────────────────────────────────────────────────</span></span></span>
@@ -941,7 +941,7 @@ composition barplots article</a>.</p>
 <span><span class="co">#&gt;  memoise            2.0.1     <span style="color: #555555;">2021-11-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  mgcv               1.8-42    <span style="color: #555555;">2023-03-02</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
 <span><span class="co">#&gt;  microbiome         1.22.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">#&gt;  microViz         * 0.10.9    <span style="color: #555555;">2023-05-15</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">local</span></span></span>
+<span><span class="co">#&gt;  microViz         * 0.10.10   <span style="color: #555555;">2023-05-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">local</span></span></span>
 <span><span class="co">#&gt;  mime               0.12      <span style="color: #555555;">2021-09-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  miniUI             0.1.1.1   <span style="color: #555555;">2018-05-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt;  multtest           2.56.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
