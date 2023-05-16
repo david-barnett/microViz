@@ -217,6 +217,9 @@ comp_barplot <- function(ps,
                          x = "SAMPLE",
                          ...) {
   ps <- ps_get(ps)
+  if (identical(tax_level, ".Taxon")) {
+    stop("'.Taxon' cannot be used as a rank name! You must rename that rank.")
+  }
   if (!rlang::is_scalar_integerish(n_taxa) || n_taxa < 1) {
     stop("n_taxa must a positive integer")
   }
@@ -378,7 +381,7 @@ comp_barplotFixed <- function(ps, interactive,
   df <- ps_melt(ps)
 
   # set fixed order of stacked taxa bars by creating ordered factor
-  df[["Taxon"]] <- factor(df[["unique"]], levels = rev(uniqueTaxaOrdered))
+  df[[".Taxon"]] <- factor(df[["unique"]], levels = rev(uniqueTaxaOrdered))
 
   # # set fixed order of fill colours (for LEGEND ordering!)
   df[[tax_level]] <- factor(df[[".top"]], levels = topTaxaOrdered)
@@ -390,7 +393,7 @@ comp_barplotFixed <- function(ps, interactive,
   # build plot
   p <- ggplot2::ggplot(data = df, mapping = ggplot2::aes(
     x = .data[[x]], y = .data[["Abundance"]],
-    fill = .data[[tax_level]], group = .data[["Taxon"]]
+    fill = .data[[tax_level]], group = .data[[".Taxon"]]
   ))
   if (identical(x, "SAMPLE")) p <- p + ggplot2::xlab(NULL)
 
