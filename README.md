@@ -133,7 +133,7 @@ install.packages("devtools")
 devtools::install_github("david-barnett/microViz")
 
 # To install a specific "release" version of this package, e.g. an old version 
-devtools::install_github("david-barnett/microViz@0.10.8") 
+devtools::install_github("david-barnett/microViz@0.10.10") 
 ```
 
 ### Installation notes
@@ -159,7 +159,7 @@ formally test this.
 
 ``` r
 library(microViz)
-#> microViz version 0.10.9 - Copyright (C) 2023 David Barnett
+#> microViz version 0.10.10 - Copyright (C) 2023 David Barnett
 #> ! Website: https://david-barnett.github.io/microViz
 #> ✔ Useful?  For citation details, run: `citation("microViz")`
 #> ✖ Silence? `suppressPackageStartupMessages(library(microViz))`
@@ -331,8 +331,8 @@ aitchison_perm <- aitchison_dists %>%
     n_processes = 1, n_perms = 99, # you should use at least 999!
     variables = "bmi_group"
   )
-#> 2023-05-15 21:22:34.548391 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2023-05-15 21:22:34.605894 - Finished PERMANOVA
+#> 2023-05-16 14:37:53.680031 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2023-05-16 14:37:53.786058 - Finished PERMANOVA
 
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
@@ -357,8 +357,8 @@ your permanova directly using the `ord_plot` function with constraints
 perm2 <- aitchison_dists %>%
   dist_permanova(variables = c("weight", "african", "sex"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2023-05-15 21:22:34.623176 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2023-05-15 21:22:36.280034 - Finished PERMANOVA
+#> 2023-05-16 14:37:53.808143 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2023-05-16 14:37:56.526257 - Finished PERMANOVA
 ```
 
 We’ll visualise the effect of nationality and bodyweight on sample
@@ -451,12 +451,12 @@ and by participating in this project you agree to abide by its terms.
 ``` r
 sessionInfo()
 #> R version 4.3.0 (2023-04-21)
-#> Platform: aarch64-apple-darwin20 (64-bit)
+#> Platform: x86_64-apple-darwin20 (64-bit)
 #> Running under: macOS Ventura 13.3.1
 #> 
 #> Matrix products: default
-#> BLAS:   /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/lib/libRblas.0.dylib 
-#> LAPACK: /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.11.0
+#> BLAS:   /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/lib/libRblas.0.dylib 
+#> LAPACK: /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/lib/libRlapack.dylib;  LAPACK version 3.11.0
 #> 
 #> locale:
 #> [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
@@ -468,8 +468,8 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] ggplot2_3.4.2   dplyr_1.1.2     phyloseq_1.44.0 microViz_0.10.9
-#> [5] testthat_3.1.8  devtools_2.4.5  usethis_2.1.6  
+#> [1] ggplot2_3.4.2    dplyr_1.1.2      phyloseq_1.44.0  microViz_0.10.10
+#> [5] testthat_3.1.8   devtools_2.4.5   usethis_2.1.6   
 #> 
 #> loaded via a namespace (and not attached):
 #>   [1] RColorBrewer_1.1-3      shape_1.4.6             rstudioapi_0.14        
@@ -486,13 +486,13 @@ sessionInfo()
 #>  [34] shiny_1.7.4             digest_0.6.31           selectr_0.4-2          
 #>  [37] colorspace_2.1-0        S4Vectors_0.38.1        ps_1.7.5               
 #>  [40] pkgload_1.3.2           seriation_1.4.2         vegan_2.6-4            
-#>  [43] labeling_0.4.2          fansi_1.0.4             httr_1.4.5             
+#>  [43] labeling_0.4.2          fansi_1.0.4             httr_1.4.6             
 #>  [46] mgcv_1.8-42             compiler_4.3.0          remotes_2.4.2          
 #>  [49] doParallel_1.0.17       withr_2.5.0             viridis_0.6.3          
 #>  [52] pkgbuild_1.4.0          highr_0.10              MASS_7.3-60            
 #>  [55] sessioninfo_1.2.2       rjson_0.2.21            biomformat_1.28.0      
 #>  [58] permute_0.9-7           tools_4.3.0             ape_5.7-1              
-#>  [61] httpuv_1.6.9            glue_1.6.2              callr_3.7.3            
+#>  [61] httpuv_1.6.11           glue_1.6.2              callr_3.7.3            
 #>  [64] nlme_3.1-162            rhdf5filters_1.12.1     promises_1.2.0.1       
 #>  [67] gridtext_0.1.5          grid_4.3.0              Rtsne_0.16             
 #>  [70] cluster_2.1.4           reshape2_1.4.4          ade4_1.7-22            

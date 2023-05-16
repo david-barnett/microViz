@@ -1,3 +1,7 @@
+# microViz 0.10.10
+
+- Fix: `comp_barplot` taxon ordering is now correct when tax_level is set to "Taxon"
+
 # microViz 0.10.9
 
 - Fix: Small internal fix to avoid renderggiraph deprecation warning in ord_explore.
