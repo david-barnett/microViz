@@ -8,7 +8,7 @@ test_that("tax_fix_interactive() works", {
   skip_if(Sys.info()[["machine"]] == "arm64")
   DTversion <- utils::packageVersion("DT")
   skip_if(DTversion < "0.26")
-  if (DTversion != c("0.27") && DTversion != c("0.26")) {
+  if (!DTversion %in% package_version(c("0.28", "0.27", "0.26"))) {
     rlang::abort(message = c(
       "DT has been updated!",
       i = "DT updates will always break these tests due to the version being recorded in the html",
