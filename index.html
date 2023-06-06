@@ -372,8 +372,8 @@
 <span>    n_processes <span class="op">=</span> <span class="fl">1</span>, n_perms <span class="op">=</span> <span class="fl">99</span>, <span class="co"># you should use at least 999!</span></span>
 <span>    variables <span class="op">=</span> <span class="st">"bmi_group"</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-05-16 14:37:53.680031 - Starting PERMANOVA with 99 perms with 1 processes</span></span>
-<span><span class="co">#&gt; 2023-05-16 14:37:53.786058 - Finished PERMANOVA</span></span>
+<span><span class="co">#&gt; 2023-06-06 15:54:22.582369 - Starting PERMANOVA with 99 perms with 1 processes</span></span>
+<span><span class="co">#&gt; 2023-06-06 15:54:22.662667 - Finished PERMANOVA</span></span>
 <span></span>
 <span><span class="co"># view the permanova results</span></span>
 <span><span class="fu"><a href="reference/psExtra-accessors.html">perm_get</a></span><span class="op">(</span><span class="va">aitchison_perm</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -395,8 +395,8 @@
 <code class="sourceCode R"><span><span class="va">perm2</span> <span class="op">&lt;-</span> <span class="va">aitchison_dists</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="reference/dist_permanova.html">dist_permanova</a></span><span class="op">(</span>variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"african"</span>, <span class="st">"sex"</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">321</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Dropping samples with missings: 2</span></span>
-<span><span class="co">#&gt; 2023-05-16 14:37:53.808143 - Starting PERMANOVA with 999 perms with 1 processes</span></span>
-<span><span class="co">#&gt; 2023-05-16 14:37:56.526257 - Finished PERMANOVA</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-06-06 15:54:22.683263 - Starting PERMANOVA with 999 perms with 1 processes</span></span>
+<span><span class="co">#&gt; 2023-06-06 15:54:24.86453 - Finished PERMANOVA</span></span></code></pre></div>
 <p>We’ll visualise the effect of nationality and bodyweight on sample composition, after first removing the effect of sex.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">perm2</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
@@ -472,12 +472,12 @@
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; R version 4.3.0 (2023-04-21)</span></span>
-<span><span class="co">#&gt; Platform: x86_64-apple-darwin20 (64-bit)</span></span>
+<span><span class="co">#&gt; Platform: aarch64-apple-darwin20 (64-bit)</span></span>
 <span><span class="co">#&gt; Running under: macOS Ventura 13.3.1</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Matrix products: default</span></span>
-<span><span class="co">#&gt; BLAS:   /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/lib/libRblas.0.dylib </span></span>
-<span><span class="co">#&gt; LAPACK: /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/lib/libRlapack.dylib;  LAPACK version 3.11.0</span></span>
+<span><span class="co">#&gt; BLAS:   /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/lib/libRblas.0.dylib </span></span>
+<span><span class="co">#&gt; LAPACK: /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.11.0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; locale:</span></span>
 <span><span class="co">#&gt; [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8</span></span>
@@ -507,13 +507,13 @@
 <span><span class="co">#&gt;  [34] shiny_1.7.4             digest_0.6.31           selectr_0.4-2          </span></span>
 <span><span class="co">#&gt;  [37] colorspace_2.1-0        S4Vectors_0.38.1        ps_1.7.5               </span></span>
 <span><span class="co">#&gt;  [40] pkgload_1.3.2           seriation_1.4.2         vegan_2.6-4            </span></span>
-<span><span class="co">#&gt;  [43] labeling_0.4.2          fansi_1.0.4             httr_1.4.6             </span></span>
+<span><span class="co">#&gt;  [43] labeling_0.4.2          fansi_1.0.4             httr_1.4.5             </span></span>
 <span><span class="co">#&gt;  [46] mgcv_1.8-42             compiler_4.3.0          remotes_2.4.2          </span></span>
 <span><span class="co">#&gt;  [49] doParallel_1.0.17       withr_2.5.0             viridis_0.6.3          </span></span>
 <span><span class="co">#&gt;  [52] pkgbuild_1.4.0          highr_0.10              MASS_7.3-60            </span></span>
 <span><span class="co">#&gt;  [55] sessioninfo_1.2.2       rjson_0.2.21            biomformat_1.28.0      </span></span>
 <span><span class="co">#&gt;  [58] permute_0.9-7           tools_4.3.0             ape_5.7-1              </span></span>
-<span><span class="co">#&gt;  [61] httpuv_1.6.11           glue_1.6.2              callr_3.7.3            </span></span>
+<span><span class="co">#&gt;  [61] httpuv_1.6.9            glue_1.6.2              callr_3.7.3            </span></span>
 <span><span class="co">#&gt;  [64] nlme_3.1-162            rhdf5filters_1.12.1     promises_1.2.0.1       </span></span>
 <span><span class="co">#&gt;  [67] gridtext_0.1.5          grid_4.3.0              Rtsne_0.16             </span></span>
 <span><span class="co">#&gt;  [70] cluster_2.1.4           reshape2_1.4.4          ade4_1.7-22            </span></span>
@@ -585,7 +585,7 @@
 <li><a href="https://codecov.io/gh/david-barnett/microViz" class="external-link"><img src="https://codecov.io/gh/david-barnett/microViz/branch/main/graph/badge.svg?token=C1EoVkhnxA" alt="codecov"></a></li>
 <li><a href="https://david-barnett.r-universe.dev/ui#package:microViz" class="external-link"><img src="https://david-barnett.r-universe.dev/badges/microViz" alt="r-universe microViz status"></a></li>
 <li><a href="https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa" class="external-link"><img src="https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa/status.svg" alt="JOSS article"></a></li>
-<li><a href="https://scholar.google.com/scholar?oi=bibs&amp;hl=en&amp;cites=5439940108464463894" class="external-link"><img src="https://img.shields.io/badge/Citations-~37-blueviolet" alt="Citations"></a></li>
+<li><a href="https://scholar.google.com/scholar?oi=bibs&amp;hl=en&amp;cites=5439940108464463894" class="external-link"><img src="https://img.shields.io/badge/Citations-~41-blueviolet" alt="Citations"></a></li>
 <li><a href="https://zenodo.org/badge/latestdoi/307119750" class="external-link"><img src="https://zenodo.org/badge/307119750.svg" alt="Zenodo DOI"></a></li>
 </ul>
 </div>
