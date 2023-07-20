@@ -9,7 +9,7 @@ taxatree_stats_p_adjust(
   method,
   grouping = "rank",
   p = "p.value",
-  new_var = paste0("p.adj.", method, ".", grouping)
+  new_var = NULL
 )
 }
 \arguments{
@@ -35,8 +35,12 @@ or more conservative family-wise error rate controlling methods such as "holm" o
 \details{
 Define how to group the p values for adjustment with the \code{grouping} argument.
 The default is to adjust the p values in groups at each taxonomic rank,
-but you could also adjust per "model" / "taxon" or per "term".
-Or even group by a combination of rank and term with c("rank", "term")
+but you could also adjust per "taxon" or per "term".
+Or even group by a combination of rank and term with c("rank", "term").
+You should specify the name of the new variable containing the adjusted
+p values in the new_var argument. If left as NULL the new variable name will
+be created by pasting together p.adj, the method, and the grouping variable(s)
+separated by ".".
 }
 \examples{
 # This example is an abbreviated excerpt from article on taxon modelling on
