@@ -40,7 +40,50 @@ lm_models <- phylo %>%
 # convert models to stats
 lm_stats <- taxatree_models2stats(lm_models)
 
-# test plotting errors
+# Test taxatree_stats_p_adjust input checks
+test_that("taxatree_stats_p_adjust rejects invalid grouping argument", {
+  expect_error(
+    taxatree_stats_p_adjust(lm_stats, method = "BH", grouping = 1),
+    regexp = "grouping must be character"
+  )
+})
+test_that("taxatree_stats_p_adjust rejects invalid new_var argument", {
+  expect_error(
+    taxatree_stats_p_adjust(lm_stats, method = "BH", new_var = c("A", "B")),
+    regexp = "new_var must be NULL or a string"
+  )
+})
+test_that("taxatree_stats_p_adjust rejects invalid data argument", {
+  expect_error(
+    taxatree_stats_p_adjust(data = phylo, method = "BH"),
+    regexp = "data must be a psExtra or a taxatree_stats dataframe"
+  )
+})
+test_that("taxatree_stats_p_adjust rejects invalid method argument", {
+  expect_error(
+    taxatree_stats_p_adjust(data = lm_stats, method = "bh"),
+    regexp = "`method` must be one of \"holm\", \"hochberg\","
+  )
+  expect_error(
+    taxatree_stats_p_adjust(data = lm_stats, method = c("BH", "holm")),
+    regexp = "method must be a string"
+  )
+})
+# test basic taxatree_stats_p_adjust functionality
+test_that("taxatree_stats_p_adjust works correctly with default grouping", {
+  result <- taxatree_stats_p_adjust(lm_stats, method = "BH")
+  expect_true("p.adj.BH.rank" %in% colnames(taxatree_stats_get(result)))
+})
+test_that("taxatree_stats_p_adjust works correctly with 2 variable grouping", {
+  result <- taxatree_stats_p_adjust(lm_stats, method = "BH", grouping = c("rank", "term"))
+  expect_true("p.adj.BH.rank.term" %in% colnames(taxatree_stats_get(result)))
+})
+test_that("taxatree_stats_p_adjust works correctly with provided new_var", {
+  result <- taxatree_stats_p_adjust(lm_stats, method = "BH", new_var = "new_p")
+  expect_true("new_p" %in% colnames(taxatree_stats_get(result)))
+})
+
+# test taxatree_plots plotting errors
 test_that("taxatree_plots throw informative errors", {
   expect_error(
     object = lm_models %>% taxatree_plots(),
@@ -58,7 +101,6 @@ test_that("taxatree_plots throw informative errors", {
     regexp = "It is missing the column\\(s\\): taxon & rank"
   )
 })
-
 
 test_that("taxatree_plot plotting works", {
   local_edition(3)

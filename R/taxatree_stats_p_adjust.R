@@ -8,9 +8,12 @@
 #' @details
 #' Define how to group the p values for adjustment with the `grouping` argument.
 #' The default is to adjust the p values in groups at each taxonomic rank,
-#' but you could also adjust per "model" / "taxon" or per "term".
-#' Or even group by a combination of rank and term with c("rank", "term")
-#'
+#' but you could also adjust per "taxon" or per "term".
+#' Or even group by a combination of rank and term with c("rank", "term").
+#' You should specify the name of the new variable containing the adjusted
+#' p values in the new_var argument. If left as NULL the new variable name will
+#' be created by pasting together p.adj, the method, and the grouping variable(s)
+#' separated by ".".
 #'
 #' @param data psExtra with taxatree_stats dataframe, or just the dataframe
 #' @param grouping
@@ -95,19 +98,33 @@ taxatree_stats_p_adjust <- function(data,
                                     method,
                                     grouping = "rank",
                                     p = "p.value",
-                                    new_var = paste0(
-                                      "p.adj.", method, ".", grouping
-                                    )) {
-  if (is(data, "psExtra") && is.data.frame(data@taxatree_stats)) {
-    df <- data@taxatree_stats
-  } else if (inherits(data, "data.frame")) {
-    df <- data
-  } else {
-    stop(
-      "data must be a psExtra with taxatree_stats or just the stats dataframe"
-    )
+                                    new_var = NULL) {
+  # Input checks
+  if (!rlang::is_string(method)) rlang::abort("method must be a string")
+  rlang::arg_match(method, values = stats::p.adjust.methods)
+  if (!is.character(grouping)) rlang::abort("grouping must be character")
+  if (!is.null(new_var) && !rlang::is_string(new_var)) {
+    rlang::abort("new_var must be NULL or a string")
+  }
+  if (!is(data, "psExtra") && !is.data.frame(data)) {
+    rlang::abort("data must be a psExtra or a taxatree_stats dataframe")
   }
 
+  # Extract and check stats data frame
+  if (is(data, "psExtra")) {
+    if (!is.data.frame(data@taxatree_stats)) {
+      stop("psExtra input must have stats dataframe in taxatree_stats slot")
+    }
+    df <- data@taxatree_stats
+  } else {
+    df <- data
+  }
+
+  # set default new variable name
+  if (is.null(new_var)) {
+    new_var <- paste0("p.adj.", method, ".", paste(grouping, collapse = "."))
+  }
+  # change grouping variable names from alternative nomenclature
   if (identical(grouping, "model") || identical(grouping, "taxon_name")) {
     grouping <- "taxon"
   }
