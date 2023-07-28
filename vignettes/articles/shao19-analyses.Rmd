@@ -305,28 +305,22 @@ Starting with a simple approach borrowed from [MaAsLin2](https://huttenhower.sph
 ```{r}
 # First transform and filter the taxa, ready for statistical modelling #
 
-shao4d_log2prop <- shao4d %>%
+shao4d_prev10 <- shao4d %>%
   # prepend the 1st letter of the rank to each tax_table entry, to ensure all are unique
   tax_prepend_ranks() %>%
-  tax_transform(
-    trans = "compositional", rank = "genus",
-    add = "halfmin" # adds half the minimum observed abundance to all values
-  ) %>% #
+  tax_transform(trans = "compositional", rank = "genus") %>% 
   # for various statistical, biological, and practical reasons, let's strictly filter taxa
-  tax_filter(min_prevalence = 0.1, use_counts = TRUE) %>%
-  tax_transform(
-    trans = "log2", # pseudocount added earlier allows us to use a log transform
-    chain = TRUE # chain = TRUE allows the 2nd transformation
-  )
+  tax_filter(min_prevalence = 0.1, use_counts = TRUE)
 
-shao4d_log2prop
+shao4d_prev10
 ```
 
 ```{r}
-shao4d_treeStats <- shao4d_log2prop %>%
+shao4d_treeStats <- shao4d_prev10 %>%
   # run all the statistical models
   taxatree_models(
     ranks = c("phylum", "class", "order", "family", "genus"),
+    trans = "log2", trans_args = list(add = "halfmin"),
     variables = "Csection", type = lm # modelling function
   ) %>%
   # extract stats from the models
