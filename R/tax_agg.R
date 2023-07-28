@@ -117,7 +117,6 @@ tax_agg <- function(ps,
       stop("`top_N` must be NA or a number > 0")
     }
   }
-
   # store taxa orientation info for restoration to original setup before return
   taxa_were_rows <- phyloseq::taxa_are_rows(ps)
 
@@ -168,6 +167,12 @@ tax_agg <- function(ps,
     # otu_table --------------------------------------------------------------
     # get otu table with taxa as rows (like the tax table)
     otu <- t(unclass(otu_get(ps)))
+
+    # check OTU table does not contain negative values, which should not be added
+    if (any(otu < 0)) {
+      rlang::abort("otu_table values must not be negative when aggregating")
+    }
+
     otu_df <- as.data.frame.matrix(
       x = otu, optional = TRUE, make.names = FALSE, stringsAsFactors = FALSE
     )

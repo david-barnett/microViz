@@ -26,6 +26,10 @@
 #' @param verbose
 #' message about progress: "rank" only notifies which rank is being processed;
 #' TRUE notifies you about each taxon being processed; FALSE for no messages.
+#' @param trans
+#' name of tax_transform transformation to apply to aggregated taxa before fitting statistical models
+#' @param trans_args
+#' named list of any additional arguments to tax_transform e.g. list(zero_replace = "halfmin")
 #' @param ... extra arguments are passed directly to modelling function
 #'
 #' @seealso \code{\link{tax_model}} for more details and examples
@@ -41,18 +45,22 @@ taxatree_models <- function(ps,
                             checkVars = TRUE,
                             checkNA = "warning",
                             verbose = "rank",
+                            trans = "identity",
+                            trans_args = list(),
                             ...) {
   check_is_phyloseq(ps, argName = "ps")
   data <- as(ps, "psExtra")
-  ps <- ps_get(ps)
+  ps <- ps_get(ps) # This probably is not safe.
   ranks <- taxatree_modelsGetRanks(ps = ps, ranks = ranks)
   taxatree_modelsCheckDupes(ps = ps, ranks = ranks)
 
   tax_models_list <- lapply(
     X = ranks, FUN = function(r) {
       if (!isFALSE(verbose)) message(Sys.time(), " - modelling at rank: ", r)
+
       models <- tax_model(
-        ps = ps, rank = r, type = type, variables = variables, formula = formula,
+        ps = ps, rank = r, trans = trans, trans_args = trans_args,
+        type = type, variables = variables, formula = formula,
         checkVars = checkVars, checkNA = checkNA, verbose = verbose,
         use_future = use_future, return_psx = FALSE, ...
       )

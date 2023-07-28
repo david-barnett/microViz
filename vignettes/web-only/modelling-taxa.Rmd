@@ -77,19 +77,22 @@ phylo <- phylo %>%
 
 We will start by creating a linear regression model for one genus,
 *Bacteroides*. We will transform the count data by first making it
-proportions, and then taking the logarithm, with base 2. This is what
-MaAsLin2 does by default (except they call the compositional
-transformation "Total Sum Scaling (TSS)"). We will replace the zeros
-with half the minimum observed abundance proportion (of any taxon)
-before log2 transformation.
+proportions with `tax_transform("compositional")`. 
+We will replace the zeros with half the minimum observed abundance proportion 
+(of any taxon) before log2 transformation. 
+We do this second transformation step by passing trans = "log2" 
+to the tax_model function. 
+This two-step transformation is borrowed from MaAsLin2
+(except in MaAsLin2 the compositional transformation is named 
+"Total Sum Scaling (TSS)").
 
 ```{r}
 parabacteroides_lm <- phylo %>%
   tax_fix() %>%
   tax_transform("compositional", rank = "Genus") %>%
-  tax_transform("log2", zero_replace = "halfmin", chain = TRUE) %>%
   tax_model(
     type = "lm", rank = "Genus", taxa = "Parabacteroides",
+    trans = "log2", trans_args = list(zero_replace = "halfmin"),
     variables = c("UC", "female", "antibiotics", "steroids", "age_scaled"),
     return_psx = FALSE
   )
@@ -165,11 +168,9 @@ lm_models <- phylo %>%
   # it makes sense to perform the compositional transformation BEFORE filtering
   tax_transform("compositional", rank = "Genus", keep_counts = TRUE) %>%
   tax_filter(min_prevalence = 0.1, undetected = 0, use_counts = TRUE) %>%
-  tax_transform(
-    trans = "log2", chain = TRUE, zero_replace = "halfmin"
-  ) %>%
   taxatree_models(
     type = lm,
+    trans = "log2", trans_args = list(zero_replace = "halfmin"),
     ranks = NULL, # uses every rank available except the first
     variables = c("UC", "female", "antibiotics", "steroids", "age_scaled")
   )
@@ -370,7 +371,7 @@ lm_stats %>%
     rank == "Genus", p.value < 0.05 | prevalence > 0.5, estimate > 0
   ) %>%
   taxatree_plots(
-    colour_lims = c(-20, 20), colour_trans = "identity",
+    colour_lims = c(-5, 5), colour_trans = "identity",
     palette = "Blue-Red 3", l2 = 90
   ) %>%
   .[[1]] %>% # show only the first plot
@@ -389,7 +390,7 @@ lm_stats %>%
     rank == "Genus", p.value < 0.05 | prevalence > 0.5, estimate > 0
   ) %>%
   taxatree_plots(
-    palette = "Berlin", colour_lims = c(-20, 20), size_guide = NULL
+    palette = "Berlin", colour_lims = c(-5, 5), size_guide = NULL
   ) %>%
   .[[1]] %>% # show only the first plot
   taxatree_plot_labels(

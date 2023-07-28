@@ -30,9 +30,8 @@ lm_models <- phylo %>%
   tax_prepend_ranks() %>%
   tax_transform("compositional", rank = "Family", keep_counts = TRUE) %>%
   tax_filter(min_prevalence = 0.3, undetected = 0, use_counts = TRUE) %>%
-  tax_transform(trans = "log2", chain = TRUE, zero_replace = "halfmin") %>%
   taxatree_models(
-    type = lm,
+    type = lm, trans = "log2", trans_args = list(zero_replace = "halfmin"),
     ranks = NULL, # uses every rank available except the first
     variables = c("UC", "female", "age_scaled")
   )

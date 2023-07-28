@@ -137,7 +137,7 @@ tax_transform <- function(data,
   if (!is.na(rank)) data <- tax_agg(ps = ps_get(data), rank = rank)
 
   # store otu table prior to transformation (for if keep_counts == TRUE)
-  counts_otu <- otu_get(ps_counts(data = data))
+  if (keep_counts) counts_otu <- otu_get(data = data, counts = TRUE)
 
   # get plain phyloseq from aggregated psExtra data
   ps <- ps_get(data)
