@@ -17,7 +17,7 @@ date)](https://img.shields.io/docker/v/barnettdavid/microviz-rocker-verse?color=
 status](https://david-barnett.r-universe.dev/badges/microViz)](https://david-barnett.r-universe.dev/ui#package:microViz)
 [![JOSS
 article](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa/status.svg)](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa)
-[![Citations](https://img.shields.io/badge/Citations-~50-blueviolet)](https://scholar.google.com/scholar?oi=bibs&hl=en&cites=5439940108464463894)
+[![Citations](https://img.shields.io/badge/Citations-~53-blueviolet)](https://scholar.google.com/scholar?oi=bibs&hl=en&cites=5439940108464463894)
 [![Zenodo
 DOI](https://zenodo.org/badge/307119750.svg)](https://zenodo.org/badge/latestdoi/307119750)
 <!-- badges: end -->
@@ -159,7 +159,7 @@ formally test this.
 
 ``` r
 library(microViz)
-#> microViz version 0.10.10 - Copyright (C) 2023 David Barnett
+#> microViz version 0.11.0 - Copyright (C) 2023 David Barnett
 #> ! Website: https://david-barnett.github.io/microViz
 #> ✔ Useful?  For citation details, run: `citation("microViz")`
 #> ✖ Silence? `suppressPackageStartupMessages(library(microViz))`
@@ -331,8 +331,8 @@ aitchison_perm <- aitchison_dists %>%
     n_processes = 1, n_perms = 99, # you should use at least 999!
     variables = "bmi_group"
   )
-#> 2023-07-20 17:10:01.831556 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2023-07-20 17:10:01.889154 - Finished PERMANOVA
+#> 2023-07-28 22:52:57.924566 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2023-07-28 22:52:57.981476 - Finished PERMANOVA
 
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
@@ -357,8 +357,8 @@ your permanova directly using the `ord_plot` function with constraints
 perm2 <- aitchison_dists %>%
   dist_permanova(variables = c("weight", "african", "sex"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2023-07-20 17:10:01.900323 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2023-07-20 17:10:03.569987 - Finished PERMANOVA
+#> 2023-07-28 22:52:57.992459 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2023-07-28 22:52:59.653581 - Finished PERMANOVA
 ```
 
 We’ll visualise the effect of nationality and bodyweight on sample
@@ -452,7 +452,7 @@ and by participating in this project you agree to abide by its terms.
 sessionInfo()
 #> R version 4.3.0 (2023-04-21)
 #> Platform: aarch64-apple-darwin20 (64-bit)
-#> Running under: macOS Ventura 13.4.1
+#> Running under: macOS Ventura 13.5
 #> 
 #> Matrix products: default
 #> BLAS:   /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/lib/libRblas.0.dylib 
@@ -468,8 +468,8 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] ggplot2_3.4.2    dplyr_1.1.2      phyloseq_1.44.0  microViz_0.10.10
-#> [5] testthat_3.1.10  devtools_2.4.5   usethis_2.2.2   
+#> [1] ggplot2_3.4.2   dplyr_1.1.2     phyloseq_1.44.0 microViz_0.11.0
+#> [5] testthat_3.1.10 devtools_2.4.5  usethis_2.2.2  
 #> 
 #> loaded via a namespace (and not attached):
 #>   [1] RColorBrewer_1.1-3      shape_1.4.6             rstudioapi_0.15.0      
