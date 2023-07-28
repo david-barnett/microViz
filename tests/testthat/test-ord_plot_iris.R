@@ -6,9 +6,9 @@ clr_pca <- dietswap %>%
   tax_transform("clr", keep_counts = FALSE) %>%
   ord_calc(method = "PCA")
 
-test_that("ord_plot_iris warns counts aren't available", {
-  expect_warning(
-    object = ord_plot_iris(data = clr_pca, tax_level = "Genus"),
-    regexp = "otu_table of counts is NOT available"
+test_that("ord_plot_iris fails as it can't aggregate CLR transformed values", {
+  expect_error(
+    object = suppressWarnings(ord_plot_iris(data = clr_pca, tax_level = "Genus")),
+    regexp = "otu_table values must not be negative when aggregating"
   )
 })

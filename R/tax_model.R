@@ -44,6 +44,10 @@
 #' One of "stop", "warning", "message", or "allow", which
 #' indicates whether to check predictor variables for NAs, and how to report any NAs if present?
 #' @param verbose message about progress and any taxa name modifications
+#' @param trans
+#' name of tax_transform transformation to apply to aggregated taxa before fitting statistical models
+#' @param trans_args
+#' named list of any additional arguments to tax_transform e.g. list(zero_replace = "halfmin")
 #' @param ... extra args passed directly to modelling function
 #'
 #' @return
@@ -118,12 +122,18 @@ tax_model <- function(ps,
                       checkVars = TRUE,
                       checkNA = "warning",
                       verbose = TRUE,
+                      trans = "identity",
+                      trans_args = list(),
                       ...) {
+  if (!rlang::is_string(trans)) rlang::abort("trans must be a string")
+  if (!rlang::is_list(trans_args)) rlang::abort("trans_args must be a list")
+  if (!rlang::is_named2(trans_args)) rlang::abort("trans_args must all be named")
+
   check_is_phyloseq(ps, argName = "ps")
   if (!rlang::is_string(type) && !rlang::is_function(type)) {
     stop("`type` must be a string naming a modelling function, or a function")
   }
-  if (!rlang::is_bool(checkVars)) stop("checkVars must be TRUE or FALSE")
+  if (!rlang::is_bool(checkVars)) rlang::abort("checkVars must be TRUE or FALSE")
 
   # coerce input data is psExtra if user wants result returned as attachment
   if (isTRUE(return_psx)) data <- as(ps, "psExtra")
@@ -132,8 +142,12 @@ tax_model <- function(ps,
   # check phyloseq for common problems (and fix or message about this)
   ps <- phyloseq_validate(ps, remove_undetected = TRUE, verbose = TRUE)
 
-  # aggregate phyloseq at chosen rank level
-  ps <- tax_agg(ps, rank = rank) %>% ps_get()
+  # Aggregate taxa, including any transformation performed after aggregation
+  transform_args <- list(keep_counts = FALSE)
+  transform_args[names(trans_args)] <- trans_args
+  transform_args[c("data", "rank", "trans")] <- list(ps, rank, trans)
+  ps <- do.call(what = tax_transform, args = transform_args)
+  ps <- ps_get(ps)
 
   # check actual phyloseq taxa_names match this level after aggregating as
   # sometimes the names are not changed by tax_agg (when no aggregation occurs)

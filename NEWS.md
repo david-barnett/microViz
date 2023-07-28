@@ -1,3 +1,7 @@
+# microViz (development version)
+
+- `taxatree_models` now accepts transformation arguments to allow transformation after aggregation at each rank
+
 # microViz 0.10.11
 
 - Fix: `taxatree_stats_p_adjust` can accept multiple grouping variables without specifying new_var.

@@ -14,6 +14,8 @@ taxatree_models(
   checkVars = TRUE,
   checkNA = "warning",
   verbose = "rank",
+  trans = "identity",
+  trans_args = list(),
   ...
 )
 }
@@ -38,6 +40,10 @@ If variables is a list, not a vector, a model is fit for each entry in list.}
 
 \item{verbose}{message about progress: "rank" only notifies which rank is being processed;
 TRUE notifies you about each taxon being processed; FALSE for no messages.}
+
+\item{trans}{name of tax_transform transformation to apply to aggregated taxa before fitting statistical models}
+
+\item{trans_args}{named list of any additional arguments to tax_transform e.g. list(zero_replace = "halfmin")}
 
 \item{...}{extra arguments are passed directly to modelling function}
 }

@@ -55,13 +55,12 @@
 #'   tax_prepend_ranks() %>%
 #'   tax_transform("compositional", rank = "Genus") %>%
 #'   tax_filter(min_prevalence = 0.1, use_counts = TRUE) %>%
-#'   tax_transform("log2", zero_replace = "halfmin", chain = TRUE) %>%
 #'   taxatree_models(
 #'     type = lm,
+#'     trans = "log2", trans_args = list(zero_replace = "halfmin"),
 #'     ranks = c("Phylum", "Class", "Genus"),
 #'     variables = c("UC", "female", "antibiotics", "steroids", "age_scaled")
 #'   )
-#'
 #'
 #' lm_stats <- lm_models %>% taxatree_models2stats()
 #'

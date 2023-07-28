@@ -16,6 +16,8 @@ tax_model(
   checkVars = TRUE,
   checkNA = "warning",
   verbose = TRUE,
+  trans = "identity",
+  trans_args = list(),
   ...
 )
 }
@@ -44,6 +46,10 @@ If variables is a list, not a vector, a model is fit for each entry in list.}
 indicates whether to check predictor variables for NAs, and how to report any NAs if present?}
 
 \item{verbose}{message about progress and any taxa name modifications}
+
+\item{trans}{name of tax_transform transformation to apply to aggregated taxa before fitting statistical models}
+
+\item{trans_args}{named list of any additional arguments to tax_transform e.g. list(zero_replace = "halfmin")}
 
 \item{...}{extra args passed directly to modelling function}
 }
