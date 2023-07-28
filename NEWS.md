@@ -1,4 +1,4 @@
-# microViz (development version)
+# microViz 0.11.0
 
 - `taxatree_models` now accepts transformation arguments to allow transformation after aggregation at each rank
 
