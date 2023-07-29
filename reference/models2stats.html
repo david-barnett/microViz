@@ -24,7 +24,7 @@ taxatree_models or tax_model"><meta property="og:image" content="https://david-b
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.11.0</span>
       </span>
     </div>
 
@@ -190,17 +190,16 @@ taxatree_models or tax_model"><meta property="og:image" content="https://david-b
 <span class="r-in"><span>  <span class="fu"><a href="tax_prepend_ranks.html">tax_prepend_ranks</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"compositional"</span>, rank <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="tax_filter.html">tax_filter</a></span><span class="op">(</span>min_prevalence <span class="op">=</span> <span class="fl">0.1</span>, use_counts <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="tax_transform.html">tax_transform</a></span><span class="op">(</span><span class="st">"log2"</span>, zero_replace <span class="op">=</span> <span class="st">"halfmin"</span>, chain <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="taxatree_models.html">taxatree_models</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    type <span class="op">=</span> <span class="va">lm</span>,</span></span>
+<span class="r-in"><span>    trans <span class="op">=</span> <span class="st">"log2"</span>, trans_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>zero_replace <span class="op">=</span> <span class="st">"halfmin"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    ranks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Phylum"</span>, <span class="st">"Class"</span>, <span class="st">"Genus"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UC"</span>, <span class="st">"female"</span>, <span class="st">"antibiotics"</span>, <span class="st">"steroids"</span>, <span class="st">"age_scaled"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Proportional min_prevalence given: 0.1 --&gt; min 7/67 samples.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-07-20 16:22:55.440825 - modelling at rank: Phylum</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-07-20 16:22:55.737573 - modelling at rank: Class</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-07-20 16:22:56.204448 - modelling at rank: Genus</span>
-<span class="r-in"><span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-07-29 07:03:13.83661 - modelling at rank: Phylum</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-07-29 07:03:14.07626 - modelling at rank: Class</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-07-29 07:03:14.476021 - modelling at rank: Genus</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">lm_stats</span> <span class="op">&lt;-</span> <span class="va">lm_models</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">taxatree_models2stats</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -216,7 +215,7 @@ taxatree_models or tax_model"><meta property="og:image" content="https://david-b
 <span class="r-out co"><span class="r-pr">#&gt;</span> otu_get(counts = TRUE)		 [ 68 taxa and 67 samples ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> psExtra info:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> tax_agg = "Genus" tax_trans = "compositional&amp;log2" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> tax_agg = "Genus" tax_trans = "compositional" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> taxatree_stats dataframe:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 88 taxa at 3 ranks: Phylum, Class, Genus </span>
@@ -227,16 +226,16 @@ taxatree_models or tax_model"><meta property="og:image" content="https://david-b
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 440 × 8</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    term        taxon          rank  formula estimate std.error statistic p.value</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> UC          P: Firmicutes  Phyl… `P: Fi…  -<span style="color: #BB0000;">22.3</span>       13.6     -<span style="color: #BB0000;">1.64</span>  0.107  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> female      P: Firmicutes  Phyl… `P: Fi…  -<span style="color: #BB0000;">11.7</span>        9.66    -<span style="color: #BB0000;">1.21</span>  0.230  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> antibiotics P: Firmicutes  Phyl… `P: Fi…  -<span style="color: #BB0000;">19.8</span>       13.1     -<span style="color: #BB0000;">1.51</span>  0.137  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> steroids    P: Firmicutes  Phyl… `P: Fi…  -<span style="color: #BB0000;">32.7</span>       12.4     -<span style="color: #BB0000;">2.63</span>  0.010<span style="text-decoration: underline;">7</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> age_scaled  P: Firmicutes  Phyl… `P: Fi…   -<span style="color: #BB0000;">0.600</span>      5.45    -<span style="color: #BB0000;">0.110</span> 0.913  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> UC          P: Bacteroide… Phyl… `P: Ba…  -<span style="color: #BB0000;">13.8</span>        4.15    -<span style="color: #BB0000;">3.32</span>  0.001<span style="text-decoration: underline;">51</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> female      P: Bacteroide… Phyl… `P: Ba…   -<span style="color: #BB0000;">1.21</span>       2.95    -<span style="color: #BB0000;">0.410</span> 0.683  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> antibiotics P: Bacteroide… Phyl… `P: Ba…    1.37       4.01     0.342 0.734  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> steroids    P: Bacteroide… Phyl… `P: Ba…   -<span style="color: #BB0000;">4.36</span>       3.79    -<span style="color: #BB0000;">1.15</span>  0.255  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> age_scaled  P: Bacteroide… Phyl… `P: Ba…   -<span style="color: #BB0000;">0.937</span>      1.67    -<span style="color: #BB0000;">0.563</span> 0.576  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> UC          P: Firmicutes  Phyl… `P: Fi…   0.043<span style="text-decoration: underline;">0</span>     0.455    0.094<span style="text-decoration: underline;">5</span>  0.925 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> female      P: Firmicutes  Phyl… `P: Fi…  -<span style="color: #BB0000;">0.297</span>      0.324   -<span style="color: #BB0000;">0.919</span>   0.362 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> antibiotics P: Firmicutes  Phyl… `P: Fi…  -<span style="color: #BB0000;">0.793</span>      0.440   -<span style="color: #BB0000;">1.80</span>    0.076<span style="text-decoration: underline;">3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> steroids    P: Firmicutes  Phyl… `P: Fi…  -<span style="color: #BB0000;">0.747</span>      0.415   -<span style="color: #BB0000;">1.80</span>    0.077<span style="text-decoration: underline;">1</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> age_scaled  P: Firmicutes  Phyl… `P: Fi…   0.144      0.183    0.788   0.434 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> UC          P: Bacteroide… Phyl… `P: Ba…  -<span style="color: #BB0000;">2.58</span>       1.63    -<span style="color: #BB0000;">1.58</span>    0.120 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> female      P: Bacteroide… Phyl… `P: Ba…  -<span style="color: #BB0000;">1.01</span>       1.16    -<span style="color: #BB0000;">0.870</span>   0.388 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> antibiotics P: Bacteroide… Phyl… `P: Ba…   1.52       1.58     0.962   0.340 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> steroids    P: Bacteroide… Phyl… `P: Ba…  -<span style="color: #BB0000;">1.67</span>       1.49    -<span style="color: #BB0000;">1.12</span>    0.266 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> age_scaled  P: Bacteroide… Phyl… `P: Ba…  -<span style="color: #BB0000;">0.340</span>      0.655   -<span style="color: #BB0000;">0.519</span>   0.605 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 430 more rows</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># keep the models on the psExtra object</span></span></span>
@@ -251,7 +250,7 @@ taxatree_models or tax_model"><meta property="og:image" content="https://david-b
 <span class="r-out co"><span class="r-pr">#&gt;</span> otu_get(counts = TRUE)		 [ 68 taxa and 67 samples ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> psExtra info:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> tax_agg = "Genus" tax_trans = "compositional&amp;log2" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> tax_agg = "Genus" tax_trans = "compositional" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> taxatree_models list:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Ranks: Phylum/Class/Genus</span>

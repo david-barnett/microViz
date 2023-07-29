@@ -29,7 +29,7 @@ dataframe of statistics for use with taxatree_plots."><meta property="og:image" 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.11.0</span>
       </span>
     </div>
 
@@ -130,6 +130,8 @@ dataframe of statistics for use with <code>taxatree_plots</code>.</p>
 <span>  checkVars <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  checkNA <span class="op">=</span> <span class="st">"warning"</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="st">"rank"</span>,</span>
+<span>  trans <span class="op">=</span> <span class="st">"identity"</span>,</span>
+<span>  trans_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -173,6 +175,14 @@ If variables is a list, not a vector, a model is fit for each entry in list.</p>
 <dt>verbose</dt>
 <dd><p>message about progress: "rank" only notifies which rank is being processed;
 TRUE notifies you about each taxon being processed; FALSE for no messages.</p></dd>
+
+
+<dt>trans</dt>
+<dd><p>name of tax_transform transformation to apply to aggregated taxa before fitting statistical models</p></dd>
+
+
+<dt>trans_args</dt>
+<dd><p>named list of any additional arguments to tax_transform e.g. list(zero_replace = "halfmin")</p></dd>
 
 
 <dt>...</dt>
