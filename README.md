@@ -33,13 +33,14 @@ flexible.
 :microscope: `microViz` extends and complements popular microbial
 ecology packages like `phyloseq`, `vegan`, & `microbiome`.
 
-## Upgrading microViz versions ≤ 0.9.7 to version 0.10.0 +
+## Warning: do not follow taxatree_models examples from versions earlier than 0.11.0
 
-microViz version 0.10.0 introduces changes that may break some code
-written with older versions of microViz. If you were already using
-microViz prior to version 0.10.0 please read [this
-document](https://david-barnett.github.io/microViz/articles/ps_extra-replaced.html)
-before upgrading to the latest version.
+The documentation from earlier versions of microViz included an
+incorrect example of taxatree_models use. Specifically, it accidentally
+demonstrated log transforming abundance data before aggregation. Sincere
+apologies to anyone who followed this incorrect procedure. Examples have
+been corrected in microViz docs and website for version 0.11.0 and
+later. Please reach out to me with any questions about this issue.
 
 ## Learn more
 
@@ -86,9 +87,9 @@ examples: <https://david-barnett.github.io/microViz/>
   - [Modelling and plotting individual taxon associations with
     taxatrees](https://david-barnett.github.io/microViz/articles/web-only/modelling-taxa.html)
 
-  - More coming soon(ish)! Post on [GitHub
-    discussions](https://github.com/david-barnett/microViz/discussions)
-    if you have questions/requests
+- Post on [GitHub
+  discussions](https://github.com/david-barnett/microViz/discussions) if
+  you have questions/requests
 
 ## Installation
 
@@ -331,8 +332,8 @@ aitchison_perm <- aitchison_dists %>%
     n_processes = 1, n_perms = 99, # you should use at least 999!
     variables = "bmi_group"
   )
-#> 2023-07-28 22:52:57.924566 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2023-07-28 22:52:57.981476 - Finished PERMANOVA
+#> 2023-07-31 12:41:41.029456 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2023-07-31 12:41:41.089939 - Finished PERMANOVA
 
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
@@ -357,8 +358,8 @@ your permanova directly using the `ord_plot` function with constraints
 perm2 <- aitchison_dists %>%
   dist_permanova(variables = c("weight", "african", "sex"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2023-07-28 22:52:57.992459 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2023-07-28 22:52:59.653581 - Finished PERMANOVA
+#> 2023-07-31 12:41:41.102269 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2023-07-31 12:41:42.784852 - Finished PERMANOVA
 ```
 
 We’ll visualise the effect of nationality and bodyweight on sample
