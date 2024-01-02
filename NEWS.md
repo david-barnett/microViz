@@ -1,3 +1,7 @@
+# microViz (development version)
+
+- Note: If needed, `corncob` can now only be installed from GitHub, as is currently not available from CRAN. `corncob` is a suggested dependency of microViz from which data is borrowed for use in several examples, and which is needed is bbdml models are requested in tax_model.
+
 # microViz 0.11.0
 
 - `taxatree_models` now accepts transformation arguments to allow transformation after aggregation at each rank
