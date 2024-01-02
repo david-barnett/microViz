@@ -8,7 +8,6 @@
 #'      - generalised: 'gunifrac' (optionally set weighting alpha in gunifrac alpha)
 #'      - unweighted: 'unifrac'
 #'      - weighted: 'wunifrac'
-#'      - variance adjusted weighted: 'va-wunifrac'
 #'  - Aitchison distance (Euclidean distance after centered log ratio transform clr, see details)
 #'  - Euclidean distance
 #'
@@ -72,7 +71,7 @@ dist_calc <- function(data,
                       ...) {
   # check valid distance name was supplied
   rlang::arg_match(arg = dist, multiple = FALSE, values = union(c(
-    "bray", "gunifrac", "unifrac", "wunifrac", "va-wunifrac",
+    "bray", "gunifrac", "unifrac", "wunifrac",
     "aitchison", "robust.aitchison", "euclidean"
   ), unlist(phyloseq::distanceMethodList)))
 
@@ -94,12 +93,12 @@ dist_calc <- function(data,
       EXPR = dist,
       "unifrac" = "UW",
       "wunifrac" = 1,
-      "va-wunifrac" = "VAW",
-      "vawunifrac" = "VAW",
       "gunifrac" = gunifrac_alpha
     )
     # update distance name
     if (identical(dist, "gunifrac")) dist <- paste0(dist, "_", uniID)
+    # wunifrac is just setting gunifrac alpha to 1
+    if (identical(dist, "wunifrac")) gunifrac_alpha <- 1
 
     distMat <- distMatUnifrac(
       ps = ps, gunifrac_alpha = gunifrac_alpha, uniID = uniID
@@ -159,7 +158,8 @@ distMatUnifrac <- function(ps, gunifrac_alpha, uniID) {
   distMats <- GUniFrac::GUniFrac(
     otu.tab = otu_get(ps),
     tree = phyloseq::phy_tree(ps),
-    alpha = c(0, gunifrac_alpha, 1)
+    alpha = c(gunifrac_alpha),
+    verbose = FALSE
   )[["unifracs"]]
 
   distMat <- stats::as.dist(distMats[, , paste0("d_", uniID)])

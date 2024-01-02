@@ -1157,8 +1157,7 @@ dist_choices <- function(data, type) {
     "jsd" = "jsd: Jensen-Shannon Divergence",
     "gunifrac" = "gunifrac: Generalised UniFrac, alpha=0.5",
     "unifrac" = "unifrac: unweighted UniFrac",
-    "wunifrac" = "wunifrac: weighted UniFrac",
-    "va-wunifrac" = "va-wunifrac: variance-adjusted weighted UniFrac"
+    "wunifrac" = "wunifrac: weighted UniFrac"
   )
   # add more phyloseq dist methods
   pdists <- unlist(c(
