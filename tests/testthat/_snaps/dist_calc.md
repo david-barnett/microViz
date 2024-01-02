@@ -1,7 +1,7 @@
 # unifrac distances work
 
     Code
-      dist_get(dist_calc(esophagus, dist = d))
+      dist_get(dist_calc(esophagus, dist = "gunifrac"))
     Output
                 B         C
       C 0.4404284          
@@ -10,7 +10,7 @@
 ---
 
     Code
-      dist_get(dist_calc(esophagus, dist = d))
+      dist_get(dist_calc(esophagus, dist = "unifrac"))
     Output
                 B         C
       C 0.5175550          
@@ -19,18 +19,9 @@
 ---
 
     Code
-      dist_get(dist_calc(esophagus, dist = d))
+      dist_get(dist_calc(esophagus, dist = "wunifrac"))
     Output
                 B         C
       C 0.2035424          
       D 0.2603371 0.2477016
-
----
-
-    Code
-      dist_get(dist_calc(esophagus, dist = d))
-    Output
-                B         C
-      C 0.3605292          
-      D 0.3594336 0.3610123
 

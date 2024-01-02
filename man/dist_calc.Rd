@@ -27,7 +27,6 @@ Can compute various sample-sample distances using the microbiota composition of 
 \item generalised: 'gunifrac' (optionally set weighting alpha in gunifrac alpha)
 \item unweighted: 'unifrac'
 \item weighted: 'wunifrac'
-\item variance adjusted weighted: 'va-wunifrac'
 }
 \item Aitchison distance (Euclidean distance after centered log ratio transform clr, see details)
 \item Euclidean distance
