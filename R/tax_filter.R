@@ -16,7 +16,6 @@
 #'  (can be proportion of all counts)
 #' @param min_sample_abundance
 #' taxa must have at least this many reads in one or more samples
-#' (or proportion of that sample's reads)
 #' @param tax_level
 #' if given, aggregates data at named taxonomic rank before filtering,
 #' but returns phyloseq at the ORIGINAL level of aggregation!
