@@ -49,10 +49,6 @@ test_that("ord_explore app works: unconstrained ords", {
   app$wait_for_idle()
   app$expect_values() # 2
 
-  # Skip test based on package versions
-  skip_if_not(packageVersion("ggiraph") > "0.8.3" || packageVersion("ggplot2") < "3.4.0")
-  # test locally with dev version in the meantime until visual change in barplot legend (thick borders) is fixed
-
   # check state after first build
   app$click("build")
   app$wait_for_idle()
