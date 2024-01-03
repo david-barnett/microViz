@@ -205,7 +205,7 @@ unconstrained_aitchison_pca \%>\%
   facet_wrap("sex") +
   theme(line = element_blank()) +
   stat_density2d(aes(colour = sex)) +
-  guides(colour = FALSE)
+  guides(colour = "none")
 
 unconstrained_aitchison_pca \%>\%
   ord_plot(color = "bmi_group", plot_samples = FALSE, auto_caption = NA) +
