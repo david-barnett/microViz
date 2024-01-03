@@ -8,7 +8,7 @@ test_that("tax_fix_interactive() works", {
   skip_if(Sys.info()[["machine"]] == "arm64")
   DTversion <- utils::packageVersion("DT")
   skip_if(DTversion < "0.26")
-  if (!DTversion %in% package_version(c("0.29", "0.28", "0.27", "0.26"))) {
+  if (!DTversion %in% package_version(seq(0.26, 0.31, by = 0.01))) {
     rlang::abort(message = c(
       "DT has been updated!",
       i = "DT updates will always break these tests due to the version being recorded in the html",
@@ -21,7 +21,7 @@ test_that("tax_fix_interactive() works", {
 
   # devel R has Shiny errors fixed in #3625
   # due to Sys.setenv(`_R_CHECK_LENGTH_1_LOGIC2_`="true")
-  testthat::skip_if(getRversion() > "4.2" && packageVersion("shiny") <= "1.7.1")
+  skip_if(getRversion() > "4.2" && packageVersion("shiny") <= "1.7.1")
 
 
   data("dietswap", package = "microbiome")
