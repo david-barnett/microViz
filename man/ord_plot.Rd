@@ -64,7 +64,7 @@ NA = auto-scaling, or provide a numeric multiplier yourself.}
 \item{plot_samples}{if TRUE, plot sample points with geom_point}
 
 \item{scaling}{Type 2, or type 1 scaling. For more info,
-see \url{https://sites.google.com/site/mb3gustame/constrained-analyses/rda}.
+see \url{https://sites.google.com/site/mb3gustame/constrained-analyses/redundancy-analysis}.
 Either "species" or "site" scores are scaled by (proportional) eigenvalues,
 and the other set of scores is left unscaled (from ?vegan::scores.cca)}
 
