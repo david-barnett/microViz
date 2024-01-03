@@ -1,7 +1,6 @@
-# microViz (development version)
+# microViz 0.12.0
 
 - Breaking change: va-wunifrac distance calculation is no longer available, as it is not available in GUniFrac 1.8
-- 
 - Note: If needed, `corncob` can now only be installed from GitHub, as is currently not available from CRAN. `corncob` is a suggested dependency of microViz from which data is borrowed for use in several examples, and which is needed is bbdml models are requested in tax_model.
 
 # microViz 0.11.0

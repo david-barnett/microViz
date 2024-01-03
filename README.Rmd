@@ -109,21 +109,23 @@ I also highly recommend you install the following suggested CRAN packages.
 install.packages("ggtext") # for rotated labels on ord_plot() 
 install.packages("ggraph") # for taxatree_plots()
 install.packages("DT") # for tax_fix_interactive()
-install.packages("corncob") # for example datasets and beta binomial models
+
+# install corncob from github for example datasets and beta binomial models
+remotes::install_github('statdivlab/corncob@v0.4.1')
 ```
 
 ### Installation of microViz from GitHub
 
 ``` r
-# Installing from GitHub requires the devtools package
-install.packages("devtools")
+# Installing from GitHub requires the remotes package
+install.packages("remotes")
 # Windows users will also need to have RTools installed! http://jtleek.com/modules/01_DataScientistToolbox/02_10_rtools/
 
 # To install the latest version:
-devtools::install_github("david-barnett/microViz")
+remotes::install_github("david-barnett/microViz")
 
 # To install a specific "release" version of this package, e.g. an old version 
-devtools::install_github("david-barnett/microViz@0.10.10") 
+remotes::install_github("david-barnett/microViz@0.11.0") 
 ```
 
 ### Installation notes
@@ -134,7 +136,7 @@ devtools::install_github("david-barnett/microViz@0.10.10")
 
 :whale: For Docker users an image with the main branch installed is available at: <https://hub.docker.com/r/barnettdavid/microviz-rocker-verse>
 
-:date: microViz is tested to work with R version 4 on Windows, MacOS, and Ubuntu 18 and 20.
+:date: microViz is tested to work with R version 4 on Windows, MacOS, and Ubuntu 20.
 R version 3.6.\* should probably work, but I don't formally test this.
 
 ## Interactive ordination exploration
@@ -230,17 +232,15 @@ BMI.
 
 Here is one option as an example:
 
-1.  Filter out rare taxa (e.g. remove Genera not present in at least 10% of samples) - use `tax_filter()`
-2.  Aggregate the taxa into bacterial families (for example) - use `tax_agg()`
-3.  Transform the microbial data with the centered-log-ratio transformation - use `tax_transform()`
-4.  Perform PCA with the clr-transformed features (equivalent to Aitchison distance PCoA) - use `ord_calc()`
-5.  Plot the first 2 axes of this PCA ordination, colouring samples by group and adding taxon loading arrows to visualize which taxa generally differ across your samples - use `ord_plot()`
-6.  Customise the theme of the ggplot as you like and/or add features like ellipses or annotations
+1.  Aggregate the taxa into bacterial families (for example) - use `tax_agg()`
+2.  Transform the microbial data with the centered-log-ratio transformation - use `tax_transform()`
+3.  Perform PCA with the clr-transformed features (equivalent to Aitchison distance PCoA) - use `ord_calc()`
+4.  Plot the first 2 axes of this PCA ordination, colouring samples by group and adding taxon loading arrows to visualize which taxa generally differ across your samples - use `ord_plot()`
+5.  Customise the theme of the ggplot as you like and/or add features like ellipses or annotations
 
 ```{r ordination-plot, dpi=120}
 # perform ordination
 unconstrained_aitchison_pca <- dietswap %>%
-  tax_filter(min_prevalence = 0.1, tax_level = "Genus") %>%
   tax_agg("Family") %>%
   tax_transform("clr") %>%
   ord_calc()
@@ -252,7 +252,7 @@ pca_plot <- unconstrained_aitchison_pca %>%
   ord_plot(
     plot_taxa = 1:6, colour = "bmi_group", size = 1.5,
     tax_vec_length = 0.325,
-    tax_lab_style = tax_lab_style(max_angle = 90, aspect_ratio = 0.5),
+    tax_lab_style = tax_lab_style(max_angle = 90, aspect_ratio = 1),
     auto_caption = 8
   )
 
@@ -261,7 +261,7 @@ customised_plot <- pca_plot +
   stat_ellipse(aes(linetype = bmi_group, colour = bmi_group), linewidth = 0.3) + # linewidth not size, since ggplot 3.4.0
   scale_colour_brewer(palette = "Set1") +
   theme(legend.position = "bottom") +
-  coord_fixed(ratio = 0.5, clip = "off") # makes rotated labels align correctly
+  coord_fixed(ratio = 1, clip = "off") # makes rotated labels align correctly
 
 # show plot
 customised_plot
@@ -271,12 +271,11 @@ customised_plot
 
 You visualised your ordinated data in the plot above.
 Below you can see how to perform a PERMANOVA to test the significance of BMI's association with overall microbial composition.
-This example uses the Family-level aitchison distance to correspond with the plot above.
+This example uses the Family-level Aitchison distance to correspond with the plot above.
 
 ```{r permanova}
 # calculate distances
 aitchison_dists <- dietswap %>%
-  tax_filter(min_prevalence = 0.1) %>%
   tax_transform("identity", rank = "Family") %>%
   dist_calc("aitchison")
 
@@ -316,12 +315,12 @@ perm2 %>%
     constraint_vec_length = 1,
     constraint_vec_style = vec_constraint(1.5, colour = "grey15"),
     constraint_lab_style = constraint_lab_style(
-      max_angle = 90, size = 3, aspect_ratio = 0.35, colour = "black"
+      max_angle = 90, size = 3, aspect_ratio = 0.8, colour = "black"
     )
   ) +
   stat_ellipse(aes(colour = nationality), linewidth = 0.2) + # linewidth not size since ggplot 3.4.0
   scale_color_brewer(palette = "Set1") +
-  coord_fixed(ratio = 0.35, clip = "off") +
+  coord_fixed(ratio = 0.8, clip = "off", xlim = c(-4, 4)) +
   theme(legend.position = c(0.9, 0.1), legend.background = element_rect())
 ```
 
@@ -368,7 +367,6 @@ Journal of Open Source Software, 6(63), 3201, <https://doi.org/10.21105/joss.032
 
 Bug reports, questions, suggestions for new features, and other contributions are all welcome.
 Feel free to create a [GitHub Issue](https://github.com/david-barnett/microViz/issues) or write on the [Discussions](https://github.com/david-barnett/microViz/discussions) page.
-Alternatively you could also contact me (David) on Twitter [\@\_david_barnett\_](https://twitter.com/_david_barnett_) .
 
 This project is released with a [Contributor Code of Conduct](https://david-barnett.github.io/microViz/CODE_OF_CONDUCT.html) and by participating in this project you agree to abide by its terms.
 
