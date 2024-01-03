@@ -49,7 +49,7 @@ ord_plot_iris(
 \item{keep_all_vars}{slows down processing but is required for any post-hoc plot customisation options}
 
 \item{scaling}{Type 2, or type 1 scaling. For more info,
-see \url{https://sites.google.com/site/mb3gustame/constrained-analyses/rda}.
+see \url{https://sites.google.com/site/mb3gustame/constrained-analyses/redundancy-analysis}.
 Either "species" or "site" scores are scaled by (proportional) eigenvalues,
 and the other set of scores is left unscaled (from ?vegan::scores.cca)}
 
