@@ -28,8 +28,7 @@ in that sample (or set undetected arg)}
 \item{min_total_abundance}{minimum total readcount of a taxon, summed across all samples
 (can be proportion of all counts)}
 
-\item{min_sample_abundance}{taxa must have at least this many reads in one or more samples
-(or proportion of that sample's reads)}
+\item{min_sample_abundance}{taxa must have at least this many reads in one or more samples}
 
 \item{tax_level}{if given, aggregates data at named taxonomic rank before filtering,
 but returns phyloseq at the ORIGINAL level of aggregation!}
