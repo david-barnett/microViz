@@ -492,6 +492,65 @@ psq %>%
   )
 ```
 
+### Alternative: ggplot correlation heatmaps with p-values
+
+In response to a number of questions/requests about annotating correlation heatmaps with p-values: `cor_heatmap` cannot do this, so here is an alternative way using `tax_model`. 
+
+```{r}
+# compute correlations, with p values, and store in a dataframe
+correlations_df <- psq %>% 
+  tax_model(
+    trans = "clr",
+    rank = "Family", variables = list("var1", "var2", "var3", "var4", "var5"), 
+    type = microViz::cor_test, method = "spearman", 
+    return_psx = FALSE, verbose = FALSE
+  ) %>% 
+  tax_models2stats(rank = "Family")
+
+# get nice looking ordering of correlation estimates using hclust
+taxa_hclust <- correlations_df %>% 
+  dplyr::select(term, taxon, estimate) %>% 
+  tidyr::pivot_wider(
+    id_cols = taxon, names_from = term, values_from = estimate
+  ) %>% 
+  tibble::column_to_rownames("taxon") %>% 
+  as.matrix() %>% 
+  stats::dist(method = "euclidean") %>% 
+  hclust(method = "ward.D2") 
+
+taxa_order <- taxa_hclust$labels[taxa_hclust$order]
+```
+
+
+```{r}
+library(ggplot2)
+
+correlations_df %>% 
+  mutate(p.FDR = p.adjust(p.value, method = "fdr")) %>% 
+  ggplot(aes(x = term, y = taxon)) +
+  geom_raster(aes(fill = estimate)) +
+  geom_point(
+    data = function(x) filter(x, p.value < 0.05),
+    shape = "asterisk"
+  ) +
+  geom_point(
+    data = function(x) filter(x, p.FDR < 0.05),
+    shape = "circle", size = 3
+  ) +
+  scale_y_discrete(limits = taxa_order) +
+  scale_fill_distiller(palette = "BrBG", limits = c(-0.45, 0.45)) + 
+  theme_minimal() +
+  labs(
+    x = NULL, y = NULL, fill = "Spearman's\nRank\nCorrelation",
+    caption = paste(
+      "Asterisk indicates p < 0.05, not FDR adjusted",
+      "Filled circle indicates FDR corrected p < 0.05", sep = "\n"
+  ))
+```
+
+Additionally, with the `scale_y_dendrogram` function from the [ggh4x package](https://teunbrand.github.io/ggh4x) you can add a visualisation of the hclust dendrogram to the y axis. See: <https://teunbrand.github.io/ggh4x/articles/PositionGuides.html#dendrograms>
+
+
 ## Other stuff
 
 Complicated stuff demonstrated down here, not necessarily useful.
