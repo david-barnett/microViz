@@ -28,8 +28,8 @@
 #'
 #' @examples
 #' library("ComplexHeatmap")
-#' data("ibd_phylo", package = "corncob")
-#' psq <- tax_filter(ibd_phylo, min_prevalence = 5)
+#' data("ibd", package = "microViz")
+#' psq <- tax_filter(ibd, min_prevalence = 5)
 #' psq <- tax_mutate(psq, Species = NULL)
 #' psq <- tax_fix(psq)
 #' psq <- tax_agg(psq, rank = "Family")
@@ -162,8 +162,8 @@ taxAnnotation <- function(...,
 #' @export
 #' @examples
 #' library("ComplexHeatmap")
-#' data("ibd_phylo", package = "corncob")
-#' psq <- tax_filter(ibd_phylo, min_prevalence = 5)
+#' data("ibd", package = "microViz")
+#' psq <- tax_filter(ibd, min_prevalence = 5)
 #' psq <- tax_mutate(psq, Species = NULL)
 #' psq <- tax_fix(psq)
 #' psq <- tax_agg(psq, rank = "Family")
@@ -274,8 +274,8 @@ anno_tax_prev <- function(undetected = 0,
 #'
 #' @examples
 #' library("ComplexHeatmap")
-#' data("ibd_phylo", package = "corncob")
-#' psq <- tax_filter(ibd_phylo, min_prevalence = 5)
+#' data("ibd", package = "microViz")
+#' psq <- tax_filter(ibd, min_prevalence = 5)
 #' psq <- tax_mutate(psq, Species = NULL)
 #' psq <- tax_fix(psq)
 #' psq <- tax_agg(psq, rank = "Family")
@@ -383,8 +383,8 @@ anno_tax_box <- function(undetected = 0,
 #'
 #' @examples
 #' library("ComplexHeatmap")
-#' data("ibd_phylo", package = "corncob")
-#' psq <- tax_filter(ibd_phylo, min_prevalence = 5)
+#' data("ibd", package = "microViz")
+#' psq <- tax_filter(ibd, min_prevalence = 5)
 #' psq <- tax_mutate(psq, Species = NULL)
 #' psq <- tax_fix(psq)
 #' psq <- tax_agg(psq, rank = "Family")

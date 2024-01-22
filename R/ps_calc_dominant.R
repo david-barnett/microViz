@@ -31,7 +31,7 @@
 #'
 #' @examples
 #' library(ggplot2)
-#' ps <- corncob::ibd_phylo %>%
+#' ps <- microViz::ibd %>%
 #'   tax_filter(min_prevalence = 3) %>%
 #'   tax_fix() %>%
 #'   phyloseq_validate()

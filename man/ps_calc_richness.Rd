@@ -40,8 +40,8 @@ For a discussion of the uncertainty and bias of these estimates
 see e.g. work by Amy Willis https://doi.org/10.3389/fmicb.2019.02407
 }
 \examples{
-data(ibd_phylo, package = "corncob")
-ibd_phylo \%>\%
+data(ibd, package = "microViz")
+ibd \%>\%
   ps_filter(abx == "abx") \%>\%
   tax_fix() \%>\%
   ps_calc_richness("Genus", index = "observed") \%>\%

@@ -1,5 +1,5 @@
 test_that("tax_palette throws appropriate errors", {
-  ps <- tax_filter(corncob::ibd_phylo, min_prevalence = 10)
+  ps <- tax_filter(microViz::ibd, min_prevalence = 10)
   ps <- tax_fix(ps)
 
   expect_error(
@@ -34,7 +34,7 @@ or: unique / NA"
 })
 
 test_that("tax_palette works", {
-  ps <- tax_filter(corncob::ibd_phylo, min_prevalence = 10)
+  ps <- tax_filter(microViz::ibd, min_prevalence = 10)
   ps <- tax_fix(ps)
 
   expect_equal(
@@ -66,7 +66,7 @@ test_that("tax_palette works", {
 test_that("tax_palette_plot works", {
   skip_on_os("windows")
   local_edition(3)
-  ps <- tax_filter(corncob::ibd_phylo, min_prevalence = 10)
+  ps <- tax_filter(microViz::ibd, min_prevalence = 10)
   ps <- tax_fix(ps)
   vdiffr::expect_doppelganger(
     "tax_palette_plot",

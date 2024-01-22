@@ -1,5 +1,5 @@
 test_that("ps_calc_diversity supported plot doesn't change", {
-  p <- corncob::ibd_phylo %>%
+  p <- microViz::ibd %>%
     ps_filter(abx == "abx") %>%
     tax_fix() %>%
     ps_calc_diversity("Genus", index = "shannon", exp = TRUE) %>%
@@ -20,7 +20,7 @@ test_that("ps_calc_diversity supported plot doesn't change", {
 })
 
 test_that("ps_calc_diversity errors work", {
-  psTest <- corncob::ibd_phylo %>%
+  psTest <- microViz::ibd %>%
     ps_filter(abx == "abx") %>%
     tax_filter(min_prevalence = 10) %>%
     tax_fix()

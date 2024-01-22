@@ -28,7 +28,7 @@ knitr::opts_chunk$set(fig.height = 6, fig.width = 9)
 
 ```{r example data}
 # get example phyloseq data from corncob package and tidy up
-pseq <- corncob::ibd_phylo %>%
+pseq <- microViz::ibd %>%
   tax_filter(min_prevalence = 2) %>%
   tax_fix() %>%
   phyloseq_validate()

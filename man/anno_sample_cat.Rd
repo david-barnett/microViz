@@ -69,8 +69,8 @@ which itself is used by comp_heatmap() as sample_anno argument.
 }
 \examples{
 library("ComplexHeatmap")
-data("ibd_phylo", package = "corncob")
-psq <- ibd_phylo
+data("ibd", package = "microViz")
+psq <- ibd
 samples <- phyloseq::sample_names(psq)
 
 # makes a function that takes data, taxa and which (at minimum)

@@ -76,14 +76,14 @@ This is a ggplot2 extension - slightly modified from the original code found her
 }
 \examples{
 library(ggplot2)
-corncob::ibd_phylo \%>\%
+microViz::ibd \%>\%
   tax_fix() \%>\%
   tax_transform(rank = "Genus", trans = "clr") \%>\%
   ord_calc(method = "PCA") \%>\%
   ord_plot(colour = "DiseaseState", shape = "DiseaseState", alpha = 0.5) +
   stat_chull(aes(colour = DiseaseState))
 
-corncob::ibd_phylo \%>\%
+microViz::ibd \%>\%
   tax_fix() \%>\%
   tax_transform(rank = "Genus", trans = "clr") \%>\%
   ord_calc(method = "PCA") \%>\%

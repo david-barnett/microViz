@@ -46,7 +46,7 @@ appearance along a parallel axis of a paired ordination plot.
 library(ggplot2)
 
 # example data
-ibd <- corncob::ibd_phylo \%>\%
+ibd <- microViz::ibd \%>\%
   tax_filter(min_prevalence = 2) \%>\%
   tax_fix() \%>\%
   phyloseq_validate()

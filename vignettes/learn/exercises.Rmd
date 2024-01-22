@@ -472,8 +472,8 @@ This is an extension exercise, for those who are moving quickly.
 **Inflammatory Bowel Disease study**
 
 ```{r}
-ibd <- corncob::ibd_phylo %>%
-  tax_mutate(Species = NULL) %>% # ibd_phylo Species column was blank -> deleted
+ibd <- microViz::ibd %>%
+  tax_mutate(Species = NULL) %>% # ibd Species column was blank -> deleted
   ps_mutate(disease = ibd == "ibd", ibd = NULL) # adds disease state indicator variable
 ```
 

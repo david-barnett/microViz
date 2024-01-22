@@ -23,7 +23,7 @@ Shapes used are, in order: "circle filled", "triangle filled",
 "square filled", "diamond filled", and "triangle down filled"
 }
 \examples{
-corncob::ibd_phylo \%>\%
+microViz::ibd \%>\%
   tax_fix() \%>\%
   phyloseq_validate() \%>\%
   tax_transform(rank = "Genus", trans = "clr") \%>\%

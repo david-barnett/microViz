@@ -26,8 +26,8 @@
 #' @seealso \code{microbiome::\link[microbiome]{richness}}
 #'
 #' @examples
-#' data(ibd_phylo, package = "corncob")
-#' ibd_phylo %>%
+#' data(ibd, package = "microViz")
+#' ibd %>%
 #'   ps_filter(abx == "abx") %>%
 #'   tax_fix() %>%
 #'   ps_calc_richness("Genus", index = "observed") %>%

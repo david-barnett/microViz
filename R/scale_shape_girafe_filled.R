@@ -17,7 +17,7 @@
 #' @export
 #'
 #' @examples
-#' corncob::ibd_phylo %>%
+#' microViz::ibd %>%
 #'   tax_fix() %>%
 #'   phyloseq_validate() %>%
 #'   tax_transform(rank = "Genus", trans = "clr") %>%

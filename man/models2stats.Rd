@@ -39,7 +39,7 @@ Runs a function e.g. \code{broom::tidy} on a list of models, i.e. the output of
 # the microViz documentation website
 
 library(dplyr)
-data("ibd_phylo", package = "corncob")
+data("ibd", package = "microViz")
 
 # We'll keep only the Ulcerative Colitis and Healthy Control samples, to
 # simplify the analyses for this example. We'll also remove the Species
@@ -48,7 +48,7 @@ data("ibd_phylo", package = "corncob")
 # unknown, with the family name or whatever higher rank classification is
 # known.
 
-phylo <- ibd_phylo \%>\%
+phylo <- ibd \%>\%
   ps_filter(DiseaseState \%in\% c("UC", "nonIBD")) \%>\%
   tax_mutate(Species = NULL) \%>\%
   tax_fix()

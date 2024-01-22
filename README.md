@@ -17,7 +17,7 @@ date)](https://img.shields.io/docker/v/barnettdavid/microviz-rocker-verse?color=
 status](https://david-barnett.r-universe.dev/badges/microViz)](https://david-barnett.r-universe.dev/ui#package:microViz)
 [![JOSS
 article](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa/status.svg)](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa)
-[![Citations](https://img.shields.io/badge/Citations-~83-blueviolet)](https://scholar.google.com/scholar?oi=bibs&hl=en&cites=5439940108464463894)
+[![Citations](https://img.shields.io/badge/Citations-~87-blueviolet)](https://scholar.google.com/scholar?oi=bibs&hl=en&cites=5439940108464463894)
 [![Zenodo
 DOI](https://zenodo.org/badge/307119750.svg)](https://zenodo.org/badge/latestdoi/307119750)
 <!-- badges: end -->
@@ -162,7 +162,7 @@ formally test this.
 
 ``` r
 library(microViz)
-#> microViz version 0.12.0 - Copyright (C) 2023 David Barnett
+#> microViz version 0.12.1 - Copyright (C) 2023 David Barnett
 #> ! Website: https://david-barnett.github.io/microViz
 #> ✔ Useful?  For citation details, run: `citation("microViz")`
 #> ✖ Silence? `suppressPackageStartupMessages(library(microViz))`
@@ -173,7 +173,7 @@ microbiome data: all you need is a phyloseq object.
 
 ``` r
 # example data from corncob package
-pseq <- corncob::ibd_phylo %>%
+pseq <- microViz::ibd %>%
   tax_fix() %>%
   phyloseq_validate()
 ```
@@ -328,8 +328,8 @@ aitchison_perm <- aitchison_dists %>%
     n_processes = 1, n_perms = 99, # you should use at least 999!
     variables = "bmi_group"
   )
-#> 2024-01-03 11:46:38.764224 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2024-01-03 11:46:38.846804 - Finished PERMANOVA
+#> 2024-01-22 11:04:40.054288 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2024-01-22 11:04:40.137992 - Finished PERMANOVA
 
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
@@ -354,8 +354,8 @@ your permanova directly using the `ord_plot` function with constraints
 perm2 <- aitchison_dists %>%
   dist_permanova(variables = c("weight", "african", "sex"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2024-01-03 11:46:38.865963 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2024-01-03 11:46:40.73727 - Finished PERMANOVA
+#> 2024-01-22 11:04:40.155601 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2024-01-22 11:04:42.013452 - Finished PERMANOVA
 ```
 
 We’ll visualise the effect of nationality and bodyweight on sample
@@ -448,7 +448,7 @@ and by participating in this project you agree to abide by its terms.
 sessionInfo()
 #> R version 4.3.2 (2023-10-31)
 #> Platform: x86_64-apple-darwin20 (64-bit)
-#> Running under: macOS Ventura 13.6
+#> Running under: macOS Sonoma 14.2.1
 #> 
 #> Matrix products: default
 #> BLAS:   /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/lib/libRblas.0.dylib 
@@ -464,51 +464,51 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] ggplot2_3.4.4   dplyr_1.1.4     phyloseq_1.44.0 microViz_0.12.0
+#> [1] ggplot2_3.4.4   dplyr_1.1.4     phyloseq_1.46.0 microViz_0.12.1
 #> [5] testthat_3.2.1  devtools_2.4.5  usethis_2.2.2  
 #> 
 #> loaded via a namespace (and not attached):
 #>   [1] RColorBrewer_1.1-3      rstudioapi_0.15.0       jsonlite_1.8.8         
 #>   [4] shape_1.4.6             magrittr_2.0.3          farver_2.1.1           
 #>   [7] rmarkdown_2.25          GlobalOptions_0.1.2     fs_1.6.3               
-#>  [10] zlibbioc_1.46.0         vctrs_0.6.5             multtest_2.56.0        
-#>  [13] memoise_2.0.1           Cairo_1.6-2             RCurl_1.98-1.13        
-#>  [16] htmltools_0.5.7         curl_5.2.0              Rhdf5lib_1.22.0        
-#>  [19] rhdf5_2.44.0            htmlwidgets_1.6.4       plyr_1.8.9             
+#>  [10] zlibbioc_1.48.0         vctrs_0.6.5             multtest_2.58.0        
+#>  [13] memoise_2.0.1           Cairo_1.6-2             RCurl_1.98-1.14        
+#>  [16] htmltools_0.5.7         curl_5.2.0              Rhdf5lib_1.24.1        
+#>  [19] rhdf5_2.46.1            htmlwidgets_1.6.4       plyr_1.8.9             
 #>  [22] cachem_1.0.8            commonmark_1.9.0        igraph_1.6.0           
 #>  [25] mime_0.12               lifecycle_1.0.4         iterators_1.0.14       
 #>  [28] pkgconfig_2.0.3         Matrix_1.6-4            R6_2.5.1               
-#>  [31] fastmap_1.1.1           clue_0.3-65             GenomeInfoDbData_1.2.10
-#>  [34] shiny_1.8.0             digest_0.6.33           selectr_0.4-2          
-#>  [37] colorspace_2.1-0        S4Vectors_0.38.1        pkgload_1.3.3          
+#>  [31] fastmap_1.1.1           clue_0.3-65             GenomeInfoDbData_1.2.11
+#>  [34] shiny_1.8.0             digest_0.6.34           selectr_0.4-2          
+#>  [37] colorspace_2.1-0        S4Vectors_0.40.2        pkgload_1.3.3          
 #>  [40] seriation_1.5.4         vegan_2.6-4             labeling_0.4.3         
 #>  [43] fansi_1.0.6             httr_1.4.7              mgcv_1.9-1             
-#>  [46] compiler_4.3.2          remotes_2.4.2.1         withr_2.5.2            
+#>  [46] compiler_4.3.2          remotes_2.4.2.1         withr_3.0.0            
 #>  [49] doParallel_1.0.17       viridis_0.6.4           pkgbuild_1.4.3         
 #>  [52] highr_0.10              MASS_7.3-60             sessioninfo_1.2.2      
-#>  [55] rjson_0.2.21            biomformat_1.28.0       permute_0.9-7          
+#>  [55] rjson_0.2.21            biomformat_1.30.0       permute_0.9-7          
 #>  [58] tools_4.3.2             ape_5.7-1               httpuv_1.6.13          
-#>  [61] glue_1.6.2              nlme_3.1-164            rhdf5filters_1.12.1    
+#>  [61] glue_1.7.0              nlme_3.1-164            rhdf5filters_1.14.1    
 #>  [64] promises_1.2.1          gridtext_0.1.5          grid_4.3.2             
 #>  [67] Rtsne_0.17              cluster_2.1.6           reshape2_1.4.4         
 #>  [70] ade4_1.7-22             generics_0.1.3          gtable_0.3.4           
-#>  [73] microbiome_1.22.0       ca_0.71.1               tidyr_1.3.0            
+#>  [73] microbiome_1.24.0       ca_0.71.1               tidyr_1.3.0            
 #>  [76] data.table_1.14.10      xml2_1.3.6              utf8_1.2.4             
-#>  [79] XVector_0.40.0          BiocGenerics_0.46.0     markdown_1.12          
+#>  [79] XVector_0.42.0          BiocGenerics_0.48.1     markdown_1.12          
 #>  [82] foreach_1.5.2           pillar_1.9.0            stringr_1.5.1          
 #>  [85] later_1.3.2             circlize_0.4.15         splines_4.3.2          
-#>  [88] ggtext_0.1.2            lattice_0.22-5          corncob_0.4.1          
-#>  [91] survival_3.5-7          tidyselect_1.2.0        registry_0.5-1         
-#>  [94] ComplexHeatmap_2.16.0   Biostrings_2.68.0       miniUI_0.1.1.1         
-#>  [97] knitr_1.45              gridExtra_2.3           IRanges_2.34.0         
-#> [100] stats4_4.3.2            xfun_0.41               Biobase_2.60.0         
-#> [103] matrixStats_1.2.0       brio_1.1.4              stringi_1.8.3          
-#> [106] yaml_2.3.8              evaluate_0.23           codetools_0.2-19       
-#> [109] tibble_3.2.1            cli_3.6.2               xtable_1.8-4           
-#> [112] munsell_0.5.0           Rcpp_1.0.11             GenomeInfoDb_1.36.0    
-#> [115] png_0.1-8               parallel_4.3.2          ellipsis_0.3.2         
-#> [118] profvis_0.3.8           urlchecker_1.0.1        bitops_1.0-7           
-#> [121] viridisLite_0.4.2       scales_1.3.0            purrr_1.0.2            
-#> [124] crayon_1.5.2            GetoptLong_1.0.5        rlang_1.1.2            
-#> [127] TSP_1.2-4               rvest_1.0.3
+#>  [88] ggtext_0.1.2            lattice_0.22-5          survival_3.5-7         
+#>  [91] tidyselect_1.2.0        registry_0.5-1          ComplexHeatmap_2.18.0  
+#>  [94] Biostrings_2.70.1       miniUI_0.1.1.1          knitr_1.45             
+#>  [97] gridExtra_2.3           IRanges_2.36.0          stats4_4.3.2           
+#> [100] xfun_0.41               Biobase_2.62.0          brio_1.1.4             
+#> [103] matrixStats_1.2.0       stringi_1.8.3           yaml_2.3.8             
+#> [106] evaluate_0.23           codetools_0.2-19        tibble_3.2.1           
+#> [109] cli_3.6.2               xtable_1.8-4            munsell_0.5.0          
+#> [112] Rcpp_1.0.12             GenomeInfoDb_1.38.5     png_0.1-8              
+#> [115] parallel_4.3.2          ellipsis_0.3.2          profvis_0.3.8          
+#> [118] urlchecker_1.0.1        bitops_1.0-7            viridisLite_0.4.2      
+#> [121] scales_1.3.0            purrr_1.0.2             crayon_1.5.2           
+#> [124] GetoptLong_1.0.5        rlang_1.1.3             TSP_1.2-4              
+#> [127] rvest_1.0.3
 ```

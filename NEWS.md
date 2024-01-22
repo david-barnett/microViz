@@ -1,3 +1,8 @@
+# microViz 0.12.1
+
+- corncob (a suggested dependency) back on CRAN - so no longer installed from GitHub
+- `ibd` phyloseq dataset added to microViz, as no longer included in corncob.
+
 # microViz 0.12.0
 
 - Breaking change: va-wunifrac distance calculation is no longer available, as it is not available in GUniFrac 1.8
