@@ -16,7 +16,7 @@ rlang::on_load(rlang::local_use_cli(inline = TRUE))
   rlang::inform(
     class = "packageStartupMessage",
     message = c(
-      paste("{.strong", pkgname, "version", version, "- Copyright (C) 2023 David Barnett}"),
+      paste("{.strong", pkgname, "version", version, "- Copyright (C) 2021-2024 David Barnett}"),
       "!" = website,
       "v" = 'Useful? \tFor citation details, run: {.code citation("microViz")}',
       "x" = "Silence? {.code suppressPackageStartupMessages(library(microViz))}"
