@@ -2,6 +2,8 @@ data(esophagus, package = "phyloseq")
 
 test_that("unifrac distances work", {
   local_edition(3)
+  # GUniFrac 1.5 did not have verbose argument (relevant for R 3.6 checks)
+  skip_if(packageVersion("GUniFrac") < 1.6)
   expect_snapshot(dist_get(dist_calc(esophagus, dist = 'gunifrac')))
   expect_snapshot(dist_get(dist_calc(esophagus, dist = 'unifrac')))
   expect_snapshot(dist_get(dist_calc(esophagus, dist = 'wunifrac')))
@@ -15,14 +17,13 @@ test_that("gunifrac alpha = 1 is wunifrac", {
   )
 })
 
-
 test_that("dist_calc rclr and euclid same as robust aitchison", {
   local_edition(3)
-  robustAitchVeg <- corncob::soil_phylum_small %>%
+  robustAitchVeg <- microViz::ibd %>%
     otu_get() %>%
     vegan::vegdist(method = "robust.aitchison")
 
-  robustAitchViz <- corncob::soil_phylum_small %>%
+  robustAitchViz <- microViz::ibd %>%
     dist_calc(dist = "robust.aitchison") %>%
     dist_get()
 
@@ -31,7 +32,7 @@ test_that("dist_calc rclr and euclid same as robust aitchison", {
     tolerance = 0.0000001, ignore_attr = c("call", "method", "maxdist")
   )
 
-  rclrEuclid <- corncob::soil_phylum_small %>%
+  rclrEuclid <- microViz::ibd %>%
     tax_transform("rclr") %>%
     dist_calc(dist = "euclidean") %>%
     dist_get()
@@ -45,7 +46,7 @@ test_that("dist_calc rclr and euclid same as robust aitchison", {
 test_that("dist_calc throws errors", {
   expect_error(
     object = dist_calc(
-      data = tax_transform(corncob::soil_phylum_small, trans = "clr"),
+      data = tax_transform(microViz::ibd, trans = "clr"),
       dist = "aitchison"
     ),
     regexp = "dist_calc 'aitchison' distance requires count data"
@@ -53,7 +54,7 @@ test_that("dist_calc throws errors", {
 
   expect_error(
     object = dist_calc(
-      data = tax_transform(corncob::soil_phylum_small, trans = "rclr"),
+      data = tax_transform(microViz::ibd, trans = "rclr"),
       dist = "aitchison"
     ),
     regexp = "dist_calc 'aitchison' distance requires count data"

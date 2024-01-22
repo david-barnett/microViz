@@ -1,9 +1,9 @@
 local_edition(3)
 
-test_that("ibd_phylo names are as expected, and are replaced consistently", {
-  data("ibd_phylo", package = "corncob")
+test_that("ibd names are as expected, and are replaced consistently", {
+  data("ibd", package = "microViz")
 
-  ps <- ibd_phylo %>%
+  ps <- ibd %>%
     tax_filter(min_prevalence = 15) %>%
     tax_fix()
 

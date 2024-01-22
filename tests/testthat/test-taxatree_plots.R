@@ -1,7 +1,7 @@
 options(stringsAsFactors = FALSE)
-data("ibd_phylo", package = "corncob")
+data("ibd", package = "microViz")
 
-phylo <- ibd_phylo %>%
+phylo <- ibd %>%
   ps_filter(DiseaseState %in% c("UC", "nonIBD")) %>%
   tax_mutate(Species = NULL, Genus = NULL) %>%
   tax_fix() %>%

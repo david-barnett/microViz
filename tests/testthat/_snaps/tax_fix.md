@@ -58,7 +58,7 @@
       psExtra info:
       tax_agg = "Genus" 
 
-# tax_fix defaults allow agg: ibd_phylo Kingdom
+# tax_fix defaults allow agg: ibd Kingdom
 
     Code
       tax_agg(ps = fixed, rank = r)
@@ -73,7 +73,7 @@
       psExtra info:
       tax_agg = "Kingdom" 
 
-# tax_fix defaults allow agg: ibd_phylo Phylum
+# tax_fix defaults allow agg: ibd Phylum
 
     Code
       tax_agg(ps = fixed, rank = r)
@@ -88,7 +88,7 @@
       psExtra info:
       tax_agg = "Phylum" 
 
-# tax_fix defaults allow agg: ibd_phylo Class
+# tax_fix defaults allow agg: ibd Class
 
     Code
       tax_agg(ps = fixed, rank = r)
@@ -103,7 +103,7 @@
       psExtra info:
       tax_agg = "Class" 
 
-# tax_fix defaults allow agg: ibd_phylo Order
+# tax_fix defaults allow agg: ibd Order
 
     Code
       tax_agg(ps = fixed, rank = r)
@@ -118,7 +118,7 @@
       psExtra info:
       tax_agg = "Order" 
 
-# tax_fix defaults allow agg: ibd_phylo Family
+# tax_fix defaults allow agg: ibd Family
 
     Code
       tax_agg(ps = fixed, rank = r)
@@ -133,7 +133,7 @@
       psExtra info:
       tax_agg = "Family" 
 
-# tax_fix defaults allow agg: ibd_phylo Genus
+# tax_fix defaults allow agg: ibd Genus
 
     Code
       tax_agg(ps = fixed, rank = r)
@@ -148,7 +148,7 @@
       psExtra info:
       tax_agg = "Genus" 
 
-# tax_fix defaults allow agg: ibd_phylo Species
+# tax_fix defaults allow agg: ibd Species
 
     Code
       tax_agg(ps = fixed, rank = r)

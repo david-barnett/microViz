@@ -33,9 +33,9 @@
 #'
 #' @examples
 #' library(phyloseq)
-#' data("ibd_phylo", package = "corncob")
+#' data("ibd", package = "microViz")
 #'
-#' ps <- ibd_phylo %>%
+#' ps <- ibd %>%
 #'   tax_filter(min_prevalence = 3) %>%
 #'   tax_fix()
 #'

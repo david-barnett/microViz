@@ -41,8 +41,8 @@ http://www.loujost.com/Statistics\%20and\%20Physics/Diversity\%20and\%20Similari
 http://www.loujost.com/Statistics\%20and\%20Physics/Diversity\%20and\%20Similarity/EffectiveNumberOfSpecies.htm
 }
 \examples{
-data(ibd_phylo, package = "corncob")
-ibd_phylo \%>\%
+data(ibd, package = "microViz")
+ibd \%>\%
   ps_filter(abx == "abx") \%>\%
   tax_fix() \%>\%
   ps_calc_diversity("Genus", index = "shannon", exp = TRUE) \%>\%

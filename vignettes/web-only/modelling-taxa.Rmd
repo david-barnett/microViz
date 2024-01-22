@@ -26,8 +26,8 @@ First we'll get some OTU abundance data from inflammatory bowel disease
 patients and controls from the corncob package.
 
 ```{r}
-data("ibd_phylo")
-ibd_phylo
+data("ibd")
+ibd
 ```
 
 We'll keep only the Ulcerative Colitis and Healthy Control samples, to
@@ -38,7 +38,7 @@ unknown, with the family name or whatever higher rank classification is
 known.
 
 ```{r}
-phylo <- ibd_phylo %>%
+phylo <- ibd %>%
   ps_filter(DiseaseState %in% c("UC", "nonIBD")) %>%
   tax_mutate(Species = NULL) %>%
   tax_fix()

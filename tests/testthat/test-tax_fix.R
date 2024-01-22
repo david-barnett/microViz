@@ -25,7 +25,7 @@ data("atlas1006", package = "microbiome")
 
 datasets <- list(
   enterotype = enterotype, modified_dietswap = ps,
-  ibd_phylo = corncob::ibd_phylo
+  ibd = microViz::ibd
 )
 
 for (pseq in names(datasets)) {

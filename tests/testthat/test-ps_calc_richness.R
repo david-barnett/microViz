@@ -8,7 +8,7 @@ test_that("microbiome chao1 results don't change", {
   # see https://github.com/microbiome/microbiome/issues/150
   # change seems to occur between bioconductor 3.13 and 3.14
   ps <-
-    corncob::ibd_phylo %>%
+    microViz::ibd %>%
     ps_filter(abx == "abx") %>%
     tax_fix() %>%
     tax_agg("Family") %>%
@@ -24,7 +24,7 @@ test_that("ps_calc_richness results don't change", {
   skip_if(packageVersion("microbiome") < 1.16)
 
   ps <-
-    corncob::ibd_phylo %>%
+    microViz::ibd %>%
     ps_filter(abx == "abx") %>%
     tax_fix() %>%
     ps_calc_richness("Genus", index = "observed") %>%
@@ -39,7 +39,7 @@ test_that("ps_calc_richness results don't change", {
 test_that("ps_calc_richness supported plot doesn't change", {
   skip_if(packageVersion("microbiome") < 1.16)
 
-  p <- corncob::ibd_phylo %>%
+  p <- microViz::ibd %>%
     ps_filter(abx == "abx") %>%
     tax_fix() %>%
     ps_calc_richness("Genus", index = "observed") %>%
@@ -58,7 +58,7 @@ test_that("ps_calc_richness supported plot doesn't change", {
 })
 
 test_that("ps_calc_richness errors work", {
-  psTest <- corncob::ibd_phylo %>%
+  psTest <- microViz::ibd %>%
     ps_filter(abx == "abx") %>%
     tax_filter(min_prevalence = 10) %>% # just for quick test purposes
     tax_fix()

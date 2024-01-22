@@ -3,10 +3,10 @@ local_edition(3)
 library(ggplot2)
 
 # get example inflammatory bowel disease stool dataset from corncob package
-data("ibd_phylo", package = "corncob")
+data("ibd", package = "microViz")
 
 # filter out rare taxa and clean up names etc
-ibd <- ibd_phylo %>%
+ibd <- ibd %>%
   ps_mutate(DiseaseState = as.factor(DiseaseState), active = as.factor(active)) %>%
   tax_filter(min_prevalence = 3) %>%
   tax_fix() %>%

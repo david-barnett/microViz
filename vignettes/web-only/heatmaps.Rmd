@@ -24,8 +24,8 @@ First we'll get some OTU abundance data from inflammatory bowel disease
 patients and controls from the corncob package.
 
 ```{r}
-data("ibd_phylo", package = "corncob")
-ibd_phylo
+data("ibd", package = "microViz")
+ibd
 ```
 
 Remove the mostly unclassified species-level data, drop the rare taxa
@@ -33,7 +33,7 @@ and fix the taxonomy of the rest. Also drop patients with unclassified
 IBD.
 
 ```{r}
-psq <- ibd_phylo %>%
+psq <- ibd %>%
   tax_mutate(Species = NULL) %>%
   tax_filter(min_prevalence = 5) %>%
   tax_fix() %>%

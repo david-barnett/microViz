@@ -21,7 +21,7 @@ library(microViz)
 Example data loaded from the corncob package. All you need is a valid phyloseq object, and to run `tax_fix` to [ensure the tax_table doesn't contain problematic names](https://david-barnett.github.io/microViz/articles/web-only/tax-fixing.html).
 
 ```{r example}
-pseq <- corncob::ibd_phylo %>%
+pseq <- microViz::ibd %>%
   tax_fix() %>%
   phyloseq_validate()
 ```
