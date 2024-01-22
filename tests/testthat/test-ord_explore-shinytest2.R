@@ -38,6 +38,7 @@ test_that("ord_explore app works: unconstrained ords", {
   )
   # use record_test(app) to record a new test
   app$wait_for_idle()
+  app$wait_for_value(input = "build")
 
   # keep this commented out unless interactive testing
   # app$view()
