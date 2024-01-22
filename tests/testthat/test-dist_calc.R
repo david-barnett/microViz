@@ -11,6 +11,7 @@ test_that("unifrac distances work", {
 })
 
 test_that("gunifrac alpha = 1 is wunifrac", {
+  skip_if(packageVersion("GUniFrac") < 1.6)
   expect_equal(
     dist_get(dist_calc(esophagus, dist = "wunifrac")),
     dist_get(dist_calc(esophagus, dist = "gunifrac", gunifrac_alpha = 1))
