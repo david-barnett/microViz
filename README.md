@@ -17,7 +17,7 @@ date)](https://img.shields.io/docker/v/barnettdavid/microviz-rocker-verse?color=
 status](https://david-barnett.r-universe.dev/badges/microViz)](https://david-barnett.r-universe.dev/ui#package:microViz)
 [![JOSS
 article](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa/status.svg)](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa)
-[![Citations](https://img.shields.io/badge/Citations-~87-blueviolet)](https://scholar.google.com/scholar?oi=bibs&hl=en&cites=5439940108464463894)
+[![Citations](https://img.shields.io/badge/Citations-~90-blueviolet)](https://scholar.google.com/scholar?oi=bibs&hl=en&cites=5439940108464463894)
 [![Zenodo
 DOI](https://zenodo.org/badge/307119750.svg)](https://zenodo.org/badge/latestdoi/307119750)
 <!-- badges: end -->
@@ -113,16 +113,13 @@ install.packages(
 )
 ```
 
-I also highly recommend you install the following suggested CRAN
-packages.
+I also recommend you install the following suggested CRAN packages.
 
 ``` r
 install.packages("ggtext") # for rotated labels on ord_plot() 
 install.packages("ggraph") # for taxatree_plots()
 install.packages("DT") # for tax_fix_interactive()
-
-# install corncob from github for example datasets and beta binomial models
-remotes::install_github('statdivlab/corncob@v0.4.1')
+install.packages("corncob") # for beta binomial models in tax_model()
 ```
 
 ### Installation of microViz from GitHub
@@ -136,7 +133,7 @@ install.packages("remotes")
 remotes::install_github("david-barnett/microViz")
 
 # To install a specific "release" version of this package, e.g. an old version 
-remotes::install_github("david-barnett/microViz@0.11.0") 
+remotes::install_github("david-barnett/microViz@0.12.0") 
 ```
 
 ### Installation notes
@@ -154,15 +151,15 @@ package installations across multiple projects.
 available at:
 <https://hub.docker.com/r/barnettdavid/microviz-rocker-verse>
 
-:date: microViz is tested to work with R version 4 on Windows, MacOS,
-and Ubuntu 20. R version 3.6.\* should probably work, but I don’t
-formally test this.
+:date: microViz is tested to work with R version 4.\* on Windows, MacOS,
+and Ubuntu 20. R version 3.6.\* should probably work, but I don’t fully
+test this.
 
 ## Interactive ordination exploration
 
 ``` r
 library(microViz)
-#> microViz version 0.12.1 - Copyright (C) 2023 David Barnett
+#> microViz version 0.12.1 - Copyright (C) 2021-2024 David Barnett
 #> ! Website: https://david-barnett.github.io/microViz
 #> ✔ Useful?  For citation details, run: `citation("microViz")`
 #> ✖ Silence? `suppressPackageStartupMessages(library(microViz))`
@@ -328,8 +325,8 @@ aitchison_perm <- aitchison_dists %>%
     n_processes = 1, n_perms = 99, # you should use at least 999!
     variables = "bmi_group"
   )
-#> 2024-01-22 11:04:40.054288 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2024-01-22 11:04:40.137992 - Finished PERMANOVA
+#> 2024-01-25 12:25:14.511375 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2024-01-25 12:25:14.592359 - Finished PERMANOVA
 
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
@@ -354,8 +351,8 @@ your permanova directly using the `ord_plot` function with constraints
 perm2 <- aitchison_dists %>%
   dist_permanova(variables = c("weight", "african", "sex"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2024-01-22 11:04:40.155601 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2024-01-22 11:04:42.013452 - Finished PERMANOVA
+#> 2024-01-25 12:25:14.609321 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2024-01-25 12:25:16.703141 - Finished PERMANOVA
 ```
 
 We’ll visualise the effect of nationality and bodyweight on sample
@@ -477,22 +474,22 @@ sessionInfo()
 #>  [19] rhdf5_2.46.1            htmlwidgets_1.6.4       plyr_1.8.9             
 #>  [22] cachem_1.0.8            commonmark_1.9.0        igraph_1.6.0           
 #>  [25] mime_0.12               lifecycle_1.0.4         iterators_1.0.14       
-#>  [28] pkgconfig_2.0.3         Matrix_1.6-4            R6_2.5.1               
+#>  [28] pkgconfig_2.0.3         Matrix_1.6-5            R6_2.5.1               
 #>  [31] fastmap_1.1.1           clue_0.3-65             GenomeInfoDbData_1.2.11
 #>  [34] shiny_1.8.0             digest_0.6.34           selectr_0.4-2          
-#>  [37] colorspace_2.1-0        S4Vectors_0.40.2        pkgload_1.3.3          
+#>  [37] colorspace_2.1-0        S4Vectors_0.40.2        pkgload_1.3.4          
 #>  [40] seriation_1.5.4         vegan_2.6-4             labeling_0.4.3         
 #>  [43] fansi_1.0.6             httr_1.4.7              mgcv_1.9-1             
 #>  [46] compiler_4.3.2          remotes_2.4.2.1         withr_3.0.0            
 #>  [49] doParallel_1.0.17       viridis_0.6.4           pkgbuild_1.4.3         
-#>  [52] highr_0.10              MASS_7.3-60             sessioninfo_1.2.2      
+#>  [52] highr_0.10              MASS_7.3-60.0.1         sessioninfo_1.2.2      
 #>  [55] rjson_0.2.21            biomformat_1.30.0       permute_0.9-7          
 #>  [58] tools_4.3.2             ape_5.7-1               httpuv_1.6.13          
 #>  [61] glue_1.7.0              nlme_3.1-164            rhdf5filters_1.14.1    
 #>  [64] promises_1.2.1          gridtext_0.1.5          grid_4.3.2             
 #>  [67] Rtsne_0.17              cluster_2.1.6           reshape2_1.4.4         
 #>  [70] ade4_1.7-22             generics_0.1.3          gtable_0.3.4           
-#>  [73] microbiome_1.24.0       ca_0.71.1               tidyr_1.3.0            
+#>  [73] microbiome_1.24.0       ca_0.71.1               tidyr_1.3.1            
 #>  [76] data.table_1.14.10      xml2_1.3.6              utf8_1.2.4             
 #>  [79] XVector_0.42.0          BiocGenerics_0.48.1     markdown_1.12          
 #>  [82] foreach_1.5.2           pillar_1.9.0            stringr_1.5.1          

@@ -103,15 +103,13 @@ install.packages(
 )
 ```
 
-I also highly recommend you install the following suggested CRAN packages.
+I also recommend you install the following suggested CRAN packages.
 
 ``` r 
 install.packages("ggtext") # for rotated labels on ord_plot() 
 install.packages("ggraph") # for taxatree_plots()
 install.packages("DT") # for tax_fix_interactive()
-
-# install corncob from github for example datasets and beta binomial models
-remotes::install_github('statdivlab/corncob@v0.4.1')
+install.packages("corncob") # for beta binomial models in tax_model()
 ```
 
 ### Installation of microViz from GitHub
@@ -125,7 +123,7 @@ install.packages("remotes")
 remotes::install_github("david-barnett/microViz")
 
 # To install a specific "release" version of this package, e.g. an old version 
-remotes::install_github("david-barnett/microViz@0.11.0") 
+remotes::install_github("david-barnett/microViz@0.12.0") 
 ```
 
 ### Installation notes
@@ -136,8 +134,8 @@ remotes::install_github("david-barnett/microViz@0.11.0")
 
 :whale: For Docker users an image with the main branch installed is available at: <https://hub.docker.com/r/barnettdavid/microviz-rocker-verse>
 
-:date: microViz is tested to work with R version 4 on Windows, MacOS, and Ubuntu 20.
-R version 3.6.\* should probably work, but I don't formally test this.
+:date: microViz is tested to work with R version 4.* on Windows, MacOS, and Ubuntu 20.
+R version 3.6.\* should probably work, but I don't fully test this.
 
 ## Interactive ordination exploration
 
