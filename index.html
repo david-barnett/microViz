@@ -191,14 +191,12 @@
 <span>  <span class="st">"microViz"</span>,</span>
 <span>  repos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>davidbarnett <span class="op">=</span> <span class="st">"https://david-barnett.r-universe.dev"</span>, <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"repos"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>I also highly recommend you install the following suggested CRAN packages.</p>
+<p>I also recommend you install the following suggested CRAN packages.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"ggtext"</span><span class="op">)</span> <span class="co"># for rotated labels on ord_plot() </span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"ggraph"</span><span class="op">)</span> <span class="co"># for taxatree_plots()</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"DT"</span><span class="op">)</span> <span class="co"># for tax_fix_interactive()</span></span>
-<span></span>
-<span><span class="co"># install corncob from github for example datasets and beta binomial models</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">'statdivlab/corncob@v0.4.1'</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"corncob"</span><span class="op">)</span> <span class="co"># for beta binomial models in tax_model()</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="installation-of-microviz-from-github">Installation of microViz from GitHub<a class="anchor" aria-label="anchor" href="#installation-of-microviz-from-github"></a>
@@ -212,7 +210,7 @@
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"david-barnett/microViz"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To install a specific "release" version of this package, e.g. an old version </span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"david-barnett/microViz@0.11.0"</span><span class="op">)</span> </span></code></pre></div>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"david-barnett/microViz@0.12.0"</span><span class="op">)</span> </span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="installation-notes">Installation notes<a class="anchor" aria-label="anchor" href="#installation-notes"></a>
@@ -220,7 +218,7 @@
 <p><strong><span class="emoji" data-emoji="apple">🍎</span> macOS</strong> <strong>users</strong> - might need to install <a href="https://www.xquartz.org/" class="external-link">xquartz</a> to make the heatmaps work (to do this with homebrew, run the following command in your mac’s Terminal: <code>brew install --cask xquartz</code></p>
 <p><span class="emoji" data-emoji="package">📦</span> I highly recommend using <a href="https://rstudio.github.io/renv/index.html" class="external-link">renv</a> for managing your R package installations across multiple projects.</p>
 <p><span class="emoji" data-emoji="whale">🐳</span> For Docker users an image with the main branch installed is available at: <a href="https://hub.docker.com/r/barnettdavid/microviz-rocker-verse" class="external-link uri">https://hub.docker.com/r/barnettdavid/microviz-rocker-verse</a></p>
-<p><span class="emoji" data-emoji="date">📅</span> microViz is tested to work with R version 4 on Windows, MacOS, and Ubuntu 20. R version 3.6.* should probably work, but I don’t formally test this.</p>
+<p><span class="emoji" data-emoji="date">📅</span> microViz is tested to work with R version 4.* on Windows, MacOS, and Ubuntu 20. R version 3.6.* should probably work, but I don’t fully test this.</p>
 </div>
 </div>
 <div class="section level2">
@@ -228,7 +226,7 @@
 </h2>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://david-barnett.github.io/microViz">microViz</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; microViz version 0.12.1 - Copyright (C) 2023 David Barnett</span></span>
+<span><span class="co">#&gt; microViz version 0.12.1 - Copyright (C) 2021-2024 David Barnett</span></span>
 <span><span class="co">#&gt; ! Website: https://david-barnett.github.io/microViz</span></span>
 <span><span class="co">#&gt; ✔ Useful?  For citation details, run: `citation("microViz")`</span></span>
 <span><span class="co">#&gt; ✖ Silence? `suppressPackageStartupMessages(library(microViz))`</span></span></code></pre></div>
@@ -368,8 +366,8 @@
 <span>    n_processes <span class="op">=</span> <span class="fl">1</span>, n_perms <span class="op">=</span> <span class="fl">99</span>, <span class="co"># you should use at least 999!</span></span>
 <span>    variables <span class="op">=</span> <span class="st">"bmi_group"</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; 2024-01-22 11:04:40.054288 - Starting PERMANOVA with 99 perms with 1 processes</span></span>
-<span><span class="co">#&gt; 2024-01-22 11:04:40.137992 - Finished PERMANOVA</span></span>
+<span><span class="co">#&gt; 2024-01-25 12:25:14.511375 - Starting PERMANOVA with 99 perms with 1 processes</span></span>
+<span><span class="co">#&gt; 2024-01-25 12:25:14.592359 - Finished PERMANOVA</span></span>
 <span></span>
 <span><span class="co"># view the permanova results</span></span>
 <span><span class="fu"><a href="reference/psExtra-accessors.html">perm_get</a></span><span class="op">(</span><span class="va">aitchison_perm</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -391,8 +389,8 @@
 <code class="sourceCode R"><span><span class="va">perm2</span> <span class="op">&lt;-</span> <span class="va">aitchison_dists</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="reference/dist_permanova.html">dist_permanova</a></span><span class="op">(</span>variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"african"</span>, <span class="st">"sex"</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">321</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Dropping samples with missings: 2</span></span>
-<span><span class="co">#&gt; 2024-01-22 11:04:40.155601 - Starting PERMANOVA with 999 perms with 1 processes</span></span>
-<span><span class="co">#&gt; 2024-01-22 11:04:42.013452 - Finished PERMANOVA</span></span></code></pre></div>
+<span><span class="co">#&gt; 2024-01-25 12:25:14.609321 - Starting PERMANOVA with 999 perms with 1 processes</span></span>
+<span><span class="co">#&gt; 2024-01-25 12:25:16.703141 - Finished PERMANOVA</span></span></code></pre></div>
 <p>We’ll visualise the effect of nationality and bodyweight on sample composition, after first removing the effect of sex.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">perm2</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
@@ -498,22 +496,22 @@
 <span><span class="co">#&gt;  [19] rhdf5_2.46.1            htmlwidgets_1.6.4       plyr_1.8.9             </span></span>
 <span><span class="co">#&gt;  [22] cachem_1.0.8            commonmark_1.9.0        igraph_1.6.0           </span></span>
 <span><span class="co">#&gt;  [25] mime_0.12               lifecycle_1.0.4         iterators_1.0.14       </span></span>
-<span><span class="co">#&gt;  [28] pkgconfig_2.0.3         Matrix_1.6-4            R6_2.5.1               </span></span>
+<span><span class="co">#&gt;  [28] pkgconfig_2.0.3         Matrix_1.6-5            R6_2.5.1               </span></span>
 <span><span class="co">#&gt;  [31] fastmap_1.1.1           clue_0.3-65             GenomeInfoDbData_1.2.11</span></span>
 <span><span class="co">#&gt;  [34] shiny_1.8.0             digest_0.6.34           selectr_0.4-2          </span></span>
-<span><span class="co">#&gt;  [37] colorspace_2.1-0        S4Vectors_0.40.2        pkgload_1.3.3          </span></span>
+<span><span class="co">#&gt;  [37] colorspace_2.1-0        S4Vectors_0.40.2        pkgload_1.3.4          </span></span>
 <span><span class="co">#&gt;  [40] seriation_1.5.4         vegan_2.6-4             labeling_0.4.3         </span></span>
 <span><span class="co">#&gt;  [43] fansi_1.0.6             httr_1.4.7              mgcv_1.9-1             </span></span>
 <span><span class="co">#&gt;  [46] compiler_4.3.2          remotes_2.4.2.1         withr_3.0.0            </span></span>
 <span><span class="co">#&gt;  [49] doParallel_1.0.17       viridis_0.6.4           pkgbuild_1.4.3         </span></span>
-<span><span class="co">#&gt;  [52] highr_0.10              MASS_7.3-60             sessioninfo_1.2.2      </span></span>
+<span><span class="co">#&gt;  [52] highr_0.10              MASS_7.3-60.0.1         sessioninfo_1.2.2      </span></span>
 <span><span class="co">#&gt;  [55] rjson_0.2.21            biomformat_1.30.0       permute_0.9-7          </span></span>
 <span><span class="co">#&gt;  [58] tools_4.3.2             ape_5.7-1               httpuv_1.6.13          </span></span>
 <span><span class="co">#&gt;  [61] glue_1.7.0              nlme_3.1-164            rhdf5filters_1.14.1    </span></span>
 <span><span class="co">#&gt;  [64] promises_1.2.1          gridtext_0.1.5          grid_4.3.2             </span></span>
 <span><span class="co">#&gt;  [67] Rtsne_0.17              cluster_2.1.6           reshape2_1.4.4         </span></span>
 <span><span class="co">#&gt;  [70] ade4_1.7-22             generics_0.1.3          gtable_0.3.4           </span></span>
-<span><span class="co">#&gt;  [73] microbiome_1.24.0       ca_0.71.1               tidyr_1.3.0            </span></span>
+<span><span class="co">#&gt;  [73] microbiome_1.24.0       ca_0.71.1               tidyr_1.3.1            </span></span>
 <span><span class="co">#&gt;  [76] data.table_1.14.10      xml2_1.3.6              utf8_1.2.4             </span></span>
 <span><span class="co">#&gt;  [79] XVector_0.42.0          BiocGenerics_0.48.1     markdown_1.12          </span></span>
 <span><span class="co">#&gt;  [82] foreach_1.5.2           pillar_1.9.0            stringr_1.5.1          </span></span>
@@ -580,7 +578,7 @@
 <li><a href="https://codecov.io/gh/david-barnett/microViz" class="external-link"><img src="https://codecov.io/gh/david-barnett/microViz/branch/main/graph/badge.svg?token=C1EoVkhnxA" alt="codecov"></a></li>
 <li><a href="https://david-barnett.r-universe.dev/ui#package:microViz" class="external-link"><img src="https://david-barnett.r-universe.dev/badges/microViz" alt="r-universe microViz status"></a></li>
 <li><a href="https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa" class="external-link"><img src="https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa/status.svg" alt="JOSS article"></a></li>
-<li><a href="https://scholar.google.com/scholar?oi=bibs&amp;hl=en&amp;cites=5439940108464463894" class="external-link"><img src="https://img.shields.io/badge/Citations-~87-blueviolet" alt="Citations"></a></li>
+<li><a href="https://scholar.google.com/scholar?oi=bibs&amp;hl=en&amp;cites=5439940108464463894" class="external-link"><img src="https://img.shields.io/badge/Citations-~90-blueviolet" alt="Citations"></a></li>
 <li><a href="https://zenodo.org/badge/latestdoi/307119750" class="external-link"><img src="https://zenodo.org/badge/307119750.svg" alt="Zenodo DOI"></a></li>
 </ul>
 </div>
