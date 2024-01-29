@@ -184,6 +184,33 @@ anno_cat_legend(
   ComplexHeatmap::draw()
 ```
 
+### Arranging samples 
+
+Instead of sorting samples by similarity, you can alternatively arrange the samples beforehand with ps_arrange or other methods, and then suppress reordering of the heatmap with sample_seriation = "Identity" 
+
+```{r, fig.height=3, fig.width=7, dpi=120}
+cols <- distinct_palette(n = 3, add = NA)
+names(cols) <- unique(samdat_tbl(psq)$DiseaseState)
+
+psq %>%
+  # sort all samples by similarity
+  ps_seriate(rank = "Class", tax_transform = "compositional", dist = "bray") %>% 
+  # arrange the samples into Disease State groups
+  ps_arrange(DiseaseState) %>% 
+  tax_transform("compositional", rank = "Class") %>%
+  comp_heatmap(
+    tax_anno = taxAnnotation(
+      Prev. = anno_tax_prev(bar_width = 0.3, size = grid::unit(1, "cm"))
+    ),
+    sample_anno = sampleAnnotation(
+      State1 = anno_sample("DiseaseState"),
+      col = list(State1 = cols), border = FALSE,
+      State2 = anno_sample_cat("DiseaseState", col = cols)
+    ),
+    sample_seriation = "Identity" # suppress sample reordering
+  )
+```
+
 
 ### Numbering cells
 
