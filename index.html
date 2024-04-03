@@ -143,13 +143,8 @@
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
 <p><span class="emoji" data-emoji="package">📦</span> <code>microViz</code> is an R package for analysis and visualization of microbiome sequencing data.</p>
-<p><span class="emoji" data-emoji="hammer">🔨</span> <code>microViz</code> functions are intended to be easy to use and flexible.</p>
-<p><span class="emoji" data-emoji="microscope">🔬</span> <code>microViz</code> extends and complements popular microbial ecology packages like <code>phyloseq</code>, <code>vegan</code>, &amp; <code>microbiome</code>.</p>
-</div>
-<div class="section level2">
-<h2 id="warning-do-not-follow-taxatree_models-examples-from-versions-earlier-than-0110">Warning: do not follow taxatree_models examples from versions earlier than 0.11.0<a class="anchor" aria-label="anchor" href="#warning-do-not-follow-taxatree_models-examples-from-versions-earlier-than-0110"></a>
-</h2>
-<p>The documentation from earlier versions of microViz included an incorrect example of taxatree_models use. Specifically, it accidentally demonstrated log transforming abundance data before aggregation. Sincere apologies to anyone who followed this incorrect procedure. Examples have been corrected in microViz docs and website for version 0.11.0 and later. Please reach out to me with any questions about this issue.</p>
+<p><span class="emoji" data-emoji="hammer">🔨</span> <code>microViz</code> functions are intended to be beginner-friendly but flexible.</p>
+<p><span class="emoji" data-emoji="microscope">🔬</span> <code>microViz</code> extends or complements popular microbial ecology packages, including <code>phyloseq</code>, <code>vegan</code>, &amp; <code>microbiome</code>.</p>
 </div>
 <div class="section level2">
 <h2 id="learn-more">Learn more<a class="anchor" aria-label="anchor" href="#learn-more"></a>
@@ -366,8 +361,8 @@
 <span>    n_processes <span class="op">=</span> <span class="fl">1</span>, n_perms <span class="op">=</span> <span class="fl">99</span>, <span class="co"># you should use at least 999!</span></span>
 <span>    variables <span class="op">=</span> <span class="st">"bmi_group"</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; 2024-01-25 12:25:14.511375 - Starting PERMANOVA with 99 perms with 1 processes</span></span>
-<span><span class="co">#&gt; 2024-01-25 12:25:14.592359 - Finished PERMANOVA</span></span>
+<span><span class="co">#&gt; 2024-04-03 14:06:14.500859 - Starting PERMANOVA with 99 perms with 1 processes</span></span>
+<span><span class="co">#&gt; 2024-04-03 14:06:14.55802 - Finished PERMANOVA</span></span>
 <span></span>
 <span><span class="co"># view the permanova results</span></span>
 <span><span class="fu"><a href="reference/psExtra-accessors.html">perm_get</a></span><span class="op">(</span><span class="va">aitchison_perm</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -389,8 +384,8 @@
 <code class="sourceCode R"><span><span class="va">perm2</span> <span class="op">&lt;-</span> <span class="va">aitchison_dists</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="reference/dist_permanova.html">dist_permanova</a></span><span class="op">(</span>variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"african"</span>, <span class="st">"sex"</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">321</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Dropping samples with missings: 2</span></span>
-<span><span class="co">#&gt; 2024-01-25 12:25:14.609321 - Starting PERMANOVA with 999 perms with 1 processes</span></span>
-<span><span class="co">#&gt; 2024-01-25 12:25:16.703141 - Finished PERMANOVA</span></span></code></pre></div>
+<span><span class="co">#&gt; 2024-04-03 14:06:14.574135 - Starting PERMANOVA with 999 perms with 1 processes</span></span>
+<span><span class="co">#&gt; 2024-04-03 14:06:16.223648 - Finished PERMANOVA</span></span></code></pre></div>
 <p>We’ll visualise the effect of nationality and bodyweight on sample composition, after first removing the effect of sex.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">perm2</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
@@ -412,7 +407,13 @@
 <span><span class="co">#&gt; Centering (mean) and scaling (sd) the constraints and/or conditions:</span></span>
 <span><span class="co">#&gt;  weight</span></span>
 <span><span class="co">#&gt;  african</span></span>
-<span><span class="co">#&gt;  female</span></span></code></pre></div>
+<span><span class="co">#&gt;  female</span></span>
+<span><span class="co">#&gt; Warning: A numeric `legend.position` argument in `theme()` was deprecated in ggplot2</span></span>
+<span><span class="co">#&gt; 3.5.0.</span></span>
+<span><span class="co">#&gt; ℹ Please use the `legend.position.inside` argument of `theme()` instead.</span></span>
+<span><span class="co">#&gt; This warning is displayed once every 8 hours.</span></span>
+<span><span class="co">#&gt; Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span>
+<span><span class="co">#&gt; generated.</span></span></code></pre></div>
 <p><img src="reference/figures/README-constrained-ord-plot-1.png" width="100%"></p>
 </div>
 <div class="section level3">
@@ -466,12 +467,12 @@
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; R version 4.3.2 (2023-10-31)</span></span>
-<span><span class="co">#&gt; Platform: x86_64-apple-darwin20 (64-bit)</span></span>
-<span><span class="co">#&gt; Running under: macOS Sonoma 14.2.1</span></span>
+<span><span class="co">#&gt; Platform: aarch64-apple-darwin20 (64-bit)</span></span>
+<span><span class="co">#&gt; Running under: macOS Sonoma 14.4.1</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Matrix products: default</span></span>
-<span><span class="co">#&gt; BLAS:   /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/lib/libRblas.0.dylib </span></span>
-<span><span class="co">#&gt; LAPACK: /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/lib/libRlapack.dylib;  LAPACK version 3.11.0</span></span>
+<span><span class="co">#&gt; BLAS:   /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/lib/libRblas.0.dylib </span></span>
+<span><span class="co">#&gt; LAPACK: /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.11.0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; locale:</span></span>
 <span><span class="co">#&gt; [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8</span></span>
@@ -483,53 +484,54 @@
 <span><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt; [1] ggplot2_3.4.4   dplyr_1.1.4     phyloseq_1.46.0 microViz_0.12.1</span></span>
-<span><span class="co">#&gt; [5] testthat_3.2.1  devtools_2.4.5  usethis_2.2.2  </span></span>
+<span><span class="co">#&gt; [1] ggplot2_3.5.0   dplyr_1.1.4     phyloseq_1.46.0 microViz_0.12.1</span></span>
+<span><span class="co">#&gt; [5] testthat_3.2.1  devtools_2.4.5  usethis_2.2.3  </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
-<span><span class="co">#&gt;   [1] RColorBrewer_1.1-3      rstudioapi_0.15.0       jsonlite_1.8.8         </span></span>
-<span><span class="co">#&gt;   [4] shape_1.4.6             magrittr_2.0.3          farver_2.1.1           </span></span>
-<span><span class="co">#&gt;   [7] rmarkdown_2.25          GlobalOptions_0.1.2     fs_1.6.3               </span></span>
+<span><span class="co">#&gt;   [1] RColorBrewer_1.1-3      shape_1.4.6.1           rstudioapi_0.16.0      </span></span>
+<span><span class="co">#&gt;   [4] jsonlite_1.8.8          magrittr_2.0.3          farver_2.1.1           </span></span>
+<span><span class="co">#&gt;   [7] rmarkdown_2.26          GlobalOptions_0.1.2     fs_1.6.3               </span></span>
 <span><span class="co">#&gt;  [10] zlibbioc_1.48.0         vctrs_0.6.5             multtest_2.58.0        </span></span>
 <span><span class="co">#&gt;  [13] memoise_2.0.1           Cairo_1.6-2             RCurl_1.98-1.14        </span></span>
-<span><span class="co">#&gt;  [16] htmltools_0.5.7         curl_5.2.0              Rhdf5lib_1.24.1        </span></span>
+<span><span class="co">#&gt;  [16] htmltools_0.5.8         curl_5.2.1              Rhdf5lib_1.24.2        </span></span>
 <span><span class="co">#&gt;  [19] rhdf5_2.46.1            htmlwidgets_1.6.4       plyr_1.8.9             </span></span>
-<span><span class="co">#&gt;  [22] cachem_1.0.8            commonmark_1.9.0        igraph_1.6.0           </span></span>
+<span><span class="co">#&gt;  [22] cachem_1.0.8            commonmark_1.9.1        igraph_2.0.3           </span></span>
 <span><span class="co">#&gt;  [25] mime_0.12               lifecycle_1.0.4         iterators_1.0.14       </span></span>
 <span><span class="co">#&gt;  [28] pkgconfig_2.0.3         Matrix_1.6-5            R6_2.5.1               </span></span>
 <span><span class="co">#&gt;  [31] fastmap_1.1.1           clue_0.3-65             GenomeInfoDbData_1.2.11</span></span>
-<span><span class="co">#&gt;  [34] shiny_1.8.0             digest_0.6.34           selectr_0.4-2          </span></span>
-<span><span class="co">#&gt;  [37] colorspace_2.1-0        S4Vectors_0.40.2        pkgload_1.3.4          </span></span>
-<span><span class="co">#&gt;  [40] seriation_1.5.4         vegan_2.6-4             labeling_0.4.3         </span></span>
-<span><span class="co">#&gt;  [43] fansi_1.0.6             httr_1.4.7              mgcv_1.9-1             </span></span>
-<span><span class="co">#&gt;  [46] compiler_4.3.2          remotes_2.4.2.1         withr_3.0.0            </span></span>
-<span><span class="co">#&gt;  [49] doParallel_1.0.17       viridis_0.6.4           pkgbuild_1.4.3         </span></span>
-<span><span class="co">#&gt;  [52] highr_0.10              MASS_7.3-60.0.1         sessioninfo_1.2.2      </span></span>
-<span><span class="co">#&gt;  [55] rjson_0.2.21            biomformat_1.30.0       permute_0.9-7          </span></span>
-<span><span class="co">#&gt;  [58] tools_4.3.2             ape_5.7-1               httpuv_1.6.13          </span></span>
-<span><span class="co">#&gt;  [61] glue_1.7.0              nlme_3.1-164            rhdf5filters_1.14.1    </span></span>
-<span><span class="co">#&gt;  [64] promises_1.2.1          gridtext_0.1.5          grid_4.3.2             </span></span>
-<span><span class="co">#&gt;  [67] Rtsne_0.17              cluster_2.1.6           reshape2_1.4.4         </span></span>
-<span><span class="co">#&gt;  [70] ade4_1.7-22             generics_0.1.3          gtable_0.3.4           </span></span>
-<span><span class="co">#&gt;  [73] microbiome_1.24.0       ca_0.71.1               tidyr_1.3.1            </span></span>
-<span><span class="co">#&gt;  [76] data.table_1.14.10      xml2_1.3.6              utf8_1.2.4             </span></span>
-<span><span class="co">#&gt;  [79] XVector_0.42.0          BiocGenerics_0.48.1     markdown_1.12          </span></span>
-<span><span class="co">#&gt;  [82] foreach_1.5.2           pillar_1.9.0            stringr_1.5.1          </span></span>
-<span><span class="co">#&gt;  [85] later_1.3.2             circlize_0.4.15         splines_4.3.2          </span></span>
-<span><span class="co">#&gt;  [88] ggtext_0.1.2            lattice_0.22-5          survival_3.5-7         </span></span>
-<span><span class="co">#&gt;  [91] tidyselect_1.2.0        registry_0.5-1          ComplexHeatmap_2.18.0  </span></span>
-<span><span class="co">#&gt;  [94] Biostrings_2.70.1       miniUI_0.1.1.1          knitr_1.45             </span></span>
-<span><span class="co">#&gt;  [97] gridExtra_2.3           IRanges_2.36.0          stats4_4.3.2           </span></span>
-<span><span class="co">#&gt; [100] xfun_0.41               Biobase_2.62.0          brio_1.1.4             </span></span>
-<span><span class="co">#&gt; [103] matrixStats_1.2.0       stringi_1.8.3           yaml_2.3.8             </span></span>
-<span><span class="co">#&gt; [106] evaluate_0.23           codetools_0.2-19        tibble_3.2.1           </span></span>
-<span><span class="co">#&gt; [109] cli_3.6.2               xtable_1.8-4            munsell_0.5.0          </span></span>
-<span><span class="co">#&gt; [112] Rcpp_1.0.12             GenomeInfoDb_1.38.5     png_0.1-8              </span></span>
-<span><span class="co">#&gt; [115] parallel_4.3.2          ellipsis_0.3.2          profvis_0.3.8          </span></span>
-<span><span class="co">#&gt; [118] urlchecker_1.0.1        bitops_1.0-7            viridisLite_0.4.2      </span></span>
-<span><span class="co">#&gt; [121] scales_1.3.0            purrr_1.0.2             crayon_1.5.2           </span></span>
-<span><span class="co">#&gt; [124] GetoptLong_1.0.5        rlang_1.1.3             TSP_1.2-4              </span></span>
-<span><span class="co">#&gt; [127] rvest_1.0.3</span></span></code></pre></div>
+<span><span class="co">#&gt;  [34] shiny_1.8.1.1           digest_0.6.35           selectr_0.4-2          </span></span>
+<span><span class="co">#&gt;  [37] colorspace_2.1-0        S4Vectors_0.40.2        ps_1.7.6               </span></span>
+<span><span class="co">#&gt;  [40] pkgload_1.3.4           seriation_1.5.4         vegan_2.6-4            </span></span>
+<span><span class="co">#&gt;  [43] labeling_0.4.3          fansi_1.0.6             httr_1.4.7             </span></span>
+<span><span class="co">#&gt;  [46] mgcv_1.9-1              compiler_4.3.2          remotes_2.5.0          </span></span>
+<span><span class="co">#&gt;  [49] doParallel_1.0.17       withr_3.0.0             viridis_0.6.5          </span></span>
+<span><span class="co">#&gt;  [52] pkgbuild_1.4.4          highr_0.10              MASS_7.3-60.0.1        </span></span>
+<span><span class="co">#&gt;  [55] sessioninfo_1.2.2       rjson_0.2.21            biomformat_1.30.0      </span></span>
+<span><span class="co">#&gt;  [58] permute_0.9-7           tools_4.3.2             chromote_0.2.0         </span></span>
+<span><span class="co">#&gt;  [61] ape_5.7-1               httpuv_1.6.15           glue_1.7.0             </span></span>
+<span><span class="co">#&gt;  [64] nlme_3.1-164            rhdf5filters_1.14.1     promises_1.2.1         </span></span>
+<span><span class="co">#&gt;  [67] gridtext_0.1.5          grid_4.3.2              Rtsne_0.17             </span></span>
+<span><span class="co">#&gt;  [70] cluster_2.1.6           reshape2_1.4.4          ade4_1.7-22            </span></span>
+<span><span class="co">#&gt;  [73] generics_0.1.3          gtable_0.3.4            microbiome_1.24.0      </span></span>
+<span><span class="co">#&gt;  [76] ca_0.71.1               tidyr_1.3.1             websocket_1.4.1        </span></span>
+<span><span class="co">#&gt;  [79] data.table_1.15.4       xml2_1.3.6              utf8_1.2.4             </span></span>
+<span><span class="co">#&gt;  [82] XVector_0.42.0          BiocGenerics_0.48.1     markdown_1.12          </span></span>
+<span><span class="co">#&gt;  [85] foreach_1.5.2           pillar_1.9.0            stringr_1.5.1          </span></span>
+<span><span class="co">#&gt;  [88] later_1.3.2             circlize_0.4.16         splines_4.3.2          </span></span>
+<span><span class="co">#&gt;  [91] ggtext_0.1.2            lattice_0.22-6          survival_3.5-8         </span></span>
+<span><span class="co">#&gt;  [94] tidyselect_1.2.1        registry_0.5-1          ComplexHeatmap_2.18.0  </span></span>
+<span><span class="co">#&gt;  [97] Biostrings_2.70.2       miniUI_0.1.1.1          knitr_1.45             </span></span>
+<span><span class="co">#&gt; [100] gridExtra_2.3           IRanges_2.36.0          stats4_4.3.2           </span></span>
+<span><span class="co">#&gt; [103] xfun_0.43               Biobase_2.62.0          matrixStats_1.2.0      </span></span>
+<span><span class="co">#&gt; [106] brio_1.1.4              stringi_1.8.3           yaml_2.3.8             </span></span>
+<span><span class="co">#&gt; [109] evaluate_0.23           codetools_0.2-20        tibble_3.2.1           </span></span>
+<span><span class="co">#&gt; [112] cli_3.6.2               xtable_1.8-4            munsell_0.5.1          </span></span>
+<span><span class="co">#&gt; [115] processx_3.8.4          Rcpp_1.0.12             GenomeInfoDb_1.38.7    </span></span>
+<span><span class="co">#&gt; [118] png_0.1-8               parallel_4.3.2          ellipsis_0.3.2         </span></span>
+<span><span class="co">#&gt; [121] profvis_0.3.8           urlchecker_1.0.1        bitops_1.0-7           </span></span>
+<span><span class="co">#&gt; [124] viridisLite_0.4.2       scales_1.3.0            purrr_1.0.2            </span></span>
+<span><span class="co">#&gt; [127] crayon_1.5.2            GetoptLong_1.0.5        rlang_1.1.3            </span></span>
+<span><span class="co">#&gt; [130] TSP_1.2-4               rvest_1.0.4</span></span></code></pre></div>
 </div>
 </div>
   </div>
@@ -578,7 +580,7 @@
 <li><a href="https://codecov.io/gh/david-barnett/microViz" class="external-link"><img src="https://codecov.io/gh/david-barnett/microViz/branch/main/graph/badge.svg?token=C1EoVkhnxA" alt="codecov"></a></li>
 <li><a href="https://david-barnett.r-universe.dev/ui#package:microViz" class="external-link"><img src="https://david-barnett.r-universe.dev/badges/microViz" alt="r-universe microViz status"></a></li>
 <li><a href="https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa" class="external-link"><img src="https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa/status.svg" alt="JOSS article"></a></li>
-<li><a href="https://scholar.google.com/scholar?oi=bibs&amp;hl=en&amp;cites=5439940108464463894" class="external-link"><img src="https://img.shields.io/badge/Citations-~90-blueviolet" alt="Citations"></a></li>
+<li><a href="https://scholar.google.com/scholar?oi=bibs&amp;hl=en&amp;cites=5439940108464463894" class="external-link"><img src="https://img.shields.io/badge/Citations-~113-blueviolet" alt="Citations"></a></li>
 <li><a href="https://zenodo.org/badge/latestdoi/307119750" class="external-link"><img src="https://zenodo.org/badge/307119750.svg" alt="Zenodo DOI"></a></li>
 </ul>
 </div>
