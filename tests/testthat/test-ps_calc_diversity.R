@@ -11,7 +11,8 @@ test_that("ps_calc_diversity supported plot doesn't change", {
     ) +
     ggplot2::scale_colour_viridis_c() +
     ggplot2::guides(
-      size = ggplot2::guide_legend(order = 1), ggplot2::guide_colorbar(order = 2)
+      size = ggplot2::guide_legend(order = 1),
+      colour = ggplot2::guide_colorbar(order = 2)
     ) +
     ggplot2::theme_test()
 
