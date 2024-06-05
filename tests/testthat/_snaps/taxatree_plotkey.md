@@ -22,13 +22,14 @@
       10     4    11 p: Firmicutes     class       0.533 TRUE  left     
       # ℹ 51 more rows
       #
-      # Node Data: 62 × 6
-        taxon             parent rank   prevalence label .ggraph.orig_index
-        <chr>             <chr>  <chr>       <dbl> <lgl>              <int>
-      1 root              root   root        1     TRUE                   1
-      2 p: Proteobacteria root   phylum      0.8   TRUE                   2
-      3 p: Actinobacteria root   phylum      0.933 TRUE                   3
+      # Node Data: 62 × 8
+        taxon        parent rank  prevalence label .ggraph.orig_index .ggraph_layout_x
+        <chr>        <chr>  <chr>      <dbl> <lgl>              <int>            <dbl>
+      1 root         root   root       1     TRUE                   1           0     
+      2 p: Proteoba… root   phyl…      0.8   TRUE                   2           0.0541
+      3 p: Actinoba… root   phyl…      0.933 TRUE                   3           0.167 
       # ℹ 59 more rows
+      # ℹ 1 more variable: .ggraph_layout_y <dbl>
 
 ---
 
@@ -54,11 +55,12 @@
       10     4    11 p: Firmicutes     class       0.533 TRUE  left     
       # ℹ 51 more rows
       #
-      # Node Data: 62 × 6
-        taxon             parent rank   prevalence label .ggraph.orig_index
-        <chr>             <chr>  <chr>       <dbl> <lgl>              <int>
-      1 root              root   root        1     TRUE                   1
-      2 p: Proteobacteria root   phylum      0.8   TRUE                   2
-      3 p: Actinobacteria root   phylum      0.933 TRUE                   3
+      # Node Data: 62 × 8
+        taxon        parent rank  prevalence label .ggraph.orig_index .ggraph_layout_x
+        <chr>        <chr>  <chr>      <dbl> <lgl>              <int>            <dbl>
+      1 root         root   root       1     TRUE                   1             0   
+      2 p: Proteoba… root   phyl…      0.8   TRUE                   2            -8.03
+      3 p: Actinoba… root   phyl…      0.933 TRUE                   3            -4.41
       # ℹ 59 more rows
+      # ℹ 1 more variable: .ggraph_layout_y <dbl>
 
