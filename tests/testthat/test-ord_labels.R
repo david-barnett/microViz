@@ -30,7 +30,11 @@ p1 <- ibd_ord %>%
     )
   ) +
   coord_fixed(1, clip = "off", xlim = c(-5, 5)) +
-  theme(legend.position = c(0.8, 0.2), legend.background = element_rect()) +
+  theme(
+    legend.position = "inside",
+    legend.position.inside = c(0.8, 0.2),
+    legend.background = element_rect()
+  ) +
   stat_chull(mapping = aes(colour = ibd, fill = ibd), alpha = 0.1)
 
 test_that("ord_labels/tax_vec_style help page example stays the same", {

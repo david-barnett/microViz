@@ -13,6 +13,6 @@
 #' (\href{https://orcid.org/0000-0003-1961-7206}{ORCID})
 #' (\href{https://github.com/david-barnett}{GitHub})
 #'
-#' @docType package
 #' @name microViz
+"_PACKAGE"
 NULL
