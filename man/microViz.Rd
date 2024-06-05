@@ -2,6 +2,7 @@
 % Please edit documentation in R/microViz.R
 \docType{package}
 \name{microViz}
+\alias{microViz-package}
 \alias{microViz}
 \title{microViz: microbiome data analysis and visualization}
 \description{
@@ -11,6 +12,14 @@ microViz wraps, extends and complements popular microbial ecology packages like 
 Check out the website for tutorials and illustrated help pages.
 
 \url{https://david-barnett.github.io/microViz/}
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://david-barnett.github.io/microViz}
+  \item \url{https://github.com/david-barnett/microViz}
+}
+
 }
 \author{
 David Barnett

@@ -1,3 +1,7 @@
+# microViz 0.12.2
+
+- Fix: `comp_heatmap` helper `sampleAnnotation` will now work with R 4.4
+
 # microViz 0.12.1
 
 - corncob (a suggested dependency) back on CRAN - so no longer installed from GitHub
