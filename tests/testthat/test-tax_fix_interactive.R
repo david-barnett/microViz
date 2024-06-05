@@ -5,10 +5,10 @@ test_that("tax_fix_interactive() works", {
   testthat::skip_on_cran()
   testthat::skip_on_bioc()
   skip_on_os(os = c("windows", "linux"))
-  skip_if(Sys.info()[["machine"]] == "arm64")
+  skip_on_os(os = "mac", arch = "x86_64")
   DTversion <- utils::packageVersion("DT")
   skip_if(DTversion < "0.26")
-  if (!DTversion %in% package_version(seq(0.26, 0.31, by = 0.01))) {
+  if (!DTversion %in% package_version(as.character(seq(0.26, 0.33, by = 0.01)))) {
     rlang::abort(message = c(
       "DT has been updated!",
       i = "DT updates will always break these tests due to the version being recorded in the html",

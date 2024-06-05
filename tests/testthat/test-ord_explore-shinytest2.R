@@ -1,10 +1,10 @@
 library(shinytest2)
 
 test_that("ord_explore app works: unconstrained ords", {
-  # Skip tests in most conditions
+  # Skip tests in most conditions - only run on aarch64
   skip_on_cran()
-  skip_if(Sys.info()[["machine"]] == "arm64")
   skip_on_os(os = c("windows", "linux"))
+  skip_on_os(os = "mac", arch = "x86_64")
 
   # Set local edition and options
   local_edition(3)
