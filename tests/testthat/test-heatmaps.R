@@ -15,7 +15,7 @@ set.seed(123)
 taxa <- sample(microbiome::top_taxa(ps_get(psq))[1:50], size = 30)
 
 test_that("comp_heatmap can make a one taxon or one sample heatmap", {
-  skip_if_not(packageVersion("ComplexHeatmap") > 2.11)
+  skip_if_not(packageVersion("ComplexHeatmap") > "2.11")
   onecol <- psq %>% comp_heatmap(taxa = 5, taxa_side = "bottom")
   onerow <- psq %>% comp_heatmap(taxa = 5, taxa_side = "right")
   expect_s4_class(onecol, class = "Heatmap")
@@ -50,7 +50,7 @@ test_that("cor_heatmap error on invalid anno_tax argument", {
 
 test_that("cor_heatmap doesn't change:", {
   local_edition(3)
-  skip_if_not(packageVersion("ComplexHeatmap") > 2.11)
+  skip_if_not(packageVersion("ComplexHeatmap") > "2.11")
 
   # make simple correlation heatmap with all numeric-like variables
   p <- suppressWarnings(
@@ -107,7 +107,7 @@ test_that("cor_heatmap doesn't change:", {
 
 test_that("comp_heatmap doesn't change: ", {
   local_edition(3)
-  skip_if_not(packageVersion("ComplexHeatmap") > 2.11)
+  skip_if_not(packageVersion("ComplexHeatmap") > "2.11")
 
   p <- suppressWarnings(
     psq %>%

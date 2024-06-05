@@ -3,7 +3,7 @@ library(dplyr)
 test_that("microbiome chao1 results don't change", {
   local_edition(3)
 
-  skip_if(packageVersion("microbiome") < 1.16)
+  skip_if(packageVersion("microbiome") < "1.16")
 
   # see https://github.com/microbiome/microbiome/issues/150
   # change seems to occur between bioconductor 3.13 and 3.14
@@ -21,7 +21,7 @@ test_that("microbiome chao1 results don't change", {
 test_that("ps_calc_richness results don't change", {
   local_edition(3)
 
-  skip_if(packageVersion("microbiome") < 1.16)
+  skip_if(packageVersion("microbiome") < "1.16")
 
   ps <-
     microViz::ibd %>%
@@ -37,7 +37,7 @@ test_that("ps_calc_richness results don't change", {
 
 #
 test_that("ps_calc_richness supported plot doesn't change", {
-  skip_if(packageVersion("microbiome") < 1.16)
+  skip_if(packageVersion("microbiome") < "1.16")
 
   p <- microViz::ibd %>%
     ps_filter(abx == "abx") %>%
