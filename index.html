@@ -221,7 +221,7 @@
 </h2>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://david-barnett.github.io/microViz">microViz</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; microViz version 0.12.2 - Copyright (C) 2021-2024 David Barnett</span></span>
+<span><span class="co">#&gt; microViz version 0.12.3 - Copyright (C) 2021-2024 David Barnett</span></span>
 <span><span class="co">#&gt; ! Website: https://david-barnett.github.io/microViz</span></span>
 <span><span class="co">#&gt; ✔ Useful?  For citation details, run: `citation("microViz")`</span></span>
 <span><span class="co">#&gt; ✖ Silence? `suppressPackageStartupMessages(library(microViz))`</span></span></code></pre></div>
@@ -361,8 +361,8 @@
 <span>    n_processes <span class="op">=</span> <span class="fl">1</span>, n_perms <span class="op">=</span> <span class="fl">99</span>, <span class="co"># you should use at least 999!</span></span>
 <span>    variables <span class="op">=</span> <span class="st">"bmi_group"</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; 2024-06-05 14:03:04.343581 - Starting PERMANOVA with 99 perms with 1 processes</span></span>
-<span><span class="co">#&gt; 2024-06-05 14:03:04.421735 - Finished PERMANOVA</span></span></code></pre></div>
+<span><span class="co">#&gt; 2024-06-06 20:28:23.195662 - Starting PERMANOVA with 99 perms with 1 processes</span></span>
+<span><span class="co">#&gt; 2024-06-06 20:28:23.252764 - Finished PERMANOVA</span></span></code></pre></div>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># view the permanova results</span></span>
@@ -386,8 +386,8 @@
 <code class="sourceCode R"><span><span class="va">perm2</span> <span class="op">&lt;-</span> <span class="va">aitchison_dists</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="reference/dist_permanova.html">dist_permanova</a></span><span class="op">(</span>variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"african"</span>, <span class="st">"sex"</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">321</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Dropping samples with missings: 2</span></span>
-<span><span class="co">#&gt; 2024-06-05 14:03:04.436911 - Starting PERMANOVA with 999 perms with 1 processes</span></span>
-<span><span class="co">#&gt; 2024-06-05 14:03:06.667701 - Finished PERMANOVA</span></span></code></pre></div>
+<span><span class="co">#&gt; 2024-06-06 20:28:23.263874 - Starting PERMANOVA with 999 perms with 1 processes</span></span>
+<span><span class="co">#&gt; 2024-06-06 20:28:24.92056 - Finished PERMANOVA</span></span></code></pre></div>
 <p>We’ll visualise the effect of nationality and bodyweight on sample composition, after first removing the effect of sex.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">perm2</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
@@ -487,7 +487,7 @@
 <span><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt; [1] ggplot2_3.5.1    dplyr_1.1.4      phyloseq_1.48.0  microViz_0.12.2 </span></span>
+<span><span class="co">#&gt; [1] ggplot2_3.5.1    dplyr_1.1.4      phyloseq_1.48.0  microViz_0.12.3 </span></span>
 <span><span class="co">#&gt; [5] testthat_3.2.1.1 devtools_2.4.5   usethis_2.2.3   </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
@@ -508,7 +508,7 @@
 <span><span class="co">#&gt;  [43] fansi_1.0.6             httr_1.4.7              mgcv_1.9-1             </span></span>
 <span><span class="co">#&gt;  [46] compiler_4.4.0          remotes_2.5.0           doParallel_1.0.17      </span></span>
 <span><span class="co">#&gt;  [49] withr_3.0.0             viridis_0.6.5           pkgbuild_1.4.4         </span></span>
-<span><span class="co">#&gt;  [52] highr_0.10              MASS_7.3-60.2           sessioninfo_1.2.2      </span></span>
+<span><span class="co">#&gt;  [52] highr_0.11              MASS_7.3-60.2           sessioninfo_1.2.2      </span></span>
 <span><span class="co">#&gt;  [55] rjson_0.2.21            biomformat_1.32.0       permute_0.9-7          </span></span>
 <span><span class="co">#&gt;  [58] tools_4.4.0             chromote_0.2.0          ape_5.8                </span></span>
 <span><span class="co">#&gt;  [61] httpuv_1.6.15           glue_1.7.0              nlme_3.1-164           </span></span>
@@ -523,7 +523,7 @@
 <span><span class="co">#&gt;  [88] circlize_0.4.16         splines_4.4.0           ggtext_0.1.2           </span></span>
 <span><span class="co">#&gt;  [91] lattice_0.22-6          survival_3.5-8          tidyselect_1.2.1       </span></span>
 <span><span class="co">#&gt;  [94] registry_0.5-1          ComplexHeatmap_2.20.0   Biostrings_2.72.0      </span></span>
-<span><span class="co">#&gt;  [97] miniUI_0.1.1.1          knitr_1.46              gridExtra_2.3          </span></span>
+<span><span class="co">#&gt;  [97] miniUI_0.1.1.1          knitr_1.47              gridExtra_2.3          </span></span>
 <span><span class="co">#&gt; [100] IRanges_2.38.0          stats4_4.4.0            xfun_0.44              </span></span>
 <span><span class="co">#&gt; [103] Biobase_2.64.0          matrixStats_1.3.0       brio_1.1.5             </span></span>
 <span><span class="co">#&gt; [106] stringi_1.8.4           UCSC.utils_1.0.0        yaml_2.3.8             </span></span>
@@ -533,7 +533,7 @@
 <span><span class="co">#&gt; [118] png_0.1-8               parallel_4.4.0          ellipsis_0.3.2         </span></span>
 <span><span class="co">#&gt; [121] profvis_0.3.8           urlchecker_1.0.1        viridisLite_0.4.2      </span></span>
 <span><span class="co">#&gt; [124] scales_1.3.0            purrr_1.0.2             crayon_1.5.2           </span></span>
-<span><span class="co">#&gt; [127] GetoptLong_1.0.5        rlang_1.1.3             TSP_1.2-4              </span></span>
+<span><span class="co">#&gt; [127] GetoptLong_1.0.5        rlang_1.1.4             TSP_1.2-4              </span></span>
 <span><span class="co">#&gt; [130] rvest_1.0.4</span></span></code></pre></div>
 </div>
 </div>
@@ -583,7 +583,7 @@
 <li><a href="https://codecov.io/gh/david-barnett/microViz" class="external-link"><img src="https://codecov.io/gh/david-barnett/microViz/branch/main/graph/badge.svg?token=C1EoVkhnxA" alt="codecov"></a></li>
 <li><a href="https://david-barnett.r-universe.dev/ui#package:microViz" class="external-link"><img src="https://david-barnett.r-universe.dev/badges/microViz" alt="r-universe microViz status"></a></li>
 <li><a href="https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa" class="external-link"><img src="https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa/status.svg" alt="JOSS article"></a></li>
-<li><a href="https://scholar.google.com/scholar?oi=bibs&amp;hl=en&amp;cites=5439940108464463894" class="external-link"><img src="https://img.shields.io/badge/Citations-~133-blueviolet" alt="Citations"></a></li>
+<li><a href="https://scholar.google.com/scholar?hl=en&amp;as_sdt=2005&amp;sciodt=0,5&amp;cites=5439940108464463894&amp;scipsc=&amp;q=&amp;scisbd=1" class="external-link"><img src="https://img.shields.io/badge/Citations-~135-blueviolet" alt="Citations"></a></li>
 <li><a href="https://zenodo.org/badge/latestdoi/307119750" class="external-link"><img src="https://zenodo.org/badge/307119750.svg" alt="Zenodo DOI"></a></li>
 </ul>
 </div>
