@@ -4,7 +4,7 @@ test_that("unifrac distances work", {
   local_edition(3)
   # GUniFrac 1.5 did not have verbose argument (relevant for R 3.6 checks)
   skip_if(packageVersion("GUniFrac") < "1.6")
-  expect_snapshot(dist_get(dist_calc(esophagus, dist = 'gunifrac')))
+  expect_snapshot(suppressMessages(dist_get(dist_calc(esophagus, dist = 'gunifrac'))))
   expect_snapshot(dist_get(dist_calc(esophagus, dist = 'unifrac')))
   expect_snapshot(dist_get(dist_calc(esophagus, dist = 'wunifrac')))
   # since GUniFrac 1.8, variance-adjusted unifrac appears to have been dropped
