@@ -17,7 +17,7 @@ date)](https://img.shields.io/docker/v/barnettdavid/microviz-rocker-verse?color=
 status](https://david-barnett.r-universe.dev/badges/microViz)](https://david-barnett.r-universe.dev/ui#package:microViz)
 [![JOSS
 article](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa/status.svg)](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa)
-[![Citations](https://img.shields.io/badge/Citations-~133-blueviolet)](https://scholar.google.com/scholar?oi=bibs&hl=en&cites=5439940108464463894)
+[![Citations](https://img.shields.io/badge/Citations-~135-blueviolet)](https://scholar.google.com/scholar?hl=en&as_sdt=2005&sciodt=0,5&cites=5439940108464463894&scipsc=&q=&scisbd=1)
 [![Zenodo
 DOI](https://zenodo.org/badge/307119750.svg)](https://zenodo.org/badge/latestdoi/307119750)
 <!-- badges: end -->
@@ -150,7 +150,7 @@ test this.
 
 ``` r
 library(microViz)
-#> microViz version 0.12.2 - Copyright (C) 2021-2024 David Barnett
+#> microViz version 0.12.3 - Copyright (C) 2021-2024 David Barnett
 #> ! Website: https://david-barnett.github.io/microViz
 #> ✔ Useful?  For citation details, run: `citation("microViz")`
 #> ✖ Silence? `suppressPackageStartupMessages(library(microViz))`
@@ -316,8 +316,8 @@ aitchison_perm <- aitchison_dists %>%
     n_processes = 1, n_perms = 99, # you should use at least 999!
     variables = "bmi_group"
   )
-#> 2024-06-05 14:03:04.343581 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2024-06-05 14:03:04.421735 - Finished PERMANOVA
+#> 2024-06-06 20:28:23.195662 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2024-06-06 20:28:23.252764 - Finished PERMANOVA
 ```
 
 ``` r
@@ -348,8 +348,8 @@ your permanova directly using the `ord_plot` function with constraints
 perm2 <- aitchison_dists %>%
   dist_permanova(variables = c("weight", "african", "sex"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2024-06-05 14:03:04.436911 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2024-06-05 14:03:06.667701 - Finished PERMANOVA
+#> 2024-06-06 20:28:23.263874 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2024-06-06 20:28:24.92056 - Finished PERMANOVA
 ```
 
 We’ll visualise the effect of nationality and bodyweight on sample
@@ -467,7 +467,7 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] ggplot2_3.5.1    dplyr_1.1.4      phyloseq_1.48.0  microViz_0.12.2 
+#> [1] ggplot2_3.5.1    dplyr_1.1.4      phyloseq_1.48.0  microViz_0.12.3 
 #> [5] testthat_3.2.1.1 devtools_2.4.5   usethis_2.2.3   
 #> 
 #> loaded via a namespace (and not attached):
@@ -488,7 +488,7 @@ sessionInfo()
 #>  [43] fansi_1.0.6             httr_1.4.7              mgcv_1.9-1             
 #>  [46] compiler_4.4.0          remotes_2.5.0           doParallel_1.0.17      
 #>  [49] withr_3.0.0             viridis_0.6.5           pkgbuild_1.4.4         
-#>  [52] highr_0.10              MASS_7.3-60.2           sessioninfo_1.2.2      
+#>  [52] highr_0.11              MASS_7.3-60.2           sessioninfo_1.2.2      
 #>  [55] rjson_0.2.21            biomformat_1.32.0       permute_0.9-7          
 #>  [58] tools_4.4.0             chromote_0.2.0          ape_5.8                
 #>  [61] httpuv_1.6.15           glue_1.7.0              nlme_3.1-164           
@@ -503,7 +503,7 @@ sessionInfo()
 #>  [88] circlize_0.4.16         splines_4.4.0           ggtext_0.1.2           
 #>  [91] lattice_0.22-6          survival_3.5-8          tidyselect_1.2.1       
 #>  [94] registry_0.5-1          ComplexHeatmap_2.20.0   Biostrings_2.72.0      
-#>  [97] miniUI_0.1.1.1          knitr_1.46              gridExtra_2.3          
+#>  [97] miniUI_0.1.1.1          knitr_1.47              gridExtra_2.3          
 #> [100] IRanges_2.38.0          stats4_4.4.0            xfun_0.44              
 #> [103] Biobase_2.64.0          matrixStats_1.3.0       brio_1.1.5             
 #> [106] stringi_1.8.4           UCSC.utils_1.0.0        yaml_2.3.8             
@@ -513,6 +513,6 @@ sessionInfo()
 #> [118] png_0.1-8               parallel_4.4.0          ellipsis_0.3.2         
 #> [121] profvis_0.3.8           urlchecker_1.0.1        viridisLite_0.4.2      
 #> [124] scales_1.3.0            purrr_1.0.2             crayon_1.5.2           
-#> [127] GetoptLong_1.0.5        rlang_1.1.3             TSP_1.2-4              
+#> [127] GetoptLong_1.0.5        rlang_1.1.4             TSP_1.2-4              
 #> [130] rvest_1.0.4
 ```
