@@ -11,6 +11,45 @@ ps <- dietswap %>%
   ) %>%
   tax_filter(min_prevalence = 1)
 
+# checkValidEllipsesOrdPlot ------
+
+test_that("checkValidEllipsesOrdPlot works", {
+  expect_error(
+    microViz:::checkValidEllipsesOrdPlot(size = "1", ps = microViz::ibd),
+    regexp = "1 is not a variable in the sample metadata"
+  )
+  expect_error(
+    microViz:::checkValidEllipsesOrdPlot(fill = "#FF", ps = microViz::ibd),
+    regexp = "#FF is not a variable in the sample metadata"
+  )
+  expect_error(
+    microViz:::checkValidEllipsesOrdPlot(fill = "#ABG", ps = microViz::ibd),
+    regexp = "#ABG is not a variable in the sample metadata"
+  )
+  expect_error(
+    microViz:::checkValidEllipsesOrdPlot(colour = "#ABG", ps = microViz::ibd),
+    regexp = "#ABG is not a variable in the sample metadata"
+  )
+  expect_no_error(
+    microViz:::checkValidEllipsesOrdPlot(colour = "#Aa1", ps = microViz::ibd)
+  )
+  expect_no_error(
+    microViz:::checkValidEllipsesOrdPlot("#1D2A3fff", ps = microViz::ibd)
+  )
+  expect_no_error(
+    microViz:::checkValidEllipsesOrdPlot(colour = "pink", ps = microViz::ibd)
+  )
+  expect_no_error(
+    microViz:::checkValidEllipsesOrdPlot(shape = "circle", ps = microViz::ibd)
+  )
+  expect_no_error(
+    microViz:::checkValidEllipsesOrdPlot(shape = "abx", ps = microViz::ibd)
+  )
+  expect_no_error(
+    microViz:::checkValidEllipsesOrdPlot(size = 4, ps = microViz::ibd)
+  )
+})
+
 # RDA ------------------------
 
 p <- suppressMessages(
