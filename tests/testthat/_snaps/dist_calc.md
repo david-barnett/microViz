@@ -1,7 +1,7 @@
 # unifrac distances work
 
     Code
-      dist_get(dist_calc(esophagus, dist = "gunifrac"))
+      suppressMessages(dist_get(dist_calc(esophagus, dist = "gunifrac")))
     Output
                 B         C
       C 0.4404284          
