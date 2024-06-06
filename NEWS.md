@@ -1,3 +1,7 @@
+# microViz 0.12.3
+
+- Fix: allow hex code colours in `ord_plot`
+
 # microViz 0.12.2
 
 - Fix: `comp_heatmap` helper `sampleAnnotation` will now work with R 4.4
