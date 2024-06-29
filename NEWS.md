@@ -1,4 +1,4 @@
-# microViz (development version)
+# microViz 0.12.4
 
 - Fix: no more cowplot legend extraction warnings in `ord_explore` 
 
