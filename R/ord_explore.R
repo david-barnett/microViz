@@ -1449,7 +1449,7 @@ ord_explore_palet_fun <- function(ps,
 #' @return a ggplot and its legend combined with cowplot
 #' @noRd
 legend_separate <- function(ggplot, rel_widths = c(3, 1)) {
-  leg <- cowplot::get_legend(ggplot)
+  leg <- cowplot::get_plot_component(ggplot, pattern = "guide-box-right")
   ggplot <- ggplot + ggplot2::theme(legend.position = "none")
   out <- cowplot::plot_grid(ggplot, leg, rel_widths = rel_widths)
   return(out)
