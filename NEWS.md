@@ -1,3 +1,7 @@
+# microViz (development version)
+
+- Fix: no more cowplot legend extraction warnings in `ord_explore` 
+
 # microViz 0.12.3
 
 - Fix: allow hex code colours in `ord_plot`
