@@ -13,8 +13,8 @@ version](https://img.shields.io/github/r-package/v/david-barnett/microViz?label=
 pre-releases)](https://img.shields.io/github/v/release/david-barnett/microViz?include_prereleases&label=Release)
 ![Docker Image Version (latest by
 date)](https://img.shields.io/docker/v/barnettdavid/microviz-rocker-verse?color=blue&label=Docker)
-[![r-universe microViz
-status](https://david-barnett.r-universe.dev/badges/microViz)](https://david-barnett.r-universe.dev/ui#package:microViz)
+[![microViz status
+badge](https://david-barnett.r-universe.dev/badges/microViz)](https://david-barnett.r-universe.dev/microViz)
 [![JOSS
 article](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa/status.svg)](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa)
 [![Citations](https://img.shields.io/badge/Citations-~135-blueviolet)](https://scholar.google.com/scholar?hl=en&as_sdt=2005&sciodt=0,5&cites=5439940108464463894&scipsc=&q=&scisbd=1)
@@ -150,7 +150,7 @@ test this.
 
 ``` r
 library(microViz)
-#> microViz version 0.12.3 - Copyright (C) 2021-2024 David Barnett
+#> microViz version 0.12.3.9000 - Copyright (C) 2021-2024 David Barnett
 #> ! Website: https://david-barnett.github.io/microViz
 #> ✔ Useful?  For citation details, run: `citation("microViz")`
 #> ✖ Silence? `suppressPackageStartupMessages(library(microViz))`
@@ -316,8 +316,8 @@ aitchison_perm <- aitchison_dists %>%
     n_processes = 1, n_perms = 99, # you should use at least 999!
     variables = "bmi_group"
   )
-#> 2024-06-06 20:28:23.195662 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2024-06-06 20:28:23.252764 - Finished PERMANOVA
+#> 2024-06-30 10:55:51.862638 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2024-06-30 10:55:51.919099 - Finished PERMANOVA
 ```
 
 ``` r
@@ -348,8 +348,8 @@ your permanova directly using the `ord_plot` function with constraints
 perm2 <- aitchison_dists %>%
   dist_permanova(variables = c("weight", "african", "sex"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2024-06-06 20:28:23.263874 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2024-06-06 20:28:24.92056 - Finished PERMANOVA
+#> 2024-06-30 10:55:51.930319 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2024-06-30 10:55:53.574252 - Finished PERMANOVA
 ```
 
 We’ll visualise the effect of nationality and bodyweight on sample
@@ -367,21 +367,15 @@ perm2 %>%
       max_angle = 90, size = 3, aspect_ratio = 0.8, colour = "black"
     )
   ) +
-  stat_ellipse(aes(colour = nationality), linewidth = 0.2) + # linewidth not size since ggplot 3.4.0
-  scale_color_brewer(palette = "Set1") +
+  stat_ellipse(aes(colour = nationality), linewidth = 0.2) + 
+  scale_color_brewer(palette = "Set1", guide = guide_legend(position = "inside")) +
   coord_fixed(ratio = 0.8, clip = "off", xlim = c(-4, 4)) +
-  theme(legend.position = c(0.9, 0.1), legend.background = element_rect())
+  theme(legend.position.inside = c(0.9, 0.1), legend.background = element_rect())
 #> 
 #> Centering (mean) and scaling (sd) the constraints and/or conditions:
 #>  weight
 #>  african
 #>  female
-#> Warning: A numeric `legend.position` argument in `theme()` was deprecated in ggplot2
-#> 3.5.0.
-#> ℹ Please use the `legend.position.inside` argument of `theme()` instead.
-#> This warning is displayed once every 8 hours.
-#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-#> generated.
 ```
 
 <img src="man/figures/README-constrained-ord-plot-1.png" width="100%" />
@@ -467,8 +461,9 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] ggplot2_3.5.1    dplyr_1.1.4      phyloseq_1.48.0  microViz_0.12.3 
-#> [5] testthat_3.2.1.1 devtools_2.4.5   usethis_2.2.3   
+#> [1] ggplot2_3.5.1        dplyr_1.1.4          phyloseq_1.48.0     
+#> [4] microViz_0.12.3.9000 testthat_3.2.1.1     devtools_2.4.5      
+#> [7] usethis_2.2.3       
 #> 
 #> loaded via a namespace (and not attached):
 #>   [1] RColorBrewer_1.1-3      rstudioapi_0.16.0       jsonlite_1.8.8         
@@ -482,7 +477,7 @@ sessionInfo()
 #>  [25] lifecycle_1.0.4         iterators_1.0.14        pkgconfig_2.0.3        
 #>  [28] Matrix_1.7-0            R6_2.5.1                fastmap_1.2.0          
 #>  [31] clue_0.3-65             GenomeInfoDbData_1.2.12 shiny_1.8.1.1          
-#>  [34] digest_0.6.35           selectr_0.4-2           colorspace_2.1-0       
+#>  [34] digest_0.6.36           selectr_0.4-2           colorspace_2.1-0       
 #>  [37] S4Vectors_0.42.0        ps_1.7.6                pkgload_1.3.4          
 #>  [40] seriation_1.5.5         vegan_2.6-6.1           labeling_0.4.3         
 #>  [43] fansi_1.0.6             httr_1.4.7              mgcv_1.9-1             
@@ -504,15 +499,15 @@ sessionInfo()
 #>  [91] lattice_0.22-6          survival_3.5-8          tidyselect_1.2.1       
 #>  [94] registry_0.5-1          ComplexHeatmap_2.20.0   Biostrings_2.72.0      
 #>  [97] miniUI_0.1.1.1          knitr_1.47              gridExtra_2.3          
-#> [100] IRanges_2.38.0          stats4_4.4.0            xfun_0.44              
+#> [100] IRanges_2.38.0          stats4_4.4.0            xfun_0.45              
 #> [103] Biobase_2.64.0          matrixStats_1.3.0       brio_1.1.5             
 #> [106] stringi_1.8.4           UCSC.utils_1.0.0        yaml_2.3.8             
-#> [109] evaluate_0.23           codetools_0.2-20        tibble_3.2.1           
-#> [112] cli_3.6.2               xtable_1.8-4            munsell_0.5.1          
+#> [109] evaluate_0.24.0         codetools_0.2-20        tibble_3.2.1           
+#> [112] cli_3.6.3               xtable_1.8-4            munsell_0.5.1          
 #> [115] processx_3.8.4          Rcpp_1.0.12             GenomeInfoDb_1.40.1    
 #> [118] png_0.1-8               parallel_4.4.0          ellipsis_0.3.2         
 #> [121] profvis_0.3.8           urlchecker_1.0.1        viridisLite_0.4.2      
-#> [124] scales_1.3.0            purrr_1.0.2             crayon_1.5.2           
+#> [124] scales_1.3.0            purrr_1.0.2             crayon_1.5.3           
 #> [127] GetoptLong_1.0.5        rlang_1.1.4             TSP_1.2-4              
 #> [130] rvest_1.0.4
 ```

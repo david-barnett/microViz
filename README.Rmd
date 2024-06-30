@@ -23,13 +23,12 @@ citations <- paste0("~", stringr::str_extract(rvest::html_text(citeElem), "[0-9]
 # microViz <a href='https://david-barnett.github.io/microViz/index.html'><img src="man/figures/logo.png" align="right" height="180" width="156"/></a>
 
 <!-- badges: start -->
-
 [![R-CMD-check](https://github.com/david-barnett/microViz/workflows/R-CMD-check/badge.svg)](https://github.com/david-barnett/microViz/actions) 
 [![codecov](https://codecov.io/gh/david-barnett/microViz/branch/main/graph/badge.svg?token=C1EoVkhnxA)](https://codecov.io/gh/david-barnett/microViz) 
 ![GitHub R package version](https://img.shields.io/github/r-package/v/david-barnett/microViz?label=Latest) 
 ![GitHub release (including pre-releases)](https://img.shields.io/github/v/release/david-barnett/microViz?include_prereleases&label=Release) 
 ![Docker Image Version (latest by date)](https://img.shields.io/docker/v/barnettdavid/microviz-rocker-verse?color=blue&label=Docker) 
-[![r-universe microViz status](https://david-barnett.r-universe.dev/badges/microViz)](https://david-barnett.r-universe.dev/ui#package:microViz) 
+[![microViz status badge](https://david-barnett.r-universe.dev/badges/microViz)](https://david-barnett.r-universe.dev/microViz)
 [![JOSS article](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa/status.svg)](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa)
 [![Citations](https://img.shields.io/badge/Citations-`r citations`-blueviolet)](https://scholar.google.com/scholar?hl=en&as_sdt=2005&sciodt=0,5&cites=5439940108464463894&scipsc=&q=&scisbd=1) 
 [![Zenodo DOI](https://zenodo.org/badge/307119750.svg)](https://zenodo.org/badge/latestdoi/307119750)
@@ -307,10 +306,10 @@ perm2 %>%
       max_angle = 90, size = 3, aspect_ratio = 0.8, colour = "black"
     )
   ) +
-  stat_ellipse(aes(colour = nationality), linewidth = 0.2) + # linewidth not size since ggplot 3.4.0
-  scale_color_brewer(palette = "Set1") +
+  stat_ellipse(aes(colour = nationality), linewidth = 0.2) + 
+  scale_color_brewer(palette = "Set1", guide = guide_legend(position = "inside")) +
   coord_fixed(ratio = 0.8, clip = "off", xlim = c(-4, 4)) +
-  theme(legend.position = c(0.9, 0.1), legend.background = element_rect())
+  theme(legend.position.inside = c(0.9, 0.1), legend.background = element_rect())
 ```
 
 ### Correlation Heatmaps
