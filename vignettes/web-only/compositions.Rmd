@@ -582,7 +582,7 @@ pseq %>%
   tax_agg("Phylum") %>%
   tax_transform("compositional") %>%
   ps_arrange(desc(Firmicutes), .target = "otu_table") %>%
-  comp_barplot(tax_level = "Phylum", sample_order = "asis") +
+  comp_barplot(tax_level = "Phylum", sample_order = "asis", counts_warn = FALSE) +
   coord_flip()
 ```
 
