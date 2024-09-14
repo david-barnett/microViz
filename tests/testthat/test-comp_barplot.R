@@ -11,7 +11,7 @@ test_that("comp_barplot throws correct errors", {
   )
   expect_error(
     object = comp_barplot(dietswap, tax_level = "Genus", n_taxa = 1:15),
-    regexp = "n_taxa must a positive integer"
+    regexp = "n_taxa must be a positive integer"
   )
   expect_error(
     object = comp_barplot(dietswap, tax_level = "Genus", max_taxa = 5),
