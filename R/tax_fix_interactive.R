@@ -100,7 +100,7 @@ tax_fix_interactive <- function(data,
           shiny::h5("Min length:"),
           shiny::sliderInput(
             inputId = "min_char", label = NULL,
-            min = 0, max = 10, value = 4,
+            min = 1, max = 10, value = 4,
             step = 1, round = TRUE, ticks = FALSE
           )
         ),

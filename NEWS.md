@@ -1,3 +1,7 @@
+# microViz 0.12.5
+
+- Fix: tax_fix no longer allows min_length of 0, as empty strings are (and were) always replaced
+
 # microViz 0.12.4
 
 - Fix: no more cowplot legend extraction warnings in `ord_explore` 
