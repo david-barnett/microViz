@@ -58,6 +58,7 @@
 #' @param notification_durations
 #' length 2 list giving duration in seconds of short and long notifications
 #' or NULL for notifications that do not disappear automatically
+#' @param counts_warn should a warning be issued if accounts are unavailable?
 #' @param ... additional arguments passed to ord_plot
 #'
 #' @return nothing, opens default browser
@@ -152,6 +153,7 @@ ord_explore <- function(data,
                         plot_widths = c(7, 9),
                         modal_fade = TRUE,
                         notification_durations = list(2, 20),
+                        counts_warn = TRUE,
                         ...) {
   # SETUP -------------------------------------------------------------------
 
@@ -159,7 +161,7 @@ ord_explore <- function(data,
   # TODO how to better handle this choice?
   p_width <- plot_widths # 1st is ordination, 2nd is composition
 
-  init <- ord_explore_init(data)
+  init <- ord_explore_init(data, counts_warn = counts_warn)
 
   message("To stop the app: Click red stop button or hit Esc in the console")
 
@@ -471,7 +473,7 @@ ord_explore <- function(data,
     phylos <- shiny::reactiveValues(
       ord1 = init$data, # for ord_plot
       comps = ps_seriate( # for comp_barplot (samples can be reordered)
-        ps = ps_counts(init$data, warn = TRUE),
+        ps = ps_counts(init$data, warn = counts_warn),
         method = seriate_method,
         tax_transform = shiny::isolate(ord1chosen$trans),
         dist = setdiff(
@@ -850,7 +852,8 @@ ord_explore <- function(data,
               data = init$data, rank = input$rank, trans = input$trans,
               dist = if (input$dist == "none") NA else input$dist,
               method = input$method,
-              constraints = input$const, conditions = input$conds
+              constraints = input$const, conditions = input$conds,
+              counts_warn = counts_warn
             )
           }
         )
@@ -891,7 +894,7 @@ ord_explore <- function(data,
         )
         # for comp_barplot (samples can be reordered)
         phylos$comps <- ps_seriate(
-          ps = ps_counts(init$data, warn = TRUE),
+          ps = ps_counts(init$data, warn = counts_warn),
           method = seriate_method, tax_transform = init$info$trans,
           # get current distance, if not "none", else use euclidean
           dist = setdiff(
@@ -923,12 +926,16 @@ ord_explore <- function(data,
 #'
 #' @return a list of lists
 #' @noRd
-ord_explore_init <- function(data) {
+ord_explore_init <- function(data, counts_warn) {
   check_is_phyloseq(data, argName = "data")
 
   # if data is plain phyloseq, validate and convert to psExtra
   if (!is(data, "psExtra")) {
-    data <- tax_transform(phyloseq_validate(data), "identity", rank = "unique")
+    data <- phyloseq_validate(data, min_tax_length = 3)
+    data <- tax_transform(
+      data = data, keep_counts = counts_warn,
+      trans = "identity", rank = "unique"
+    )
   }
 
   # create a SAMPLE id variable
@@ -1021,10 +1028,12 @@ ord_build <- function(data,
                       dist = NA,
                       method = "auto",
                       constraints = NULL,
-                      conditions = NULL) {
-  dat <- ps_counts(data, warn = TRUE)
+                      conditions = NULL,
+                      counts_warn = TRUE
+) {
+  dat <- ps_counts(data, warn = counts_warn)
   dat <- tax_agg(ps = dat, rank = rank)
-  dat <- tax_transform(data = dat, trans = trans)
+  dat <- tax_transform(data = dat, trans = trans, keep_counts = counts_warn)
   if (!identical(dist, NA)) {
     dat <- dist_calc(data = dat, dist = dist)
   }
