@@ -22,18 +22,28 @@
 #' 'G__unknown' 'G__Unknown' 'G__NA' 'F__unknown' 'F__Unknown' 'F__NA' 'O__unknown' 'O__Unknown' 'O__NA'
 #' 'C__unknown' 'C__Unknown' 'C__NA' 'P__unknown' 'P__Unknown' 'P__NA' 'K__unknown' 'K__Unknown' 'K__NA'
 #'
-#' @param ps phyloseq or tax_table (taxonomyTable)
-#' @param min_length replace strings shorter than this
-#' @param unknowns also replace strings matching any in this vector, NA default vector shown in details!
+#'
+#' @param ps
+#' phyloseq or tax_table (taxonomyTable)
+#' @param min_length
+#' replace strings shorter than this, must be integer > 0
+#' @param unknowns
+#' also replace strings matching any in this vector,
+#' NA default vector shown in details!
 #' @param suffix_rank
-#' "classified" (default) or "current", when replacing an entry, should the suffix be taken from the lowest classified rank
-#'  for that taxon, "classified", or the "current" unclassified rank?
-#' @param sep character(s) separating new name and taxonomic rank level suffix (see suffix_rank)
-#' @param anon_unique make anonymous taxa unique by replacing unknowns with taxa_name?
+#' "classified" (default) or "current", when replacing an entry,
+#' should the suffix be taken from the lowest classified rank
+#' for that taxon, "classified", or the "current" unclassified rank?
+#' @param sep
+#' character(s) separating new name and taxonomic rank level suffix (see suffix_rank)
+#' @param anon_unique
+#' make anonymous taxa unique by replacing unknowns with taxa_name?
 #' otherwise they are replaced with paste("unknown", first_rank_name),
 #' which is therefore the same for every anonymous taxon, meaning they will be merged if tax_agg is used.
-#' (anonymous taxa are taxa with all unknown values in their tax_table row, i.e. cannot be classified even at highest rank available)
-#' @param verbose emit warnings when cannot replace with informative name?
+#' (anonymous taxa are taxa with all unknown values in their tax_table row,
+#' i.e. cannot be classified even at highest rank available)
+#' @param verbose
+#' emit warnings when cannot replace with informative name?
 #'
 #' @return object same class as ps
 #' @export
@@ -105,6 +115,9 @@ tax_fix <- function(ps,
                     sep = " ",
                     anon_unique = TRUE,
                     verbose = TRUE) {
+  if (!rlang::is_scalar_integerish(min_length) || min_length < 1L) {
+    stop("min_length must be an integer greater than 0")
+  }
   if (is(ps, "psExtra")) stop("ps is a psExtra, run tax_fix BEFORE tax_agg etc")
   if (methods::is(ps, "phyloseq")) {
     tt <- unclass(phyloseq::tax_table(ps))

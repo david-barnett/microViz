@@ -17,11 +17,13 @@ tax_fix(
 \arguments{
 \item{ps}{phyloseq or tax_table (taxonomyTable)}
 
-\item{min_length}{replace strings shorter than this}
+\item{min_length}{replace strings shorter than this, must be integer > 0}
 
-\item{unknowns}{also replace strings matching any in this vector, NA default vector shown in details!}
+\item{unknowns}{also replace strings matching any in this vector,
+NA default vector shown in details!}
 
-\item{suffix_rank}{"classified" (default) or "current", when replacing an entry, should the suffix be taken from the lowest classified rank
+\item{suffix_rank}{"classified" (default) or "current", when replacing an entry,
+should the suffix be taken from the lowest classified rank
 for that taxon, "classified", or the "current" unclassified rank?}
 
 \item{sep}{character(s) separating new name and taxonomic rank level suffix (see suffix_rank)}
@@ -29,7 +31,8 @@ for that taxon, "classified", or the "current" unclassified rank?}
 \item{anon_unique}{make anonymous taxa unique by replacing unknowns with taxa_name?
 otherwise they are replaced with paste("unknown", first_rank_name),
 which is therefore the same for every anonymous taxon, meaning they will be merged if tax_agg is used.
-(anonymous taxa are taxa with all unknown values in their tax_table row, i.e. cannot be classified even at highest rank available)}
+(anonymous taxa are taxa with all unknown values in their tax_table row,
+i.e. cannot be classified even at highest rank available)}
 
 \item{verbose}{emit warnings when cannot replace with informative name?}
 }
