@@ -33,6 +33,7 @@
 #' @param trans
 #' name of transformation to apply to taxa before sorting (taxa are returned un-transformed)
 #' @param use_counts use count data if available, instead of transformed data
+#' @param counts_warn warn if count data are not available?
 #'
 #' @return sorted phyloseq or psExtra
 #' @export
@@ -116,7 +117,8 @@ tax_sort <- function(data,
                      tree_warn = TRUE,
                      verbose = TRUE,
                      trans = "identity",
-                     use_counts = TRUE) {
+                     use_counts = TRUE,
+                     counts_warn = TRUE) {
   # checks, and get phyloseq--------------------------------------------------
   stopifnot(rlang::is_bool(use_counts))
   stopifnot(rlang::is_bool(tree_warn))
@@ -134,9 +136,12 @@ tax_sort <- function(data,
   if (!rlang::is_string(by) && !rlang::is_function(by)) stop(byIsInvalidError)
   # TODO ?allow numeric or character vector sorting by subsetting?
 
-  # get and check phyloseq (of counts?)
-  ps <- if (use_counts) ps_counts(data, warn = TRUE) else ps_get(data)
-  ps <- phyloseq_validate(ps, remove_undetected = FALSE, verbose = verbose)
+  # get phyloseq (of counts or whatever else)
+  ps <- ps_get(data, counts = use_counts, warn = counts_warn)
+
+  # check phyloseq for common problems (and fix or message about this)
+  ps <- psCheckSamdat(ps, verbose = verbose)
+  ps <- psCheckTaxTable(ps, verbose = verbose, min_tax_length = 3)
 
   # check `by` string options including sample names
   if (rlang::is_string(by)) {
@@ -185,8 +190,12 @@ tax_sort <- function(data,
     } else {
       # it was checked already that it must otherwise be a rank name
       # --> aggregation required
-      psAg <- tax_agg(ps = ps, rank = at) %>% ps_get()
-      psAg <- tax_sort(data = psAg, by = by, at = "names", trans = trans, ...)
+      psAg <- tax_agg(ps = ps, rank = at)
+      psAg <- ps_get(psAg)
+      psAg <- tax_sort(
+        data = psAg, by = by, at = "names", trans = trans,
+        use_counts = use_counts, counts_warn = counts_warn, ...
+      )
 
       # the aggregated tax_table has different dimensions to the un-aggregated
       # make tax table of un-aggregated phyloseq as dataframe
