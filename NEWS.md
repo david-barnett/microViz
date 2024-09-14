@@ -1,7 +1,7 @@
 # microViz 0.12.5
 
 - Fix: tax_fix no longer allows min_length of 0, as empty strings are (and were) always replaced
-- Fix/Feat: comp_barplot and tax_sort checks/warnings about unavailable counts can be disabled with counts_warn = FALSE
+- Fix/Feat: comp_barplot, ord_explore, and tax_sort checks/warnings about unavailable counts can be disabled with counts_warn = FALSE
 
 # microViz 0.12.4
 
