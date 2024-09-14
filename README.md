@@ -150,7 +150,7 @@ test this.
 
 ``` r
 library(microViz)
-#> microViz version 0.12.4 - Copyright (C) 2021-2024 David Barnett
+#> microViz version 0.12.5 - Copyright (C) 2021-2024 David Barnett
 #> ! Website: https://david-barnett.github.io/microViz
 #> ✔ Useful?  For citation details, run: `citation("microViz")`
 #> ✖ Silence? `suppressPackageStartupMessages(library(microViz))`
@@ -316,8 +316,8 @@ aitchison_perm <- aitchison_dists %>%
     n_processes = 1, n_perms = 99, # you should use at least 999!
     variables = "bmi_group"
   )
-#> 2024-09-14 16:41:43.803016 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2024-09-14 16:41:43.858752 - Finished PERMANOVA
+#> 2024-09-14 21:00:04.03385 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2024-09-14 21:00:04.090414 - Finished PERMANOVA
 
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
@@ -342,8 +342,8 @@ your permanova directly using the `ord_plot` function with constraints
 perm2 <- aitchison_dists %>%
   dist_permanova(variables = c("weight", "african", "sex"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2024-09-14 16:41:43.869815 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2024-09-14 16:41:45.512262 - Finished PERMANOVA
+#> 2024-09-14 21:00:04.101656 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2024-09-14 21:00:05.739389 - Finished PERMANOVA
 ```
 
 We’ll visualise the effect of nationality and bodyweight on sample
@@ -452,7 +452,7 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] ggplot2_3.5.1    dplyr_1.1.4      phyloseq_1.48.0  microViz_0.12.4 
+#> [1] ggplot2_3.5.1    dplyr_1.1.4      phyloseq_1.48.0  microViz_0.12.5 
 #> [5] testthat_3.2.1.1 devtools_2.4.5   usethis_3.0.0   
 #> 
 #> loaded via a namespace (and not attached):
