@@ -13,7 +13,7 @@ var_anno creates list describing variable annotation (for cor_heatmap)
 
   gtag('config', 'G-2YQ669S4V5');
 </script></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -27,7 +27,7 @@ var_anno creates list describing variable annotation (for cor_heatmap)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.5</span>
       </span>
     </div>
 
@@ -41,7 +41,7 @@ var_anno creates list describing variable annotation (for cor_heatmap)
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -85,25 +85,25 @@ var_anno creates list describing variable annotation (for cor_heatmap)
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/david-barnett/microViz/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off"></div>
       </form>
-      
+
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>DEPRECATED Heatmap annotations helpers</h1>
-    <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/HEAD/R/heatmap_annotations-deprecated.R" class="external-link"><code>R/heatmap_annotations-deprecated.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/main/R/heatmap_annotations-deprecated.R" class="external-link"><code>R/heatmap_annotations-deprecated.R</code></a></small>
     <div class="hidden name"><code>deprecated-heatmap-annotations.Rd</code></div>
     </div>
 
@@ -167,81 +167,83 @@ var_anno creates list describing variable annotation (for cor_heatmap)
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>undetected</dt>
+
+
+<dl><dt id="arg-undetected">undetected<a class="anchor" aria-label="anchor" href="#arg-undetected"></a></dt>
 <dd><p>value above which taxa are considered present/detected in a sample</p></dd>
 
 
-<dt>which</dt>
+<dt id="arg-which">which<a class="anchor" aria-label="anchor" href="#arg-which"></a></dt>
 <dd><p>"row" or "column" annnotation</p></dd>
 
 
-<dt>prev</dt>
+<dt id="arg-prev">prev<a class="anchor" aria-label="anchor" href="#arg-prev"></a></dt>
 <dd><p>order in which prevalence annotation shown (number, or NA to not show)</p></dd>
 
 
-<dt>abund</dt>
+<dt id="arg-abund">abund<a class="anchor" aria-label="anchor" href="#arg-abund"></a></dt>
 <dd><p>order in which abundance annotation shown (number, or NA to not show)</p></dd>
 
 
-<dt>size</dt>
+<dt id="arg-size">size<a class="anchor" aria-label="anchor" href="#arg-size"></a></dt>
 <dd><p>total size (mm) of annotations (width/height depending on which)</p></dd>
 
 
-<dt>gap</dt>
+<dt id="arg-gap">gap<a class="anchor" aria-label="anchor" href="#arg-gap"></a></dt>
 <dd><p>gap in mm between annotations</p></dd>
 
 
-<dt>rel_sizes</dt>
+<dt id="arg-rel-sizes">rel_sizes<a class="anchor" aria-label="anchor" href="#arg-rel-sizes"></a></dt>
 <dd><p>relative sizes of annotations (NA for equal sizes, or same length as annos)</p></dd>
 
 
-<dt>args</dt>
+<dt id="arg-args">args<a class="anchor" aria-label="anchor" href="#arg-args"></a></dt>
 <dd><p>extra args passed to each annotation: give as list of lists
 (one inner list per arg, named, e.g. list(prev = list(whatever = whatever))</p></dd>
 
 
-<dt>...</dt>
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>further named args to be passed on (to list)</p></dd>
 
 
-<dt>data</dt>
+<dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
 <dd><p>phyloseq or ps-extra (or a data.frame or matrix for anno_var_* functions)</p></dd>
 
 
-<dt>taxa</dt>
+<dt id="arg-taxa">taxa<a class="anchor" aria-label="anchor" href="#arg-taxa"></a></dt>
 <dd><p>names of taxa to plot</p></dd>
 
 
-<dt>bar_width</dt>
+<dt id="arg-bar-width">bar_width<a class="anchor" aria-label="anchor" href="#arg-bar-width"></a></dt>
 <dd><p>relative width of barchart bars</p></dd>
 
 
-<dt>gp</dt>
+<dt id="arg-gp">gp<a class="anchor" aria-label="anchor" href="#arg-gp"></a></dt>
 <dd><p>a grid::gpar() object for graphics parameter settings like fill or lwd</p></dd>
 
 
-<dt>point_size</dt>
+<dt id="arg-point-size">point_size<a class="anchor" aria-label="anchor" href="#arg-point-size"></a></dt>
 <dd><p>size of outlier points in mm</p></dd>
 
 
-<dt>box_width</dt>
+<dt id="arg-box-width">box_width<a class="anchor" aria-label="anchor" href="#arg-box-width"></a></dt>
 <dd><p>relative width of boxplot boxes</p></dd>
 
 
-<dt>annos</dt>
+<dt id="arg-annos">annos<a class="anchor" aria-label="anchor" href="#arg-annos"></a></dt>
 <dd><p>name(s) of annotation(s) to show, in order (e.g. 'var_box', 'var_hist')</p></dd>
 
 
-<dt>funs</dt>
+<dt id="arg-funs">funs<a class="anchor" aria-label="anchor" href="#arg-funs"></a></dt>
 <dd><p>function(s) to transform matrix of variable values before plotting
 (length must be 1 or same length as annos)</p></dd>
 
 
-<dt>names</dt>
+<dt id="arg-names">names<a class="anchor" aria-label="anchor" href="#arg-names"></a></dt>
 <dd><p>names to use for each annotation in annos</p></dd>
 
 
-<dt>vars</dt>
+<dt id="arg-vars">vars<a class="anchor" aria-label="anchor" href="#arg-vars"></a></dt>
 <dd><p>names of variables to plot</p></dd>
 
 </dl></div>
@@ -258,16 +260,16 @@ var_anno creates list describing variable annotation (for cor_heatmap)
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
   docsearch({
-    
-    
+
+
     apiKey: '22e6f0a75b7b1ffae9bf5bc5b58864d7',
     indexName: 'microViz',
     inputSelector: 'input#search-input.form-control',

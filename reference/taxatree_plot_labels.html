@@ -11,7 +11,7 @@ and label drawing for taxatree_plots output too."><meta property="og:image" cont
 
   gtag('config', 'G-2YQ669S4V5');
 </script></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -25,7 +25,7 @@ and label drawing for taxatree_plots output too."><meta property="og:image" cont
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.5</span>
       </span>
     </div>
 
@@ -39,7 +39,7 @@ and label drawing for taxatree_plots output too."><meta property="og:image" cont
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -83,25 +83,25 @@ and label drawing for taxatree_plots output too."><meta property="og:image" cont
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/david-barnett/microViz/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off"></div>
       </form>
-      
+
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Add labels to taxatree plots/key</h1>
-    <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/HEAD/R/taxatree_plotkey.R" class="external-link"><code>R/taxatree_plotkey.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/main/R/taxatree_plotkey.R" class="external-link"><code>R/taxatree_plotkey.R</code></a></small>
     <div class="hidden name"><code>taxatree_plot_labels.Rd</code></div>
     </div>
 
@@ -137,82 +137,84 @@ and label drawing for <code>taxatree_plots</code> output too.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>p</dt>
+
+
+<dl><dt id="arg-p">p<a class="anchor" aria-label="anchor" href="#arg-p"></a></dt>
 <dd><p>taxatree_plotkey or taxatree_plots output plot</p></dd>
 
 
-<dt>circular</dt>
+<dt id="arg-circular">circular<a class="anchor" aria-label="anchor" href="#arg-circular"></a></dt>
 <dd><p>is the plot layout circular? labels are drawn differently for circular trees</p></dd>
 
 
-<dt>taxon_renamer</dt>
+<dt id="arg-taxon-renamer">taxon_renamer<a class="anchor" aria-label="anchor" href="#arg-taxon-renamer"></a></dt>
 <dd><p>function that takes taxon names and returns modified names for labels</p></dd>
 
 
-<dt>fun</dt>
+<dt id="arg-fun">fun<a class="anchor" aria-label="anchor" href="#arg-fun"></a></dt>
 <dd><p>ggrepel labelling function: geom_text_repel or geom_label_repel</p></dd>
 
 
-<dt>label_var</dt>
+<dt id="arg-label-var">label_var<a class="anchor" aria-label="anchor" href="#arg-label-var"></a></dt>
 <dd><p>name of variable in taxatree_stats that indicates which taxa to label</p></dd>
 
 
-<dt>x_nudge</dt>
+<dt id="arg-x-nudge">x_nudge<a class="anchor" aria-label="anchor" href="#arg-x-nudge"></a></dt>
 <dd><p>absolute amount by which the initial position of taxon labels is nudged
 (relevant only for circular layouts, use nudge_x for other layouts)</p></dd>
 
 
-<dt>y_nudge</dt>
+<dt id="arg-y-nudge">y_nudge<a class="anchor" aria-label="anchor" href="#arg-y-nudge"></a></dt>
 <dd><p>absolute amount by which the initial position of taxon labels is nudged
 (relevant only for circular layouts, use nudge_y for other layouts)</p></dd>
 
 
-<dt>rotate</dt>
+<dt id="arg-rotate">rotate<a class="anchor" aria-label="anchor" href="#arg-rotate"></a></dt>
 <dd><p>angle to rotate labels' outer edges away from horizontal
 (relevant only for circular layouts, use angle for other layouts)</p></dd>
 
 
-<dt>fontface</dt>
+<dt id="arg-fontface">fontface<a class="anchor" aria-label="anchor" href="#arg-fontface"></a></dt>
 <dd><p>fontface of label text</p></dd>
 
 
-<dt>size</dt>
+<dt id="arg-size">size<a class="anchor" aria-label="anchor" href="#arg-size"></a></dt>
 <dd><p>size of labels</p></dd>
 
 
-<dt>colour</dt>
+<dt id="arg-colour">colour<a class="anchor" aria-label="anchor" href="#arg-colour"></a></dt>
 <dd><p>colour of label outlines and text</p></dd>
 
 
-<dt>max.overlaps</dt>
+<dt id="arg-max-overlaps">max.overlaps<a class="anchor" aria-label="anchor" href="#arg-max-overlaps"></a></dt>
 <dd><p>max number of overlapping labels tolerated</p></dd>
 
 
-<dt>min.segment.length</dt>
+<dt id="arg-min-segment-length">min.segment.length<a class="anchor" aria-label="anchor" href="#arg-min-segment-length"></a></dt>
 <dd><p>min length of label line segment to bother drawing</p></dd>
 
 
-<dt>segment.size</dt>
+<dt id="arg-segment-size">segment.size<a class="anchor" aria-label="anchor" href="#arg-segment-size"></a></dt>
 <dd><p>thickness of line segment</p></dd>
 
 
-<dt>segment.color</dt>
+<dt id="arg-segment-color">segment.color<a class="anchor" aria-label="anchor" href="#arg-segment-color"></a></dt>
 <dd><p>colour of line segment</p></dd>
 
 
-<dt>point.padding</dt>
+<dt id="arg-point-padding">point.padding<a class="anchor" aria-label="anchor" href="#arg-point-padding"></a></dt>
 <dd><p>padding around node points (for label positioning)</p></dd>
 
 
-<dt>box.padding</dt>
+<dt id="arg-box-padding">box.padding<a class="anchor" aria-label="anchor" href="#arg-box-padding"></a></dt>
 <dd><p>padding around labels/text (for label positioning)</p></dd>
 
 
-<dt>seed</dt>
+<dt id="arg-seed">seed<a class="anchor" aria-label="anchor" href="#arg-seed"></a></dt>
 <dd><p>set this for reproducible label positions</p></dd>
 
 
-<dt>...</dt>
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Arguments passed on to <code><a href="https://ggrepel.slowkow.com/reference/geom_text_repel.html" class="external-link">ggrepel::geom_text_repel</a></code></p><dl><dt><code>arrow</code></dt>
 <dd><p>specification for arrow heads, as created by <code><a href="https://rdrr.io/r/grid/arrow.html" class="external-link">arrow</a></code></p></dd>
 
@@ -238,12 +240,12 @@ to these limits. By default, text labels are constrained to the entire plot
 area.</p></dd>
 
     <dt><code>direction</code></dt>
-<dd><p>"both", "x", or "y" -- direction in which to adjust position of labels</p></dd>
+<dd><p>"both", "x", or "y" – direction in which to adjust position of labels</p></dd>
 
     <dt><code>verbose</code></dt>
 <dd><p>If <code>TRUE</code>, some diagnostics of the repel algorithm are printed</p></dd>
 
-  
+
 </dl></dd>
 
 </dl></div>
@@ -260,16 +262,16 @@ area.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
   docsearch({
-    
-    
+
+
     apiKey: '22e6f0a75b7b1ffae9bf5bc5b58864d7',
     indexName: 'microViz',
     inputSelector: 'input#search-input.form-control',

@@ -42,7 +42,7 @@ Please report any other app problems on the microViz GitHub issues page."><meta 
 
   gtag('config', 'G-2YQ669S4V5');
 </script></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -56,7 +56,7 @@ Please report any other app problems on the microViz GitHub issues page."><meta 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.5</span>
       </span>
     </div>
 
@@ -70,7 +70,7 @@ Please report any other app problems on the microViz GitHub issues page."><meta 
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -114,25 +114,25 @@ Please report any other app problems on the microViz GitHub issues page."><meta 
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/david-barnett/microViz/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off"></div>
       </form>
-      
+
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Interactively explore microbial compositions of ordinated samples</h1>
-    <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/HEAD/R/ord_explore.R" class="external-link"><code>R/ord_explore.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/main/R/ord_explore.R" class="external-link"><code>R/ord_explore.R</code></a></small>
     <div class="hidden name"><code>ord_explore.Rd</code></div>
     </div>
 
@@ -171,51 +171,56 @@ Please report any other app problems on the microViz GitHub issues page.</p>
 <span>  plot_widths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">7</span>, <span class="fl">9</span><span class="op">)</span>,</span>
 <span>  modal_fade <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  notification_durations <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">20</span><span class="op">)</span>,</span>
+<span>  counts_warn <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>data</dt>
+
+
+<dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
 <dd><p>a phyloseq, or the psExtra output of ord_calc</p></dd>
 
 
-<dt>sample_id</dt>
+<dt id="arg-sample-id">sample_id<a class="anchor" aria-label="anchor" href="#arg-sample-id"></a></dt>
 <dd><p>name of sample ID variable to use as default for selecting samples</p></dd>
 
 
-<dt>seriate_method</dt>
+<dt id="arg-seriate-method">seriate_method<a class="anchor" aria-label="anchor" href="#arg-seriate-method"></a></dt>
 <dd><p>seriation method to order phyloseq samples by similarity</p></dd>
 
 
-<dt>app_options</dt>
+<dt id="arg-app-options">app_options<a class="anchor" aria-label="anchor" href="#arg-app-options"></a></dt>
 <dd><p>passed to shinyApp() options argument</p></dd>
 
 
-<dt>plot_widths</dt>
+<dt id="arg-plot-widths">plot_widths<a class="anchor" aria-label="anchor" href="#arg-plot-widths"></a></dt>
 <dd><p>widths of plots in inches, including any legends
 (first number is ordination, second is composition barplot)</p></dd>
 
 
-<dt>modal_fade</dt>
+<dt id="arg-modal-fade">modal_fade<a class="anchor" aria-label="anchor" href="#arg-modal-fade"></a></dt>
 <dd><p>should the popover menus (modals) have a fade animation?</p></dd>
 
 
-<dt>notification_durations</dt>
+<dt id="arg-notification-durations">notification_durations<a class="anchor" aria-label="anchor" href="#arg-notification-durations"></a></dt>
 <dd><p>length 2 list giving duration in seconds of short and long notifications
 or NULL for notifications that do not disappear automatically</p></dd>
 
 
-<dt>...</dt>
+<dt id="arg-counts-warn">counts_warn<a class="anchor" aria-label="anchor" href="#arg-counts-warn"></a></dt>
+<dd><p>should a warning be issued if accounts are unavailable?</p></dd>
+
+
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>additional arguments passed to ord_plot</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>nothing, opens default browser</p>
+    <p>nothing, opens default browser</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -326,16 +331,16 @@ This problem occurs in all Shiny apps, not just microViz.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
   docsearch({
-    
-    
+
+
     apiKey: '22e6f0a75b7b1ffae9bf5bc5b58864d7',
     indexName: 'microViz',
     inputSelector: 'input#search-input.form-control',

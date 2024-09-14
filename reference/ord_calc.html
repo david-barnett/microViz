@@ -23,7 +23,7 @@ the "GUide to STatistical Analysis in Microbial Ecology": https://sites.google.c
 
   gtag('config', 'G-2YQ669S4V5');
 </script></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -37,7 +37,7 @@ the "GUide to STatistical Analysis in Microbial Ecology": https://sites.google.c
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.5</span>
       </span>
     </div>
 
@@ -51,7 +51,7 @@ the "GUide to STatistical Analysis in Microbial Ecology": https://sites.google.c
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -95,25 +95,25 @@ the "GUide to STatistical Analysis in Microbial Ecology": https://sites.google.c
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/david-barnett/microViz/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off"></div>
       </form>
-      
+
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Ordinate samples (arrange by similarity in multiple dimensions)</h1>
-    <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/HEAD/R/ord_calc.R" class="external-link"><code>R/ord_calc.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/main/R/ord_calc.R" class="external-link"><code>R/ord_calc.R</code></a></small>
     <div class="hidden name"><code>ord_calc.Rd</code></div>
     </div>
 
@@ -143,44 +143,44 @@ the "GUide to STatistical Analysis in Microbial Ecology": <a href="https://sites
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>data</dt>
+
+
+<dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
 <dd><p>psExtra object: output from dist_calc(), or tax_transform() if no distance calculation required for method e.g. for RDA</p></dd>
 
 
-<dt>method</dt>
+<dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
 <dd><p>which ordination method to use? "auto" means automatically determined from psExtra and other args.
 If you really know what you want: manually set one of 'PCoA', 'PCA', 'CCA', 'CAP' or 'RDA'</p></dd>
 
 
-<dt>constraints</dt>
+<dt id="arg-constraints">constraints<a class="anchor" aria-label="anchor" href="#arg-constraints"></a></dt>
 <dd><p>(a vector of) valid sample_data name(s) to constrain analyses, or leave as NULL for unconstrained ordination.
 Non-NULL values are compatible with method = "auto"/"RDA"/"CAP"</p></dd>
 
 
-<dt>conditions</dt>
+<dt id="arg-conditions">conditions<a class="anchor" aria-label="anchor" href="#arg-conditions"></a></dt>
 <dd><p>(a vector of) valid sample_data name(s) to partial these out of analyses with Condition(), or leave as NULL</p></dd>
 
 
-<dt>scale_cc</dt>
+<dt id="arg-scale-cc">scale_cc<a class="anchor" aria-label="anchor" href="#arg-scale-cc"></a></dt>
 <dd><p>If TRUE (default) ensures any constraints and conditions variables are scaled before use, to ensure their effects are comparable.
 If set to FALSE you must ensure you have already set the variables on a similar scale yourself!
 If there are no constraints or conditions, scale_cc does nothing.</p></dd>
 
 
-<dt>verbose</dt>
+<dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
 <dd><p>If TRUE or "max", show any warnings and messages about constraint and conditions scaling and missings etc.
 FALSE suppresses warnings!</p></dd>
 
 
-<dt>...</dt>
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>optional arguments passed on to phyloseq::ordinate()</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>psExtra object</p>
+    <p>psExtra object</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -288,16 +288,16 @@ You can extract the ordination object for other analyses with ord_get()</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
   docsearch({
-    
-    
+
+
     apiKey: '22e6f0a75b7b1ffae9bf5bc5b58864d7',
     indexName: 'microViz',
     inputSelector: 'input#search-input.form-control',

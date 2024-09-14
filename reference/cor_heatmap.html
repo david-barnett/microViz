@@ -12,7 +12,7 @@ and you can pass any other argument from ComplexHeatmap::Heatmap() too."><meta p
 
   gtag('config', 'G-2YQ669S4V5');
 </script></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -26,7 +26,7 @@ and you can pass any other argument from ComplexHeatmap::Heatmap() too."><meta p
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.5</span>
       </span>
     </div>
 
@@ -40,7 +40,7 @@ and you can pass any other argument from ComplexHeatmap::Heatmap() too."><meta p
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -84,25 +84,25 @@ and you can pass any other argument from ComplexHeatmap::Heatmap() too."><meta p
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/david-barnett/microViz/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off"></div>
       </form>
-      
+
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Microbe-to-sample-data correlation heatmap</h1>
-    <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/HEAD/R/heatmaps.R" class="external-link"><code>R/heatmaps.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/main/R/heatmaps.R" class="external-link"><code>R/heatmaps.R</code></a></small>
     <div class="hidden name"><code>cor_heatmap.Rd</code></div>
     </div>
 
@@ -142,99 +142,101 @@ and you can pass any other argument from <code><a href="https://rdrr.io/pkg/Comp
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>data</dt>
+
+
+<dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
 <dd><p>phyloseq or phyloseq extra</p></dd>
 
 
-<dt>taxa</dt>
+<dt id="arg-taxa">taxa<a class="anchor" aria-label="anchor" href="#arg-taxa"></a></dt>
 <dd><p>list of taxa to include, or NA for all</p></dd>
 
 
-<dt>tax_anno</dt>
+<dt id="arg-tax-anno">tax_anno<a class="anchor" aria-label="anchor" href="#arg-tax-anno"></a></dt>
 <dd><p>NULL or annotation function for taxa: taxAnnotation() output.</p></dd>
 
 
-<dt>taxon_renamer</dt>
+<dt id="arg-taxon-renamer">taxon_renamer<a class="anchor" aria-label="anchor" href="#arg-taxon-renamer"></a></dt>
 <dd><p>function to rename taxa before plotting</p></dd>
 
 
-<dt>vars</dt>
+<dt id="arg-vars">vars<a class="anchor" aria-label="anchor" href="#arg-vars"></a></dt>
 <dd><p>selection of variable names from sample_data</p></dd>
 
 
-<dt>var_anno</dt>
+<dt id="arg-var-anno">var_anno<a class="anchor" aria-label="anchor" href="#arg-var-anno"></a></dt>
 <dd><p>NULL or annotation function for variables: varAnnotation() output.</p></dd>
 
 
-<dt>cor</dt>
+<dt id="arg-cor">cor<a class="anchor" aria-label="anchor" href="#arg-cor"></a></dt>
 <dd><p>correlation coefficient. pearson/kendall/spearman,
 can be abbreviated (used as legend title)</p></dd>
 
 
-<dt>cor_use</dt>
+<dt id="arg-cor-use">cor_use<a class="anchor" aria-label="anchor" href="#arg-cor-use"></a></dt>
 <dd><p>passed to cor(use = cor_use)</p></dd>
 
 
-<dt>colors</dt>
+<dt id="arg-colors">colors<a class="anchor" aria-label="anchor" href="#arg-colors"></a></dt>
 <dd><p>output of heat_palette() to set heatmap fill color scheme</p></dd>
 
 
-<dt>numbers</dt>
+<dt id="arg-numbers">numbers<a class="anchor" aria-label="anchor" href="#arg-numbers"></a></dt>
 <dd><p>output of heat_numbers() to draw numbers on heatmap cells</p></dd>
 
 
-<dt>taxa_side</dt>
+<dt id="arg-taxa-side">taxa_side<a class="anchor" aria-label="anchor" href="#arg-taxa-side"></a></dt>
 <dd><p>"top"/"right"/"bottom"/"left": controls heatmap orientation and where any
 annotations specified in tax_anno are placed</p></dd>
 
 
-<dt>vars_side</dt>
+<dt id="arg-vars-side">vars_side<a class="anchor" aria-label="anchor" href="#arg-vars-side"></a></dt>
 <dd><p>which side to place any variable annotations specified in var_anno,
 must be an adjacent side to taxa_side</p></dd>
 
 
-<dt>seriation_method</dt>
+<dt id="arg-seriation-method">seriation_method<a class="anchor" aria-label="anchor" href="#arg-seriation-method"></a></dt>
 <dd><p>method to order the rows (in seriation::seriate)</p></dd>
 
 
-<dt>seriation_dist</dt>
+<dt id="arg-seriation-dist">seriation_dist<a class="anchor" aria-label="anchor" href="#arg-seriation-dist"></a></dt>
 <dd><p>distance to use in seriation_method (if needed)</p></dd>
 
 
-<dt>seriation_method_col</dt>
+<dt id="arg-seriation-method-col">seriation_method_col<a class="anchor" aria-label="anchor" href="#arg-seriation-method-col"></a></dt>
 <dd><p>method to order the columns (in seriation::seriate)</p></dd>
 
 
-<dt>seriation_dist_col</dt>
+<dt id="arg-seriation-dist-col">seriation_dist_col<a class="anchor" aria-label="anchor" href="#arg-seriation-dist-col"></a></dt>
 <dd><p>distance to use in seriation_method_col (if needed)</p></dd>
 
 
-<dt>var_fun</dt>
+<dt id="arg-var-fun">var_fun<a class="anchor" aria-label="anchor" href="#arg-var-fun"></a></dt>
 <dd><p>a function (or name of) to be applied to columns of a matrix of vars
 before correlating (but not used in any variable annotations)</p></dd>
 
 
-<dt>grid_col</dt>
+<dt id="arg-grid-col">grid_col<a class="anchor" aria-label="anchor" href="#arg-grid-col"></a></dt>
 <dd><p>colour of gridlines, or NA for none</p></dd>
 
 
-<dt>grid_lwd</dt>
+<dt id="arg-grid-lwd">grid_lwd<a class="anchor" aria-label="anchor" href="#arg-grid-lwd"></a></dt>
 <dd><p>width of gridlines</p></dd>
 
 
-<dt>anno_tax</dt>
+<dt id="arg-anno-tax">anno_tax<a class="anchor" aria-label="anchor" href="#arg-anno-tax"></a></dt>
 <dd><p>DEPRECATED:
 optional annotation of taxa distributions: tax_anno() list output,
 or a pre-made ComplexHeatmap HeatmapAnnotation</p></dd>
 
 
-<dt>anno_vars</dt>
+<dt id="arg-anno-vars">anno_vars<a class="anchor" aria-label="anchor" href="#arg-anno-vars"></a></dt>
 <dd><p>DEPRECATED: use var_anno argument instead.
 Optional annotation of variable distributions:
 var_anno() list output, or a pre-made ComplexHeatmap HeatmapAnnotation</p></dd>
 
 
-<dt>...</dt>
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Arguments passed on to <code><a href="https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html" class="external-link">ComplexHeatmap::Heatmap</a></code></p><dl><dt><code>row_dend_width</code></dt>
 <dd><p>Width of the row dendrogram, should be a <code><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></code> object.</p></dd>
 
@@ -259,7 +261,7 @@ var_anno() list output, or a pre-made ComplexHeatmap HeatmapAnnotation</p></dd>
     <dt><code>show_heatmap_legend</code></dt>
 <dd><p>Whether show heatmap legend?</p></dd>
 
-  
+
 </dl></dd>
 
 </dl></div>
@@ -416,16 +418,16 @@ with each other, and all arguments relating to taxa will be ignored.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
   docsearch({
-    
-    
+
+
     apiKey: '22e6f0a75b7b1ffae9bf5bc5b58864d7',
     indexName: 'microViz',
     inputSelector: 'input#search-input.form-control',

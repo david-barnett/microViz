@@ -22,7 +22,7 @@ More than one "duplicate" sample can be kept per group by setting n samples &amp
 
   gtag('config', 'G-2YQ669S4V5');
 </script></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -36,7 +36,7 @@ More than one "duplicate" sample can be kept per group by setting n samples &amp
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.5</span>
       </span>
     </div>
 
@@ -50,7 +50,7 @@ More than one "duplicate" sample can be kept per group by setting n samples &amp
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -94,25 +94,25 @@ More than one "duplicate" sample can be kept per group by setting n samples &amp
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/david-barnett/microViz/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off"></div>
       </form>
-      
+
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>De-duplicate phyloseq samples</h1>
-    <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/HEAD/R/ps_dedupe.R" class="external-link"><code>R/ps_dedupe.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/main/R/ps_dedupe.R" class="external-link"><code>R/ps_dedupe.R</code></a></small>
     <div class="hidden name"><code>ps_dedupe.Rd</code></div>
     </div>
 
@@ -147,46 +147,48 @@ encountered in the row order of the sample_data</p></li>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>ps</dt>
+
+
+<dl><dt id="arg-ps">ps<a class="anchor" aria-label="anchor" href="#arg-ps"></a></dt>
 <dd><p>phyloseq object</p></dd>
 
 
-<dt>vars</dt>
+<dt id="arg-vars">vars<a class="anchor" aria-label="anchor" href="#arg-vars"></a></dt>
 <dd><p>names of variables, whose (combined) levels identify groups
 from which only 1 sample is desired</p></dd>
 
 
-<dt>method</dt>
+<dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
 <dd><p>keep sample with max "readcount" or the "first" or "last" or "random"
 samples encountered in given sample_data order for each duplicate group</p></dd>
 
 
-<dt>verbose</dt>
+<dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
 <dd><p>message about number of groups, and number of samples dropped?</p></dd>
 
 
-<dt>n</dt>
+<dt id="arg-n">n<a class="anchor" aria-label="anchor" href="#arg-n"></a></dt>
 <dd><p>number of 'duplicates' to keep per group, defaults to 1</p></dd>
 
 
-<dt>.keep_group_var</dt>
+<dt id="arg--keep-group-var">.keep_group_var<a class="anchor" aria-label="anchor" href="#arg--keep-group-var"></a></dt>
 <dd><p>keep grouping variable .GROUP. in phyloseq object?</p></dd>
 
 
-<dt>.keep_readcount</dt>
+<dt id="arg--keep-readcount">.keep_readcount<a class="anchor" aria-label="anchor" href="#arg--keep-readcount"></a></dt>
 <dd><p>keep readcount variable .READCOUNT. in phyloseq object?</p></dd>
 
 
-<dt>.message_IDs</dt>
+<dt id="arg--message-ids">.message_IDs<a class="anchor" aria-label="anchor" href="#arg--message-ids"></a></dt>
 <dd><p>message sample names of dropped variables?</p></dd>
 
 
-<dt>.label_only</dt>
+<dt id="arg--label-only">.label_only<a class="anchor" aria-label="anchor" href="#arg--label-only"></a></dt>
 <dd><p>if TRUE, the samples will NOT be filtered, just labelled with a new logical
 variable .KEEP_SAMPLE.</p></dd>
 
 
-<dt>.keep_all_taxa</dt>
+<dt id="arg--keep-all-taxa">.keep_all_taxa<a class="anchor" aria-label="anchor" href="#arg--keep-all-taxa"></a></dt>
 <dd><p>keep all taxa after removing duplicates?
 If FALSE, the default, taxa are removed if they never occur in any of
 the retained samples</p></dd>
@@ -194,9 +196,7 @@ the retained samples</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>phyloseq object</p>
+    <p>phyloseq object</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -333,16 +333,16 @@ The first encountered maximum is kept (in sample_data row order, like method = "
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
   docsearch({
-    
-    
+
+
     apiKey: '22e6f0a75b7b1ffae9bf5bc5b58864d7',
     indexName: 'microViz',
     inputSelector: 'input#search-input.form-control',

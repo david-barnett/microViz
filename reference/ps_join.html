@@ -18,7 +18,7 @@ reattaches the modified sample_data to the phyloseq and returns the phyloseq
 
   gtag('config', 'G-2YQ669S4V5');
 </script></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -32,7 +32,7 @@ reattaches the modified sample_data to the phyloseq and returns the phyloseq
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.5</span>
       </span>
     </div>
 
@@ -46,7 +46,7 @@ reattaches the modified sample_data to the phyloseq and returns the phyloseq
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -90,25 +90,25 @@ reattaches the modified sample_data to the phyloseq and returns the phyloseq
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/david-barnett/microViz/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off"></div>
       </form>
-      
+
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Join a dataframe to phyloseq sample data</h1>
-    <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/HEAD/R/ps_join.R" class="external-link"><code>R/ps_join.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/main/R/ps_join.R" class="external-link"><code>R/ps_join.R</code></a></small>
     <div class="hidden name"><code>ps_join.Rd</code></div>
     </div>
 
@@ -137,43 +137,43 @@ This function simply:</p><ol><li><p>extracts the sample_data from the phyloseq a
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>x</dt>
+
+
+<dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
 <dd><p>phyloseq (or dataframe)</p></dd>
 
 
-<dt>y</dt>
+<dt id="arg-y">y<a class="anchor" aria-label="anchor" href="#arg-y"></a></dt>
 <dd><p>dataframe (or phyloseq for e.g. type = "right")</p></dd>
 
 
-<dt>by</dt>
+<dt id="arg-by">by<a class="anchor" aria-label="anchor" href="#arg-by"></a></dt>
 <dd><p>A character vector of variables to join by (col must be present in both x and y or paired via a named vector like c("xname" = "yname", etc.))</p></dd>
 
 
-<dt>match_sample_names</dt>
+<dt id="arg-match-sample-names">match_sample_names<a class="anchor" aria-label="anchor" href="#arg-match-sample-names"></a></dt>
 <dd><p>match against the phyloseq sample_names by naming a variable in the additional dataframe (this is in addition to any variables named in by)</p></dd>
 
 
-<dt>keep_sample_name_col</dt>
+<dt id="arg-keep-sample-name-col">keep_sample_name_col<a class="anchor" aria-label="anchor" href="#arg-keep-sample-name-col"></a></dt>
 <dd><p>should the column named in match_sample_names be kept in the returned phyloseq's sample_data? (only relevant if match_sample_names is not NULL)</p></dd>
 
 
-<dt>sample_name_natural_join</dt>
+<dt id="arg-sample-name-natural-join">sample_name_natural_join<a class="anchor" aria-label="anchor" href="#arg-sample-name-natural-join"></a></dt>
 <dd><p>if TRUE, use sample_name AND all shared colnames to match rows (only relevant if match_sample_names is not NULL, this arg takes precedence over anything also entered in <code>by</code> arg)</p></dd>
 
 
-<dt>type</dt>
+<dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
 <dd><p>name of type of join e.g. "left", "right", "inner", "semi" (see dplyr help pages)</p></dd>
 
 
-<dt>.keep_all_taxa</dt>
+<dt id="arg--keep-all-taxa">.keep_all_taxa<a class="anchor" aria-label="anchor" href="#arg--keep-all-taxa"></a></dt>
 <dd><p>if FALSE (the default), remove taxa which are no longer present in the dataset after filtering</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>phyloseq with modified sample_data (and possibly filtered)</p>
+    <p>phyloseq with modified sample_data (and possibly filtered)</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -372,16 +372,16 @@ This will cause this function to fail, as additional rows cannot be added to the
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
   docsearch({
-    
-    
+
+
     apiKey: '22e6f0a75b7b1ffae9bf5bc5b58864d7',
     indexName: 'microViz',
     inputSelector: 'input#search-input.form-control',

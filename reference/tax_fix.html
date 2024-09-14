@@ -19,7 +19,7 @@ https://david-barnett.github.io/microViz/articles/web-only/tax-fixing.html'><met
 
   gtag('config', 'G-2YQ669S4V5');
 </script></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -33,7 +33,7 @@ https://david-barnett.github.io/microViz/articles/web-only/tax-fixing.html'><met
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.5</span>
       </span>
     </div>
 
@@ -47,7 +47,7 @@ https://david-barnett.github.io/microViz/articles/web-only/tax-fixing.html'><met
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -91,25 +91,25 @@ https://david-barnett.github.io/microViz/articles/web-only/tax-fixing.html'><met
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/david-barnett/microViz/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off"></div>
       </form>
-      
+
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Replace unknown, NA, or short tax_table values</h1>
-    <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/HEAD/R/tax_fix.R" class="external-link"><code>R/tax_fix.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/main/R/tax_fix.R" class="external-link"><code>R/tax_fix.R</code></a></small>
     <div class="hidden name"><code>tax_fix.Rd</code></div>
     </div>
 
@@ -138,48 +138,51 @@ It is up to the user to specify sensible values in <code>unknowns</code> if thei
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>ps</dt>
+
+
+<dl><dt id="arg-ps">ps<a class="anchor" aria-label="anchor" href="#arg-ps"></a></dt>
 <dd><p>phyloseq or tax_table (taxonomyTable)</p></dd>
 
 
-<dt>min_length</dt>
-<dd><p>replace strings shorter than this</p></dd>
+<dt id="arg-min-length">min_length<a class="anchor" aria-label="anchor" href="#arg-min-length"></a></dt>
+<dd><p>replace strings shorter than this, must be integer &gt; 0</p></dd>
 
 
-<dt>unknowns</dt>
-<dd><p>also replace strings matching any in this vector, NA default vector shown in details!</p></dd>
+<dt id="arg-unknowns">unknowns<a class="anchor" aria-label="anchor" href="#arg-unknowns"></a></dt>
+<dd><p>also replace strings matching any in this vector,
+NA default vector shown in details!</p></dd>
 
 
-<dt>suffix_rank</dt>
-<dd><p>"classified" (default) or "current", when replacing an entry, should the suffix be taken from the lowest classified rank
+<dt id="arg-suffix-rank">suffix_rank<a class="anchor" aria-label="anchor" href="#arg-suffix-rank"></a></dt>
+<dd><p>"classified" (default) or "current", when replacing an entry,
+should the suffix be taken from the lowest classified rank
 for that taxon, "classified", or the "current" unclassified rank?</p></dd>
 
 
-<dt>sep</dt>
+<dt id="arg-sep">sep<a class="anchor" aria-label="anchor" href="#arg-sep"></a></dt>
 <dd><p>character(s) separating new name and taxonomic rank level suffix (see suffix_rank)</p></dd>
 
 
-<dt>anon_unique</dt>
+<dt id="arg-anon-unique">anon_unique<a class="anchor" aria-label="anchor" href="#arg-anon-unique"></a></dt>
 <dd><p>make anonymous taxa unique by replacing unknowns with taxa_name?
 otherwise they are replaced with paste("unknown", first_rank_name),
 which is therefore the same for every anonymous taxon, meaning they will be merged if tax_agg is used.
-(anonymous taxa are taxa with all unknown values in their tax_table row, i.e. cannot be classified even at highest rank available)</p></dd>
+(anonymous taxa are taxa with all unknown values in their tax_table row,
+i.e. cannot be classified even at highest rank available)</p></dd>
 
 
-<dt>verbose</dt>
+<dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
 <dd><p>emit warnings when cannot replace with informative name?</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>object same class as ps</p>
+    <p>object same class as ps</p>
     </div>
     <div id="details">
     <h2>Details</h2>
     <p>By default (unknowns = NA), unknowns is set to a vector containing:</p>
-<p>'s__' 'g__' 'f__' 'o__' 'c__' 'p__' 'k__' 'S__' 'G__' 'F__' 'O__' 'C__' 'P__' 'K__' 'NA' 'NaN' ' ' ''
+<p>'s__' 'g__' 'f__' 'o__' 'c__' 'p__' 'k__' 'S__' 'G__' 'F__' 'O__' 'C__' 'P__' 'K__' 'NA' 'NaN' ' ' ”
 'unknown' 'Unknown' 's__unknown' 's__Unknown' 's__NA' 'g__unknown' 'g__Unknown' 'g__NA'
 'f__unknown' 'f__Unknown' 'f__NA' 'o__unknown' 'o__Unknown' 'o__NA' 'c__unknown' 'c__Unknown' 'c__NA'
 'p__unknown' 'p__Unknown' 'p__NA' 'k__unknown' 'k__Unknown' 'k__NA' 'S__unknown' 'S__Unknown' 'S__NA'
@@ -972,16 +975,16 @@ which is therefore the same for every anonymous taxon, meaning they will be merg
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
   docsearch({
-    
-    
+
+
     apiKey: '22e6f0a75b7b1ffae9bf5bc5b58864d7',
     indexName: 'microViz',
     inputSelector: 'input#search-input.form-control',

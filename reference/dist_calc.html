@@ -24,7 +24,7 @@ Alternatively you can directly access the distance matrix with dist_get()."><met
 
   gtag('config', 'G-2YQ669S4V5');
 </script></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -38,7 +38,7 @@ Alternatively you can directly access the distance matrix with dist_get()."><met
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.5</span>
       </span>
     </div>
 
@@ -52,7 +52,7 @@ Alternatively you can directly access the distance matrix with dist_get()."><met
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -96,25 +96,25 @@ Alternatively you can directly access the distance matrix with dist_get()."><met
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/david-barnett/microViz/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off"></div>
       </form>
-      
+
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Calculate distances between pairs of samples in phyloseq object</h1>
-    <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/HEAD/R/dist_calc.R" class="external-link"><code>R/dist_calc.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/main/R/dist_calc.R" class="external-link"><code>R/dist_calc.R</code></a></small>
     <div class="hidden name"><code>dist_calc.Rd</code></div>
     </div>
 
@@ -139,31 +139,31 @@ Alternatively you can directly access the distance matrix with dist_get().</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>data</dt>
+
+
+<dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
 <dd><p>psExtra object, e.g. output from tax_transform()</p></dd>
 
 
-<dt>dist</dt>
+<dt id="arg-dist">dist<a class="anchor" aria-label="anchor" href="#arg-dist"></a></dt>
 <dd><p>name of distance to calculate between pairs of samples</p></dd>
 
 
-<dt>gunifrac_alpha</dt>
+<dt id="arg-gunifrac-alpha">gunifrac_alpha<a class="anchor" aria-label="anchor" href="#arg-gunifrac-alpha"></a></dt>
 <dd><p>setting alpha value only relevant if gunifrac distance used</p></dd>
 
 
-<dt>...</dt>
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>optional distance-specific named arguments passed to phyloseq::distance()</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>psExtra object including distance matrix and name of distance used</p>
+    <p>psExtra object including distance matrix and name of distance used</p>
     </div>
     <div id="aitchison-distance-note">
     <h2>Aitchison distance note</h2>
-    
+
 
 
 <p>You should EITHER:</p><ol><li><p>skip the dist_calc function and call ord_calc(method = "PCA") directly on an object with taxa transformed with tax_transform(trans = "clr")</p></li>
@@ -173,7 +173,7 @@ If the distance matrix is required for permanova, users require option 2.</p>
     </div>
     <div id="binary-jaccard-distance-note">
     <h2>Binary Jaccard distance note</h2>
-    
+
 
 
 <p>Jaccard distance can be computed on abundances, but often in microbiome
@@ -240,16 +240,16 @@ OR pass an additional argument to <code>dist_calc("jaccard", binary = TRUE)</cod
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
   docsearch({
-    
-    
+
+
     apiKey: '22e6f0a75b7b1ffae9bf5bc5b58864d7',
     indexName: 'microViz',
     inputSelector: 'input#search-input.form-control',

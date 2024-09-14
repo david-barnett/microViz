@@ -12,7 +12,7 @@ and requires count input for some sample_order methods!'><meta property="og:imag
 
   gtag('config', 'G-2YQ669S4V5');
 </script></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -26,7 +26,7 @@ and requires count input for some sample_order methods!'><meta property="og:imag
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.5</span>
       </span>
     </div>
 
@@ -40,7 +40,7 @@ and requires count input for some sample_order methods!'><meta property="og:imag
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -84,25 +84,25 @@ and requires count input for some sample_order methods!'><meta property="og:imag
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/david-barnett/microViz/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off"></div>
       </form>
-      
+
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Plot (grouped and ordered) compositional barplots</h1>
-    <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/HEAD/R/comp_barplot.R" class="external-link"><code>R/comp_barplot.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/main/R/comp_barplot.R" class="external-link"><code>R/comp_barplot.R</code></a></small>
     <div class="hidden name"><code>comp_barplot.Rd</code></div>
     </div>
 
@@ -138,134 +138,140 @@ and requires count input for some sample_order methods!</p>
 <span>  max_taxa <span class="op">=</span> <span class="fl">10000</span>,</span>
 <span>  other_name <span class="op">=</span> <span class="st">"Other"</span>,</span>
 <span>  x <span class="op">=</span> <span class="st">"SAMPLE"</span>,</span>
+<span>  counts_warn <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>ps</dt>
+
+
+<dl><dt id="arg-ps">ps<a class="anchor" aria-label="anchor" href="#arg-ps"></a></dt>
 <dd><p>phyloseq object</p></dd>
 
 
-<dt>tax_level</dt>
+<dt id="arg-tax-level">tax_level<a class="anchor" aria-label="anchor" href="#arg-tax-level"></a></dt>
 <dd><p>taxonomic aggregation level (from rank_names(ps))</p></dd>
 
 
-<dt>n_taxa</dt>
+<dt id="arg-n-taxa">n_taxa<a class="anchor" aria-label="anchor" href="#arg-n-taxa"></a></dt>
 <dd><p>how many taxa to show distinct colours for (all others grouped into "Other")</p></dd>
 
 
-<dt>tax_order</dt>
+<dt id="arg-tax-order">tax_order<a class="anchor" aria-label="anchor" href="#arg-tax-order"></a></dt>
 <dd><p>order of taxa within the bars, either a function for tax_sort (e.g. sum),
 or a vector of (all) taxa names at tax_level to set order manually</p></dd>
 
 
-<dt>merge_other</dt>
+<dt id="arg-merge-other">merge_other<a class="anchor" aria-label="anchor" href="#arg-merge-other"></a></dt>
 <dd><p>if FALSE, taxa coloured/filled as "other" remain distinct,
 and so can have bar outlines drawn around them</p></dd>
 
 
-<dt>taxon_renamer</dt>
+<dt id="arg-taxon-renamer">taxon_renamer<a class="anchor" aria-label="anchor" href="#arg-taxon-renamer"></a></dt>
 <dd><p>function that takes taxon names and returns modified names for legend</p></dd>
 
 
-<dt>sample_order</dt>
+<dt id="arg-sample-order">sample_order<a class="anchor" aria-label="anchor" href="#arg-sample-order"></a></dt>
 <dd><p>vector of sample names;
 or any distance measure in dist_calc that doesn't require phylogenetic tree;
 or "asis" for the current order as is returned by phyloseq::sample_names(ps)</p></dd>
 
 
-<dt>order_with_all_taxa</dt>
+<dt id="arg-order-with-all-taxa">order_with_all_taxa<a class="anchor" aria-label="anchor" href="#arg-order-with-all-taxa"></a></dt>
 <dd><p>if TRUE, this will always use all taxa (not just the top n_taxa)
 to calculate any distances needed for sample ordering</p></dd>
 
 
-<dt>label</dt>
+<dt id="arg-label">label<a class="anchor" aria-label="anchor" href="#arg-label"></a></dt>
 <dd><p>name of variable to use for labelling samples, or "SAMPLE" for sample names</p></dd>
 
 
-<dt>group_by</dt>
+<dt id="arg-group-by">group_by<a class="anchor" aria-label="anchor" href="#arg-group-by"></a></dt>
 <dd><p>splits dataset by this variable (must be categorical)</p><ul><li><p>resulting in a list of plots, one for each level of the group_by variable.</p></li>
 </ul></dd>
 
 
-<dt>facet_by</dt>
+<dt id="arg-facet-by">facet_by<a class="anchor" aria-label="anchor" href="#arg-facet-by"></a></dt>
 <dd><p>facets plots by this variable (must be categorical). If group_by is also set
 the faceting will occur separately in the plot for each group.</p></dd>
 
 
-<dt>bar_width</dt>
+<dt id="arg-bar-width">bar_width<a class="anchor" aria-label="anchor" href="#arg-bar-width"></a></dt>
 <dd><p>default 1 avoids random gapping otherwise seen with many samples
 (set to less than 1 to introduce gaps between samples)</p></dd>
 
 
-<dt>bar_outline_colour</dt>
+<dt id="arg-bar-outline-colour">bar_outline_colour<a class="anchor" aria-label="anchor" href="#arg-bar-outline-colour"></a></dt>
 <dd><p>line colour separating taxa and samples (use NA for no outlines)</p></dd>
 
 
-<dt>bar_outline_width</dt>
+<dt id="arg-bar-outline-width">bar_outline_width<a class="anchor" aria-label="anchor" href="#arg-bar-outline-width"></a></dt>
 <dd><p>width of line separating taxa and samples
 (for no outlines set bar_outline_colour = NA)</p></dd>
 
 
-<dt>palette</dt>
+<dt id="arg-palette">palette<a class="anchor" aria-label="anchor" href="#arg-palette"></a></dt>
 <dd><p>palette for taxa fill colours</p></dd>
 
 
-<dt>tax_transform_for_ordering</dt>
+<dt id="arg-tax-transform-for-ordering">tax_transform_for_ordering<a class="anchor" aria-label="anchor" href="#arg-tax-transform-for-ordering"></a></dt>
 <dd><p>transformation of taxa values used before ordering samples by similarity</p></dd>
 
 
-<dt>tax_transform_for_plot</dt>
+<dt id="arg-tax-transform-for-plot">tax_transform_for_plot<a class="anchor" aria-label="anchor" href="#arg-tax-transform-for-plot"></a></dt>
 <dd><p>default "compositional" draws proportions of total counts per sample,
 but you could reasonably use another transformation,
 e.g. "identity", if you have truly quantitative microbiome profiling data</p></dd>
 
 
-<dt>seriate_method</dt>
+<dt id="arg-seriate-method">seriate_method<a class="anchor" aria-label="anchor" href="#arg-seriate-method"></a></dt>
 <dd><p>name of any ordering method suitable for distance matrices
 (see ?seriation::seriate)</p></dd>
 
 
-<dt>keep_all_vars</dt>
+<dt id="arg-keep-all-vars">keep_all_vars<a class="anchor" aria-label="anchor" href="#arg-keep-all-vars"></a></dt>
 <dd><p>FALSE may speed up internal melting with ps_melt for large phyloseq objects
 but TRUE is required for some post-hoc plot customisation</p></dd>
 
 
-<dt>interactive</dt>
+<dt id="arg-interactive">interactive<a class="anchor" aria-label="anchor" href="#arg-interactive"></a></dt>
 <dd><p>creates plot suitable for use with ggiraph</p></dd>
 
 
-<dt>max_taxa</dt>
+<dt id="arg-max-taxa">max_taxa<a class="anchor" aria-label="anchor" href="#arg-max-taxa"></a></dt>
 <dd><p>maximum distinct taxa groups to show
 (only really useful for limiting complexity of interactive plots
 e.g. within ord_explore)</p></dd>
 
 
-<dt>other_name</dt>
+<dt id="arg-other-name">other_name<a class="anchor" aria-label="anchor" href="#arg-other-name"></a></dt>
 <dd><p>name for other taxa after N</p></dd>
 
 
-<dt>x</dt>
+<dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
 <dd><p>name of variable to use as x aesthetic:
 it probably only makes sense to change this when also using facets
 (check only one sample is represented per bar!)</p></dd>
 
 
-<dt>...</dt>
+<dt id="arg-counts-warn">counts_warn<a class="anchor" aria-label="anchor" href="#arg-counts-warn"></a></dt>
+<dd><p>should a warning be issued if counts are unavailable?
+TRUE, FALSE, or "error" (passed to ps_get)</p></dd>
+
+
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>extra arguments passed to facet_wrap() (if facet_by is not NA)</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>ggplot or list of harmonised ggplots</p>
+    <p>ggplot or list of harmonised ggplots</p>
     </div>
     <div id="details">
     <h2>Details</h2>
-    
+
 <ul><li><p>sample_order: Either specify a list of sample names to order manually, or the bars/samples can/will be sorted by similarity, according to a specified distance measure (default 'bray'-curtis),</p></li>
 <li><p>seriate_method specifies a seriation/ordering algorithm (default Ward hierarchical clustering with optimal leaf ordering, see seriation::list_seriation_methods())</p></li>
 <li><p>group_by: You can group the samples on distinct plots by levels of a variable in the phyloseq object. The list of ggplots produced can be arranged flexibly with the patchwork package functions. If you want to group by several variables you can create an interaction variable with interaction(var1, var2) in the phyloseq sample_data BEFORE using comp_barplot.</p></li>
@@ -423,16 +429,16 @@ it probably only makes sense to change this when also using facets
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
   docsearch({
-    
-    
+
+
     apiKey: '22e6f0a75b7b1ffae9bf5bc5b58864d7',
     indexName: 'microViz',
     inputSelector: 'input#search-input.form-control',

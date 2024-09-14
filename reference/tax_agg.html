@@ -23,7 +23,7 @@ The tax_table produced when using top_N is otherwise INVALID FOR MOST OTHER ANAL
 
   gtag('config', 'G-2YQ669S4V5');
 </script></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -37,7 +37,7 @@ The tax_table produced when using top_N is otherwise INVALID FOR MOST OTHER ANAL
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.5</span>
       </span>
     </div>
 
@@ -51,7 +51,7 @@ The tax_table produced when using top_N is otherwise INVALID FOR MOST OTHER ANAL
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -95,25 +95,25 @@ The tax_table produced when using top_N is otherwise INVALID FOR MOST OTHER ANAL
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/david-barnett/microViz/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off"></div>
       </form>
-      
+
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Aggregate taxa and track aggregation in psExtra</h1>
-    <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/HEAD/R/tax_agg.R" class="external-link"><code>R/tax_agg.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/main/R/tax_agg.R" class="external-link"><code>R/tax_agg.R</code></a></small>
     <div class="hidden name"><code>tax_agg.Rd</code></div>
     </div>
 
@@ -148,24 +148,26 @@ The tax_table produced when using top_N is otherwise INVALID FOR MOST OTHER ANAL
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>ps</dt>
+
+
+<dl><dt id="arg-ps">ps<a class="anchor" aria-label="anchor" href="#arg-ps"></a></dt>
 <dd><p>phyloseq object</p></dd>
 
 
-<dt>rank</dt>
+<dt id="arg-rank">rank<a class="anchor" aria-label="anchor" href="#arg-rank"></a></dt>
 <dd><p>NA (for tax_names level) or name of valid taxonomic rank (try phyloseq::rank_names(ps)) or "unique"</p></dd>
 
 
-<dt>sort_by</dt>
+<dt id="arg-sort-by">sort_by<a class="anchor" aria-label="anchor" href="#arg-sort-by"></a></dt>
 <dd><p>if not NA, how should the taxa be sorted, uses tax_sort(), takes same options as <code>by</code> arg</p></dd>
 
 
-<dt>top_N</dt>
+<dt id="arg-top-n">top_N<a class="anchor" aria-label="anchor" href="#arg-top-n"></a></dt>
 <dd><p>NA does nothing, but if top_N is a number, it creates an extra tax_table column called top,
 which is the same as the unique column for the first top_N number of taxa, and "other" otherwise.</p></dd>
 
 
-<dt>force</dt>
+<dt id="arg-force">force<a class="anchor" aria-label="anchor" href="#arg-force"></a></dt>
 <dd><p>If TRUE, this forces aggregation at chosen rank to occur regardless of if the output will be sensible!
 This avoids the "Taxa not unique at rank: ..." error, but may allow very inappropriate aggregation to occur.
 Do not use force = TRUE unless you know why you are doing this, and what the result will be.
@@ -174,15 +176,13 @@ force = TRUE is similar to microbiome::aggregate_taxa,
 which also does not check that the taxa are uniquely defined by only the aggregation level.</p></dd>
 
 
-<dt>add_unique</dt>
+<dt id="arg-add-unique">add_unique<a class="anchor" aria-label="anchor" href="#arg-add-unique"></a></dt>
 <dd><p>if TRUE, adds a rank named unique, identical to the rownames after aggregation</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>psExtra object including phyloseq and tax_agg rank info</p>
+    <p>psExtra object including phyloseq and tax_agg rank info</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -320,16 +320,16 @@ which should then result in (much) shorter unique names at the aggregation rank.
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
   docsearch({
-    
-    
+
+
     apiKey: '22e6f0a75b7b1ffae9bf5bc5b58864d7',
     indexName: 'microViz',
     inputSelector: 'input#search-input.form-control',

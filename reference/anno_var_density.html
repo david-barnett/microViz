@@ -10,7 +10,7 @@ which itself is used by cor_heatmap var_anno argument."><meta property="og:image
 
   gtag('config', 'G-2YQ669S4V5');
 </script></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -24,7 +24,7 @@ which itself is used by cor_heatmap var_anno argument."><meta property="og:image
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.5</span>
       </span>
     </div>
 
@@ -38,7 +38,7 @@ which itself is used by cor_heatmap var_anno argument."><meta property="og:image
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -82,25 +82,25 @@ which itself is used by cor_heatmap var_anno argument."><meta property="og:image
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/david-barnett/microViz/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off"></div>
       </form>
-      
+
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Helper to specify heatmap annotation for variable distribution density plot</h1>
-    <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/HEAD/R/heatmaps-varAnnotation.R" class="external-link"><code>R/heatmaps-varAnnotation.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/main/R/heatmaps-varAnnotation.R" class="external-link"><code>R/heatmaps-varAnnotation.R</code></a></small>
     <div class="hidden name"><code>anno_var_density.Rd</code></div>
     </div>
 
@@ -129,70 +129,70 @@ which itself is used by cor_heatmap var_anno argument.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>fun</dt>
+
+
+<dl><dt id="arg-fun">fun<a class="anchor" aria-label="anchor" href="#arg-fun"></a></dt>
 <dd><p>function applied to all variables, with apply()</p></dd>
 
 
-<dt>size</dt>
+<dt id="arg-size">size<a class="anchor" aria-label="anchor" href="#arg-size"></a></dt>
 <dd><p>width or height as a grid unit object</p></dd>
 
 
-<dt>type</dt>
+<dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
 <dd><p>Type of graphics to represent density distribution. "lines" for normal density plot; "violine" for violin plot and "heatmap" for heatmap visualization of density distribution.</p></dd>
 
 
-<dt>xlim</dt>
+<dt id="arg-xlim">xlim<a class="anchor" aria-label="anchor" href="#arg-xlim"></a></dt>
 <dd><p>Range on x-axis.</p></dd>
 
 
-<dt>heatmap_colors</dt>
+<dt id="arg-heatmap-colors">heatmap_colors<a class="anchor" aria-label="anchor" href="#arg-heatmap-colors"></a></dt>
 <dd><p>A vector of colors for interpolating density values.</p></dd>
 
 
-<dt>joyplot_scale</dt>
+<dt id="arg-joyplot-scale">joyplot_scale<a class="anchor" aria-label="anchor" href="#arg-joyplot-scale"></a></dt>
 <dd><p>Relative height of density distribution. A value higher than 1 increases the height of the density distribution and the plot will represented as so-called "joyplot".</p></dd>
 
 
-<dt>border</dt>
+<dt id="arg-border">border<a class="anchor" aria-label="anchor" href="#arg-border"></a></dt>
 <dd><p>Wether draw borders of the annotation region?</p></dd>
 
 
-<dt>gp</dt>
+<dt id="arg-gp">gp<a class="anchor" aria-label="anchor" href="#arg-gp"></a></dt>
 <dd><p>Graphic parameters for the boxes. The length of the graphic parameters should be one or the number of observations.</p></dd>
 
 
-<dt>axis</dt>
+<dt id="arg-axis">axis<a class="anchor" aria-label="anchor" href="#arg-axis"></a></dt>
 <dd><p>Whether to add axis?</p></dd>
 
 
-<dt>...</dt>
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Arguments passed on to <code><a href="https://rdrr.io/pkg/ComplexHeatmap/man/anno_density.html" class="external-link">ComplexHeatmap::anno_density</a></code></p><dl><dt><code>axis_param</code></dt>
 <dd><p>parameters for controlling axis. See <code><a href="https://rdrr.io/pkg/ComplexHeatmap/man/default_axis_param.html" class="external-link">default_axis_param</a></code> for all possible settings and default parameters.</p></dd>
 
-  
+
 </dl></dd>
 
 
-<dt>data</dt>
+<dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
 <dd><p>OPTIONAL phyloseq or psExtra,
 only set this to override use of same data as in heatmap</p></dd>
 
 
-<dt>vars</dt>
+<dt id="arg-vars">vars<a class="anchor" aria-label="anchor" href="#arg-vars"></a></dt>
 <dd><p>OPTIONAL selection vector of variable names,
 only set this if providing data argument to override default</p></dd>
 
 
-<dt>which</dt>
+<dt id="arg-which">which<a class="anchor" aria-label="anchor" href="#arg-which"></a></dt>
 <dd><p>OPTIONAL indicating if it is a 'column' or a 'row' annotation,
 only set this if providing data argument to override default</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>function or ComplexHeatmap AnnotationFunction object</p>
+    <p>function or ComplexHeatmap AnnotationFunction object</p>
     </div>
 
     <div id="ref-examples">
@@ -235,16 +235,16 @@ only set this if providing data argument to override default</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
   docsearch({
-    
-    
+
+
     apiKey: '22e6f0a75b7b1ffae9bf5bc5b58864d7',
     indexName: 'microViz',
     inputSelector: 'input#search-input.form-control',

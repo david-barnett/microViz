@@ -14,7 +14,7 @@ returns the top n number of taxa names
 
   gtag('config', 'G-2YQ669S4V5');
 </script></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -28,7 +28,7 @@ returns the top n number of taxa names
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.5</span>
       </span>
     </div>
 
@@ -42,7 +42,7 @@ returns the top n number of taxa names
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -86,25 +86,25 @@ returns the top n number of taxa names
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/david-barnett/microViz/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off"></div>
       </form>
-      
+
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Get names of "top" n taxa</h1>
-    <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/HEAD/R/tax_top.R" class="external-link"><code>R/tax_top.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/main/R/tax_top.R" class="external-link"><code>R/tax_top.R</code></a></small>
     <div class="hidden name"><code>tax_top.Rd</code></div>
     </div>
 
@@ -120,30 +120,32 @@ returns the top n number of taxa names
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>data</dt>
+
+
+<dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
 <dd><p>phyloseq object or psExtra</p></dd>
 
 
-<dt>n</dt>
+<dt id="arg-n">n<a class="anchor" aria-label="anchor" href="#arg-n"></a></dt>
 <dd><p>how many taxa names to return, or NA for all
 (can return fewer than n values, if there are fewer to return)</p></dd>
 
 
-<dt>by</dt>
+<dt id="arg-by">by<a class="anchor" aria-label="anchor" href="#arg-by"></a></dt>
 <dd><p>how to sort taxa (see <code>?tax_sort()</code>),
 defaults to <code>sum</code> which sorts by total abundance across all samples</p></dd>
 
 
-<dt>rank</dt>
+<dt id="arg-rank">rank<a class="anchor" aria-label="anchor" href="#arg-rank"></a></dt>
 <dd><p>taxonomic rank to aggregate at before calculating
 ("unique" = no aggregation)</p></dd>
 
 
-<dt>use_counts</dt>
+<dt id="arg-use-counts">use_counts<a class="anchor" aria-label="anchor" href="#arg-use-counts"></a></dt>
 <dd><p>use count data if available, instead of transformed data</p></dd>
 
 
-<dt>...</dt>
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Arguments passed on to <code><a href="tax_sort.html">tax_sort</a></code></p><dl><dt><code>verbose</code></dt>
 <dd><p>passed to phyloseq_validate verbose
 (if TRUE: message about suspicious values in tax_table, and how to fix)</p></dd>
@@ -151,15 +153,13 @@ defaults to <code>sum</code> which sorts by total abundance across all samples</
     <dt><code>trans</code></dt>
 <dd><p>name of transformation to apply to taxa before sorting (taxa are returned un-transformed)</p></dd>
 
-  
+
 </dl></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>vector of taxa names at chosen rank</p>
+    <p>vector of taxa names at chosen rank</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -197,16 +197,16 @@ defaults to <code>sum</code> which sorts by total abundance across all samples</
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
   docsearch({
-    
-    
+
+
     apiKey: '22e6f0a75b7b1ffae9bf5bc5b58864d7',
     indexName: 'microViz',
     inputSelector: 'input#search-input.form-control',

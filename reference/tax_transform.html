@@ -11,7 +11,7 @@ or equivalently set the rank argument in tax_transform."><meta property="og:imag
 
   gtag('config', 'G-2YQ669S4V5');
 </script></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -25,7 +25,7 @@ or equivalently set the rank argument in tax_transform."><meta property="og:imag
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.5</span>
       </span>
     </div>
 
@@ -39,7 +39,7 @@ or equivalently set the rank argument in tax_transform."><meta property="og:imag
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -83,25 +83,25 @@ or equivalently set the rank argument in tax_transform."><meta property="og:imag
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/david-barnett/microViz/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off"></div>
       </form>
-      
+
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Transform taxa in phyloseq object and record transformation</h1>
-    <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/HEAD/R/tax_transform.R" class="external-link"><code>R/tax_transform.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/main/R/tax_transform.R" class="external-link"><code>R/tax_transform.R</code></a></small>
     <div class="hidden name"><code>tax_transform.Rd</code></div>
     </div>
 
@@ -127,56 +127,56 @@ or equivalently set the rank argument in <code>tax_transform</code>.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>data</dt>
+
+
+<dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
 <dd><p>a phyloseq object or psExtra output from <code>tax_agg</code></p></dd>
 
 
-<dt>trans</dt>
+<dt id="arg-trans">trans<a class="anchor" aria-label="anchor" href="#arg-trans"></a></dt>
 <dd><p>any valid taxa transformation (e.g. from <code><a href="https://rdrr.io/pkg/microbiome/man/transform.html" class="external-link">microbiome::transform</a></code>)</p></dd>
 
 
-<dt>rank</dt>
+<dt id="arg-rank">rank<a class="anchor" aria-label="anchor" href="#arg-rank"></a></dt>
 <dd><p>If data is phyloseq: data are aggregated at this rank before transforming.
 If NA, runs tax_agg(data, rank = NA).
 If rank is NA and data is already psExtra, any preceding aggregation is left as is.</p></dd>
 
 
-<dt>keep_counts</dt>
+<dt id="arg-keep-counts">keep_counts<a class="anchor" aria-label="anchor" href="#arg-keep-counts"></a></dt>
 <dd><p>if TRUE, store the pre-transformation count data in psExtra counts slot</p></dd>
 
 
-<dt>chain</dt>
+<dt id="arg-chain">chain<a class="anchor" aria-label="anchor" href="#arg-chain"></a></dt>
 <dd><p>if TRUE, transforming again is possible when data are already transformed
 i.e. multiple transformations can be chained with multiple tax_transform calls</p></dd>
 
 
-<dt>zero_replace</dt>
+<dt id="arg-zero-replace">zero_replace<a class="anchor" aria-label="anchor" href="#arg-zero-replace"></a></dt>
 <dd><p>Replace any zeros with this value before transforming. Either a numeric, or
 "halfmin" which replaces zeros with half of the smallest value across the
 entire dataset.
 Beware: the choice of zero replacement is not tracked in the psExtra output.</p></dd>
 
 
-<dt>add</dt>
+<dt id="arg-add">add<a class="anchor" aria-label="anchor" href="#arg-add"></a></dt>
 <dd><p>Add this value to the otu_table before transforming. If <code>add</code> != 0,
 <code>zero_replace</code> does nothing. Either a numeric, or "halfmin".
 Beware: this choice is not tracked in the psExtra output.</p></dd>
 
 
-<dt>transformation</dt>
+<dt id="arg-transformation">transformation<a class="anchor" aria-label="anchor" href="#arg-transformation"></a></dt>
 <dd><p>deprecated, use <code>trans</code> instead!</p></dd>
 
 
-<dt>...</dt>
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>any extra arguments passed to <code><a href="https://rdrr.io/pkg/microbiome/man/transform.html" class="external-link">microbiome::transform</a></code> or pass
 undetected = <code>a number</code> when using trans = "binary"</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p><code>psExtra</code> object including phyloseq and extra info</p>
+    <p><code>psExtra</code> object including phyloseq and extra info</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -195,7 +195,7 @@ extra info (used for annotating <code>ord_plot</code> ordinations):</p><ul><li><
 </ul></div>
     <div id="-r-clr-transformation-note">
     <h2>(r)clr transformation note</h2>
-    
+
 
 
 <p>If any values are zero, the clr transform routine first adds a small
@@ -206,7 +206,7 @@ are transformed, using the geometric mean of non-zero features as denominator.</
     </div>
     <div id="binary-transformation-notes">
     <h2>Binary transformation notes</h2>
-    
+
 
 
 <p>By default, otu_table values of 0 are kept as 0, and all positive values
@@ -336,16 +336,16 @@ All abundances above 10 would be converted to 1s.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
   docsearch({
-    
-    
+
+
     apiKey: '22e6f0a75b7b1ffae9bf5bc5b58864d7',
     indexName: 'microViz',
     inputSelector: 'input#search-input.form-control',

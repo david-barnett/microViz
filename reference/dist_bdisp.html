@@ -11,7 +11,7 @@ See help('betadisper', package = 'vegan')."><meta property="og:image" content="h
 
   gtag('config', 'G-2YQ669S4V5');
 </script></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -25,7 +25,7 @@ See help('betadisper', package = 'vegan')."><meta property="og:image" content="h
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.5</span>
       </span>
     </div>
 
@@ -39,7 +39,7 @@ See help('betadisper', package = 'vegan')."><meta property="og:image" content="h
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -83,25 +83,25 @@ See help('betadisper', package = 'vegan')."><meta property="og:image" content="h
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/david-barnett/microViz/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off"></div>
       </form>
-      
+
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Wrapper for vegan::betadisper()</h1>
-    <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/HEAD/R/dist_bdisp.R" class="external-link"><code>R/dist_bdisp.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/main/R/dist_bdisp.R" class="external-link"><code>R/dist_bdisp.R</code></a></small>
     <div class="hidden name"><code>dist_bdisp.Rd</code></div>
     </div>
 
@@ -123,31 +123,31 @@ See help('betadisper', package = 'vegan').</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>data</dt>
+
+
+<dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
 <dd><p>psExtra output from dist_calc</p></dd>
 
 
-<dt>variables</dt>
+<dt id="arg-variables">variables<a class="anchor" aria-label="anchor" href="#arg-variables"></a></dt>
 <dd><p>list of variables to use as group</p></dd>
 
 
-<dt>method</dt>
+<dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
 <dd><p>centroid or median</p></dd>
 
 
-<dt>complete_cases</dt>
+<dt id="arg-complete-cases">complete_cases<a class="anchor" aria-label="anchor" href="#arg-complete-cases"></a></dt>
 <dd><p>drop samples with NAs in any of the variables listed</p></dd>
 
 
-<dt>verbose</dt>
+<dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
 <dd><p>sends messages about progress if true</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>psExtra containing betadisper results</p>
+    <p>psExtra containing betadisper results</p>
     </div>
 
     <div id="ref-examples">
@@ -156,7 +156,7 @@ See help('betadisper', package = 'vegan').</p>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/vegandevs/vegan" class="external-link">vegan</a></span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: permute</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: lattice</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> This is vegan 2.6-6.1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> This is vegan 2.6-8</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"dietswap"</span>, package <span class="op">=</span> <span class="st">"microbiome"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># add some missings to demonstrate automated removal</span></span></span>
@@ -229,8 +229,8 @@ See help('betadisper', package = 'vegan').</p>
 <span class="r-in"><span>    n_processes <span class="op">=</span> <span class="fl">1</span>, n_perms <span class="op">=</span> <span class="fl">99</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Dropping samples with missings: 4</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2024-06-30 09:00:43.865185 - Starting PERMANOVA with 99 perms with 1 processes</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2024-06-30 09:00:44.00008 - Finished PERMANOVA</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2024-09-14 19:04:51.595902 - Starting PERMANOVA with 99 perms with 1 processes</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2024-09-14 19:04:51.732712 - Finished PERMANOVA</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">PERM</span>, max.level <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Formal class 'psExtra' [package "microViz"] with 15 slots</span>
 <span class="r-in"><span></span></span>
@@ -280,16 +280,16 @@ See help('betadisper', package = 'vegan').</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
   docsearch({
-    
-    
+
+
     apiKey: '22e6f0a75b7b1ffae9bf5bc5b58864d7',
     indexName: 'microViz',
     inputSelector: 'input#search-input.form-control',

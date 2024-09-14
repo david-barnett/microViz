@@ -11,7 +11,7 @@ Best paired with ordination plot made from same ord_calc output."><meta property
 
   gtag('config', 'G-2YQ669S4V5');
 </script></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -25,7 +25,7 @@ Best paired with ordination plot made from same ord_calc output."><meta property
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.5</span>
       </span>
     </div>
 
@@ -39,7 +39,7 @@ Best paired with ordination plot made from same ord_calc output."><meta property
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -83,25 +83,25 @@ Best paired with ordination plot made from same ord_calc output."><meta property
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/david-barnett/microViz/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off"></div>
       </form>
-      
+
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Circular compositional barplot sorted by ordination angle</h1>
-    <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/HEAD/R/ord_plot_iris.R" class="external-link"><code>R/ord_plot_iris.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/main/R/ord_plot_iris.R" class="external-link"><code>R/ord_plot_iris.R</code></a></small>
     <div class="hidden name"><code>ord_plot_iris.Rd</code></div>
     </div>
 
@@ -133,67 +133,69 @@ Best paired with ordination plot made from same <code>ord_calc</code> output.</p
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>data</dt>
+
+
+<dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
 <dd><p>psExtra output of ord_calc</p></dd>
 
 
-<dt>tax_level</dt>
+<dt id="arg-tax-level">tax_level<a class="anchor" aria-label="anchor" href="#arg-tax-level"></a></dt>
 <dd><p>taxonomic aggregation level (from rank_names(ps))</p></dd>
 
 
-<dt>axes</dt>
+<dt id="arg-axes">axes<a class="anchor" aria-label="anchor" href="#arg-axes"></a></dt>
 <dd><p>which 2 axes of ordination to use for ordering bars</p></dd>
 
 
-<dt>n_taxa</dt>
+<dt id="arg-n-taxa">n_taxa<a class="anchor" aria-label="anchor" href="#arg-n-taxa"></a></dt>
 <dd><p>how many taxa to colour show distinct colours for (all other taxa grouped into "other").</p></dd>
 
 
-<dt>ord_plot</dt>
+<dt id="arg-ord-plot">ord_plot<a class="anchor" aria-label="anchor" href="#arg-ord-plot"></a></dt>
 <dd><p>add a matching ordination plot to your iris plot
 ('list' returns separate plots in a list, 'above'/'below' uses patchwork to pair plots together into one)</p></dd>
 
 
-<dt>taxon_renamer</dt>
+<dt id="arg-taxon-renamer">taxon_renamer<a class="anchor" aria-label="anchor" href="#arg-taxon-renamer"></a></dt>
 <dd><p>function to rename taxa in the legend</p></dd>
 
 
-<dt>palette</dt>
+<dt id="arg-palette">palette<a class="anchor" aria-label="anchor" href="#arg-palette"></a></dt>
 <dd><p>colour palette</p></dd>
 
 
-<dt>anno_colour</dt>
+<dt id="arg-anno-colour">anno_colour<a class="anchor" aria-label="anchor" href="#arg-anno-colour"></a></dt>
 <dd><p>name of sample_data variable to use for colouring geom_segment annotation ring</p></dd>
 
 
-<dt>anno_colour_style</dt>
+<dt id="arg-anno-colour-style">anno_colour_style<a class="anchor" aria-label="anchor" href="#arg-anno-colour-style"></a></dt>
 <dd><p>list of further arguments passed to geom_segment e.g. size</p></dd>
 
 
-<dt>anno_binary</dt>
+<dt id="arg-anno-binary">anno_binary<a class="anchor" aria-label="anchor" href="#arg-anno-binary"></a></dt>
 <dd><p>name(s) of binary sample_data variable(s) (levels T/F or 1/0) to use for filtered geom_point annotation ring(s) (annotates at TRUE values)</p></dd>
 
 
-<dt>anno_binary_style</dt>
+<dt id="arg-anno-binary-style">anno_binary_style<a class="anchor" aria-label="anchor" href="#arg-anno-binary-style"></a></dt>
 <dd><p>list of further arguments passed to geom_point e.g. colour, size, y, etc.</p></dd>
 
 
-<dt>keep_all_vars</dt>
+<dt id="arg-keep-all-vars">keep_all_vars<a class="anchor" aria-label="anchor" href="#arg-keep-all-vars"></a></dt>
 <dd><p>slows down processing but is required for any post-hoc plot customisation options</p></dd>
 
 
-<dt>scaling</dt>
+<dt id="arg-scaling">scaling<a class="anchor" aria-label="anchor" href="#arg-scaling"></a></dt>
 <dd><p>Type 2, or type 1 scaling. For more info,
 see <a href="https://sites.google.com/site/mb3gustame/constrained-analyses/redundancy-analysis" class="external-link">https://sites.google.com/site/mb3gustame/constrained-analyses/redundancy-analysis</a>.
 Either "species" or "site" scores are scaled by (proportional) eigenvalues,
 and the other set of scores is left unscaled (from ?vegan::scores.cca)</p></dd>
 
 
-<dt>count_warn</dt>
+<dt id="arg-count-warn">count_warn<a class="anchor" aria-label="anchor" href="#arg-count-warn"></a></dt>
 <dd><p>warn if count data are not available? i.e. phyloseq otu_table is not positive integers and psExtra counts slot is NULL</p></dd>
 
 
-<dt>...</dt>
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Arguments passed on to <code><a href="comp_barplot.html">comp_barplot</a></code></p><dl><dt><code>merge_other</code></dt>
 <dd><p>if FALSE, taxa coloured/filled as "other" remain distinct,
 and so can have bar outlines drawn around them</p></dd>
@@ -225,15 +227,13 @@ e.g. within ord_explore)</p></dd>
     <dt><code>other_name</code></dt>
 <dd><p>name for other taxa after N</p></dd>
 
-  
+
 </dl></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>ggplot</p>
+    <p>ggplot</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -387,16 +387,16 @@ as the fill is used for the taxonomic composition bars</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
   docsearch({
-    
-    
+
+
     apiKey: '22e6f0a75b7b1ffae9bf5bc5b58864d7',
     indexName: 'microViz',
     inputSelector: 'input#search-input.form-control',

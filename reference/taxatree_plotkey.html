@@ -9,7 +9,7 @@
 
   gtag('config', 'G-2YQ669S4V5');
 </script></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.5</span>
       </span>
     </div>
 
@@ -37,7 +37,7 @@
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -81,25 +81,25 @@
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/david-barnett/microViz/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off"></div>
       </form>
-      
+
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Draw labelled key to accompany taxatree_plots</h1>
-    <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/HEAD/R/taxatree_plotkey.R" class="external-link"><code>R/taxatree_plotkey.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/david-barnett/microViz/blob/main/R/taxatree_plotkey.R" class="external-link"><code>R/taxatree_plotkey.R</code></a></small>
     <div class="hidden name"><code>taxatree_plotkey.Rd</code></div>
     </div>
 
@@ -135,104 +135,104 @@
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>data</dt>
+
+
+<dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
 <dd><p>psExtra (or phyloseq)</p></dd>
 
 
-<dt>...</dt>
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>logical conditions for labelling
 e.g. rank == "Phylum", p.value &lt; 0.1 | taxon %in% listOfTaxa</p></dd>
 
 
-<dt>size_stat</dt>
+<dt id="arg-size-stat">size_stat<a class="anchor" aria-label="anchor" href="#arg-size-stat"></a></dt>
 <dd><p>named list of length 1, giving function calculated for each taxon,
 to determine the size of nodes (and edges). Name used as size legend title.</p></dd>
 
 
-<dt>node_size_range</dt>
+<dt id="arg-node-size-range">node_size_range<a class="anchor" aria-label="anchor" href="#arg-node-size-range"></a></dt>
 <dd><p>min and max node sizes, decrease to avoid node overlap</p></dd>
 
 
-<dt>edge_width_range</dt>
+<dt id="arg-edge-width-range">edge_width_range<a class="anchor" aria-label="anchor" href="#arg-edge-width-range"></a></dt>
 <dd><p>min and max edge widths</p></dd>
 
 
-<dt>size_guide</dt>
+<dt id="arg-size-guide">size_guide<a class="anchor" aria-label="anchor" href="#arg-size-guide"></a></dt>
 <dd><p>guide for node sizes, try "none", "legend" or ggplot2::guide_legend()</p></dd>
 
 
-<dt>size_trans</dt>
+<dt id="arg-size-trans">size_trans<a class="anchor" aria-label="anchor" href="#arg-size-trans"></a></dt>
 <dd><p>transformation for size scale
 you can use (the name of) any transformer from the scales package,
 such as "identity", "log1p", or "sqrt"</p></dd>
 
 
-<dt>colour</dt>
+<dt id="arg-colour">colour<a class="anchor" aria-label="anchor" href="#arg-colour"></a></dt>
 <dd><p>fixed colour and fill of nodes and edges</p></dd>
 
 
-<dt>edge_alpha</dt>
+<dt id="arg-edge-alpha">edge_alpha<a class="anchor" aria-label="anchor" href="#arg-edge-alpha"></a></dt>
 <dd><p>fixed alpha value for edges</p></dd>
 
 
-<dt>title</dt>
+<dt id="arg-title">title<a class="anchor" aria-label="anchor" href="#arg-title"></a></dt>
 <dd><p>title of plot (NULL for none)</p></dd>
 
 
-<dt>title_size</dt>
+<dt id="arg-title-size">title_size<a class="anchor" aria-label="anchor" href="#arg-title-size"></a></dt>
 <dd><p>font size of title</p></dd>
 
 
-<dt>taxon_renamer</dt>
+<dt id="arg-taxon-renamer">taxon_renamer<a class="anchor" aria-label="anchor" href="#arg-taxon-renamer"></a></dt>
 <dd><p>function that takes taxon names and returns modified names for labels</p></dd>
 
 
-<dt>.combine_label</dt>
+<dt id="arg--combine-label">.combine_label<a class="anchor" aria-label="anchor" href="#arg--combine-label"></a></dt>
 <dd><p>all or any: function to combine multiple logical "label" values for a taxon
 (relevant if taxatree_stats already present in data)</p></dd>
 
 
-<dt>.draw_label</dt>
+<dt id="arg--draw-label">.draw_label<a class="anchor" aria-label="anchor" href="#arg--draw-label"></a></dt>
 <dd><p>should labels be drawn, or just the bare tree, set this to FALSE if you want
 to draw customised labels with taxatree_plot_labels afterwards</p></dd>
 
 
-<dt>.calc_label</dt>
+<dt id="arg--calc-label">.calc_label<a class="anchor" aria-label="anchor" href="#arg--calc-label"></a></dt>
 <dd><p>if you already set labels with taxatree_label:
 set this to FALSE to use / avoid overwriting that data
 (ignores <code>...</code> if FALSE)</p></dd>
 
 
-<dt>layout</dt>
+<dt id="arg-layout">layout<a class="anchor" aria-label="anchor" href="#arg-layout"></a></dt>
 <dd><p>any ggraph layout, default is "tree"</p></dd>
 
 
-<dt>layout_seed</dt>
+<dt id="arg-layout-seed">layout_seed<a class="anchor" aria-label="anchor" href="#arg-layout-seed"></a></dt>
 <dd><p>any numeric, required if a stochastic igraph layout is named</p></dd>
 
 
-<dt>circular</dt>
+<dt id="arg-circular">circular<a class="anchor" aria-label="anchor" href="#arg-circular"></a></dt>
 <dd><p>should the layout be circular?</p></dd>
 
 
-<dt>node_sort</dt>
+<dt id="arg-node-sort">node_sort<a class="anchor" aria-label="anchor" href="#arg-node-sort"></a></dt>
 <dd><p>sort nodes by "increasing" or "decreasing" size? NULL for no sorting.
 Use <code><a href="tax_sort.html">tax_sort()</a></code> before <code><a href="taxatree_plots.html">taxatree_plots()</a></code> for finer control.</p></dd>
 
 
-<dt>add_circles</dt>
+<dt id="arg-add-circles">add_circles<a class="anchor" aria-label="anchor" href="#arg-add-circles"></a></dt>
 <dd><p>add faint concentric circles to plot, behind each rank?</p></dd>
 
 
-<dt>drop_ranks</dt>
+<dt id="arg-drop-ranks">drop_ranks<a class="anchor" aria-label="anchor" href="#arg-drop-ranks"></a></dt>
 <dd><p>drop ranks from tree if not included in stats dataframe</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>ggplot</p>
+    <p>ggplot</p>
     </div>
 
     <div id="ref-examples">
@@ -312,16 +312,16 @@ Use <code><a href="tax_sort.html">tax_sort()</a></code> before <code><a href="ta
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
   docsearch({
-    
-    
+
+
     apiKey: '22e6f0a75b7b1ffae9bf5bc5b58864d7',
     indexName: 'microViz',
     inputSelector: 'input#search-input.form-control',
