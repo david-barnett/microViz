@@ -926,7 +926,7 @@ ord_explore <- function(data,
 #'
 #' @return a list of lists
 #' @noRd
-ord_explore_init <- function(data, counts_warn) {
+ord_explore_init <- function(data, counts_warn = TRUE) {
   check_is_phyloseq(data, argName = "data")
 
   # if data is plain phyloseq, validate and convert to psExtra
