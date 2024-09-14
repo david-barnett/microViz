@@ -16,8 +16,10 @@
 #' - merge_other: controls whether bar outlines can be drawn around individual (lower abundance) taxa that are grouped in "other" category. If you want to see the diversity of taxa in "other" use merge_taxa = FALSE, or use TRUE if you prefer the cleaner merged look
 #' - palette: Default colouring is consistent across multiple plots if created with the group_by argument, and the defaults scheme retains the colouring of the most abundant taxa irrespective of n_taxa
 #'
-#' @param ps phyloseq object
-#' @param tax_level taxonomic aggregation level (from rank_names(ps))
+#' @param ps
+#' phyloseq object
+#' @param tax_level
+#' taxonomic aggregation level (from rank_names(ps))
 #' @param n_taxa
 #' how many taxa to show distinct colours for (all others grouped into "Other")
 #' @param tax_order
@@ -62,16 +64,23 @@
 #' @param keep_all_vars
 #' FALSE may speed up internal melting with ps_melt for large phyloseq objects
 #' but TRUE is required for some post-hoc plot customisation
-#' @param interactive creates plot suitable for use with ggiraph
-#' @param max_taxa maximum distinct taxa groups to show
+#' @param interactive
+#' creates plot suitable for use with ggiraph
+#' @param max_taxa
+#' maximum distinct taxa groups to show
 #' (only really useful for limiting complexity of interactive plots
 #' e.g. within ord_explore)
-#' @param other_name name for other taxa after N
-#' @param ... extra arguments passed to facet_wrap() (if facet_by is not NA)
+#' @param other_name
+#' name for other taxa after N
+#' @param ...
+#' extra arguments passed to facet_wrap() (if facet_by is not NA)
 #' @param x
 #' name of variable to use as x aesthetic:
 #' it probably only makes sense to change this when also using facets
 #' (check only one sample is represented per bar!)
+#' @param counts_warn
+#' should a warning be issued if counts are unavailable?
+#' TRUE, FALSE, or "error" (passed to ps_get)
 #'
 #' @return ggplot or list of harmonised ggplots
 #' @export
@@ -215,21 +224,26 @@ comp_barplot <- function(ps,
                          max_taxa = 10000,
                          other_name = "Other",
                          x = "SAMPLE",
+                         counts_warn = TRUE,
                          ...) {
   ps <- ps_get(ps)
+
   if (identical(tax_level, ".Taxon")) {
     stop("'.Taxon' cannot be used as a rank name! You must rename that rank.")
   }
   if (!rlang::is_scalar_integerish(n_taxa) || n_taxa < 1) {
-    stop("n_taxa must a positive integer")
+    stop("n_taxa must be a positive integer")
   }
   if (!rlang::is_scalar_integerish(max_taxa) || max_taxa < n_taxa) {
     stop("max_taxa must be a positive integer, and not lower than n_taxa")
   }
-  if (!rlang::is_character(sample_order)) stop("sample_order")
+  if (!rlang::is_character(sample_order)) {
+    stop("sample_order must be character")
+  }
 
   # check phyloseq for common problems (and fix or message about this)
-  ps <- phyloseq_validate(ps, remove_undetected = FALSE, verbose = TRUE)
+  ps <- psCheckSamdat(ps, verbose = TRUE)
+  ps <- psCheckTaxTable(ps, verbose = TRUE, min_tax_length = 3)
 
   # create a sample names variable if this will be used for labelling
   if (identical(label, "SAMPLE") || identical(x, "SAMPLE")) {
@@ -245,11 +259,12 @@ comp_barplot <- function(ps,
   # taxa: aggregate and order for bar ordering and plotting ------------------
 
   # include "unique" rank when aggregating
-  ps <- tax_agg(ps, rank = tax_level, add_unique = TRUE) %>% ps_get()
+  ps <- tax_agg(ps, rank = tax_level, add_unique = TRUE)
+  ps <- ps_get(ps)
 
   if (length(tax_order) == 1) {
     # reorder taxa if tax_order given as a length one rule
-    ps <- tax_sort(ps, by = tax_order)
+    ps <- tax_sort(ps, by = tax_order, use_counts = TRUE, counts_warn = counts_warn)
   } else {
     # reorder taxa if tax_order given as presumably a vector of taxa names
     ps <- tax_reorder(ps, tax_order = tax_order, tree_warn = FALSE, ignore = other_name)
@@ -309,7 +324,8 @@ comp_barplot <- function(ps,
     # merge ".top" rank's `other_name` category into one taxon to allow drawing
     # bar outlines everywhere except within `other_name` category bars
     if (isTRUE(merge_other)) {
-      ps <- tax_agg(ps, rank = ".top", force = TRUE, add_unique = TRUE) %>% ps_get()
+      ps <- tax_agg(ps, rank = ".top", force = TRUE, add_unique = TRUE)
+      ps <- ps_get(ps)
     } else {
       ps <- taxMaxEnforce(ps = ps, maxTaxa = max_taxa, otherName = other_name)
     }
@@ -374,7 +390,8 @@ comp_barplotFixed <- function(ps, interactive,
   if (is.null(label)) LABELLER <- NULL # will remove labels
 
   # transform taxa values for display on plot
-  ps <- tax_transform(ps, trans = tax_transform_for_plot) %>% ps_get()
+  ps <- tax_transform(ps, trans = tax_transform_for_plot, keep_counts = FALSE)
+  ps <- ps_get(ps, warn = FALSE)
 
   # prepare dataframe for plot ----------------------------------------------
   # create long dataframe from (compositional) phyloseq
@@ -514,7 +531,8 @@ taxMaxEnforce <- function(ps, maxTaxa, otherName) {
     tt = phyloseq::tax_table(ps), N = maxTaxa - 1,
     other = otherName, varname = "..sep" # temp variable, can't be "unique"
   )
-  ps <- tax_agg(ps, rank = "..sep", force = TRUE, add_unique = TRUE) %>% ps_get()
+  ps <- tax_agg(ps, rank = "..sep", force = TRUE, add_unique = TRUE)
+  ps <- ps_get(ps)
   ps <- tax_mutate(ps = ps, ..sep = NULL)
   return(ps)
 }

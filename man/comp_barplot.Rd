@@ -28,6 +28,7 @@ comp_barplot(
   max_taxa = 10000,
   other_name = "Other",
   x = "SAMPLE",
+  counts_warn = TRUE,
   ...
 )
 }
@@ -96,6 +97,9 @@ e.g. within ord_explore)}
 \item{x}{name of variable to use as x aesthetic:
 it probably only makes sense to change this when also using facets
 (check only one sample is represented per bar!)}
+
+\item{counts_warn}{should a warning be issued if counts are unavailable?
+TRUE, FALSE, or "error" (passed to ps_get)}
 
 \item{...}{extra arguments passed to facet_wrap() (if facet_by is not NA)}
 }

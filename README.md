@@ -17,7 +17,7 @@ date)](https://img.shields.io/docker/v/barnettdavid/microviz-rocker-verse?color=
 badge](https://david-barnett.r-universe.dev/badges/microViz)](https://david-barnett.r-universe.dev/microViz)
 [![JOSS
 article](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa/status.svg)](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa)
-[![Citations](https://img.shields.io/badge/Citations-~135-blueviolet)](https://scholar.google.com/scholar?hl=en&as_sdt=2005&sciodt=0,5&cites=5439940108464463894&scipsc=&q=&scisbd=1)
+[![Citations](https://img.shields.io/badge/Citations-~157-blueviolet)](https://scholar.google.com/scholar?hl=en&as_sdt=2005&sciodt=0,5&cites=5439940108464463894&scipsc=&q=&scisbd=1)
 [![Zenodo
 DOI](https://zenodo.org/badge/307119750.svg)](https://zenodo.org/badge/latestdoi/307119750)
 <!-- badges: end -->
@@ -150,7 +150,7 @@ test this.
 
 ``` r
 library(microViz)
-#> microViz version 0.12.3.9000 - Copyright (C) 2021-2024 David Barnett
+#> microViz version 0.12.4 - Copyright (C) 2021-2024 David Barnett
 #> ! Website: https://david-barnett.github.io/microViz
 #> ✔ Useful?  For citation details, run: `citation("microViz")`
 #> ✖ Silence? `suppressPackageStartupMessages(library(microViz))`
@@ -316,11 +316,8 @@ aitchison_perm <- aitchison_dists %>%
     n_processes = 1, n_perms = 99, # you should use at least 999!
     variables = "bmi_group"
   )
-#> 2024-06-30 10:55:51.862638 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2024-06-30 10:55:51.919099 - Finished PERMANOVA
-```
-
-``` r
+#> 2024-09-14 16:41:43.803016 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2024-09-14 16:41:43.858752 - Finished PERMANOVA
 
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
@@ -328,9 +325,6 @@ perm_get(aitchison_perm) %>% as.data.frame()
 #> bmi_group   2  109.170 0.04104336 4.686602   0.01
 #> Residual  219 2550.700 0.95895664       NA     NA
 #> Total     221 2659.869 1.00000000       NA     NA
-```
-
-``` r
 
 # view the info stored about the distance calculation
 info_get(aitchison_perm)
@@ -348,8 +342,8 @@ your permanova directly using the `ord_plot` function with constraints
 perm2 <- aitchison_dists %>%
   dist_permanova(variables = c("weight", "african", "sex"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2024-06-30 10:55:51.930319 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2024-06-30 10:55:53.574252 - Finished PERMANOVA
+#> 2024-09-14 16:41:43.869815 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2024-09-14 16:41:45.512262 - Finished PERMANOVA
 ```
 
 We’ll visualise the effect of nationality and bodyweight on sample
@@ -398,9 +392,6 @@ psq <- dietswap %>%
   ) %>%
   tax_transform("identity", rank = "Genus")
 #> Proportional min_prevalence given: 0.1 --> min 23/222 samples.
-```
-
-``` r
 
 # randomly select 30 taxa from the 50 most abundant taxa (just for an example)
 set.seed(123)
@@ -445,7 +436,7 @@ and by participating in this project you agree to abide by its terms.
 sessionInfo()
 #> R version 4.4.0 (2024-04-24)
 #> Platform: aarch64-apple-darwin20
-#> Running under: macOS Sonoma 14.5
+#> Running under: macOS Sonoma 14.6.1
 #> 
 #> Matrix products: default
 #> BLAS:   /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRblas.0.dylib 
@@ -461,9 +452,8 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] ggplot2_3.5.1        dplyr_1.1.4          phyloseq_1.48.0     
-#> [4] microViz_0.12.3.9000 testthat_3.2.1.1     devtools_2.4.5      
-#> [7] usethis_2.2.3       
+#> [1] ggplot2_3.5.1    dplyr_1.1.4      phyloseq_1.48.0  microViz_0.12.4 
+#> [5] testthat_3.2.1.1 devtools_2.4.5   usethis_3.0.0   
 #> 
 #> loaded via a namespace (and not attached):
 #>   [1] RColorBrewer_1.1-3      rstudioapi_0.16.0       jsonlite_1.8.8         
@@ -476,35 +466,35 @@ sessionInfo()
 #>  [22] commonmark_1.9.1        igraph_2.0.3            mime_0.12              
 #>  [25] lifecycle_1.0.4         iterators_1.0.14        pkgconfig_2.0.3        
 #>  [28] Matrix_1.7-0            R6_2.5.1                fastmap_1.2.0          
-#>  [31] clue_0.3-65             GenomeInfoDbData_1.2.12 shiny_1.8.1.1          
-#>  [34] digest_0.6.36           selectr_0.4-2           colorspace_2.1-0       
-#>  [37] S4Vectors_0.42.0        ps_1.7.6                pkgload_1.3.4          
+#>  [31] clue_0.3-65             GenomeInfoDbData_1.2.12 shiny_1.9.1            
+#>  [34] digest_0.6.36           selectr_0.4-2           colorspace_2.1-1       
+#>  [37] S4Vectors_0.42.1        ps_1.7.7                pkgload_1.4.0          
 #>  [40] seriation_1.5.5         vegan_2.6-6.1           labeling_0.4.3         
 #>  [43] fansi_1.0.6             httr_1.4.7              mgcv_1.9-1             
 #>  [46] compiler_4.4.0          remotes_2.5.0           doParallel_1.0.17      
-#>  [49] withr_3.0.0             viridis_0.6.5           pkgbuild_1.4.4         
-#>  [52] highr_0.11              MASS_7.3-60.2           sessioninfo_1.2.2      
+#>  [49] withr_3.0.1             viridis_0.6.5           pkgbuild_1.4.4         
+#>  [52] highr_0.11              MASS_7.3-61             sessioninfo_1.2.2      
 #>  [55] rjson_0.2.21            biomformat_1.32.0       permute_0.9-7          
 #>  [58] tools_4.4.0             chromote_0.2.0          ape_5.8                
-#>  [61] httpuv_1.6.15           glue_1.7.0              nlme_3.1-164           
+#>  [61] httpuv_1.6.15           glue_1.7.0              nlme_3.1-165           
 #>  [64] rhdf5filters_1.16.0     promises_1.3.0          gridtext_0.1.5         
 #>  [67] grid_4.4.0              Rtsne_0.17              cluster_2.1.6          
 #>  [70] reshape2_1.4.4          ade4_1.7-22             generics_0.1.3         
 #>  [73] gtable_0.3.5            microbiome_1.26.0       ca_0.71.1              
-#>  [76] tidyr_1.3.1             websocket_1.4.1         data.table_1.15.4      
+#>  [76] tidyr_1.3.1             websocket_1.4.2         data.table_1.15.4      
 #>  [79] xml2_1.3.6              utf8_1.2.4              XVector_0.44.0         
-#>  [82] BiocGenerics_0.50.0     markdown_1.12           foreach_1.5.2          
+#>  [82] BiocGenerics_0.50.0     markdown_1.13           foreach_1.5.2          
 #>  [85] pillar_1.9.0            stringr_1.5.1           later_1.3.2            
 #>  [88] circlize_0.4.16         splines_4.4.0           ggtext_0.1.2           
-#>  [91] lattice_0.22-6          survival_3.5-8          tidyselect_1.2.1       
-#>  [94] registry_0.5-1          ComplexHeatmap_2.20.0   Biostrings_2.72.0      
-#>  [97] miniUI_0.1.1.1          knitr_1.47              gridExtra_2.3          
-#> [100] IRanges_2.38.0          stats4_4.4.0            xfun_0.45              
+#>  [91] lattice_0.22-6          survival_3.7-0          tidyselect_1.2.1       
+#>  [94] registry_0.5-1          ComplexHeatmap_2.20.0   Biostrings_2.72.1      
+#>  [97] miniUI_0.1.1.1          knitr_1.48              gridExtra_2.3          
+#> [100] IRanges_2.38.1          stats4_4.4.0            xfun_0.46              
 #> [103] Biobase_2.64.0          matrixStats_1.3.0       brio_1.1.5             
-#> [106] stringi_1.8.4           UCSC.utils_1.0.0        yaml_2.3.8             
+#> [106] stringi_1.8.4           UCSC.utils_1.0.0        yaml_2.3.10            
 #> [109] evaluate_0.24.0         codetools_0.2-20        tibble_3.2.1           
 #> [112] cli_3.6.3               xtable_1.8-4            munsell_0.5.1          
-#> [115] processx_3.8.4          Rcpp_1.0.12             GenomeInfoDb_1.40.1    
+#> [115] processx_3.8.4          Rcpp_1.0.13             GenomeInfoDb_1.40.1    
 #> [118] png_0.1-8               parallel_4.4.0          ellipsis_0.3.2         
 #> [121] profvis_0.3.8           urlchecker_1.0.1        viridisLite_0.4.2      
 #> [124] scales_1.3.0            purrr_1.0.2             crayon_1.5.3           

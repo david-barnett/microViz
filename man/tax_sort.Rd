@@ -12,7 +12,8 @@ tax_sort(
   tree_warn = TRUE,
   verbose = TRUE,
   trans = "identity",
-  use_counts = TRUE
+  use_counts = TRUE,
+  counts_warn = TRUE
 )
 }
 \arguments{
@@ -35,6 +36,8 @@ tree_warn = FALSE will suppress the warning message, but still remove the tree!}
 \item{trans}{name of transformation to apply to taxa before sorting (taxa are returned un-transformed)}
 
 \item{use_counts}{use count data if available, instead of transformed data}
+
+\item{counts_warn}{warn if count data are not available?}
 }
 \value{
 sorted phyloseq or psExtra
