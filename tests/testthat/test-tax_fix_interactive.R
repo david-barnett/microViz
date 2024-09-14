@@ -39,7 +39,7 @@ test_that("tax_fix_interactive() works", {
   )
 
   # app$view()
-  app$set_inputs(min_char = 0)
+  app$set_inputs(min_char = 1)
   app$wait_for_value(input = "view_rows_all")
   app$wait_for_idle()
   app$expect_values()
