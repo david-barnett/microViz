@@ -12,6 +12,7 @@ ord_explore(
   plot_widths = c(7, 9),
   modal_fade = TRUE,
   notification_durations = list(2, 20),
+  counts_warn = TRUE,
   ...
 )
 }
@@ -31,6 +32,8 @@ ord_explore(
 
 \item{notification_durations}{length 2 list giving duration in seconds of short and long notifications
 or NULL for notifications that do not disappear automatically}
+
+\item{counts_warn}{should a warning be issued if accounts are unavailable?}
 
 \item{...}{additional arguments passed to ord_plot}
 }
