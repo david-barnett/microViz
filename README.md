@@ -17,7 +17,7 @@ date)](https://img.shields.io/docker/v/barnettdavid/microviz-rocker-verse?color=
 badge](https://david-barnett.r-universe.dev/badges/microViz)](https://david-barnett.r-universe.dev/microViz)
 [![JOSS
 article](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa/status.svg)](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa)
-[![Citations](https://img.shields.io/badge/Citations-~157-blueviolet)](https://scholar.google.com/scholar?hl=en&as_sdt=2005&sciodt=0,5&cites=5439940108464463894&scipsc=&q=&scisbd=1)
+[![Citations](https://img.shields.io/badge/Citations-~193-blueviolet)](https://scholar.google.com/scholar?hl=en&as_sdt=2005&sciodt=0,5&cites=5439940108464463894&scipsc=&q=&scisbd=1)
 [![Zenodo
 DOI](https://zenodo.org/badge/307119750.svg)](https://zenodo.org/badge/latestdoi/307119750)
 <!-- badges: end -->
@@ -316,8 +316,8 @@ aitchison_perm <- aitchison_dists %>%
     n_processes = 1, n_perms = 99, # you should use at least 999!
     variables = "bmi_group"
   )
-#> 2024-09-14 21:00:04.03385 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2024-09-14 21:00:04.090414 - Finished PERMANOVA
+#> 2024-11-18 15:43:00.162228 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2024-11-18 15:43:00.240951 - Finished PERMANOVA
 
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
@@ -342,8 +342,8 @@ your permanova directly using the `ord_plot` function with constraints
 perm2 <- aitchison_dists %>%
   dist_permanova(variables = c("weight", "african", "sex"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2024-09-14 21:00:04.101656 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2024-09-14 21:00:05.739389 - Finished PERMANOVA
+#> 2024-11-18 15:43:00.255258 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2024-11-18 15:43:02.429889 - Finished PERMANOVA
 ```
 
 We’ll visualise the effect of nationality and bodyweight on sample
@@ -436,7 +436,7 @@ and by participating in this project you agree to abide by its terms.
 sessionInfo()
 #> R version 4.4.0 (2024-04-24)
 #> Platform: aarch64-apple-darwin20
-#> Running under: macOS Sonoma 14.6.1
+#> Running under: macOS Sonoma 14.7
 #> 
 #> Matrix products: default
 #> BLAS:   /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRblas.0.dylib 
@@ -469,14 +469,14 @@ sessionInfo()
 #>  [31] clue_0.3-65             GenomeInfoDbData_1.2.12 shiny_1.9.1            
 #>  [34] digest_0.6.36           selectr_0.4-2           colorspace_2.1-1       
 #>  [37] S4Vectors_0.42.1        ps_1.7.7                pkgload_1.4.0          
-#>  [40] seriation_1.5.5         vegan_2.6-6.1           labeling_0.4.3         
+#>  [40] seriation_1.5.5         vegan_2.6-8             labeling_0.4.3         
 #>  [43] fansi_1.0.6             httr_1.4.7              mgcv_1.9-1             
 #>  [46] compiler_4.4.0          remotes_2.5.0           doParallel_1.0.17      
 #>  [49] withr_3.0.1             viridis_0.6.5           pkgbuild_1.4.4         
 #>  [52] highr_0.11              MASS_7.3-61             sessioninfo_1.2.2      
-#>  [55] rjson_0.2.21            biomformat_1.32.0       permute_0.9-7          
+#>  [55] rjson_0.2.22            biomformat_1.32.0       permute_0.9-7          
 #>  [58] tools_4.4.0             chromote_0.2.0          ape_5.8                
-#>  [61] httpuv_1.6.15           glue_1.7.0              nlme_3.1-165           
+#>  [61] httpuv_1.6.15           glue_1.8.0              nlme_3.1-165           
 #>  [64] rhdf5filters_1.16.0     promises_1.3.0          gridtext_0.1.5         
 #>  [67] grid_4.4.0              Rtsne_0.17              cluster_2.1.6          
 #>  [70] reshape2_1.4.4          ade4_1.7-22             generics_0.1.3         
