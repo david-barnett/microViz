@@ -109,5 +109,12 @@ test_that("sorting by Phylum total abundance works", {
 
 test_that("otu_table returned untransformed at transform for sorting", {
   res <- tax_sort(dietswap, by = sum, trans = "compositional")
-  expect_setequal(object = otu_get(res)[1, ], expected = otu_get(dietswap)[1, ])
+  expect_setequal(
+    object = as.vector(otu_get(res)[1, ]),
+    expected = as.vector(otu_get(dietswap)[1, ])
+  )
+  expect_setequal(
+    object = colnames(otu_get(res)[1, ]),
+    expected = colnames(otu_get(dietswap)[1, ])
+  )
 })
