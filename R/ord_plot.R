@@ -245,9 +245,11 @@ ord_plot <-
       )
       axesLabs <- axesNames <- colnames(siteScoresDf)
     } else {
-      # compute summary of ordination object to ensure
-      # consistent scaling of components
-      ordsum <- summary(ordination, scaling = scaling, axes = max(axes))
+      # get all scores of ordination, to ensure consistent scaling
+      ordsum <- vegan::scores(
+        x = ordination, scaling = scaling,
+        choices = seq_len(max(axes)), display = "all"
+      )
 
       # retrieve scores from model object
       siteScoresDf <- as.data.frame(ordsum[["sites"]][, axes, drop = FALSE])
@@ -268,6 +270,7 @@ ord_plot <-
       axesNames <- colnames(siteScoresDf)
       axesLabs <- paste0(axesNames, " [", sprintf("%.1f", 100 * explainedVar), "%]")
     }
+
     # bind ordination axes vectors to metadata subset for plotting
     df <- dplyr::bind_cols(siteScoresDf, meta)
 
