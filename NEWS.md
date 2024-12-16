@@ -1,4 +1,6 @@
-# microViz (development version)
+# microViz 0.12.6
+
+- Fix: `ord_plot` score retrieval is now compatible with vegan 2.7.0
 
 # microViz 0.12.5
 
