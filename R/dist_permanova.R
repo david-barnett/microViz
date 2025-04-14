@@ -112,12 +112,10 @@ dist_permanova <- function(data,
   }
   formula <- paste("distMat", formula)
   # split variables in case they were provided in any part as formula
-  split_vars <- variables %>%
-    strsplit(split = "[+*|:]", perl = TRUE) %>%
-    unlist() %>%
-    # remove trailing and leading whitespaces
-    gsub(pattern = "^\\s+|\\s+$", replacement = "", .data) %>%
-    unique()
+  split_vars <- strsplit(x = variables, split = "[+*|:]", perl = TRUE)
+  split_vars <- unlist(split_vars)
+  # remove trailing and leading whitespaces
+  split_vars <- unique(trimws(split_vars))
 
   if (any(!split_vars %in% phyloseq::sample_variables(ps))) {
     stop(
@@ -139,13 +137,12 @@ dist_permanova <- function(data,
   }
   ps <- ps_drop_incomplete(ps, vars = split_vars, verbose = verbose)
 
-
   # drop samples from pre-existing distMat
   # if no longer in ps after dropping incomplete
   keepers <- phyloseq::sample_names(ps)
   distMat <- stats::as.dist(as.matrix(distMat)[keepers, keepers])
   # drop samples from any existing count matrix
-  if (!is.null(data@counts)) data@counts <- data@counts[keepers, ]
+  if (!is.null(data@counts)) data@counts <- data@counts[keepers, , drop = FALSE]
 
   # extract sample metadata from phyloseq object
   metadata <- samdatAsDataframe(ps)[, split_vars, drop = FALSE]

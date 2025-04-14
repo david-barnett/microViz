@@ -1,3 +1,7 @@
+# microViz 0.12.7
+
+- Fix: `dist_permanova` now works under R version 4.5.0
+
 # microViz 0.12.6
 
 - Fix: `ord_plot` score retrieval is now compatible with vegan 2.7.0
