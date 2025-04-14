@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Microbiome Data Analysis and Visualization • microViz</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -12,20 +12,15 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="apple-touch-icon-120x120.png">
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
-<script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><!-- docsearch --><script src="docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
-<link href="docsearch.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Microbiome Data Analysis and Visualization">
+<script src="lightswitch.js"></script><script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Microbiome Data Analysis and Visualization">
+<meta name="description" content="Microbiome data visualization and statistics tools built upon phyloseq.">
 <meta property="og:description" content="Microbiome data visualization and statistics tools built upon phyloseq.">
 <meta property="og:image" content="https://david-barnett.github.io/microViz/logo.png">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]--><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-2YQ669S4V5"></script><script>
+<!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-2YQ669S4V5"></script><script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
@@ -33,110 +28,70 @@
   gtag('config', 'G-2YQ669S4V5');
 </script>
 </head>
-<body data-spy="scroll" data-target="#toc">
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <div class="container template-home">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="index.html">microViz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.6</span>
-      </span>
-    </div>
+    <nav class="navbar navbar-expand-lg fixed-top " aria-label="Site navigation"><div class="container">
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="articles/shao19-analyses.html">Getting Started</a>
-</li>
-<li>
-  <a href="reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Articles
+    <a class="navbar-brand me-2" href="index.html">microViz</a>
 
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="articles/web-only/phyloseq.html">Working with phyloseq objects</a>
-    </li>
-    <li>
-      <a href="articles/web-only/tax-fixing.html">Fixing your tax_table</a>
-    </li>
-    <li>
-      <a href="articles/web-only/ordination.html">Ordination plots</a>
-    </li>
-    <li>
-      <a href="articles/web-only/ordination-interactive.html">Interactive ordination plots</a>
-    </li>
-    <li>
-      <a href="articles/web-only/compositions.html">Visualising compositions with barplots</a>
-    </li>
-    <li>
-      <a href="articles/web-only/heatmaps.html">Heatmaps of microbiome composition or correlation</a>
-    </li>
-    <li>
-      <a href="articles/web-only/modelling-taxa.html">Statistical modelling of individual taxa</a>
-    </li>
-    <li>
-      <a href="articles/web-only/videos.html">Tutorial video</a>
-    </li>
-    <li>
-      <a href="articles/ps_extra-replaced.html">Upgrading to microViz version 0.10.0</a>
-    </li>
-    <li>
-      <a href="articles/web-only/atlas1006.html">Example analyses with atlas1006 data</a>
-    </li>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.12.7</small>
+
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="articles/shao19-analyses.html">Getting Started</a></li>
+<li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="articles/web-only/phyloseq.html">Working with phyloseq objects</a></li>
+    <li><a class="dropdown-item" href="articles/web-only/tax-fixing.html">Fixing your tax_table</a></li>
+    <li><a class="dropdown-item" href="articles/web-only/ordination.html">Ordination plots</a></li>
+    <li><a class="dropdown-item" href="articles/web-only/ordination-interactive.html">Interactive ordination plots</a></li>
+    <li><a class="dropdown-item" href="articles/web-only/compositions.html">Visualising compositions with barplots</a></li>
+    <li><a class="dropdown-item" href="articles/web-only/heatmaps.html">Heatmaps of microbiome composition or correlation</a></li>
+    <li><a class="dropdown-item" href="articles/web-only/modelling-taxa.html">Statistical modelling of individual taxa</a></li>
+    <li><a class="dropdown-item" href="articles/web-only/videos.html">Tutorial video</a></li>
+    <li><a class="dropdown-item" href="articles/ps_extra-replaced.html">Upgrading to microViz version 0.10.0</a></li>
+    <li><a class="dropdown-item" href="articles/web-only/atlas1006.html">Example analyses with atlas1006 data</a></li>
   </ul>
 </li>
-<li>
-  <a href="articles/learn/exercises.html">Learn</a>
-</li>
-<li>
-  <a href="news/index.html">News</a>
-</li>
-<li class="dropdown-header">
-      </li>
-</ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/david-barnett/microViz/" class="external-link">
-    <span class="fab fa-github fa-lg"></span>
-
-  </a>
+<li class="nav-item"><a class="nav-link" href="articles/learn/exercises.html">Learn</a></li>
+<li class="nav-item"><a class="nav-link" href="news/index.html">News</a></li>
+<li class="nav-item"><h6 class="dropdown-header" data-toc-skip></h6></li>
+      </ul>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/david-barnett/microViz/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-lightswitch" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Light switch"><span class="fa fa-sun"></span></button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-lightswitch">
+<li><button class="dropdown-item" data-bs-theme-value="light"><span class="fa fa-sun"></span> Light</button></li>
+    <li><button class="dropdown-item" data-bs-theme-value="dark"><span class="fa fa-moon"></span> Dark</button></li>
+    <li><button class="dropdown-item" data-bs-theme-value="auto"><span class="fa fa-adjust"></span> Auto</button></li>
+  </ul>
 </li>
       </ul>
-<form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
-        <div class="form-group">
-          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
 </div>
-      </form>
 
-    </div>
-<!--/.nav-collapse -->
+
   </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
-
-
-
-      </header><div class="row">
-  <div class="contents col-md-9">
-<div class="section level1">
-<div class="page-header"><h1 id="microviz-">microViz <a href="https://david-barnett.github.io/microViz/index.html"><img src="reference/figures/logo.png" align="right" height="180" width="156"></a>
+</nav><div class="container template-home">
+<div class="row">
+  <main id="main" class="col-md-9"><div class="section level1">
+<div class="page-header">
+<img src="logo.png" class="logo" alt=""><h1 id="microviz-">microViz 
 <a class="anchor" aria-label="anchor" href="#microviz-"></a>
-</h1></div>
+</h1>
+</div>
 <!-- badges: start -->
 
 <div class="section level2">
@@ -221,7 +176,7 @@
 </h2>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://david-barnett.github.io/microViz">microViz</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; microViz version 0.12.6 - Copyright (C) 2021-2024 David Barnett</span></span>
+<span><span class="co">#&gt; microViz version 0.12.7 - Copyright (C) 2021-2025 David Barnett</span></span>
 <span><span class="co">#&gt; ! Website: https://david-barnett.github.io/microViz</span></span>
 <span><span class="co">#&gt; ✔ Useful?  For citation details, run: `citation("microViz")`</span></span>
 <span><span class="co">#&gt; ✖ Silence? `suppressPackageStartupMessages(library(microViz))`</span></span></code></pre></div>
@@ -361,8 +316,8 @@
 <span>    n_processes <span class="op">=</span> <span class="fl">1</span>, n_perms <span class="op">=</span> <span class="fl">99</span>, <span class="co"># you should use at least 999!</span></span>
 <span>    variables <span class="op">=</span> <span class="st">"bmi_group"</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; 2024-12-16 09:47:30.753936 - Starting PERMANOVA with 99 perms with 1 processes</span></span>
-<span><span class="co">#&gt; 2024-12-16 09:47:30.829263 - Finished PERMANOVA</span></span>
+<span><span class="co">#&gt; 2025-04-14 13:04:09.320441 - Starting PERMANOVA with 99 perms with 1 processes</span></span>
+<span><span class="co">#&gt; 2025-04-14 13:04:09.380158 - Finished PERMANOVA</span></span>
 <span></span>
 <span><span class="co"># view the permanova results</span></span>
 <span><span class="fu"><a href="reference/psExtra-accessors.html">perm_get</a></span><span class="op">(</span><span class="va">aitchison_perm</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -384,8 +339,8 @@
 <code class="sourceCode R"><span><span class="va">perm2</span> <span class="op">&lt;-</span> <span class="va">aitchison_dists</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="reference/dist_permanova.html">dist_permanova</a></span><span class="op">(</span>variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"african"</span>, <span class="st">"sex"</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">321</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Dropping samples with missings: 2</span></span>
-<span><span class="co">#&gt; 2024-12-16 09:47:30.844906 - Starting PERMANOVA with 999 perms with 1 processes</span></span>
-<span><span class="co">#&gt; 2024-12-16 09:47:33.254138 - Finished PERMANOVA</span></span></code></pre></div>
+<span><span class="co">#&gt; 2025-04-14 13:04:09.398024 - Starting PERMANOVA with 999 perms with 1 processes</span></span>
+<span><span class="co">#&gt; 2025-04-14 13:04:11.194814 - Finished PERMANOVA</span></span></code></pre></div>
 <p>We’ll visualise the effect of nationality and bodyweight on sample composition, after first removing the effect of sex.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">perm2</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
@@ -460,77 +415,74 @@
 </h2>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; R version 4.4.2 (2024-10-31)</span></span>
+<span><span class="co">#&gt; R version 4.5.0 (2025-04-11)</span></span>
 <span><span class="co">#&gt; Platform: aarch64-apple-darwin20</span></span>
-<span><span class="co">#&gt; Running under: macOS Sequoia 15.1.1</span></span>
+<span><span class="co">#&gt; Running under: macOS Sequoia 15.3.2</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Matrix products: default</span></span>
-<span><span class="co">#&gt; BLAS:   /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRblas.0.dylib </span></span>
-<span><span class="co">#&gt; LAPACK: /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.0</span></span>
+<span><span class="co">#&gt; BLAS:   /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRblas.0.dylib </span></span>
+<span><span class="co">#&gt; LAPACK: /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.1</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; locale:</span></span>
 <span><span class="co">#&gt; [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; time zone: Europe/London</span></span>
+<span><span class="co">#&gt; time zone: Europe/Amsterdam</span></span>
 <span><span class="co">#&gt; tzcode source: internal</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; attached base packages:</span></span>
 <span><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt; [1] ggplot2_3.5.1   dplyr_1.1.4     phyloseq_1.48.0 microViz_0.12.6</span></span>
-<span><span class="co">#&gt; [5] testthat_3.2.2  devtools_2.4.5  usethis_3.1.0  </span></span>
+<span><span class="co">#&gt; [1] ggplot2_3.5.2   dplyr_1.1.4     phyloseq_1.51.0 microViz_0.12.7</span></span>
+<span><span class="co">#&gt; [5] testthat_3.2.3  devtools_2.4.5  usethis_3.1.0  </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
-<span><span class="co">#&gt;   [1] RColorBrewer_1.1-3      rstudioapi_0.17.1       jsonlite_1.8.9         </span></span>
+<span><span class="co">#&gt;   [1] RColorBrewer_1.1-3      rstudioapi_0.17.1       jsonlite_2.0.0         </span></span>
 <span><span class="co">#&gt;   [4] shape_1.4.6.1           magrittr_2.0.3          farver_2.1.2           </span></span>
-<span><span class="co">#&gt;   [7] rmarkdown_2.29          GlobalOptions_0.1.2     fs_1.6.5               </span></span>
-<span><span class="co">#&gt;  [10] zlibbioc_1.50.0         vctrs_0.6.5             multtest_2.60.0        </span></span>
-<span><span class="co">#&gt;  [13] memoise_2.0.1           Cairo_1.6-2             htmltools_0.5.8.1      </span></span>
-<span><span class="co">#&gt;  [16] curl_6.0.1              Rhdf5lib_1.26.0         rhdf5_2.48.0           </span></span>
-<span><span class="co">#&gt;  [19] htmlwidgets_1.6.4       plyr_1.8.9              cachem_1.1.0           </span></span>
-<span><span class="co">#&gt;  [22] commonmark_1.9.2        igraph_2.1.2            mime_0.12              </span></span>
-<span><span class="co">#&gt;  [25] lifecycle_1.0.4         iterators_1.0.14        pkgconfig_2.0.3        </span></span>
-<span><span class="co">#&gt;  [28] Matrix_1.7-1            R6_2.5.1                fastmap_1.2.0          </span></span>
-<span><span class="co">#&gt;  [31] clue_0.3-66             GenomeInfoDbData_1.2.12 shiny_1.10.0           </span></span>
-<span><span class="co">#&gt;  [34] digest_0.6.37           selectr_0.4-2           colorspace_2.1-1       </span></span>
-<span><span class="co">#&gt;  [37] S4Vectors_0.42.1        ps_1.8.1                pkgload_1.4.0          </span></span>
-<span><span class="co">#&gt;  [40] seriation_1.5.7         vegan_2.7-0             labeling_0.4.3         </span></span>
-<span><span class="co">#&gt;  [43] fansi_1.0.6             httr_1.4.7              mgcv_1.9-1             </span></span>
-<span><span class="co">#&gt;  [46] compiler_4.4.2          remotes_2.5.0           withr_3.0.2            </span></span>
-<span><span class="co">#&gt;  [49] doParallel_1.0.17       viridis_0.6.5           pkgbuild_1.4.5         </span></span>
-<span><span class="co">#&gt;  [52] MASS_7.3-61             sessioninfo_1.2.2       rjson_0.2.23           </span></span>
-<span><span class="co">#&gt;  [55] biomformat_1.32.0       permute_0.9-7           tools_4.4.2            </span></span>
-<span><span class="co">#&gt;  [58] chromote_0.3.1          ape_5.8                 httpuv_1.6.15          </span></span>
-<span><span class="co">#&gt;  [61] glue_1.8.0              nlme_3.1-166            rhdf5filters_1.16.0    </span></span>
-<span><span class="co">#&gt;  [64] promises_1.3.2          gridtext_0.1.5          grid_4.4.2             </span></span>
-<span><span class="co">#&gt;  [67] Rtsne_0.17              cluster_2.1.8           reshape2_1.4.4         </span></span>
-<span><span class="co">#&gt;  [70] ade4_1.7-22             generics_0.1.3          gtable_0.3.6           </span></span>
-<span><span class="co">#&gt;  [73] microbiome_1.26.0       ca_0.71.1               tidyr_1.3.1            </span></span>
-<span><span class="co">#&gt;  [76] websocket_1.4.2         data.table_1.16.4       xml2_1.3.6             </span></span>
-<span><span class="co">#&gt;  [79] utf8_1.2.4              XVector_0.44.0          BiocGenerics_0.50.0    </span></span>
-<span><span class="co">#&gt;  [82] markdown_1.13           foreach_1.5.2           pillar_1.9.0           </span></span>
-<span><span class="co">#&gt;  [85] stringr_1.5.1           later_1.4.1             circlize_0.4.16        </span></span>
-<span><span class="co">#&gt;  [88] splines_4.4.2           ggtext_0.1.2            lattice_0.22-6         </span></span>
-<span><span class="co">#&gt;  [91] survival_3.7-0          tidyselect_1.2.1        registry_0.5-1         </span></span>
-<span><span class="co">#&gt;  [94] ComplexHeatmap_2.20.0   Biostrings_2.72.1       miniUI_0.1.1.1         </span></span>
-<span><span class="co">#&gt;  [97] knitr_1.49              gridExtra_2.3           IRanges_2.38.1         </span></span>
-<span><span class="co">#&gt; [100] stats4_4.4.2            xfun_0.49               Biobase_2.64.0         </span></span>
-<span><span class="co">#&gt; [103] matrixStats_1.4.1       brio_1.1.5              stringi_1.8.4          </span></span>
-<span><span class="co">#&gt; [106] UCSC.utils_1.0.0        yaml_2.3.10             evaluate_1.0.1         </span></span>
-<span><span class="co">#&gt; [109] codetools_0.2-20        tibble_3.2.1            cli_3.6.3              </span></span>
-<span><span class="co">#&gt; [112] xtable_1.8-4            munsell_0.5.1           processx_3.8.4         </span></span>
-<span><span class="co">#&gt; [115] Rcpp_1.0.13-1           GenomeInfoDb_1.40.1     png_0.1-8              </span></span>
-<span><span class="co">#&gt; [118] parallel_4.4.2          ellipsis_0.3.2          profvis_0.4.0          </span></span>
-<span><span class="co">#&gt; [121] urlchecker_1.0.1        viridisLite_0.4.2       scales_1.3.0           </span></span>
-<span><span class="co">#&gt; [124] purrr_1.0.2             crayon_1.5.3            GetoptLong_1.0.5       </span></span>
-<span><span class="co">#&gt; [127] rlang_1.1.4             TSP_1.2-4               rvest_1.0.4</span></span></code></pre></div>
+<span><span class="co">#&gt;   [7] rmarkdown_2.29          GlobalOptions_0.1.2     fs_1.6.6               </span></span>
+<span><span class="co">#&gt;  [10] vctrs_0.6.5             multtest_2.63.0         memoise_2.0.1          </span></span>
+<span><span class="co">#&gt;  [13] Cairo_1.6-2             htmltools_0.5.8.1       curl_6.2.2             </span></span>
+<span><span class="co">#&gt;  [16] Rhdf5lib_1.29.2         rhdf5_2.51.2            htmlwidgets_1.6.4      </span></span>
+<span><span class="co">#&gt;  [19] plyr_1.8.9              cachem_1.1.0            commonmark_1.9.5       </span></span>
+<span><span class="co">#&gt;  [22] igraph_2.1.4            mime_0.13               lifecycle_1.0.4        </span></span>
+<span><span class="co">#&gt;  [25] iterators_1.0.14        pkgconfig_2.0.3         Matrix_1.7-3           </span></span>
+<span><span class="co">#&gt;  [28] R6_2.6.1                fastmap_1.2.0           clue_0.3-66            </span></span>
+<span><span class="co">#&gt;  [31] GenomeInfoDbData_1.2.14 shiny_1.10.0            digest_0.6.37          </span></span>
+<span><span class="co">#&gt;  [34] selectr_0.4-2           colorspace_2.1-1        S4Vectors_0.45.4       </span></span>
+<span><span class="co">#&gt;  [37] ps_1.9.1                pkgload_1.4.0           seriation_1.5.7        </span></span>
+<span><span class="co">#&gt;  [40] vegan_2.6-10            labeling_0.4.3          httr_1.4.7             </span></span>
+<span><span class="co">#&gt;  [43] mgcv_1.9-1              compiler_4.5.0          remotes_2.5.0          </span></span>
+<span><span class="co">#&gt;  [46] withr_3.0.2             doParallel_1.0.17       viridis_0.6.5          </span></span>
+<span><span class="co">#&gt;  [49] pkgbuild_1.4.7          MASS_7.3-65             sessioninfo_1.2.3      </span></span>
+<span><span class="co">#&gt;  [52] rjson_0.2.23            biomformat_1.35.0       permute_0.9-7          </span></span>
+<span><span class="co">#&gt;  [55] tools_4.5.0             chromote_0.5.0          ape_5.8-1              </span></span>
+<span><span class="co">#&gt;  [58] httpuv_1.6.15           glue_1.8.0              nlme_3.1-168           </span></span>
+<span><span class="co">#&gt;  [61] rhdf5filters_1.19.2     promises_1.3.2          gridtext_0.1.5         </span></span>
+<span><span class="co">#&gt;  [64] grid_4.5.0              Rtsne_0.17              cluster_2.1.8.1        </span></span>
+<span><span class="co">#&gt;  [67] reshape2_1.4.4          ade4_1.7-23             generics_0.1.3         </span></span>
+<span><span class="co">#&gt;  [70] gtable_0.3.6            microbiome_1.29.0       ca_0.71.1              </span></span>
+<span><span class="co">#&gt;  [73] tidyr_1.3.1             websocket_1.4.4         data.table_1.17.0      </span></span>
+<span><span class="co">#&gt;  [76] xml2_1.3.8              XVector_0.47.2          BiocGenerics_0.53.6    </span></span>
+<span><span class="co">#&gt;  [79] markdown_2.0            foreach_1.5.2           pillar_1.10.2          </span></span>
+<span><span class="co">#&gt;  [82] stringr_1.5.1           later_1.4.2             circlize_0.4.16        </span></span>
+<span><span class="co">#&gt;  [85] splines_4.5.0           ggtext_0.1.2            lattice_0.22-6         </span></span>
+<span><span class="co">#&gt;  [88] survival_3.8-3          tidyselect_1.2.1        registry_0.5-1         </span></span>
+<span><span class="co">#&gt;  [91] ComplexHeatmap_2.23.1   Biostrings_2.75.4       miniUI_0.1.1.1         </span></span>
+<span><span class="co">#&gt;  [94] knitr_1.50              gridExtra_2.3           litedown_0.7           </span></span>
+<span><span class="co">#&gt;  [97] IRanges_2.41.3          stats4_4.5.0            xfun_0.52              </span></span>
+<span><span class="co">#&gt; [100] Biobase_2.67.0          brio_1.1.5              matrixStats_1.5.0      </span></span>
+<span><span class="co">#&gt; [103] stringi_1.8.7           UCSC.utils_1.3.1        yaml_2.3.10            </span></span>
+<span><span class="co">#&gt; [106] evaluate_1.0.3          codetools_0.2-20        tibble_3.2.1           </span></span>
+<span><span class="co">#&gt; [109] cli_3.6.4               xtable_1.8-4            munsell_0.5.1          </span></span>
+<span><span class="co">#&gt; [112] processx_3.8.6          Rcpp_1.0.14             GenomeInfoDb_1.43.4    </span></span>
+<span><span class="co">#&gt; [115] png_0.1-8               parallel_4.5.0          ellipsis_0.3.2         </span></span>
+<span><span class="co">#&gt; [118] profvis_0.4.0           urlchecker_1.0.1        viridisLite_0.4.2      </span></span>
+<span><span class="co">#&gt; [121] scales_1.3.0            purrr_1.0.4             crayon_1.5.3           </span></span>
+<span><span class="co">#&gt; [124] GetoptLong_1.0.5        rlang_1.1.6             TSP_1.2-4              </span></span>
+<span><span class="co">#&gt; [127] rvest_1.0.4</span></span></code></pre></div>
 </div>
 </div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-    <div class="links">
+  </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
 <li><a href="https://github.com/david-barnett/microViz/" class="external-link">Browse source code</a></li>
@@ -573,43 +525,28 @@
 <li><a href="https://codecov.io/gh/david-barnett/microViz" class="external-link"><img src="https://codecov.io/gh/david-barnett/microViz/branch/main/graph/badge.svg?token=C1EoVkhnxA" alt="codecov"></a></li>
 <li><a href="https://david-barnett.r-universe.dev/microViz" class="external-link"><img src="https://david-barnett.r-universe.dev/badges/microViz" alt="microViz status badge"></a></li>
 <li><a href="https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa" class="external-link"><img src="https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa/status.svg" alt="JOSS article"></a></li>
-<li><a href="https://scholar.google.com/scholar?hl=en&amp;as_sdt=2005&amp;sciodt=0,5&amp;cites=5439940108464463894&amp;scipsc=&amp;q=&amp;scisbd=1" class="external-link"><img src="https://img.shields.io/badge/Citations-~205-blueviolet" alt="Citations"></a></li>
+<li><a href="https://scholar.google.com/scholar?hl=en&amp;as_sdt=2005&amp;sciodt=0,5&amp;cites=5439940108464463894&amp;scipsc=&amp;q=&amp;scisbd=1" class="external-link"><img src="https://img.shields.io/badge/Citations-~276-blueviolet" alt="Citations"></a></li>
 <li><a href="https://zenodo.org/badge/latestdoi/307119750" class="external-link"><img src="https://zenodo.org/badge/307119750.svg" alt="Zenodo DOI"></a></li>
 </ul>
 </div>
 
-  </div>
+  </aside>
 </div>
 
 
-      <footer><div class="copyright">
-  <p></p>
-<p>Developed by David Barnett.</p>
+    <footer><div class="pkgdown-footer-left">
+  <p>Developed by David Barnett.</p>
 </div>
 
-<div class="pkgdown">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+<div class="pkgdown-footer-right">
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
-      </footer>
+    </footer>
 </div>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
-  docsearch({
 
-
-    apiKey: '22e6f0a75b7b1ffae9bf5bc5b58864d7',
-    indexName: 'microViz',
-    inputSelector: 'input#search-input.form-control',
-    transformData: function(hits) {
-      return hits.map(function (hit) {
-        hit.url = updateHitURL(hit);
-        return hit;
-      });
-    }
-  });
-</script><script data-goatcounter="https://microviz.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+  <script data-goatcounter="https://microviz.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
