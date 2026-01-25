@@ -22,6 +22,7 @@ test_that("dist_calc rclr and euclid same as robust aitchison", {
   local_edition(3)
   robustAitchVeg <- microViz::ibd %>%
     otu_get() %>%
+    as(., "matrix") %>% # can't be otu_table for rclr with optspace()
     vegan::vegdist(method = "robust.aitchison")
 
   robustAitchViz <- microViz::ibd %>%

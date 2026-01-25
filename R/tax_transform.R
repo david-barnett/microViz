@@ -141,8 +141,12 @@ tax_transform <- function(data,
 
   # get plain phyloseq from aggregated psExtra data
   ps <- ps_get(data)
-  # extract otu
+
+  # extract otu table with taxa as columns
   otu <- otu_get(ps)
+
+  # ensure matrix for transforms (otu_table class breaks rclr with optspace)
+  otu <- as(otu, "matrix")
 
   # add constant to all otu table values
   otu <- otuAddConstant(otu, add = add)
