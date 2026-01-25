@@ -1,3 +1,8 @@
+# microViz 0.13.0
+
+- Fix: tax_transform "rclr" now works again with vegan ≥2.7.0 
+- Breaking: tax_transform with rclr and dist_calc with robust.aitchison now give different results than before, due to changes in vegan ≥2.7.0
+
 # microViz 0.12.7
 
 - Fix: `dist_permanova` now works under R version 4.5.0
