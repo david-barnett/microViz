@@ -49,7 +49,7 @@
 #'   ggplot(aes(x = timepoint, y = subject)) +
 #'   geom_tile(aes(fill = aitchison_DistFromLast)) +
 #'   scale_fill_viridis_c(na.value = NA, name = "dist") +
-#'   theme_minimal(base_line_size = NA) +
+#'   theme_minimal(base_line_size = 0) +
 #'   scale_y_discrete(limits = rev(levels(samdat_tbl(pseq)$subject)))
 #'
 #' # ComplexHeatmap plotting with clustering #
