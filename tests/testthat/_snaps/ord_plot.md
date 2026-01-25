@@ -73,7 +73,7 @@
     Code
       p3$layers
     Output
-      [[1]]
+      $geom_point
       mapping: colour = ~.data$bmi_group 
       geom_point: na.rm = FALSE
       stat_identity: na.rm = FALSE
@@ -99,7 +99,7 @@
     Code
       p4$layers
     Output
-      [[1]]
+      $geom_point
       mapping: colour = ~.data$bmi_group 
       geom_point: na.rm = FALSE
       stat_identity: na.rm = FALSE
