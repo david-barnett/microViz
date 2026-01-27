@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 scholarUrl <- "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=5439940108464463894"
 # google now (July 2025) blocks scraping with rvest.
-citations <- 338 # manually obtained - 1st Aug 2025
+citations <- 453 # manually obtained - 27th Jan 2026
 ```
 
 # microViz <a href='https://david-barnett.github.io/microViz/index.html'><img src="man/figures/logo.png" align="right" height="180" width="156"/></a>
@@ -112,19 +112,19 @@ install.packages("remotes")
 remotes::install_github("david-barnett/microViz")
 
 # To install a specific "release" version of this package, e.g. an old version 
-remotes::install_github("david-barnett/microViz@0.12.6") 
+remotes::install_github("david-barnett/microViz@0.13.0") 
 ```
 
 ### Installation notes
 
 **:apple: macOS** **users** - might need to install [xquartz](https://www.xquartz.org/) to make the heatmaps work (to do this with homebrew, run the following command in your mac's Terminal: `brew install --cask xquartz`
 
-:package: I highly recommend using [renv](https://rstudio.github.io/renv/index.html) for managing your R package installations across multiple projects.
+:package: I recommend using [renv](https://rstudio.github.io/renv/index.html) for managing your R package installations across multiple projects.
 
 :whale: For Docker users an image with the main branch installed is available at: <https://hub.docker.com/r/barnettdavid/microviz-rocker-verse>
 
-:date: microViz is tested to work with R version 4.* on Windows, MacOS, and Ubuntu 20.
-R version 3.6.\* should probably work, but I don't fully test this.
+:date: microViz is tested to work with recent R versions on Windows, MacOS, and Ubuntu.
+R versions below 4 are no longer supported since 0.13.0 (R 4.0.0 was released in 2020).
 
 ## Interactive ordination exploration
 

@@ -17,6 +17,10 @@
 
 - `tax_transform` with "rclr" and `dist_calc` with "robust.aitchison" now give different results than before, due to changes in vegan ≥2.7.0 (the optspace matrix completion step)
 
+- microViz 0.13.0 requires microbiome package ≥1.23.1 and vegan package ≥2.7.0 due to the changes in underlying transformation functions
+- microViz 0.13.0 requires ggiraph package ≥0.9.1 and ggplot2 package ≥4.0.0 to fix interactive plot issues in `ord_explore`
+- microViz 0.13.0 no longer supports R versions before 4.0.0 (released 2020)
+
 ### Fix:
 
 - `tax_transform` "rclr" now actually works again with vegan ≥2.7.0, but beware of the breaking change in how it is computed.
