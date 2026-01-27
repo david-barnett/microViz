@@ -1201,14 +1201,15 @@ trans_choices <- function(type) {
     "log10p" = "log10p: log10(x + 1)",
     "compositional" = "compositional: proportions",
     "hellinger" = "hellinger",
-    "binary" = "binary: presence-absence"
+    "binary" = "binary: presence-absence",
+    "comp_clr" = "comp_clr: legacy routine"
   )
   # overlapping type lists
   l <- list(
     all = names(all),
     identity = "identity",
     nonIdentity = setdiff(names(all), "identity"),
-    log = c("clr", "rclr", "log10p")
+    log = c("clr", "rclr", "log10p", "comp_clr")
   )
   # select choices by name, with value as long description
   choices <- purrr::reduce(l[type], intersect)
