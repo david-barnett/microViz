@@ -1,7 +1,26 @@
 # microViz 0.13.0
 
-- Fix: tax_transform "rclr" now works again with vegan ≥2.7.0 
-- Breaking: tax_transform with rclr and dist_calc with robust.aitchison now give different results than before, due to changes in vegan ≥2.7.0
+### Breaking changes: 
+
+- Output of `tax_transform` with "clr" will change slightly when zeros are present:
+    - The clr transform procedure no longer converts to compositions before adding a pseudocount and running the CLR transform.
+    - This propagates a change made in the underlying `microbiome::transform` function in microbiome version 1.23.1
+    - When zeros are present in the OTU table, the addition of a pseudocount of half the minimum non-zero value is now done on the raw counts, rather than on the compositions.
+    - If you want the legacy behaviour, you can use the new "comp_clr" transformation option in `tax_transform`, which replicates the previous behaviour.
+
+- Output of `dist_calc` with "aitchison" will also change slightly when zeros are present
+    - Change is caused by same reason as above (change in `microbiome::transform` behaviour)
+    - If you want the legacy `dist_calc` aitchison distance, use `tax_transform` with "comp_clr" followed by `dist_calc` with "euclidean".
+    - This change will also affect `comp_barplot` and `comp_heatmap` sample ordering when using aitchison distance
+    - If you want the legacy behaviour for `comp_barplot` sample ordering, set tax_transform_for_ordering = "comp_clr", and sample_order = "euclidean".
+    - If you want the legacy behaviour for `comp_heatmap` sample ordering, pre-transform with `tax_transform("comp_clr")`
+
+- `tax_transform` with "rclr" and `dist_calc` with "robust.aitchison" now give different results than before, due to changes in vegan ≥2.7.0 (the optspace matrix completion step)
+
+### Fix:
+
+- `tax_transform` "rclr" now actually works again with vegan ≥2.7.0, but beware of the breaking change in how it is computed.
+- Interactive plots in `ord_explore` now work with ggiraph ≥0.9.1 and ggplot2 ≥4.0.0, which are now the required versions of those dependencies.
 
 # microViz 0.12.7
 

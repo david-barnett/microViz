@@ -28,11 +28,18 @@
 #' @section (r)clr transformation note:
 #'
 #' If any values are zero, the clr transform routine first adds a small
-#' pseudocount of min(relative abundance)/2 to all values. To avoid this, you
+#' pseudocount of min(abundance)/2 to all values. To avoid this, you
 #' can replace any zeros in advance by setting zero_replace to a number > 0.
 #'
-#' The rclr transform does not replace zeros. Instead, only non-zero features
-#' are transformed, using the geometric mean of non-zero features as denominator.
+#' The comp_clr is provided for legacy reasons to replicate the behavior of
+#' microbiome::transform prior to microbiome version 1.23.1 (BioC late 2023).
+#' It first performs a compositional transform, then adds half the minimum
+#' value (i.e. now as a proportion) to all entries (if any zeroes were present)
+#' and finally performs the clr transform.
+#'
+#' The rclr is similar to regular clr, but it allows data with zeroes.
+#' See the vegan::decostand documentation for more details.
+#' rclr results may vary depending on the version of vegan installed.
 #'
 #' @section Binary transformation notes:
 #'
@@ -146,7 +153,7 @@ tax_transform <- function(data,
   otu <- otu_get(ps)
 
   # ensure matrix for transforms (otu_table class breaks rclr with optspace)
-  otu <- as(otu, "matrix")
+  otu <- methods::as(otu, "matrix")
 
   # add constant to all otu table values
   otu <- otuAddConstant(otu, add = add)
@@ -158,7 +165,10 @@ tax_transform <- function(data,
   otu <- otuTransform(otu = otu, trans = trans, ...)
 
   # return otu table in original orientation
-  if (phyloseq::taxa_are_rows(ps)) otu <- phyloseq::t(otu)
+  if (phyloseq::taxa_are_rows(ps)) {
+    # phyloseq::t can transpose otu_table or plain matrix
+    otu <- phyloseq::t(otu)
+  }
   phyloseq::otu_table(ps) <- phyloseq::otu_table(
     object = otu, taxa_are_rows = phyloseq::taxa_are_rows(ps)
   )
@@ -200,6 +210,20 @@ tax_transformInfoUpdate <- function(info, trans, chain, rank) {
 # returned by otu_get() (taxa as columns!)
 # trans is same as tax_transform trans
 otuTransform <- function(otu, trans, ...) {
+  # save original column names and row names
+  names_col <- colnames(otu)
+  names_row <- rownames(otu)
+
+  # special case - pre-transform as compositional for comp_clr
+  if (identical(trans, "comp_clr")) {
+    # legacy approach from microbiome::transform before 1.23.1 - BioC late 2023
+    # - performs compositional transform
+    # - then adds half the minimum value (i.e. a proportion)
+    # - only then clr transforms
+    otu <- otuTransform(otu = otu, trans = "compositional")
+    trans <- "clr" # next step is clr (but will still be labelled comp_clr)
+  }
+
   # perform one of several transformations #
   if (identical(trans, "binary")) { # perform special binary transformation
     dots <- list(...)
@@ -216,11 +240,14 @@ otuTransform <- function(otu, trans, ...) {
     }
     otu <- log2(otu)
   } else {
-    # transform phyloseq with microbiome::transform
-    otu <- phyloseq::t(otu)
+    # transform otu table with microbiome::transform
+    otu <- phyloseq::t(otu) # microbiome::transform uses/needs taxa as rows
     otu <- microbiome::transform(otu, transform = trans, target = "OTU", ...)
     otu <- phyloseq::t(otu) # microbiome::transform uses/returns taxa as rows
   }
+  # ensure names: some transforms drop dimnames (e.g. rclr in vegan 2.7-2)
+  colnames(otu) <- names_col
+  rownames(otu) <- names_row
   return(otu)
 }
 
@@ -228,8 +255,9 @@ otuTransform <- function(otu, trans, ...) {
 # binary transformation helper
 # otu is from otu_get(ps)
 otuTransformBinary <- function(otu, undetected = 0) {
-  # get and transform otu_table
-  otu <- unclass(otu)
+  # get otu_table and ensure plain matrix
+  otu <- methods::as(otu, "matrix")
+  # values above undetected threshold are present (TRUE)
   otu <- otu > undetected
   # cast from logical to double
   storage.mode(otu) <- "double"
@@ -280,3 +308,4 @@ otuHalfMin <- function(otu) {
   halfmin <- min(otu[otu > 0], na.rm = TRUE) / 2
   return(halfmin)
 }
+

@@ -78,11 +78,17 @@ A few commonly used transformations:
 
 
 If any values are zero, the clr transform routine first adds a small
-pseudocount of min(relative abundance)/2 to all values. To avoid this, you
+pseudocount of min(abundance)/2 to all values. To avoid this, you
 can replace any zeros in advance by setting zero_replace to a number > 0.
 
-The rclr transform does not replace zeros. Instead, only non-zero features
-are transformed, using the geometric mean of non-zero features as denominator.
+The comp_clr is provided for legacy reasons to replicate the behavior of
+microbiome::transform prior to microbiome version 1.23.1 (BioC late 2023).
+It first performs a compositional transform, then adds half the minimum
+value (i.e. a proportion) to all entries, and finally performs the clr transform.
+
+The rclr is similar to regular clr, but it allows data with zeroes.
+See the vegan::decostand documentation for more details.
+rclr results may vary depending on the version of vegan installed.
 }
 
 \section{Binary transformation notes}{
