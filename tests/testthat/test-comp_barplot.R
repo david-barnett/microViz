@@ -69,7 +69,8 @@ test_that("comp_barplot doesn't change", {
     ps_filter(timepoint == 1) %>%
     comp_barplot(
       tax_level = "Genus", n_taxa = 8,
-      sample_order = "aitchison",
+      tax_transform_for_ordering = "comp_clr", # legacy to match prior output
+      sample_order = "euclidean",
       merge_other = FALSE,
       tax_order = sum,
     ) + ggplot2::coord_flip()

@@ -14,7 +14,7 @@ test_that("tax_top works", {
   data("esophagus", package = "phyloseq")
   eso <- microViz:::psCheckTaxTable(esophagus, verbose = FALSE)
   eso <- microViz:::psCheckSamdat(eso, verbose = FALSE)
-  eso <- tax_transform(eso, "clr")
+  eso <- tax_transform(eso, "comp_clr") # now a legacy method
   expect_silent(TOPb_transf <- tax_top(eso, n = NA))
   expect_silent(TOPb_counts <- tax_top(eso, n = NA, use_counts = TRUE))
   expect_snapshot_csv(TOPb_transf, name = "tax_top")

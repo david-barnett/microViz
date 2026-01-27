@@ -18,12 +18,41 @@ test_that("gunifrac alpha = 1 is wunifrac", {
   )
 })
 
+test_that("dist_calc clr and euclid same as aitchison", {
+  local_edition(3)
+  # vegan::vegdist needs otu_table to be positive matrix for aitchison
+  otu_matrix <- as(otu_get(microViz::ibd), "matrix")
+  halfmin <- min(otu_matrix[otu_matrix > 0]) / 2
+  otu_matrix <- otu_matrix + halfmin
+  aitchVeg <- vegan::vegdist(x = otu_matrix, method = "aitchison")
+
+  # internally dist_calc uses clr transform after pseudocount for aitchison
+  aitchViz <- microViz::ibd %>%
+    dist_calc(dist = "aitchison") %>%
+    dist_get()
+
+  expect_equal(
+    object = aitchVeg, expected = aitchViz,
+    tolerance = 0.0000001, ignore_attr = c("call", "method", "maxdist")
+  )
+
+  # clr (with pseudocount) + euclidean should equal aitchison
+  clrEuclid <- microViz::ibd %>%
+    tax_transform("clr") %>%
+    dist_calc(dist = "euclidean") %>%
+    dist_get()
+
+  expect_equal(
+    object = aitchVeg, expected = clrEuclid,
+    tolerance = 0.0000001, ignore_attr = c("call", "method", "maxdist", "Labels")
+  )
+})
+
 test_that("dist_calc rclr and euclid same as robust aitchison", {
   local_edition(3)
-  robustAitchVeg <- microViz::ibd %>%
-    otu_get() %>%
-    as(., "matrix") %>% # can't be otu_table for rclr with optspace()
-    vegan::vegdist(method = "robust.aitchison")
+  # can't be otu_table for rclr with optspace()
+  otu_matrix <- as(otu_get(microViz::ibd), "matrix")
+  robustAitchVeg <- vegan::vegdist(otu_matrix, method = "robust.aitchison")
 
   robustAitchViz <- microViz::ibd %>%
     dist_calc(dist = "robust.aitchison") %>%
@@ -41,7 +70,7 @@ test_that("dist_calc rclr and euclid same as robust aitchison", {
 
   expect_equal(
     object = robustAitchVeg, expected = rclrEuclid,
-    tolerance = 0.0000001, ignore_attr = c("call", "method", "maxdist")
+    tolerance = 0.0000001, ignore_attr = c("call", "method", "maxdist", "Labels")
   )
 })
 

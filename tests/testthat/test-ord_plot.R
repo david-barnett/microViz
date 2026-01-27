@@ -55,7 +55,8 @@ test_that("checkValidEllipsesOrdPlot works", {
 p <- suppressMessages(
   # messages about scaling
   ps %>%
-    tax_transform("clr", rank = "Genus") %>%
+    # comp_clr is legacy method
+    tax_transform("comp_clr", rank = "Genus") %>%
     ord_calc(constraints = c("weight", "female")) %>%
     ord_plot(colour = "bmi_group", plot_taxa = 1:3) +
     lims(x = c(-5, 6), y = c(-5, 5))
@@ -88,16 +89,16 @@ test_that("partialed bray CAP plot gives correct positions", {
   expect_snapshot(cat(p2$layers[[2]]$data[, 1, drop = TRUE]))
 })
 
-# aitchison and clr PCA equivalence ----------------------------------------
+# legacy method aitchison and clr PCA equivalence ----------------------------
 
 p3 <- ps %>%
-  tax_transform(trans = "identity", rank = "Genus") %>%
-  dist_calc("aitchison") %>%
+  tax_transform(trans = "comp_clr", rank = "Genus") %>%
+  dist_calc("euclidean") %>%
   ord_calc(method = "PCoA") %>%
   ord_plot(colour = "bmi_group")
 
 p4 <- ps %>%
-  tax_transform(trans = "clr", rank = "Genus") %>%
+  tax_transform(trans = "comp_clr", rank = "Genus") %>%
   ord_calc(method = "PCA") %>%
   ord_plot(colour = "bmi_group")
 
@@ -118,4 +119,36 @@ test_that("clr PCA plot hasn't changed", {
   expect_snapshot(cat(p4$data[1:50, 1, drop = TRUE]))
   expect_snapshot(cat(p4$data[1:50, 2, drop = TRUE]))
   expect_snapshot(p4$layers)
+})
+
+# new default method aitchison and clr PCA equivalence -----------------------
+
+p5 <- ps %>%
+  tax_transform(trans = "identity", rank = "Genus") %>%
+  dist_calc("aitchison") %>%
+  ord_calc(method = "PCoA") %>%
+  ord_plot(colour = "bmi_group")
+
+p6 <- ps %>%
+  tax_transform(trans = "clr", rank = "Genus") %>%
+  ord_calc(method = "PCA") %>%
+  ord_plot(colour = "bmi_group")
+
+test_that("default clr PCA equivalent to aitchison PCoA", {
+  expect_equal(
+    object = abs(round(unname(p5$data[, 1:2]), digits = 10)),
+    expected = abs(round(unname(p6$data[, 1:2]), digits = 10))
+  )
+})
+
+test_that("default aitchison plot hasn't changed", {
+  expect_snapshot(cat(abs(p5$data[1:50, 1, drop = TRUE])))
+  expect_snapshot(cat(abs(p5$data[1:50, 2, drop = TRUE])))
+  expect_snapshot(p5$layers)
+})
+
+test_that("default clr PCA plot hasn't changed", {
+  expect_snapshot(cat(p6$data[1:50, 1, drop = TRUE]))
+  expect_snapshot(cat(p6$data[1:50, 2, drop = TRUE]))
+  expect_snapshot(p6$layers)
 })

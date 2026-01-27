@@ -111,7 +111,8 @@ test_that("comp_heatmap doesn't change: ", {
 
   p <- suppressWarnings(
     psq %>%
-      tax_transform("clr") %>%
+      # now uses legacy procedure to mimic old microbiome::transform("clr")
+      tax_transform("comp_clr") %>%
       comp_heatmap(taxa = taxa, anno_tax = tax_anno(undetected = 50))
   )
   expect_snapshot_csv(

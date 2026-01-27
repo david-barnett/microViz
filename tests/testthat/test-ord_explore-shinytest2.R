@@ -46,7 +46,7 @@ test_that("ord_explore app works: unconstrained ords", {
   # Set initial inputs and click build
   app$expect_values() # test 1
   app$set_inputs(rank = "genus")
-  app$set_inputs(trans = "clr")
+  app$set_inputs(trans = "comp_clr")
   app$wait_for_idle()
   app$expect_values() # 2
 

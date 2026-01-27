@@ -13,7 +13,7 @@ test_that("ps_calc_dominant supported plot doesn't change", {
       rank = "Family", other = "Other", none = "Not dominated",
       threshold = 0.4, n_max = 3
     ) %>%
-    tax_transform(rank = "Genus", trans = "clr") %>%
+    tax_transform(rank = "Genus", trans = "comp_clr") %>%
     ord_calc("PCA") %>%
     ord_plot(colour = "dominant_Family", size = 3, alpha = 0.6) +
     scale_colour_manual(values = c(

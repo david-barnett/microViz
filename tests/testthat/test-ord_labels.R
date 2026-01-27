@@ -13,8 +13,9 @@ ibd <- ibd %>%
   phyloseq_validate()
 
 # calculate a centered-log-ratio transformed PCA ordination
+# now uses legacy "comp_clr" method to match prior output
 ibd_ord <- ibd %>%
-  tax_transform("clr", rank = "Genus") %>%
+  tax_transform("comp_clr", rank = "Genus") %>%
   ord_calc("PCA")
 
 # example plot #
@@ -51,7 +52,7 @@ p2 <- ibd %>%
     Female = as.numeric(gender == "female"),
     Abx. = as.numeric(abx == "abx")
   ) %>%
-  tax_transform("clr", rank = "Genus") %>%
+  tax_transform("comp_clr", rank = "Genus") %>%
   ord_calc(
     constraints = c("IBD", "Female", "Abx."),
     method = "RDA",
