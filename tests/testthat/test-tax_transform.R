@@ -36,8 +36,13 @@ test_that("tax_transform doesn't change", {
   comp <- tax_transform(ps, trans = "compositional", rank = "Family")
   expect_snapshot_csv(name = "diet_fam_prop", object = round(otu_get(comp), 4))
 
-  clr <- tax_transform(ps, trans = "clr", rank = "Family")
+  # this is now a legacy routine: - replicating microbiome <1.23.1 behaviour
+  clr <- tax_transform(ps, trans = "comp_clr", rank = "Family")
   expect_snapshot_csv(name = "diet_fam_clr", object = round(otu_get(clr), 4))
+
+  # new clr routine
+  clr2 <- tax_transform(ps, trans = "clr", rank = "Family")
+  expect_snapshot_csv(name = "diet_fam_clr2", object = round(otu_get(clr2), 4))
 
   rclr <- tax_transform(ps, trans = "rclr", rank = "Family")
   expect_snapshot_csv(name = "diet_fam_rclr", object = round(otu_get(rclr), 4))

@@ -44,7 +44,7 @@ test_that("ps_calc_richness supported plot doesn't change", {
     tax_fix() %>%
     ps_calc_richness("Genus", index = "observed") %>%
     ps_calc_richness("Family", index = "chao1") %>%
-    tax_transform(rank = "Genus", trans = "clr") %>%
+    tax_transform(rank = "Genus", trans = "comp_clr") %>% # now a legacy method
     ord_calc("PCA") %>%
     ord_plot(
       size = "observed_Genus", colour = "chao1_Family"
