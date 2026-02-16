@@ -32,7 +32,7 @@
 #' can replace any zeros in advance by setting zero_replace to a number > 0.
 #'
 #' The comp_clr is provided for legacy reasons to replicate the behavior of
-#' microbiome::transform prior to microbiome version 1.23.1 (BioC late 2023).
+#' microbiome::transform prior to microbiome version 1.32.0 (BioC 3.22 Oct 2025).
 #' It first performs a compositional transform, then adds half the minimum
 #' value (i.e. now as a proportion) to all entries (if any zeroes were present)
 #' and finally performs the clr transform.
@@ -216,7 +216,8 @@ otuTransform <- function(otu, trans, ...) {
 
   # special case - pre-transform as compositional for comp_clr
   if (identical(trans, "comp_clr")) {
-    # legacy approach from microbiome::transform before 1.23.1 - BioC late 2023
+    # legacy approach from microbiome::transform before 1.23.1/1.32.0 
+    # (on github late 2023, but only on BioC 3.22 in Oct 2025 as part of v1.32.0)
     # - performs compositional transform
     # - then adds half the minimum value (i.e. a proportion)
     # - only then clr transforms
