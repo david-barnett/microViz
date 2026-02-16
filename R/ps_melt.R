@@ -13,13 +13,13 @@
 #' with \code{\link[ggplot2]{ggplot}2}.
 #' The naming conventions used in downstream phyloseq graphics functions
 #' have reserved the following variable names that should not be used
-#' as the names of \code{\link{sample_variables}}
-#' or taxonomic \code{\link{rank_names}}.
+#' as the names of \code{\link[phyloseq]{sample_variables}}
+#' or taxonomic \code{\link[phyloseq]{rank_names}}.
 #' These reserved names are \code{c("Sample", "Abundance", "OTU")}.
 #' Also, you should not have identical names for
 #' sample variables and taxonomic ranks.
 #' That is, the intersection of the output of the following two functions
-#' \code{\link{sample_variables}}, \code{\link{rank_names}}
+#' \code{\link[phyloseq]{sample_variables}}, \code{\link[phyloseq]{rank_names}}
 #' should be an empty vector
 #' (e.g. \code{intersect(sample_variables(ps), rank_names(ps))}).
 #' All of these potential name collisions are checked-for
@@ -39,16 +39,16 @@
 #' the number of OTU entries has a large effect on the RAM requirement, methods
 #' to reduce the number of separate OTU entries -- for instance by
 #' agglomerating OTUs based on phylogenetic distance using
-#' \code{\link{tip_glom}} -- can help alleviate RAM usage problems.  This
+#' \code{\link[phyloseq]{tip_glom}} -- can help alleviate RAM usage problems.  This
 #' function is made user-accessible for flexibility, but is also used
 #' extensively by plot functions in phyloseq.
 #'
-#' @param ps (Required). An \code{\link{otu_table-class}} or
-#'  \code{\link{phyloseq-class}}. Function most useful for phyloseq-class.
+#' @param ps (Required). An \code{\link[phyloseq]{otu_table-class}} or
+#'  \code{\link[phyloseq]{phyloseq-class}}. Function most useful for phyloseq-class.
 #'
-#' @return A \code{\link{tibble}} class data frame.
+#' @return A \code{\link[tibble]{tibble}} class data frame.
 #'
-#' @seealso \code{\link{psmelt}}
+#' @seealso \code{\link[phyloseq]{psmelt}}
 #'
 #' @export
 #'
