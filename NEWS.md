@@ -25,6 +25,7 @@
 
 - `tax_transform` "rclr" now actually works again with vegan ≥2.7.0, but beware of the breaking change in how it is computed.
 - Interactive plots in `ord_explore` now work with ggiraph ≥0.9.1 and ggplot2 ≥4.0.0, which are now the required versions of those dependencies.
+- `taxatree_plotkey` and `taxatree_plot_labels` circular label drawing no longer errors with dplyr ≥1.2.0 (removed use of `dplyr::if_all` which changed behaviour)
 
 # microViz 0.12.7
 
