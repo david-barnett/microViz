@@ -20,6 +20,10 @@ test_that("gunifrac alpha = 1 is wunifrac", {
 
 test_that("dist_calc clr and euclid same as aitchison", {
   local_edition(3)
+  skip_if(
+    packageVersion("microbiome") < "1.23.1",
+    message = "requires microbiome >= 1.23.1 for current clr behaviour"
+  )
   # vegan::vegdist needs otu_table to be positive matrix for aitchison
   otu_matrix <- as(otu_get(microViz::ibd), "matrix")
   halfmin <- min(otu_matrix[otu_matrix > 0]) / 2
