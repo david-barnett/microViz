@@ -12,7 +12,7 @@
 #'
 #' @inheritParams ggplot2::layer
 #' @inheritParams ggplot2::stat_ellipse
-#' @seealso \code{ggplot2::\link{stat_ellipse}}
+#' @seealso \code{ggplot2::\link[ggplot2]{stat_ellipse}}
 #' @seealso \code{\link{ord_plot}}
 #' @export
 #' @examples
