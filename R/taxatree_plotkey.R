@@ -272,17 +272,40 @@ taxatree_plot_labels <- function(p,
   dots <- list(...)
 
   if (isTRUE(circular)) {
-    # add circular plot specific nudges and limits
-    args[c("x_nudge", "y_nudge", "xlim", "ylim", "rotate")] <- list(
-      x_nudge, y_nudge, c(-1.5, 1.5), c(-1.5, 1.5), rotate
-    )
+    args[c("xlim", "ylim")] <- list(c(-1.5, 1.5), c(-1.5, 1.5))
     args[names(dots)] <- dots
     args <- taxatreePruneLabelArgs(fun = fun, args = args)
 
-    for (pos in list(c("x", "y"), "y", NULL, "x")) {
-      args[["pos"]] <- pos
-      p <- do.call(taxatree_plot_labelsQuadrant, args = args)
-      args[["p"]] <- p # modified plot used in next iteration of loop
+    # Separate geom args from internal control args
+    geom_args <- args[!names(args) %in% c(
+      "p", "fun", "label_var", "taxon_renamer"
+    )]
+
+    # Add one ggrepel layer per quadrant of the circular tree.
+    # Each quadrant gets its own layer so ggrepel computes label repulsion
+    # per-quadrant (labels don't push across quadrants).
+    # Nudge pushes labels outward; hjust anchors text on the center-facing side.
+    quadrants <- list(
+      list( # top-right
+        data = function(d) d[d[[label_var]] & d$x >= 0 & d$y >= 0, , drop = FALSE],
+        nudge_x =  x_nudge, nudge_y =  y_nudge, hjust = 0, angle =  rotate
+      ),
+      list( # top-left
+        data = function(d) d[d[[label_var]] & d$x <  0 & d$y >= 0, , drop = FALSE],
+        nudge_x = -x_nudge, nudge_y =  y_nudge, hjust = 1, angle = -rotate
+      ),
+      list( # bottom-left
+        data = function(d) d[d[[label_var]] & d$x <  0 & d$y <  0, , drop = FALSE],
+        nudge_x = -x_nudge, nudge_y = -y_nudge, hjust = 1, angle =  rotate
+      ),
+      list( # bottom-right
+        data = function(d) d[d[[label_var]] & d$x >= 0 & d$y <  0, , drop = FALSE],
+        nudge_x =  x_nudge, nudge_y = -y_nudge, hjust = 0, angle = -rotate
+      )
+    )
+
+    for (q in quadrants) {
+      p <- p + do.call(fun, c(q, geom_args))
     }
   } else {
     args[names(dots)] <- dots
@@ -291,55 +314,6 @@ taxatree_plot_labels <- function(p,
   }
   return(p)
 }
-
-# helper for plotting labels on each quadrant of circular tree plot
-taxatree_plot_labelsQuadrant <- function(p,
-                                         taxon_renamer,
-                                         fun = ggrepel::geom_text_repel,
-                                         pos = NULL,
-                                         label_var,
-                                         x_nudge,
-                                         y_nudge,
-                                         rotate,
-                                         ...) {
-  neg <- c("x", "y")[!c("x", "y") %in% pos]
-
-  if ("y" %in% neg) {
-    ysign <- -1
-  } else {
-    ysign <- 1
-  }
-  if ("x" %in% neg) {
-    xsign <- -1
-    hjust <- 1
-  } else {
-    xsign <- 1
-    hjust <- 0
-  }
-
-  args <- list(
-    data = function(d) {
-      dplyr::filter(
-        .data = d,
-        dplyr::if_all(.cols = dplyr::all_of(pos), .fns = ~ . >= 0),
-        dplyr::if_all(.cols = dplyr::all_of(neg), .fns = ~ . < 0),
-        .data[[label_var]]
-      )
-    },
-    nudge_x = xsign * x_nudge,
-    nudge_y = ysign * y_nudge,
-    angle = ysign * xsign * rotate,
-    hjust = hjust
-  )
-
-  # append/overwrite args with extra args
-  dots <- list(...)
-  args[names(dots)] <- dots
-
-  p <- p + do.call(what = fun, args = args)
-  return(p)
-}
-
 
 # helper for plotting labels on non-circular taxatree plots/keys
 taxatree_plot_labelsNotCircular <- function(p,
