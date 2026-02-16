@@ -40,10 +40,6 @@ test_that("tax_transform doesn't change", {
   clr <- tax_transform(ps, trans = "comp_clr", rank = "Family")
   expect_snapshot_csv(name = "diet_fam_clr", object = round(otu_get(clr), 4))
 
-  # new clr routine
-  clr2 <- tax_transform(ps, trans = "clr", rank = "Family")
-  expect_snapshot_csv(name = "diet_fam_clr2", object = round(otu_get(clr2), 4))
-
   rclr <- tax_transform(ps, trans = "rclr", rank = "Family")
   expect_snapshot_csv(name = "diet_fam_rclr", object = round(otu_get(rclr), 4))
 
@@ -60,6 +56,16 @@ test_that("tax_transform doesn't change", {
   expect_error(object = {
     tax_transform(ps, rank = "Family", trans = "log2", zero_replace = 0)
   }, regexp = "711 zeros detected in otu_table")
+})
+
+test_that("tax_transform clr output doesn't change", {
+  skip_if(
+    packageVersion("microbiome") < "1.23.1",
+    message = "requires microbiome >= 1.23.1 for current clr behaviour"
+  )
+  ps <- dietswap
+  clr2 <- tax_transform(ps, trans = "clr", rank = "Family")
+  expect_snapshot_csv(name = "diet_fam_clr2", object = round(otu_get(clr2), 4))
 })
 
 test_that("clr and rclr equivalent with no zeros", {

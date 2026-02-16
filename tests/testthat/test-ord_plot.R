@@ -142,12 +142,20 @@ test_that("default clr PCA equivalent to aitchison PCoA", {
 })
 
 test_that("default aitchison plot hasn't changed", {
+  skip_if(
+    packageVersion("microbiome") < "1.23.1",
+    message = "requires microbiome >= 1.23.1 for current clr behaviour"
+  )
   expect_snapshot(cat(abs(p5$data[1:50, 1, drop = TRUE])))
   expect_snapshot(cat(abs(p5$data[1:50, 2, drop = TRUE])))
   expect_snapshot(p5$layers)
 })
 
 test_that("default clr PCA plot hasn't changed", {
+  skip_if(
+    packageVersion("microbiome") < "1.23.1",
+    message = "requires microbiome >= 1.23.1 for current clr behaviour"
+  )
   expect_snapshot(cat(p6$data[1:50, 1, drop = TRUE]))
   expect_snapshot(cat(p6$data[1:50, 2, drop = TRUE]))
   expect_snapshot(p6$layers)
