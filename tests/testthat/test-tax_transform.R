@@ -36,7 +36,7 @@ test_that("tax_transform doesn't change", {
   comp <- tax_transform(ps, trans = "compositional", rank = "Family")
   expect_snapshot_csv(name = "diet_fam_prop", object = round(otu_get(comp), 4))
 
-  # this is now a legacy routine: - replicating microbiome <1.23.1 behaviour
+  # this is now a legacy routine: - replicating microbiome <1.32.0 behaviour
   clr <- tax_transform(ps, trans = "comp_clr", rank = "Family")
   expect_snapshot_csv(name = "diet_fam_clr", object = round(otu_get(clr), 4))
 
@@ -60,8 +60,8 @@ test_that("tax_transform doesn't change", {
 
 test_that("tax_transform clr output doesn't change", {
   skip_if(
-    packageVersion("microbiome") < "1.23.1",
-    message = "requires microbiome >= 1.23.1 for current clr behaviour"
+    packageVersion("microbiome") < "1.32.0",
+    message = "requires microbiome >= 1.32.0 for current clr behaviour"
   )
   ps <- dietswap
   clr2 <- tax_transform(ps, trans = "clr", rank = "Family")

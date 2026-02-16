@@ -4,7 +4,7 @@
 
 - Output of `tax_transform` with "clr" will change slightly when zeros are present:
     - The clr transform procedure no longer converts to compositions before adding a pseudocount and running the CLR transform.
-    - This propagates a change made in the underlying `microbiome::transform` function in microbiome version 1.23.1
+    - This propagates a change made in the underlying `microbiome::transform` function in microbiome version 1.32.0
     - When zeros are present in the OTU table, the addition of a pseudocount of half the minimum non-zero value is now done on the raw counts, rather than on the compositions.
     - If you want the legacy behaviour, you can use the new "comp_clr" transformation option in `tax_transform`, which replicates the previous behaviour.
 
@@ -17,7 +17,7 @@
 
 - `tax_transform` with "rclr" and `dist_calc` with "robust.aitchison" now give different results than before, due to changes in vegan ≥2.7.0 (the optspace matrix completion step)
 
-- microViz 0.13.0 requires microbiome package ≥1.23.1 and vegan package ≥2.7.0 due to the changes in underlying transformation functions
+- microViz 0.13.0 requires vegan package ≥2.7.0 (and recommends microbiome ≥1.32.0) due to the changes in underlying transformation functions
 - microViz 0.13.0 requires ggiraph package ≥0.9.1 and ggplot2 package ≥4.0.0 to fix interactive plot issues in `ord_explore`
 - microViz 0.13.0 no longer supports R versions before 4.0.0 (released 2020)
 
