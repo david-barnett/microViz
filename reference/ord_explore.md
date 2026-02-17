@@ -1,0 +1,226 @@
+# Interactively explore microbial compositions of ordinated samples
+
+A Shiny app used to create and explore an interactive version of
+[`ord_plot()`](https://david-barnett.github.io/microViz/reference/ord_plot.md).
+You can select samples on an ordination plot to view their composition
+with stacked barplots.
+
+The `ord_explore()` data argument takes either:
+
+- the output of
+  [`ord_calc()`](https://david-barnett.github.io/microViz/reference/ord_calc.md)
+  (i.e. a psExtra with an ordination)
+
+- a plain phyloseq object: `ord_explore()` will help you build an
+  ordination
+
+Once the app is running (in your browser), you can:
+
+1.  Create/edit the ordination if required
+
+    - look at the R console error messages if your chosen options don't
+      build
+
+2.  Style the ordination plot (e.g. choose dimensions; set colour and
+    size; ...)
+
+    - Taxa loading arrows can be added only to PCA, RDA and CCA plots
+
+    - Convex hulls or ellipses can only be drawn if Colour is set to a
+      variable
+
+    - To track individuals over time with the path plotter, your data
+      MUST already be sorted by time (e.g. with ps_arrange)!
+
+3.  Click on or use the lasso tool to select 1 or more samples to view
+    their compositions
+
+    - By default samples can be selected individually
+
+    - Set the "Select" option to another variable to select by level of
+      that variable
+
+4.  Style the taxonomic compositions barplot
+
+    - The samples are ordered using the seriate_method argument and the
+      same transformation and distance as used in the ordination plot
+
+    - The app may lag if you select 100s of samples and ungroup the
+      "Other" category
+
+    - To avoid this lag: either reduce the number of taxa or samples, or
+      deselect "Interactive" barplot
+
+5.  Stop the app by clicking the red stop button in the R console
+
+    - Closing the web browser window doesn't stop the app, (you can find
+      the app again at the local http address shown in the R console)
+
+    - Don't forget to copy the ordination plot code before you close the
+      app
+
+See the Details section for some known limitations of the app. Please
+report any other app problems on the microViz GitHub issues page.
+
+## Usage
+
+``` r
+ord_explore(
+  data,
+  sample_id = NULL,
+  seriate_method = "OLO_ward",
+  app_options = list(launch.browser = TRUE),
+  plot_widths = c(7, 9),
+  modal_fade = TRUE,
+  notification_durations = list(2, 20),
+  counts_warn = TRUE,
+  ...
+)
+```
+
+## Arguments
+
+- data:
+
+  a phyloseq, or the psExtra output of ord_calc
+
+- sample_id:
+
+  name of sample ID variable to use as default for selecting samples
+
+- seriate_method:
+
+  seriation method to order phyloseq samples by similarity
+
+- app_options:
+
+  passed to shinyApp() options argument
+
+- plot_widths:
+
+  widths of plots in inches, including any legends (first number is
+  ordination, second is composition barplot)
+
+- modal_fade:
+
+  should the popover menus (modals) have a fade animation?
+
+- notification_durations:
+
+  length 2 list giving duration in seconds of short and long
+  notifications or NULL for notifications that do not disappear
+  automatically
+
+- counts_warn:
+
+  should a warning be issued if accounts are unavailable?
+
+- ...:
+
+  additional arguments passed to ord_plot
+
+## Value
+
+nothing, opens default browser
+
+## Details
+
+Limitations:
+
+- If a "Select:" grouping variable is NA for some samples, then that
+  grouping variable cannot be used to select those samples
+
+- "Shape:" can only be mapped to variables with maximum 5 distinct
+  levels, not including NAs. NAs in the shape variable are shown as
+  hollow circles.
+
+On some web browsers, e.g. older versions of Firefox, the numeric
+inputs' buttons are sometimes hard to click. As a workaround, click the
+box and type a number or use the arrow keys. This problem occurs in all
+Shiny apps, not just microViz.
+
+## Examples
+
+``` r
+# example code only runs in interactive R session
+if (interactive()) {
+  library(phyloseq)
+  library(dplyr)
+
+  # example of quickstart approach with interactive ordination calculation #
+  microViz::ibd %>%
+    # filtering makes subsequent calculations faster
+    tax_filter(min_prevalence = 2) %>%
+    tax_fix() %>%
+    ord_explore()
+
+  # simple example with precalculated ordination #
+  data("enterotype")
+  taxa_names(enterotype)[1] <- "unclassified" # replaces the "-1" taxon name
+  ps <- tax_fix(enterotype) # remove NA taxa
+  ord1 <- ps %>%
+    tax_transform("identity", rank = "Genus") %>%
+    dist_calc("bray") %>%
+    ord_calc(method = "PCoA")
+
+  ord_explore(data = ord1, auto_caption = 6)
+
+  # constrained ordination example #
+  data("dietswap", package = "microbiome")
+
+  # create a couple of numerical variables to use as constraints
+  dietswap <- dietswap %>%
+    ps_mutate(
+      weight = recode(bmi_group, obese = 3, overweight = 2, lean = 1),
+      female = if_else(sex == "female", true = 1, false = 0)
+    ) %>%
+    tax_agg("Genus")
+
+  constrained_aitchison_rda <- dietswap %>%
+    tax_transform("clr") %>%
+    ord_calc(constraints = c("weight", "female"))
+
+  # label style arguments can be passed to ord_explore
+  constrained_aitchison_rda %>%
+    ord_explore(
+      tax_lab_style = list(size = 3),
+      constraint_lab_style = list(size = 4), auto_caption = 6
+    )
+  # Try changing the point colour to bmi_group or similar
+  # Style points interactively!
+  # (setting colour/shape/etc as arguments doesn't work)
+
+  # dietswap is actually a longitudinal dataset, with multiple samples per
+  # subject. If we arrange by timepoint first (!!!), we can use the "paths"
+  # additional plot layer from the ord_explore "Add:" menu to track
+  # individual subjects over time.
+  dietswap %>%
+    ps_arrange(timepoint) %>%
+    tax_fix() %>%
+    ord_explore()
+
+
+  # Another dataset, where "size" variable drives gradient on PC1
+  # Try setting size and/or alpha to correspond to "size"!
+  # Then edit the ordination to use "size" as a condition, see what happens
+  # hmp2 <- microbiomeutilities::hmp2
+  hmp2 %>%
+    tax_fix() %>%
+    tax_transform(rank = "Genus", "identity") %>%
+    dist_calc("aitchison") %>%
+    ord_calc() %>%
+    ord_explore()
+
+  # another dataset
+  data("soilrep", package = "phyloseq")
+  # test auto creation of SAMPLE var
+  ps <- soilrep %>% ps_select(-Sample)
+  # The barplot is actually quite useless with the 16000+ anonymous OTUs
+  # in this dataset, but the 1000s of unmerged "Other" categories do render
+  phyloseq_validate(ps) %>%
+    tax_fix() %>%
+    dist_calc("aitchison") %>%
+    ord_calc() %>%
+    ord_explore()
+}
+```

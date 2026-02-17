@@ -6,12 +6,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Example analyses: Shao 2019 data • microViz</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
 <script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
@@ -33,7 +32,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">microViz</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.12.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.13.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -111,7 +110,7 @@ details.</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com" class="external-link">patchwork</a></span><span class="op">)</span> <span class="co"># for combining multiple plots</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://david-barnett.github.io/microViz">microViz</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;">microViz version 0.12.7 - Copyright (C) 2021-2025 David Barnett</span></span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">microViz version 0.13.0 - Copyright (C) 2021-2026 David Barnett</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Website: https://david-barnett.github.io/microViz</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Useful?  For citation details, run: `citation("microViz")`</span></span>
 <span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> Silence? `suppressPackageStartupMessages(library(microViz))`</span></span></code></pre></div>
@@ -312,7 +311,7 @@ un-merged, as in this example.</p>
 <span>    <span class="st">"Substanstial differences are visible in profiles of high abundance taxa"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.ticks.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>, strip.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>face <span class="op">=</span> <span class="st">"bold"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="shao19-analyses_files/figure-html/unnamed-chunk-14-1.png" width="672"></p>
+<p><img src="shao19-analyses_files/figure-html/unnamed-chunk-14-1.png" class="r-plt" alt="" width="672"></p>
 <p>As practice, try modifying this barplot by changing some of the
 <code><a href="../reference/comp_barplot.html">comp_barplot()</a></code> arguments, try for example: using a
 different dissimilarity measure to sort the samples, displaying a
@@ -400,7 +399,7 @@ object. To retrieve each of these, use
 <span><span class="co"># match coord_fixed() ratio to tax_lab_style() aspect_ratio for correct text angles</span></span>
 <span></span>
 <span><span class="va">PCA_plot</span></span></code></pre></div>
-<p><img src="shao19-analyses_files/figure-html/unnamed-chunk-16-1.png" width="720"></p>
+<p><img src="shao19-analyses_files/figure-html/unnamed-chunk-16-1.png" class="r-plt" alt="" width="720"></p>
 <p>As this PCA plot is a ggplot object, you can adjust the aesthetic
 scales (colour, shape, size etc.) and theme elements in <a href="https://ggplot2.tidyverse.org/" title="ggplot2 website" class="external-link">the usual
 ggplot ways</a>. However, styling the taxon loadings arrows and labels
@@ -428,7 +427,7 @@ can only be done within the <code><a href="../reference/ord_plot.html">ord_plot(
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span>, legend.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">PCA_plot_custom</span></span></code></pre></div>
-<p><img src="shao19-analyses_files/figure-html/unnamed-chunk-17-1.png" width="672"></p>
+<p><img src="shao19-analyses_files/figure-html/unnamed-chunk-17-1.png" class="r-plt" alt="" width="672"></p>
 <p>There are many choices to make during ordination analysis and
 visualisation. Try customising the ordination plot itself: change the
 arguments in <code><a href="../reference/ord_plot.html">ord_plot()</a></code> (e.g. map the shape aesthetic to
@@ -477,7 +476,7 @@ on the ordination plot axes!</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">patchwork</span><span class="fu">::</span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html" class="external-link">wrap_plots</a></span><span class="op">(</span><span class="va">PCA_plot_custom</span>, <span class="va">irisPlot</span>, nrow <span class="op">=</span> <span class="fl">1</span>, widths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="shao19-analyses_files/figure-html/unnamed-chunk-18-1.png" width="1152"></p>
+<p><img src="shao19-analyses_files/figure-html/unnamed-chunk-18-1.png" class="r-plt" alt="" width="1152"></p>
 </div>
 <div class="section level2">
 <h2 id="interactive-ordination-plots">Interactive ordination plots<a class="anchor" aria-label="anchor" href="#interactive-ordination-plots"></a>
@@ -489,7 +488,7 @@ don’t fancy much typing?</p>
 ordination plots.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/ord_explore.html">ord_explore</a></span><span class="op">(</span><span class="va">shao19</span><span class="op">)</span></span></code></pre></div>
-<p><img src="assets%2Ford_explore.gif"></p>
+<p><img src="assets/ord_explore.gif"></p>
 <p>As shown in the video clip above, your default web browser will open
 a new window (or tab), and display an interactive <a href="https://shiny.posit.co/" class="external-link">shiny</a>
 application. Select options from the menu to build an interactive
@@ -525,7 +524,7 @@ abundance taxa can be hard to spot.</p>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#&gt; Proportional min_prevalence given: 0.1 --&gt; min 31/306 samples.</span></span></code></pre></div>
-<p><img src="shao19-analyses_files/figure-html/unnamed-chunk-20-1.png" width="816"></p>
+<p><img src="shao19-analyses_files/figure-html/unnamed-chunk-20-1.png" class="r-plt" alt="" width="816"></p>
 <p>See the microViz <a href="https://david-barnett.github.io/microViz/articles/web-only/heatmaps.html" title="Heatmaps">heatmaps article</a> for more guidance on making
 composition heatmaps.</p>
 <p><a href="https://jokergoo.github.io/ComplexHeatmap-reference/book/" title="ComplexHeatmap book" class="external-link">See the ComplexHeatmap online book</a> for
@@ -544,7 +543,7 @@ with an overall difference in microbiota composition in your dataset is
 permutational multivariate analysis of variance (PERMANOVA). For a great
 introduction to PERMANOVA, <a href="https://doi.org/10.1002/9781118445112.stat07841" title="Permutational Multivariate Analysis of Variance (PERMANOVA)" class="external-link">see
 this resource by Marti J Anderson</a>.</p>
-<p>vegan provides the <code><a href="https://rdrr.io/pkg/vegan/man/adonis.html" class="external-link">vegan::adonis2()</a></code> function for
+<p>vegan provides the <code><a href="https://vegandevs.github.io/vegan/reference/adonis.html" class="external-link">vegan::adonis2()</a></code> function for
 performing PERMANOVA analyses. microViz provides a convenience function,
 <code><a href="../reference/dist_permanova.html">dist_permanova()</a></code> which allows you to use the distance
 matrix stored in a psExtra object to perform PERMANOVA with adonis2, and
@@ -559,8 +558,8 @@ store the result in the psExtra too.</p>
 <span>    n_processes <span class="op">=</span> <span class="fl">1</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#&gt; Dropping samples with missings: 15</span></span>
-<span><span class="co">#&gt; 2025-04-14 11:49:13.887985 - Starting PERMANOVA with 99 perms with 1 processes</span></span>
-<span><span class="co">#&gt; 2025-04-14 11:49:14.30558 - Finished PERMANOVA</span></span>
+<span><span class="co">#&gt; 2026-02-17 09:23:42.803591 - Starting PERMANOVA with 99 perms with 1 processes</span></span>
+<span><span class="co">#&gt; 2026-02-17 09:23:43.345632 - Finished PERMANOVA</span></span>
 <span></span>
 <span><span class="va">shao4d_perm</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../reference/psExtra-accessors.html">perm_get</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Permutation test for adonis under reduced model</span></span>
@@ -570,11 +569,11 @@ store the result in the psExtra too.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; vegan::adonis2(formula = formula, data = metadata, permutations = n_perms, by = by, parallel = parall)</span></span>
 <span><span class="co">#&gt;               Df SumOfSqs      R2       F Pr(&gt;F)   </span></span>
-<span><span class="co">#&gt; birth_mode     1    10462 0.09055 29.3778   0.01 **</span></span>
-<span><span class="co">#&gt; sex            1      402 0.00348  1.1296   0.29   </span></span>
-<span><span class="co">#&gt; number_reads   1     1117 0.00967  3.1364   0.01 **</span></span>
-<span><span class="co">#&gt; Residual     287   102209 0.88462                  </span></span>
-<span><span class="co">#&gt; Total        290   115540 1.00000                  </span></span>
+<span><span class="co">#&gt; birth_mode     1    10596 0.09060 29.4369   0.01 **</span></span>
+<span><span class="co">#&gt; sex            1      411 0.00352  1.1427   0.30   </span></span>
+<span><span class="co">#&gt; number_reads   1     1287 0.01101  3.5765   0.01 **</span></span>
+<span><span class="co">#&gt; Residual     287   103310 0.88328                  </span></span>
+<span><span class="co">#&gt; Total        290   116961 1.00000                  </span></span>
 <span><span class="co">#&gt; ---</span></span>
 <span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre></div>
 </div>
@@ -639,11 +638,11 @@ C-section and vaginally delivered infants.</p>
 <span>  <span class="fu"><a href="../reference/models2stats.html">taxatree_models2stats</a></span><span class="op">(</span>.keep_models <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="co"># adjust the p values for multiple testing, within each rank</span></span>
 <span>  <span class="fu"><a href="../reference/taxatree_stats_p_adjust.html">taxatree_stats_p_adjust</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"fdr"</span>, grouping <span class="op">=</span> <span class="st">"rank"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2025-04-14 11:49:14.683869 - modelling at rank: phylum</span></span>
-<span><span class="co">#&gt; 2025-04-14 11:49:14.831641 - modelling at rank: class</span></span>
-<span><span class="co">#&gt; 2025-04-14 11:49:15.034188 - modelling at rank: order</span></span>
-<span><span class="co">#&gt; 2025-04-14 11:49:15.311254 - modelling at rank: family</span></span>
-<span><span class="co">#&gt; 2025-04-14 11:49:15.636246 - modelling at rank: genus</span></span></code></pre></div>
+<span><span class="co">#&gt; 2026-02-17 09:23:43.767481 - modelling at rank: phylum</span></span>
+<span><span class="co">#&gt; 2026-02-17 09:23:43.925934 - modelling at rank: class</span></span>
+<span><span class="co">#&gt; 2026-02-17 09:23:44.135947 - modelling at rank: order</span></span>
+<span><span class="co">#&gt; 2026-02-17 09:23:44.421221 - modelling at rank: family</span></span>
+<span><span class="co">#&gt; 2026-02-17 09:23:44.753546 - modelling at rank: genus</span></span></code></pre></div>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">shao4d_treeStats</span></span>
 <span><span class="co">#&gt; psExtra object - a phyloseq object with extra slots:</span></span>
@@ -707,8 +706,479 @@ lists of taxa.</p>
 <span></span>
 <span><span class="va">treePlotsSimple</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span>max.level <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="co"># just a list with a single ggplot inside</span></span>
 <span><span class="co">#&gt; List of 1</span></span>
-<span><span class="co">#&gt;  $ Csection:List of 11</span></span>
-<span><span class="co">#&gt;   ..- attr(*, "class")= chr [1:3] "ggraph" "gg" "ggplot"</span></span></code></pre></div>
+<span><span class="co">#&gt;  $ Csection: &lt;ggraph&gt;</span></span>
+<span><span class="co">#&gt;   ..@ data       : lyt_tbl_ [58 × 17] (S3: layout_tbl_graph/layout_ggraph/tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;  - attr(*, "graph")=Classes 'tbl_graph', 'igraph'  hidden list of 10</span></span>
+<span><span class="co">#&gt;   ..- attr(*, "active")= chr "edges"</span></span>
+<span><span class="co">#&gt;  - attr(*, "circular")= logi TRUE</span></span>
+<span><span class="co">#&gt;   ..@ layers     :List of 10</span></span>
+<span><span class="co">#&gt;   ..@ scales     :Classes 'ScalesList', 'ggproto', 'gg' &lt;ggproto object: Class ScalesList, gg&gt;</span></span>
+<span><span class="co">#&gt;     add: function</span></span>
+<span><span class="co">#&gt;     add_defaults: function</span></span>
+<span><span class="co">#&gt;     add_missing: function</span></span>
+<span><span class="co">#&gt;     backtransform_df: function</span></span>
+<span><span class="co">#&gt;     clone: function</span></span>
+<span><span class="co">#&gt;     find: function</span></span>
+<span><span class="co">#&gt;     get_scales: function</span></span>
+<span><span class="co">#&gt;     has_scale: function</span></span>
+<span><span class="co">#&gt;     input: function</span></span>
+<span><span class="co">#&gt;     map_df: function</span></span>
+<span><span class="co">#&gt;     n: function</span></span>
+<span><span class="co">#&gt;     non_position_scales: function</span></span>
+<span><span class="co">#&gt;     scales: list</span></span>
+<span><span class="co">#&gt;     set_palettes: function</span></span>
+<span><span class="co">#&gt;     train_df: function</span></span>
+<span><span class="co">#&gt;     transform_df: function</span></span>
+<span><span class="co">#&gt;     super:  &lt;ggproto object: Class ScalesList, gg&gt; </span></span>
+<span><span class="co">#&gt;   ..@ guides     :Classes 'Guides', 'ggproto', 'gg' &lt;ggproto object: Class Guides, gg&gt;</span></span>
+<span><span class="co">#&gt;     add: function</span></span>
+<span><span class="co">#&gt;     assemble: function</span></span>
+<span><span class="co">#&gt;     build: function</span></span>
+<span><span class="co">#&gt;     draw: function</span></span>
+<span><span class="co">#&gt;     get_custom: function</span></span>
+<span><span class="co">#&gt;     get_guide: function</span></span>
+<span><span class="co">#&gt;     get_params: function</span></span>
+<span><span class="co">#&gt;     get_position: function</span></span>
+<span><span class="co">#&gt;     guides: NULL</span></span>
+<span><span class="co">#&gt;     merge: function</span></span>
+<span><span class="co">#&gt;     missing: &lt;ggproto object: Class GuideNone, Guide, gg&gt;</span></span>
+<span><span class="co">#&gt;         add_title: function</span></span>
+<span><span class="co">#&gt;         arrange_layout: function</span></span>
+<span><span class="co">#&gt;         assemble_drawing: function</span></span>
+<span><span class="co">#&gt;         available_aes: any</span></span>
+<span><span class="co">#&gt;         build_decor: function</span></span>
+<span><span class="co">#&gt;         build_labels: function</span></span>
+<span><span class="co">#&gt;         build_ticks: function</span></span>
+<span><span class="co">#&gt;         build_title: function</span></span>
+<span><span class="co">#&gt;         draw: function</span></span>
+<span><span class="co">#&gt;         draw_early_exit: function</span></span>
+<span><span class="co">#&gt;         elements: list</span></span>
+<span><span class="co">#&gt;         extract_decor: function</span></span>
+<span><span class="co">#&gt;         extract_key: function</span></span>
+<span><span class="co">#&gt;         extract_params: function</span></span>
+<span><span class="co">#&gt;         get_layer_key: function</span></span>
+<span><span class="co">#&gt;         hashables: list</span></span>
+<span><span class="co">#&gt;         measure_grobs: function</span></span>
+<span><span class="co">#&gt;         merge: function</span></span>
+<span><span class="co">#&gt;         override_elements: function</span></span>
+<span><span class="co">#&gt;         params: list</span></span>
+<span><span class="co">#&gt;         process_layers: function</span></span>
+<span><span class="co">#&gt;         setup_elements: function</span></span>
+<span><span class="co">#&gt;         setup_params: function</span></span>
+<span><span class="co">#&gt;         train: function</span></span>
+<span><span class="co">#&gt;         transform: function</span></span>
+<span><span class="co">#&gt;         super:  &lt;ggproto object: Class GuideNone, Guide, gg&gt;</span></span>
+<span><span class="co">#&gt;     package_box: function</span></span>
+<span><span class="co">#&gt;     print: function</span></span>
+<span><span class="co">#&gt;     process_layers: function</span></span>
+<span><span class="co">#&gt;     setup: function</span></span>
+<span><span class="co">#&gt;     subset_guides: function</span></span>
+<span><span class="co">#&gt;     train: function</span></span>
+<span><span class="co">#&gt;     update_params: function</span></span>
+<span><span class="co">#&gt;     super:  &lt;ggproto object: Class Guides, gg&gt; </span></span>
+<span><span class="co">#&gt;   ..@ mapping    : &lt;ggplot2::mapping&gt;  Named list()</span></span>
+<span><span class="co">#&gt;   ..@ theme      : &lt;theme&gt; List of 144</span></span>
+<span><span class="co">#&gt;  .. .. $ line                            : &lt;ggplot2::element_line&gt;</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ colour       : chr "black"</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ linewidth    : num 0.5</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ linetype     : num 1</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ lineend      : chr "butt"</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ linejoin     : chr "round"</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ arrow        : logi FALSE</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ arrow.fill   : chr "black"</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ inherit.blank: logi TRUE</span></span>
+<span><span class="co">#&gt;  .. .. $ rect                            : &lt;ggplot2::element_rect&gt;</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ fill         : chr "white"</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ colour       : chr "black"</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ linewidth    : num 0.5</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ linetype     : num 1</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ linejoin     : chr "round"</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ inherit.blank: logi TRUE</span></span>
+<span><span class="co">#&gt;  .. .. $ text                            : &lt;ggplot2::element_text&gt;</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ family       : chr "sans"</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ face         : chr "plain"</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ italic       : chr NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ fontweight   : num NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ fontwidth    : num NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ colour       : chr "black"</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ size         : num 11</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ hjust        : num 0.5</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ vjust        : num 0.5</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ angle        : num 0</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ lineheight   : num 0.9</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ margin       : &lt;ggplot2::margin&gt; num [1:4] 0 0 0 0</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ debug        : logi FALSE</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ inherit.blank: logi FALSE</span></span>
+<span><span class="co">#&gt;  .. .. $ title                           : &lt;ggplot2::element_text&gt;</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ family       : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ face         : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ italic       : chr NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ fontweight   : num NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ fontwidth    : num NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ colour       : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ size         : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ hjust        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ vjust        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ angle        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ lineheight   : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ margin       : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ debug        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ inherit.blank: logi TRUE</span></span>
+<span><span class="co">#&gt;  .. .. $ point                           : &lt;ggplot2::element_point&gt;</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ colour       : chr "black"</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ shape        : num 19</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ size         : num 1.5</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ fill         : chr "white"</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ stroke       : num 0.5</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ inherit.blank: logi TRUE</span></span>
+<span><span class="co">#&gt;  .. .. $ polygon                         : &lt;ggplot2::element_polygon&gt;</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ fill         : chr "white"</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ colour       : chr "black"</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ linewidth    : num 0.5</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ linetype     : num 1</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ linejoin     : chr "round"</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ inherit.blank: logi TRUE</span></span>
+<span><span class="co">#&gt;  .. .. $ geom                            : &lt;ggplot2::element_geom&gt;</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ ink        : chr "black"</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ paper      : chr "white"</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ accent     : chr "#3366FF"</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ linewidth  : num 0.5</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ borderwidth: num 0.5</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ linetype   : int 1</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ bordertype : int 1</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ family     : chr "sans"</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ fontsize   : num 3.87</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ pointsize  : num 1.5</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ pointshape : num 19</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ colour     : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ fill       : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ spacing                         : 'simpleUnit' num 5.5points</span></span>
+<span><span class="co">#&gt;  .. ..  ..- attr(*, "unit")= int 8</span></span>
+<span><span class="co">#&gt;  .. .. $ margins                         : &lt;ggplot2::margin&gt; num [1:4] 5.5 5.5 5.5 5.5</span></span>
+<span><span class="co">#&gt;  .. .. $ aspect.ratio                    : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.title                      : &lt;ggplot2::element_blank&gt;</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.title.x                    : &lt;ggplot2::element_text&gt;</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ family       : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ face         : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ italic       : chr NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ fontweight   : num NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ fontwidth    : num NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ colour       : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ size         : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ hjust        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ vjust        : num 1</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ angle        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ lineheight   : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ margin       : &lt;ggplot2::margin&gt; num [1:4] 2.75 0 0 0</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ debug        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ inherit.blank: logi TRUE</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.title.x.top                : &lt;ggplot2::element_text&gt;</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ family       : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ face         : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ italic       : chr NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ fontweight   : num NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ fontwidth    : num NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ colour       : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ size         : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ hjust        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ vjust        : num 0</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ angle        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ lineheight   : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ margin       : &lt;ggplot2::margin&gt; num [1:4] 0 0 2.75 0</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ debug        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ inherit.blank: logi TRUE</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.title.x.bottom             : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.title.y                    : &lt;ggplot2::element_text&gt;</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ family       : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ face         : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ italic       : chr NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ fontweight   : num NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ fontwidth    : num NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ colour       : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ size         : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ hjust        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ vjust        : num 1</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ angle        : num 90</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ lineheight   : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ margin       : &lt;ggplot2::margin&gt; num [1:4] 0 2.75 0 0</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ debug        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ inherit.blank: logi TRUE</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.title.y.left               : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.title.y.right              : &lt;ggplot2::element_text&gt;</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ family       : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ face         : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ italic       : chr NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ fontweight   : num NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ fontwidth    : num NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ colour       : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ size         : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ hjust        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ vjust        : num 1</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ angle        : num -90</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ lineheight   : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ margin       : &lt;ggplot2::margin&gt; num [1:4] 0 0 0 2.75</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ debug        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ inherit.blank: logi TRUE</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.text                       : &lt;ggplot2::element_blank&gt;</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.text.x                     : &lt;ggplot2::element_text&gt;</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ family       : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ face         : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ italic       : chr NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ fontweight   : num NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ fontwidth    : num NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ colour       : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ size         : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ hjust        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ vjust        : num 1</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ angle        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ lineheight   : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ margin       : &lt;ggplot2::margin&gt; num [1:4] 2.2 0 0 0</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ debug        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ inherit.blank: logi TRUE</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.text.x.top                 : &lt;ggplot2::element_text&gt;</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ family       : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ face         : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ italic       : chr NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ fontweight   : num NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ fontwidth    : num NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ colour       : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ size         : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ hjust        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ vjust        : num 0</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ angle        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ lineheight   : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ margin       : &lt;ggplot2::margin&gt; num [1:4] 0 0 2.2 0</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ debug        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ inherit.blank: logi TRUE</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.text.x.bottom              : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.text.y                     : &lt;ggplot2::element_text&gt;</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ family       : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ face         : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ italic       : chr NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ fontweight   : num NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ fontwidth    : num NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ colour       : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ size         : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ hjust        : num 1</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ vjust        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ angle        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ lineheight   : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ margin       : &lt;ggplot2::margin&gt; num [1:4] 0 2.2 0 0</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ debug        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ inherit.blank: logi TRUE</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.text.y.left                : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.text.y.right               : &lt;ggplot2::element_text&gt;</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ family       : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ face         : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ italic       : chr NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ fontweight   : num NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ fontwidth    : num NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ colour       : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ size         : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ hjust        : num 0</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ vjust        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ angle        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ lineheight   : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ margin       : &lt;ggplot2::margin&gt; num [1:4] 0 0 0 2.2</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ debug        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ inherit.blank: logi TRUE</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.text.theta                 : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.text.r                     : &lt;ggplot2::element_text&gt;</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ family       : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ face         : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ italic       : chr NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ fontweight   : num NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ fontwidth    : num NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ colour       : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ size         : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ hjust        : num 0.5</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ vjust        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ angle        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ lineheight   : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ margin       : &lt;ggplot2::margin&gt; num [1:4] 0 2.2 0 2.2</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ debug        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ inherit.blank: logi TRUE</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.ticks                      : &lt;ggplot2::element_blank&gt;</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.ticks.x                    : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.ticks.x.top                : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.ticks.x.bottom             : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.ticks.y                    : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.ticks.y.left               : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.ticks.y.right              : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.ticks.theta                : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.ticks.r                    : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.minor.ticks.x.top          : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.minor.ticks.x.bottom       : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.minor.ticks.y.left         : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.minor.ticks.y.right        : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.minor.ticks.theta          : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.minor.ticks.r              : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.ticks.length               : 'rel' num 0.5</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.ticks.length.x             : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.ticks.length.x.top         : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.ticks.length.x.bottom      : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.ticks.length.y             : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.ticks.length.y.left        : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.ticks.length.y.right       : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.ticks.length.theta         : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.ticks.length.r             : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.minor.ticks.length         : 'rel' num 0.75</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.minor.ticks.length.x       : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.minor.ticks.length.x.top   : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.minor.ticks.length.x.bottom: NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.minor.ticks.length.y       : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.minor.ticks.length.y.left  : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.minor.ticks.length.y.right : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.minor.ticks.length.theta   : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.minor.ticks.length.r       : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.line                       : &lt;ggplot2::element_blank&gt;</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.line.x                     : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.line.x.top                 : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.line.x.bottom              : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.line.y                     : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.line.y.left                : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.line.y.right               : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.line.theta                 : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ axis.line.r                     : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ legend.background               : &lt;ggplot2::element_blank&gt;</span></span>
+<span><span class="co">#&gt;  .. .. $ legend.margin                   : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ legend.spacing                  : 'rel' num 2</span></span>
+<span><span class="co">#&gt;  .. .. $ legend.spacing.x                : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ legend.spacing.y                : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ legend.key                      : &lt;ggplot2::element_blank&gt;</span></span>
+<span><span class="co">#&gt;  .. .. $ legend.key.size                 : 'simpleUnit' num 1.2lines</span></span>
+<span><span class="co">#&gt;  .. ..  ..- attr(*, "unit")= int 3</span></span>
+<span><span class="co">#&gt;  .. .. $ legend.key.height               : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ legend.key.width                : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ legend.key.spacing              : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ legend.key.spacing.x            : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ legend.key.spacing.y            : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ legend.key.justification        : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ legend.frame                    : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ legend.ticks                    : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ legend.ticks.length             : 'rel' num 0.2</span></span>
+<span><span class="co">#&gt;  .. .. $ legend.axis.line                : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ legend.text                     : &lt;ggplot2::element_text&gt;</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ family       : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ face         : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ italic       : chr NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ fontweight   : num NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ fontwidth    : num NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ colour       : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ size         : 'rel' num 0.8</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ hjust        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ vjust        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ angle        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ lineheight   : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ margin       : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ debug        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ inherit.blank: logi TRUE</span></span>
+<span><span class="co">#&gt;  .. .. $ legend.text.position            : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ legend.title                    : &lt;ggplot2::element_text&gt;</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ family       : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ face         : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ italic       : chr NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ fontweight   : num NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ fontwidth    : num NA</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ colour       : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ size         : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ hjust        : num 0</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ vjust        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ angle        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ lineheight   : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ margin       : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ debug        : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  ..@ inherit.blank: logi TRUE</span></span>
+<span><span class="co">#&gt;  .. .. $ legend.title.position           : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ legend.position                 : chr "right"</span></span>
+<span><span class="co">#&gt;  .. .. $ legend.position.inside          : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ legend.direction                : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ legend.byrow                    : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ legend.justification            : chr "center"</span></span>
+<span><span class="co">#&gt;  .. .. $ legend.justification.top        : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ legend.justification.bottom     : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ legend.justification.left       : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ legend.justification.right      : NULL</span></span>
+<span><span class="co">#&gt;  .. .. $ legend.justification.inside     : NULL</span></span>
+<span><span class="co">#&gt;  .. ..  [list output truncated]</span></span>
+<span><span class="co">#&gt;  .. .. @ complete: logi TRUE</span></span>
+<span><span class="co">#&gt;  .. .. @ validate: logi TRUE</span></span>
+<span><span class="co">#&gt;   ..@ coordinates:Classes 'CoordCartesian', 'Coord', 'ggproto', 'gg' &lt;ggproto object: Class CoordCartesian, Coord, gg&gt;</span></span>
+<span><span class="co">#&gt;     aspect: function</span></span>
+<span><span class="co">#&gt;     backtransform_range: function</span></span>
+<span><span class="co">#&gt;     clip: off</span></span>
+<span><span class="co">#&gt;     default: TRUE</span></span>
+<span><span class="co">#&gt;     distance: function</span></span>
+<span><span class="co">#&gt;     draw_panel: function</span></span>
+<span><span class="co">#&gt;     expand: FALSE</span></span>
+<span><span class="co">#&gt;     is_free: function</span></span>
+<span><span class="co">#&gt;     is_linear: function</span></span>
+<span><span class="co">#&gt;     labels: function</span></span>
+<span><span class="co">#&gt;     limits: list</span></span>
+<span><span class="co">#&gt;     modify_scales: function</span></span>
+<span><span class="co">#&gt;     range: function</span></span>
+<span><span class="co">#&gt;     ratio: 1</span></span>
+<span><span class="co">#&gt;     render_axis_h: function</span></span>
+<span><span class="co">#&gt;     render_axis_v: function</span></span>
+<span><span class="co">#&gt;     render_bg: function</span></span>
+<span><span class="co">#&gt;     render_fg: function</span></span>
+<span><span class="co">#&gt;     reverse: none</span></span>
+<span><span class="co">#&gt;     setup_data: function</span></span>
+<span><span class="co">#&gt;     setup_layout: function</span></span>
+<span><span class="co">#&gt;     setup_panel_guides: function</span></span>
+<span><span class="co">#&gt;     setup_panel_params: function</span></span>
+<span><span class="co">#&gt;     setup_params: function</span></span>
+<span><span class="co">#&gt;     train_panel_guides: function</span></span>
+<span><span class="co">#&gt;     transform: function</span></span>
+<span><span class="co">#&gt;     super:  &lt;ggproto object: Class CoordCartesian, Coord, gg&gt; </span></span>
+<span><span class="co">#&gt;   ..@ facet      :Classes 'FacetNull', 'Facet', 'ggproto', 'gg' &lt;ggproto object: Class FacetNull, Facet, gg&gt;</span></span>
+<span><span class="co">#&gt;     attach_axes: function</span></span>
+<span><span class="co">#&gt;     attach_strips: function</span></span>
+<span><span class="co">#&gt;     compute_layout: function</span></span>
+<span><span class="co">#&gt;     draw_back: function</span></span>
+<span><span class="co">#&gt;     draw_front: function</span></span>
+<span><span class="co">#&gt;     draw_labels: function</span></span>
+<span><span class="co">#&gt;     draw_panel_content: function</span></span>
+<span><span class="co">#&gt;     draw_panels: function</span></span>
+<span><span class="co">#&gt;     finish_data: function</span></span>
+<span><span class="co">#&gt;     format_strip_labels: function</span></span>
+<span><span class="co">#&gt;     init_gtable: function</span></span>
+<span><span class="co">#&gt;     init_scales: function</span></span>
+<span><span class="co">#&gt;     map_data: function</span></span>
+<span><span class="co">#&gt;     params: list</span></span>
+<span><span class="co">#&gt;     set_panel_size: function</span></span>
+<span><span class="co">#&gt;     setup_data: function</span></span>
+<span><span class="co">#&gt;     setup_panel_params: function</span></span>
+<span><span class="co">#&gt;     setup_params: function</span></span>
+<span><span class="co">#&gt;     shrink: TRUE</span></span>
+<span><span class="co">#&gt;     train_scales: function</span></span>
+<span><span class="co">#&gt;     vars: function</span></span>
+<span><span class="co">#&gt;     super:  &lt;ggproto object: Class FacetNull, Facet, gg&gt; </span></span>
+<span><span class="co">#&gt;   ..@ layout     :Classes 'Layout', 'ggproto', 'gg' &lt;ggproto object: Class Layout, gg&gt;</span></span>
+<span><span class="co">#&gt;     coord: NULL</span></span>
+<span><span class="co">#&gt;     coord_params: list</span></span>
+<span><span class="co">#&gt;     facet: NULL</span></span>
+<span><span class="co">#&gt;     facet_params: list</span></span>
+<span><span class="co">#&gt;     finish_data: function</span></span>
+<span><span class="co">#&gt;     get_scales: function</span></span>
+<span><span class="co">#&gt;     layout: NULL</span></span>
+<span><span class="co">#&gt;     map_position: function</span></span>
+<span><span class="co">#&gt;     panel_params: NULL</span></span>
+<span><span class="co">#&gt;     panel_scales_x: NULL</span></span>
+<span><span class="co">#&gt;     panel_scales_y: NULL</span></span>
+<span><span class="co">#&gt;     render: function</span></span>
+<span><span class="co">#&gt;     render_labels: function</span></span>
+<span><span class="co">#&gt;     reset_scales: function</span></span>
+<span><span class="co">#&gt;     resolve_label: function</span></span>
+<span><span class="co">#&gt;     setup: function</span></span>
+<span><span class="co">#&gt;     setup_panel_guides: function</span></span>
+<span><span class="co">#&gt;     setup_panel_params: function</span></span>
+<span><span class="co">#&gt;     train_position: function</span></span>
+<span><span class="co">#&gt;     super:  &lt;ggproto object: Class Layout, gg&gt; </span></span>
+<span><span class="co">#&gt;   ..@ labels     : &lt;ggplot2::labels&gt; List of 1</span></span>
+<span><span class="co">#&gt;  .. .. $ title: Factor w/ 1 level "Csection": 1</span></span>
+<span><span class="co">#&gt;   ..@ meta       : list()</span></span>
+<span><span class="co">#&gt;   ..@ plot_env   :&lt;environment: 0x55dd59c92b40&gt;</span></span></code></pre></div>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">treePlotsSimple</span><span class="op">$</span><span class="va">Csection</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="co"># add labels to the plot, only for the taxa indicated earlier</span></span>
@@ -716,8 +1186,10 @@ lists of taxa.</p>
 <span>    taxon_renamer <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, pattern <span class="op">=</span> <span class="st">"[pg]: "</span>, replacement <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_fixed.html" class="external-link">coord_fixed</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="cn">TRUE</span>, clip <span class="op">=</span> <span class="st">"off"</span><span class="op">)</span> <span class="op">+</span> <span class="co"># allow scale expansion</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expansion.html" class="external-link">expansion</a></span><span class="op">(</span>mult <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span><span class="op">)</span> <span class="co"># make space for labels</span></span></code></pre></div>
-<p><img src="shao19-analyses_files/figure-html/unnamed-chunk-28-1.png" width="672"></p>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expansion.html" class="external-link">expansion</a></span><span class="op">(</span>mult <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span><span class="op">)</span> <span class="co"># make space for labels</span></span>
+<span><span class="co">#&gt; Warning: Removed 1 row containing missing values or values outside the scale range</span></span>
+<span><span class="co">#&gt; (`geom_text_repel()`).</span></span></code></pre></div>
+<p><img src="shao19-analyses_files/figure-html/unnamed-chunk-28-1.png" class="r-plt" alt="" width="672"></p>
 <p>Check out the <a href="https://david-barnett.github.io/microViz/articles/web-only/modelling-taxa.html" title="Statistical modelling of individual taxa">statistical modelling
 article</a> for many more tree examples, including covariate-adjusted
 regression.</p>
@@ -789,7 +1261,7 @@ recreate something fun like this.</p>
 <span>    mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="va">subject_id</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html" class="external-link">scale_color_viridis_d</a></span><span class="op">(</span>option <span class="op">=</span> <span class="st">"turbo"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="shao19-analyses_files/figure-html/unnamed-chunk-31-1.png" width="576"></p>
+<p><img src="shao19-analyses_files/figure-html/unnamed-chunk-31-1.png" class="r-plt" alt="" width="576"></p>
 <p>To learn how to sort samples by time, or in some other manual order,
 such as in the example below, check out the <a href="https://david-barnett.github.io/microViz/articles/web-only/compositions.html#sorting-by-time" title="Sort barcharts by time">section on sorting samples by time in the
 composition barplots article</a>.</p>
@@ -802,161 +1274,150 @@ composition barplots article</a>.</p>
 <code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://sessioninfo.r-lib.org/reference/session_info.html" class="external-link">session_info</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">─ Session info ───────────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt;  <span style="color: #555555; font-style: italic;">setting </span> <span style="color: #555555; font-style: italic;">value</span></span></span>
-<span><span class="co">#&gt;  version  R version 4.5.0 (2025-04-11)</span></span>
-<span><span class="co">#&gt;  os       Ubuntu 24.04.2 LTS</span></span>
+<span><span class="co">#&gt;  version  R version 4.5.2 (2025-10-31)</span></span>
+<span><span class="co">#&gt;  os       Ubuntu 24.04.3 LTS</span></span>
 <span><span class="co">#&gt;  system   x86_64, linux-gnu</span></span>
 <span><span class="co">#&gt;  ui       X11</span></span>
 <span><span class="co">#&gt;  language en</span></span>
 <span><span class="co">#&gt;  collate  C.UTF-8</span></span>
 <span><span class="co">#&gt;  ctype    C.UTF-8</span></span>
 <span><span class="co">#&gt;  tz       UTC</span></span>
-<span><span class="co">#&gt;  date     2025-04-14</span></span>
+<span><span class="co">#&gt;  date     2026-02-17</span></span>
 <span><span class="co">#&gt;  pandoc   3.1.11 @ /opt/hostedtoolcache/pandoc/3.1.11/x64/ (via rmarkdown)</span></span>
 <span><span class="co">#&gt;  quarto   NA</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">─ Packages ───────────────────────────────────────────────────────────────────</span></span></span>
-<span><span class="co">#&gt;  <span style="color: #555555; font-style: italic;">package         </span> <span style="color: #555555; font-style: italic;">*</span> <span style="color: #555555; font-style: italic;">version</span> <span style="color: #555555; font-style: italic;">date (UTC)</span> <span style="color: #555555; font-style: italic;">lib</span> <span style="color: #555555; font-style: italic;">source</span></span></span>
-<span><span class="co">#&gt;  ade4               1.7-23  <span style="color: #555555;">2025-02-14</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  ape                5.8-1   <span style="color: #555555;">2024-12-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  backports          1.5.0   <span style="color: #555555;">2024-05-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  Biobase            2.67.0  <span style="color: #555555;">2024-10-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Bioconduc~</span></span></span>
-<span><span class="co">#&gt;  BiocGenerics       0.53.6  <span style="color: #555555;">2025-01-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Bioconduc~</span></span></span>
-<span><span class="co">#&gt;  biomformat         1.35.0  <span style="color: #555555;">2024-10-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Bioconduc~</span></span></span>
-<span><span class="co">#&gt;  Biostrings         2.75.4  <span style="color: #555555;">2025-02-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Bioconduc~</span></span></span>
-<span><span class="co">#&gt;  broom              1.0.8   <span style="color: #555555;">2025-03-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  bslib              0.9.0   <span style="color: #555555;">2025-01-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  ca                 0.71.1  <span style="color: #555555;">2020-01-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  cachem             1.1.0   <span style="color: #555555;">2024-05-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  circlize           0.4.16  <span style="color: #555555;">2024-02-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  cli                3.6.4   <span style="color: #555555;">2025-02-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  clue               0.3-66  <span style="color: #555555;">2024-11-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  cluster            2.1.8.1 <span style="color: #555555;">2025-03-12</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.5.0)</span></span></span>
-<span><span class="co">#&gt;  codetools          0.2-20  <span style="color: #555555;">2024-03-31</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.5.0)</span></span></span>
-<span><span class="co">#&gt;  colorspace         2.1-1   <span style="color: #555555;">2024-07-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  commonmark         1.9.5   <span style="color: #555555;">2025-03-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  ComplexHeatmap     2.23.1  <span style="color: #555555;">2025-04-01</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Bioconduc~</span></span></span>
-<span><span class="co">#&gt;  corncob            0.4.2   <span style="color: #555555;">2025-03-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  crayon             1.5.3   <span style="color: #555555;">2024-06-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  data.table         1.17.0  <span style="color: #555555;">2025-02-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  desc               1.4.3   <span style="color: #555555;">2023-12-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  devtools           2.4.5   <span style="color: #555555;">2022-10-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  digest             0.6.37  <span style="color: #555555;">2024-08-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  doParallel         1.0.17  <span style="color: #555555;">2022-02-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  dplyr              1.1.4   <span style="color: #555555;">2023-11-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  ellipsis           0.3.2   <span style="color: #555555;">2021-04-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  evaluate           1.0.3   <span style="color: #555555;">2025-01-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  farver             2.1.2   <span style="color: #555555;">2024-05-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  fastmap            1.2.0   <span style="color: #555555;">2024-05-15</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  foreach            1.5.2   <span style="color: #555555;">2022-02-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  fs                 1.6.5   <span style="color: #555555;">2024-10-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  generics           0.1.3   <span style="color: #555555;">2022-07-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  GenomeInfoDb       1.43.4  <span style="color: #555555;">2025-01-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Bioconduc~</span></span></span>
-<span><span class="co">#&gt;  GenomeInfoDbData   1.2.14  <span style="color: #555555;">2025-04-14</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">#&gt;  GetoptLong         1.0.5   <span style="color: #555555;">2020-12-15</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  ggforce            0.4.2   <span style="color: #555555;">2024-02-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  ggplot2          * 3.5.2   <span style="color: #555555;">2025-04-09</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  ggraph             2.2.1   <span style="color: #555555;">2024-03-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  ggrepel            0.9.6   <span style="color: #555555;">2024-09-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  ggtext             0.1.2   <span style="color: #555555;">2022-09-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  GlobalOptions      0.1.2   <span style="color: #555555;">2020-06-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  glue               1.8.0   <span style="color: #555555;">2024-09-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  graphlayouts       1.2.2   <span style="color: #555555;">2025-01-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  gridExtra          2.3     <span style="color: #555555;">2017-09-09</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  gridtext           0.1.5   <span style="color: #555555;">2022-09-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  gtable             0.3.6   <span style="color: #555555;">2024-10-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  htmltools          0.5.8.1 <span style="color: #555555;">2024-04-04</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  htmlwidgets        1.6.4   <span style="color: #555555;">2023-12-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  httpuv             1.6.15  <span style="color: #555555;">2024-03-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  httr               1.4.7   <span style="color: #555555;">2023-08-15</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  igraph             2.1.4   <span style="color: #555555;">2025-01-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  IRanges            2.41.3  <span style="color: #555555;">2025-02-12</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Bioconduc~</span></span></span>
-<span><span class="co">#&gt;  iterators          1.0.14  <span style="color: #555555;">2022-02-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  jquerylib          0.1.4   <span style="color: #555555;">2021-04-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  jsonlite           2.0.0   <span style="color: #555555;">2025-03-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  knitr              1.50    <span style="color: #555555;">2025-03-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  labeling           0.4.3   <span style="color: #555555;">2023-08-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  later              1.4.2   <span style="color: #555555;">2025-04-08</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  lattice            0.22-6  <span style="color: #555555;">2024-03-20</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.5.0)</span></span></span>
-<span><span class="co">#&gt;  lifecycle          1.0.4   <span style="color: #555555;">2023-11-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  litedown           0.7     <span style="color: #555555;">2025-04-08</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  magrittr           2.0.3   <span style="color: #555555;">2022-03-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  markdown           2.0     <span style="color: #555555;">2025-03-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  MASS               7.3-65  <span style="color: #555555;">2025-02-28</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.5.0)</span></span></span>
-<span><span class="co">#&gt;  Matrix             1.7-3   <span style="color: #555555;">2025-03-11</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.5.0)</span></span></span>
-<span><span class="co">#&gt;  matrixStats        1.5.0   <span style="color: #555555;">2025-01-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  memoise            2.0.1   <span style="color: #555555;">2021-11-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  mgcv               1.9-1   <span style="color: #555555;">2023-12-21</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.5.0)</span></span></span>
-<span><span class="co">#&gt;  microbiome         1.29.0  <span style="color: #555555;">2025-01-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Bioconduc~</span></span></span>
-<span><span class="co">#&gt;  microViz         * 0.12.7  <span style="color: #555555;">2025-04-14</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">local</span></span></span>
-<span><span class="co">#&gt;  mime               0.13    <span style="color: #555555;">2025-03-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  miniUI             0.1.1.1 <span style="color: #555555;">2018-05-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  multtest           2.63.0  <span style="color: #555555;">2024-10-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Bioconduc~</span></span></span>
-<span><span class="co">#&gt;  munsell            0.5.1   <span style="color: #555555;">2024-04-01</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  nlme               3.1-168 <span style="color: #555555;">2025-03-31</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.5.0)</span></span></span>
-<span><span class="co">#&gt;  patchwork        * 1.3.0   <span style="color: #555555;">2024-09-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  permute            0.9-7   <span style="color: #555555;">2022-01-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  phyloseq         * 1.51.0  <span style="color: #555555;">2025-01-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Bioconduc~</span></span></span>
-<span><span class="co">#&gt;  pillar             1.10.2  <span style="color: #555555;">2025-04-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  pkgbuild           1.4.7   <span style="color: #555555;">2025-03-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  pkgconfig          2.0.3   <span style="color: #555555;">2019-09-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  pkgdown            2.1.1   <span style="color: #555555;">2024-09-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  pkgload            1.4.0   <span style="color: #555555;">2024-06-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  plyr               1.8.9   <span style="color: #555555;">2023-10-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  png                0.1-8   <span style="color: #555555;">2022-11-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  polyclip           1.10-7  <span style="color: #555555;">2024-07-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  profvis            0.4.0   <span style="color: #555555;">2024-09-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  promises           1.3.2   <span style="color: #555555;">2024-11-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  purrr              1.0.4   <span style="color: #555555;">2025-02-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  R6                 2.6.1   <span style="color: #555555;">2025-02-15</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  ragg               1.4.0   <span style="color: #555555;">2025-04-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  RColorBrewer       1.1-3   <span style="color: #555555;">2022-04-03</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  Rcpp               1.0.14  <span style="color: #555555;">2025-01-12</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  registry           0.5-1   <span style="color: #555555;">2019-03-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  remotes            2.5.0   <span style="color: #555555;">2024-03-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  reshape2           1.4.4   <span style="color: #555555;">2020-04-09</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  rhdf5              2.51.2  <span style="color: #555555;">2025-01-08</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Bioconduc~</span></span></span>
-<span><span class="co">#&gt;  rhdf5filters       1.19.2  <span style="color: #555555;">2025-03-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Bioconduc~</span></span></span>
-<span><span class="co">#&gt;  Rhdf5lib           1.29.2  <span style="color: #555555;">2025-03-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Bioconduc~</span></span></span>
-<span><span class="co">#&gt;  rjson              0.2.23  <span style="color: #555555;">2024-09-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  rlang              1.1.5   <span style="color: #555555;">2025-01-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  rmarkdown          2.29    <span style="color: #555555;">2024-11-04</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  Rtsne              0.17    <span style="color: #555555;">2023-12-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  S4Vectors          0.45.4  <span style="color: #555555;">2025-02-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Bioconduc~</span></span></span>
-<span><span class="co">#&gt;  sass               0.4.9   <span style="color: #555555;">2024-03-15</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  scales             1.3.0   <span style="color: #555555;">2023-11-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  seriation          1.5.7   <span style="color: #555555;">2024-12-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  sessioninfo        1.2.3   <span style="color: #555555;">2025-02-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  shape              1.4.6.1 <span style="color: #555555;">2024-02-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  shiny              1.10.0  <span style="color: #555555;">2024-12-14</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  stringi            1.8.7   <span style="color: #555555;">2025-03-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  stringr            1.5.1   <span style="color: #555555;">2023-11-14</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  survival           3.8-3   <span style="color: #555555;">2024-12-17</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.5.0)</span></span></span>
-<span><span class="co">#&gt;  systemfonts        1.2.2   <span style="color: #555555;">2025-04-04</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  textshaping        1.0.0   <span style="color: #555555;">2025-01-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  tibble             3.2.1   <span style="color: #555555;">2023-03-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  tidygraph          1.3.1   <span style="color: #555555;">2024-01-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  tidyr              1.3.1   <span style="color: #555555;">2024-01-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  tidyselect         1.2.1   <span style="color: #555555;">2024-03-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  TSP                1.2-4   <span style="color: #555555;">2023-04-04</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  tweenr             2.0.3   <span style="color: #555555;">2024-02-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  UCSC.utils         1.3.1   <span style="color: #555555;">2025-01-15</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Bioconduc~</span></span></span>
-<span><span class="co">#&gt;  urlchecker         1.0.1   <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  usethis            3.1.0   <span style="color: #555555;">2024-11-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  utf8               1.2.4   <span style="color: #555555;">2023-10-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  vctrs              0.6.5   <span style="color: #555555;">2023-12-01</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  vegan              2.6-10  <span style="color: #555555;">2025-01-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  viridis            0.6.5   <span style="color: #555555;">2024-01-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  viridisLite        0.4.2   <span style="color: #555555;">2023-05-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  withr              3.0.2   <span style="color: #555555;">2024-10-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  xfun               0.52    <span style="color: #555555;">2025-04-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  xml2               1.3.8   <span style="color: #555555;">2025-03-14</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  xtable             1.8-4   <span style="color: #555555;">2019-04-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
-<span><span class="co">#&gt;  XVector            0.47.2  <span style="color: #555555;">2025-01-08</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Bioconduc~</span></span></span>
-<span><span class="co">#&gt;  yaml               2.3.10  <span style="color: #555555;">2024-07-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  <span style="color: #555555; font-style: italic;">package       </span> <span style="color: #555555; font-style: italic;">*</span> <span style="color: #555555; font-style: italic;">version </span> <span style="color: #555555; font-style: italic;">date (UTC)</span> <span style="color: #555555; font-style: italic;">lib</span> <span style="color: #555555; font-style: italic;">source</span></span></span>
+<span><span class="co">#&gt;  ade4             1.7-23   <span style="color: #555555;">2025-02-14</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  ape              5.8-1    <span style="color: #555555;">2024-12-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  backports        1.5.0    <span style="color: #555555;">2024-05-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  Biobase          2.70.0   <span style="color: #555555;">2025-10-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Bioconduc~</span></span></span>
+<span><span class="co">#&gt;  BiocGenerics     0.56.0   <span style="color: #555555;">2025-10-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Bioconduc~</span></span></span>
+<span><span class="co">#&gt;  biomformat       1.38.0   <span style="color: #555555;">2025-10-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Bioconduc~</span></span></span>
+<span><span class="co">#&gt;  Biostrings       2.78.0   <span style="color: #555555;">2025-10-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Bioconduc~</span></span></span>
+<span><span class="co">#&gt;  broom            1.0.12   <span style="color: #555555;">2026-01-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  bslib            0.10.0   <span style="color: #555555;">2026-01-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  ca               0.71.1   <span style="color: #555555;">2020-01-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  cachem           1.1.0    <span style="color: #555555;">2024-05-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  circlize         0.4.17   <span style="color: #555555;">2025-12-08</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  cli              3.6.5    <span style="color: #555555;">2025-04-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  clue             0.3-66   <span style="color: #555555;">2024-11-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  cluster          2.1.8.1  <span style="color: #555555;">2025-03-12</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.5.2)</span></span></span>
+<span><span class="co">#&gt;  codetools        0.2-20   <span style="color: #555555;">2024-03-31</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.5.2)</span></span></span>
+<span><span class="co">#&gt;  colorspace       2.1-2    <span style="color: #555555;">2025-09-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  commonmark       2.0.0    <span style="color: #555555;">2025-07-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  ComplexHeatmap   2.26.1   <span style="color: #555555;">2026-02-03</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Bioconduc~</span></span></span>
+<span><span class="co">#&gt;  corncob          0.4.2    <span style="color: #555555;">2025-03-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  crayon           1.5.3    <span style="color: #555555;">2024-06-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  data.table       1.18.2.1 <span style="color: #555555;">2026-01-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  desc             1.4.3    <span style="color: #555555;">2023-12-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  devtools         2.4.6    <span style="color: #555555;">2025-10-03</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  digest           0.6.39   <span style="color: #555555;">2025-11-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  doParallel       1.0.17   <span style="color: #555555;">2022-02-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  dplyr            1.2.0    <span style="color: #555555;">2026-02-03</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  ellipsis         0.3.2    <span style="color: #555555;">2021-04-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  evaluate         1.0.5    <span style="color: #555555;">2025-08-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  farver           2.1.2    <span style="color: #555555;">2024-05-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  fastmap          1.2.0    <span style="color: #555555;">2024-05-15</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  foreach          1.5.2    <span style="color: #555555;">2022-02-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  fs               1.6.6    <span style="color: #555555;">2025-04-12</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  generics         0.1.4    <span style="color: #555555;">2025-05-09</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  GetoptLong       1.1.0    <span style="color: #555555;">2025-11-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  ggforce          0.5.0    <span style="color: #555555;">2025-06-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  ggplot2        * 4.0.2    <span style="color: #555555;">2026-02-03</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  ggraph           2.2.2    <span style="color: #555555;">2025-08-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  ggrepel          0.9.6    <span style="color: #555555;">2024-09-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  ggtext           0.1.2    <span style="color: #555555;">2022-09-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  GlobalOptions    0.1.3    <span style="color: #555555;">2025-11-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  glue             1.8.0    <span style="color: #555555;">2024-09-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  graphlayouts     1.2.2    <span style="color: #555555;">2025-01-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  gridExtra        2.3      <span style="color: #555555;">2017-09-09</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  gridtext         0.1.5    <span style="color: #555555;">2022-09-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  gtable           0.3.6    <span style="color: #555555;">2024-10-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  htmltools        0.5.9    <span style="color: #555555;">2025-12-04</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  htmlwidgets      1.6.4    <span style="color: #555555;">2023-12-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  igraph           2.2.2    <span style="color: #555555;">2026-02-12</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  IRanges          2.44.0   <span style="color: #555555;">2025-10-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Bioconduc~</span></span></span>
+<span><span class="co">#&gt;  iterators        1.0.14   <span style="color: #555555;">2022-02-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  jquerylib        0.1.4    <span style="color: #555555;">2021-04-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  jsonlite         2.0.0    <span style="color: #555555;">2025-03-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  knitr            1.51     <span style="color: #555555;">2025-12-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  labeling         0.4.3    <span style="color: #555555;">2023-08-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  lattice          0.22-7   <span style="color: #555555;">2025-04-02</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.5.2)</span></span></span>
+<span><span class="co">#&gt;  lifecycle        1.0.5    <span style="color: #555555;">2026-01-08</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  litedown         0.9      <span style="color: #555555;">2025-12-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  magrittr         2.0.4    <span style="color: #555555;">2025-09-12</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  markdown         2.0      <span style="color: #555555;">2025-03-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  MASS             7.3-65   <span style="color: #555555;">2025-02-28</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.5.2)</span></span></span>
+<span><span class="co">#&gt;  Matrix           1.7-4    <span style="color: #555555;">2025-08-28</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.5.2)</span></span></span>
+<span><span class="co">#&gt;  matrixStats      1.5.0    <span style="color: #555555;">2025-01-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  memoise          2.0.1    <span style="color: #555555;">2021-11-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  mgcv             1.9-3    <span style="color: #555555;">2025-04-04</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.5.2)</span></span></span>
+<span><span class="co">#&gt;  microbiome       1.32.0   <span style="color: #555555;">2025-10-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Bioconduc~</span></span></span>
+<span><span class="co">#&gt;  microViz       * 0.13.0   <span style="color: #555555;">2026-02-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">local</span></span></span>
+<span><span class="co">#&gt;  multtest         2.66.0   <span style="color: #555555;">2025-10-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Bioconduc~</span></span></span>
+<span><span class="co">#&gt;  nlme             3.1-168  <span style="color: #555555;">2025-03-31</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.5.2)</span></span></span>
+<span><span class="co">#&gt;  otel             0.2.0    <span style="color: #555555;">2025-08-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  patchwork      * 1.3.2    <span style="color: #555555;">2025-08-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  permute          0.9-10   <span style="color: #555555;">2026-02-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  phyloseq       * 1.54.0   <span style="color: #555555;">2025-10-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Bioconduc~</span></span></span>
+<span><span class="co">#&gt;  pillar           1.11.1   <span style="color: #555555;">2025-09-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  pkgbuild         1.4.8    <span style="color: #555555;">2025-05-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  pkgconfig        2.0.3    <span style="color: #555555;">2019-09-22</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  pkgdown          2.2.0    <span style="color: #555555;">2025-11-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  pkgload          1.5.0    <span style="color: #555555;">2026-02-03</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  plyr             1.8.9    <span style="color: #555555;">2023-10-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  png              0.1-8    <span style="color: #555555;">2022-11-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  polyclip         1.10-7   <span style="color: #555555;">2024-07-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  purrr            1.2.1    <span style="color: #555555;">2026-01-09</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  R6               2.6.1    <span style="color: #555555;">2025-02-15</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  ragg             1.5.0    <span style="color: #555555;">2025-09-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  RColorBrewer     1.1-3    <span style="color: #555555;">2022-04-03</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  Rcpp             1.1.1    <span style="color: #555555;">2026-01-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  registry         0.5-1    <span style="color: #555555;">2019-03-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  remotes          2.5.0    <span style="color: #555555;">2024-03-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  reshape2         1.4.5    <span style="color: #555555;">2025-11-12</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  rhdf5            2.54.1   <span style="color: #555555;">2025-12-04</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Bioconduc~</span></span></span>
+<span><span class="co">#&gt;  rhdf5filters     1.22.0   <span style="color: #555555;">2025-10-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Bioconduc~</span></span></span>
+<span><span class="co">#&gt;  Rhdf5lib         1.32.0   <span style="color: #555555;">2025-10-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Bioconduc~</span></span></span>
+<span><span class="co">#&gt;  rjson            0.2.23   <span style="color: #555555;">2024-09-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  rlang            1.1.7    <span style="color: #555555;">2026-01-09</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  rmarkdown        2.30     <span style="color: #555555;">2025-09-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  Rtsne            0.17     <span style="color: #555555;">2023-12-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  S4Vectors        0.48.0   <span style="color: #555555;">2025-10-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Bioconduc~</span></span></span>
+<span><span class="co">#&gt;  S7               0.2.1    <span style="color: #555555;">2025-11-14</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  sass             0.4.10   <span style="color: #555555;">2025-04-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  scales           1.4.0    <span style="color: #555555;">2025-04-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  Seqinfo          1.0.0    <span style="color: #555555;">2025-10-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Bioconduc~</span></span></span>
+<span><span class="co">#&gt;  seriation        1.5.8    <span style="color: #555555;">2025-08-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  sessioninfo      1.2.3    <span style="color: #555555;">2025-02-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  shape            1.4.6.1  <span style="color: #555555;">2024-02-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  stringi          1.8.7    <span style="color: #555555;">2025-03-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  stringr          1.6.0    <span style="color: #555555;">2025-11-04</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  survival         3.8-3    <span style="color: #555555;">2024-12-17</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.5.2)</span></span></span>
+<span><span class="co">#&gt;  systemfonts      1.3.1    <span style="color: #555555;">2025-10-01</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  textshaping      1.0.4    <span style="color: #555555;">2025-10-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  tibble           3.3.1    <span style="color: #555555;">2026-01-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  tidygraph        1.3.1    <span style="color: #555555;">2024-01-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  tidyr            1.3.2    <span style="color: #555555;">2025-12-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  tidyselect       1.2.1    <span style="color: #555555;">2024-03-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  TSP              1.2.6    <span style="color: #555555;">2025-11-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  tweenr           2.0.3    <span style="color: #555555;">2024-02-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  usethis          3.2.1    <span style="color: #555555;">2025-09-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  utf8             1.2.6    <span style="color: #555555;">2025-06-08</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  vctrs            0.7.1    <span style="color: #555555;">2026-01-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  vegan            2.7-2    <span style="color: #555555;">2025-10-08</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  viridis          0.6.5    <span style="color: #555555;">2024-01-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  viridisLite      0.4.3    <span style="color: #555555;">2026-02-04</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  withr            3.0.2    <span style="color: #555555;">2024-10-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  xfun             0.56     <span style="color: #555555;">2026-01-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  xml2             1.5.2    <span style="color: #555555;">2026-01-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
+<span><span class="co">#&gt;  XVector          0.50.0   <span style="color: #555555;">2025-10-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Bioconduc~</span></span></span>
+<span><span class="co">#&gt;  yaml             2.3.12   <span style="color: #555555;">2025-12-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #555555;"> [1] /home/runner/work/_temp/Library</span></span></span>
-<span><span class="co">#&gt; <span style="color: #555555;"> [2] /opt/R/4.5.0/lib/R/site-library</span></span></span>
-<span><span class="co">#&gt; <span style="color: #555555;"> [3] /opt/R/4.5.0/lib/R/library</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;"> [2] /opt/R/4.5.2/lib/R/site-library</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;"> [3] /opt/R/4.5.2/lib/R/library</span></span></span>
 <span><span class="co">#&gt;  <span style="color: #BBBBBB; background-color: #BB0000;">*</span> ── Packages attached to the search path.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">──────────────────────────────────────────────────────────────────────────────</span></span></span></code></pre></div>
@@ -972,7 +1433,7 @@ composition barplots article</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>
