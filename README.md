@@ -134,6 +134,15 @@ remotes::install_github("david-barnett/microViz@0.13.0")
 this with homebrew, run the following command in your mac’s Terminal:
 `brew install --cask xquartz`
 
+**:snake: conda** **users** - if you encounter compilation errors when
+installing dependencies like `ggiraph` or `httpuv` (e.g.
+`cannot find -lz`), you may need to install system libraries in your
+conda environment first:
+
+```
+conda install -c conda-forge zlib
+```
+
 :package: I recommend using
 [renv](https://rstudio.github.io/renv/index.html) for managing your R
 package installations across multiple projects.
