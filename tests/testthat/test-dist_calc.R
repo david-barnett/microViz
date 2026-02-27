@@ -95,5 +95,13 @@ test_that("dist_calc throws errors", {
     regexp = "dist_calc 'aitchison' distance requires count data"
   )
 
+  expect_error(
+    object = dist_calc(
+      data = tax_transform(microViz::ibd, trans = "comp_clr"),
+      dist = "aitchison"
+    ),
+    regexp = "dist_calc 'aitchison' distance requires count data"
+  )
+
   expect_error(dist_calc(data = 2), regexp = "data is class: numeric")
 })

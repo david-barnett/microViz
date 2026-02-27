@@ -124,7 +124,8 @@ dist_calc <- function(data,
 # (psExtra `info` required for transformation check)
 #
 distMatAitchison <- function(ps, dist, info) {
-  if (identical(info$tax_trans, "clr") || identical(info$tax_trans, "rclr")) {
+  tax_transforms <- unlist(strsplit(info$tax_trans, split = "&", fixed = TRUE))
+  if (any(tax_transforms %in% c("clr", "rclr", "comp_clr"))) {
     rlang::abort(call = rlang::caller_env(1), message = c(
       "dist_calc 'aitchison' distance requires count data",
       i = paste0(

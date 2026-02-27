@@ -1,3 +1,9 @@
+# microViz 0.13.1
+
+### Fix:
+
+- `dist_calc(dist = "aitchison")` now correctly errors when input data were transformed with legacy `tax_transform("comp_clr")`, preventing invalid double-CLR processing.
+
 # microViz 0.13.0
 
 ### Breaking changes: 
