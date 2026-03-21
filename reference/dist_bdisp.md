@@ -121,8 +121,8 @@ PERM <- testDist %>%
     n_processes = 1, n_perms = 99
   )
 #> Dropping samples with missings: 4
-#> 2026-02-17 09:17:00.816695 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2026-02-17 09:17:01.038285 - Finished PERMANOVA
+#> 2026-03-21 10:36:53.033057 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2026-03-21 10:36:53.255242 - Finished PERMANOVA
 str(PERM, max.level = 1)
 #> Formal class 'psExtra' [package "microViz"] with 15 slots
 
@@ -149,7 +149,7 @@ bd
 #> 
 #> vegan::adonis2(formula = formula, data = metadata, permutations = n_perms, by = by, parallel = parall)
 #>            Df SumOfSqs      R2      F Pr(>F)   
-#> sex         1    0.361 0.00933 2.1539   0.16   
+#> sex         1    0.361 0.00933 2.1539   0.17   
 #> bmi_group   2    2.377 0.06143 7.0888   0.01 **
 #> Residual  214   35.874 0.92720                 
 #> Total     217   38.691 1.00000                 

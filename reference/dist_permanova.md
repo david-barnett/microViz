@@ -135,8 +135,8 @@ PERM <- testDist %>%
     n_perms = 99 # only 99 perms used in examples for speed (use 9999+!)
   )
 #> Dropping samples with missings: 4
-#> 2026-02-17 09:17:07.186096 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2026-02-17 09:17:07.402125 - Finished PERMANOVA
+#> 2026-03-21 10:36:59.1817 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2026-03-21 10:36:59.397776 - Finished PERMANOVA
 PERM
 #> psExtra object - a phyloseq object with extra slots:
 #> 
@@ -176,8 +176,8 @@ PERM2 <- testDist %>%
     n_processes = 1, n_perms = 99
   )
 #> Dropping samples with missings: 4
-#> 2026-02-17 09:17:07.426029 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2026-02-17 09:17:07.680235 - Finished PERMANOVA
+#> 2026-03-21 10:36:59.420573 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2026-03-21 10:36:59.679363 - Finished PERMANOVA
 perm_get(PERM2)
 #> Permutation test for adonis under reduced model
 #> Marginal effects of terms
@@ -202,8 +202,8 @@ PERM3 <- testDist %>%
     n_processes = 1, n_perms = 99
   )
 #> Dropping samples with missings: 4
-#> 2026-02-17 09:17:07.699155 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2026-02-17 09:17:07.975661 - Finished PERMANOVA
+#> 2026-03-21 10:36:59.693181 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2026-03-21 10:36:59.954762 - Finished PERMANOVA
 perm_get(PERM3)
 #> Permutation test for adonis under reduced model
 #> Marginal effects of terms
