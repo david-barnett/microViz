@@ -1285,9 +1285,9 @@ shao4 %>%
   perm_get()
 ```
 
-    ## 2026-03-21 10:40:15.834631 - Starting PERMANOVA with 99 perms with 1 processes
+    ## 2026-03-30 06:39:53.727787 - Starting PERMANOVA with 99 perms with 1 processes
 
-    ## 2026-03-21 10:40:15.913268 - Finished PERMANOVA
+    ## 2026-03-30 06:39:53.809695 - Finished PERMANOVA
 
     ## Permutation test for adonis under reduced model
     ## Marginal effects of terms
@@ -1340,9 +1340,9 @@ shao4 %>%
 
     ## Dropping samples with missings: 15
 
-    ## 2026-03-21 10:40:16.163673 - Starting PERMANOVA with 99 perms with 1 processes
+    ## 2026-03-30 06:39:54.070585 - Starting PERMANOVA with 99 perms with 1 processes
 
-    ## 2026-03-21 10:40:16.866832 - Finished PERMANOVA
+    ## 2026-03-30 06:39:55.387032 - Finished PERMANOVA
 
     ## Permutation test for adonis under reduced model
     ## Marginal effects of terms
@@ -1950,33 +1950,33 @@ shaoModels <- shao4 %>%
 
     ## Proportional min_prevalence given: 0.1 --> min 31/306 samples.
 
-    ## 2026-03-21 10:40:38.120139 - modelling at rank: phylum
+    ## 2026-03-30 06:40:18.766128 - modelling at rank: phylum
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
 
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
 
-    ## 2026-03-21 10:40:38.261323 - modelling at rank: class
+    ## 2026-03-30 06:40:18.911734 - modelling at rank: class
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
 
-    ## 2026-03-21 10:40:38.449052 - modelling at rank: order
+    ## 2026-03-30 06:40:19.123711 - modelling at rank: order
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
 
-    ## 2026-03-21 10:40:38.694639 - modelling at rank: family
+    ## 2026-03-30 06:40:19.369875 - modelling at rank: family
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
 
-    ## 2026-03-21 10:40:38.981105 - modelling at rank: genus
+    ## 2026-03-30 06:40:19.672562 - modelling at rank: genus
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
 
-    ## 2026-03-21 10:40:39.328712 - modelling at rank: species
+    ## 2026-03-30 06:40:20.035069 - modelling at rank: species
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
@@ -2154,14 +2154,14 @@ devtools::session_info()
     ## ─ Session info ───────────────────────────────────────────────────────────────
     ##  setting  value
     ##  version  R version 4.5.3 (2026-03-11)
-    ##  os       Ubuntu 24.04.3 LTS
+    ##  os       Ubuntu 24.04.4 LTS
     ##  system   x86_64, linux-gnu
     ##  ui       X11
     ##  language en
     ##  collate  C.UTF-8
     ##  ctype    C.UTF-8
     ##  tz       UTC
-    ##  date     2026-03-21
+    ##  date     2026-03-30
     ##  pandoc   3.1.11 @ /opt/hostedtoolcache/pandoc/3.1.11/x64/ (via rmarkdown)
     ##  quarto   NA
     ## 
@@ -2180,7 +2180,7 @@ devtools::session_info()
     ##  cachem           1.1.0    2024-05-16 [1] RSPM
     ##  circlize         0.4.17   2025-12-08 [1] RSPM
     ##  cli              3.6.5    2025-04-23 [1] RSPM
-    ##  clue             0.3-67   2026-02-18 [1] RSPM
+    ##  clue             0.3-68   2026-03-26 [1] RSPM
     ##  cluster          2.1.8.2  2026-02-05 [3] CRAN (R 4.5.3)
     ##  codetools        0.2-20   2024-03-31 [3] CRAN (R 4.5.3)
     ##  colorspace       2.1-2    2025-09-22 [1] RSPM
@@ -2199,7 +2199,7 @@ devtools::session_info()
     ##  fastmap          1.2.0    2024-05-15 [1] RSPM
     ##  forcats          1.0.1    2025-09-25 [1] RSPM
     ##  foreach          1.5.2    2022-02-02 [1] RSPM
-    ##  fs               1.6.7    2026-03-06 [1] RSPM
+    ##  fs               2.0.1    2026-03-24 [1] RSPM
     ##  generics         0.1.4    2025-05-09 [1] RSPM
     ##  GetoptLong       1.1.0    2025-11-28 [1] RSPM
     ##  ggforce          0.5.0    2025-06-18 [1] RSPM
@@ -2231,7 +2231,7 @@ devtools::session_info()
     ##  memoise          2.0.1    2021-11-26 [1] RSPM
     ##  mgcv             1.9-4    2025-11-07 [3] CRAN (R 4.5.3)
     ##  microbiome       1.32.0   2025-10-29 [1] Bioconduc~
-    ##  microViz       * 0.13.0   2026-03-21 [1] local
+    ##  microViz       * 0.13.0   2026-03-30 [1] local
     ##  mime             0.13     2025-03-17 [1] RSPM
     ##  multtest         2.66.0   2025-10-29 [1] Bioconduc~
     ##  nlme             3.1-168  2025-03-31 [3] CRAN (R 4.5.3)
@@ -2250,17 +2250,14 @@ devtools::session_info()
     ##  promises         1.5.0    2025-11-01 [1] RSPM
     ##  purrr          * 1.2.1    2026-01-09 [1] RSPM
     ##  R6               2.6.1    2025-02-15 [1] RSPM
-    ##  ragg             1.5.1    2026-03-06 [1] RSPM
+    ##  ragg             1.5.2    2026-03-23 [1] RSPM
     ##  RColorBrewer     1.1-3    2022-04-03 [1] RSPM
     ##  Rcpp             1.1.1    2026-01-10 [1] RSPM
     ##  registry         0.5-1    2019-03-05 [1] RSPM
     ##  reshape2         1.4.5    2025-11-12 [1] RSPM
-    ##  rhdf5            2.54.1   2025-12-04 [1] Bioconduc~
-    ##  rhdf5filters     1.22.0   2025-10-29 [1] Bioconduc~
-    ##  Rhdf5lib         1.32.0   2025-10-29 [1] Bioconduc~
     ##  rjson            0.2.23   2024-09-16 [1] RSPM
     ##  rlang            1.1.7    2026-01-09 [1] RSPM
-    ##  rmarkdown        2.30     2025-09-28 [1] RSPM
+    ##  rmarkdown        2.31     2026-03-26 [1] RSPM
     ##  Rtsne            0.17     2023-12-07 [1] RSPM
     ##  S4Vectors        0.48.0   2025-10-29 [1] Bioconduc~
     ##  S7               0.2.1    2025-11-14 [1] RSPM
@@ -2280,11 +2277,11 @@ devtools::session_info()
     ##  tidygraph        1.3.1    2024-01-30 [1] RSPM
     ##  tidyr            1.3.2    2025-12-19 [1] RSPM
     ##  tidyselect       1.2.1    2024-03-11 [1] RSPM
-    ##  TSP              1.2.6    2025-11-27 [1] RSPM
+    ##  TSP              1.2.7    2026-03-23 [1] RSPM
     ##  tweenr           2.0.3    2024-02-26 [1] RSPM
     ##  usethis          3.2.1    2025-09-06 [1] RSPM
     ##  utf8             1.2.6    2025-06-08 [1] RSPM
-    ##  vctrs            0.7.1    2026-01-23 [1] RSPM
+    ##  vctrs            0.7.2    2026-03-21 [1] RSPM
     ##  vegan            2.7-3    2026-03-04 [1] RSPM
     ##  viridis          0.6.5    2024-01-29 [1] RSPM
     ##  viridisLite      0.4.3    2026-02-04 [1] RSPM

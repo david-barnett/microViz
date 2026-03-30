@@ -311,11 +311,11 @@ lm_models <- phylo %>%
     variables = c("UC", "female", "antibiotics", "steroids", "age_scaled")
   )
 #> Proportional min_prevalence given: 0.1 --> min 7/67 samples.
-#> 2026-03-21 10:41:52.937098 - modelling at rank: Phylum
-#> 2026-03-21 10:41:53.090325 - modelling at rank: Class
-#> 2026-03-21 10:41:53.342981 - modelling at rank: Order
-#> 2026-03-21 10:41:53.626252 - modelling at rank: Family
-#> 2026-03-21 10:41:54.62003 - modelling at rank: Genus
+#> 2026-03-30 06:41:41.376934 - modelling at rank: Phylum
+#> 2026-03-30 06:41:41.538275 - modelling at rank: Class
+#> 2026-03-30 06:41:41.822939 - modelling at rank: Order
+#> 2026-03-30 06:41:42.144266 - modelling at rank: Family
+#> 2026-03-30 06:41:42.710161 - modelling at rank: Genus
 ```
 
 Why filter the taxa? *It’s less likely that we are interested in rare
@@ -759,10 +759,10 @@ bb_models <- phylo %>%
     variables = c("UC", "female", "antibiotics", "steroids", "age_scaled")
   )
 #> Proportional min_prevalence given: 0.3 --> min 21/67 samples.
-#> 2026-03-21 10:42:21.324034 - modelling at rank: Phylum
-#> 2026-03-21 10:42:21.450601 - modelling at rank: Class
-#> 2026-03-21 10:42:21.684098 - modelling at rank: Order
-#> 2026-03-21 10:42:21.887927 - modelling at rank: Family
+#> 2026-03-30 06:42:12.253552 - modelling at rank: Phylum
+#> 2026-03-30 06:42:12.386307 - modelling at rank: Class
+#> 2026-03-30 06:42:12.557471 - modelling at rank: Order
+#> 2026-03-30 06:42:12.768497 - modelling at rank: Family
 bb_models
 #> psExtra object - a phyloseq object with extra slots:
 #> 
@@ -895,14 +895,14 @@ devtools::session_info()
 #> ─ Session info ───────────────────────────────────────────────────────────────
 #>  setting  value
 #>  version  R version 4.5.3 (2026-03-11)
-#>  os       Ubuntu 24.04.3 LTS
+#>  os       Ubuntu 24.04.4 LTS
 #>  system   x86_64, linux-gnu
 #>  ui       X11
 #>  language en
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-03-21
+#>  date     2026-03-30
 #>  pandoc   3.1.11 @ /opt/hostedtoolcache/pandoc/3.1.11/x64/ (via rmarkdown)
 #>  quarto   NA
 #> 
@@ -937,7 +937,7 @@ devtools::session_info()
 #>  farver               2.1.2         2024-05-13 [1] RSPM
 #>  fastmap              1.2.0         2024-05-15 [1] RSPM
 #>  foreach              1.5.2         2022-02-02 [1] RSPM
-#>  fs                   1.6.7         2026-03-06 [1] RSPM
+#>  fs                   2.0.1         2026-03-24 [1] RSPM
 #>  generics             0.1.4         2025-05-09 [1] RSPM
 #>  ggforce              0.5.0         2025-06-18 [1] RSPM
 #>  ggplot2            * 4.0.2         2026-02-03 [1] RSPM
@@ -965,7 +965,7 @@ devtools::session_info()
 #>  memoise              2.0.1         2021-11-26 [1] RSPM
 #>  mgcv                 1.9-4         2025-11-07 [3] CRAN (R 4.5.3)
 #>  microbiome           1.32.0        2025-10-29 [1] Bioconduc~
-#>  microViz           * 0.13.0        2026-03-21 [1] local
+#>  microViz           * 0.13.0        2026-03-30 [1] local
 #>  multtest             2.66.0        2025-10-29 [1] Bioconduc~
 #>  nlme                 3.1-168       2025-03-31 [3] CRAN (R 4.5.3)
 #>  numDeriv             2016.8-1.1    2019-06-06 [1] RSPM
@@ -982,17 +982,14 @@ devtools::session_info()
 #>  polyclip             1.10-7        2024-07-23 [1] RSPM
 #>  purrr                1.2.1         2026-01-09 [1] RSPM
 #>  R6                   2.6.1         2025-02-15 [1] RSPM
-#>  ragg                 1.5.1         2026-03-06 [1] RSPM
+#>  ragg                 1.5.2         2026-03-23 [1] RSPM
 #>  RColorBrewer         1.1-3         2022-04-03 [1] RSPM
 #>  Rcpp                 1.1.1         2026-01-10 [1] RSPM
 #>  registry             0.5-1         2019-03-05 [1] RSPM
 #>  repr                 1.1.7         2024-03-22 [1] RSPM
 #>  reshape2             1.4.5         2025-11-12 [1] RSPM
-#>  rhdf5                2.54.1        2025-12-04 [1] Bioconduc~
-#>  rhdf5filters         1.22.0        2025-10-29 [1] Bioconduc~
-#>  Rhdf5lib             1.32.0        2025-10-29 [1] Bioconduc~
 #>  rlang                1.1.7         2026-01-09 [1] RSPM
-#>  rmarkdown            2.30          2025-09-28 [1] RSPM
+#>  rmarkdown            2.31          2026-03-26 [1] RSPM
 #>  ROI                  1.0-2         2026-01-12 [1] RSPM
 #>  ROI.plugin.lpsolve   1.0-2         2023-07-07 [1] RSPM
 #>  Rtsne                0.17          2023-12-07 [1] RSPM
@@ -1017,7 +1014,7 @@ devtools::session_info()
 #>  tweenr               2.0.3         2024-02-26 [1] RSPM
 #>  usethis              3.2.1         2025-09-06 [1] RSPM
 #>  utf8                 1.2.6         2025-06-08 [1] RSPM
-#>  vctrs                0.7.1         2026-01-23 [1] RSPM
+#>  vctrs                0.7.2         2026-03-21 [1] RSPM
 #>  vegan                2.7-3         2026-03-04 [1] RSPM
 #>  viridis              0.6.5         2024-01-29 [1] RSPM
 #>  viridisLite          0.4.3         2026-02-04 [1] RSPM
