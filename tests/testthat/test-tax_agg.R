@@ -2,7 +2,6 @@ library(phyloseq)
 data("dietswap", package = "microbiome")
 
 options(width = 80)
-local_edition(3)
 
 
 
@@ -15,7 +14,6 @@ test_that("microbiome's dietswap data hasn't changed", {
 })
 
 test_that("tax_agg gives appropriate errors", {
-  local_edition(3)
   expect_snapshot_output(tax_agg(dietswap, rank = NA)) # works
   rankErr <- "`rank` must be the name of a valid rank:
 Phylum / Family / Genus

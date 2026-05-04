@@ -1,5 +1,4 @@
 test_that("taxatree_plotkey works as expected", {
-  local_edition(3)
   data("shao19")
 
   ps <- shao19 %>%
@@ -103,7 +102,6 @@ test_that("taxatree_plotkey can sort nodes", {
 
 
 test_that("taxatree_plotkey can drop ranks", {
-  local_edition(3)
   data("shao19")
 
   ps <- shao19 %>%
@@ -134,7 +132,6 @@ test_that("taxatree_plotkey can drop ranks", {
 })
 
 test_that("taxatree_label and plot_labels allows multiple rounds of custom labels", {
-  local_edition(3)
   data("shao19")
 
   ps <- shao19 %>%

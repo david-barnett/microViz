@@ -1,7 +1,6 @@
 data(esophagus, package = "phyloseq")
 
 test_that("unifrac distances work", {
-  local_edition(3)
   # GUniFrac 1.5 did not have verbose argument (relevant for R 3.6 checks)
   skip_if(packageVersion("GUniFrac") < "1.6")
   expect_snapshot(suppressMessages(dist_get(dist_calc(esophagus, dist = 'gunifrac'))))
@@ -19,7 +18,6 @@ test_that("gunifrac alpha = 1 is wunifrac", {
 })
 
 test_that("dist_calc clr and euclid same as aitchison", {
-  local_edition(3)
   skip_if(
     packageVersion("microbiome") < "1.32.0",
     message = "requires microbiome >= 1.32.0 for current clr behaviour"
@@ -53,7 +51,6 @@ test_that("dist_calc clr and euclid same as aitchison", {
 })
 
 test_that("dist_calc rclr and euclid same as robust aitchison", {
-  local_edition(3)
   # can't be otu_table for rclr with optspace()
   otu_matrix <- as(otu_get(microViz::ibd), "matrix")
   robustAitchVeg <- vegan::vegdist(otu_matrix, method = "robust.aitchison")

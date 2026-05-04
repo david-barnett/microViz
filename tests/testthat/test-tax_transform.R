@@ -1,4 +1,3 @@
-local_edition(3)
 data("dietswap", package = "microbiome")
 
 test_that("tax_transform and agg 1 and 2 step options equivalent", {

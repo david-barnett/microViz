@@ -43,7 +43,6 @@ test_that("ps_dedupe errors appropriately'", {
 
 
 test_that("ps_dedupe methods all gives same nsamples", {
-  local_edition(3)
   library(phyloseq)
   data("dietswap", package = "microbiome")
   v <- c("timepoint", "group", "bmi_group")

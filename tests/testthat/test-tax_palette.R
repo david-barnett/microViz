@@ -65,7 +65,6 @@ test_that("tax_palette works", {
 
 test_that("tax_palette_plot works", {
   skip_on_os("windows")
-  local_edition(3)
   ps <- tax_filter(microViz::ibd, min_prevalence = 10)
   ps <- tax_fix(ps)
   vdiffr::expect_doppelganger(

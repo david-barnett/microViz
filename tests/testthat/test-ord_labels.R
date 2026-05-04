@@ -1,4 +1,3 @@
-local_edition(3)
 
 library(ggplot2)
 

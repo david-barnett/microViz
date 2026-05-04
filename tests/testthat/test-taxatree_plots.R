@@ -102,7 +102,6 @@ test_that("taxatree_plots throw informative errors", {
 })
 
 test_that("taxatree_plot plotting works", {
-  local_edition(3)
   lm_plots <- taxatree_plots(lm_stats)
   # test basic plotting success
   expect_equal(names(lm_plots), c("UC", "female", "age_scaled"))
@@ -119,7 +118,6 @@ test_that("taxatree_plot plotting works", {
 
 
 test_that("taxatree_plot plotting works with multiple sig markers", {
-  local_edition(3)
   # test multiple significance markers succeeds
   lmp_multiSig <- taxatree_plots(
     lm_stats,
@@ -141,7 +139,6 @@ test_that("taxatree_plot plotting works with multiple sig markers", {
 })
 
 test_that("taxatree_plotkey produces same results before and after stats", {
-  local_edition(3)
   # generate various different tree plots that should all have same layout
   p1 <- lm_models %>% taxatree_plotkey(.draw_label = TRUE)
   p2a <- lm_stats %>% taxatree_plotkey(.draw_label = TRUE)

@@ -1,5 +1,4 @@
 test_that("tax_top works", {
-  local_edition(3)
   data("enterotype", package = "phyloseq")
   expect_error(
     object = tax_top(enterotype, use_counts = TRUE),

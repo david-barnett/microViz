@@ -4,7 +4,6 @@ options(width = 80)
 
 # ord_explore_init -----------------------------------------------------------
 test_that("ord_explore_init stays the same", {
-  local_edition(3)
   transformed <- dietswap %>%
     ps_mutate(
       weight = dplyr::recode(bmi_group, obese = 3, overweight = 2, lean = 1),
@@ -22,7 +21,6 @@ test_that("ord_explore_init stays the same", {
 
 # dist_choices ---------------------------------------------------------------
 test_that("dist_choices helper works", {
-  local_edition(3)
   # phyloseq without phy_tree
   expect_snapshot(dist_choices(dietswap, type = "tree"))
   expect_snapshot_csv(
@@ -47,7 +45,6 @@ test_that("dist_choices helper works", {
 
 # ord_choices ----------------------------------------------------------------
 test_that("ord_choices helper works", {
-  local_edition(3)
   cons <- list("constrained", "unconstrained")
   dists <- list("dist", "noDist")
   for (type in c(
@@ -65,7 +62,6 @@ test_that("ord_choices helper works", {
 
 # ord_code --------------------------------------------------------------------
 test_that("ord_code helper works", {
-  local_edition(3)
 
   # Iterate through different values for plot_taxa
   for (p in list(FALSE, 1:6)) {
@@ -94,13 +90,11 @@ test_that("ord_code helper works", {
 
 
 test_that("ord_code_dist helper works", {
-  local_edition(3)
   expect_snapshot(cat(ord_code_dist("aitchison")))
   expect_snapshot(cat(ord_code_dist("none")))
 })
 
 test_that("Testing ord_code_stat() different combinations of ellipses and chulls", {
-  local_edition(3)
   expect_snapshot(cat(ord_code_stat(ellipses = TRUE, chulls = FALSE, colour = "aVar")))
   expect_snapshot(cat(ord_code_stat(ellipses = FALSE, chulls = FALSE, colour = "aVar")))
   expect_snapshot(cat(ord_code_stat(ellipses = FALSE, chulls = TRUE, colour = "aVar")))
@@ -108,7 +102,6 @@ test_that("Testing ord_code_stat() different combinations of ellipses and chulls
 })
 
 test_that("Testing ord_code_paths() with different all_vars options (string & vec)", {
-  local_edition(3)
   expect_snapshot(cat(
     ord_code_paths(paths = list(
       colour = "aVar", id_var = "bVar", id_values = letters[1:4],
@@ -125,7 +118,6 @@ test_that("Testing ord_code_paths() with different all_vars options (string & ve
 
 # ord_build ------------------------------------------------------------------
 test_that("ord_build works", {
-  local_edition(3)
   expect_snapshot(ord_build(
     data = dietswap, rank = "Genus", trans = "identity", dist = "bray",
     method = "PCoA", constraints = NULL, conditions = NULL
@@ -138,7 +130,6 @@ test_that("ord_build works", {
 
 # palet_fun ------------------------------------------------------------------
 test_that("ord_explore_palet_fun works", {
-  local_edition(3)
   expect_snapshot(ord_explore_palet_fun(dietswap, "Genus"))
   expect_snapshot(ord_explore_palet_fun(
     ps = dietswap, tax_level = "Family", top_by = median, other = "colourz"

@@ -1,5 +1,4 @@
 test_that("ord_plot arrow style helpers work", {
-  local_edition(3)
   expect_error(vec_tax_sel(arrow = "none"), "arrow must be")
   expect_error(vec_tax_all(arrow = NA), "arrow must be")
   expect_error(vec_constraint(arrow = grid::arrow), "arrow must be")
