@@ -35,8 +35,8 @@ test_that("tax_reorder works", {
   )
 
   # partial reordering and some non-matching taxa should throw a warning
-  reordered <- expect_warning(
-    object = tax_agg(dietswap, rank = "Phylum") %>% ps_get() %>%
+  expect_warning(
+    reordered <- tax_agg(dietswap, rank = "Phylum") %>% ps_get() %>%
       tax_reorder(tax_order = c(new_order2[1:2], "extra", "taxa")) %>%
       phyloseq::taxa_names(),
     regexp = "2 taxa specified in tax_order are not in phyloseq"

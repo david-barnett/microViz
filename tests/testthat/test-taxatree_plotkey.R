@@ -1,4 +1,5 @@
 test_that("taxatree_plotkey works as expected", {
+  withr::local_options(cli.unicode = TRUE)
   data("shao19")
 
   ps <- shao19 %>%
