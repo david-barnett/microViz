@@ -52,7 +52,10 @@ test_that("(constrained) ordination gives correct warnings etc", {
   expect_error(ord_calc(tmpNoDist, method = "NMDS"), "Distance matrix missing!")
   expect_error(ord_calc(tmpNoDist, method = "PCOA"), "Did you mean \"PCoA\"?")
   expect_warning(
-    object = ord_calc(data = tmpNoDist, method = "DCA"),
+    object = expect_warning(
+      object = ord_calc(data = tmpNoDist, method = "DCA"),
+      regexp = "some species were removed because they were missing in the data"
+    ),
     regexp = "Neither DCA nor DPCoA have been tested"
   )
   expect_error(

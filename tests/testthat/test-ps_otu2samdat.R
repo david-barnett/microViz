@@ -23,8 +23,8 @@ test_that("ps_otu2samdat works as expected", {
     regexp = "The following taxa were not found in the otu table"
   )
   # repeated selection of same
-  tmp <- expect_warning(
-    object = ps_otu2samdat(shao19, taxa = 1:2) %>% ps_otu2samdat(1:3),
+  expect_warning(
+    tmp <- ps_otu2samdat(shao19, taxa = 1:2) %>% ps_otu2samdat(1:3),
     regexp = "Overwriting the following sample_data variables:
 Escherichia coli / Bacteroides caccae"
   )
