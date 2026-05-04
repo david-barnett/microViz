@@ -79,7 +79,6 @@ test_that("tax_sort prevalence ordering works", {
 })
 
 test_that("expected names order for comparison hasn't changed", {
-  local_edition(3L)
   expect_snapshot(cat(df[["names"]]), cran = FALSE)
 })
 

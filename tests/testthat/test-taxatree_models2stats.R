@@ -1,5 +1,4 @@
 test_that("tax_models2stats works", {
-  local_edition(3)
 
   data("shao19")
 

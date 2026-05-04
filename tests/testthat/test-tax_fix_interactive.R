@@ -1,7 +1,6 @@
 library(shinytest2)
 
 test_that("tax_fix_interactive() works", {
-  local_edition(3)
   testthat::skip_on_cran()
   testthat::skip_on_bioc()
   skip_on_os(os = c("windows", "linux"))

@@ -1,4 +1,3 @@
-local_edition(3)
 
 test_that("ibd names are as expected, and are replaced consistently", {
   data("ibd", package = "microViz")

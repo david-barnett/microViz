@@ -1,7 +1,6 @@
 library(phyloseq)
 data("enterotype", package = "phyloseq")
 
-local_edition(3)
 
 x <- enterotype
 y <- data.frame(

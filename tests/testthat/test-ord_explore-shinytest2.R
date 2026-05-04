@@ -6,8 +6,7 @@ test_that("ord_explore app works: unconstrained ords", {
   skip_on_os(os = c("windows", "linux"))
   skip_on_os(os = "mac", arch = "x86_64")
 
-  # Set local edition and options
-  local_edition(3)
+  # Set test options
   options(width = 80)
 
   # Prepare the data

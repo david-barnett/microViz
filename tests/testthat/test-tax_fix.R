@@ -30,7 +30,6 @@ datasets <- list(
 
 for (pseq in names(datasets)) {
   test_that(paste("dataset stays same:", pseq), {
-    local_edition(3)
     expect_snapshot_csv(
       name = pseq,
       object = head(tax_table(datasets[[pseq]]), 500)
@@ -40,7 +39,6 @@ for (pseq in names(datasets)) {
   fixed <- suppressWarnings(tax_fix(datasets[[pseq]]))
 
   test_that(paste("tax_fix dataset stays same:", pseq), {
-    local_edition(3)
     expect_snapshot_csv(
       name = paste0("fixed_", pseq),
       object = head(tax_table(fixed), 500)
@@ -51,7 +49,6 @@ for (pseq in names(datasets)) {
     test_that(
       desc = paste("tax_fix defaults allow agg:", pseq, r),
       code = {
-        local_edition(3)
         expect_snapshot(
           tax_agg(ps = fixed, rank = r)
         )
@@ -62,7 +59,6 @@ for (pseq in names(datasets)) {
 
 # tax_common_unknowns ==========================
 test_that("tax_common_unknowns doesn't change", {
-  local_edition(3)
   for (i in 0:5) {
     expect_snapshot_csv(
       name = paste0("tax_common_unknowns-", i),

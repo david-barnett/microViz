@@ -21,7 +21,6 @@ test_that("ps_melt equivalent to psmelt", {
 
 
 test_that("ps_melt doesn't change", {
-  local_edition(3)
   gp_ch <- phyloseq::subset_taxa(GlobalPatterns, Phylum == "Chlamydiae")
   mdf <- ps_melt(gp_ch)
   expect_snapshot_csv(name = "melted_ps", object = mdf)

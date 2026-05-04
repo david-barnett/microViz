@@ -49,7 +49,6 @@ test_that("cor_heatmap error on invalid anno_tax argument", {
 })
 
 test_that("cor_heatmap doesn't change:", {
-  local_edition(3)
   skip_if_not(packageVersion("ComplexHeatmap") > "2.11")
 
   # make simple correlation heatmap with all numeric-like variables
@@ -106,7 +105,6 @@ test_that("cor_heatmap doesn't change:", {
 # deprecated comp_heatmap annotation approach ---------------------------
 
 test_that("comp_heatmap doesn't change: ", {
-  local_edition(3)
   skip_if_not(packageVersion("ComplexHeatmap") > "2.11")
 
   p <- suppressWarnings(
