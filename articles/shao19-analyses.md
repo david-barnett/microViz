@@ -577,8 +577,8 @@ shao4d_perm <- shao4d %>%
     n_processes = 1
   )
 #> Dropping samples with missings: 15
-#> 2026-05-04 14:24:19.355613 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2026-05-04 14:24:19.919035 - Finished PERMANOVA
+#> 2026-05-04 14:48:37.722242 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2026-05-04 14:48:38.283472 - Finished PERMANOVA
 
 shao4d_perm %>% perm_get()
 #> Permutation test for adonis under reduced model
@@ -669,11 +669,11 @@ shao4d_treeStats <- shao4d_prev10 %>%
   taxatree_models2stats(.keep_models = TRUE) %>%
   # adjust the p values for multiple testing, within each rank
   taxatree_stats_p_adjust(method = "fdr", grouping = "rank")
-#> 2026-05-04 14:24:20.352993 - modelling at rank: phylum
-#> 2026-05-04 14:24:20.518645 - modelling at rank: class
-#> 2026-05-04 14:24:20.734893 - modelling at rank: order
-#> 2026-05-04 14:24:21.02983 - modelling at rank: family
-#> 2026-05-04 14:24:21.374792 - modelling at rank: genus
+#> 2026-05-04 14:48:38.704879 - modelling at rank: phylum
+#> 2026-05-04 14:48:38.862227 - modelling at rank: class
+#> 2026-05-04 14:48:39.071867 - modelling at rank: order
+#> 2026-05-04 14:48:39.363148 - modelling at rank: family
+#> 2026-05-04 14:48:39.698645 - modelling at rank: genus
 ```
 
 ``` r
@@ -1225,7 +1225,7 @@ treePlotsSimple %>% str(max.level = 1) # just a list with a single ggplot inside
 #>   ..@ labels     : <ggplot2::labels> List of 1
 #>  .. .. $ title: Factor w/ 1 level "Csection": 1
 #>   ..@ meta       : list()
-#>   ..@ plot_env   :<environment: 0x561ae3aebca0>
+#>   ..@ plot_env   :<environment: 0x558b65e8b100>
 ```
 
 ``` r
