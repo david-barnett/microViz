@@ -1,4 +1,4 @@
-library(dplyr)
+suppressPackageStartupMessages(library(dplyr))
 library(phyloseq)
 data(dietswap, package = "microbiome")
 ps <- dietswap
@@ -36,7 +36,7 @@ for (pseq in names(datasets)) {
     )
   })
 
-  fixed <- suppressWarnings(tax_fix(datasets[[pseq]]))
+  fixed <- suppressWarnings(tax_fix(datasets[[pseq]], verbose = FALSE))
 
   test_that(paste("tax_fix dataset stays same:", pseq), {
     expect_snapshot_csv(

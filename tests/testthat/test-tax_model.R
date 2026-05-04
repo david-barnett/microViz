@@ -60,11 +60,14 @@ test_that("formula and variable arg alternatives can be equivalent", {
       obese = if_else(bmi_group == "obese", 1, 0, NaN)
     )
 
-  ps <- ps %>% tax_filter(min_prevalence = 0.1, min_total_abundance = 10000)
+  ps <- ps %>% tax_filter(
+    min_prevalence = 0.1, min_total_abundance = 10000, verbose = FALSE
+  )
 
   models <- tax_model(
     ps = ps, type = "lm", rank = "Genus", taxa = 1:3,
-    variables = c("female", "overweight", "obese"), return_psx = FALSE
+    variables = c("female", "overweight", "obese"), return_psx = FALSE,
+    verbose = FALSE
   )
 
   expect_equal(
@@ -75,12 +78,14 @@ test_that("formula and variable arg alternatives can be equivalent", {
   # Alternative method using formula arg instead of vars for identical results
   models2 <- tax_model(
     ps = ps, type = "lm", rank = "Genus", taxa = 1:3,
-    formula = ~ female + overweight + obese, return_psx = FALSE
+    formula = ~ female + overweight + obese, return_psx = FALSE,
+    verbose = FALSE
   )
   # Alternative method using formula arg as string to produce identical results
   models3 <- tax_model(
     ps = ps, type = "lm", rank = "Genus", taxa = 1:3,
-    formula = "~ female + overweight + obese", return_psx = FALSE
+    formula = "~ female + overweight + obese", return_psx = FALSE,
+    verbose = FALSE
   )
 
   expect_equal(models, models2)
@@ -89,11 +94,13 @@ test_that("formula and variable arg alternatives can be equivalent", {
   # try some univariable models
   models4 <- tax_model(
     ps = ps, type = "lm", rank = "Genus", taxa = 1:3,
-    formula = c(~female, "~ overweight", "~ obese"), return_psx = FALSE
+    formula = c(~female, "~ overweight", "~ obese"), return_psx = FALSE,
+    verbose = FALSE
   )
   models5 <- tax_model(
     ps = ps, type = "lm", rank = "Genus", taxa = 1:3,
-    variables = list("female", "overweight", "obese"), return_psx = FALSE
+    variables = list("female", "overweight", "obese"), return_psx = FALSE,
+    verbose = FALSE
   )
   expect_equal(models5, models4)
 })

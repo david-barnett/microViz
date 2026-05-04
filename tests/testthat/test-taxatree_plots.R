@@ -4,7 +4,7 @@ data("ibd", package = "microViz")
 phylo <- ibd %>%
   ps_filter(DiseaseState %in% c("UC", "nonIBD")) %>%
   tax_mutate(Species = NULL, Genus = NULL) %>%
-  tax_fix() %>%
+  tax_fix(verbose = FALSE) %>%
   ps_mutate(
     UC = ifelse(DiseaseState == "UC", yes = 1, no = 0),
     female = ifelse(gender == "female", yes = 1, no = 0),
@@ -29,11 +29,13 @@ test_that("taxatree_nodes errors on bad fun argument", {
 lm_models <- phylo %>%
   tax_prepend_ranks() %>%
   tax_transform("compositional", rank = "Family", keep_counts = TRUE) %>%
-  tax_filter(min_prevalence = 0.3, undetected = 0, use_counts = TRUE) %>%
+  tax_filter(
+    min_prevalence = 0.3, undetected = 0, use_counts = TRUE, verbose = FALSE
+  ) %>%
   taxatree_models(
     type = lm, trans = "log2", trans_args = list(zero_replace = "halfmin"),
     ranks = NULL, # uses every rank available except the first
-    variables = c("UC", "female", "age_scaled")
+    variables = c("UC", "female", "age_scaled"), verbose = FALSE
   )
 
 # convert models to stats

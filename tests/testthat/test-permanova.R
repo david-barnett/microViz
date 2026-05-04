@@ -23,7 +23,8 @@ test_that("different ways of specifying the same permanova model are equivalent"
     dist_permanova(
       seed = 1,
       variables = "nationality + sex * bmi_group",
-      n_perms = 9
+      n_perms = 9,
+      verbose = FALSE
     )
 
   # specify the same model in alternative way
@@ -32,7 +33,8 @@ test_that("different ways of specifying the same permanova model are equivalent"
       seed = 1,
       variables = c("nationality", "sex", "bmi_group"),
       interactions = "sex * bmi_group",
-      n_perms = 9
+      n_perms = 9,
+      verbose = FALSE
     )
 
   expect_equal(PERM3, PERM2)

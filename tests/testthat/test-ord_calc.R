@@ -40,8 +40,12 @@ test_that("(constrained) ordination gives correct warnings etc", {
     ord_calc(tmpDist, constraints = c("weight", "female"), scale_cc = FALSE),
     regexp = "Dropping samples with missings: 2"
   )
+  # Scaling constraints emits one summary message and one line per variable.
   expect_message(
-    ord_calc(tmpDist, conditions = "weight", scale_cc = TRUE),
+    expect_message(
+      ord_calc(tmpDist, conditions = "weight", scale_cc = TRUE),
+      regexp = "\tweight"
+    ),
     regexp = "Centering \\(mean\\) and scaling \\(sd\\) the constraints and/or conditions"
   )
   expect_warning(
@@ -51,6 +55,7 @@ test_that("(constrained) ordination gives correct warnings etc", {
   expect_error(ord_calc(tmpNoDist, method = "PCoA"), "Distance matrix missing!")
   expect_error(ord_calc(tmpNoDist, method = "NMDS"), "Distance matrix missing!")
   expect_error(ord_calc(tmpNoDist, method = "PCOA"), "Did you mean \"PCoA\"?")
+  # DCA emits one microViz warning and one vegan::decorana() warning.
   expect_warning(
     object = expect_warning(
       object = ord_calc(data = tmpNoDist, method = "DCA"),
