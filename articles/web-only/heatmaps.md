@@ -6,6 +6,7 @@ microbial composition heatmaps with microViz.
 ## Setup
 
 ``` r
+
 library(dplyr)
 #> 
 #> Attaching package: 'dplyr'
@@ -27,6 +28,7 @@ First we’ll get some OTU abundance data from inflammatory bowel disease
 patients and controls from the corncob package.
 
 ``` r
+
 data("ibd", package = "microViz")
 ibd
 #> phyloseq-class experiment-level object
@@ -40,6 +42,7 @@ and fix the taxonomy of the rest. Also drop patients with unclassified
 IBD.
 
 ``` r
+
 psq <- ibd %>%
   tax_mutate(Species = NULL) %>%
   tax_filter(min_prevalence = 5) %>%
@@ -64,6 +67,7 @@ In this example we use a “compositional” transformation, so the Class
 abundances are shown as proportions of each sample.
 
 ``` r
+
 psq %>%
   tax_transform("compositional", rank = "Class") %>%
   comp_heatmap()
@@ -79,6 +83,7 @@ like “clr” or “standardize”. This is the default symmetrical palette but
 you can pick from many.
 
 ``` r
+
 psq %>%
   tax_transform("clr", rank = "Family") %>%
   comp_heatmap(colors = heat_palette(sym = TRUE), name = "CLR")
@@ -89,6 +94,7 @@ psq %>%
 ### Annotating taxa
 
 ``` r
+
 psq %>%
   tax_transform("compositional", rank = "Class") %>%
   comp_heatmap(tax_anno = taxAnnotation(
@@ -104,6 +110,7 @@ Positioning the heatmap legend at the bottom is possible. You can assign
 the heatmap to a name and then call `ComplexHeatmap`’s `draw` function.
 
 ``` r
+
 heat <- psq %>%
   tax_transform("compositional", rank = "Class") %>%
   comp_heatmap(
@@ -139,6 +146,7 @@ metadata are possible.
   can have cell borders, but requires an extra step to draw a legend
 
 ``` r
+
 cols <- distinct_palette(n = 3, add = NA)
 names(cols) <- unique(samdat_tbl(psq)$DiseaseState)
 
@@ -169,6 +177,7 @@ every row with `row_split = 1:11`, which are both
 arguments.
 
 ``` r
+
 psqC <- psq %>% tax_transform("compositional", rank = "Class")
 
 htmp <- psqC %>%
@@ -201,6 +210,7 @@ You can also manually draw a legend with the convenience function
 [`anno_cat_legend()`](https://david-barnett.github.io/microViz/reference/anno_cat_legend.md).
 
 ``` r
+
 grid::grid.newpage()
 anno_cat_legend(
   col = c("a level" = "red", "another level" = "blue", c = "white"),
@@ -218,6 +228,7 @@ the samples beforehand with ps_arrange or other methods, and then
 suppress reordering of the heatmap with sample_seriation = “Identity”
 
 ``` r
+
 cols <- distinct_palette(n = 3, add = NA)
 names(cols) <- unique(samdat_tbl(psq)$DiseaseState)
 
@@ -248,6 +259,7 @@ If you have fewer samples (and taxa) you might like to label the cells
 with their values. By default, the raw counts are shown.
 
 ``` r
+
 psq %>%
   tax_transform("compositional", rank = "Class") %>%
   comp_heatmap(samples = 1:15, numbers = heat_numbers())
@@ -260,6 +272,7 @@ setting `numbers_use_counts = FALSE`, and you can/should change the
 number of decimals shown too.
 
 ``` r
+
 psq %>%
   tax_transform("compositional", rank = "Class") %>%
   comp_heatmap(
@@ -274,6 +287,7 @@ The numbers can any transformation of counts, irrespective of what
 transformations were used for the colours, or seriation.
 
 ``` r
+
 psq %>%
   tax_transform("binary", undetected = 0, rank = "Class") %>%
   comp_heatmap(
@@ -292,6 +306,7 @@ values used for the numbers transformation, not the colours, which are
 just presence/absence!
 
 ``` r
+
 psq %>%
   tax_transform("binary", undetected = 0, rank = "Class") %>%
   comp_heatmap(
@@ -315,6 +330,7 @@ microbial abundances and other metadata.
 Let’s make some fake numeric variables to exemplify this.
 
 ``` r
+
 set.seed(111) # ensures making same random variables every time!
 psq <- psq %>%
   ps_arrange(ibd) %>%
@@ -337,6 +353,7 @@ By default, the `cor_heatmap` function will correlate all taxa to all
 numerical sample data, using pearson correlation method.
 
 ``` r
+
 psq %>%
   tax_agg("Family") %>%
   cor_heatmap(vars = c("var1", "var2", "var3", "var4", "var5", "var6"))
@@ -351,6 +368,7 @@ maximum count, just to make these tutorial figures a little more
 compact!
 
 ``` r
+
 psq %>%
   tax_agg("Family") %>%
   cor_heatmap(
@@ -371,6 +389,7 @@ on the same scale, as by default the annotation functions extract the
 stored counts data from the psExtra input, not the transformed data.*
 
 ``` r
+
 psq %>%
   tax_agg("Family") %>%
   tax_transform("clr", zero_replace = "halfmin") %>%
@@ -385,6 +404,7 @@ psq %>%
 Let’s transform and scale the taxon abundances before correlating.
 
 ``` r
+
 psq %>%
   tax_agg("Family") %>%
   tax_transform("clr", zero_replace = "halfmin") %>%
@@ -406,6 +426,7 @@ You can transform the taxa for the abundance annotation. The `trans` and
 [`tax_transform()`](https://david-barnett.github.io/microViz/reference/tax_transform.md).
 
 ``` r
+
 psq %>%
   tax_agg("Family") %>%
   cor_heatmap(
@@ -425,6 +446,7 @@ function, that takes a psExtra or phyloseq object, transforms it, and
 returns it.
 
 ``` r
+
 psq %>%
   tax_agg("Family") %>%
   cor_heatmap(
@@ -463,6 +485,7 @@ For zero-inflated microbiome data, showing prevalence and “abundance
 when detected” often seems like a more informative annotation.
 
 ``` r
+
 psq %>%
   tax_agg("Family") %>%
   cor_heatmap(
@@ -498,6 +521,7 @@ ordering, so you can set `seriation_method_col = OLO_ward` to keep
 ordering.
 
 ``` r
+
 psq %>%
   tax_agg("Family") %>%
   tax_sort(by = prev, at = "Family") %>%
@@ -521,6 +545,7 @@ You can easily put the taxa annotations on another of the heatmap with
 e.g. `taxa_side = "left"`
 
 ``` r
+
 psq %>%
   tax_agg("Family") %>%
   tax_sort(by = prev, at = "Family") %>%
@@ -543,6 +568,7 @@ Or on the top or bottom is also possible, this will rotate the heatmap.
 Remember to swap the seriation method arguments around!
 
 ``` r
+
 psq %>%
   tax_agg("Family") %>%
   tax_sort(by = prev, at = "Family") %>%
@@ -566,6 +592,7 @@ psq %>%
 As well as annotating the taxa, you can also annotate the variables.
 
 ``` r
+
 psq %>%
   tax_agg("Family") %>%
   cor_heatmap(
@@ -587,6 +614,7 @@ correlation heatmaps with p-values: `cor_heatmap` cannot do this, so
 here is an alternative way using `tax_model`.
 
 ``` r
+
 # compute correlations, with p values, and store in a dataframe
 correlations_df <- psq %>% 
   tax_model(
@@ -612,6 +640,7 @@ taxa_order <- taxa_hclust$labels[taxa_hclust$order]
 ```
 
 ``` r
+
 library(ggplot2)
 
 correlations_df %>% 
@@ -657,6 +686,7 @@ instead of only 5.
 Transform data and customise only labels.
 
 ``` r
+
 psq %>%
   tax_transform("compositional", rank = "Class") %>%
   tax_transform("log10", zero_replace = "halfmin", chain = TRUE) %>%
@@ -677,6 +707,7 @@ demonstrates that custom breaks can be set in
 [`heat_palette()`](https://david-barnett.github.io/microViz/reference/heat_palette.md).
 
 ``` r
+
 # seriation transform
 serTrans <- function(x) {
   tax_transform(x, trans = "log10", zero_replace = "halfmin", chain = TRUE)
@@ -699,10 +730,11 @@ psq %>%
 ## Session info
 
 ``` r
+
 devtools::session_info()
 #> ─ Session info ───────────────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.5.3 (2026-03-11)
+#>  version  R version 4.6.0 (2026-04-24)
 #>  os       Ubuntu 24.04.4 LTS
 #>  system   x86_64, linux-gnu
 #>  ui       X11
@@ -710,121 +742,121 @@ devtools::session_info()
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-03-30
-#>  pandoc   3.1.11 @ /opt/hostedtoolcache/pandoc/3.1.11/x64/ (via rmarkdown)
+#>  date     2026-05-04
+#>  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)
 #>  quarto   NA
 #> 
 #> ─ Packages ───────────────────────────────────────────────────────────────────
-#>  package        * version  date (UTC) lib source
-#>  ade4             1.7-24   2026-03-21 [1] RSPM
-#>  ape              5.8-1    2024-12-16 [1] RSPM
-#>  backports        1.5.0    2024-05-23 [1] RSPM
-#>  Biobase          2.70.0   2025-10-29 [1] Bioconduc~
-#>  BiocGenerics     0.56.0   2025-10-29 [1] Bioconduc~
-#>  biomformat       1.38.3   2026-03-16 [1] Bioconduc~
-#>  Biostrings       2.78.0   2025-10-29 [1] Bioconduc~
-#>  broom            1.0.12   2026-01-27 [1] RSPM
-#>  bslib            0.10.0   2026-01-26 [1] RSPM
-#>  ca               0.71.1   2020-01-24 [1] RSPM
-#>  cachem           1.1.0    2024-05-16 [1] RSPM
-#>  circlize         0.4.17   2025-12-08 [1] RSPM
-#>  cli              3.6.5    2025-04-23 [1] RSPM
-#>  clue             0.3-68   2026-03-26 [1] RSPM
-#>  cluster          2.1.8.2  2026-02-05 [3] CRAN (R 4.5.3)
-#>  codetools        0.2-20   2024-03-31 [3] CRAN (R 4.5.3)
-#>  colorspace       2.1-2    2025-09-22 [1] RSPM
-#>  ComplexHeatmap   2.26.1   2026-02-03 [1] Bioconduc~
-#>  corncob          0.4.2    2025-03-29 [1] RSPM
-#>  crayon           1.5.3    2024-06-20 [1] RSPM
-#>  data.table       1.18.2.1 2026-01-27 [1] RSPM
-#>  desc             1.4.3    2023-12-10 [1] RSPM
-#>  devtools         2.5.0    2026-03-14 [1] RSPM
-#>  digest           0.6.39   2025-11-19 [1] RSPM
-#>  doParallel       1.0.17   2022-02-07 [1] RSPM
-#>  dplyr          * 1.2.0    2026-02-03 [1] RSPM
-#>  ellipsis         0.3.2    2021-04-29 [1] RSPM
-#>  evaluate         1.0.5    2025-08-27 [1] RSPM
-#>  farver           2.1.2    2024-05-13 [1] RSPM
-#>  fastmap          1.2.0    2024-05-15 [1] RSPM
-#>  foreach          1.5.2    2022-02-02 [1] RSPM
-#>  fs               2.0.1    2026-03-24 [1] RSPM
-#>  generics         0.1.4    2025-05-09 [1] RSPM
-#>  GetoptLong       1.1.0    2025-11-28 [1] RSPM
-#>  ggplot2        * 4.0.2    2026-02-03 [1] RSPM
-#>  GlobalOptions    0.1.3    2025-11-28 [1] RSPM
-#>  glue             1.8.0    2024-09-30 [1] RSPM
-#>  gtable           0.3.6    2024-10-25 [1] RSPM
-#>  htmltools        0.5.9    2025-12-04 [1] RSPM
-#>  htmlwidgets      1.6.4    2023-12-06 [1] RSPM
-#>  igraph           2.2.2    2026-02-12 [1] RSPM
-#>  IRanges          2.44.0   2025-10-29 [1] Bioconduc~
-#>  iterators        1.0.14   2022-02-05 [1] RSPM
-#>  jquerylib        0.1.4    2021-04-26 [1] RSPM
-#>  jsonlite         2.0.0    2025-03-27 [1] RSPM
-#>  knitr            1.51     2025-12-20 [1] RSPM
-#>  labeling         0.4.3    2023-08-29 [1] RSPM
-#>  lattice          0.22-9   2026-02-09 [3] CRAN (R 4.5.3)
-#>  lifecycle        1.0.5    2026-01-08 [1] RSPM
-#>  magrittr         2.0.4    2025-09-12 [1] RSPM
-#>  MASS             7.3-65   2025-02-28 [3] CRAN (R 4.5.3)
-#>  Matrix           1.7-4    2025-08-28 [3] CRAN (R 4.5.3)
-#>  matrixStats      1.5.0    2025-01-07 [1] RSPM
-#>  memoise          2.0.1    2021-11-26 [1] RSPM
-#>  mgcv             1.9-4    2025-11-07 [3] CRAN (R 4.5.3)
-#>  microbiome       1.32.0   2025-10-29 [1] Bioconduc~
-#>  microViz       * 0.13.0   2026-03-30 [1] local
-#>  multtest         2.66.0   2025-10-29 [1] Bioconduc~
-#>  nlme             3.1-168  2025-03-31 [3] CRAN (R 4.5.3)
-#>  otel             0.2.0    2025-08-29 [1] RSPM
-#>  permute          0.9-10   2026-02-06 [1] RSPM
-#>  phyloseq       * 1.54.2   2026-03-02 [1] Bioconduc~
-#>  pillar           1.11.1   2025-09-17 [1] RSPM
-#>  pkgbuild         1.4.8    2025-05-26 [1] RSPM
-#>  pkgconfig        2.0.3    2019-09-22 [1] RSPM
-#>  pkgdown          2.2.0    2025-11-06 [1] RSPM
-#>  pkgload          1.5.0    2026-02-03 [1] RSPM
-#>  plyr             1.8.9    2023-10-02 [1] RSPM
-#>  png              0.1-9    2026-03-15 [1] RSPM
-#>  purrr            1.2.1    2026-01-09 [1] RSPM
-#>  R6               2.6.1    2025-02-15 [1] RSPM
-#>  ragg             1.5.2    2026-03-23 [1] RSPM
-#>  RColorBrewer     1.1-3    2022-04-03 [1] RSPM
-#>  Rcpp             1.1.1    2026-01-10 [1] RSPM
-#>  registry         0.5-1    2019-03-05 [1] RSPM
-#>  reshape2         1.4.5    2025-11-12 [1] RSPM
-#>  rjson            0.2.23   2024-09-16 [1] RSPM
-#>  rlang            1.1.7    2026-01-09 [1] RSPM
-#>  rmarkdown        2.31     2026-03-26 [1] RSPM
-#>  Rtsne            0.17     2023-12-07 [1] RSPM
-#>  S4Vectors        0.48.0   2025-10-29 [1] Bioconduc~
-#>  S7               0.2.1    2025-11-14 [1] RSPM
-#>  sass             0.4.10   2025-04-11 [1] RSPM
-#>  scales           1.4.0    2025-04-24 [1] RSPM
-#>  Seqinfo          1.0.0    2025-10-29 [1] Bioconduc~
-#>  seriation        1.5.8    2025-08-20 [1] RSPM
-#>  sessioninfo      1.2.3    2025-02-05 [1] RSPM
-#>  shape            1.4.6.1  2024-02-23 [1] RSPM
-#>  stringi          1.8.7    2025-03-27 [1] RSPM
-#>  stringr          1.6.0    2025-11-04 [1] RSPM
-#>  survival         3.8-6    2026-01-16 [3] CRAN (R 4.5.3)
-#>  systemfonts      1.3.2    2026-03-05 [1] RSPM
-#>  textshaping      1.0.5    2026-03-06 [1] RSPM
-#>  tibble           3.3.1    2026-01-11 [1] RSPM
-#>  tidyr            1.3.2    2025-12-19 [1] RSPM
-#>  tidyselect       1.2.1    2024-03-11 [1] RSPM
-#>  TSP              1.2.7    2026-03-23 [1] RSPM
-#>  usethis          3.2.1    2025-09-06 [1] RSPM
-#>  vctrs            0.7.2    2026-03-21 [1] RSPM
-#>  vegan            2.7-3    2026-03-04 [1] RSPM
-#>  viridisLite      0.4.3    2026-02-04 [1] RSPM
-#>  withr            3.0.2    2024-10-28 [1] RSPM
-#>  xfun             0.57     2026-03-20 [1] RSPM
-#>  XVector          0.50.0   2025-10-29 [1] Bioconduc~
-#>  yaml             2.3.12   2025-12-10 [1] RSPM
+#>  package        * version   date (UTC) lib source
+#>  ade4             1.7-24    2026-03-21 [1] RSPM
+#>  ape              5.8-1     2024-12-16 [1] RSPM
+#>  backports        1.5.1     2026-04-03 [1] RSPM
+#>  Biobase          2.72.0    2026-04-28 [1] Bioconduc~
+#>  BiocGenerics     0.58.0    2026-04-28 [1] Bioconduc~
+#>  biomformat       1.40.0    2026-04-28 [1] Bioconduc~
+#>  Biostrings       2.80.0    2026-04-28 [1] Bioconduc~
+#>  broom            1.0.12    2026-01-27 [1] RSPM
+#>  bslib            0.10.0    2026-01-26 [1] RSPM
+#>  ca               0.71.1    2020-01-24 [1] RSPM
+#>  cachem           1.1.0     2024-05-16 [1] RSPM
+#>  circlize         0.4.18    2026-04-04 [1] RSPM
+#>  cli              3.6.6     2026-04-09 [1] RSPM
+#>  clue             0.3-68    2026-03-26 [1] RSPM
+#>  cluster          2.1.8.2   2026-02-05 [3] CRAN (R 4.6.0)
+#>  codetools        0.2-20    2024-03-31 [3] CRAN (R 4.6.0)
+#>  colorspace       2.1-2     2025-09-22 [1] RSPM
+#>  ComplexHeatmap   2.28.0    2026-04-28 [1] Bioconduc~
+#>  corncob          0.4.2     2025-03-29 [1] RSPM
+#>  crayon           1.5.3     2024-06-20 [1] RSPM
+#>  data.table       1.18.2.1  2026-01-27 [1] RSPM
+#>  desc             1.4.3     2023-12-10 [1] RSPM
+#>  devtools         2.5.2     2026-04-30 [1] RSPM
+#>  digest           0.6.39    2025-11-19 [1] RSPM
+#>  doParallel       1.0.17    2022-02-07 [1] RSPM
+#>  dplyr          * 1.2.1     2026-04-03 [1] RSPM
+#>  ellipsis         0.3.3     2026-04-04 [1] RSPM
+#>  evaluate         1.0.5     2025-08-27 [1] RSPM
+#>  farver           2.1.2     2024-05-13 [1] RSPM
+#>  fastmap          1.2.0     2024-05-15 [1] RSPM
+#>  foreach          1.5.2     2022-02-02 [1] RSPM
+#>  fs               2.1.0     2026-04-18 [1] RSPM
+#>  generics         0.1.4     2025-05-09 [1] RSPM
+#>  GetoptLong       1.1.1     2026-04-08 [1] RSPM
+#>  ggplot2        * 4.0.3     2026-04-22 [1] RSPM
+#>  GlobalOptions    0.1.4     2026-04-08 [1] RSPM
+#>  glue             1.8.1     2026-04-17 [1] RSPM
+#>  gtable           0.3.6     2024-10-25 [1] RSPM
+#>  htmltools        0.5.9     2025-12-04 [1] RSPM
+#>  htmlwidgets      1.6.4     2023-12-06 [1] RSPM
+#>  igraph           2.3.0     2026-04-21 [1] RSPM
+#>  IRanges          2.46.0    2026-04-28 [1] Bioconduc~
+#>  iterators        1.0.14    2022-02-05 [1] RSPM
+#>  jquerylib        0.1.4     2021-04-26 [1] RSPM
+#>  jsonlite         2.0.0     2025-03-27 [1] RSPM
+#>  knitr            1.51      2025-12-20 [1] RSPM
+#>  labeling         0.4.3     2023-08-29 [1] RSPM
+#>  lattice          0.22-9    2026-02-09 [3] CRAN (R 4.6.0)
+#>  lifecycle        1.0.5     2026-01-08 [1] RSPM
+#>  magrittr         2.0.5     2026-04-04 [1] RSPM
+#>  MASS             7.3-65    2025-02-28 [3] CRAN (R 4.6.0)
+#>  Matrix           1.7-5     2026-03-21 [3] CRAN (R 4.6.0)
+#>  matrixStats      1.5.0     2025-01-07 [1] RSPM
+#>  memoise          2.0.1     2021-11-26 [1] RSPM
+#>  mgcv             1.9-4     2025-11-07 [3] CRAN (R 4.6.0)
+#>  microbiome       1.34.0    2026-04-28 [1] Bioconduc~
+#>  microViz       * 0.13.0    2026-05-04 [1] local
+#>  multtest         2.68.0    2026-04-28 [1] Bioconduc~
+#>  nlme             3.1-169   2026-03-27 [3] CRAN (R 4.6.0)
+#>  otel             0.2.0     2025-08-29 [1] RSPM
+#>  permute          0.9-10    2026-02-06 [1] RSPM
+#>  phyloseq       * 1.56.0    2026-04-28 [1] Bioconduc~
+#>  pillar           1.11.1    2025-09-17 [1] RSPM
+#>  pkgbuild         1.4.8     2025-05-26 [1] RSPM
+#>  pkgconfig        2.0.3     2019-09-22 [1] RSPM
+#>  pkgdown          2.2.0     2025-11-06 [1] RSPM
+#>  pkgload          1.5.2     2026-04-22 [1] RSPM
+#>  plyr             1.8.9     2023-10-02 [1] RSPM
+#>  png              0.1-9     2026-03-15 [1] RSPM
+#>  purrr            1.2.2     2026-04-10 [1] RSPM
+#>  R6               2.6.1     2025-02-15 [1] RSPM
+#>  ragg             1.5.2     2026-03-23 [1] RSPM
+#>  RColorBrewer     1.1-3     2022-04-03 [1] RSPM
+#>  Rcpp             1.1.1-1.1 2026-04-24 [1] RSPM
+#>  registry         0.5-1     2019-03-05 [1] RSPM
+#>  reshape2         1.4.5     2025-11-12 [1] RSPM
+#>  rjson            0.2.23    2024-09-16 [1] RSPM
+#>  rlang            1.2.0     2026-04-06 [1] RSPM
+#>  rmarkdown        2.31      2026-03-26 [1] RSPM
+#>  Rtsne            0.17      2023-12-07 [1] RSPM
+#>  S4Vectors        0.50.0    2026-04-28 [1] Bioconduc~
+#>  S7               0.2.2     2026-04-22 [1] RSPM
+#>  sass             0.4.10    2025-04-11 [1] RSPM
+#>  scales           1.4.0     2025-04-24 [1] RSPM
+#>  Seqinfo          1.2.0     2026-04-28 [1] Bioconduc~
+#>  seriation        1.5.8     2025-08-20 [1] RSPM
+#>  sessioninfo      1.2.3     2025-02-05 [1] RSPM
+#>  shape            1.4.6.1   2024-02-23 [1] RSPM
+#>  stringi          1.8.7     2025-03-27 [1] RSPM
+#>  stringr          1.6.0     2025-11-04 [1] RSPM
+#>  survival         3.8-6     2026-01-16 [3] CRAN (R 4.6.0)
+#>  systemfonts      1.3.2     2026-03-05 [1] RSPM
+#>  textshaping      1.0.5     2026-03-06 [1] RSPM
+#>  tibble           3.3.1     2026-01-11 [1] RSPM
+#>  tidyr            1.3.2     2025-12-19 [1] RSPM
+#>  tidyselect       1.2.1     2024-03-11 [1] RSPM
+#>  TSP              1.2.7     2026-03-23 [1] RSPM
+#>  usethis          3.2.1     2025-09-06 [1] RSPM
+#>  vctrs            0.7.3     2026-04-11 [1] RSPM
+#>  vegan            2.7-3     2026-03-04 [1] RSPM
+#>  viridisLite      0.4.3     2026-02-04 [1] RSPM
+#>  withr            3.0.2     2024-10-28 [1] RSPM
+#>  xfun             0.57      2026-03-20 [1] RSPM
+#>  XVector          0.52.0    2026-04-28 [1] Bioconduc~
+#>  yaml             2.3.12    2025-12-10 [1] RSPM
 #> 
 #>  [1] /home/runner/work/_temp/Library
-#>  [2] /opt/R/4.5.3/lib/R/site-library
-#>  [3] /opt/R/4.5.3/lib/R/library
+#>  [2] /opt/R/4.6.0/lib/R/site-library
+#>  [3] /opt/R/4.6.0/lib/R/library
 #>  * ── Packages attached to the search path.
 #> 
 #> ──────────────────────────────────────────────────────────────────────────────

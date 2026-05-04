@@ -1,6 +1,7 @@
 # Upgrading to microViz version 0.10.0 (and beyond)
 
 ``` r
+
 library(microViz)
 #> microViz version 0.13.0 - Copyright (C) 2021-2026 David Barnett
 #> ! Website: https://david-barnett.github.io/microViz
@@ -16,6 +17,7 @@ newest version. You can check which version of microViz you are using by
 running the following code.
 
 ``` r
+
 packageVersion("microViz")
 #> [1] '0.13.0'
 ```

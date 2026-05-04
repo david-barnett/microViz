@@ -17,6 +17,7 @@ using microViz *taxonomic association tree* plots.
 ### Setup
 
 ``` r
+
 library(microViz)
 #> microViz version 0.13.0 - Copyright (C) 2021-2026 David Barnett
 #> ! Website: https://david-barnett.github.io/microViz
@@ -41,6 +42,7 @@ First we’ll get some OTU abundance data from inflammatory bowel disease
 patients and controls from the corncob package.
 
 ``` r
+
 data("ibd")
 ibd
 #> phyloseq-class experiment-level object
@@ -57,6 +59,7 @@ unknown, with the family name or whatever higher rank classification is
 known.
 
 ``` r
+
 phylo <- ibd %>%
   ps_filter(DiseaseState %in% c("UC", "nonIBD")) %>%
   tax_mutate(Species = NULL) %>%
@@ -71,6 +74,7 @@ phylo
 Let’s have a quick look at the sample data using the `skimr` package.
 
 ``` r
+
 phylo %>%
   samdat_tbl() %>%
   dplyr::mutate(across(where(is.character), as.factor)) %>%
@@ -99,27 +103,27 @@ phylo %>%
 | \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ |            |
 | Group variables                                  | None       |
 
-Data summary
+Data summary {.table}
 
 **Variable type: factor**
 
-| skim_variable | n_missing | complete_rate | ordered | n_unique | top_counts                        |
-|:--------------|----------:|--------------:|:--------|---------:|:----------------------------------|
-| .sample_name  |         0 |             1 | FALSE   |       67 | 003: 1, 004: 1, 005: 1, 009: 1    |
-| sample        |         0 |             1 | FALSE   |       67 | 003: 1, 004: 1, 005: 1, 009: 1    |
-| gender        |         0 |             1 | FALSE   |        2 | fem: 36, mal: 31                  |
-| DiseaseState  |         0 |             1 | FALSE   |        2 | UC: 43, non: 24                   |
-| steroids      |         0 |             1 | FALSE   |        2 | nos: 42, ste: 25                  |
-| imsp          |         0 |             1 | FALSE   |        2 | noi: 44, ims: 23                  |
-| abx           |         0 |             1 | FALSE   |        2 | noa: 53, abx: 14                  |
-| mesalamine    |         0 |             1 | FALSE   |        2 | nom: 61, mes: 6                   |
-| ibd           |         0 |             1 | FALSE   |        2 | ibd: 43, non: 24                  |
-| activity      |         0 |             1 | FALSE   |        5 | con: 24, mil: 15, ina: 11, mod: 9 |
-| active        |         0 |             1 | FALSE   |        3 | act: 32, con: 24, ina: 11         |
-| race          |         0 |             1 | FALSE   |        5 | Whi: 54, Bla: 4, Oth: 4, nof: 3   |
-| fhx           |         0 |             1 | FALSE   |        7 | nof: 39, fhx: 17, non: 7, lev: 1  |
-| imspLEVEL     |         0 |             1 | FALSE   |        7 | non: 21, sto: 11, lev: 9, lev: 9  |
-| SampleType    |         0 |             1 | FALSE   |        2 | sto: 56, emp: 11                  |
+| skim_variable | n_missing | complete_rate | ordered | n_unique | top_counts |
+|:---|---:|---:|:---|---:|:---|
+| .sample_name | 0 | 1 | FALSE | 67 | 003: 1, 004: 1, 005: 1, 009: 1 |
+| sample | 0 | 1 | FALSE | 67 | 003: 1, 004: 1, 005: 1, 009: 1 |
+| gender | 0 | 1 | FALSE | 2 | fem: 36, mal: 31 |
+| DiseaseState | 0 | 1 | FALSE | 2 | UC: 43, non: 24 |
+| steroids | 0 | 1 | FALSE | 2 | nos: 42, ste: 25 |
+| imsp | 0 | 1 | FALSE | 2 | noi: 44, ims: 23 |
+| abx | 0 | 1 | FALSE | 2 | noa: 53, abx: 14 |
+| mesalamine | 0 | 1 | FALSE | 2 | nom: 61, mes: 6 |
+| ibd | 0 | 1 | FALSE | 2 | ibd: 43, non: 24 |
+| activity | 0 | 1 | FALSE | 5 | con: 24, mil: 15, ina: 11, mod: 9 |
+| active | 0 | 1 | FALSE | 3 | act: 32, con: 24, ina: 11 |
+| race | 0 | 1 | FALSE | 5 | Whi: 54, Bla: 4, Oth: 4, nof: 3 |
+| fhx | 0 | 1 | FALSE | 7 | nof: 39, fhx: 17, non: 7, lev: 1 |
+| imspLEVEL | 0 | 1 | FALSE | 7 | non: 21, sto: 11, lev: 9, lev: 9 |
+| SampleType | 0 | 1 | FALSE | 2 | sto: 56, emp: 11 |
 
 **Variable type: numeric**
 
@@ -134,6 +138,7 @@ or 0 for false). We will also scale and center the numeric variable for
 age.
 
 ``` r
+
 phylo <- phylo %>%
   ps_mutate(
     UC = ifelse(DiseaseState == "UC", yes = 1, no = 0),
@@ -158,6 +163,7 @@ transformation is borrowed from MaAsLin2 (except in MaAsLin2 the
 compositional transformation is named “Total Sum Scaling (TSS)”).
 
 ``` r
+
 parabacteroides_lm <- phylo %>%
   tax_fix() %>%
   tax_transform("compositional", rank = "Genus") %>%
@@ -179,6 +185,7 @@ parabacteroides_lm$Parabacteroides
 ```
 
 ``` r
+
 summary(parabacteroides_lm$Parabacteroides)
 #> 
 #> Call:
@@ -213,6 +220,7 @@ Let’s boxplot the transformed data to see what this *Parabacteroides*
 association looks like as a crude group difference.
 
 ``` r
+
 plot_data <- phylo %>%
   tax_fix() %>%
   tax_transform("compositional", rank = "Genus") %>%
@@ -248,6 +256,7 @@ yourself. See
 for more info on these models.
 
 ``` r
+
 parabacteroides_bb <- phylo %>%
   tax_fix() %>%
   tax_model(
@@ -298,6 +307,7 @@ each rank is always unique. As an example of the problem, Actinobacteria
 is the name of both a Phylum and a Class!
 
 ``` r
+
 lm_models <- phylo %>%
   tax_fix() %>%
   tax_prepend_ranks() %>%
@@ -311,11 +321,11 @@ lm_models <- phylo %>%
     variables = c("UC", "female", "antibiotics", "steroids", "age_scaled")
   )
 #> Proportional min_prevalence given: 0.1 --> min 7/67 samples.
-#> 2026-03-30 06:41:41.376934 - modelling at rank: Phylum
-#> 2026-03-30 06:41:41.538275 - modelling at rank: Class
-#> 2026-03-30 06:41:41.822939 - modelling at rank: Order
-#> 2026-03-30 06:41:42.144266 - modelling at rank: Family
-#> 2026-03-30 06:41:42.710161 - modelling at rank: Genus
+#> 2026-05-04 12:04:55.557055 - modelling at rank: Phylum
+#> 2026-05-04 12:04:55.66802 - modelling at rank: Class
+#> 2026-05-04 12:04:55.864075 - modelling at rank: Order
+#> 2026-05-04 12:04:56.074547 - modelling at rank: Family
+#> 2026-05-04 12:04:56.44686 - modelling at rank: Genus
 ```
 
 Why filter the taxa? *It’s less likely that we are interested in rare
@@ -324,6 +334,7 @@ unreliable. Reducing the the number of taxa modelled also makes
 visualising the results easier!*
 
 ``` r
+
 lm_models
 #> psExtra object - a phyloseq object with extra slots:
 #> 
@@ -355,6 +366,7 @@ the `corncob` package
 function.
 
 ``` r
+
 lm_stats <- taxatree_models2stats(lm_models)
 lm_stats
 #> psExtra object - a phyloseq object with extra slots:
@@ -375,6 +387,7 @@ lm_stats
 ```
 
 ``` r
+
 lm_stats %>% taxatree_stats_get()
 #> # A tibble: 670 × 8
 #>    term        taxon          rank  formula estimate std.error statistic p.value
@@ -404,6 +417,7 @@ at all ranks, the default behaviour is to control the family-wise error
 rate per rank.
 
 ``` r
+
 lm_stats <- taxatree_stats_p_adjust(
   data = lm_stats, method = "BH", grouping = "rank"
 )
@@ -441,6 +455,7 @@ for example (and/or
 [`cowplot`](https://wilkelab.org/cowplot/articles/plot_grid.html)).
 
 ``` r
+
 lm_stats %>%
   taxatree_plots(
     node_size_range = c(1, 3), var_renamer = toupper
@@ -459,6 +474,7 @@ grey tree with `taxatree_plotkey`. This labels taxa based on certain
 conditions.
 
 ``` r
+
 set.seed(123) # label position
 key <- taxatree_plotkey(
   data = lm_stats,
@@ -492,6 +508,7 @@ are alternatives you can also try.
 can be particularly useful.
 
 ``` r
+
 trees <- lm_stats %>%
   taxatree_plots(node_size_range = c(1, 2.25)) %>%
   .[1:4] %>%
@@ -511,6 +528,7 @@ You could save the plot with
 this.
 
 ``` r
+
 set.seed(111)
 ggsave("test.png", panel, width = 13, height = 5.5, dpi = 120, device = "png")
 ```
@@ -525,6 +543,7 @@ and then adding your own custom-style labels with
 Here we will draw some yellow labels.
 
 ``` r
+
 taxatree_plotkey(
   data = lm_stats, .draw_label = FALSE,
   rank %in% c("Phylum", "Family") & !grepl("Bacteria", taxon),
@@ -558,6 +577,7 @@ this for a few taxa. You must run
 first to create a “label” indicator variable.
 
 ``` r
+
 lm_stats %>%
   taxatree_label(
     rank == "Genus", p.value < 0.05 | prevalence > 0.5, estimate > 0
@@ -584,6 +604,7 @@ Choosing another color palette is easy, just name any diverging palette
 from colorspace hcl diverging palettes. See your options below.
 
 ``` r
+
 colorspace::hcl_palettes(type = "diverging", plot = TRUE, n = 11)
 ```
 
@@ -603,6 +624,7 @@ values for l1 and l2, e.g. if the extremes are too bright or dark. This
 is done by default for the Green-Brown palette.
 
 ``` r
+
 lm_stats %>%
   taxatree_label(
     rank == "Genus", p.value < 0.05 | prevalence > 0.5, estimate > 0
@@ -630,6 +652,7 @@ Palettes like “Berlin” that go through a black midpoint would probably
 only make sense with a darker background!
 
 ``` r
+
 lm_stats %>%
   taxatree_label(
     rank == "Genus", p.value < 0.05 | prevalence > 0.5, estimate > 0
@@ -664,6 +687,7 @@ If you like, you can sort the nodes by sorting the taxa in the ps_extra
 object.
 
 ``` r
+
 lm_stats %>%
   tax_sort(by = "prev", at = "Genus") %>%
   taxatree_plots() %>%
@@ -678,6 +702,7 @@ calls together to fine-tune the order of the nodes on the tree to your
 own preference.
 
 ``` r
+
 lm_stats %>%
   tax_sort(by = "prev", at = "Family") %>%
   tax_sort(by = "name", at = "Phylum") %>%
@@ -699,6 +724,7 @@ It looks like only the disease state (having ulcerative colitis) shows
 any significant associations after this FDR correction.
 
 ``` r
+
 lm_stats %>%
   taxatree_plots(
     sig_stat = "p.adj.BH.rank", sig_threshold = 0.1,
@@ -722,6 +748,7 @@ unadjusted significance markers for p \< 0.05 (as outlined white
 circles).
 
 ``` r
+
 lm_stats %>%
   taxatree_plots(
     sig_stat = c("p.adj.BH.rank", "p.value"), sig_threshold = 0.05,
@@ -749,6 +776,7 @@ before this type of modelling. We do not need to transform the data, as
 this approach uses counts.
 
 ``` r
+
 bb_models <- phylo %>%
   tax_fix() %>%
   tax_prepend_ranks() %>%
@@ -759,10 +787,10 @@ bb_models <- phylo %>%
     variables = c("UC", "female", "antibiotics", "steroids", "age_scaled")
   )
 #> Proportional min_prevalence given: 0.3 --> min 21/67 samples.
-#> 2026-03-30 06:42:12.253552 - modelling at rank: Phylum
-#> 2026-03-30 06:42:12.386307 - modelling at rank: Class
-#> 2026-03-30 06:42:12.557471 - modelling at rank: Order
-#> 2026-03-30 06:42:12.768497 - modelling at rank: Family
+#> 2026-05-04 12:05:17.762866 - modelling at rank: Phylum
+#> 2026-05-04 12:05:17.844833 - modelling at rank: Class
+#> 2026-05-04 12:05:17.97994 - modelling at rank: Order
+#> 2026-05-04 12:05:18.11195 - modelling at rank: Family
 bb_models
 #> psExtra object - a phyloseq object with extra slots:
 #> 
@@ -781,6 +809,7 @@ specify which parameter estimate you want, “mu” for differential
 abundance, or “phi” for differential variability or overdispersion.
 
 ``` r
+
 bb_stats <- taxatree_models2stats(bb_models, param = "mu")
 bb_stats
 #> psExtra object - a phyloseq object with extra slots:
@@ -812,6 +841,7 @@ bb_stats %>% taxatree_stats_get()
 ```
 
 ``` r
+
 bb_stats %>%
   taxatree_plots(
     node_size_range = c(1, 4), colour_trans = "identity"
@@ -830,6 +860,7 @@ bb_stats %>%
 You do not need to make circular tree plots if you don’t want to!
 
 ``` r
+
 alt_trees <- bb_stats %>%
   taxatree_plots(
     node_size_range = c(1, 4), circular = FALSE, colour_trans = "identity"
@@ -851,6 +882,7 @@ Let’s add the key for this layout and label it manually with
 [`taxatree_plot_labels()`](https://david-barnett.github.io/microViz/reference/taxatree_plot_labels.md).
 
 ``` r
+
 alt_tree_key <- bb_stats %>%
   taxatree_plotkey(circular = FALSE, .draw_label = FALSE, rank == "Family") %>%
   taxatree_plot_labels(
@@ -874,6 +906,7 @@ force-directed algorithm (“fr”). You must set a layout_seed number for
 these layouts to ensure they are always the same.
 
 ``` r
+
 bb_stats %>%
   taxatree_plots(
     node_size_range = c(1, 4),
@@ -891,10 +924,11 @@ bb_stats %>%
 ## Session info
 
 ``` r
+
 devtools::session_info()
 #> ─ Session info ───────────────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.5.3 (2026-03-11)
+#>  version  R version 4.6.0 (2026-04-24)
 #>  os       Ubuntu 24.04.4 LTS
 #>  system   x86_64, linux-gnu
 #>  ui       X11
@@ -902,108 +936,108 @@ devtools::session_info()
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-03-30
-#>  pandoc   3.1.11 @ /opt/hostedtoolcache/pandoc/3.1.11/x64/ (via rmarkdown)
+#>  date     2026-05-04
+#>  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)
 #>  quarto   NA
 #> 
 #> ─ Packages ───────────────────────────────────────────────────────────────────
 #>  package            * version       date (UTC) lib source
 #>  ade4                 1.7-24        2026-03-21 [1] RSPM
 #>  ape                  5.8-1         2024-12-16 [1] RSPM
-#>  backports            1.5.0         2024-05-23 [1] RSPM
+#>  backports            1.5.1         2026-04-03 [1] RSPM
 #>  base64enc            0.1-6         2026-02-02 [1] RSPM
-#>  Biobase              2.70.0        2025-10-29 [1] Bioconduc~
-#>  BiocGenerics         0.56.0        2025-10-29 [1] Bioconduc~
-#>  biomformat           1.38.3        2026-03-16 [1] Bioconduc~
-#>  Biostrings           2.78.0        2025-10-29 [1] Bioconduc~
+#>  Biobase              2.72.0        2026-04-28 [1] Bioconduc~
+#>  BiocGenerics         0.58.0        2026-04-28 [1] Bioconduc~
+#>  biomformat           1.40.0        2026-04-28 [1] Bioconduc~
+#>  Biostrings           2.80.0        2026-04-28 [1] Bioconduc~
 #>  broom                1.0.12        2026-01-27 [1] RSPM
 #>  bslib                0.10.0        2026-01-26 [1] RSPM
 #>  cachem               1.1.0         2024-05-16 [1] RSPM
 #>  checkmate            2.3.4         2026-02-03 [1] RSPM
-#>  cli                  3.6.5         2025-04-23 [1] RSPM
-#>  cluster              2.1.8.2       2026-02-05 [3] CRAN (R 4.5.3)
-#>  codetools            0.2-20        2024-03-31 [3] CRAN (R 4.5.3)
+#>  cli                  3.6.6         2026-04-09 [1] RSPM
+#>  cluster              2.1.8.2       2026-02-05 [3] CRAN (R 4.6.0)
+#>  codetools            0.2-20        2024-03-31 [3] CRAN (R 4.6.0)
 #>  colorspace           2.1-2         2025-09-22 [1] RSPM
 #>  corncob            * 0.4.2         2025-03-29 [1] RSPM
 #>  crayon               1.5.3         2024-06-20 [1] RSPM
 #>  data.table           1.18.2.1      2026-01-27 [1] RSPM
 #>  desc                 1.4.3         2023-12-10 [1] RSPM
-#>  detectseparation     0.3           2022-08-26 [1] RSPM
-#>  devtools             2.5.0         2026-03-14 [1] RSPM
+#>  detectseparation     0.4.0         2026-04-19 [1] RSPM
+#>  devtools             2.5.2         2026-04-30 [1] RSPM
 #>  digest               0.6.39        2025-11-19 [1] RSPM
-#>  dplyr              * 1.2.0         2026-02-03 [1] RSPM
-#>  ellipsis             0.3.2         2021-04-29 [1] RSPM
+#>  dplyr              * 1.2.1         2026-04-03 [1] RSPM
+#>  ellipsis             0.3.3         2026-04-04 [1] RSPM
 #>  evaluate             1.0.5         2025-08-27 [1] RSPM
 #>  farver               2.1.2         2024-05-13 [1] RSPM
 #>  fastmap              1.2.0         2024-05-15 [1] RSPM
 #>  foreach              1.5.2         2022-02-02 [1] RSPM
-#>  fs                   2.0.1         2026-03-24 [1] RSPM
+#>  fs                   2.1.0         2026-04-18 [1] RSPM
 #>  generics             0.1.4         2025-05-09 [1] RSPM
 #>  ggforce              0.5.0         2025-06-18 [1] RSPM
-#>  ggplot2            * 4.0.2         2026-02-03 [1] RSPM
+#>  ggplot2            * 4.0.3         2026-04-22 [1] RSPM
 #>  ggraph               2.2.2         2025-08-24 [1] RSPM
 #>  ggrepel              0.9.8         2026-03-17 [1] RSPM
-#>  glue                 1.8.0         2024-09-30 [1] RSPM
+#>  glue                 1.8.1         2026-04-17 [1] RSPM
 #>  graphlayouts         1.2.3         2026-02-21 [1] RSPM
 #>  gridExtra            2.3           2017-09-09 [1] RSPM
 #>  gtable               0.3.6         2024-10-25 [1] RSPM
 #>  htmltools            0.5.9         2025-12-04 [1] RSPM
 #>  htmlwidgets          1.6.4         2023-12-06 [1] RSPM
-#>  igraph               2.2.2         2026-02-12 [1] RSPM
-#>  IRanges              2.44.0        2025-10-29 [1] Bioconduc~
+#>  igraph               2.3.0         2026-04-21 [1] RSPM
+#>  IRanges              2.46.0        2026-04-28 [1] Bioconduc~
 #>  iterators            1.0.14        2022-02-05 [1] RSPM
 #>  jquerylib            0.1.4         2021-04-26 [1] RSPM
 #>  jsonlite             2.0.0         2025-03-27 [1] RSPM
 #>  knitr                1.51          2025-12-20 [1] RSPM
 #>  labeling             0.4.3         2023-08-29 [1] RSPM
-#>  lattice              0.22-9        2026-02-09 [3] CRAN (R 4.5.3)
+#>  lattice              0.22-9        2026-02-09 [3] CRAN (R 4.6.0)
 #>  lifecycle            1.0.5         2026-01-08 [1] RSPM
 #>  lpSolveAPI           5.5.2.0-17.15 2026-02-13 [1] RSPM
-#>  magrittr             2.0.4         2025-09-12 [1] RSPM
-#>  MASS                 7.3-65        2025-02-28 [3] CRAN (R 4.5.3)
-#>  Matrix               1.7-4         2025-08-28 [3] CRAN (R 4.5.3)
+#>  magrittr             2.0.5         2026-04-04 [1] RSPM
+#>  MASS                 7.3-65        2025-02-28 [3] CRAN (R 4.6.0)
+#>  Matrix               1.7-5         2026-03-21 [3] CRAN (R 4.6.0)
 #>  memoise              2.0.1         2021-11-26 [1] RSPM
-#>  mgcv                 1.9-4         2025-11-07 [3] CRAN (R 4.5.3)
-#>  microbiome           1.32.0        2025-10-29 [1] Bioconduc~
-#>  microViz           * 0.13.0        2026-03-30 [1] local
-#>  multtest             2.66.0        2025-10-29 [1] Bioconduc~
-#>  nlme                 3.1-168       2025-03-31 [3] CRAN (R 4.5.3)
+#>  mgcv                 1.9-4         2025-11-07 [3] CRAN (R 4.6.0)
+#>  microbiome           1.34.0        2026-04-28 [1] Bioconduc~
+#>  microViz           * 0.13.0        2026-05-04 [1] local
+#>  multtest             2.68.0        2026-04-28 [1] Bioconduc~
+#>  nlme                 3.1-169       2026-03-27 [3] CRAN (R 4.6.0)
 #>  numDeriv             2016.8-1.1    2019-06-06 [1] RSPM
 #>  otel                 0.2.0         2025-08-29 [1] RSPM
 #>  patchwork            1.3.2         2025-08-25 [1] RSPM
 #>  permute              0.9-10        2026-02-06 [1] RSPM
-#>  phyloseq             1.54.2        2026-03-02 [1] Bioconduc~
+#>  phyloseq             1.56.0        2026-04-28 [1] Bioconduc~
 #>  pillar               1.11.1        2025-09-17 [1] RSPM
 #>  pkgbuild             1.4.8         2025-05-26 [1] RSPM
 #>  pkgconfig            2.0.3         2019-09-22 [1] RSPM
 #>  pkgdown              2.2.0         2025-11-06 [1] RSPM
-#>  pkgload              1.5.0         2026-02-03 [1] RSPM
+#>  pkgload              1.5.2         2026-04-22 [1] RSPM
 #>  plyr                 1.8.9         2023-10-02 [1] RSPM
 #>  polyclip             1.10-7        2024-07-23 [1] RSPM
-#>  purrr                1.2.1         2026-01-09 [1] RSPM
+#>  purrr                1.2.2         2026-04-10 [1] RSPM
 #>  R6                   2.6.1         2025-02-15 [1] RSPM
 #>  ragg                 1.5.2         2026-03-23 [1] RSPM
 #>  RColorBrewer         1.1-3         2022-04-03 [1] RSPM
-#>  Rcpp                 1.1.1         2026-01-10 [1] RSPM
+#>  Rcpp                 1.1.1-1.1     2026-04-24 [1] RSPM
 #>  registry             0.5-1         2019-03-05 [1] RSPM
 #>  repr                 1.1.7         2024-03-22 [1] RSPM
 #>  reshape2             1.4.5         2025-11-12 [1] RSPM
-#>  rlang                1.1.7         2026-01-09 [1] RSPM
+#>  rlang                1.2.0         2026-04-06 [1] RSPM
 #>  rmarkdown            2.31          2026-03-26 [1] RSPM
 #>  ROI                  1.0-2         2026-01-12 [1] RSPM
 #>  ROI.plugin.lpsolve   1.0-2         2023-07-07 [1] RSPM
 #>  Rtsne                0.17          2023-12-07 [1] RSPM
-#>  S4Vectors            0.48.0        2025-10-29 [1] Bioconduc~
-#>  S7                   0.2.1         2025-11-14 [1] RSPM
+#>  S4Vectors            0.50.0        2026-04-28 [1] Bioconduc~
+#>  S7                   0.2.2         2026-04-22 [1] RSPM
 #>  sass                 0.4.10        2025-04-11 [1] RSPM
 #>  scales               1.4.0         2025-04-24 [1] RSPM
-#>  Seqinfo              1.0.0         2025-10-29 [1] Bioconduc~
+#>  Seqinfo              1.2.0         2026-04-28 [1] Bioconduc~
 #>  sessioninfo          1.2.3         2025-02-05 [1] RSPM
 #>  skimr                2.2.2         2026-01-10 [1] RSPM
 #>  slam                 0.1-55        2024-11-13 [1] RSPM
 #>  stringi              1.8.7         2025-03-27 [1] RSPM
 #>  stringr              1.6.0         2025-11-04 [1] RSPM
-#>  survival             3.8-6         2026-01-16 [3] CRAN (R 4.5.3)
+#>  survival             3.8-6         2026-01-16 [3] CRAN (R 4.6.0)
 #>  systemfonts          1.3.2         2026-03-05 [1] RSPM
 #>  textshaping          1.0.5         2026-03-06 [1] RSPM
 #>  tibble               3.3.1         2026-01-11 [1] RSPM
@@ -1014,18 +1048,18 @@ devtools::session_info()
 #>  tweenr               2.0.3         2024-02-26 [1] RSPM
 #>  usethis              3.2.1         2025-09-06 [1] RSPM
 #>  utf8                 1.2.6         2025-06-08 [1] RSPM
-#>  vctrs                0.7.2         2026-03-21 [1] RSPM
+#>  vctrs                0.7.3         2026-04-11 [1] RSPM
 #>  vegan                2.7-3         2026-03-04 [1] RSPM
 #>  viridis              0.6.5         2024-01-29 [1] RSPM
 #>  viridisLite          0.4.3         2026-02-04 [1] RSPM
 #>  withr                3.0.2         2024-10-28 [1] RSPM
 #>  xfun                 0.57          2026-03-20 [1] RSPM
-#>  XVector              0.50.0        2025-10-29 [1] Bioconduc~
+#>  XVector              0.52.0        2026-04-28 [1] Bioconduc~
 #>  yaml                 2.3.12        2025-12-10 [1] RSPM
 #> 
 #>  [1] /home/runner/work/_temp/Library
-#>  [2] /opt/R/4.5.3/lib/R/site-library
-#>  [3] /opt/R/4.5.3/lib/R/library
+#>  [2] /opt/R/4.6.0/lib/R/site-library
+#>  [3] /opt/R/4.6.0/lib/R/library
 #>  * ── Packages attached to the search path.
 #> 
 #> ──────────────────────────────────────────────────────────────────────────────

@@ -83,7 +83,7 @@ AnnotationFunction
 library(ComplexHeatmap)
 #> Loading required package: grid
 #> ========================================
-#> ComplexHeatmap version 2.26.1
+#> ComplexHeatmap version 2.28.0
 #> Bioconductor page: http://bioconductor.org/packages/ComplexHeatmap/
 #> Github page: https://github.com/jokergoo/ComplexHeatmap
 #> Documentation: http://jokergoo.github.io/ComplexHeatmap-reference

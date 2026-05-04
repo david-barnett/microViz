@@ -69,6 +69,7 @@ I recommend you first install the Bioconductor dependencies using the
 code below.
 
 ``` r
+
 if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
 BiocManager::install(c("phyloseq", "microbiome", "ComplexHeatmap"), update = FALSE)
 ```
@@ -76,6 +77,7 @@ BiocManager::install(c("phyloseq", "microbiome", "ComplexHeatmap"), update = FAL
 ### Installation of microViz from R Universe
 
 ``` r
+
 install.packages(
   "microViz",
   repos = c(davidbarnett = "https://david-barnett.r-universe.dev", getOption("repos"))
@@ -85,6 +87,7 @@ install.packages(
 I also recommend you install the following suggested CRAN packages.
 
 ``` r
+
 install.packages("ggtext") # for rotated labels on ord_plot() 
 install.packages("ggraph") # for taxatree_plots()
 install.packages("DT") # for tax_fix_interactive()
@@ -94,6 +97,7 @@ install.packages("corncob") # for beta binomial models in tax_model()
 ### Installation of microViz from GitHub
 
 ``` r
+
 # Installing from GitHub requires the remotes package
 install.packages("remotes")
 # Windows users will also need to have RTools installed! http://jtleek.com/modules/01_DataScientistToolbox/02_10_rtools/
@@ -125,6 +129,7 @@ and Ubuntu. R versions below 4 are no longer supported since 0.13.0 (R
 ## Interactive ordination exploration
 
 ``` r
+
 library(microViz)
 #> microViz version 0.13.0 - Copyright (C) 2021-2026 David Barnett
 #> ! Website: https://david-barnett.github.io/microViz
@@ -136,6 +141,7 @@ microViz provides a Shiny app for an easy way to start exploring your
 microbiome data: all you need is a phyloseq object.
 
 ``` r
+
 # example data from corncob package
 pseq <- microViz::ibd %>%
   tax_fix() %>%
@@ -143,6 +149,7 @@ pseq <- microViz::ibd %>%
 ```
 
 ``` r
+
 ord_explore(pseq) # gif generated with microViz version 0.7.4 (plays at 1.75x speed)
 ```
 
@@ -151,12 +158,14 @@ ord_explore(pseq) # gif generated with microViz version 0.7.4 (plays at 1.75x sp
 ## Example analyses (on HITChip data)
 
 ``` r
+
 library(phyloseq)
 library(dplyr)
 library(ggplot2)
 ```
 
 ``` r
+
 # get some example data
 data("dietswap", package = "microbiome")
 
@@ -178,6 +187,7 @@ visualize their compositions. Perhaps these example data differ by
 participant nationality?
 
 ``` r
+
 dietswap %>%
   comp_barplot(
     tax_level = "Genus", n_taxa = 15, other_name = "Other",
@@ -197,6 +207,7 @@ dietswap %>%
 ![](reference/figures/README-bars-1.png)
 
 ``` r
+
 htmp <- dietswap %>%
   ps_mutate(nationality = as.character(nationality)) %>%
   tax_transform("log2", add = 1, chain = TRUE) %>%
@@ -244,6 +255,7 @@ Here is one option as an example:
     like ellipses or annotations
 
 ``` r
+
 # perform ordination
 unconstrained_aitchison_pca <- dietswap %>%
   tax_agg("Family") %>%
@@ -282,6 +294,7 @@ with overall microbial composition. This example uses the Family-level
 Aitchison distance to correspond with the plot above.
 
 ``` r
+
 # calculate distances
 aitchison_dists <- dietswap %>%
   tax_transform("identity", rank = "Family") %>%
@@ -318,6 +331,7 @@ your permanova directly using the `ord_plot` function with constraints
 (and conditions).
 
 ``` r
+
 perm2 <- aitchison_dists %>%
   dist_permanova(variables = c("weight", "african", "sex"), seed = 321)
 #> Dropping samples with missings: 2
@@ -329,6 +343,7 @@ We’ll visualise the effect of nationality and bodyweight on sample
 composition, after first removing the effect of sex.
 
 ``` r
+
 perm2 %>%
   ord_calc(constraints = c("weight", "african"), conditions = "female") %>%
   ord_plot(
@@ -359,6 +374,7 @@ microViz heatmaps are powered by `ComplexHeatmap` and annotated with
 taxa prevalence and/or abundance.
 
 ``` r
+
 # set up the data with numerical variables and filter to top taxa
 psq <- dietswap %>%
   ps_mutate(
@@ -412,6 +428,7 @@ and by participating in this project you agree to abide by its terms.
 ## Session info
 
 ``` r
+
 sessionInfo()
 #> R version 4.5.2 (2025-10-31)
 #> Platform: aarch64-apple-darwin20

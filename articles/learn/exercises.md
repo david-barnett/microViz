@@ -57,12 +57,14 @@ page](https://github.com/david-barnett/microViz/discussions).
 Set R Markdown chunk output options:
 
 ``` r
+
 knitr::opts_chunk$set(echo = TRUE, fig.width = 6, fig.height = 4, dpi = 120)
 ```
 
 Load the R packages we will be using:
 
 ``` r
+
 library(seriation)
 library(dplyr)
 library(purrr)
@@ -75,6 +77,7 @@ library(shiny)
 Get the two example datasets:
 
 ``` r
+
 mice <- readRDS(url("https://github.com/david-barnett/evomics-material/raw/898766166ce151f837b8d668bdc0bf0f859a6dd3/data/mice.rds"))
 data("shao19", package = "microViz")
 ```
@@ -154,6 +157,7 @@ inside.
 You can also use the `@` symbol.
 
 ``` r
+
 mice
 ```
 
@@ -163,10 +167,12 @@ mice
     ## tax_table()   Taxonomy Table:    [ 3229 taxa by 7 taxonomic ranks ]
 
 ``` r
+
 # View(mice)
 ```
 
 ``` r
+
 tax_table(mice) %>% head()
 ```
 
@@ -187,12 +193,14 @@ tax_table(mice) %>% head()
     ## ASV0006 "Porphyromonadaceae" NA                 NA
 
 ``` r
+
 rank_names(mice)
 ```
 
     ## [1] "Kingdom" "Phylum"  "Class"   "Order"   "Family"  "Genus"   "Species"
 
 ``` r
+
 otu_table(mice)[1:15, 1:8]
 ```
 
@@ -216,10 +224,12 @@ otu_table(mice)[1:15, 1:8]
     ## D0.G1     3052       0    3393    3209    2867     873     372    1512
 
 ``` r
+
 # mice@otu_table[1:15, 1:10] # the same result
 ```
 
 ``` r
+
 sample_variables(mice)
 ```
 
@@ -228,6 +238,7 @@ sample_variables(mice)
     ##  [9] "treatment"       "virus"           "survival_status"
 
 ``` r
+
 sample_data(mice)[1:15, 1:5]
 ```
 
@@ -249,6 +260,7 @@ sample_data(mice)[1:15, 1:5]
     ## D0.G1  111.Thackray.D0.G1 TACCGAAGGTAT 368     2    111
 
 ``` r
+
 sample_names(mice) %>% head(10)
 ```
 
@@ -268,6 +280,7 @@ Lets take a very small subset of this data to get started. Just the
 control group (vehicle treatment) at day 13.
 
 ``` r
+
 # We can filter the samples like this, using the sample_data information
 mice %>%
   ps_filter(treatment_days == "D13", virus == "WNV2000", treatment == "Vehicle")
@@ -284,6 +297,7 @@ improvements to make the bar chart more informative.
 ##### Bad bars
 
 ``` r
+
 mice %>%
   ps_filter(treatment_days == "D13", virus == "WNV2000", treatment == "Vehicle") %>%
   comp_barplot(
@@ -312,6 +326,7 @@ total counts for that sample.
 ##### Compositions (%)
 
 ``` r
+
 mice %>%
   ps_filter(treatment_days == "D13", virus == "WNV2000", treatment == "Vehicle") %>%
   comp_barplot(
@@ -332,6 +347,7 @@ mice %>%
 Let’s look at the taxonomy table interactively:
 
 ``` r
+
 # tax_fix_interactive(mice) # run this in the R Console for an interactive look
 ```
 
@@ -341,6 +357,7 @@ down info from a higher rank classification. Let’s update our `mice`
 phyloseq object with this fix.
 
 ``` r
+
 mice <- tax_fix(mice, verbose = FALSE)
 ```
 
@@ -349,6 +366,7 @@ according to their classification at the rank of Family (and how common
 they are).
 
 ``` r
+
 mice %>%
   taxa_names() %>%
   head()
@@ -357,6 +375,7 @@ mice %>%
     ## [1] "ASV0001" "ASV0002" "ASV0003" "ASV0004" "ASV0005" "ASV0006"
 
 ``` r
+
 mice <- tax_rename(mice, rank = "Family")
 mice %>%
   taxa_names() %>%
@@ -369,6 +388,7 @@ mice %>%
 Let’s try again with the better names.
 
 ``` r
+
 mice %>%
   ps_filter(treatment_days == "D13", virus == "WNV2000", treatment == "Vehicle") %>%
   comp_barplot(
@@ -382,6 +402,7 @@ mice %>%
 Sadly we don’t have enough distinct colours to show all the unique taxa.
 
 ``` r
+
 mice %>%
   ps_filter(treatment_days == "D13", virus == "WNV2000", treatment == "Vehicle") %>%
   comp_barplot(
@@ -401,6 +422,7 @@ that family. We can do that by changing the `tax_level` argument to
 “Family”.
 
 ``` r
+
 mice %>%
   ps_filter(treatment_days == "D13", virus == "WNV2000", treatment == "Vehicle") %>%
   comp_barplot(
@@ -418,6 +440,7 @@ families are the most abundant, and how variable the communities are.
 Try making some similar plots aggregated at different taxonomic ranks.
 
 ``` r
+
 # rank_names(mice)
 # mice %>%
 #   ps_filter(treatment_days == 'D13', virus == 'WNV2000', treatment == 'Vehicle') %>%
@@ -425,6 +448,7 @@ Try making some similar plots aggregated at different taxonomic ranks.
 ```
 
 ``` r
+
 mice %>%
   ps_filter(treatment_days == "D13", virus == "WNV2000", treatment == "Vehicle") %>%
   comp_barplot(
@@ -440,6 +464,7 @@ Many of the ASVs in this mice data, the *Porphyromonadaceae*, could not
 be classified at genus level.
 
 ``` r
+
 mice %>%
   ps_filter(treatment_days == "D13", virus == "WNV2000", treatment == "Vehicle") %>%
   comp_barplot(
@@ -503,6 +528,7 @@ The more the merrier. The simplest measure is just counting, aka
 sample with it.
 
 ``` r
+
 mice %>%
   ps_filter(treatment_days == "D13", virus == "WNV2000", treatment == "Vehicle") %>%
   ps_calc_richness(rank = "Genus", index = "observed", varname = "N genera") %>%
@@ -521,6 +547,7 @@ Richness and evenness matter in the calculation of true diversity
 indices.
 
 ``` r
+
 mice %>%
   ps_filter(treatment_days == "D13", virus == "WNV2000", treatment == "Vehicle") %>%
   ps_calc_diversity(rank = "Genus", index = "shannon") %>%
@@ -539,6 +566,7 @@ mice %>%
 So we have our alpha diversity values for this small subset of mice.
 
 ``` r
+
 mice %>%
   ps_filter(treatment_days == "D13", virus == "WNV2000", treatment == "Vehicle") %>%
   ps_calc_diversity(rank = "Genus", index = "shannon") %>%
@@ -558,12 +586,14 @@ microbiota diversity of the antibiotic exposed mice will differ from the
 control group’s at day 3.
 
 ``` r
+
 # First compute a new variable aggregating all the control mice together
 mice <- mice %>%
   ps_mutate(antibiotics = treatment %in% c("Amp", "Metro", "AmpMetro"))
 ```
 
 ``` r
+
 mice %>%
   ps_filter(treatment_days == "D13") %>%
   ps_calc_diversity(rank = "Genus", index = "shannon") %>%
@@ -580,6 +610,7 @@ It looks like the antibiotics treated mice have lower gut microbiota
 diversity on average. A simple statistical test supports this.
 
 ``` r
+
 mice %>%
   ps_filter(treatment_days == "D13") %>%
   ps_calc_diversity(rank = "Genus", index = "shannon") %>%
@@ -599,6 +630,7 @@ for covariates with linear regression, using
 [`lm()`](https://rdrr.io/r/stats/lm.html)
 
 ``` r
+
 mice %>%
   ps_filter(treatment_days == "D13") %>%
   ps_calc_diversity(rank = "Genus", index = "shannon") %>%
@@ -643,6 +675,7 @@ This is an extension exercise, for those who are moving quickly.
 **Inflammatory Bowel Disease study**
 
 ``` r
+
 ibd <- microViz::ibd %>%
   tax_mutate(Species = NULL) %>% # ibd Species column was blank -> deleted
   ps_mutate(disease = ibd == "ibd", ibd = NULL) # adds disease state indicator variable
@@ -658,6 +691,7 @@ sequences into “OTUs”.
 Have a look at the data, like we did before for the `mice` dataset.
 
 ``` r
+
 ibd
 ```
 
@@ -667,6 +701,7 @@ ibd
     ## tax_table()   Taxonomy Table:    [ 36349 taxa by 6 taxonomic ranks ]
 
 ``` r
+
 #
 ```
 
@@ -674,6 +709,7 @@ You can perform alpha diversity analysis: Try comparing the alpha
 diversity of the IBD patients against the healthy controls.
 
 ``` r
+
 #
 ```
 
@@ -682,6 +718,7 @@ Don’t worry if you don’t try this now, as we will look at Shao 2019
 dataset in the next part of the lab.
 
 ``` r
+
 shao19
 ```
 
@@ -708,6 +745,7 @@ the actual ecosystem, the richness estimate actually has quantifiable
 uncertainty too.)
 
 ``` r
+
 mice %>%
   ps_filter(treatment_days == "D13", virus == "WNV2000", treatment == "Amp") %>%
   ps_calc_richness(rank = "Genus", index = "observed", varname = "N genera") %>%
@@ -720,6 +758,7 @@ mice %>%
 ![](exercises_files/figure-html/unnamed-chunk-35-1.png)
 
 ``` r
+
 mice %>%
   ps_calc_richness(rank = "Genus", index = "observed", varname = "genera") %>%
   ps_mutate(readcount = sample_sums(mice)) %>%
@@ -768,6 +807,7 @@ little bit more practice examining a phyloseq object. Look at the rank
 names, sample data variables etc.
 
 ``` r
+
 shao19 # this object has another part!
 ```
 
@@ -778,6 +818,7 @@ shao19 # this object has another part!
     ## phy_tree()    Phylogenetic Tree: [ 819 tips and 818 internal nodes ]
 
 ``` r
+
 #
 ```
 
@@ -798,6 +839,7 @@ You might already do this check for total reads and remove poor quality
 samples during the fastq file processing.
 
 ``` r
+
 shao19 %>%
   ps_mutate(reads = sample_sums(shao19)) %>%
   samdat_tbl() %>%
@@ -834,6 +876,7 @@ If you are interested, go back and recreate this plot with the 16S
 sequencing dataset `mice`.
 
 ``` r
+
 # mice %>%
 #   ps_mutate(reads = sample_sums(mice)) %>%
 #   samdat_tbl() %>%
@@ -871,6 +914,7 @@ interested in unique taxa that occur in fewer than 2% of samples, and
 they have to have at least 10,000 reads in total across all samples.
 
 ``` r
+
 # before filtering
 ntaxa(shao19)
 ```
@@ -878,6 +922,7 @@ ntaxa(shao19)
     ## [1] 819
 
 ``` r
+
 # after filtering
 shao19 %>%
   tax_filter(min_prevalence = 2 / 100, min_total_abundance = 10000) %>%
@@ -892,6 +937,7 @@ Wow so that would remove **most** of our unique taxa! What is going on?
 Let’s make some plots!
 
 ``` r
+
 # make table of summary statistics for the unique taxa in shao19
 shaoTaxaStats <- tibble(
   taxon = taxa_names(shao19),
@@ -901,6 +947,7 @@ shaoTaxaStats <- tibble(
 ```
 
 ``` r
+
 p <- shaoTaxaStats %>%
   ggplot(aes(total_abundance, prevalence)) +
   geom_point(alpha = 0.5) +
@@ -926,6 +973,7 @@ p <- shaoTaxaStats %>%
     ## generated.
 
 ``` r
+
 p
 ```
 
@@ -937,6 +985,7 @@ most.
 Let’s label those points to check which taxa are the big time players.
 
 ``` r
+
 p + ggrepel::geom_text_repel(
   data = function(df) filter(df, total_abundance > 1e9 | prevalence > 0.6),
   mapping = aes(label = taxon), size = 2.5, min.segment.length = 0, force = 15
@@ -953,6 +1002,7 @@ axes. We’ll also add lines indicating the thresholds of 2% prevalence
 and 10000 reads abundance.
 
 ``` r
+
 shaoTaxaStats %>%
   ggplot(aes(x = total_abundance, y = prevalence)) +
   geom_vline(xintercept = 10000, color = "red", linetype = "dotted") +
@@ -977,6 +1027,7 @@ We can break this down by phylum if we add the taxonomic table
 information.
 
 ``` r
+
 # don't worry about this code if it's confusing, just focus on the plot output
 shao19 %>%
   tax_table() %>%
@@ -1043,6 +1094,7 @@ part of the dataset. We’ll only look at the 300 infant fecal samples
 from 4 days of age.
 
 ``` r
+
 shao4 <- shao19 %>% ps_filter(family_role == "child", infant_age == 4)
 ```
 
@@ -1051,6 +1103,7 @@ But we won’t overwrite our smaller dataset: we’ll do the filtering per
 analysis.
 
 ``` r
+
 shao4 %>%
   tax_filter(min_prevalence = 2.5 / 100) %>%
   tax_agg(rank = "genus") %>%
@@ -1081,6 +1134,7 @@ object (a “ps_extra” class object created by microViz, which also stores
 info about the aggregation and transformations you performed)
 
 ``` r
+
 distances <- shao4 %>%
   tax_filter(min_prevalence = 2.5 / 100, verbose = FALSE) %>%
   tax_agg(rank = "genus") %>%
@@ -1092,6 +1146,7 @@ distances <- shao4 %>%
 You can extract the dissimilarities or distances with dist_get.
 
 ``` r
+
 as.matrix(distances)[1:5, 1:5]
 ```
 
@@ -1106,6 +1161,7 @@ The Binary Jaccard dissimilarities range between zero (identical) and
 one (no shared genera).
 
 ``` r
+
 range(distances)
 ```
 
@@ -1140,6 +1196,7 @@ the next session. The other topics may be interesting for you to read at
 a later date if you’ll work on microbiome analysis.
 
 ``` r
+
 shao4 %>%
   tax_filter(min_prevalence = 2.5 / 100, verbose = FALSE) %>%
   tax_agg(rank = "genus") %>%
@@ -1156,6 +1213,7 @@ To get a little insight into what has happened here, we can colour each
 sample according to its dominant (most abundant) genus.
 
 ``` r
+
 shao4 %>%
   tax_filter(min_prevalence = 2.5 / 100, verbose = FALSE) %>%
   ps_calc_dominant(rank = "genus", none = "Mixed", other = "Other") %>%
@@ -1216,6 +1274,7 @@ started. But read the instructions first.
     ecology website link
 
 ``` r
+
 # fire up the shiny app
 # run these lines in your console (don't keep in script/notebook)
 shao4 %>%
@@ -1227,6 +1286,7 @@ shao4 %>%
 ```
 
 ``` r
+
 # different options
 # run this line in your console
 shao19 %>%
@@ -1262,6 +1322,7 @@ GUide to STatistical Analysis in Microbial Ecology
 **TLDR:** Are those groups on the PCoA actually different??
 
 ``` r
+
 shao4 %>%
   tax_filter(min_prevalence = 2.5 / 100, verbose = FALSE) %>%
   tax_agg(rank = "genus") %>%
@@ -1277,6 +1338,7 @@ shao4 %>%
 ![](exercises_files/figure-html/unnamed-chunk-54-1.png)
 
 ``` r
+
 shao4 %>%
   tax_filter(min_prevalence = 2.5 / 100, verbose = FALSE) %>%
   tax_agg(rank = "genus") %>%
@@ -1285,9 +1347,9 @@ shao4 %>%
   perm_get()
 ```
 
-    ## 2026-03-30 06:39:53.727787 - Starting PERMANOVA with 99 perms with 1 processes
+    ## 2026-05-04 12:03:36.76544 - Starting PERMANOVA with 99 perms with 1 processes
 
-    ## 2026-03-30 06:39:53.809695 - Finished PERMANOVA
+    ## 2026-05-04 12:03:36.823353 - Finished PERMANOVA
 
     ## Permutation test for adonis under reduced model
     ## Marginal effects of terms
@@ -1303,6 +1365,7 @@ shao4 %>%
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 ``` r
+
 # Use more permutations for a more reliable p.value in your real work (slower)
 # Set a random seed number for reproducibility of this stochastic method
 ```
@@ -1327,6 +1390,7 @@ adjusting for infant sex, birth weight, and the total number of assigned
 reads.
 
 ``` r
+
 shao4 %>%
   tax_filter(min_prevalence = 2.5 / 100, verbose = FALSE) %>%
   tax_agg(rank = "genus") %>%
@@ -1340,9 +1404,9 @@ shao4 %>%
 
     ## Dropping samples with missings: 15
 
-    ## 2026-03-30 06:39:54.070585 - Starting PERMANOVA with 99 perms with 1 processes
+    ## 2026-05-04 12:03:37.03445 - Starting PERMANOVA with 99 perms with 1 processes
 
-    ## 2026-03-30 06:39:55.387032 - Finished PERMANOVA
+    ## 2026-05-04 12:03:37.617976 - Finished PERMANOVA
 
     ## Permutation test for adonis under reduced model
     ## Marginal effects of terms
@@ -1361,6 +1425,7 @@ shao4 %>%
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 ``` r
+
 # Use more permutations for a more reliable p.value in your real work (slower)
 # Set a random seed number for reproducibility of this stochastic method
 ```
@@ -1384,11 +1449,13 @@ Euclidean distances are essentially a generalization of Pythagoras’
 theorem to more dimensions. In our data every taxon is a feature, a
 dimension, on which we calculate Euclidean distances.
 
-- Pythagoras: $c = \sqrt{a^{2} + b^{2}}$
+- Pythagoras: $`c = \sqrt{a^2 + b^2}`$
 
 - Euclidean distance:
 
-$$d(p,q) = \sqrt{\sum\limits_{i = 1}^{n_{taxa}}\left( p_{i} - q_{i} \right)^{2}}$$
+``` math
+d\left(p, q\right) = \sqrt{\sum _{i=1}^{n_{taxa}} \left( p_{i}-q_{i}\right)^2 }
+```
 
 **Issues**
 
@@ -1398,6 +1465,7 @@ $$d(p,q) = \sqrt{\sum\limits_{i = 1}^{n_{taxa}}\left( p_{i} - q_{i} \right)^{2}}
   projections..
 
 ``` r
+
 shao4 %>%
   tax_filter(min_prevalence = 2.5 / 100, verbose = FALSE) %>%
   tax_agg(rank = "genus") %>%
@@ -1427,6 +1495,7 @@ transformation.
 First let’s look at the abundance again, this time with heatmaps.
 
 ``` r
+
 # Getting the taxa in abundance order up front
 # to keep it consistent across multiple plots
 shao4_sorted <- shao4 %>%
@@ -1436,6 +1505,7 @@ shao4_sorted <- shao4 %>%
 Each column is a sample (from an infant), and each row is a taxon.
 
 ``` r
+
 shao4_sorted %>%
   tax_transform(trans = "identity", rank = "genus") %>%
   comp_heatmap(
@@ -1447,6 +1517,7 @@ shao4_sorted %>%
 ![](exercises_files/figure-html/unnamed-chunk-59-1.png)
 
 ``` r
+
 shao4_sorted %>%
   tax_transform(trans = "compositional", rank = "genus") %>%
   comp_heatmap(
@@ -1460,6 +1531,7 @@ shao4_sorted %>%
 We can add the proportions on this small subset of data as numbers.
 
 ``` r
+
 shao4_sorted %>%
   tax_transform(trans = "compositional", rank = "genus") %>%
   comp_heatmap(
@@ -1483,6 +1555,7 @@ One option is to just add 1, and another popular option is to add half
 of the smallest observed real value (from across the whole dataset).
 
 ``` r
+
 shao4_sorted %>%
   tax_transform(rank = "genus", trans = "log10", zero_replace = 1) %>%
   comp_heatmap(
@@ -1494,6 +1567,7 @@ shao4_sorted %>%
 ![](exercises_files/figure-html/unnamed-chunk-62-1.png)
 
 ``` r
+
 shao4_sorted %>%
   tax_agg(rank = "genus") %>%
   # tax_transform(trans = 'compositional') %>% # compositional also possible
@@ -1518,6 +1592,7 @@ The centered log-ratio (clr) transformation uses the geometric mean of
 the sample vector as the reference.
 
 ``` r
+
 shao4_sorted %>%
   tax_agg(rank = "genus") %>%
   # tax_transform(trans = 'compositional') %>% # compositional also possible
@@ -1576,6 +1651,7 @@ be found here:
 <https://david-barnett.github.io/microViz/articles/web-only/heatmaps.html>
 
 ``` r
+
 #
 ```
 
@@ -1592,6 +1668,7 @@ distances. So let’s perform the CLR-transform first and check PCA and
 euclidean PCoA are the same.
 
 ``` r
+
 shao4 %>%
   tax_filter(min_prevalence = 2.5 / 100, verbose = FALSE) %>%
   tax_transform(rank = "genus", trans = "clr", zero_replace = "halfmin") %>%
@@ -1606,6 +1683,7 @@ shao4 %>%
 ![](exercises_files/figure-html/unnamed-chunk-66-1.png)
 
 ``` r
+
 shao4 %>%
   tax_filter(min_prevalence = 2.5 / 100, verbose = FALSE) %>%
   tax_transform(rank = "genus", trans = "clr", zero_replace = "halfmin") %>%
@@ -1625,6 +1703,7 @@ we can plot this information (loadings) as arrows, alongside the sample
 points.
 
 ``` r
+
 pca <- shao4 %>%
   tax_filter(min_prevalence = 2.5 / 100, verbose = FALSE) %>%
   tax_transform(rank = "genus", trans = "clr", zero_replace = "halfmin") %>%
@@ -1676,6 +1755,7 @@ We can make another kind of barplot now, using the PCA information to
 order our samples in a circular layout.
 
 ``` r
+
 iris <- shao4 %>%
   tax_filter(min_prevalence = 2.5 / 100, verbose = FALSE) %>%
   tax_transform(rank = "genus", trans = "clr", zero_replace = "halfmin") %>%
@@ -1696,12 +1776,14 @@ iris <- shao4 %>%
     ## generated.
 
 ``` r
+
 iris
 ```
 
 ![](exercises_files/figure-html/unnamed-chunk-69-1.png)
 
 ``` r
+
 patchwork::wrap_plots(pca, iris, nrow = 1, guides = "collect")
 ```
 
@@ -1719,6 +1801,7 @@ abundance” (DA) testing, in the style of “differential expression” (DE)
 testing from the transcriptomics field.
 
 ``` r
+
 shao4 %>%
   comp_barplot(
     tax_level = "genus", n_taxa = 12, facet_by = "birth_mode",
@@ -1738,6 +1821,7 @@ proportions, and then taking the binary logarithm, log2, after adding a
 pseudocount.
 
 ``` r
+
 bacteroidesRegression1 <- shao4 %>%
   tax_transform("compositional", rank = "genus") %>%
   tax_model(
@@ -1752,6 +1836,7 @@ bacteroidesRegression1 <- shao4 %>%
     ## Modelling: Bacteroides
 
 ``` r
+
 # looking at the regression results
 summary(bacteroidesRegression1)
 ```
@@ -1776,6 +1861,7 @@ summary(bacteroidesRegression1)
     ## F-statistic: 109.6 on 1 and 304 DF,  p-value: < 2.2e-16
 
 ``` r
+
 confint(bacteroidesRegression1)
 ```
 
@@ -1784,6 +1870,7 @@ confint(bacteroidesRegression1)
     ## birth_modevaginal   5.791662   8.472414
 
 ``` r
+
 broom::tidy(bacteroidesRegression1, conf.int = TRUE)
 ```
 
@@ -1805,6 +1892,7 @@ Starting from a dataframe like the one produced by the code below, plot:
     `pivot_longer`)
 
 ``` r
+
 shao4 %>%
   tax_transform("compositional", rank = "genus") %>%
   ps_get() %>%
@@ -1819,6 +1907,7 @@ variables, and scale the continuous covariates to 0 mean and SD 1
 interpret later.
 
 ``` r
+
 shao4 <- shao4 %>%
   ps_mutate(
     C_section = if_else(birth_mode == "c_section", true = 1, false = 0),
@@ -1829,6 +1918,7 @@ shao4 <- shao4 %>%
 ```
 
 ``` r
+
 bacteroidesRegression2 <- shao4 %>%
   tax_transform("compositional", rank = "genus") %>%
   tax_model(
@@ -1847,6 +1937,7 @@ bacteroidesRegression2 <- shao4 %>%
     ## Modelling: Bacteroides
 
 ``` r
+
 # looking at the regression results
 summary(bacteroidesRegression2)
 ```
@@ -1875,6 +1966,7 @@ summary(bacteroidesRegression2)
     ## F-statistic: 28.55 on 4 and 286 DF,  p-value: < 2.2e-16
 
 ``` r
+
 broom::tidy(bacteroidesRegression2, conf.int = TRUE)
 ```
 
@@ -1935,6 +2027,7 @@ rank we have available, from phylum down to species.
 \*We’ll actually filter out species with a prevalence of less than 10%.
 
 ``` r
+
 # The code for `taxatree_models` is quite similar to tax_model.
 # However, you might need to run `tax_prepend_ranks` to ensure that each taxon at each rank is always unique.
 shaoModels <- shao4 %>%
@@ -1950,38 +2043,39 @@ shaoModels <- shao4 %>%
 
     ## Proportional min_prevalence given: 0.1 --> min 31/306 samples.
 
-    ## 2026-03-30 06:40:18.766128 - modelling at rank: phylum
+    ## 2026-05-04 12:03:54.669653 - modelling at rank: phylum
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
 
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
 
-    ## 2026-03-30 06:40:18.911734 - modelling at rank: class
+    ## 2026-05-04 12:03:54.769782 - modelling at rank: class
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
 
-    ## 2026-03-30 06:40:19.123711 - modelling at rank: order
+    ## 2026-05-04 12:03:54.915199 - modelling at rank: order
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
 
-    ## 2026-03-30 06:40:19.369875 - modelling at rank: family
+    ## 2026-05-04 12:03:55.084909 - modelling at rank: family
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
 
-    ## 2026-03-30 06:40:19.672562 - modelling at rank: genus
+    ## 2026-05-04 12:03:55.300715 - modelling at rank: genus
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
 
-    ## 2026-03-30 06:40:20.035069 - modelling at rank: species
+    ## 2026-05-04 12:03:55.54034 - modelling at rank: species
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
 
 ``` r
+
 shaoModels
 ```
 
@@ -2012,6 +2106,7 @@ estimates, test statistics and corresponding p values from all these
 regression models.
 
 ``` r
+
 shaoStats <- taxatree_models2stats(shaoModels)
 shaoStats
 ```
@@ -2033,6 +2128,7 @@ shaoStats
     ## 4 terms: C_section, Female, Birth_weight_Z, Reads_Z
 
 ``` r
+
 shaoStats %>% taxatree_stats_get()
 ```
 
@@ -2064,6 +2160,7 @@ at all ranks, the default behaviour is to control the family-wise error
 rate per taxonomic rank.
 
 ``` r
+
 shaoStats <- shaoStats %>% taxatree_stats_p_adjust(method = "BH", grouping = "rank")
 # notice the new variable
 shaoStats %>% taxatree_stats_get()
@@ -2100,6 +2197,7 @@ for example (and/or
 [`cowplot`](https://wilkelab.org/cowplot/articles/plot_grid.html)).
 
 ``` r
+
 shaoStats %>%
   taxatree_plots(node_size_range = c(1, 3), sig_stat = "p.adj.BH.rank") %>%
   patchwork::wrap_plots(ncol = 2, guides = "collect")
@@ -2116,6 +2214,7 @@ This labels only some of the taxa based on certain conditions that we
 specify.
 
 ``` r
+
 set.seed(123) # label position
 key <- shaoStats %>%
   taxatree_plotkey(
@@ -2137,6 +2236,7 @@ layout and style of the trees, and even how to use a different
 regression modelling approach.
 
 ``` r
+
 # try it out!
 ```
 
@@ -2148,12 +2248,13 @@ regression modelling approach.
 debugging / reproducing analysis.
 
 ``` r
+
 devtools::session_info()
 ```
 
     ## ─ Session info ───────────────────────────────────────────────────────────────
     ##  setting  value
-    ##  version  R version 4.5.3 (2026-03-11)
+    ##  version  R version 4.6.0 (2026-04-24)
     ##  os       Ubuntu 24.04.4 LTS
     ##  system   x86_64, linux-gnu
     ##  ui       X11
@@ -2161,139 +2262,139 @@ devtools::session_info()
     ##  collate  C.UTF-8
     ##  ctype    C.UTF-8
     ##  tz       UTC
-    ##  date     2026-03-30
-    ##  pandoc   3.1.11 @ /opt/hostedtoolcache/pandoc/3.1.11/x64/ (via rmarkdown)
+    ##  date     2026-05-04
+    ##  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)
     ##  quarto   NA
     ## 
     ## ─ Packages ───────────────────────────────────────────────────────────────────
-    ##  package        * version  date (UTC) lib source
-    ##  ade4             1.7-24   2026-03-21 [1] RSPM
-    ##  ape              5.8-1    2024-12-16 [1] RSPM
-    ##  backports        1.5.0    2024-05-23 [1] RSPM
-    ##  Biobase          2.70.0   2025-10-29 [1] Bioconduc~
-    ##  BiocGenerics     0.56.0   2025-10-29 [1] Bioconduc~
-    ##  biomformat       1.38.3   2026-03-16 [1] Bioconduc~
-    ##  Biostrings       2.78.0   2025-10-29 [1] Bioconduc~
-    ##  broom            1.0.12   2026-01-27 [1] RSPM
-    ##  bslib            0.10.0   2026-01-26 [1] RSPM
-    ##  ca               0.71.1   2020-01-24 [1] RSPM
-    ##  cachem           1.1.0    2024-05-16 [1] RSPM
-    ##  circlize         0.4.17   2025-12-08 [1] RSPM
-    ##  cli              3.6.5    2025-04-23 [1] RSPM
-    ##  clue             0.3-68   2026-03-26 [1] RSPM
-    ##  cluster          2.1.8.2  2026-02-05 [3] CRAN (R 4.5.3)
-    ##  codetools        0.2-20   2024-03-31 [3] CRAN (R 4.5.3)
-    ##  colorspace       2.1-2    2025-09-22 [1] RSPM
-    ##  ComplexHeatmap   2.26.1   2026-02-03 [1] Bioconduc~
-    ##  corncob          0.4.2    2025-03-29 [1] RSPM
-    ##  crayon           1.5.3    2024-06-20 [1] RSPM
-    ##  data.table       1.18.2.1 2026-01-27 [1] RSPM
-    ##  desc             1.4.3    2023-12-10 [1] RSPM
-    ##  devtools         2.5.0    2026-03-14 [1] RSPM
-    ##  digest           0.6.39   2025-11-19 [1] RSPM
-    ##  doParallel       1.0.17   2022-02-07 [1] RSPM
-    ##  dplyr          * 1.2.0    2026-02-03 [1] RSPM
-    ##  ellipsis         0.3.2    2021-04-29 [1] RSPM
-    ##  evaluate         1.0.5    2025-08-27 [1] RSPM
-    ##  farver           2.1.2    2024-05-13 [1] RSPM
-    ##  fastmap          1.2.0    2024-05-15 [1] RSPM
-    ##  forcats          1.0.1    2025-09-25 [1] RSPM
-    ##  foreach          1.5.2    2022-02-02 [1] RSPM
-    ##  fs               2.0.1    2026-03-24 [1] RSPM
-    ##  generics         0.1.4    2025-05-09 [1] RSPM
-    ##  GetoptLong       1.1.0    2025-11-28 [1] RSPM
-    ##  ggforce          0.5.0    2025-06-18 [1] RSPM
-    ##  ggplot2        * 4.0.2    2026-02-03 [1] RSPM
-    ##  ggraph           2.2.2    2025-08-24 [1] RSPM
-    ##  ggrepel          0.9.8    2026-03-17 [1] RSPM
-    ##  GlobalOptions    0.1.3    2025-11-28 [1] RSPM
-    ##  glue             1.8.0    2024-09-30 [1] RSPM
-    ##  graphlayouts     1.2.3    2026-02-21 [1] RSPM
-    ##  gridExtra        2.3      2017-09-09 [1] RSPM
-    ##  gtable           0.3.6    2024-10-25 [1] RSPM
-    ##  htmltools        0.5.9    2025-12-04 [1] RSPM
-    ##  htmlwidgets      1.6.4    2023-12-06 [1] RSPM
-    ##  httpuv           1.6.17   2026-03-18 [1] RSPM
-    ##  igraph           2.2.2    2026-02-12 [1] RSPM
-    ##  IRanges          2.44.0   2025-10-29 [1] Bioconduc~
-    ##  iterators        1.0.14   2022-02-05 [1] RSPM
-    ##  jquerylib        0.1.4    2021-04-26 [1] RSPM
-    ##  jsonlite         2.0.0    2025-03-27 [1] RSPM
-    ##  knitr            1.51     2025-12-20 [1] RSPM
-    ##  labeling         0.4.3    2023-08-29 [1] RSPM
-    ##  later            1.4.8    2026-03-05 [1] RSPM
-    ##  lattice          0.22-9   2026-02-09 [3] CRAN (R 4.5.3)
-    ##  lifecycle        1.0.5    2026-01-08 [1] RSPM
-    ##  magrittr         2.0.4    2025-09-12 [1] RSPM
-    ##  MASS             7.3-65   2025-02-28 [3] CRAN (R 4.5.3)
-    ##  Matrix           1.7-4    2025-08-28 [3] CRAN (R 4.5.3)
-    ##  matrixStats      1.5.0    2025-01-07 [1] RSPM
-    ##  memoise          2.0.1    2021-11-26 [1] RSPM
-    ##  mgcv             1.9-4    2025-11-07 [3] CRAN (R 4.5.3)
-    ##  microbiome       1.32.0   2025-10-29 [1] Bioconduc~
-    ##  microViz       * 0.13.0   2026-03-30 [1] local
-    ##  mime             0.13     2025-03-17 [1] RSPM
-    ##  multtest         2.66.0   2025-10-29 [1] Bioconduc~
-    ##  nlme             3.1-168  2025-03-31 [3] CRAN (R 4.5.3)
-    ##  otel             0.2.0    2025-08-29 [1] RSPM
-    ##  patchwork        1.3.2    2025-08-25 [1] RSPM
-    ##  permute          0.9-10   2026-02-06 [1] RSPM
-    ##  phyloseq       * 1.54.2   2026-03-02 [1] Bioconduc~
-    ##  pillar           1.11.1   2025-09-17 [1] RSPM
-    ##  pkgbuild         1.4.8    2025-05-26 [1] RSPM
-    ##  pkgconfig        2.0.3    2019-09-22 [1] RSPM
-    ##  pkgdown          2.2.0    2025-11-06 [1] RSPM
-    ##  pkgload          1.5.0    2026-02-03 [1] RSPM
-    ##  plyr             1.8.9    2023-10-02 [1] RSPM
-    ##  png              0.1-9    2026-03-15 [1] RSPM
-    ##  polyclip         1.10-7   2024-07-23 [1] RSPM
-    ##  promises         1.5.0    2025-11-01 [1] RSPM
-    ##  purrr          * 1.2.1    2026-01-09 [1] RSPM
-    ##  R6               2.6.1    2025-02-15 [1] RSPM
-    ##  ragg             1.5.2    2026-03-23 [1] RSPM
-    ##  RColorBrewer     1.1-3    2022-04-03 [1] RSPM
-    ##  Rcpp             1.1.1    2026-01-10 [1] RSPM
-    ##  registry         0.5-1    2019-03-05 [1] RSPM
-    ##  reshape2         1.4.5    2025-11-12 [1] RSPM
-    ##  rjson            0.2.23   2024-09-16 [1] RSPM
-    ##  rlang            1.1.7    2026-01-09 [1] RSPM
-    ##  rmarkdown        2.31     2026-03-26 [1] RSPM
-    ##  Rtsne            0.17     2023-12-07 [1] RSPM
-    ##  S4Vectors        0.48.0   2025-10-29 [1] Bioconduc~
-    ##  S7               0.2.1    2025-11-14 [1] RSPM
-    ##  sass             0.4.10   2025-04-11 [1] RSPM
-    ##  scales           1.4.0    2025-04-24 [1] RSPM
-    ##  Seqinfo          1.0.0    2025-10-29 [1] Bioconduc~
-    ##  seriation      * 1.5.8    2025-08-20 [1] RSPM
-    ##  sessioninfo      1.2.3    2025-02-05 [1] RSPM
-    ##  shape            1.4.6.1  2024-02-23 [1] RSPM
-    ##  shiny          * 1.13.0   2026-02-20 [1] RSPM
-    ##  stringi          1.8.7    2025-03-27 [1] RSPM
-    ##  stringr          1.6.0    2025-11-04 [1] RSPM
-    ##  survival         3.8-6    2026-01-16 [3] CRAN (R 4.5.3)
-    ##  systemfonts      1.3.2    2026-03-05 [1] RSPM
-    ##  textshaping      1.0.5    2026-03-06 [1] RSPM
-    ##  tibble           3.3.1    2026-01-11 [1] RSPM
-    ##  tidygraph        1.3.1    2024-01-30 [1] RSPM
-    ##  tidyr            1.3.2    2025-12-19 [1] RSPM
-    ##  tidyselect       1.2.1    2024-03-11 [1] RSPM
-    ##  TSP              1.2.7    2026-03-23 [1] RSPM
-    ##  tweenr           2.0.3    2024-02-26 [1] RSPM
-    ##  usethis          3.2.1    2025-09-06 [1] RSPM
-    ##  utf8             1.2.6    2025-06-08 [1] RSPM
-    ##  vctrs            0.7.2    2026-03-21 [1] RSPM
-    ##  vegan            2.7-3    2026-03-04 [1] RSPM
-    ##  viridis          0.6.5    2024-01-29 [1] RSPM
-    ##  viridisLite      0.4.3    2026-02-04 [1] RSPM
-    ##  withr            3.0.2    2024-10-28 [1] RSPM
-    ##  xfun             0.57     2026-03-20 [1] RSPM
-    ##  xtable           1.8-8    2026-02-22 [1] RSPM
-    ##  XVector          0.50.0   2025-10-29 [1] Bioconduc~
-    ##  yaml             2.3.12   2025-12-10 [1] RSPM
+    ##  package        * version   date (UTC) lib source
+    ##  ade4             1.7-24    2026-03-21 [1] RSPM
+    ##  ape              5.8-1     2024-12-16 [1] RSPM
+    ##  backports        1.5.1     2026-04-03 [1] RSPM
+    ##  Biobase          2.72.0    2026-04-28 [1] Bioconduc~
+    ##  BiocGenerics     0.58.0    2026-04-28 [1] Bioconduc~
+    ##  biomformat       1.40.0    2026-04-28 [1] Bioconduc~
+    ##  Biostrings       2.80.0    2026-04-28 [1] Bioconduc~
+    ##  broom            1.0.12    2026-01-27 [1] RSPM
+    ##  bslib            0.10.0    2026-01-26 [1] RSPM
+    ##  ca               0.71.1    2020-01-24 [1] RSPM
+    ##  cachem           1.1.0     2024-05-16 [1] RSPM
+    ##  circlize         0.4.18    2026-04-04 [1] RSPM
+    ##  cli              3.6.6     2026-04-09 [1] RSPM
+    ##  clue             0.3-68    2026-03-26 [1] RSPM
+    ##  cluster          2.1.8.2   2026-02-05 [3] CRAN (R 4.6.0)
+    ##  codetools        0.2-20    2024-03-31 [3] CRAN (R 4.6.0)
+    ##  colorspace       2.1-2     2025-09-22 [1] RSPM
+    ##  ComplexHeatmap   2.28.0    2026-04-28 [1] Bioconduc~
+    ##  corncob          0.4.2     2025-03-29 [1] RSPM
+    ##  crayon           1.5.3     2024-06-20 [1] RSPM
+    ##  data.table       1.18.2.1  2026-01-27 [1] RSPM
+    ##  desc             1.4.3     2023-12-10 [1] RSPM
+    ##  devtools         2.5.2     2026-04-30 [1] RSPM
+    ##  digest           0.6.39    2025-11-19 [1] RSPM
+    ##  doParallel       1.0.17    2022-02-07 [1] RSPM
+    ##  dplyr          * 1.2.1     2026-04-03 [1] RSPM
+    ##  ellipsis         0.3.3     2026-04-04 [1] RSPM
+    ##  evaluate         1.0.5     2025-08-27 [1] RSPM
+    ##  farver           2.1.2     2024-05-13 [1] RSPM
+    ##  fastmap          1.2.0     2024-05-15 [1] RSPM
+    ##  forcats          1.0.1     2025-09-25 [1] RSPM
+    ##  foreach          1.5.2     2022-02-02 [1] RSPM
+    ##  fs               2.1.0     2026-04-18 [1] RSPM
+    ##  generics         0.1.4     2025-05-09 [1] RSPM
+    ##  GetoptLong       1.1.1     2026-04-08 [1] RSPM
+    ##  ggforce          0.5.0     2025-06-18 [1] RSPM
+    ##  ggplot2        * 4.0.3     2026-04-22 [1] RSPM
+    ##  ggraph           2.2.2     2025-08-24 [1] RSPM
+    ##  ggrepel          0.9.8     2026-03-17 [1] RSPM
+    ##  GlobalOptions    0.1.4     2026-04-08 [1] RSPM
+    ##  glue             1.8.1     2026-04-17 [1] RSPM
+    ##  graphlayouts     1.2.3     2026-02-21 [1] RSPM
+    ##  gridExtra        2.3       2017-09-09 [1] RSPM
+    ##  gtable           0.3.6     2024-10-25 [1] RSPM
+    ##  htmltools        0.5.9     2025-12-04 [1] RSPM
+    ##  htmlwidgets      1.6.4     2023-12-06 [1] RSPM
+    ##  httpuv           1.6.17    2026-03-18 [1] RSPM
+    ##  igraph           2.3.0     2026-04-21 [1] RSPM
+    ##  IRanges          2.46.0    2026-04-28 [1] Bioconduc~
+    ##  iterators        1.0.14    2022-02-05 [1] RSPM
+    ##  jquerylib        0.1.4     2021-04-26 [1] RSPM
+    ##  jsonlite         2.0.0     2025-03-27 [1] RSPM
+    ##  knitr            1.51      2025-12-20 [1] RSPM
+    ##  labeling         0.4.3     2023-08-29 [1] RSPM
+    ##  later            1.4.8     2026-03-05 [1] RSPM
+    ##  lattice          0.22-9    2026-02-09 [3] CRAN (R 4.6.0)
+    ##  lifecycle        1.0.5     2026-01-08 [1] RSPM
+    ##  magrittr         2.0.5     2026-04-04 [1] RSPM
+    ##  MASS             7.3-65    2025-02-28 [3] CRAN (R 4.6.0)
+    ##  Matrix           1.7-5     2026-03-21 [3] CRAN (R 4.6.0)
+    ##  matrixStats      1.5.0     2025-01-07 [1] RSPM
+    ##  memoise          2.0.1     2021-11-26 [1] RSPM
+    ##  mgcv             1.9-4     2025-11-07 [3] CRAN (R 4.6.0)
+    ##  microbiome       1.34.0    2026-04-28 [1] Bioconduc~
+    ##  microViz       * 0.13.0    2026-05-04 [1] local
+    ##  mime             0.13      2025-03-17 [1] RSPM
+    ##  multtest         2.68.0    2026-04-28 [1] Bioconduc~
+    ##  nlme             3.1-169   2026-03-27 [3] CRAN (R 4.6.0)
+    ##  otel             0.2.0     2025-08-29 [1] RSPM
+    ##  patchwork        1.3.2     2025-08-25 [1] RSPM
+    ##  permute          0.9-10    2026-02-06 [1] RSPM
+    ##  phyloseq       * 1.56.0    2026-04-28 [1] Bioconduc~
+    ##  pillar           1.11.1    2025-09-17 [1] RSPM
+    ##  pkgbuild         1.4.8     2025-05-26 [1] RSPM
+    ##  pkgconfig        2.0.3     2019-09-22 [1] RSPM
+    ##  pkgdown          2.2.0     2025-11-06 [1] RSPM
+    ##  pkgload          1.5.2     2026-04-22 [1] RSPM
+    ##  plyr             1.8.9     2023-10-02 [1] RSPM
+    ##  png              0.1-9     2026-03-15 [1] RSPM
+    ##  polyclip         1.10-7    2024-07-23 [1] RSPM
+    ##  promises         1.5.0     2025-11-01 [1] RSPM
+    ##  purrr          * 1.2.2     2026-04-10 [1] RSPM
+    ##  R6               2.6.1     2025-02-15 [1] RSPM
+    ##  ragg             1.5.2     2026-03-23 [1] RSPM
+    ##  RColorBrewer     1.1-3     2022-04-03 [1] RSPM
+    ##  Rcpp             1.1.1-1.1 2026-04-24 [1] RSPM
+    ##  registry         0.5-1     2019-03-05 [1] RSPM
+    ##  reshape2         1.4.5     2025-11-12 [1] RSPM
+    ##  rjson            0.2.23    2024-09-16 [1] RSPM
+    ##  rlang            1.2.0     2026-04-06 [1] RSPM
+    ##  rmarkdown        2.31      2026-03-26 [1] RSPM
+    ##  Rtsne            0.17      2023-12-07 [1] RSPM
+    ##  S4Vectors        0.50.0    2026-04-28 [1] Bioconduc~
+    ##  S7               0.2.2     2026-04-22 [1] RSPM
+    ##  sass             0.4.10    2025-04-11 [1] RSPM
+    ##  scales           1.4.0     2025-04-24 [1] RSPM
+    ##  Seqinfo          1.2.0     2026-04-28 [1] Bioconduc~
+    ##  seriation      * 1.5.8     2025-08-20 [1] RSPM
+    ##  sessioninfo      1.2.3     2025-02-05 [1] RSPM
+    ##  shape            1.4.6.1   2024-02-23 [1] RSPM
+    ##  shiny          * 1.13.0    2026-02-20 [1] RSPM
+    ##  stringi          1.8.7     2025-03-27 [1] RSPM
+    ##  stringr          1.6.0     2025-11-04 [1] RSPM
+    ##  survival         3.8-6     2026-01-16 [3] CRAN (R 4.6.0)
+    ##  systemfonts      1.3.2     2026-03-05 [1] RSPM
+    ##  textshaping      1.0.5     2026-03-06 [1] RSPM
+    ##  tibble           3.3.1     2026-01-11 [1] RSPM
+    ##  tidygraph        1.3.1     2024-01-30 [1] RSPM
+    ##  tidyr            1.3.2     2025-12-19 [1] RSPM
+    ##  tidyselect       1.2.1     2024-03-11 [1] RSPM
+    ##  TSP              1.2.7     2026-03-23 [1] RSPM
+    ##  tweenr           2.0.3     2024-02-26 [1] RSPM
+    ##  usethis          3.2.1     2025-09-06 [1] RSPM
+    ##  utf8             1.2.6     2025-06-08 [1] RSPM
+    ##  vctrs            0.7.3     2026-04-11 [1] RSPM
+    ##  vegan            2.7-3     2026-03-04 [1] RSPM
+    ##  viridis          0.6.5     2024-01-29 [1] RSPM
+    ##  viridisLite      0.4.3     2026-02-04 [1] RSPM
+    ##  withr            3.0.2     2024-10-28 [1] RSPM
+    ##  xfun             0.57      2026-03-20 [1] RSPM
+    ##  xtable           1.8-8     2026-02-22 [1] RSPM
+    ##  XVector          0.52.0    2026-04-28 [1] Bioconduc~
+    ##  yaml             2.3.12    2025-12-10 [1] RSPM
     ## 
     ##  [1] /home/runner/work/_temp/Library
-    ##  [2] /opt/R/4.5.3/lib/R/site-library
-    ##  [3] /opt/R/4.5.3/lib/R/library
+    ##  [2] /opt/R/4.6.0/lib/R/site-library
+    ##  [3] /opt/R/4.6.0/lib/R/library
     ##  * ── Packages attached to the search path.
     ## 
     ## ──────────────────────────────────────────────────────────────────────────────

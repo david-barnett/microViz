@@ -6,6 +6,7 @@ This tutorial will show you how microViz makes working with phyloseq
 objects easier.
 
 ``` r
+
 library(dplyr)
 #> 
 #> Attaching package: 'dplyr'
@@ -58,6 +59,7 @@ biom file or phyloseq object at the start, as
 makes it easy to add sample data later.
 
 ``` r
+
 # This tutorial will just use some example data
 # It is already available as a phyloseq object from the corncob package
 example_ps <- microViz::ibd
@@ -78,6 +80,7 @@ might cause problems in later analyses. It is recommended to run this at
 the start of your analyses, and fix any problems identified.
 
 ``` r
+
 example_ps <- phyloseq_validate(example_ps, remove_undetected = TRUE)
 #> Short values detected in phyloseq tax_table (nchar<4) :
 #> Consider using tax_fix() to make taxa uniquely identifiable
@@ -131,6 +134,7 @@ page for extensive usage examples.
 Lets look at the sample data already in our example phyloseq.
 
 ``` r
+
 # 91 samples, with 15 sample_data variables
 example_ps
 #> phyloseq-class experiment-level object
@@ -162,6 +166,7 @@ You can do that by filtering samples based on the values of the sample
 data variable: ibd
 
 ``` r
+
 example_ps %>% ps_filter(ibd == "ibd") # it is essential to use `==` , not just one `=`
 #> phyloseq-class experiment-level object
 #> otu_table()   OTU Table:         [ 24490 taxa and 67 samples ]
@@ -175,6 +180,7 @@ female IBD patients with “mild” or “severe” activity, who are at least
 13 years old.
 
 ``` r
+
 partial_ps <- example_ps %>%
   ps_filter(
     gender == "female",
@@ -193,6 +199,7 @@ arrange the samples grouped by disease and in descending age order, and
 select only a few interesting variables to show.
 
 ``` r
+
 partial_ps %>%
   ps_arrange(DiseaseState, desc(age)) %>%
   ps_select(DiseaseState, age, matches("activ"), abx) %>% # selection order is respected
@@ -215,6 +222,7 @@ You can also sort sample by microbiome similarity with
 [`ps_seriate()`](https://david-barnett.github.io/microViz/reference/ps_seriate.md).
 
 ``` r
+
 partial_ps %>%
   tax_agg("Genus") %>%
   ps_seriate(dist = "bray", method = "OLO_ward") %>% # these are the defaults
@@ -227,6 +235,7 @@ partial_ps %>%
 ![](phyloseq_files/figure-html/unnamed-chunk-2-1.png)
 
 ``` r
+
 # note that comp_barplot with sample_order = "bray" will run
 # this ps_seriate call internally, so you don't have to!
 ```
@@ -237,6 +246,7 @@ with `.target = "otu_table"`. Arranging by taxon can only be done at the
 current taxonomic rank, so we will aggregate to Genus level first.
 
 ``` r
+
 # Arranging by decreasing Bacteroides abundance
 partial_ps %>%
   tax_agg("Genus") %>%
@@ -266,6 +276,7 @@ partial_ps %>%
 ![](phyloseq_files/figure-html/unnamed-chunk-3-1.png)
 
 ``` r
+
 # Notice this is sorted by bacteroides counts
 # (this doesn't quite match relative abundance % due to sequencing depth variation)
 ```
@@ -294,10 +305,11 @@ If you don’t want this, you can set the `.keep_all_taxa` argument to
 ## Technical log
 
 ``` r
+
 devtools::session_info()
 #> ─ Session info ───────────────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.5.3 (2026-03-11)
+#>  version  R version 4.6.0 (2026-04-24)
 #>  os       Ubuntu 24.04.4 LTS
 #>  system   x86_64, linux-gnu
 #>  ui       X11
@@ -305,107 +317,107 @@ devtools::session_info()
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-03-30
-#>  pandoc   3.1.11 @ /opt/hostedtoolcache/pandoc/3.1.11/x64/ (via rmarkdown)
+#>  date     2026-05-04
+#>  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)
 #>  quarto   NA
 #> 
 #> ─ Packages ───────────────────────────────────────────────────────────────────
-#>  package      * version  date (UTC) lib source
-#>  ade4           1.7-24   2026-03-21 [1] RSPM
-#>  ape            5.8-1    2024-12-16 [1] RSPM
-#>  Biobase        2.70.0   2025-10-29 [1] Bioconduc~
-#>  BiocGenerics   0.56.0   2025-10-29 [1] Bioconduc~
-#>  biomformat     1.38.3   2026-03-16 [1] Bioconduc~
-#>  Biostrings     2.78.0   2025-10-29 [1] Bioconduc~
-#>  bslib          0.10.0   2026-01-26 [1] RSPM
-#>  ca             0.71.1   2020-01-24 [1] RSPM
-#>  cachem         1.1.0    2024-05-16 [1] RSPM
-#>  cli            3.6.5    2025-04-23 [1] RSPM
-#>  cluster        2.1.8.2  2026-02-05 [3] CRAN (R 4.5.3)
-#>  codetools      0.2-20   2024-03-31 [3] CRAN (R 4.5.3)
-#>  crayon         1.5.3    2024-06-20 [1] RSPM
-#>  data.table     1.18.2.1 2026-01-27 [1] RSPM
-#>  desc           1.4.3    2023-12-10 [1] RSPM
-#>  devtools       2.5.0    2026-03-14 [1] RSPM
-#>  digest         0.6.39   2025-11-19 [1] RSPM
-#>  dplyr        * 1.2.0    2026-02-03 [1] RSPM
-#>  ellipsis       0.3.2    2021-04-29 [1] RSPM
-#>  evaluate       1.0.5    2025-08-27 [1] RSPM
-#>  farver         2.1.2    2024-05-13 [1] RSPM
-#>  fastmap        1.2.0    2024-05-15 [1] RSPM
-#>  foreach        1.5.2    2022-02-02 [1] RSPM
-#>  fs             2.0.1    2026-03-24 [1] RSPM
-#>  generics       0.1.4    2025-05-09 [1] RSPM
-#>  ggplot2        4.0.2    2026-02-03 [1] RSPM
-#>  glue           1.8.0    2024-09-30 [1] RSPM
-#>  gtable         0.3.6    2024-10-25 [1] RSPM
-#>  htmltools      0.5.9    2025-12-04 [1] RSPM
-#>  htmlwidgets    1.6.4    2023-12-06 [1] RSPM
-#>  igraph         2.2.2    2026-02-12 [1] RSPM
-#>  IRanges        2.44.0   2025-10-29 [1] Bioconduc~
-#>  iterators      1.0.14   2022-02-05 [1] RSPM
-#>  jquerylib      0.1.4    2021-04-26 [1] RSPM
-#>  jsonlite       2.0.0    2025-03-27 [1] RSPM
-#>  knitr          1.51     2025-12-20 [1] RSPM
-#>  labeling       0.4.3    2023-08-29 [1] RSPM
-#>  lattice        0.22-9   2026-02-09 [3] CRAN (R 4.5.3)
-#>  lifecycle      1.0.5    2026-01-08 [1] RSPM
-#>  magrittr       2.0.4    2025-09-12 [1] RSPM
-#>  MASS           7.3-65   2025-02-28 [3] CRAN (R 4.5.3)
-#>  Matrix         1.7-4    2025-08-28 [3] CRAN (R 4.5.3)
-#>  memoise        2.0.1    2021-11-26 [1] RSPM
-#>  mgcv           1.9-4    2025-11-07 [3] CRAN (R 4.5.3)
-#>  microbiome     1.32.0   2025-10-29 [1] Bioconduc~
-#>  microViz     * 0.13.0   2026-03-30 [1] local
-#>  multtest       2.66.0   2025-10-29 [1] Bioconduc~
-#>  nlme           3.1-168  2025-03-31 [3] CRAN (R 4.5.3)
-#>  otel           0.2.0    2025-08-29 [1] RSPM
-#>  permute        0.9-10   2026-02-06 [1] RSPM
-#>  phyloseq     * 1.54.2   2026-03-02 [1] Bioconduc~
-#>  pillar         1.11.1   2025-09-17 [1] RSPM
-#>  pkgbuild       1.4.8    2025-05-26 [1] RSPM
-#>  pkgconfig      2.0.3    2019-09-22 [1] RSPM
-#>  pkgdown        2.2.0    2025-11-06 [1] RSPM
-#>  pkgload        1.5.0    2026-02-03 [1] RSPM
-#>  plyr           1.8.9    2023-10-02 [1] RSPM
-#>  purrr          1.2.1    2026-01-09 [1] RSPM
-#>  R6             2.6.1    2025-02-15 [1] RSPM
-#>  ragg           1.5.2    2026-03-23 [1] RSPM
-#>  RColorBrewer   1.1-3    2022-04-03 [1] RSPM
-#>  Rcpp           1.1.1    2026-01-10 [1] RSPM
-#>  registry       0.5-1    2019-03-05 [1] RSPM
-#>  reshape2       1.4.5    2025-11-12 [1] RSPM
-#>  rlang          1.1.7    2026-01-09 [1] RSPM
-#>  rmarkdown      2.31     2026-03-26 [1] RSPM
-#>  Rtsne          0.17     2023-12-07 [1] RSPM
-#>  S4Vectors      0.48.0   2025-10-29 [1] Bioconduc~
-#>  S7             0.2.1    2025-11-14 [1] RSPM
-#>  sass           0.4.10   2025-04-11 [1] RSPM
-#>  scales         1.4.0    2025-04-24 [1] RSPM
-#>  Seqinfo        1.0.0    2025-10-29 [1] Bioconduc~
-#>  seriation      1.5.8    2025-08-20 [1] RSPM
-#>  sessioninfo    1.2.3    2025-02-05 [1] RSPM
-#>  stringi        1.8.7    2025-03-27 [1] RSPM
-#>  stringr        1.6.0    2025-11-04 [1] RSPM
-#>  survival       3.8-6    2026-01-16 [3] CRAN (R 4.5.3)
-#>  systemfonts    1.3.2    2026-03-05 [1] RSPM
-#>  textshaping    1.0.5    2026-03-06 [1] RSPM
-#>  tibble         3.3.1    2026-01-11 [1] RSPM
-#>  tidyr          1.3.2    2025-12-19 [1] RSPM
-#>  tidyselect     1.2.1    2024-03-11 [1] RSPM
-#>  TSP            1.2.7    2026-03-23 [1] RSPM
-#>  usethis        3.2.1    2025-09-06 [1] RSPM
-#>  utf8           1.2.6    2025-06-08 [1] RSPM
-#>  vctrs          0.7.2    2026-03-21 [1] RSPM
-#>  vegan          2.7-3    2026-03-04 [1] RSPM
-#>  withr          3.0.2    2024-10-28 [1] RSPM
-#>  xfun           0.57     2026-03-20 [1] RSPM
-#>  XVector        0.50.0   2025-10-29 [1] Bioconduc~
-#>  yaml           2.3.12   2025-12-10 [1] RSPM
+#>  package      * version   date (UTC) lib source
+#>  ade4           1.7-24    2026-03-21 [1] RSPM
+#>  ape            5.8-1     2024-12-16 [1] RSPM
+#>  Biobase        2.72.0    2026-04-28 [1] Bioconduc~
+#>  BiocGenerics   0.58.0    2026-04-28 [1] Bioconduc~
+#>  biomformat     1.40.0    2026-04-28 [1] Bioconduc~
+#>  Biostrings     2.80.0    2026-04-28 [1] Bioconduc~
+#>  bslib          0.10.0    2026-01-26 [1] RSPM
+#>  ca             0.71.1    2020-01-24 [1] RSPM
+#>  cachem         1.1.0     2024-05-16 [1] RSPM
+#>  cli            3.6.6     2026-04-09 [1] RSPM
+#>  cluster        2.1.8.2   2026-02-05 [3] CRAN (R 4.6.0)
+#>  codetools      0.2-20    2024-03-31 [3] CRAN (R 4.6.0)
+#>  crayon         1.5.3     2024-06-20 [1] RSPM
+#>  data.table     1.18.2.1  2026-01-27 [1] RSPM
+#>  desc           1.4.3     2023-12-10 [1] RSPM
+#>  devtools       2.5.2     2026-04-30 [1] RSPM
+#>  digest         0.6.39    2025-11-19 [1] RSPM
+#>  dplyr        * 1.2.1     2026-04-03 [1] RSPM
+#>  ellipsis       0.3.3     2026-04-04 [1] RSPM
+#>  evaluate       1.0.5     2025-08-27 [1] RSPM
+#>  farver         2.1.2     2024-05-13 [1] RSPM
+#>  fastmap        1.2.0     2024-05-15 [1] RSPM
+#>  foreach        1.5.2     2022-02-02 [1] RSPM
+#>  fs             2.1.0     2026-04-18 [1] RSPM
+#>  generics       0.1.4     2025-05-09 [1] RSPM
+#>  ggplot2        4.0.3     2026-04-22 [1] RSPM
+#>  glue           1.8.1     2026-04-17 [1] RSPM
+#>  gtable         0.3.6     2024-10-25 [1] RSPM
+#>  htmltools      0.5.9     2025-12-04 [1] RSPM
+#>  htmlwidgets    1.6.4     2023-12-06 [1] RSPM
+#>  igraph         2.3.0     2026-04-21 [1] RSPM
+#>  IRanges        2.46.0    2026-04-28 [1] Bioconduc~
+#>  iterators      1.0.14    2022-02-05 [1] RSPM
+#>  jquerylib      0.1.4     2021-04-26 [1] RSPM
+#>  jsonlite       2.0.0     2025-03-27 [1] RSPM
+#>  knitr          1.51      2025-12-20 [1] RSPM
+#>  labeling       0.4.3     2023-08-29 [1] RSPM
+#>  lattice        0.22-9    2026-02-09 [3] CRAN (R 4.6.0)
+#>  lifecycle      1.0.5     2026-01-08 [1] RSPM
+#>  magrittr       2.0.5     2026-04-04 [1] RSPM
+#>  MASS           7.3-65    2025-02-28 [3] CRAN (R 4.6.0)
+#>  Matrix         1.7-5     2026-03-21 [3] CRAN (R 4.6.0)
+#>  memoise        2.0.1     2021-11-26 [1] RSPM
+#>  mgcv           1.9-4     2025-11-07 [3] CRAN (R 4.6.0)
+#>  microbiome     1.34.0    2026-04-28 [1] Bioconduc~
+#>  microViz     * 0.13.0    2026-05-04 [1] local
+#>  multtest       2.68.0    2026-04-28 [1] Bioconduc~
+#>  nlme           3.1-169   2026-03-27 [3] CRAN (R 4.6.0)
+#>  otel           0.2.0     2025-08-29 [1] RSPM
+#>  permute        0.9-10    2026-02-06 [1] RSPM
+#>  phyloseq     * 1.56.0    2026-04-28 [1] Bioconduc~
+#>  pillar         1.11.1    2025-09-17 [1] RSPM
+#>  pkgbuild       1.4.8     2025-05-26 [1] RSPM
+#>  pkgconfig      2.0.3     2019-09-22 [1] RSPM
+#>  pkgdown        2.2.0     2025-11-06 [1] RSPM
+#>  pkgload        1.5.2     2026-04-22 [1] RSPM
+#>  plyr           1.8.9     2023-10-02 [1] RSPM
+#>  purrr          1.2.2     2026-04-10 [1] RSPM
+#>  R6             2.6.1     2025-02-15 [1] RSPM
+#>  ragg           1.5.2     2026-03-23 [1] RSPM
+#>  RColorBrewer   1.1-3     2022-04-03 [1] RSPM
+#>  Rcpp           1.1.1-1.1 2026-04-24 [1] RSPM
+#>  registry       0.5-1     2019-03-05 [1] RSPM
+#>  reshape2       1.4.5     2025-11-12 [1] RSPM
+#>  rlang          1.2.0     2026-04-06 [1] RSPM
+#>  rmarkdown      2.31      2026-03-26 [1] RSPM
+#>  Rtsne          0.17      2023-12-07 [1] RSPM
+#>  S4Vectors      0.50.0    2026-04-28 [1] Bioconduc~
+#>  S7             0.2.2     2026-04-22 [1] RSPM
+#>  sass           0.4.10    2025-04-11 [1] RSPM
+#>  scales         1.4.0     2025-04-24 [1] RSPM
+#>  Seqinfo        1.2.0     2026-04-28 [1] Bioconduc~
+#>  seriation      1.5.8     2025-08-20 [1] RSPM
+#>  sessioninfo    1.2.3     2025-02-05 [1] RSPM
+#>  stringi        1.8.7     2025-03-27 [1] RSPM
+#>  stringr        1.6.0     2025-11-04 [1] RSPM
+#>  survival       3.8-6     2026-01-16 [3] CRAN (R 4.6.0)
+#>  systemfonts    1.3.2     2026-03-05 [1] RSPM
+#>  textshaping    1.0.5     2026-03-06 [1] RSPM
+#>  tibble         3.3.1     2026-01-11 [1] RSPM
+#>  tidyr          1.3.2     2025-12-19 [1] RSPM
+#>  tidyselect     1.2.1     2024-03-11 [1] RSPM
+#>  TSP            1.2.7     2026-03-23 [1] RSPM
+#>  usethis        3.2.1     2025-09-06 [1] RSPM
+#>  utf8           1.2.6     2025-06-08 [1] RSPM
+#>  vctrs          0.7.3     2026-04-11 [1] RSPM
+#>  vegan          2.7-3     2026-03-04 [1] RSPM
+#>  withr          3.0.2     2024-10-28 [1] RSPM
+#>  xfun           0.57      2026-03-20 [1] RSPM
+#>  XVector        0.52.0    2026-04-28 [1] Bioconduc~
+#>  yaml           2.3.12    2025-12-10 [1] RSPM
 #> 
 #>  [1] /home/runner/work/_temp/Library
-#>  [2] /opt/R/4.5.3/lib/R/site-library
-#>  [3] /opt/R/4.5.3/lib/R/library
+#>  [2] /opt/R/4.6.0/lib/R/site-library
+#>  [3] /opt/R/4.6.0/lib/R/library
 #>  * ── Packages attached to the search path.
 #> 
 #> ──────────────────────────────────────────────────────────────────────────────
