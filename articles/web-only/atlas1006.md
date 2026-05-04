@@ -237,8 +237,8 @@ ps %>%
 #> Dropping samples with missings: 17
 #> weight has NAs: 15
 #> female has NAs: 2
-#> 2026-05-04 12:20:30.717289 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2026-05-04 12:20:35.125508 - Finished PERMANOVA
+#> 2026-05-04 13:00:34.903334 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2026-05-04 13:00:38.952303 - Finished PERMANOVA
 #> psExtra object - a phyloseq object with extra slots:
 #> 
 #> phyloseq-class experiment-level object
@@ -393,10 +393,10 @@ tt_models <- ps %>%
     type = "bbdml", verbose = "max"
   )
 #> Proportional min_prevalence given: 0.05 --> min 41/801 samples.
-#> 2026-05-04 12:20:39.455878 - modelling at rank: Phylum
+#> 2026-05-04 13:00:42.913873 - modelling at rank: Phylum
 #> Warning in do.call(fun, list(txt)): 2 / 801 values are NA in female
 #> Warning in do.call(fun, list(txt)): 15 / 801 values are NA in wt_scaled
-#> 2026-05-04 12:20:42.510658 - modelling at rank: Family
+#> 2026-05-04 13:00:45.814252 - modelling at rank: Family
 #> Warning in do.call(fun, list(txt)): 2 / 801 values are NA in female
 #> Warning in do.call(fun, list(txt)): 15 / 801 values are NA in wt_scaled
 tt_stats <- taxatree_models2stats(tt_models, param = "mu")
