@@ -86,8 +86,14 @@ test_that("ord_explore app works: unconstrained ords", {
   app$expect_values() # 7
 
   # check error avoided
+  old_ord_plot <- app$get_value(output = "ord_plot")
+  old_comps_girafe <- app$get_value(output = "comps_girafe")
   app$set_inputs(rank = "unique")
   app$click("build")
+  app$wait_for_value(output = "ord_plot", ignore = list(NULL, "", old_ord_plot))
+  app$wait_for_value(
+    output = "comps_girafe", ignore = list(NULL, "", old_comps_girafe)
+  )
   app$wait_for_idle()
   app$expect_values() # 8
 
