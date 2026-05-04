@@ -1347,9 +1347,9 @@ shao4 %>%
   perm_get()
 ```
 
-    ## 2026-05-04 13:26:36.250747 - Starting PERMANOVA with 99 perms with 1 processes
+    ## 2026-05-04 14:20:58.6602 - Starting PERMANOVA with 99 perms with 1 processes
 
-    ## 2026-05-04 13:26:36.331156 - Finished PERMANOVA
+    ## 2026-05-04 14:20:58.73953 - Finished PERMANOVA
 
     ## Permutation test for adonis under reduced model
     ## Marginal effects of terms
@@ -1404,9 +1404,9 @@ shao4 %>%
 
     ## Dropping samples with missings: 15
 
-    ## 2026-05-04 13:26:36.613203 - Starting PERMANOVA with 99 perms with 1 processes
+    ## 2026-05-04 14:20:59.011092 - Starting PERMANOVA with 99 perms with 1 processes
 
-    ## 2026-05-04 13:26:37.378474 - Finished PERMANOVA
+    ## 2026-05-04 14:20:59.763342 - Finished PERMANOVA
 
     ## Permutation test for adonis under reduced model
     ## Marginal effects of terms
@@ -2043,33 +2043,33 @@ shaoModels <- shao4 %>%
 
     ## Proportional min_prevalence given: 0.1 --> min 31/306 samples.
 
-    ## 2026-05-04 13:26:59.649732 - modelling at rank: phylum
+    ## 2026-05-04 14:21:20.033503 - modelling at rank: phylum
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
 
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
 
-    ## 2026-05-04 13:26:59.824219 - modelling at rank: class
+    ## 2026-05-04 14:21:20.175501 - modelling at rank: class
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
 
-    ## 2026-05-04 13:27:00.067996 - modelling at rank: order
+    ## 2026-05-04 14:21:20.377719 - modelling at rank: order
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
 
-    ## 2026-05-04 13:27:00.353833 - modelling at rank: family
+    ## 2026-05-04 14:21:20.618175 - modelling at rank: family
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
 
-    ## 2026-05-04 13:27:00.693658 - modelling at rank: genus
+    ## 2026-05-04 14:21:20.921658 - modelling at rank: genus
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
 
-    ## 2026-05-04 13:27:01.08298 - modelling at rank: species
+    ## 2026-05-04 14:21:21.268293 - modelling at rank: species
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z

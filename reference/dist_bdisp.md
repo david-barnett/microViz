@@ -121,8 +121,8 @@ PERM <- testDist %>%
     n_processes = 1, n_perms = 99
   )
 #> Dropping samples with missings: 4
-#> 2026-05-04 13:22:47.932834 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2026-05-04 13:22:48.168479 - Finished PERMANOVA
+#> 2026-05-04 14:17:34.157144 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2026-05-04 14:17:34.387268 - Finished PERMANOVA
 str(PERM, max.level = 1)
 #> Formal class 'psExtra' [package "microViz"] with 15 slots
 
