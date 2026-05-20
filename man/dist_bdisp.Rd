@@ -17,9 +17,11 @@ dist_bdisp(
 
 \item{variables}{list of variables to use as group}
 
-\item{method}{centroid or median}
+\item{method}{value passed to \code{vegan::betadisper(type = ...)}.
+microViz default is \code{"centroid"} (vegan default is \code{"median"}).}
 
-\item{complete_cases}{drop samples with NAs in any of the variables listed}
+\item{complete_cases}{drop samples with NAs in any of the variables listed before
+running \code{vegan::betadisper()}}
 
 \item{verbose}{sends messages about progress if true}
 }

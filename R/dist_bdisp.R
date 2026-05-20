@@ -6,8 +6,12 @@
 #'
 #' @param data psExtra output from dist_calc
 #' @param variables list of variables to use as group
-#' @param method centroid or median
-#' @param complete_cases drop samples with NAs in any of the variables listed
+#' @param method
+#' value passed to `vegan::betadisper(type = ...)`.
+#' microViz default is `"centroid"` (vegan default is `"median"`).
+#' @param complete_cases
+#' drop samples with NAs in any of the variables listed before running
+#' `vegan::betadisper()`
 #' @param verbose sends messages about progress if true
 #'
 #' @return psExtra containing betadisper results
@@ -53,6 +57,7 @@ dist_bdisp <- function(data,
                        method = c("centroid", "median")[[1]],
                        complete_cases = TRUE,
                        verbose = TRUE) {
+  method <- match.arg(arg = method, choices = c("centroid", "median"))
   # check input data object class
   check_is_psExtra(data, argName = "data")
   if (identical(dist_get(data), NULL)) {
