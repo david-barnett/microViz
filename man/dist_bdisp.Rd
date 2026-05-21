@@ -7,29 +7,54 @@
 dist_bdisp(
   data,
   variables,
-  method = c("centroid", "median")[[1]],
+  method = "centroid",
   complete_cases = TRUE,
   verbose = TRUE
 )
 }
 \arguments{
-\item{data}{psExtra output from dist_calc}
+\item{data}{A \code{psExtra} object containing a distance matrix, as returned by
+\code{dist_calc()} or by downstream functions such as \code{dist_permanova()}.}
 
-\item{variables}{list of variables to use as group}
+\item{variables}{Character vector of sample-data variable names to use as
+grouping variables. Variables must be categorical or coercible groupings;
+unsupported variable classes are skipped with a warning.}
 
-\item{method}{centroid or median}
+\item{method}{Either \code{"centroid"} or \code{"median"}. Passed to
+\code{vegan::betadisper(type = ...)}.}
 
-\item{complete_cases}{drop samples with NAs in any of the variables listed}
+\item{complete_cases}{Logical. If \code{TRUE}, samples with missing values in any
+of the specified \code{variables} are removed before running \code{betadisper()}.
+If \code{FALSE}, the function errors if missing values are present.}
 
-\item{verbose}{sends messages about progress if true}
+\item{verbose}{Logical. If \code{TRUE}, prints progress messages.}
 }
 \value{
-psExtra containing betadisper results
+A \code{psExtra} object containing betadisper results. Results are stored
+by variable name; each entry contains the fitted \code{betadisper} model, its
+\code{anova()} table, and its \code{TukeyHSD()} result.
 }
 \description{
-Takes the output of dist_calc function. Or use with the result of the permanova function to ensure the results correspond to exactly the same input data.
-Runs betadisper for all categorical variables in variables argument.
-See help('betadisper', package = 'vegan').
+Runs \code{vegan::betadisper()} on a distance matrix stored in a \code{psExtra}
+object, usually produced by \code{dist_calc()}. This can also be used on the
+result of \code{dist_permanova()} to ensure that dispersion and PERMANOVA results
+correspond to the same distance matrix and sample set.
+}
+\details{
+\code{dist_bdisp()} fits one betadisper model per grouping variable. For each
+valid grouping variable, it also stores the corresponding \code{anova()} and
+\code{TukeyHSD()} results.
+
+\code{vegan::betadisper()} tests whether groups differ in their multivariate
+dispersion, i.e. their average distance to a group centroid or spatial median.
+This is often used as a companion check when interpreting PERMANOVA results.
+
+microViz currently defaults to \code{method = "centroid"}, whereas recent versions
+of \code{vegan::betadisper()} default to \code{type = "median"}.
+
+When \code{complete_cases = TRUE}, samples with missing values in any requested
+grouping variable are removed once, before all betadisper models are fitted.
+This means all returned models use the same filtered distance matrix.
 }
 \examples{
 library(phyloseq)
