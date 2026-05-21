@@ -6,13 +6,15 @@
 #'
 #' @param data psExtra output from dist_calc
 #' @param variables list of variables to use as group
-#' @param method
-#' value passed to `vegan::betadisper(type = ...)`.
-#' microViz default is `"centroid"` (vegan default is `"median"`).
-#' @param complete_cases
-#' drop samples with NAs in any of the variables listed before running
-#' `vegan::betadisper()`
+#' @param method value passed to `vegan::betadisper(type = ...)`.
+#' @param complete_cases if `TRUE`, drops samples with NAs in the specified variables
 #' @param verbose sends messages about progress if true
+#' @details
+#' microViz defaults to `method = "centroid"` whereas `vegan::betadisper()` defaults
+#' to `type = "median"`.
+#'
+#' `complete_cases = TRUE` filters out samples with missing values in any grouping
+#' variable before running `vegan::betadisper()`.
 #'
 #' @return psExtra containing betadisper results
 #' @export

@@ -17,11 +17,9 @@ dist_bdisp(
 
 \item{variables}{list of variables to use as group}
 
-\item{method}{value passed to \code{vegan::betadisper(type = ...)}.
-microViz default is \code{"centroid"} (vegan default is \code{"median"}).}
+\item{method}{value passed to \code{vegan::betadisper(type = ...)}.}
 
-\item{complete_cases}{drop samples with NAs in any of the variables listed before
-running \code{vegan::betadisper()}}
+\item{complete_cases}{if \code{TRUE}, drops samples with NAs in the specified variables}
 
 \item{verbose}{sends messages about progress if true}
 }
@@ -32,6 +30,13 @@ psExtra containing betadisper results
 Takes the output of dist_calc function. Or use with the result of the permanova function to ensure the results correspond to exactly the same input data.
 Runs betadisper for all categorical variables in variables argument.
 See help('betadisper', package = 'vegan').
+}
+\details{
+microViz defaults to \code{method = "centroid"} whereas \code{vegan::betadisper()}
+defaults to \code{type = "median"}.
+
+\code{complete_cases = TRUE} filters out samples with missing values in any grouping
+variable before running \code{vegan::betadisper()}.
 }
 \examples{
 library(phyloseq)

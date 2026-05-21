@@ -1,3 +1,8 @@
+# microViz 0.13.1
+
+- Docs: made `dist_bdisp` argument docs more concise and moved notes about
+  `method` defaults and `complete_cases` filtering behavior into the details section.
+
 # microViz 0.13.0
 
 ### Breaking changes: 
