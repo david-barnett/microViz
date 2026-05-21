@@ -78,7 +78,9 @@ dist_bdisp <- function(data,
                        method = "centroid",
                        complete_cases = TRUE,
                        verbose = TRUE) {
-  method <- match.arg(arg = method, choices = c("centroid", "median"))
+  method <- rlang::arg_match(
+    arg = method, multiple = FALSE, values = c("centroid", "median")
+  )
   # check input data object class
   check_is_psExtra(data, argName = "data")
   if (identical(dist_get(data), NULL)) {
