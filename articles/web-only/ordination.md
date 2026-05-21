@@ -18,7 +18,7 @@ ordination plotting script.
 library(phyloseq)
 library(ggplot2)
 library(microViz)
-#> microViz version 0.13.0 - Copyright (C) 2021-2026 David Barnett
+#> microViz version 0.13.1 - Copyright (C) 2021-2026 David Barnett
 #> ! Website: https://david-barnett.github.io/microViz
 #> ✔ Useful?  For citation details, run: `citation("microViz")`
 #> ✖ Silence? `suppressPackageStartupMessages(library(microViz))`
@@ -617,7 +617,7 @@ devtools::session_info()
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-05-04
+#>  date     2026-05-21
 #>  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)
 #>  quarto   NA
 #> 
@@ -626,10 +626,10 @@ devtools::session_info()
 #>  ade4           1.7-24    2026-03-21 [1] RSPM
 #>  ape            5.8-1     2024-12-16 [1] RSPM
 #>  Biobase        2.72.0    2026-04-28 [1] Bioconduc~
-#>  BiocGenerics   0.58.0    2026-04-28 [1] Bioconduc~
+#>  BiocGenerics   0.58.1    2026-05-14 [1] Bioconduc~
 #>  biomformat     1.40.0    2026-04-28 [1] Bioconduc~
 #>  Biostrings     2.80.0    2026-04-28 [1] Bioconduc~
-#>  bslib          0.10.0    2026-01-26 [1] RSPM
+#>  bslib          0.11.0    2026-05-16 [1] RSPM
 #>  cachem         1.1.0     2024-05-16 [1] RSPM
 #>  cli            3.6.6     2026-04-09 [1] RSPM
 #>  clue           0.3-68    2026-03-26 [1] RSPM
@@ -637,7 +637,7 @@ devtools::session_info()
 #>  codetools      0.2-20    2024-03-31 [3] CRAN (R 4.6.0)
 #>  commonmark     2.0.0     2025-07-07 [1] RSPM
 #>  crayon         1.5.3     2024-06-20 [1] RSPM
-#>  data.table     1.18.2.1  2026-01-27 [1] RSPM
+#>  data.table     1.18.4    2026-05-06 [1] RSPM
 #>  desc           1.4.3     2023-12-10 [1] RSPM
 #>  devtools       2.5.2     2026-04-30 [1] RSPM
 #>  digest         0.6.39    2025-11-19 [1] RSPM
@@ -660,7 +660,7 @@ devtools::session_info()
 #>  GUniFrac       1.9       2025-08-25 [1] RSPM
 #>  htmltools      0.5.9     2025-12-04 [1] RSPM
 #>  htmlwidgets    1.6.4     2023-12-06 [1] RSPM
-#>  igraph         2.3.0     2026-04-21 [1] RSPM
+#>  igraph         2.3.1     2026-05-04 [1] RSPM
 #>  inline         0.3.21    2025-01-09 [1] RSPM
 #>  IRanges        2.46.0    2026-04-28 [1] Bioconduc~
 #>  iterators      1.0.14    2022-02-05 [1] RSPM
@@ -679,7 +679,7 @@ devtools::session_info()
 #>  memoise        2.0.1     2021-11-26 [1] RSPM
 #>  mgcv           1.9-4     2025-11-07 [3] CRAN (R 4.6.0)
 #>  microbiome     1.34.0    2026-04-28 [1] Bioconduc~
-#>  microViz     * 0.13.0    2026-05-04 [1] local
+#>  microViz     * 0.13.1    2026-05-21 [1] local
 #>  modeest        2.4.0     2019-11-18 [1] RSPM
 #>  multtest       2.68.0    2026-04-28 [1] Bioconduc~
 #>  nlme           3.1-169   2026-03-27 [3] CRAN (R 4.6.0)
@@ -704,7 +704,7 @@ devtools::session_info()
 #>  rmutil         1.1.10    2022-10-27 [1] RSPM
 #>  rpart          4.1.27    2026-03-27 [3] CRAN (R 4.6.0)
 #>  Rtsne          0.17      2023-12-07 [1] RSPM
-#>  S4Vectors      0.50.0    2026-04-28 [1] Bioconduc~
+#>  S4Vectors      0.50.1    2026-05-13 [1] Bioconduc~
 #>  S7             0.2.2     2026-04-22 [1] RSPM
 #>  sass           0.4.10    2025-04-11 [1] RSPM
 #>  scales         1.4.0     2025-04-24 [1] RSPM
@@ -714,7 +714,7 @@ devtools::session_info()
 #>  stable         1.1.7     2026-02-15 [1] RSPM
 #>  stabledist     0.7-2     2024-08-17 [1] RSPM
 #>  statip         0.2.3     2019-11-17 [1] RSPM
-#>  statmod        1.5.1     2025-10-09 [1] RSPM
+#>  statmod        1.5.2     2026-05-17 [1] RSPM
 #>  stringi        1.8.7     2025-03-27 [1] RSPM
 #>  stringr      * 1.6.0     2025-11-04 [1] RSPM
 #>  survival       3.8-6     2026-01-16 [3] CRAN (R 4.6.0)

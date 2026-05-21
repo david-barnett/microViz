@@ -1,5 +1,12 @@
 # Changelog
 
+## microViz 0.13.1
+
+- Docs: noted that `dist_bdisp` still defaults to `method = "centroid"`,
+  unlike recent versions of
+  [`vegan::betadisper()`](https://vegandevs.github.io/vegan/reference/betadisper.html)
+  which now default to `type = "median"`.
+
 ## microViz 0.13.0
 
 #### Breaking changes:

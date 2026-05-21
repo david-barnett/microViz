@@ -237,8 +237,8 @@ ps %>%
 #> Dropping samples with missings: 17
 #> weight has NAs: 15
 #> female has NAs: 2
-#> 2026-05-04 14:43:34.445407 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2026-05-04 14:43:38.695713 - Finished PERMANOVA
+#> 2026-05-21 12:18:38.605931 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2026-05-21 12:18:43.587535 - Finished PERMANOVA
 #> psExtra object - a phyloseq object with extra slots:
 #> 
 #> phyloseq-class experiment-level object
@@ -393,10 +393,10 @@ tt_models <- ps %>%
     type = "bbdml", verbose = "max"
   )
 #> Proportional min_prevalence given: 0.05 --> min 41/801 samples.
-#> 2026-05-04 14:43:42.934295 - modelling at rank: Phylum
+#> 2026-05-21 12:18:47.619622 - modelling at rank: Phylum
 #> Warning in do.call(fun, list(txt)): 2 / 801 values are NA in female
 #> Warning in do.call(fun, list(txt)): 15 / 801 values are NA in wt_scaled
-#> 2026-05-04 14:43:45.842871 - modelling at rank: Family
+#> 2026-05-21 12:18:50.154918 - modelling at rank: Family
 #> Warning in do.call(fun, list(txt)): 2 / 801 values are NA in female
 #> Warning in do.call(fun, list(txt)): 15 / 801 values are NA in wt_scaled
 tt_stats <- taxatree_models2stats(tt_models, param = "mu")
@@ -459,7 +459,7 @@ devtools::session_info()
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-05-04
+#>  date     2026-05-21
 #>  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)
 #>  quarto   NA
 #> 
@@ -469,11 +469,11 @@ devtools::session_info()
 #>  ape                  5.8-1         2024-12-16 [1] RSPM
 #>  backports            1.5.1         2026-04-03 [1] RSPM
 #>  Biobase              2.72.0        2026-04-28 [1] Bioconduc~
-#>  BiocGenerics         0.58.0        2026-04-28 [1] Bioconduc~
+#>  BiocGenerics         0.58.1        2026-05-14 [1] Bioconduc~
 #>  biomformat           1.40.0        2026-04-28 [1] Bioconduc~
 #>  Biostrings           2.80.0        2026-04-28 [1] Bioconduc~
-#>  broom                1.0.12        2026-01-27 [1] RSPM
-#>  bslib                0.10.0        2026-01-26 [1] RSPM
+#>  broom                1.0.13        2026-05-14 [1] RSPM
+#>  bslib                0.11.0        2026-05-16 [1] RSPM
 #>  cachem               1.1.0         2024-05-16 [1] RSPM
 #>  checkmate            2.3.4         2026-02-03 [1] RSPM
 #>  cli                  3.6.6         2026-04-09 [1] RSPM
@@ -483,7 +483,7 @@ devtools::session_info()
 #>  commonmark           2.0.0         2025-07-07 [1] RSPM
 #>  corncob            * 0.4.2         2025-03-29 [1] RSPM
 #>  crayon               1.5.3         2024-06-20 [1] RSPM
-#>  data.table           1.18.2.1      2026-01-27 [1] RSPM
+#>  data.table           1.18.4        2026-05-06 [1] RSPM
 #>  desc                 1.4.3         2023-12-10 [1] RSPM
 #>  detectseparation     0.4.0         2026-04-19 [1] RSPM
 #>  devtools             2.5.2         2026-04-30 [1] RSPM
@@ -508,7 +508,7 @@ devtools::session_info()
 #>  gtable               0.3.6         2024-10-25 [1] RSPM
 #>  htmltools            0.5.9         2025-12-04 [1] RSPM
 #>  htmlwidgets          1.6.4         2023-12-06 [1] RSPM
-#>  igraph               2.3.0         2026-04-21 [1] RSPM
+#>  igraph               2.3.1         2026-05-04 [1] RSPM
 #>  IRanges              2.46.0        2026-04-28 [1] Bioconduc~
 #>  iterators            1.0.14        2022-02-05 [1] RSPM
 #>  jquerylib            0.1.4         2021-04-26 [1] RSPM
@@ -526,7 +526,7 @@ devtools::session_info()
 #>  memoise              2.0.1         2021-11-26 [1] RSPM
 #>  mgcv                 1.9-4         2025-11-07 [3] CRAN (R 4.6.0)
 #>  microbiome         * 1.34.0        2026-04-28 [1] Bioconduc~
-#>  microViz           * 0.13.0        2026-05-04 [1] local
+#>  microViz           * 0.13.1        2026-05-21 [1] local
 #>  multtest             2.68.0        2026-04-28 [1] Bioconduc~
 #>  nlme                 3.1-169       2026-03-27 [3] CRAN (R 4.6.0)
 #>  numDeriv             2016.8-1.1    2019-06-06 [1] RSPM
@@ -553,7 +553,7 @@ devtools::session_info()
 #>  ROI                  1.0-2         2026-01-12 [1] RSPM
 #>  ROI.plugin.lpsolve   1.0-2         2023-07-07 [1] RSPM
 #>  Rtsne                0.17          2023-12-07 [1] RSPM
-#>  S4Vectors            0.50.0        2026-04-28 [1] Bioconduc~
+#>  S4Vectors            0.50.1        2026-05-13 [1] Bioconduc~
 #>  S7                   0.2.2         2026-04-22 [1] RSPM
 #>  sass                 0.4.10        2025-04-11 [1] RSPM
 #>  scales               1.4.0         2025-04-24 [1] RSPM

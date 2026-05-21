@@ -14,7 +14,7 @@ library(phyloseq)
 library(ggplot2)
 library(patchwork) # for combining multiple plots
 library(microViz)
-#> microViz version 0.13.0 - Copyright (C) 2021-2026 David Barnett
+#> microViz version 0.13.1 - Copyright (C) 2021-2026 David Barnett
 #> ! Website: https://david-barnett.github.io/microViz
 #> ✔ Useful?  For citation details, run: `citation("microViz")`
 #> ✖ Silence? `suppressPackageStartupMessages(library(microViz))`
@@ -577,8 +577,8 @@ shao4d_perm <- shao4d %>%
     n_processes = 1
   )
 #> Dropping samples with missings: 15
-#> 2026-05-04 14:48:37.722242 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2026-05-04 14:48:38.283472 - Finished PERMANOVA
+#> 2026-05-21 12:24:09.598503 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2026-05-21 12:24:10.105301 - Finished PERMANOVA
 
 shao4d_perm %>% perm_get()
 #> Permutation test for adonis under reduced model
@@ -669,11 +669,11 @@ shao4d_treeStats <- shao4d_prev10 %>%
   taxatree_models2stats(.keep_models = TRUE) %>%
   # adjust the p values for multiple testing, within each rank
   taxatree_stats_p_adjust(method = "fdr", grouping = "rank")
-#> 2026-05-04 14:48:38.704879 - modelling at rank: phylum
-#> 2026-05-04 14:48:38.862227 - modelling at rank: class
-#> 2026-05-04 14:48:39.071867 - modelling at rank: order
-#> 2026-05-04 14:48:39.363148 - modelling at rank: family
-#> 2026-05-04 14:48:39.698645 - modelling at rank: genus
+#> 2026-05-21 12:24:10.528266 - modelling at rank: phylum
+#> 2026-05-21 12:24:10.694915 - modelling at rank: class
+#> 2026-05-21 12:24:10.923949 - modelling at rank: order
+#> 2026-05-21 12:24:11.217661 - modelling at rank: family
+#> 2026-05-21 12:24:11.560296 - modelling at rank: genus
 ```
 
 ``` r
@@ -1225,7 +1225,7 @@ treePlotsSimple %>% str(max.level = 1) # just a list with a single ggplot inside
 #>   ..@ labels     : <ggplot2::labels> List of 1
 #>  .. .. $ title: Factor w/ 1 level "Csection": 1
 #>   ..@ meta       : list()
-#>   ..@ plot_env   :<environment: 0x558b65e8b100>
+#>   ..@ plot_env   :<environment: 0x557ffa083b38>
 ```
 
 ``` r
@@ -1351,7 +1351,7 @@ devtools::session_info()
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-05-04
+#>  date     2026-05-21
 #>  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)
 #>  quarto   NA
 #> 
@@ -1361,11 +1361,11 @@ devtools::session_info()
 #>  ape              5.8-1     2024-12-16 [1] RSPM
 #>  backports        1.5.1     2026-04-03 [1] RSPM
 #>  Biobase          2.72.0    2026-04-28 [1] Bioconduc~
-#>  BiocGenerics     0.58.0    2026-04-28 [1] Bioconduc~
+#>  BiocGenerics     0.58.1    2026-05-14 [1] Bioconduc~
 #>  biomformat       1.40.0    2026-04-28 [1] Bioconduc~
 #>  Biostrings       2.80.0    2026-04-28 [1] Bioconduc~
-#>  broom            1.0.12    2026-01-27 [1] RSPM
-#>  bslib            0.10.0    2026-01-26 [1] RSPM
+#>  broom            1.0.13    2026-05-14 [1] RSPM
+#>  bslib            0.11.0    2026-05-16 [1] RSPM
 #>  ca               0.71.1    2020-01-24 [1] RSPM
 #>  cachem           1.1.0     2024-05-16 [1] RSPM
 #>  circlize         0.4.18    2026-04-04 [1] RSPM
@@ -1378,7 +1378,7 @@ devtools::session_info()
 #>  ComplexHeatmap   2.28.0    2026-04-28 [1] Bioconduc~
 #>  corncob          0.4.2     2025-03-29 [1] RSPM
 #>  crayon           1.5.3     2024-06-20 [1] RSPM
-#>  data.table       1.18.2.1  2026-01-27 [1] RSPM
+#>  data.table       1.18.4    2026-05-06 [1] RSPM
 #>  desc             1.4.3     2023-12-10 [1] RSPM
 #>  devtools         2.5.2     2026-04-30 [1] RSPM
 #>  digest           0.6.39    2025-11-19 [1] RSPM
@@ -1405,7 +1405,7 @@ devtools::session_info()
 #>  gtable           0.3.6     2024-10-25 [1] RSPM
 #>  htmltools        0.5.9     2025-12-04 [1] RSPM
 #>  htmlwidgets      1.6.4     2023-12-06 [1] RSPM
-#>  igraph           2.3.0     2026-04-21 [1] RSPM
+#>  igraph           2.3.1     2026-05-04 [1] RSPM
 #>  IRanges          2.46.0    2026-04-28 [1] Bioconduc~
 #>  iterators        1.0.14    2022-02-05 [1] RSPM
 #>  jquerylib        0.1.4     2021-04-26 [1] RSPM
@@ -1423,7 +1423,7 @@ devtools::session_info()
 #>  memoise          2.0.1     2021-11-26 [1] RSPM
 #>  mgcv             1.9-4     2025-11-07 [3] CRAN (R 4.6.0)
 #>  microbiome       1.34.0    2026-04-28 [1] Bioconduc~
-#>  microViz       * 0.13.0    2026-05-04 [1] local
+#>  microViz       * 0.13.1    2026-05-21 [1] local
 #>  multtest         2.68.0    2026-04-28 [1] Bioconduc~
 #>  nlme             3.1-169   2026-03-27 [3] CRAN (R 4.6.0)
 #>  otel             0.2.0     2025-08-29 [1] RSPM
@@ -1449,7 +1449,7 @@ devtools::session_info()
 #>  rlang            1.2.0     2026-04-06 [1] RSPM
 #>  rmarkdown        2.31      2026-03-26 [1] RSPM
 #>  Rtsne            0.17      2023-12-07 [1] RSPM
-#>  S4Vectors        0.50.0    2026-04-28 [1] Bioconduc~
+#>  S4Vectors        0.50.1    2026-05-13 [1] Bioconduc~
 #>  S7               0.2.2     2026-04-22 [1] RSPM
 #>  sass             0.4.10    2025-04-11 [1] RSPM
 #>  scales           1.4.0     2025-04-24 [1] RSPM

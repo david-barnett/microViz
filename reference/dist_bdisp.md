@@ -1,9 +1,13 @@
 # Wrapper for vegan::betadisper()
 
-Takes the output of dist_calc function. Or use with the result of the
-permanova function to ensure the results correspond to exactly the same
-input data. Runs betadisper for all categorical variables in variables
-argument. See help('betadisper', package = 'vegan').
+Runs
+[`vegan::betadisper()`](https://vegandevs.github.io/vegan/reference/betadisper.html)
+on a distance matrix stored in a `psExtra` object, usually produced by
+[`dist_calc()`](https://david-barnett.github.io/microViz/reference/dist_calc.md).
+This can also be used on the result of
+[`dist_permanova()`](https://david-barnett.github.io/microViz/reference/dist_permanova.md)
+to ensure that dispersion and PERMANOVA results correspond to the same
+distance matrix and sample set.
 
 ## Usage
 
@@ -11,7 +15,7 @@ argument. See help('betadisper', package = 'vegan').
 dist_bdisp(
   data,
   variables,
-  method = c("centroid", "median")[[1]],
+  method = "centroid",
   complete_cases = TRUE,
   verbose = TRUE
 )
@@ -21,27 +25,61 @@ dist_bdisp(
 
 - data:
 
-  psExtra output from dist_calc
+  A `psExtra` object containing a distance matrix, as returned by
+  [`dist_calc()`](https://david-barnett.github.io/microViz/reference/dist_calc.md)
+  or by downstream functions such as
+  [`dist_permanova()`](https://david-barnett.github.io/microViz/reference/dist_permanova.md).
 
 - variables:
 
-  list of variables to use as group
+  Character vector of sample-data variable names to use as grouping
+  variables. Variables must be categorical or coercible groupings;
+  unsupported variable classes are skipped with a warning.
 
 - method:
 
-  centroid or median
+  Either `"centroid"` or `"median"`. Passed to
+  `vegan::betadisper(type = ...)`.
 
 - complete_cases:
 
-  drop samples with NAs in any of the variables listed
+  Logical. If `TRUE`, samples with missing values in any of the
+  specified `variables` are removed before running
+  [`betadisper()`](https://vegandevs.github.io/vegan/reference/betadisper.html).
+  If `FALSE`, the function errors if missing values are present.
 
 - verbose:
 
-  sends messages about progress if true
+  Logical. If `TRUE`, prints progress messages.
 
 ## Value
 
-psExtra containing betadisper results
+A `psExtra` object containing betadisper results. Results are stored by
+variable name; each entry contains the fitted `betadisper` model, its
+[`anova()`](https://rdrr.io/r/stats/anova.html) table, and its
+[`TukeyHSD()`](https://rdrr.io/r/stats/TukeyHSD.html) result.
+
+## Details
+
+`dist_bdisp()` fits one betadisper model per grouping variable. For each
+valid grouping variable, it also stores the corresponding
+[`anova()`](https://rdrr.io/r/stats/anova.html) and
+[`TukeyHSD()`](https://rdrr.io/r/stats/TukeyHSD.html) results.
+
+[`vegan::betadisper()`](https://vegandevs.github.io/vegan/reference/betadisper.html)
+tests whether groups differ in their multivariate dispersion, i.e. their
+average distance to a group centroid or spatial median. This is often
+used as a companion check when interpreting PERMANOVA results.
+
+microViz currently defaults to `method = "centroid"`, whereas recent
+versions of
+[`vegan::betadisper()`](https://vegandevs.github.io/vegan/reference/betadisper.html)
+default to `type = "median"`.
+
+When `complete_cases = TRUE`, samples with missing values in any
+requested grouping variable are removed once, before all betadisper
+models are fitted. This means all returned models use the same filtered
+distance matrix.
 
 ## Examples
 
@@ -121,8 +159,8 @@ PERM <- testDist %>%
     n_processes = 1, n_perms = 99
   )
 #> Dropping samples with missings: 4
-#> 2026-05-04 14:41:47.066307 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2026-05-04 14:41:47.297981 - Finished PERMANOVA
+#> 2026-05-21 12:16:54.457642 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2026-05-21 12:16:54.679237 - Finished PERMANOVA
 str(PERM, max.level = 1)
 #> Formal class 'psExtra' [package "microViz"] with 15 slots
 

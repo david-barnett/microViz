@@ -3,7 +3,7 @@
 ``` r
 
 library(microViz)
-#> microViz version 0.13.0 - Copyright (C) 2021-2026 David Barnett
+#> microViz version 0.13.1 - Copyright (C) 2021-2026 David Barnett
 #> ! Website: https://david-barnett.github.io/microViz
 #> ✔ Useful?  For citation details, run: `citation("microViz")`
 #> ✖ Silence? `suppressPackageStartupMessages(library(microViz))`
@@ -19,7 +19,7 @@ running the following code.
 ``` r
 
 packageVersion("microViz")
-#> [1] '0.13.0'
+#> [1] '0.13.1'
 ```
 
 ## Key points
