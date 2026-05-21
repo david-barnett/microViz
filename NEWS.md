@@ -1,7 +1,6 @@
 # microViz 0.13.1
 
-- Docs: made `dist_bdisp` argument docs more concise and moved notes about
-  `method` defaults and `complete_cases` filtering behavior into the details section.
+- Docs: noted that `dist_bdisp` still defaults to `method = "centroid"`, unlike recent versions of `vegan::betadisper()` which now default to `type = "median"`.
 
 # microViz 0.13.0
 
