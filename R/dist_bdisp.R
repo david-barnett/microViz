@@ -75,7 +75,7 @@
 #' bd
 dist_bdisp <- function(data,
                        variables,
-                       method = c("centroid", "median")[[1]],
+                       method = "centroid",
                        complete_cases = TRUE,
                        verbose = TRUE) {
   method <- match.arg(arg = method, choices = c("centroid", "median"))
