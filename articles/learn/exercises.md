@@ -1347,9 +1347,9 @@ shao4 %>%
   perm_get()
 ```
 
-    ## 2026-05-21 12:20:22.845668 - Starting PERMANOVA with 99 perms with 1 processes
+    ## 2026-06-01 09:25:03.874741 - Starting PERMANOVA with 99 perms with 1 processes
 
-    ## 2026-05-21 12:20:22.917444 - Finished PERMANOVA
+    ## 2026-06-01 09:25:03.949769 - Finished PERMANOVA
 
     ## Permutation test for adonis under reduced model
     ## Marginal effects of terms
@@ -1404,9 +1404,9 @@ shao4 %>%
 
     ## Dropping samples with missings: 15
 
-    ## 2026-05-21 12:20:23.171874 - Starting PERMANOVA with 99 perms with 1 processes
+    ## 2026-06-01 09:25:04.1997 - Starting PERMANOVA with 99 perms with 1 processes
 
-    ## 2026-05-21 12:20:23.870967 - Finished PERMANOVA
+    ## 2026-06-01 09:25:04.952976 - Finished PERMANOVA
 
     ## Permutation test for adonis under reduced model
     ## Marginal effects of terms
@@ -2043,33 +2043,33 @@ shaoModels <- shao4 %>%
 
     ## Proportional min_prevalence given: 0.1 --> min 31/306 samples.
 
-    ## 2026-05-21 12:20:46.820057 - modelling at rank: phylum
+    ## 2026-06-01 09:25:27.180432 - modelling at rank: phylum
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
 
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
 
-    ## 2026-05-21 12:20:46.950389 - modelling at rank: class
+    ## 2026-06-01 09:25:27.32795 - modelling at rank: class
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
 
-    ## 2026-05-21 12:20:47.126315 - modelling at rank: order
+    ## 2026-06-01 09:25:27.538363 - modelling at rank: order
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
 
-    ## 2026-05-21 12:20:47.359378 - modelling at rank: family
+    ## 2026-06-01 09:25:27.801166 - modelling at rank: family
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
 
-    ## 2026-05-21 12:20:47.628919 - modelling at rank: genus
+    ## 2026-06-01 09:25:28.107474 - modelling at rank: genus
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
 
-    ## 2026-05-21 12:20:47.959628 - modelling at rank: species
+    ## 2026-06-01 09:25:28.475296 - modelling at rank: species
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
@@ -2262,7 +2262,7 @@ devtools::session_info()
     ##  collate  C.UTF-8
     ##  ctype    C.UTF-8
     ##  tz       UTC
-    ##  date     2026-05-21
+    ##  date     2026-06-01
     ##  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)
     ##  quarto   NA
     ## 
@@ -2274,7 +2274,7 @@ devtools::session_info()
     ##  Biobase          2.72.0    2026-04-28 [1] Bioconduc~
     ##  BiocGenerics     0.58.1    2026-05-14 [1] Bioconduc~
     ##  biomformat       1.40.0    2026-04-28 [1] Bioconduc~
-    ##  Biostrings       2.80.0    2026-04-28 [1] Bioconduc~
+    ##  Biostrings       2.80.1    2026-05-22 [1] Bioconduc~
     ##  broom            1.0.13    2026-05-14 [1] RSPM
     ##  bslib            0.11.0    2026-05-16 [1] RSPM
     ##  ca               0.71.1    2020-01-24 [1] RSPM
@@ -2315,7 +2315,7 @@ devtools::session_info()
     ##  htmltools        0.5.9     2025-12-04 [1] RSPM
     ##  htmlwidgets      1.6.4     2023-12-06 [1] RSPM
     ##  httpuv           1.6.17    2026-03-18 [1] RSPM
-    ##  igraph           2.3.1     2026-05-04 [1] RSPM
+    ##  igraph           2.3.2     2026-05-29 [1] RSPM
     ##  IRanges          2.46.0    2026-04-28 [1] Bioconduc~
     ##  iterators        1.0.14    2022-02-05 [1] RSPM
     ##  jquerylib        0.1.4     2021-04-26 [1] RSPM
@@ -2332,7 +2332,7 @@ devtools::session_info()
     ##  memoise          2.0.1     2021-11-26 [1] RSPM
     ##  mgcv             1.9-4     2025-11-07 [3] CRAN (R 4.6.0)
     ##  microbiome       1.34.0    2026-04-28 [1] Bioconduc~
-    ##  microViz       * 0.13.1    2026-05-21 [1] local
+    ##  microViz       * 0.13.1    2026-06-01 [1] local
     ##  mime             0.13      2025-03-17 [1] RSPM
     ##  multtest         2.68.0    2026-04-28 [1] Bioconduc~
     ##  nlme             3.1-169   2026-03-27 [3] CRAN (R 4.6.0)
@@ -2383,7 +2383,7 @@ devtools::session_info()
     ##  usethis          3.2.1     2025-09-06 [1] RSPM
     ##  utf8             1.2.6     2025-06-08 [1] RSPM
     ##  vctrs            0.7.3     2026-04-11 [1] RSPM
-    ##  vegan            2.7-3     2026-03-04 [1] RSPM
+    ##  vegan            2.7-5     2026-05-25 [1] RSPM
     ##  viridis          0.6.5     2024-01-29 [1] RSPM
     ##  viridisLite      0.4.3     2026-02-04 [1] RSPM
     ##  withr            3.0.2     2024-10-28 [1] RSPM

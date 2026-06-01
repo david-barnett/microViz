@@ -577,8 +577,8 @@ shao4d_perm <- shao4d %>%
     n_processes = 1
   )
 #> Dropping samples with missings: 15
-#> 2026-05-21 12:24:09.598503 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2026-05-21 12:24:10.105301 - Finished PERMANOVA
+#> 2026-06-01 09:28:42.284351 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2026-06-01 09:28:42.835989 - Finished PERMANOVA
 
 shao4d_perm %>% perm_get()
 #> Permutation test for adonis under reduced model
@@ -669,11 +669,11 @@ shao4d_treeStats <- shao4d_prev10 %>%
   taxatree_models2stats(.keep_models = TRUE) %>%
   # adjust the p values for multiple testing, within each rank
   taxatree_stats_p_adjust(method = "fdr", grouping = "rank")
-#> 2026-05-21 12:24:10.528266 - modelling at rank: phylum
-#> 2026-05-21 12:24:10.694915 - modelling at rank: class
-#> 2026-05-21 12:24:10.923949 - modelling at rank: order
-#> 2026-05-21 12:24:11.217661 - modelling at rank: family
-#> 2026-05-21 12:24:11.560296 - modelling at rank: genus
+#> 2026-06-01 09:28:43.278522 - modelling at rank: phylum
+#> 2026-06-01 09:28:43.448235 - modelling at rank: class
+#> 2026-06-01 09:28:43.681899 - modelling at rank: order
+#> 2026-06-01 09:28:43.985548 - modelling at rank: family
+#> 2026-06-01 09:28:44.344052 - modelling at rank: genus
 ```
 
 ``` r
@@ -1225,7 +1225,7 @@ treePlotsSimple %>% str(max.level = 1) # just a list with a single ggplot inside
 #>   ..@ labels     : <ggplot2::labels> List of 1
 #>  .. .. $ title: Factor w/ 1 level "Csection": 1
 #>   ..@ meta       : list()
-#>   ..@ plot_env   :<environment: 0x557ffa083b38>
+#>   ..@ plot_env   :<environment: 0x562607c0f110>
 ```
 
 ``` r
@@ -1351,7 +1351,7 @@ devtools::session_info()
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-05-21
+#>  date     2026-06-01
 #>  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)
 #>  quarto   NA
 #> 
@@ -1363,7 +1363,7 @@ devtools::session_info()
 #>  Biobase          2.72.0    2026-04-28 [1] Bioconduc~
 #>  BiocGenerics     0.58.1    2026-05-14 [1] Bioconduc~
 #>  biomformat       1.40.0    2026-04-28 [1] Bioconduc~
-#>  Biostrings       2.80.0    2026-04-28 [1] Bioconduc~
+#>  Biostrings       2.80.1    2026-05-22 [1] Bioconduc~
 #>  broom            1.0.13    2026-05-14 [1] RSPM
 #>  bslib            0.11.0    2026-05-16 [1] RSPM
 #>  ca               0.71.1    2020-01-24 [1] RSPM
@@ -1405,7 +1405,7 @@ devtools::session_info()
 #>  gtable           0.3.6     2024-10-25 [1] RSPM
 #>  htmltools        0.5.9     2025-12-04 [1] RSPM
 #>  htmlwidgets      1.6.4     2023-12-06 [1] RSPM
-#>  igraph           2.3.1     2026-05-04 [1] RSPM
+#>  igraph           2.3.2     2026-05-29 [1] RSPM
 #>  IRanges          2.46.0    2026-04-28 [1] Bioconduc~
 #>  iterators        1.0.14    2022-02-05 [1] RSPM
 #>  jquerylib        0.1.4     2021-04-26 [1] RSPM
@@ -1423,7 +1423,7 @@ devtools::session_info()
 #>  memoise          2.0.1     2021-11-26 [1] RSPM
 #>  mgcv             1.9-4     2025-11-07 [3] CRAN (R 4.6.0)
 #>  microbiome       1.34.0    2026-04-28 [1] Bioconduc~
-#>  microViz       * 0.13.1    2026-05-21 [1] local
+#>  microViz       * 0.13.1    2026-06-01 [1] local
 #>  multtest         2.68.0    2026-04-28 [1] Bioconduc~
 #>  nlme             3.1-169   2026-03-27 [3] CRAN (R 4.6.0)
 #>  otel             0.2.0     2025-08-29 [1] RSPM
@@ -1471,7 +1471,7 @@ devtools::session_info()
 #>  usethis          3.2.1     2025-09-06 [1] RSPM
 #>  utf8             1.2.6     2025-06-08 [1] RSPM
 #>  vctrs            0.7.3     2026-04-11 [1] RSPM
-#>  vegan            2.7-3     2026-03-04 [1] RSPM
+#>  vegan            2.7-5     2026-05-25 [1] RSPM
 #>  viridis          0.6.5     2024-01-29 [1] RSPM
 #>  viridisLite      0.4.3     2026-02-04 [1] RSPM
 #>  withr            3.0.2     2024-10-28 [1] RSPM

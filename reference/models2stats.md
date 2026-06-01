@@ -97,9 +97,9 @@ lm_models <- phylo %>%
     variables = c("UC", "female", "antibiotics", "steroids", "age_scaled")
   )
 #> Proportional min_prevalence given: 0.1 --> min 7/67 samples.
-#> 2026-05-21 12:17:05.92672 - modelling at rank: Phylum
-#> 2026-05-21 12:17:06.073428 - modelling at rank: Class
-#> 2026-05-21 12:17:06.321414 - modelling at rank: Genus
+#> 2026-06-01 09:21:44.938995 - modelling at rank: Phylum
+#> 2026-06-01 09:21:45.095701 - modelling at rank: Class
+#> 2026-06-01 09:21:45.367435 - modelling at rank: Genus
 
 lm_stats <- lm_models %>% taxatree_models2stats()
 

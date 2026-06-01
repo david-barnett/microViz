@@ -236,7 +236,7 @@ devtools::session_info()
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-05-21
+#>  date     2026-06-01
 #>  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)
 #>  quarto   NA
 #> 
@@ -247,7 +247,7 @@ devtools::session_info()
 #>  Biobase        2.72.0    2026-04-28 [1] Bioconduc~
 #>  BiocGenerics   0.58.1    2026-05-14 [1] Bioconduc~
 #>  biomformat     1.40.0    2026-04-28 [1] Bioconduc~
-#>  Biostrings     2.80.0    2026-04-28 [1] Bioconduc~
+#>  Biostrings     2.80.1    2026-05-22 [1] Bioconduc~
 #>  bslib          0.11.0    2026-05-16 [1] RSPM
 #>  cachem         1.1.0     2024-05-16 [1] RSPM
 #>  cli            3.6.6     2026-04-09 [1] RSPM
@@ -271,7 +271,7 @@ devtools::session_info()
 #>  gtable         0.3.6     2024-10-25 [1] RSPM
 #>  htmltools      0.5.9     2025-12-04 [1] RSPM
 #>  htmlwidgets    1.6.4     2023-12-06 [1] RSPM
-#>  igraph         2.3.1     2026-05-04 [1] RSPM
+#>  igraph         2.3.2     2026-05-29 [1] RSPM
 #>  IRanges        2.46.0    2026-04-28 [1] Bioconduc~
 #>  iterators      1.0.14    2022-02-05 [1] RSPM
 #>  jquerylib      0.1.4     2021-04-26 [1] RSPM
@@ -284,7 +284,7 @@ devtools::session_info()
 #>  Matrix         1.7-5     2026-03-21 [3] CRAN (R 4.6.0)
 #>  memoise        2.0.1     2021-11-26 [1] RSPM
 #>  mgcv           1.9-4     2025-11-07 [3] CRAN (R 4.6.0)
-#>  microViz     * 0.13.1    2026-05-21 [1] local
+#>  microViz     * 0.13.1    2026-06-01 [1] local
 #>  multtest       2.68.0    2026-04-28 [1] Bioconduc~
 #>  nlme           3.1-169   2026-03-27 [3] CRAN (R 4.6.0)
 #>  otel           0.2.0     2025-08-29 [1] RSPM
@@ -319,7 +319,7 @@ devtools::session_info()
 #>  tidyselect     1.2.1     2024-03-11 [1] RSPM
 #>  usethis        3.2.1     2025-09-06 [1] RSPM
 #>  vctrs          0.7.3     2026-04-11 [1] RSPM
-#>  vegan          2.7-3     2026-03-04 [1] RSPM
+#>  vegan          2.7-5     2026-05-25 [1] RSPM
 #>  withr          3.0.2     2024-10-28 [1] RSPM
 #>  xfun           0.57      2026-03-20 [1] RSPM
 #>  XVector        0.52.0    2026-04-28 [1] Bioconduc~
