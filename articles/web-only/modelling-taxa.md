@@ -321,11 +321,11 @@ lm_models <- phylo %>%
     variables = c("UC", "female", "antibiotics", "steroids", "age_scaled")
   )
 #> Proportional min_prevalence given: 0.1 --> min 7/67 samples.
-#> 2026-06-01 09:26:44.844103 - modelling at rank: Phylum
-#> 2026-06-01 09:26:45.020871 - modelling at rank: Class
-#> 2026-06-01 09:26:45.284627 - modelling at rank: Order
-#> 2026-06-01 09:26:45.604621 - modelling at rank: Family
-#> 2026-06-01 09:26:46.160165 - modelling at rank: Genus
+#> 2026-06-01 18:13:19.894805 - modelling at rank: Phylum
+#> 2026-06-01 18:13:20.069043 - modelling at rank: Class
+#> 2026-06-01 18:13:20.332708 - modelling at rank: Order
+#> 2026-06-01 18:13:20.662559 - modelling at rank: Family
+#> 2026-06-01 18:13:21.215411 - modelling at rank: Genus
 ```
 
 Why filter the taxa? *It’s less likely that we are interested in rare
@@ -787,10 +787,10 @@ bb_models <- phylo %>%
     variables = c("UC", "female", "antibiotics", "steroids", "age_scaled")
   )
 #> Proportional min_prevalence given: 0.3 --> min 21/67 samples.
-#> 2026-06-01 09:27:15.54312 - modelling at rank: Phylum
-#> 2026-06-01 09:27:15.656362 - modelling at rank: Class
-#> 2026-06-01 09:27:15.819732 - modelling at rank: Order
-#> 2026-06-01 09:27:16.012922 - modelling at rank: Family
+#> 2026-06-01 18:13:51.139831 - modelling at rank: Phylum
+#> 2026-06-01 18:13:51.260451 - modelling at rank: Class
+#> 2026-06-01 18:13:51.432513 - modelling at rank: Order
+#> 2026-06-01 18:13:51.62569 - modelling at rank: Family
 bb_models
 #> psExtra object - a phyloseq object with extra slots:
 #> 
