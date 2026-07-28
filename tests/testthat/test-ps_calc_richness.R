@@ -49,6 +49,12 @@ test_that("ps_calc_richness supported plot doesn't change", {
     ) +
     ggplot2::scale_radius(range = c(1, 6)) +
     ggplot2::scale_colour_viridis_c() +
+    # explicit guide order: default order = 0 makes ggplot2 sort legends by a
+    # hash of the guide params, which is not stable across R/rlang versions
+    ggplot2::guides(
+      size = ggplot2::guide_legend(order = 1),
+      colour = ggplot2::guide_colorbar(order = 2)
+    ) +
     ggplot2::theme_test()
 
   skip_if(packageVersion("ggplot2") < "3.4.0")
