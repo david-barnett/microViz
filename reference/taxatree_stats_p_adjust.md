@@ -113,9 +113,9 @@ bb_models <- phylo %>%
     variables = c("UC", "female", "antibiotics", "steroids", "age_scaled")
   )
 #> Proportional min_prevalence given: 0.3 --> min 21/67 samples.
-#> 2026-06-01 18:09:33.63636 - modelling at rank: Phylum
-#> 2026-06-01 18:09:33.753571 - modelling at rank: Class
-#> 2026-06-01 18:09:33.923632 - modelling at rank: Order
+#> 2026-07-28 13:31:11.959763 - modelling at rank: Phylum
+#> 2026-07-28 13:31:12.076539 - modelling at rank: Class
+#> 2026-07-28 13:31:12.3324 - modelling at rank: Order
 
 bb_stats <- bb_models %>%
   taxatree_models2stats(param = "mu") %>%

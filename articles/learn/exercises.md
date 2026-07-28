@@ -1347,9 +1347,9 @@ shao4 %>%
   perm_get()
 ```
 
-    ## 2026-06-01 18:11:38.184275 - Starting PERMANOVA with 99 perms with 1 processes
+    ## 2026-07-28 13:33:16.124135 - Starting PERMANOVA with 99 perms with 1 processes
 
-    ## 2026-06-01 18:11:38.259616 - Finished PERMANOVA
+    ## 2026-07-28 13:33:16.202472 - Finished PERMANOVA
 
     ## Permutation test for adonis under reduced model
     ## Marginal effects of terms
@@ -1404,9 +1404,9 @@ shao4 %>%
 
     ## Dropping samples with missings: 15
 
-    ## 2026-06-01 18:11:38.522468 - Starting PERMANOVA with 99 perms with 1 processes
+    ## 2026-07-28 13:33:16.459872 - Starting PERMANOVA with 99 perms with 1 processes
 
-    ## 2026-06-01 18:11:39.286415 - Finished PERMANOVA
+    ## 2026-07-28 13:33:17.210961 - Finished PERMANOVA
 
     ## Permutation test for adonis under reduced model
     ## Marginal effects of terms
@@ -2043,33 +2043,33 @@ shaoModels <- shao4 %>%
 
     ## Proportional min_prevalence given: 0.1 --> min 31/306 samples.
 
-    ## 2026-06-01 18:12:01.436967 - modelling at rank: phylum
+    ## 2026-07-28 13:33:40.550784 - modelling at rank: phylum
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
 
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
 
-    ## 2026-06-01 18:12:01.58253 - modelling at rank: class
+    ## 2026-07-28 13:33:40.709621 - modelling at rank: class
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
 
-    ## 2026-06-01 18:12:01.781551 - modelling at rank: order
+    ## 2026-07-28 13:33:40.933942 - modelling at rank: order
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
 
-    ## 2026-06-01 18:12:02.041706 - modelling at rank: family
+    ## 2026-07-28 13:33:41.200072 - modelling at rank: family
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
 
-    ## 2026-06-01 18:12:02.339602 - modelling at rank: genus
+    ## 2026-07-28 13:33:41.521119 - modelling at rank: genus
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
 
-    ## 2026-06-01 18:12:02.6977 - modelling at rank: species
+    ## 2026-07-28 13:33:41.901263 - modelling at rank: species
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
@@ -2254,7 +2254,7 @@ devtools::session_info()
 
     ## ─ Session info ───────────────────────────────────────────────────────────────
     ##  setting  value
-    ##  version  R version 4.6.0 (2026-04-24)
+    ##  version  R version 4.6.1 (2026-06-24)
     ##  os       Ubuntu 24.04.4 LTS
     ##  system   x86_64, linux-gnu
     ##  ui       X11
@@ -2262,139 +2262,139 @@ devtools::session_info()
     ##  collate  C.UTF-8
     ##  ctype    C.UTF-8
     ##  tz       UTC
-    ##  date     2026-06-01
+    ##  date     2026-07-28
     ##  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)
     ##  quarto   NA
     ## 
     ## ─ Packages ───────────────────────────────────────────────────────────────────
-    ##  package        * version   date (UTC) lib source
-    ##  ade4             1.7-24    2026-03-21 [1] RSPM
-    ##  ape              5.8-1     2024-12-16 [1] RSPM
-    ##  backports        1.5.1     2026-04-03 [1] RSPM
-    ##  Biobase          2.72.0    2026-04-28 [1] Bioconduc~
-    ##  BiocGenerics     0.58.1    2026-05-14 [1] Bioconduc~
-    ##  biomformat       1.40.0    2026-04-28 [1] Bioconduc~
-    ##  Biostrings       2.80.1    2026-05-22 [1] Bioconduc~
-    ##  broom            1.0.13    2026-05-14 [1] RSPM
-    ##  bslib            0.11.0    2026-05-16 [1] RSPM
-    ##  ca               0.71.1    2020-01-24 [1] RSPM
-    ##  cachem           1.1.0     2024-05-16 [1] RSPM
-    ##  circlize         0.4.18    2026-04-04 [1] RSPM
-    ##  cli              3.6.6     2026-04-09 [1] RSPM
-    ##  clue             0.3-68    2026-03-26 [1] RSPM
-    ##  cluster          2.1.8.2   2026-02-05 [3] CRAN (R 4.6.0)
-    ##  codetools        0.2-20    2024-03-31 [3] CRAN (R 4.6.0)
-    ##  colorspace       2.1-2     2025-09-22 [1] RSPM
-    ##  ComplexHeatmap   2.28.0    2026-04-28 [1] Bioconduc~
-    ##  corncob          0.4.2     2025-03-29 [1] RSPM
-    ##  crayon           1.5.3     2024-06-20 [1] RSPM
-    ##  data.table       1.18.4    2026-05-06 [1] RSPM
-    ##  desc             1.4.3     2023-12-10 [1] RSPM
-    ##  devtools         2.5.2     2026-04-30 [1] RSPM
-    ##  digest           0.6.39    2025-11-19 [1] RSPM
-    ##  doParallel       1.0.17    2022-02-07 [1] RSPM
-    ##  dplyr          * 1.2.1     2026-04-03 [1] RSPM
-    ##  ellipsis         0.3.3     2026-04-04 [1] RSPM
-    ##  evaluate         1.0.5     2025-08-27 [1] RSPM
-    ##  farver           2.1.2     2024-05-13 [1] RSPM
-    ##  fastmap          1.2.0     2024-05-15 [1] RSPM
-    ##  forcats          1.0.1     2025-09-25 [1] RSPM
-    ##  foreach          1.5.2     2022-02-02 [1] RSPM
-    ##  fs               2.1.0     2026-04-18 [1] RSPM
-    ##  generics         0.1.4     2025-05-09 [1] RSPM
-    ##  GetoptLong       1.1.1     2026-04-08 [1] RSPM
-    ##  ggforce          0.5.0     2025-06-18 [1] RSPM
-    ##  ggplot2        * 4.0.3     2026-04-22 [1] RSPM
-    ##  ggraph           2.2.2     2025-08-24 [1] RSPM
-    ##  ggrepel          0.9.8     2026-03-17 [1] RSPM
-    ##  GlobalOptions    0.1.4     2026-04-08 [1] RSPM
-    ##  glue             1.8.1     2026-04-17 [1] RSPM
-    ##  graphlayouts     1.2.3     2026-02-21 [1] RSPM
-    ##  gridExtra        2.3       2017-09-09 [1] RSPM
-    ##  gtable           0.3.6     2024-10-25 [1] RSPM
-    ##  htmltools        0.5.9     2025-12-04 [1] RSPM
-    ##  htmlwidgets      1.6.4     2023-12-06 [1] RSPM
-    ##  httpuv           1.6.17    2026-03-18 [1] RSPM
-    ##  igraph           2.3.2     2026-05-29 [1] RSPM
-    ##  IRanges          2.46.0    2026-04-28 [1] Bioconduc~
-    ##  iterators        1.0.14    2022-02-05 [1] RSPM
-    ##  jquerylib        0.1.4     2021-04-26 [1] RSPM
-    ##  jsonlite         2.0.0     2025-03-27 [1] RSPM
-    ##  knitr            1.51      2025-12-20 [1] RSPM
-    ##  labeling         0.4.3     2023-08-29 [1] RSPM
-    ##  later            1.4.8     2026-03-05 [1] RSPM
-    ##  lattice          0.22-9    2026-02-09 [3] CRAN (R 4.6.0)
-    ##  lifecycle        1.0.5     2026-01-08 [1] RSPM
-    ##  magrittr         2.0.5     2026-04-04 [1] RSPM
-    ##  MASS             7.3-65    2025-02-28 [3] CRAN (R 4.6.0)
-    ##  Matrix           1.7-5     2026-03-21 [3] CRAN (R 4.6.0)
-    ##  matrixStats      1.5.0     2025-01-07 [1] RSPM
-    ##  memoise          2.0.1     2021-11-26 [1] RSPM
-    ##  mgcv             1.9-4     2025-11-07 [3] CRAN (R 4.6.0)
-    ##  microbiome       1.34.0    2026-04-28 [1] Bioconduc~
-    ##  microViz       * 0.13.1    2026-06-01 [1] local
-    ##  mime             0.13      2025-03-17 [1] RSPM
-    ##  multtest         2.68.0    2026-04-28 [1] Bioconduc~
-    ##  nlme             3.1-169   2026-03-27 [3] CRAN (R 4.6.0)
-    ##  otel             0.2.0     2025-08-29 [1] RSPM
-    ##  patchwork        1.3.2     2025-08-25 [1] RSPM
-    ##  permute          0.9-10    2026-02-06 [1] RSPM
-    ##  phyloseq       * 1.56.0    2026-04-28 [1] Bioconduc~
-    ##  pillar           1.11.1    2025-09-17 [1] RSPM
-    ##  pkgbuild         1.4.8     2025-05-26 [1] RSPM
-    ##  pkgconfig        2.0.3     2019-09-22 [1] RSPM
-    ##  pkgdown          2.2.0     2025-11-06 [1] RSPM
-    ##  pkgload          1.5.2     2026-04-22 [1] RSPM
-    ##  plyr             1.8.9     2023-10-02 [1] RSPM
-    ##  png              0.1-9     2026-03-15 [1] RSPM
-    ##  polyclip         1.10-7    2024-07-23 [1] RSPM
-    ##  promises         1.5.0     2025-11-01 [1] RSPM
-    ##  purrr          * 1.2.2     2026-04-10 [1] RSPM
-    ##  R6               2.6.1     2025-02-15 [1] RSPM
-    ##  ragg             1.5.2     2026-03-23 [1] RSPM
-    ##  RColorBrewer     1.1-3     2022-04-03 [1] RSPM
-    ##  Rcpp             1.1.1-1.1 2026-04-24 [1] RSPM
-    ##  registry         0.5-1     2019-03-05 [1] RSPM
-    ##  reshape2         1.4.5     2025-11-12 [1] RSPM
-    ##  rjson            0.2.23    2024-09-16 [1] RSPM
-    ##  rlang            1.2.0     2026-04-06 [1] RSPM
-    ##  rmarkdown        2.31      2026-03-26 [1] RSPM
-    ##  Rtsne            0.17      2023-12-07 [1] RSPM
-    ##  S4Vectors        0.50.1    2026-05-13 [1] Bioconduc~
-    ##  S7               0.2.2     2026-04-22 [1] RSPM
-    ##  sass             0.4.10    2025-04-11 [1] RSPM
-    ##  scales           1.4.0     2025-04-24 [1] RSPM
-    ##  Seqinfo          1.2.0     2026-04-28 [1] Bioconduc~
-    ##  seriation      * 1.5.8     2025-08-20 [1] RSPM
-    ##  sessioninfo      1.2.3     2025-02-05 [1] RSPM
-    ##  shape            1.4.6.1   2024-02-23 [1] RSPM
-    ##  shiny          * 1.13.0    2026-02-20 [1] RSPM
-    ##  stringi          1.8.7     2025-03-27 [1] RSPM
-    ##  stringr          1.6.0     2025-11-04 [1] RSPM
-    ##  survival         3.8-6     2026-01-16 [3] CRAN (R 4.6.0)
-    ##  systemfonts      1.3.2     2026-03-05 [1] RSPM
-    ##  textshaping      1.0.5     2026-03-06 [1] RSPM
-    ##  tibble           3.3.1     2026-01-11 [1] RSPM
-    ##  tidygraph        1.3.1     2024-01-30 [1] RSPM
-    ##  tidyr            1.3.2     2025-12-19 [1] RSPM
-    ##  tidyselect       1.2.1     2024-03-11 [1] RSPM
-    ##  TSP              1.2.7     2026-03-23 [1] RSPM
-    ##  tweenr           2.0.3     2024-02-26 [1] RSPM
-    ##  usethis          3.2.1     2025-09-06 [1] RSPM
-    ##  utf8             1.2.6     2025-06-08 [1] RSPM
-    ##  vctrs            0.7.3     2026-04-11 [1] RSPM
-    ##  vegan            2.7-5     2026-05-25 [1] RSPM
-    ##  viridis          0.6.5     2024-01-29 [1] RSPM
-    ##  viridisLite      0.4.3     2026-02-04 [1] RSPM
-    ##  withr            3.0.2     2024-10-28 [1] RSPM
-    ##  xfun             0.57      2026-03-20 [1] RSPM
-    ##  xtable           1.8-8     2026-02-22 [1] RSPM
-    ##  XVector          0.52.0    2026-04-28 [1] Bioconduc~
-    ##  yaml             2.3.12    2025-12-10 [1] RSPM
+    ##  package        * version date (UTC) lib source
+    ##  ade4             1.7-24  2026-03-21 [1] RSPM
+    ##  ape              5.8-1   2024-12-16 [1] RSPM
+    ##  backports        1.5.1   2026-04-03 [1] RSPM
+    ##  Biobase          2.72.0  2026-04-28 [1] Bioconduc~
+    ##  BiocGenerics     0.58.1  2026-05-14 [1] Bioconduc~
+    ##  biomformat       1.40.0  2026-04-28 [1] Bioconduc~
+    ##  Biostrings       2.80.1  2026-05-22 [1] Bioconduc~
+    ##  broom            1.0.13  2026-05-14 [1] RSPM
+    ##  bslib            0.11.0  2026-05-16 [1] RSPM
+    ##  ca               0.71.1  2020-01-24 [1] RSPM
+    ##  cachem           1.1.0   2024-05-16 [1] RSPM
+    ##  circlize         0.4.18  2026-04-04 [1] RSPM
+    ##  cli              3.6.6   2026-04-09 [1] RSPM
+    ##  clue             0.3-68  2026-03-26 [1] RSPM
+    ##  cluster          2.1.8.2 2026-02-05 [3] CRAN (R 4.6.1)
+    ##  codetools        0.2-20  2024-03-31 [3] CRAN (R 4.6.1)
+    ##  colorspace       2.1-3   2026-07-12 [1] RSPM
+    ##  ComplexHeatmap   2.28.0  2026-04-28 [1] Bioconduc~
+    ##  corncob          0.4.2   2025-03-29 [1] RSPM
+    ##  crayon           1.5.3   2024-06-20 [1] RSPM
+    ##  data.table       1.18.4  2026-05-06 [1] RSPM
+    ##  desc             1.4.3   2023-12-10 [1] RSPM
+    ##  devtools         2.5.2   2026-04-30 [1] RSPM
+    ##  digest           0.6.39  2025-11-19 [1] RSPM
+    ##  doParallel       1.0.17  2022-02-07 [1] RSPM
+    ##  dplyr          * 1.2.1   2026-04-03 [1] RSPM
+    ##  ellipsis         0.3.3   2026-04-04 [1] RSPM
+    ##  evaluate         1.0.5   2025-08-27 [1] RSPM
+    ##  farver           2.1.2   2024-05-13 [1] RSPM
+    ##  fastmap          1.2.0   2024-05-15 [1] RSPM
+    ##  forcats          1.0.1   2025-09-25 [1] RSPM
+    ##  foreach          1.5.2   2022-02-02 [1] RSPM
+    ##  fs               2.1.0   2026-04-18 [1] RSPM
+    ##  generics         0.1.4   2025-05-09 [1] RSPM
+    ##  GetoptLong       1.1.1   2026-04-08 [1] RSPM
+    ##  ggforce          0.5.0   2025-06-18 [1] RSPM
+    ##  ggplot2        * 4.0.3   2026-04-22 [1] RSPM
+    ##  ggraph           2.2.2   2025-08-24 [1] RSPM
+    ##  ggrepel          0.9.8   2026-03-17 [1] RSPM
+    ##  GlobalOptions    0.1.4   2026-04-08 [1] RSPM
+    ##  glue             1.8.1   2026-04-17 [1] RSPM
+    ##  graphlayouts     1.2.5   2026-07-22 [1] RSPM
+    ##  gridExtra        2.3.1   2026-06-25 [1] RSPM
+    ##  gtable           0.3.6   2024-10-25 [1] RSPM
+    ##  htmltools        0.5.9   2025-12-04 [1] RSPM
+    ##  htmlwidgets      1.6.4   2023-12-06 [1] RSPM
+    ##  httpuv           1.6.17  2026-03-18 [1] RSPM
+    ##  igraph           2.3.3   2026-06-26 [1] RSPM
+    ##  IRanges          2.46.0  2026-04-28 [1] Bioconduc~
+    ##  iterators        1.0.14  2022-02-05 [1] RSPM
+    ##  jquerylib        0.1.4   2021-04-26 [1] RSPM
+    ##  jsonlite         2.0.0   2025-03-27 [1] RSPM
+    ##  knitr            1.51    2025-12-20 [1] RSPM
+    ##  labeling         0.4.3   2023-08-29 [1] RSPM
+    ##  later            1.4.8   2026-03-05 [1] RSPM
+    ##  lattice          0.22-9  2026-02-09 [3] CRAN (R 4.6.1)
+    ##  lifecycle        1.0.5   2026-01-08 [1] RSPM
+    ##  magrittr         2.0.5   2026-04-04 [1] RSPM
+    ##  MASS             7.3-65  2025-02-28 [3] CRAN (R 4.6.1)
+    ##  Matrix           1.7-5   2026-03-21 [3] CRAN (R 4.6.1)
+    ##  matrixStats      1.5.0   2025-01-07 [1] RSPM
+    ##  memoise          2.0.1   2021-11-26 [1] RSPM
+    ##  mgcv             1.9-4   2025-11-07 [3] CRAN (R 4.6.1)
+    ##  microbiome       1.34.0  2026-04-28 [1] Bioconduc~
+    ##  microViz       * 0.13.1  2026-07-28 [1] local
+    ##  mime             0.13    2025-03-17 [1] RSPM
+    ##  multtest         2.68.0  2026-04-28 [1] Bioconduc~
+    ##  nlme             3.1-169 2026-03-27 [3] CRAN (R 4.6.1)
+    ##  otel             0.2.0   2025-08-29 [1] RSPM
+    ##  patchwork        1.3.2   2025-08-25 [1] RSPM
+    ##  permute          0.9-10  2026-02-06 [1] RSPM
+    ##  phyloseq       * 1.56.0  2026-04-28 [1] Bioconduc~
+    ##  pillar           1.11.1  2025-09-17 [1] RSPM
+    ##  pkgbuild         1.4.8   2025-05-26 [1] RSPM
+    ##  pkgconfig        2.0.3   2019-09-22 [1] RSPM
+    ##  pkgdown          2.2.1   2026-07-07 [1] RSPM
+    ##  pkgload          1.5.3   2026-06-15 [1] RSPM
+    ##  plyr             1.8.9   2023-10-02 [1] RSPM
+    ##  png              0.1-9   2026-03-15 [1] RSPM
+    ##  polyclip         1.10-7  2024-07-23 [1] RSPM
+    ##  promises         1.5.0   2025-11-01 [1] RSPM
+    ##  purrr          * 1.2.2   2026-04-10 [1] RSPM
+    ##  R6               2.6.1   2025-02-15 [1] RSPM
+    ##  ragg             1.5.2   2026-03-23 [1] RSPM
+    ##  RColorBrewer     1.1-3   2022-04-03 [1] RSPM
+    ##  Rcpp             1.1.2   2026-07-05 [1] RSPM
+    ##  registry         0.5-1   2019-03-05 [1] RSPM
+    ##  reshape2         1.4.5   2025-11-12 [1] RSPM
+    ##  rjson            0.2.23  2024-09-16 [1] RSPM
+    ##  rlang            1.3.0   2026-07-05 [1] RSPM
+    ##  rmarkdown        2.31    2026-03-26 [1] RSPM
+    ##  Rtsne            0.17    2023-12-07 [1] RSPM
+    ##  S4Vectors        0.50.1  2026-05-13 [1] Bioconduc~
+    ##  S7               0.2.2   2026-04-22 [1] RSPM
+    ##  sass             0.4.10  2025-04-11 [1] RSPM
+    ##  scales           1.4.0   2025-04-24 [1] RSPM
+    ##  Seqinfo          1.2.0   2026-04-28 [1] Bioconduc~
+    ##  seriation      * 1.5.8   2025-08-20 [1] RSPM
+    ##  sessioninfo      1.2.4   2026-06-04 [1] RSPM
+    ##  shape            1.4.6.1 2024-02-23 [1] RSPM
+    ##  shiny          * 1.14.0  2026-06-21 [1] RSPM
+    ##  stringi          1.8.7   2025-03-27 [1] RSPM
+    ##  stringr          1.6.0   2025-11-04 [1] RSPM
+    ##  survival         3.8-6   2026-01-16 [3] CRAN (R 4.6.1)
+    ##  systemfonts      1.3.2   2026-03-05 [1] RSPM
+    ##  textshaping      1.0.5   2026-03-06 [1] RSPM
+    ##  tibble           3.3.1   2026-01-11 [1] RSPM
+    ##  tidygraph        1.3.1   2024-01-30 [1] RSPM
+    ##  tidyr            1.3.2   2025-12-19 [1] RSPM
+    ##  tidyselect       1.2.1   2024-03-11 [1] RSPM
+    ##  TSP              1.2.7   2026-03-23 [1] RSPM
+    ##  tweenr           2.0.3   2024-02-26 [1] RSPM
+    ##  usethis          3.2.1   2025-09-06 [1] RSPM
+    ##  utf8             1.2.6   2025-06-08 [1] RSPM
+    ##  vctrs            0.7.3   2026-04-11 [1] RSPM
+    ##  vegan            2.7-5   2026-05-25 [1] RSPM
+    ##  viridis          0.6.5   2024-01-29 [1] RSPM
+    ##  viridisLite      0.4.3   2026-02-04 [1] RSPM
+    ##  withr            3.0.3   2026-06-19 [1] RSPM
+    ##  xfun             0.60    2026-07-09 [1] RSPM
+    ##  xtable           1.8-8   2026-02-22 [1] RSPM
+    ##  XVector          0.52.0  2026-04-28 [1] Bioconduc~
+    ##  yaml             2.3.12  2025-12-10 [1] RSPM
     ## 
     ##  [1] /home/runner/work/_temp/Library
-    ##  [2] /opt/R/4.6.0/lib/R/site-library
-    ##  [3] /opt/R/4.6.0/lib/R/library
+    ##  [2] /opt/R/4.6.1/lib/R/site-library
+    ##  [3] /opt/R/4.6.1/lib/R/library
     ##  * ── Packages attached to the search path.
     ## 
     ## ──────────────────────────────────────────────────────────────────────────────

@@ -321,11 +321,11 @@ lm_models <- phylo %>%
     variables = c("UC", "female", "antibiotics", "steroids", "age_scaled")
   )
 #> Proportional min_prevalence given: 0.1 --> min 7/67 samples.
-#> 2026-06-01 18:13:19.894805 - modelling at rank: Phylum
-#> 2026-06-01 18:13:20.069043 - modelling at rank: Class
-#> 2026-06-01 18:13:20.332708 - modelling at rank: Order
-#> 2026-06-01 18:13:20.662559 - modelling at rank: Family
-#> 2026-06-01 18:13:21.215411 - modelling at rank: Genus
+#> 2026-07-28 13:35:02.086785 - modelling at rank: Phylum
+#> 2026-07-28 13:35:02.254541 - modelling at rank: Class
+#> 2026-07-28 13:35:02.533896 - modelling at rank: Order
+#> 2026-07-28 13:35:02.849759 - modelling at rank: Family
+#> 2026-07-28 13:35:03.415802 - modelling at rank: Genus
 ```
 
 Why filter the taxa? *It’s less likely that we are interested in rare
@@ -787,10 +787,10 @@ bb_models <- phylo %>%
     variables = c("UC", "female", "antibiotics", "steroids", "age_scaled")
   )
 #> Proportional min_prevalence given: 0.3 --> min 21/67 samples.
-#> 2026-06-01 18:13:51.139831 - modelling at rank: Phylum
-#> 2026-06-01 18:13:51.260451 - modelling at rank: Class
-#> 2026-06-01 18:13:51.432513 - modelling at rank: Order
-#> 2026-06-01 18:13:51.62569 - modelling at rank: Family
+#> 2026-07-28 13:35:32.856754 - modelling at rank: Phylum
+#> 2026-07-28 13:35:32.971233 - modelling at rank: Class
+#> 2026-07-28 13:35:33.159373 - modelling at rank: Order
+#> 2026-07-28 13:35:33.353464 - modelling at rank: Family
 bb_models
 #> psExtra object - a phyloseq object with extra slots:
 #> 
@@ -928,7 +928,7 @@ bb_stats %>%
 devtools::session_info()
 #> ─ Session info ───────────────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.6.0 (2026-04-24)
+#>  version  R version 4.6.1 (2026-06-24)
 #>  os       Ubuntu 24.04.4 LTS
 #>  system   x86_64, linux-gnu
 #>  ui       X11
@@ -936,7 +936,7 @@ devtools::session_info()
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-06-01
+#>  date     2026-07-28
 #>  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)
 #>  quarto   NA
 #> 
@@ -955,9 +955,9 @@ devtools::session_info()
 #>  cachem               1.1.0         2024-05-16 [1] RSPM
 #>  checkmate            2.3.4         2026-02-03 [1] RSPM
 #>  cli                  3.6.6         2026-04-09 [1] RSPM
-#>  cluster              2.1.8.2       2026-02-05 [3] CRAN (R 4.6.0)
-#>  codetools            0.2-20        2024-03-31 [3] CRAN (R 4.6.0)
-#>  colorspace           2.1-2         2025-09-22 [1] RSPM
+#>  cluster              2.1.8.2       2026-02-05 [3] CRAN (R 4.6.1)
+#>  codetools            0.2-20        2024-03-31 [3] CRAN (R 4.6.1)
+#>  colorspace           2.1-3         2026-07-12 [1] RSPM
 #>  corncob            * 0.4.2         2025-03-29 [1] RSPM
 #>  crayon               1.5.3         2024-06-20 [1] RSPM
 #>  data.table           1.18.4        2026-05-06 [1] RSPM
@@ -978,30 +978,30 @@ devtools::session_info()
 #>  ggraph               2.2.2         2025-08-24 [1] RSPM
 #>  ggrepel              0.9.8         2026-03-17 [1] RSPM
 #>  glue                 1.8.1         2026-04-17 [1] RSPM
-#>  graphlayouts         1.2.3         2026-02-21 [1] RSPM
-#>  gridExtra            2.3           2017-09-09 [1] RSPM
+#>  graphlayouts         1.2.5         2026-07-22 [1] RSPM
+#>  gridExtra            2.3.1         2026-06-25 [1] RSPM
 #>  gtable               0.3.6         2024-10-25 [1] RSPM
 #>  htmltools            0.5.9         2025-12-04 [1] RSPM
 #>  htmlwidgets          1.6.4         2023-12-06 [1] RSPM
-#>  igraph               2.3.2         2026-05-29 [1] RSPM
+#>  igraph               2.3.3         2026-06-26 [1] RSPM
 #>  IRanges              2.46.0        2026-04-28 [1] Bioconduc~
 #>  iterators            1.0.14        2022-02-05 [1] RSPM
 #>  jquerylib            0.1.4         2021-04-26 [1] RSPM
 #>  jsonlite             2.0.0         2025-03-27 [1] RSPM
 #>  knitr                1.51          2025-12-20 [1] RSPM
 #>  labeling             0.4.3         2023-08-29 [1] RSPM
-#>  lattice              0.22-9        2026-02-09 [3] CRAN (R 4.6.0)
+#>  lattice              0.22-9        2026-02-09 [3] CRAN (R 4.6.1)
 #>  lifecycle            1.0.5         2026-01-08 [1] RSPM
 #>  lpSolveAPI           5.5.2.0-17.15 2026-02-13 [1] RSPM
 #>  magrittr             2.0.5         2026-04-04 [1] RSPM
-#>  MASS                 7.3-65        2025-02-28 [3] CRAN (R 4.6.0)
-#>  Matrix               1.7-5         2026-03-21 [3] CRAN (R 4.6.0)
+#>  MASS                 7.3-65        2025-02-28 [3] CRAN (R 4.6.1)
+#>  Matrix               1.7-5         2026-03-21 [3] CRAN (R 4.6.1)
 #>  memoise              2.0.1         2021-11-26 [1] RSPM
-#>  mgcv                 1.9-4         2025-11-07 [3] CRAN (R 4.6.0)
+#>  mgcv                 1.9-4         2025-11-07 [3] CRAN (R 4.6.1)
 #>  microbiome           1.34.0        2026-04-28 [1] Bioconduc~
-#>  microViz           * 0.13.1        2026-06-01 [1] local
+#>  microViz           * 0.13.1        2026-07-28 [1] local
 #>  multtest             2.68.0        2026-04-28 [1] Bioconduc~
-#>  nlme                 3.1-169       2026-03-27 [3] CRAN (R 4.6.0)
+#>  nlme                 3.1-169       2026-03-27 [3] CRAN (R 4.6.1)
 #>  numDeriv             2016.8-1.1    2019-06-06 [1] RSPM
 #>  otel                 0.2.0         2025-08-29 [1] RSPM
 #>  patchwork            1.3.2         2025-08-25 [1] RSPM
@@ -1010,19 +1010,19 @@ devtools::session_info()
 #>  pillar               1.11.1        2025-09-17 [1] RSPM
 #>  pkgbuild             1.4.8         2025-05-26 [1] RSPM
 #>  pkgconfig            2.0.3         2019-09-22 [1] RSPM
-#>  pkgdown              2.2.0         2025-11-06 [1] RSPM
-#>  pkgload              1.5.2         2026-04-22 [1] RSPM
+#>  pkgdown              2.2.1         2026-07-07 [1] RSPM
+#>  pkgload              1.5.3         2026-06-15 [1] RSPM
 #>  plyr                 1.8.9         2023-10-02 [1] RSPM
 #>  polyclip             1.10-7        2024-07-23 [1] RSPM
 #>  purrr                1.2.2         2026-04-10 [1] RSPM
 #>  R6                   2.6.1         2025-02-15 [1] RSPM
 #>  ragg                 1.5.2         2026-03-23 [1] RSPM
 #>  RColorBrewer         1.1-3         2022-04-03 [1] RSPM
-#>  Rcpp                 1.1.1-1.1     2026-04-24 [1] RSPM
+#>  Rcpp                 1.1.2         2026-07-05 [1] RSPM
 #>  registry             0.5-1         2019-03-05 [1] RSPM
 #>  repr                 1.1.7         2024-03-22 [1] RSPM
 #>  reshape2             1.4.5         2025-11-12 [1] RSPM
-#>  rlang                1.2.0         2026-04-06 [1] RSPM
+#>  rlang                1.3.0         2026-07-05 [1] RSPM
 #>  rmarkdown            2.31          2026-03-26 [1] RSPM
 #>  ROI                  1.0-2         2026-01-12 [1] RSPM
 #>  ROI.plugin.lpsolve   1.0-2         2023-07-07 [1] RSPM
@@ -1032,12 +1032,12 @@ devtools::session_info()
 #>  sass                 0.4.10        2025-04-11 [1] RSPM
 #>  scales               1.4.0         2025-04-24 [1] RSPM
 #>  Seqinfo              1.2.0         2026-04-28 [1] Bioconduc~
-#>  sessioninfo          1.2.3         2025-02-05 [1] RSPM
+#>  sessioninfo          1.2.4         2026-06-04 [1] RSPM
 #>  skimr                2.2.2         2026-01-10 [1] RSPM
-#>  slam                 0.1-55        2024-11-13 [1] RSPM
+#>  slam                 0.1-56        2026-07-13 [1] RSPM
 #>  stringi              1.8.7         2025-03-27 [1] RSPM
 #>  stringr              1.6.0         2025-11-04 [1] RSPM
-#>  survival             3.8-6         2026-01-16 [3] CRAN (R 4.6.0)
+#>  survival             3.8-6         2026-01-16 [3] CRAN (R 4.6.1)
 #>  systemfonts          1.3.2         2026-03-05 [1] RSPM
 #>  textshaping          1.0.5         2026-03-06 [1] RSPM
 #>  tibble               3.3.1         2026-01-11 [1] RSPM
@@ -1052,14 +1052,14 @@ devtools::session_info()
 #>  vegan                2.7-5         2026-05-25 [1] RSPM
 #>  viridis              0.6.5         2024-01-29 [1] RSPM
 #>  viridisLite          0.4.3         2026-02-04 [1] RSPM
-#>  withr                3.0.2         2024-10-28 [1] RSPM
-#>  xfun                 0.57          2026-03-20 [1] RSPM
+#>  withr                3.0.3         2026-06-19 [1] RSPM
+#>  xfun                 0.60          2026-07-09 [1] RSPM
 #>  XVector              0.52.0        2026-04-28 [1] Bioconduc~
 #>  yaml                 2.3.12        2025-12-10 [1] RSPM
 #> 
 #>  [1] /home/runner/work/_temp/Library
-#>  [2] /opt/R/4.6.0/lib/R/site-library
-#>  [3] /opt/R/4.6.0/lib/R/library
+#>  [2] /opt/R/4.6.1/lib/R/site-library
+#>  [3] /opt/R/4.6.1/lib/R/library
 #>  * ── Packages attached to the search path.
 #> 
 #> ──────────────────────────────────────────────────────────────────────────────
