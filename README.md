@@ -6,7 +6,8 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/david-barnett/microViz/workflows/R-CMD-check/badge.svg)](https://github.com/david-barnett/microViz/actions)
-[![codecov](https://codecov.io/gh/david-barnett/microViz/branch/main/graph/badge.svg?token=C1EoVkhnxA)](https://codecov.io/gh/david-barnett/microViz)
+[![Codecov test
+coverage](https://codecov.io/gh/david-barnett/microViz/graph/badge.svg)](https://app.codecov.io/gh/david-barnett/microViz)
 ![GitHub R package
 version](https://img.shields.io/github/r-package/v/david-barnett/microViz?label=Latest)
 ![GitHub release (including
@@ -17,7 +18,7 @@ date)](https://img.shields.io/docker/v/barnettdavid/microviz-rocker-verse?color=
 badge](https://david-barnett.r-universe.dev/badges/microViz)](https://david-barnett.r-universe.dev/microViz)
 [![JOSS
 article](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa/status.svg)](https://joss.theoj.org/papers/4547b492f224a26d96938ada81fee3fa)
-[![Citations](https://img.shields.io/badge/Citations-517-blueviolet)](https://scholar.google.com/scholar?hl=en&as_sdt=2005&sciodt=0,5&cites=5439940108464463894&scipsc=&q=&scisbd=1)
+[![Citations](https://img.shields.io/badge/Citations-553-blueviolet)](https://scholar.google.com/scholar?hl=en&as_sdt=2005&sciodt=0,5&cites=5439940108464463894&scipsc=&q=&scisbd=1)
 [![Zenodo
 DOI](https://zenodo.org/badge/307119750.svg)](https://zenodo.org/badge/latestdoi/307119750)
 <!-- badges: end -->
@@ -316,8 +317,8 @@ aitchison_perm <- aitchison_dists %>%
     n_processes = 1, n_perms = 99, # you should use at least 999!
     variables = "bmi_group"
   )
-#> 2026-05-21 11:35:38.192764 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2026-05-21 11:35:38.255294 - Finished PERMANOVA
+#> 2026-07-28 15:18:42.356887 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2026-07-28 15:18:42.417494 - Finished PERMANOVA
 
 # view the permanova results
 perm_get(aitchison_perm) %>% as.data.frame()
@@ -342,8 +343,8 @@ your permanova directly using the `ord_plot` function with constraints
 perm2 <- aitchison_dists %>%
   dist_permanova(variables = c("weight", "african", "sex"), seed = 321)
 #> Dropping samples with missings: 2
-#> 2026-05-21 11:35:38.26932 - Starting PERMANOVA with 999 perms with 1 processes
-#> 2026-05-21 11:35:40.778475 - Finished PERMANOVA
+#> 2026-07-28 15:18:42.431108 - Starting PERMANOVA with 999 perms with 1 processes
+#> 2026-07-28 15:18:44.872888 - Finished PERMANOVA
 ```
 
 We’ll visualise the effect of nationality and bodyweight on sample
