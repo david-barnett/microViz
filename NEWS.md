@@ -1,5 +1,6 @@
 # microViz 0.13.1
 
+- Tests: shinytest2 snapshots now ignore html dependency versions and DT scroller page length, which vary with package and browser updates.
 - Docs: noted that `dist_bdisp` still defaults to `method = "centroid"`, unlike recent versions of `vegan::betadisper()` which now default to `type = "median"`.
 
 # microViz 0.13.0
