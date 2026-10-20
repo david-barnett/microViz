@@ -43,16 +43,16 @@ test_that("ord_explore app works: unconstrained ords", {
   # app$view()
 
   # Set initial inputs and click build
-  app$expect_values() # test 1
+  app$expect_values(transform = scrub_dep_versions) # test 1
   app$set_inputs(rank = "genus")
   app$set_inputs(trans = "comp_clr")
   app$wait_for_idle()
-  app$expect_values() # 2
+  app$expect_values(transform = scrub_dep_versions) # 2
 
   # check state after first build
   app$click("build")
   app$wait_for_idle()
-  app$expect_values() # 3
+  app$expect_values(transform = scrub_dep_versions) # 3
 
   # check sample selection
   app$set_inputs(
@@ -60,7 +60,7 @@ test_that("ord_explore app works: unconstrained ords", {
     allow_no_input_binding_ = TRUE
   )
   app$wait_for_idle()
-  app$expect_values() # 4
+  app$expect_values(transform = scrub_dep_versions) # 4
 
   # check barchart modifications work
   app$set_inputs(mergeOther = FALSE)
@@ -70,7 +70,7 @@ test_that("ord_explore app works: unconstrained ords", {
   app$set_inputs(ntaxa = 19)
   app$set_inputs(comp_label = "family_id")
   app$wait_for_idle()
-  app$expect_values() # 5
+  app$expect_values(transform = scrub_dep_versions) # 5
 
   # check for error message for gunifrac on aggregated taxa
   app$click("settings")
@@ -79,10 +79,10 @@ test_that("ord_explore app works: unconstrained ords", {
   app$set_inputs(dist = "gunifrac")
   app$set_inputs(method = "PCoA")
   app$wait_for_idle()
-  app$expect_values() # 6
+  app$expect_values(transform = scrub_dep_versions) # 6
   app$click("build")
   app$wait_for_idle()
-  app$expect_values() # 7
+  app$expect_values(transform = scrub_dep_versions) # 7
 
   # check error avoided
   old_ord_plot <- app$get_value(output = "ord_plot")
@@ -94,7 +94,7 @@ test_that("ord_explore app works: unconstrained ords", {
     output = "comps_girafe", ignore = list(NULL, "", old_comps_girafe)
   )
   app$wait_for_idle()
-  app$expect_values() # 8
+  app$expect_values(transform = scrub_dep_versions) # 8
 
   # select a sample
   app$set_inputs(
@@ -102,13 +102,13 @@ test_that("ord_explore app works: unconstrained ords", {
     allow_no_input_binding_ = TRUE
   )
   app$wait_for_idle()
-  app$expect_values() # 9
+  app$expect_values(transform = scrub_dep_versions) # 9
 
   # change to variable size
   app$set_inputs(sizeFixed = FALSE)
   app$set_inputs(ord_size_var = "number_reads")
   app$wait_for_idle()
-  app$expect_values() # 10
+  app$expect_values(transform = scrub_dep_versions) # 10
 
   # change axis displayed
   app$set_inputs(y1 = 3)
@@ -119,10 +119,10 @@ test_that("ord_explore app works: unconstrained ords", {
     allow_no_input_binding_ = TRUE
   )
   app$wait_for_idle()
-  app$expect_values() # 11
+  app$expect_values(transform = scrub_dep_versions) # 11
 
   # test convex hulls can be added
   app$set_inputs(add = "chulls")
   app$wait_for_idle()
-  app$expect_values() # 12
+  app$expect_values(transform = scrub_dep_versions) # 12
 })
