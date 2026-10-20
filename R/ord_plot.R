@@ -265,8 +265,7 @@ ord_plot <-
       }
 
       # extract "explained variation" for labelling axes
-      eigVals <- vegan::eigenvals(ordination)
-      explainedVar <- eigVals[axes] / sum(eigVals)
+      explainedVar <- ordExplainedVar(vegan::eigenvals(ordination), axes)
       axesNames <- colnames(siteScoresDf)
       axesLabs <- paste0(axesNames, " [", sprintf("%.1f", 100 * explainedVar), "%]")
     }
@@ -548,6 +547,14 @@ checkValidEllipsesOrdPlot <- function(..., ps) {
     }
   }
   return(ellipses)
+}
+
+# proportion of total variation for chosen axes; uses vegan's "sumev"
+# attribute when present (e.g. ordinations returning only some axes)
+ordExplainedVar <- function(eigVals, axes) {
+  sumev <- attr(eigVals, "sumev")
+  if (is.null(sumev) || is.na(sumev)) sumev <- sum(eigVals)
+  eigVals[axes] / sumev
 }
 
 # generates vector of ggplot2 shapes

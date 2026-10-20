@@ -159,3 +159,31 @@ test_that("default clr PCA plot hasn't changed", {
   expect_snapshot(cat(p6$data[1:50, 2, drop = TRUE]))
   expect_snapshot(p6$layers)
 })
+
+# ordExplainedVar ------
+
+test_that("ordExplainedVar uses sumev attribute when present", {
+  x <- c(PC1 = 4, PC2 = 2, PC3 = 1)
+  expect_equal(microViz:::ordExplainedVar(x, 1:2), x[1:2] / 7)
+  attr(x, "sumev") <- 10
+  expect_equal(microViz:::ordExplainedVar(x, 1:2), x[1:2] / 10)
+  attr(x, "sumev") <- NA
+  expect_equal(microViz:::ordExplainedVar(x, 1:2), x[1:2] / 7)
+})
+
+test_that("ordExplainedVar matches vegan proportions explained", {
+  pca <- ps %>%
+    tax_transform("clr", rank = "Genus") %>%
+    ord_calc(method = "PCA") %>%
+    ord_get()
+  expect_equal(
+    unname(microViz:::ordExplainedVar(vegan::eigenvals(pca), 1:2)),
+    unname(summary(vegan::eigenvals(pca))["Proportion Explained", 1:2])
+  )
+  data("varespec", package = "vegan")
+  dca <- vegan::decorana(varespec)
+  expect_equal(
+    unname(microViz:::ordExplainedVar(vegan::eigenvals(dca), 1:2)),
+    unname(summary(vegan::eigenvals(dca))["Proportion Explained", 1:2])
+  )
+})
