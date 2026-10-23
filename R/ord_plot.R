@@ -1,14 +1,22 @@
 #' Customisable ggplot2 ordination plot
 #'
-#' Draw ordination plot. Utilises psExtra object produced by of \code{\link{ord_calc}}.
+#' Draw ordination plot. Utilises psExtra object produced by \code{\link{ord_calc}}.
 #' - For an extensive tutorial see \href{https://david-barnett.github.io/microViz/articles/web-only/ordination.html}{the ordination vignette}.
-#' - For interpretation see the the relevant pages on PCA, PCoA, RDA, or CCA on the GUide to STatistical Analysis in Microbial Ecology (GUSTA ME) website: \url{https://sites.google.com/site/mb3gustame/}
+#' - For interpretation see the relevant pages on PCA, PCoA, RDA, or CCA on the GUide to STatistical Analysis in Microbial Ecology (GUSTA ME) website: \url{https://sites.google.com/site/mb3gustame/}
 #'
 #' How to specify the plot_taxa argument (when using PCA, CCA or RDA):
 #' - FALSE --> plot no taxa vectors or labels
 #' - integer vector e.g. 1:3 --> plot labels for top 3 taxa (by longest line length)
 #' - single numeric value e.g. 0.75 --> plot labels for taxa with line length > 0.75
 #' - character vector e.g. c('g__Bacteroides', 'g__Veillonella') --> plot labels for the exactly named taxa
+#'
+#' Axis labels: for PCA, PCoA, RDA and CCA, each axis label shows the
+#' percentage of the total variation that the axis represents.
+#' This is its eigenvalue divided by the total, which is taken from the "sumev"
+#' attribute of \code{vegan::eigenvals()} when present
+#' (e.g. ordinations that keep only some axes),
+#' otherwise the sum of all eigenvalues.
+#' NMDS and DCA axes are labelled without percentages.
 #'
 #' @param data
 #' psExtra object with ordination attached, i.e. output from ord_calc
@@ -59,7 +67,7 @@
 #'
 #' @return ggplot
 #' @export
-#' @seealso \code{\link{tax_lab_style}} / \code{\link{tax_lab_style}} for styling labels
+#' @seealso \code{\link{tax_lab_style}} / \code{\link{constraint_lab_style}} for styling labels
 #' @seealso \code{\link{ord_explore}} for interactive ordination plots
 #' @seealso \code{\link{ord_calc}} for calculating an ordination to plot with ord_plot
 #'
