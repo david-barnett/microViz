@@ -85,10 +85,10 @@ drawn with geom_point using aes_string}
 ggplot
 }
 \description{
-Draw ordination plot. Utilises psExtra object produced by of \code{\link{ord_calc}}.
+Draw ordination plot. Utilises psExtra object produced by \code{\link{ord_calc}}.
 \itemize{
 \item For an extensive tutorial see \href{https://david-barnett.github.io/microViz/articles/web-only/ordination.html}{the ordination vignette}.
-\item For interpretation see the the relevant pages on PCA, PCoA, RDA, or CCA on the GUide to STatistical Analysis in Microbial Ecology (GUSTA ME) website: \url{https://sites.google.com/site/mb3gustame/}
+\item For interpretation see the relevant pages on PCA, PCoA, RDA, or CCA on the GUide to STatistical Analysis in Microbial Ecology (GUSTA ME) website: \url{https://sites.google.com/site/mb3gustame/}
 }
 }
 \details{
@@ -99,6 +99,14 @@ How to specify the plot_taxa argument (when using PCA, CCA or RDA):
 \item single numeric value e.g. 0.75 --> plot labels for taxa with line length > 0.75
 \item character vector e.g. c('g__Bacteroides', 'g__Veillonella') --> plot labels for the exactly named taxa
 }
+
+Axis labels: for PCA, PCoA, RDA and CCA, each axis label shows the
+percentage of the total variation that the axis represents.
+This is its eigenvalue divided by the total, which is taken from the "sumev"
+attribute of \code{vegan::eigenvals()} when present
+(e.g. ordinations that keep only some axes),
+otherwise the sum of all eigenvalues.
+NMDS and DCA axes are labelled without percentages.
 }
 \examples{
 library(ggplot2)
@@ -215,7 +223,7 @@ unconstrained_aitchison_pca \%>\%
   geom_point(size = 1, shape = 21, colour = "black", fill = "white")
 }
 \seealso{
-\code{\link{tax_lab_style}} / \code{\link{tax_lab_style}} for styling labels
+\code{\link{tax_lab_style}} / \code{\link{constraint_lab_style}} for styling labels
 
 \code{\link{ord_explore}} for interactive ordination plots
 
