@@ -1,14 +1,14 @@
 # Customisable ggplot2 ordination plot
 
-Draw ordination plot. Utilises psExtra object produced by of
+Draw ordination plot. Utilises psExtra object produced by
 [`ord_calc`](https://david-barnett.github.io/microViz/reference/ord_calc.md).
 
 - For an extensive tutorial see [the ordination
   vignette](https://david-barnett.github.io/microViz/articles/web-only/ordination.html).
 
-- For interpretation see the the relevant pages on PCA, PCoA, RDA, or
-  CCA on the GUide to STatistical Analysis in Microbial Ecology (GUSTA
-  ME) website: <https://sites.google.com/site/mb3gustame/>
+- For interpretation see the relevant pages on PCA, PCoA, RDA, or CCA on
+  the GUide to STatistical Analysis in Microbial Ecology (GUSTA ME)
+  website: <https://sites.google.com/site/mb3gustame/>
 
 ## Usage
 
@@ -162,11 +162,20 @@ How to specify the plot_taxa argument (when using PCA, CCA or RDA):
 - character vector e.g. c('g\_\_Bacteroides', 'g\_\_Veillonella') –\>
   plot labels for the exactly named taxa
 
+Axis labels: for PCA, PCoA, RDA and CCA, each axis label shows the
+percentage of the total variation that the axis represents. This is its
+eigenvalue divided by the total, which is taken from the "sumev"
+attribute of
+[`vegan::eigenvals()`](https://vegandevs.github.io/vegan/reference/eigenvals.html)
+when present (e.g. ordinations that keep only some axes), otherwise the
+sum of all eigenvalues. NMDS and DCA axes are labelled without
+percentages.
+
 ## See also
 
 [`tax_lab_style`](https://david-barnett.github.io/microViz/reference/Ordination-labels.md)
 /
-[`tax_lab_style`](https://david-barnett.github.io/microViz/reference/Ordination-labels.md)
+[`constraint_lab_style`](https://david-barnett.github.io/microViz/reference/Ordination-labels.md)
 for styling labels
 
 [`ord_explore`](https://david-barnett.github.io/microViz/reference/ord_explore.md)

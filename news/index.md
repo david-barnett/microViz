@@ -1,5 +1,16 @@
 # Changelog
 
+## microViz 0.13.2
+
+- Fix:
+  [`ord_plot()`](https://david-barnett.github.io/microViz/reference/ord_plot.md)
+  axis-label percentages now use the total variance from vegan’s `sumev`
+  attribute when the ordination provides it (e.g. truncated PCA from
+  other packages). No change for ordinations made by
+  [`ord_calc()`](https://david-barnett.github.io/microViz/reference/ord_calc.md).
+  (thanks [@erikrikarddaniel](https://github.com/erikrikarddaniel),
+  [\#223](https://github.com/david-barnett/microViz/issues/223))
+
 ## microViz 0.13.1
 
 - Tests: shinytest2 snapshots now ignore html dependency versions and DT

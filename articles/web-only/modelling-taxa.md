@@ -19,7 +19,7 @@ using microViz *taxonomic association tree* plots.
 ``` r
 
 library(microViz)
-#> microViz version 0.13.1 - Copyright (C) 2021-2026 David Barnett
+#> microViz version 0.13.2 - Copyright (C) 2021-2026 David Barnett
 #> ! Website: https://david-barnett.github.io/microViz
 #> ✔ Useful?  For citation details, run: `citation("microViz")`
 #> ✖ Silence? `suppressPackageStartupMessages(library(microViz))`
@@ -321,11 +321,11 @@ lm_models <- phylo %>%
     variables = c("UC", "female", "antibiotics", "steroids", "age_scaled")
   )
 #> Proportional min_prevalence given: 0.1 --> min 7/67 samples.
-#> 2026-10-23 12:39:26.608217 - modelling at rank: Phylum
-#> 2026-10-23 12:39:26.789706 - modelling at rank: Class
-#> 2026-10-23 12:39:27.085672 - modelling at rank: Order
-#> 2026-10-23 12:39:27.415564 - modelling at rank: Family
-#> 2026-10-23 12:39:27.994977 - modelling at rank: Genus
+#> 2026-10-24 09:05:02.964453 - modelling at rank: Phylum
+#> 2026-10-24 09:05:03.131883 - modelling at rank: Class
+#> 2026-10-24 09:05:03.401589 - modelling at rank: Order
+#> 2026-10-24 09:05:03.719642 - modelling at rank: Family
+#> 2026-10-24 09:05:04.264275 - modelling at rank: Genus
 ```
 
 Why filter the taxa? *It’s less likely that we are interested in rare
@@ -787,10 +787,10 @@ bb_models <- phylo %>%
     variables = c("UC", "female", "antibiotics", "steroids", "age_scaled")
   )
 #> Proportional min_prevalence given: 0.3 --> min 21/67 samples.
-#> 2026-10-23 12:39:57.223272 - modelling at rank: Phylum
-#> 2026-10-23 12:39:57.340798 - modelling at rank: Class
-#> 2026-10-23 12:39:57.527821 - modelling at rank: Order
-#> 2026-10-23 12:39:57.718207 - modelling at rank: Family
+#> 2026-10-24 09:05:33.365921 - modelling at rank: Phylum
+#> 2026-10-24 09:05:33.479798 - modelling at rank: Class
+#> 2026-10-24 09:05:33.670607 - modelling at rank: Order
+#> 2026-10-24 09:05:33.865196 - modelling at rank: Family
 bb_models
 #> psExtra object - a phyloseq object with extra slots:
 #> 
@@ -936,7 +936,7 @@ devtools::session_info()
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-10-23
+#>  date     2026-10-24
 #>  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)
 #>  quarto   NA
 #> 
@@ -999,7 +999,7 @@ devtools::session_info()
 #>  memoise              2.0.1         2021-11-26 [1] RSPM
 #>  mgcv                 1.9-4         2025-11-07 [3] CRAN (R 4.6.1)
 #>  microbiome           1.34.0        2026-04-28 [1] Bioconduc~
-#>  microViz           * 0.13.1        2026-10-23 [1] local
+#>  microViz           * 0.13.2        2026-10-24 [1] local
 #>  multtest             2.68.0        2026-04-28 [1] Bioconduc~
 #>  nlme                 3.1-169       2026-03-27 [3] CRAN (R 4.6.1)
 #>  numDeriv             2016.8-1.1    2019-06-06 [1] RSPM

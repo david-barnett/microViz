@@ -237,8 +237,8 @@ ps %>%
 #> Dropping samples with missings: 17
 #> weight has NAs: 15
 #> female has NAs: 2
-#> 2026-10-23 12:35:58.61547 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2026-10-23 12:36:03.553252 - Finished PERMANOVA
+#> 2026-10-24 09:01:39.643198 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2026-10-24 09:01:44.472888 - Finished PERMANOVA
 #> psExtra object - a phyloseq object with extra slots:
 #> 
 #> phyloseq-class experiment-level object
@@ -393,10 +393,10 @@ tt_models <- ps %>%
     type = "bbdml", verbose = "max"
   )
 #> Proportional min_prevalence given: 0.05 --> min 41/801 samples.
-#> 2026-10-23 12:36:08.235672 - modelling at rank: Phylum
+#> 2026-10-24 09:01:49.135288 - modelling at rank: Phylum
 #> Warning in do.call(fun, list(txt)): 2 / 801 values are NA in female
 #> Warning in do.call(fun, list(txt)): 15 / 801 values are NA in wt_scaled
-#> 2026-10-23 12:36:10.085862 - modelling at rank: Family
+#> 2026-10-24 09:01:50.979866 - modelling at rank: Family
 #> Warning in do.call(fun, list(txt)): 2 / 801 values are NA in female
 #> Warning in do.call(fun, list(txt)): 15 / 801 values are NA in wt_scaled
 tt_stats <- taxatree_models2stats(tt_models, param = "mu")
@@ -459,7 +459,7 @@ devtools::session_info()
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-10-23
+#>  date     2026-10-24
 #>  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)
 #>  quarto   NA
 #> 
@@ -526,7 +526,7 @@ devtools::session_info()
 #>  memoise              2.0.1         2021-11-26 [1] RSPM
 #>  mgcv                 1.9-4         2025-11-07 [3] CRAN (R 4.6.1)
 #>  microbiome         * 1.34.0        2026-04-28 [1] Bioconduc~
-#>  microViz           * 0.13.1        2026-10-23 [1] local
+#>  microViz           * 0.13.2        2026-10-24 [1] local
 #>  multtest             2.68.0        2026-04-28 [1] Bioconduc~
 #>  nlme                 3.1-169       2026-03-27 [3] CRAN (R 4.6.1)
 #>  numDeriv             2016.8-1.1    2019-06-06 [1] RSPM

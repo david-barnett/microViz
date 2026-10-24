@@ -236,7 +236,7 @@ devtools::session_info()
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-10-23
+#>  date     2026-10-24
 #>  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)
 #>  quarto   NA
 #> 
@@ -284,7 +284,7 @@ devtools::session_info()
 #>  Matrix         1.7-5    2026-03-21 [3] CRAN (R 4.6.1)
 #>  memoise        2.0.1    2021-11-26 [1] RSPM
 #>  mgcv           1.9-4    2025-11-07 [3] CRAN (R 4.6.1)
-#>  microViz     * 0.13.1   2026-10-23 [1] local
+#>  microViz     * 0.13.2   2026-10-24 [1] local
 #>  multtest       2.68.0   2026-04-28 [1] Bioconduc~
 #>  nlme           3.1-169  2026-03-27 [3] CRAN (R 4.6.1)
 #>  otel           0.2.0    2025-08-29 [1] RSPM

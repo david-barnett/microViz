@@ -1347,9 +1347,9 @@ shao4 %>%
   perm_get()
 ```
 
-    ## 2026-10-23 12:37:42.283064 - Starting PERMANOVA with 99 perms with 1 processes
+    ## 2026-10-24 09:03:21.31688 - Starting PERMANOVA with 99 perms with 1 processes
 
-    ## 2026-10-23 12:37:42.360751 - Finished PERMANOVA
+    ## 2026-10-24 09:03:21.39371 - Finished PERMANOVA
 
     ## Permutation test for adonis under reduced model
     ## Marginal effects of terms
@@ -1404,9 +1404,9 @@ shao4 %>%
 
     ## Dropping samples with missings: 15
 
-    ## 2026-10-23 12:37:42.625398 - Starting PERMANOVA with 99 perms with 1 processes
+    ## 2026-10-24 09:03:21.655744 - Starting PERMANOVA with 99 perms with 1 processes
 
-    ## 2026-10-23 12:37:43.378966 - Finished PERMANOVA
+    ## 2026-10-24 09:03:22.399317 - Finished PERMANOVA
 
     ## Permutation test for adonis under reduced model
     ## Marginal effects of terms
@@ -2043,33 +2043,33 @@ shaoModels <- shao4 %>%
 
     ## Proportional min_prevalence given: 0.1 --> min 31/306 samples.
 
-    ## 2026-10-23 12:38:05.970828 - modelling at rank: phylum
+    ## 2026-10-24 09:03:44.636458 - modelling at rank: phylum
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
 
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
 
-    ## 2026-10-23 12:38:06.123312 - modelling at rank: class
+    ## 2026-10-24 09:03:44.781676 - modelling at rank: class
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
 
-    ## 2026-10-23 12:38:06.340531 - modelling at rank: order
+    ## 2026-10-24 09:03:44.987496 - modelling at rank: order
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
 
-    ## 2026-10-23 12:38:06.590026 - modelling at rank: family
+    ## 2026-10-24 09:03:45.232623 - modelling at rank: family
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
 
-    ## 2026-10-23 12:38:06.8937 - modelling at rank: genus
+    ## 2026-10-24 09:03:45.529462 - modelling at rank: genus
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
 
-    ## 2026-10-23 12:38:07.251366 - modelling at rank: species
+    ## 2026-10-24 09:03:45.883531 - modelling at rank: species
 
     ## Warning in do.call(fun, list(txt)): 15 / 306 values are NA in Female
     ## Warning in do.call(fun, list(txt)): 14 / 306 values are NA in Birth_weight_Z
@@ -2262,7 +2262,7 @@ devtools::session_info()
     ##  collate  C.UTF-8
     ##  ctype    C.UTF-8
     ##  tz       UTC
-    ##  date     2026-10-23
+    ##  date     2026-10-24
     ##  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)
     ##  quarto   NA
     ## 
@@ -2332,7 +2332,7 @@ devtools::session_info()
     ##  memoise          2.0.1    2021-11-26 [1] RSPM
     ##  mgcv             1.9-4    2025-11-07 [3] CRAN (R 4.6.1)
     ##  microbiome       1.34.0   2026-04-28 [1] Bioconduc~
-    ##  microViz       * 0.13.1   2026-10-23 [1] local
+    ##  microViz       * 0.13.2   2026-10-24 [1] local
     ##  mime             0.13     2025-03-17 [1] RSPM
     ##  multtest         2.68.0   2026-04-28 [1] Bioconduc~
     ##  nlme             3.1-169  2026-03-27 [3] CRAN (R 4.6.1)

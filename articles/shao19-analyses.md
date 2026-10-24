@@ -14,7 +14,7 @@ library(phyloseq)
 library(ggplot2)
 library(patchwork) # for combining multiple plots
 library(microViz)
-#> microViz version 0.13.1 - Copyright (C) 2021-2026 David Barnett
+#> microViz version 0.13.2 - Copyright (C) 2021-2026 David Barnett
 #> ! Website: https://david-barnett.github.io/microViz
 #> ✔ Useful?  For citation details, run: `citation("microViz")`
 #> ✖ Silence? `suppressPackageStartupMessages(library(microViz))`
@@ -577,8 +577,8 @@ shao4d_perm <- shao4d %>%
     n_processes = 1
   )
 #> Dropping samples with missings: 15
-#> 2026-10-23 12:41:23.944482 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2026-10-23 12:41:24.494746 - Finished PERMANOVA
+#> 2026-10-24 09:06:59.543221 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2026-10-24 09:07:00.084783 - Finished PERMANOVA
 
 shao4d_perm %>% perm_get()
 #> Permutation test for adonis under reduced model
@@ -669,11 +669,11 @@ shao4d_treeStats <- shao4d_prev10 %>%
   taxatree_models2stats(.keep_models = TRUE) %>%
   # adjust the p values for multiple testing, within each rank
   taxatree_stats_p_adjust(method = "fdr", grouping = "rank")
-#> 2026-10-23 12:41:24.943964 - modelling at rank: phylum
-#> 2026-10-23 12:41:25.109519 - modelling at rank: class
-#> 2026-10-23 12:41:25.332757 - modelling at rank: order
-#> 2026-10-23 12:41:25.638405 - modelling at rank: family
-#> 2026-10-23 12:41:25.987719 - modelling at rank: genus
+#> 2026-10-24 09:07:00.523247 - modelling at rank: phylum
+#> 2026-10-24 09:07:00.68302 - modelling at rank: class
+#> 2026-10-24 09:07:00.897095 - modelling at rank: order
+#> 2026-10-24 09:07:01.199032 - modelling at rank: family
+#> 2026-10-24 09:07:01.542503 - modelling at rank: genus
 ```
 
 ``` r
@@ -1225,7 +1225,7 @@ treePlotsSimple %>% str(max.level = 1) # just a list with a single ggplot inside
 #>   ..@ labels     : <ggplot2::labels> List of 1
 #>  .. .. $ title: Factor w/ 1 level "Csection": 1
 #>   ..@ meta       : list()
-#>   ..@ plot_env   :<environment: 0x55fd5be93830>
+#>   ..@ plot_env   :<environment: 0x5584549601c8>
 ```
 
 ``` r
@@ -1351,7 +1351,7 @@ devtools::session_info()
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-10-23
+#>  date     2026-10-24
 #>  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)
 #>  quarto   NA
 #> 
@@ -1423,7 +1423,7 @@ devtools::session_info()
 #>  memoise          2.0.1    2021-11-26 [1] RSPM
 #>  mgcv             1.9-4    2025-11-07 [3] CRAN (R 4.6.1)
 #>  microbiome       1.34.0   2026-04-28 [1] Bioconduc~
-#>  microViz       * 0.13.1   2026-10-23 [1] local
+#>  microViz       * 0.13.2   2026-10-24 [1] local
 #>  multtest         2.68.0   2026-04-28 [1] Bioconduc~
 #>  nlme             3.1-169  2026-03-27 [3] CRAN (R 4.6.1)
 #>  otel             0.2.0    2025-08-29 [1] RSPM
