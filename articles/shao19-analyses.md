@@ -577,8 +577,8 @@ shao4d_perm <- shao4d %>%
     n_processes = 1
   )
 #> Dropping samples with missings: 15
-#> 2026-10-24 09:06:59.543221 - Starting PERMANOVA with 99 perms with 1 processes
-#> 2026-10-24 09:07:00.084783 - Finished PERMANOVA
+#> 2026-10-25 17:49:12.776523 - Starting PERMANOVA with 99 perms with 1 processes
+#> 2026-10-25 17:49:13.322204 - Finished PERMANOVA
 
 shao4d_perm %>% perm_get()
 #> Permutation test for adonis under reduced model
@@ -669,11 +669,11 @@ shao4d_treeStats <- shao4d_prev10 %>%
   taxatree_models2stats(.keep_models = TRUE) %>%
   # adjust the p values for multiple testing, within each rank
   taxatree_stats_p_adjust(method = "fdr", grouping = "rank")
-#> 2026-10-24 09:07:00.523247 - modelling at rank: phylum
-#> 2026-10-24 09:07:00.68302 - modelling at rank: class
-#> 2026-10-24 09:07:00.897095 - modelling at rank: order
-#> 2026-10-24 09:07:01.199032 - modelling at rank: family
-#> 2026-10-24 09:07:01.542503 - modelling at rank: genus
+#> 2026-10-25 17:49:13.760056 - modelling at rank: phylum
+#> 2026-10-25 17:49:13.921154 - modelling at rank: class
+#> 2026-10-25 17:49:14.136283 - modelling at rank: order
+#> 2026-10-25 17:49:14.43029 - modelling at rank: family
+#> 2026-10-25 17:49:14.769519 - modelling at rank: genus
 ```
 
 ``` r
@@ -1225,7 +1225,7 @@ treePlotsSimple %>% str(max.level = 1) # just a list with a single ggplot inside
 #>   ..@ labels     : <ggplot2::labels> List of 1
 #>  .. .. $ title: Factor w/ 1 level "Csection": 1
 #>   ..@ meta       : list()
-#>   ..@ plot_env   :<environment: 0x5584549601c8>
+#>   ..@ plot_env   :<environment: 0x5622e98980c0>
 ```
 
 ``` r
@@ -1351,7 +1351,7 @@ devtools::session_info()
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-10-24
+#>  date     2026-10-25
 #>  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)
 #>  quarto   NA
 #> 
@@ -1423,7 +1423,7 @@ devtools::session_info()
 #>  memoise          2.0.1    2021-11-26 [1] RSPM
 #>  mgcv             1.9-4    2025-11-07 [3] CRAN (R 4.6.1)
 #>  microbiome       1.34.0   2026-04-28 [1] Bioconduc~
-#>  microViz       * 0.13.2   2026-10-24 [1] local
+#>  microViz       * 0.13.2   2026-10-25 [1] local
 #>  multtest         2.68.0   2026-04-28 [1] Bioconduc~
 #>  nlme             3.1-169  2026-03-27 [3] CRAN (R 4.6.1)
 #>  otel             0.2.0    2025-08-29 [1] RSPM

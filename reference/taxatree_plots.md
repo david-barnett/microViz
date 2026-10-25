@@ -266,10 +266,10 @@ models <- taxatree_models(
   ps = ps, type = corncob::bbdml, ranks = c("Phylum", "Genus"),
   formula = ~ female + african, verbose = TRUE
 )
-#> 2026-10-24 09:01:16.569013 - modelling at rank: Phylum
+#> 2026-10-25 17:43:31.349277 - modelling at rank: Phylum
 #> Modelling: P: Bacteroidetes
 #> Modelling: P: Firmicutes
-#> 2026-10-24 09:01:16.708534 - modelling at rank: Genus
+#> 2026-10-25 17:43:31.457409 - modelling at rank: Genus
 #> Modelling: G: Allistipes et rel.
 #> Modelling: G: Bacteroides vulgatus et rel.
 #> Modelling: G: Butyrivibrio crossotus et rel.
